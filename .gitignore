@@ -1,0 +1,21 @@
+*venv/
+.idea/
+*.egg-info
+dist/
+build/
+logs/*
+!logs/.gitkeep
+*__pycache__
+
+.logs/
+yawning_titan/envs/generic/core/images/
+*.gif
+notebooks/.ipynb_checkpoints
+*.ipynb_checkpoints
+.coverage
+*.csv
+
+# Remove tensorboard logs starting with ppo-
+ppo-*/
+**.pkl
+docs/_build

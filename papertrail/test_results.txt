@@ -1,0 +1,53 @@
+============================= test session starts ==============================
+platform linux -- Python 3.6.9, pytest-6.2.5, py-1.10.0, pluggy-1.0.0 -- /home/joshua/PycharmProjects/yawning-titan/venv/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/joshua/PycharmProjects/yawning-titan
+plugins: anyio-3.3.1
+collecting ... collected 21 items
+
+tests/test_five_node_def.py::test_n_machines[10] PASSED                  [  4%]
+tests/test_five_node_def.py::test_n_machines[50] PASSED                  [  9%]
+tests/test_five_node_def.py::test_n_machines[16] PASSED                  [ 14%]
+tests/test_five_node_def.py::test_environment_init[10-60-0.5-4] PASSED   [ 19%]
+tests/test_five_node_def.py::test_environment_init[5-40-0.2-4] PASSED    [ 23%]
+tests/test_five_node_def.py::test_environment_init[15-20-0.9-3] PASSED   [ 28%]
+tests/test_five_node_def.py::test_environment_reset PASSED               [ 33%]
+tests/test_generic_environment.py::test_generic_env[env0-20-25000] PASSED [ 38%]
+tests/test_generic_environment.py::test_generic_env[env1-52-10000] PASSED [ 42%]
+tests/test_generic_environment.py::test_generic_env[env2-52-30000] PASSED [ 47%]
+tests/test_graph_metrics.py::test_geometric_mean_overflow[input_list0-31.291346445319] PASSED [ 52%]
+tests/test_graph_metrics.py::test_geometric_mean_overflow[input_list1-0.402021991652] PASSED [ 57%]
+tests/test_graph_metrics.py::test_flatten_list[input_list0-7] PASSED     [ 61%]
+tests/test_graph_metrics.py::test_flatten_list[input_list1-7] PASSED     [ 66%]
+tests/test_graph_metrics.py::test_get_func_summary_statistics PASSED     [ 71%]
+tests/test_graph_metrics.py::test_get_graph_metric_bundle PASSED         [ 76%]
+tests/test_nsa_node_env.py::test_default_environment_init PASSED         [ 80%]
+tests/test_nsa_node_env.py::test_environment_reset PASSED                [ 85%]
+tests/test_stable_baselines_compliance.py::test_environment_sb3_compliance[five-node-def-v0] PASSED [ 90%]
+tests/test_stable_baselines_compliance.py::test_environment_sb3_compliance[four-node-def-v0] PASSED [ 95%]
+tests/test_stable_baselines_compliance.py::test_environment_sb3_compliance[18-node-env-v0] PASSED [100%]
+
+=============================== warnings summary ===============================
+tests/test_stable_baselines_compliance.py::test_environment_sb3_compliance[five-node-def-v0]
+tests/test_stable_baselines_compliance.py::test_environment_sb3_compliance[four-node-def-v0]
+  /home/joshua/PycharmProjects/yawning-titan/venv/lib/python3.6/site-packages/stable_baselines3/common/env_checker.py:131: UserWarning: Your observation  has an unconventional shape (neither an image, nor a 1D vector). We recommend you to flatten the observation to have only a 1D vector or use a custom policy to properly process the data.
+    f"Your observation {key} has an unconventional shape (neither an image, nor a 1D vector). "
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+================== 21 passed, 2 warnings in 77.47s (0:01:17) ===================
+============================= test session starts ==============================
+platform linux -- Python 3.7.3, pytest-7.1.2, pluggy-1.0.0
+rootdir: /home/joshua/Desktop/RL/yawning-titan
+plugins: flake8-1.1.1, anyio-3.6.1, cov-3.0.0
+collected 58 items
+
+tests/test_dcbo_utils.py .........                                       [ 15%]
+tests/test_five_node_def.py .......                                      [ 27%]
+tests/test_generic_environment.py ...............                        [ 53%]
+tests/test_graph_embedding_observations.py .............                 [ 75%]
+tests/test_graph_metrics.py ......                                       [ 86%]
+tests/test_nsa_node_env.py ..                                            [ 89%]
+tests/test_reward_functions.py ...                                       [ 94%]
+tests/test_stable_baselines_compliance.py ...                            [100%]
+
+================= 58 passed, 13 warnings in 124.79s (0:02:04) ==================

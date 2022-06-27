@@ -1,0 +1,42 @@
+from setuptools import find_packages, setup
+
+setup(
+    name="yawningtitan",
+    maintainer="Defence Science and Technology Laboratory UK",
+    maintainer_email="oss@dstl.gov.uk",
+    url="https://github.com/dstl/YAWNING-TITAN",
+    description="An abstract, flexible and configurable cyber security simulation",
+    python_requires=">=3.7",
+    version="0.1.0",
+    license="MIT",
+    install_requires=[
+        "gym == 0.19.0",
+        "imageio == 2.9.0",
+        "matplotlib == 3.3.4",
+        "networkx == 2.5.1",
+        "numpy == 1.19.5",
+        "ray[rllib]",
+        "scipy == 1.5.4",
+        "stable_baselines3",
+        "tabulate == 0.8.9",
+        "karateclub",
+        "pandas == 1.2.3",
+        "pyyaml == 5.4.1",
+        "typing-extensions == 3.7.4.3",
+        "torch",
+        "tensorboard",
+        "dm-tree",
+    ],
+    packages=find_packages(),
+    extras_require={
+        "dev": [
+            "pytest",
+            "pytest-flake8",
+            "pytest-cov",
+            "pip-licenses",
+            "sphinx_rtd_theme",
+            "sphinx",
+        ],
+        "tensorflow": ["tensorflow"],
+    },
+)
