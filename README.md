@@ -13,6 +13,12 @@ YAWNING TITAN has been designed with the following things in mind:
 - Flexible environment and game rule setup
 - Generation of evaluation episode visualisations (gifs)
 
+YAWNING TITAN was publicly released on 20th July 2022 under MIT licence. It will continue to be developed through the Autonomous Resilient Cyber Defence (ARCD) project, overseen by Dstl.
+
+Feedback on its operation, and suggestions for enhancements, is gratefully received via the Issues tab.
+
+As the YAWNING TITAN project progresses, updates will be posted on this site.
+
 ## What's YAWNING TITAN built with
 
 - [OpenAI's Gym](https://gym.openai.com/)
