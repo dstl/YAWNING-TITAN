@@ -905,6 +905,7 @@ class NetworkInterface:
                 skill,
             ),
             axis=None,
+            dtype=np.float32,
         )
 
         return obs

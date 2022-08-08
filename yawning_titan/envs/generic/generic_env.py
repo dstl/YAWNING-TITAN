@@ -79,7 +79,10 @@ class GenericNetworkEnv(gym.Env):
         # sets up the observation space. This is a (n+2 by n) matrix. The first two columns show the state of all the
         # nodes. The remaining n columns show the connections between the nodes (effectively the adjacency matrix)
         self.observation_space = spaces.Box(
-            low=0, high=1, shape=(self.network_interface.get_observation_size(),)
+            low=0,
+            high=1,
+            shape=(self.network_interface.get_observation_size(),),
+            dtype=np.float32,
         )
 
         # The gym environment can only properly deal with a 1d array so the observation is flattened
