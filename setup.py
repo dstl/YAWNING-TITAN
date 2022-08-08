@@ -6,7 +6,7 @@ setup(
     maintainer_email="oss@dstl.gov.uk",
     url="https://github.com/dstl/YAWNING-TITAN",
     description="An abstract, flexible and configurable cyber security simulation",
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     version="0.1.0",
     license="MIT",
     install_requires=[
@@ -14,7 +14,7 @@ setup(
         "imageio == 2.9.0",
         "matplotlib == 3.3.4",
         "networkx == 2.5.1",
-        "numpy == 1.20.0",
+        "numpy == 1.22.0",
         "ray[rllib]",
         "scipy == 1.5.4",
         "stable_baselines3",
