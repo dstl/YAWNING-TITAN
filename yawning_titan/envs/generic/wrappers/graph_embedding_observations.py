@@ -82,7 +82,7 @@ class FeatherGraphEmbedObservation(ObservationWrapper):
 
             extra_obs = standard_obs[size_standard_adj:]
             observation = np.concatenate(
-                (self.latest_graph_embedding, extra_obs), axis=None
+                (self.latest_graph_embedding, extra_obs), axis=None, dtype=np.float32
             )
         else:
             observation = standard_obs
