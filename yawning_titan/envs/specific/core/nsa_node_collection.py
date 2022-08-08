@@ -35,7 +35,9 @@ class NodeCollection:
         Returns:
             observation: The current state of the environment (numpy array)
         """
-        observation = np.zeros((len(self.nodes), (len(self.nodes) + 2)))
+        observation = np.zeros(
+            (len(self.nodes), (len(self.nodes) + 2)), dtype=np.float32
+        )
 
         for i in range(0, len(self.nodes)):
             data = self.nodes[i].get_condition()
