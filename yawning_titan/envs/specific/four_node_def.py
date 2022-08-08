@@ -257,7 +257,7 @@ class FourNodeDef(gym.Env):
         Returns:
             A formatted observation array
         """
-        observation = np.array(self.machine_states)
+        observation = np.array(self.machine_states, dtype=np.float32)
         return observation
 
     def _get_reward(self) -> float:
