@@ -22,7 +22,7 @@ test_2_env = generate_generic_env_test_reqs(
 
 # test 5
 test_3_env = generate_generic_env_test_reqs(
-    f"{constants.TEST_CONFIG_PATH}red_config_test_2.yaml", n_nodes=100
+    f"{constants.TEST_CONFIG_PATH}/red_config_test_2.yaml", n_nodes=100
 )
 
 # test 6
