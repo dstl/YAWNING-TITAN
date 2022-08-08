@@ -14,7 +14,7 @@ setup(
         "imageio == 2.9.0",
         "matplotlib == 3.3.4",
         "networkx == 2.5.1",
-        "numpy == 1.20.0",
+        "numpy == 1.22.0",
         "ray[rllib]",
         "scipy == 1.5.4",
         "stable_baselines3",
