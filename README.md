@@ -31,7 +31,7 @@ As the YAWNING TITAN project progresses, updates will be posted on this site.
 ### Pre-Requisites
 
 In order to get YAWNING TITAN installed, you will need to have the following installed:
-- `python3.7+`
+- `python3.8+`
 - `python3-pip`
 - `virtualenv`
 
