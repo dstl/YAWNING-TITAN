@@ -52,7 +52,7 @@ This will install all of the dependencies including algorithm libraries. These l
 all use `torch`. If you'd like to install `tensorflow` for use with Rllib, you can do this manually
 or install `tensorflow` as an optional dependency by executing the following command `python3 -m pip install -e .[tensorflow]`.
 
-### Documentation
+## Documentation
 
 YAWNING TITAN comes with a full set of documentation created using the Sphinx documentation library and these can be built by using the following commands:
 > This will require the development dependencies to be installed - You can install these by executing  ``python3 -m pip install -e .[dev]``
@@ -63,10 +63,24 @@ make html
 This will build the documentation as a collection of HTML files which uses the Read The Docs sphinx theme. Other build options are available but may require additional dependencies such as LaTeX and PDF.
 Please refer to the Sphinx documentation for your specific output requirements.
 
-### Example Notebooks
+## Example Notebooks
 
 A collection of example notebooks have been provided in `/notebooks` and are the best place to start if you want to get a feel for YAWNING TITAN before builidng the docs and exploring
 further.
+
+## Cite This Work
+
+If you would like to include a citation for YAWNING TITAN in your work, please cite the paper published at the ICML 2022 ML4Cyber Workshop.
+```bibtex
+@inproceedings{inproceedings,
+ author = {Andrew, Alex and Spillard, Sam and Collyer, Joshua and Dhir, Neil},
+ year = {2022},
+ month = {07},
+ title = {Developing Optimal Causal Cyber-Defence Agents via Cyber Security Simulation},
+ maintitle = {International Confernece on Machine Learning (ICML)},
+ booktitle = {Workshop on Machine Learning for Cybersecurity (ML4Cyber)}
+}
+```
 
 # License
 
