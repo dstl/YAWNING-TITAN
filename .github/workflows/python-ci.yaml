@@ -20,6 +20,7 @@ jobs:
       - name: Install python dev
         run: |
           sudo apt update
+          sudo add-apt-repository ppa:deadsnakes/ppa -y
           sudo apt install python${{ matrix.python-version}}-dev -y
       - name: Install dependencies
         run: |
