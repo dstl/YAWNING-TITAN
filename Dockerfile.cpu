@@ -1,0 +1,7 @@
+FROM python:3.8.13-slim
+
+COPY ./ /root/code
+RUN apt-get update && apt-get install gcc -y
+RUN cd /root/code && python3 -m pip install --upgrade pip && python3 -m pip install -e .
+
+CMD /bin/bash
