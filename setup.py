@@ -36,6 +36,7 @@ setup(
             "pip-licenses",
             "sphinx_rtd_theme",
             "sphinx",
+            "pre-commit",
         ],
         "tensorflow": ["tensorflow"],
     },
