@@ -10,7 +10,7 @@ setup(
     version="0.1.0",
     license="MIT",
     install_requires=[
-        "gym",
+        "gym==0.21.0",
         "imageio == 2.9.0",
         "matplotlib == 3.3.4",
         "networkx == 2.5.1",
