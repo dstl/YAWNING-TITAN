@@ -6,9 +6,12 @@ Serves a similar function to library helpers such as Stable Baselines 3 ``evalua
 import os
 import sys
 from pathlib import Path
+import pandas as pd
 
 import imageio
 import matplotlib.pyplot as plt
+# from stable_baselines3.common.utils import set_random_seed
+
 
 
 class ActionLoop:
@@ -29,15 +32,16 @@ class ActionLoop:
         self.filename = filename
         self.episode_count = episode_count
 
-    def gif_action_loop(self):
+    def gif_action_loop(self,render_network=True,prompt_to_close=False,save_gif=False,deterministic=True):
         """Run the agent in evaluation and create a gif from episodes."""
-        str_path = sys.path[0]
-        list_path = str_path.split("/")
-        index = len(list_path) - 1 - list_path[::-1].index("yawning-titan")
-        new_list = list_path[: index + 1]
+        # str_path = sys.path[0]
+        # list_path = str_path.split("/")
+        # index = len(list_path) - 1 - list_path[::-1].index("yawning-titan")
+        # new_list = list_path[: index + 1]
         # gets the default settings file path
-        image_path_str = "/".join(new_list) + "/yawning_titan/envs/generic/core/images"
-        image_path = Path(image_path_str)
+        image_path = Path().absolute() / "images" #"/".join(new_list) + "/yawning_titan/envs/generic/core/images"
+        
+        image_path_str = image_path.as_posix()
 
         if not image_path.exists():
             # if the path does not exist, create it
@@ -51,7 +55,8 @@ class ActionLoop:
 
             while done is False:
                 # gets the agents prediction for the best next action to take
-                action, _states = self.agent.predict(obs, deterministic=True)
+                action, _states = self.agent.predict(obs, deterministic=deterministic)
+                
                 # TODO: setup logging properly here
                 # logging.info(f'Blue Agent Action: {action}')
                 # step the env
@@ -60,46 +65,59 @@ class ActionLoop:
                 # TODO: setup logging properly here
                 # logging.info(f'Observations: {obs.flatten()} Rewards:{rewards} Done:{done}')
                 # self.env.render(episode=i+1)
-                self.env.render()
 
-                current_name = f"{image_path_str}/image_{current_image}.png"
-                current_image += 1
-                frame_names.append(current_name)
-                # save the current image
-                plt.savefig(current_name)
+                if save_gif:
+                    current_name = f"{image_path_str}/image_{current_image}.png"
+                    current_image += 1
+                    frame_names.append(current_name)
+                    # save the current image
+                    plt.savefig(current_name)
 
-            with imageio.get_writer(
-                self.filename + "_" + str(self.episode_count) + ".gif", mode="I"
-            ) as writer:
-                # create a gif from the images
-                for filename in frame_names:
-                    image = imageio.imread(filename)
-                    writer.append_data(image)
+                if render_network:
+                    self.env.render()
 
-            for filename in set(frame_names):
-                os.remove(filename)
+                
 
-        self.env.close()
+            if save_gif:
+                with imageio.get_writer(
+                    self.filename + "_" + str(i) + ".gif", mode="I"
+                ) as writer:
+                    # create a gif from the images
+                    for filename in frame_names:
+                        image = imageio.imread(filename)
+                        writer.append_data(image)
 
-    def standard_action_loop(self):
+                for filename in set(frame_names):
+                    os.remove(filename)
+
+        if not prompt_to_close:
+            self.env.close()
+
+    def standard_action_loop(self,deterministic=True):
         """Indefintely act within the environment using a trained agent."""
+        complete_results = []
         for i in range(self.episode_count):
+            results = pd.DataFrame(columns = ["action","rewards","info"]) # temporary log to satisfy repeatability tests until logging can be full implemented
             obs = self.env.reset()
             done = False
             while not done:
-                action, _states = self.agent.predict(obs)
+                action, _states = self.agent.predict(obs,deterministic=deterministic)
                 # TODO: setup logging properly here
                 # logging.info(f'Blue Agent Action: {action}')
                 obs, rewards, done, info = self.env.step(action)
+                results.loc[len(results.index)] = [action,rewards,info]
+            complete_results.append(results)
+        return complete_results
+            
 
-    def random_action_loop(self):
+    def random_action_loop(self,deterministic=True):
         """Indefintely act within the environment taking random actions."""
         for i in range(self.episode_count):
             obs = self.env.reset()
             done = False
             reward = 0
             while not done:
-                action = self.agent.predict(obs, reward, done)
+                action = self.agent.predict(obs, reward, done,deterministic=deterministic)
                 ob, reward, done, ep_history = self.env.step(action)
                 if done:
                     break
