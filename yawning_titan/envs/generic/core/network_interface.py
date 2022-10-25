@@ -367,7 +367,7 @@ class NetworkInterface:
                     entry_nodes.append(nodes[i])
 
         self.entry_nodes = entry_nodes
-        self.possible_high_value_targets = []
+        self.possible_high_value_targets = [] if high_value_target is None else [high_value_target]
         number_possible_high_value = math.ceil(
             (len(self.current_graph.nodes) - len(self.entry_nodes) + 1) * 0.15
         )

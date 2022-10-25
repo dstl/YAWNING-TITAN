@@ -9,7 +9,7 @@ and topology of the network being defended and what data should be collected dur
 import copy
 import json
 from collections import Counter
-from typing import Tuple
+from typing import Tuple,Optional
 
 import gym
 import numpy as np
@@ -21,6 +21,7 @@ from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.helpers.eval_printout import EvalPrintout
 from yawning_titan.envs.generic.helpers.graph2plot import CustomEnvGraph
+from stable_baselines3.common.utils import set_random_seed
 
 
 class GenericNetworkEnv(gym.Env):
@@ -35,6 +36,7 @@ class GenericNetworkEnv(gym.Env):
         show_metrics_every: int = 1,
         collect_additional_per_ts_data: bool = True,
         print_per_ts_data: bool = False,
+        seed: Optional[int] = None,
     ):
         """
         Initialise the generic network environment.
@@ -55,6 +57,7 @@ class GenericNetworkEnv(gym.Env):
         """
         super(GenericNetworkEnv, self).__init__()
 
+        self.SEED = seed
         self.RED = red_agent
         self.BLUE = blue_agent
         self.blue_actions = blue_agent.get_number_of_actions()
@@ -97,7 +100,10 @@ class GenericNetworkEnv(gym.Env):
         Returns:
             A new starting observation (numpy array)
         """
+        if self.SEED is not None: # conditionally set seed
+            set_random_seed(self.SEED,True) # TODO: may need to add customization of cuda setting
         self.network_interface.reset()
+        self.RED.reset()
         self.current_duration = 0
         self.env_observation = self.network_interface.get_current_observation()
         self.current_game_blue = {}

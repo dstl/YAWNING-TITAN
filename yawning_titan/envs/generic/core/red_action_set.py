@@ -35,13 +35,19 @@ class RedActionSet:
         """
         self.network_interface = network_interface
         self.skill = self.network_interface.red_skill
-        self.zero_day_amount = self.network_interface.red_zero_day_start_amount
+        
         self.zero_day_required = (
             self.network_interface.red_zero_day_days_required_to_create
         )
-        self.zero_day_current_day = 0
+       
         self.action_set = action_set
         self.action_probabilities = action_probabilities
+
+        self.reset()
+
+    def reset(self):
+        self.zero_day_amount = self.network_interface.red_zero_day_start_amount
+        self.zero_day_current_day = 0
 
     def choose_target_node(self) -> Union[Tuple[str, str], Tuple[bool, bool]]:
         """
@@ -85,7 +91,7 @@ class RedActionSet:
                 possible_to_attack.add(node)
                 original_node[node] = None
 
-        possible_to_attack = list(possible_to_attack)
+        possible_to_attack =  sorted(list(possible_to_attack))
 
         weights = []
         # red can prioritise nodes based on some different parameters chosen in the settings menu
@@ -437,7 +443,7 @@ class RedActionSet:
         return {
             "Action": "natural_spread",
             "Attacking_Nodes": attacking_nodes,
-            "Target_Nodes": targets,
+            "Target_Nodes": sorted(targets),
             "Successes": success,
         }
 

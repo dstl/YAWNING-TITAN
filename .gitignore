@@ -1,4 +1,5 @@
 *venv/
+*YT-dev/
 .idea/
 *.egg-info
 dist/
