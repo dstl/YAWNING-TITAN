@@ -3,6 +3,7 @@ import functools
 import itertools
 import json
 import math
+import pathlib
 import random
 import sys
 from collections import Counter, defaultdict
@@ -16,7 +17,8 @@ import yaml
 from numpy.random import choice
 from yaml.loader import SafeLoader
 
-from yawning_titan.envs.generic.helpers.environment_input_validation import check_input
+from yawning_titan.envs.generic.helpers.environment_input_validation import \
+    check_input
 from yawning_titan.envs.generic.helpers.node_attribute_gen import (
     generate_vulnerabilities,
     generate_vulnerability,
@@ -50,9 +52,9 @@ class NetworkInterface:
         # If the user has not input a settings file then find the default one
         if settings_path is None:
             # gets the current path and backtracks to the main "yawning-titan" folder
-            str_path = sys.path[0]
+            str_path = pathlib.Path(sys.path[0]).as_posix()
             list_path = str_path.split("/")
-            index = len(list_path) - 1 - list_path[::-1].index("yawning-titan")
+            index = len(list_path) - 1 - list_path[::-1].index("YAWNING-TITAN")
             new_list = list_path[: index + 1]
             # gets the default settings file path
             settings_path = "/".join(new_list) + "/game_modes/default_game_mode.yaml"
@@ -65,9 +67,9 @@ class NetworkInterface:
             print("[Warning] Cannot find configuration file, using default instead")
 
             # gets the current path and backtracks to the main "yawning-titan" folder
-            str_path = sys.path[0]
+            str_path = pathlib.Path(sys.path[0]).as_posix()
             list_path = str_path.split("/")
-            index = len(list_path) - 1 - list_path[::-1].index("yawning-titan")
+            index = len(list_path) - 1 - list_path[::-1].index("YAWNING-TITAN")
             new_list = list_path[: index + 1]
             # gets the default settings file path
             settings_path = "/".join(new_list) + "/game_modes/default_game_mode.yaml"
