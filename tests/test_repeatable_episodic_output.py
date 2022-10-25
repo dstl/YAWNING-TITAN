@@ -21,12 +21,10 @@ def test_repeatable_episodic_output():
     """
     matrix, node_positions = network_creator.create_18_node_network()
 
-    settings_path = "D:\Pycharm projects\YAWNING-TITAN-DEV\YAWNING-TITAN\game_modes\default_game_mode.yaml" # remove absolute path and utilise pathlib relative paths
-
     entry_nodes = ["0"]
 
 
-    network_interface = NetworkInterface(matrix, node_positions, entry_nodes=entry_nodes, settings_path=settings_path, high_value_target='12')
+    network_interface = NetworkInterface(matrix, node_positions, entry_nodes=entry_nodes, high_value_target='12')
 
     red = RedInterface(network_interface)
     blue = BlueInterface(network_interface)
