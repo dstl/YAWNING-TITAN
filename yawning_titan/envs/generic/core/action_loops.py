@@ -4,6 +4,7 @@ The ``ActionLoop`` class helps reduce boilerplate code when evaluating an agent 
 Serves a similar function to library helpers such as Stable Baselines 3 ``evaluate_policy()".
 """
 import os
+import pathlib
 import sys
 from pathlib import Path
 
@@ -31,9 +32,9 @@ class ActionLoop:
 
     def gif_action_loop(self):
         """Run the agent in evaluation and create a gif from episodes."""
-        str_path = sys.path[0]
+        str_path = pathlib.Path(sys.path[0]).as_posix()
         list_path = str_path.split("/")
-        index = len(list_path) - 1 - list_path[::-1].index("yawning-titan")
+        index = len(list_path) - 1 - list_path[::-1].index("YAWNING-TITAN")
         new_list = list_path[: index + 1]
         # gets the default settings file path
         image_path_str = "/".join(new_list) + "/yawning_titan/envs/generic/core/images"
