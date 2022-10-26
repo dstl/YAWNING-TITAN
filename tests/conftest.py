@@ -1,4 +1,5 @@
 import pytest
+from pathlib import Path
 
 from stable_baselines3 import PPO
 from stable_baselines3.ppo import MlpPolicy as PPOMlp
@@ -17,8 +18,9 @@ def basic_2_agent_loop(request)->ActionLoop:
 
     entry_nodes = ["0"]
 
+    settings_path = Path(__file__).parent / "test_configs/repeatable_threat_config.yaml"
 
-    network_interface = NetworkInterface(matrix, node_positions, entry_nodes=entry_nodes, high_value_target='12')
+    network_interface = NetworkInterface(matrix, node_positions, entry_nodes=entry_nodes, high_value_target='12',settings_path=settings_path.as_posix())
 
     red = RedInterface(network_interface)
     blue = BlueInterface(network_interface)

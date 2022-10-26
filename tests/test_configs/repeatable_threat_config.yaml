@@ -198,9 +198,9 @@ GAME_RULES:
   # The node furthest away from the entry points to the network is picked as the target
   choose_high_value_target_furthest_away_from_entry: True
   # If no entry nodes are supplied choose some at random
-  choose_entry_nodes_randomly: True
+  choose_entry_nodes_randomly: False
   # If no entry nodes are supplied then how many should be chosen
-  number_of_entry_nodes: 3
+  number_of_entry_nodes: 1
   # If no entry nodes are supplied then what bias is applied to the nodes when choosing random entry nodes
   prefer_central_nodes_for_entry_nodes: True
   prefer_edge_nodes_for_entry_nodes: False
@@ -209,8 +209,8 @@ GAME_RULES:
 
 RESET:
   randomise_vulnerabilities_on_reset: False
-  choose_new_high_value_target_on_reset: True
-  choose_new_entry_nodes_on_reset: True
+  choose_new_high_value_target_on_reset: False
+  choose_new_entry_nodes_on_reset: False
 
 REWARDS:
   # Rewards for the blue agent losing
