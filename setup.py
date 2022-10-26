@@ -26,7 +26,7 @@ def _ray_3_beta_rllib_py_platform_pip_install() -> str:
             (3, 9): "/ray-3.0.0.dev0-cp39-cp39-manylinux2014_x86_64.whl",
             (3, 10): "/ray-3.0.0.dev0-cp310-cp310-manylinux2014_x86_64.whl",
         },
-        "darmin": {  # MacOSX
+        "darwin": {  # MacOSX
             (3, 8): "/ray-3.0.0.dev0-cp38-cp38-macosx_10_15_x86_64.whl",
             (3, 9): "/ray-3.0.0.dev0-cp39-cp39-macosx_10_15_x86_64.whl",
             (3, 10): "/ray-3.0.0.dev0-cp310-cp310-macosx_10_15_universal2.whl",
@@ -48,15 +48,14 @@ def _ray_3_beta_rllib_py_platform_pip_install() -> str:
             #  Python version not supported
             raise EnvironmentError(
                 f"yawningtitan with ray on {sys.platform} is only supported "
-                f"by Python version 3.8.*, 3.9.*, and 3.10.*, currently using "
+                f"by Python versions 3.8.*, 3.9.*, and 3.10.*, currently using "
                 f"python version {py_v.major}.{py_v.minor}.{py_v.micro}"
             )
     else:
         #  OS not supported
         raise EnvironmentError(
-            f"yawningtitan with ray on {sys.platform} is only supported "
-            f"by Python version 3.8.*, 3.9.*, and 3.10.*, currently using "
-            f"{sys.platform}"
+            f"yawningtitan with ray is only supported by Linux (linux), Windows (win32),"
+            f" and MacOS (darwin), currently using {sys.platform}"
         )
 
 
