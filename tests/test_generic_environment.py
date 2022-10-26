@@ -319,7 +319,7 @@ def test_new_high_value_target():
             random.randint(0, env.BLUE.get_number_of_actions() - 1)
         )
         if done:
-            hvt = env.network_interface.get_high_value_target()
+            hvt = env.network_interface.get_high_value_targets()
             if hvt not in targets:
                 targets[hvt] = 1
             else:
@@ -504,8 +504,8 @@ def test_generic_env(env, timesteps):
         if not done:
             if not env.network_interface.gr_loss_hvt_random_placement:
                 assert (
-                    env.network_interface.get_high_value_target() == prev_high_value
-                    or prev_high_value is None
+                        env.network_interface.get_high_value_targets() == prev_high_value
+                        or prev_high_value is None
                 )
 
         assert (
@@ -922,7 +922,7 @@ def test_generic_env(env, timesteps):
                 if env.network_interface.gr_loss_hvt:
                     assert (
                         env.network_interface.get_single_node_state(
-                            env.network_interface.get_high_value_target()
+                            env.network_interface.get_high_value_targets()
                         )
                         == 1
                     )
@@ -939,7 +939,7 @@ def test_generic_env(env, timesteps):
             if env.network_interface.gr_loss_hvt:
                 assert (
                     env.network_interface.get_single_node_state(
-                        env.network_interface.get_high_value_target()
+                        env.network_interface.get_high_value_targets()
                     )
                     == 0
                 )
