@@ -1,8 +1,7 @@
 import os.path
 import tempfile
-import time
-from uuid import uuid4
 
+import pytest
 from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import EvalCallback
 from stable_baselines3.common.env_checker import check_env
@@ -10,8 +9,6 @@ from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.ppo import MlpPolicy as PPOMlp
 
-from yawning_titan import IMAGES_DIR
-from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import \
     NetworkInterface
@@ -20,6 +17,7 @@ from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.envs.generic.helpers import network_creator
 
 
+@pytest.mark.e2e_integration_test
 def test_default_game_mode_e2e():
     runs = True
     try:
@@ -38,8 +36,6 @@ def test_default_game_mode_e2e():
         env = GenericNetworkEnv(red, blue, network_interface)
 
         check_env(env, warn=True)
-
-        # reset anything changed during the check
 
         _ = env.reset()
 
