@@ -118,7 +118,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     experiment_id = str(uuid.uuid4())
 
-    logger = logging.getLogger("yawning_titan")
+    logger = logging.getLogger(__name__)
 
     if args.debug is True:
         logger.setLevel(logging.DEBUG)
