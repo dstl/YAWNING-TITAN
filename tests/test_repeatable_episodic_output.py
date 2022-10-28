@@ -20,7 +20,7 @@ def test_repeatable_episodic_output_set_seed(basic_2_agent_loop:ActionLoop):
     are repeatable across all episodes with a set seed value
     """
 
-    results: List[DataFrame] = basic_2_agent_loop.standard_action_loop() 
+    results: List[DataFrame] = basic_2_agent_loop.standard_action_loop(deterministic=True) 
 
     print(results[0].compare(results[1]))
     
