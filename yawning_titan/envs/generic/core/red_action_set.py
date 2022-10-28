@@ -443,7 +443,7 @@ class RedActionSet:
         return {
             "Action": "natural_spread",
             "Attacking_Nodes": attacking_nodes,
-            "Target_Nodes": sorted(targets),
+            "Target_Nodes": targets,
             "Successes": success,
         }
 
