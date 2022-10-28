@@ -9,7 +9,7 @@ import pytest
 
 @pytest.mark.parametrize("basic_2_agent_loop",
     [
-        {"seed":666,"episodes":2,"settings_path":"test_configs/settable_target_node.yaml"},
+        {"seed":666,"episodes":2,"settings_path":"settable_target_node.yaml"},
     ], indirect=True
 )
 def test_target_specific_node(basic_2_agent_loop:ActionLoop):
@@ -18,7 +18,7 @@ def test_target_specific_node(basic_2_agent_loop:ActionLoop):
     are repeatable across all episodes with a set seed value
     """
 
-    results: List[DataFrame] = basic_2_agent_loop.gif_action_loop(save_gif=True) #basic_2_agent_loop.standard_action_loop() 
+    results: List[DataFrame] = basic_2_agent_loop.standard_action_loop(deterministic=True) #basic_2_agent_loop.gif_action_loop(save_gif=True) #
 
     print(results[0].compare(results[1]))
     
