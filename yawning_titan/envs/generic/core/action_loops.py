@@ -97,7 +97,7 @@ class ActionLoop:
         if not prompt_to_close:
             self.env.close()
 
-    def standard_action_loop(self,deterministic=True):
+    def standard_action_loop(self,deterministic=False):
         """Indefinitely act within the environment using a trained agent."""
         complete_results = []
         for i in range(self.episode_count):
@@ -114,7 +114,7 @@ class ActionLoop:
         return complete_results
             
 
-    def random_action_loop(self,deterministic=True):
+    def random_action_loop(self,deterministic=False):
         """Indefinitely act within the environment taking random actions."""
         for i in range(self.episode_count):
             obs = self.env.reset()
