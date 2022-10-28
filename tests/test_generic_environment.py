@@ -1,4 +1,5 @@
 """Used to test the GenericEnv() class and the associated agent interfaces."""
+import os
 import random
 from typing import Dict
 
@@ -9,7 +10,7 @@ import yaml
 from stable_baselines3.common.env_checker import check_env
 from yaml.loader import SafeLoader
 
-import tests.constants as constants
+from tests import TEST_CONFIG_PATH
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
@@ -106,45 +107,51 @@ def generate_generic_env_test_reqs(
 
 # test 1
 test_1_env = generate_generic_env_test_reqs(
-    f"{constants.TEST_CONFIG_PATH}/base_config.yaml",
+    os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
     net_creator_type="18node",
     n_nodes=18,
 )
 
 # test 2
 test_2_env = generate_generic_env_test_reqs(
-    f"{constants.TEST_CONFIG_PATH}/base_config.yaml",
+    os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
     net_creator_type="mesh",
     n_nodes=50,
 )
 
 # test 3
 test_3_env = generate_generic_env_test_reqs(
-    f"{constants.TEST_CONFIG_PATH}/base_config.yaml", n_nodes=50
+    os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
+    n_nodes=50
 )
 
 # test 4
 test_4_env = generate_generic_env_test_reqs(
-    f"{constants.TEST_CONFIG_PATH}/red_config_test_1.yaml", n_nodes=50
+    os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml")
+    , n_nodes=50
 )
 
 # test 5
 test_5_env = generate_generic_env_test_reqs(
-    f"{constants.TEST_CONFIG_PATH}/red_config_test_2.yaml", n_nodes=100
+    os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"),
+    n_nodes=100
 )
 
 # test 6
 test_6_env = generate_generic_env_test_reqs(
-    f"{constants.TEST_CONFIG_PATH}/red_config_test_3.yaml", n_nodes=250
+    os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"),
+    n_nodes=250
 )
 # test 7
 test_7_env = generate_generic_env_test_reqs(
-    f"{constants.TEST_CONFIG_PATH}/red_config_test_4.yaml", n_nodes=5
+    os.path.join(TEST_CONFIG_PATH, "red_config_test_4.yaml")
+    , n_nodes=5
 )
 
 # test 8
 test_8_env = generate_generic_env_test_reqs(
-    f"{constants.TEST_CONFIG_PATH}/red_config_test_5.yaml", n_nodes=24
+    os.path.join(TEST_CONFIG_PATH, "red_config_test_5.yaml"),
+    n_nodes=24
 )
 
 
@@ -153,19 +160,19 @@ def test_input_validation():
     """Test that incorrect/broken configuration files raise errors."""
     with pytest.raises(ValueError):
         _, _ = generate_generic_env_test_reqs(
-            f"{constants.TEST_CONFIG_PATH}/red_config_test_broken_1.yaml",
+            os.path.join(TEST_CONFIG_PATH, "red_config_test_broken_1.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
         )
 
         _, _ = generate_generic_env_test_reqs(
-            f"{constants.TEST_CONFIG_PATH}/red_config_test_broken_2.yaml",
+            os.path.join(TEST_CONFIG_PATH, "red_config_test_broken_2.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
         )
 
         _, _ = generate_generic_env_test_reqs(
-            f"{constants.TEST_CONFIG_PATH}/red_config_test_broken_3.yaml",
+            os.path.join(TEST_CONFIG_PATH, "red_config_test_broken_3.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
         )
@@ -174,7 +181,7 @@ def test_input_validation():
 def test_network_interface():
     """Test the network interface class and associated methods work as intended."""
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        f"{constants.TEST_CONFIG_PATH}/everything_guaranteed.yaml",
+        os.path.join(TEST_CONFIG_PATH, "everything_guaranteed.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
     )
@@ -239,7 +246,7 @@ def test_natural_spreading():
     # generate an env
     n_nodes = 100
     env = generate_generic_env_test_reqs(
-        f"{constants.TEST_CONFIG_PATH}/spreading_config.yaml",
+        os.path.join(TEST_CONFIG_PATH, "spreading_config.yaml"),
         net_creator_type="mesh",
         n_nodes=n_nodes,
     )
@@ -259,7 +266,7 @@ def test_natural_spreading():
 def test_env_reset():
     """Test environment resets clean up properly."""
     env = generate_generic_env_test_reqs(
-        f"{constants.TEST_CONFIG_PATH}/base_config.yaml",
+        os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
     )
@@ -307,7 +314,7 @@ def test_new_high_value_target():
     """Test the high value target gaol mechanic - focus on selection."""
     # check that a new high value target is being chosen
     env = generate_generic_env_test_reqs(
-        f"{constants.TEST_CONFIG_PATH}/new_high_value_target.yaml",
+        os.path.join(TEST_CONFIG_PATH, "new_high_value_target.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
     )
@@ -336,7 +343,7 @@ def test_new_high_value_target():
 def test_new_entry_nodes():
     """Test the selection of entry nodes and validate they are correct."""
     env = generate_generic_env_test_reqs(
-        f"{constants.TEST_CONFIG_PATH}/new_entry_nodes.yaml",
+        os.path.join(TEST_CONFIG_PATH, "new_entry_nodes.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
     )
@@ -366,7 +373,7 @@ def test_new_vulnerabilities():
     """Test that new vulnerabilities are chosen at each reset if activated within configuration."""
     # check that new vulnerabilities are being chosen (randomly)
     env = generate_generic_env_test_reqs(
-        f"{constants.TEST_CONFIG_PATH}/new_high_value_target.yaml",
+        os.path.join(TEST_CONFIG_PATH, "new_high_value_target.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
     )
