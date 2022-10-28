@@ -4,12 +4,11 @@ The ``ActionLoop`` class helps reduce boilerplate code when evaluating an agent 
 Serves a similar function to library helpers such as Stable Baselines 3 ``evaluate_policy()".
 """
 import os
-import pathlib
-import sys
-from pathlib import Path
 
 import imageio
 import matplotlib.pyplot as plt
+
+from yawning_titan import IMAGES_DIR
 
 
 class ActionLoop:
@@ -30,19 +29,17 @@ class ActionLoop:
         self.filename = filename
         self.episode_count = episode_count
 
-    def gif_action_loop(self):
-        """Run the agent in evaluation and create a gif from episodes."""
-        str_path = pathlib.Path(sys.path[0]).as_posix()
-        list_path = str_path.split("/")
-        index = len(list_path) - 1 - list_path[::-1].index("YAWNING-TITAN")
-        new_list = list_path[: index + 1]
-        # gets the default settings file path
-        image_path_str = "/".join(new_list) + "/yawning_titan/envs/generic/core/images"
-        image_path = Path(image_path_str)
+    def gif_action_loop(self, render: bool = True):
+        """
+        Run the agent in evaluation and create a gif from episodes.
 
-        if not image_path.exists():
+        Args:
+            render: Bool to toggle rendering on or off. Has a default
+                value of True.
+        """
+        if not IMAGES_DIR.exists():
             # if the path does not exist, create it
-            os.mkdir(image_path)
+            os.mkdir(IMAGES_DIR)
 
         for i in range(self.episode_count):
             obs = self.env.reset()
@@ -61,17 +58,21 @@ class ActionLoop:
                 # TODO: setup logging properly here
                 # logging.info(f'Observations: {obs.flatten()} Rewards:{rewards} Done:{done}')
                 # self.env.render(episode=i+1)
-                self.env.render()
+                if render:
+                    self.env.render()
 
-                current_name = f"{image_path_str}/image_{current_image}.png"
+                current_name = os.path.join(
+                    IMAGES_DIR, f"image_{current_image}.png"
+                )
                 current_image += 1
                 frame_names.append(current_name)
                 # save the current image
                 plt.savefig(current_name)
 
-            with imageio.get_writer(
-                self.filename + "_" + str(self.episode_count) + ".gif", mode="I"
-            ) as writer:
+            gif_path = os.path.join(
+                IMAGES_DIR, f"{self.filename}_{self.episode_count}.gif"
+            )
+            with imageio.get_writer(gif_path, mode="I") as writer:
                 # create a gif from the images
                 for filename in frame_names:
                     image = imageio.imread(filename)

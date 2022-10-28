@@ -1,6 +1,30 @@
 import sys
 
 from setuptools import find_packages, setup
+from setuptools.command.develop import develop
+from setuptools.command.install import install
+
+
+class PostDevelopCommand(develop):
+    """
+     Post-installation command class for development mode.
+     """
+
+    def run(self):
+        develop.run(self)
+        from yawning_titan.config.app import create_app_dirs
+        create_app_dirs()
+
+
+class PostInstallCommand(install):
+    """
+    Post-installation command class for installation mode.
+    """
+
+    def run(self):
+        install.run(self)
+        from yawning_titan.config.app import create_app_dirs
+        create_app_dirs()
 
 
 def _ray_3_beta_rllib_py_platform_pip_install() -> str:
@@ -69,6 +93,7 @@ setup(
     python_requires=">=3.8",
     version="0.1.0",
     license="MIT",
+    packages=find_packages(),
     install_requires=[
         "gym==0.21.0",
         "imageio==2.9.0",
@@ -77,17 +102,17 @@ setup(
         "numpy==1.23.4",
         _ray_3_beta_rllib_py_platform_pip_install(),
         "scipy==1.9.2",
-        "stable_baselines3",
+        "stable_baselines3==1.6.2",
         "tabulate==0.8.9",
-        "karateclub",
+        "karateclub==1.3.0",
         "pandas==1.3.5",
+        "platformdirs==2.5.2",
         "pyyaml==5.4.1",
         "typing-extensions==4.0.1",
-        "torch",
-        "tensorboard",
-        "dm-tree",
+        "torch==1.12.1 ",
+        "tensorboard==2.10.1 ",
+        "dm-tree==0.1.7",
     ],
-    packages=find_packages(),
     extras_require={
         "dev": [
             "pytest",
@@ -98,6 +123,24 @@ setup(
             "sphinx",
             "pre-commit",
         ],
-        "tensorflow": ["tensorflow"],
+        "tensorflow": ["tensorflow"],  # TODO: Determine version and lock it in
+        "jupyter": ["jupyter"]
     },
+    package_data={
+        "yawning_titan": [
+            "config/_package_data/game_modes/default_game_mode.yaml",
+            "config/_package_data/game_modes/low_skill_red_with_random_infection_perfect_detection.yaml",
+            "notebooks/_package_data/sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb",
+            "notebooks/_package_data/sb3/Using an Evaluation Callback to monitor progress during training.ipynb",
+            "notebooks/_package_data/Creating and playing as a Keyboard Agent.ipynb",
+        ]
+        # TODO: Determine whether tests config needs to be included in
+        #  package_data to be able to run tests from installed YT rather
+        #  than from cloned repo directory.
+    },
+    include_package_data=True,
+    cmdclass={
+        "install": PostInstallCommand,
+        "develop": PostDevelopCommand
+    }
 )

@@ -3,13 +3,12 @@ import functools
 import itertools
 import json
 import math
-import pathlib
 import random
-import sys
-import warnings
 from collections import Counter, defaultdict
 from datetime import datetime
-from typing import Dict, List, Tuple, Union
+from logging import getLogger
+from typing import Dict, List, Optional, Tuple, Union
+import warnings
 
 import networkx as nx
 import numpy as np
@@ -18,6 +17,7 @@ import yaml
 from numpy.random import choice
 from yaml.loader import SafeLoader
 
+from yawning_titan.config.game_modes import default_game_mode_path
 from yawning_titan.envs.generic.helpers.environment_input_validation import \
     check_input
 from yawning_titan.envs.generic.helpers.node_attribute_gen import (
@@ -25,18 +25,19 @@ from yawning_titan.envs.generic.helpers.node_attribute_gen import (
     generate_vulnerability,
 )
 
+_LOGGER = getLogger(__name__)
 
 class NetworkInterface:
     """The primary interface between both red and blue agents and the underlying environment."""
 
     def __init__(
-            self,
-            matrix: np.array,
-            positions: dict,
-            settings_path: str = None,
-            entry_nodes: List[str] = None,
-            vulnerabilities: dict = None,
-            high_value_targets: List[str] = None,
+        self,
+        matrix: np.array,
+        positions: dict,
+        settings_path: Optional[str] = None,
+        entry_nodes: Optional[List[str]] = None,
+        vulnerabilities: Optional[Dict] = None,
+        high_value_targets: Optional[List[str]] = None,
     ):
         """
         Initialise the Network Interface and initialises all of the necessary components.
@@ -50,33 +51,17 @@ class NetworkInterface:
             vulnerabilities: A dictionary containing the vulnerabilities of the nodes
             high_value_targets: A name of a node that when taken means the red agent instantly wins
         """
-        # If the user has not input a settings file then find the default one
-        if settings_path is None:
-            # gets the current path and backtracks to the main "yawning-titan" folder
-            str_path = pathlib.Path(sys.path[0]).as_posix()
-            list_path = str_path.split("/")
-            index = len(list_path) - 1 - list_path[::-1].index("YAWNING-TITAN")
-            new_list = list_path[: index + 1]
-            # gets the default settings file path
-            settings_path = "/".join(new_list) + "/game_modes/default_game_mode.yaml"
-
         # opens the fle the user has specified to be the location of the settings
+        if not settings_path:
+            settings_path = default_game_mode_path()
         try:
             with open(settings_path) as f:
                 settings = yaml.load(f, Loader=SafeLoader)
-        except FileNotFoundError:
-            print("[Warning] Cannot find configuration file, using default instead")
-
-            # gets the current path and backtracks to the main "yawning-titan" folder
-            str_path = pathlib.Path(sys.path[0]).as_posix()
-            list_path = str_path.split("/")
-            index = len(list_path) - 1 - list_path[::-1].index("YAWNING-TITAN")
-            new_list = list_path[: index + 1]
-            # gets the default settings file path
-            settings_path = "/".join(new_list) + "/game_modes/default_game_mode.yaml"
-
-            with open(settings_path) as f:
-                settings = yaml.load(f, Loader=SafeLoader)
+        except FileNotFoundError as e:
+            msg = f"Configuration file does not exist: {settings_path}"
+            print(msg)  # TODO: Remove once proper logging is setup
+            _LOGGER.critical(msg, exc_info=True)
+            raise e
 
         self.matrix = matrix
         number_of_nodes = len(matrix)

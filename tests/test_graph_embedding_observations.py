@@ -1,10 +1,14 @@
+import os
+
 import numpy as np
 import pytest
 from stable_baselines3.common.env_checker import check_env
 from stable_baselines3.common.env_util import is_wrapped
 
-import tests.constants as constants
+from tests import TEST_CONFIG_PATH
 from tests.test_generic_environment import generate_generic_env_test_reqs
+from yawning_titan.config.game_modes import \
+    low_skill_red_with_random_infection_perfect_detection_path
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.envs.generic.wrappers.graph_embedding_observations import (
     FeatherGraphEmbedObservation,
@@ -12,22 +16,25 @@ from yawning_titan.envs.generic.wrappers.graph_embedding_observations import (
 
 # Setting up Test Environment
 test_1_env = generate_generic_env_test_reqs(
-    f"{constants.GAME_MODE_PATH}/low_skill_red_with_random_infection_perfect_detection.yaml",
+    str(low_skill_red_with_random_infection_perfect_detection_path()),
     net_creator_type="18node",
     n_nodes=18,
 )
 test_2_env = generate_generic_env_test_reqs(
-    f"{constants.TEST_CONFIG_PATH}/red_config_test_1.yaml", n_nodes=50
+    os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml")
+    , n_nodes=50
 )
 
 # test 5
 test_3_env = generate_generic_env_test_reqs(
-    f"{constants.TEST_CONFIG_PATH}/red_config_test_2.yaml", n_nodes=100
+    os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"),
+    n_nodes=100
 )
 
 # test 6
 test_4_env = generate_generic_env_test_reqs(
-    f"{constants.TEST_CONFIG_PATH}/red_config_test_3.yaml", n_nodes=250
+    os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"),
+    n_nodes=250
 )
 
 test_1_env = FeatherGraphEmbedObservation(test_1_env, max_num_nodes=18)
