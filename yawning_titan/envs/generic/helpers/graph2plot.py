@@ -48,6 +48,7 @@ class CustomEnvGraph:
         title: str,
         special_nodes: dict = None,
         entrance_nodes: list = None,
+        target_node: str = None,
         show_only_blue_view: bool = False,
         show_node_names: bool = False,
     ):
@@ -132,6 +133,24 @@ class CustomEnvGraph:
                 label="Blue Patch",
                 markersize=15,
             ),
+        ]
+        # If a target node is specified add to the legend
+        if target_node is not None:
+            legend_objects.append(
+                Line2D(
+                    [0],
+                    [0],
+                    color="white",
+                    marker="o",
+                    markerfacecolor="#2c195e",
+                    label="Target Node",
+                    markersize=15,
+                )
+            )
+            # plots the target node
+            plt.scatter([pos[str(target_node)][0]], [pos[str(target_node)][1]], color="#2c195e", s=324, zorder=8)
+
+        legend_objects.extend([   
             # An edge that red has attacked along this turn
             Line2D(
                 [0],
@@ -151,8 +170,9 @@ class CustomEnvGraph:
                 markerfacecolor="gray",
                 label="Connection",
                 markersize=15,
-            ),
-        ]
+            )
+        ])
+
         # If only showing the blue view then only render red nodes that blue can see
         if not show_only_blue_view:
             legend_objects.append(
@@ -194,6 +214,7 @@ class CustomEnvGraph:
                         markersize=15,
                     ),
                 )
+
 
         # If entrance nodes are used then they are added to the legend
         if entrance_nodes is not None:

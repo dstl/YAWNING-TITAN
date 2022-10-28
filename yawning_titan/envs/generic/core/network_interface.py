@@ -6,6 +6,8 @@ import math
 import pathlib
 import random
 import sys
+
+from scipy.sparse.csgraph import dijkstra
 from collections import Counter, defaultdict
 from datetime import datetime
 from typing import Dict, List, Tuple, Union
@@ -35,7 +37,7 @@ class NetworkInterface:
         settings_path: str = None,
         entry_nodes: List[str] = None,
         vulnerabilities: dict = None,
-        high_value_target: str = None,
+        high_value_node: str = None,
     ):
         """
         Initialise the Network Interface and initialises all of the necessary components.
@@ -47,7 +49,7 @@ class NetworkInterface:
             entry_nodes: A list of nodes that act as gateways or doors in the network for the red agent. While the red
             agent does not start in the network, they can access the network at these nodes.
             vulnerabilities: A dictionary containing the vulnerabilities of the nodes
-            high_value_target: A name of a node that when taken means the red agent instantly wins
+            high_value_node: A name of a node that when taken means the red agent instantly wins
         """
         # If the user has not input a settings file then find the default one
         if settings_path is None:
@@ -83,6 +85,7 @@ class NetworkInterface:
         check_input(settings, number_of_nodes)
 
         self.settings = settings
+        self.matrix = matrix
 
         # Top level Groupings
         self.red_settings = settings["RED"]
@@ -153,6 +156,7 @@ class NetworkInterface:
         self.red_targeting_prioritise_resilient_nodes = self.red_settings[
             "red_prioritises_resilient_nodes"
         ]
+        self.red_pursues_node = str(self.red_settings["red_pursues_node"]) if self.red_settings["red_pursues_node"] is not None else None
 
         # Observation Space Settings
         self.obs_compromised_status = self.observation_space_settings[
@@ -247,12 +251,13 @@ class NetworkInterface:
         self.gr_loss_pc_node_compromised_pc = self.game_rule_settings[
             "percentage_of_nodes_compromised_equals_loss"
         ]
-        self.gr_loss_hvt = self.game_rule_settings["lose_when_high_value_target_lost"]
-        self.gr_loss_hvt_random_placement = self.game_rule_settings[
-            "choose_high_value_target_placement_at_random"
+        self.gr_loss_hvn = self.game_rule_settings["lose_when_high_value_node_lost"]
+        self.gr_loss_tn = self.game_rule_settings["lose_when_target_node_lost"]
+        self.gr_loss_hvn_random_placement = self.game_rule_settings[
+            "choose_high_value_node_placement_at_random"
         ]
-        self.gr_loss_hvt_furthest_away = self.game_rule_settings[
-            "choose_high_value_target_furthest_away_from_entry"
+        self.gr_loss_hvn_furthest_away = self.game_rule_settings[
+            "choose_high_value_node_furthest_away_from_entry"
         ]
         self.gr_random_entry_nodes = self.game_rule_settings[
             "choose_entry_nodes_randomly"
@@ -270,8 +275,8 @@ class NetworkInterface:
         self.reset_random_vulns = self.reset_settings[
             "randomise_vulnerabilities_on_reset"
         ]
-        self.reset_move_hvt = self.reset_settings[
-            "choose_new_high_value_target_on_reset"
+        self.reset_move_hvn = self.reset_settings[
+            "choose_new_high_value_node_on_reset"
         ]
         self.reset_move_entry_nodes = self.reset_settings[
             "choose_new_entry_nodes_on_reset"
@@ -369,18 +374,18 @@ class NetworkInterface:
                     entry_nodes.append(nodes[i])
 
         self.entry_nodes = entry_nodes
-        self.possible_high_value_targets = [] if high_value_target is None else [high_value_target]
+        self.possible_high_value_nodes = [] if high_value_node is None else [high_value_node]
         number_possible_high_value = math.ceil(
             (len(self.current_graph.nodes) - len(self.entry_nodes) + 1) * 0.15
         )
-        if high_value_target is None:
+        if high_value_node is None:
             # chooses a random node to be the high value target
-            if self.gr_loss_hvt_random_placement:
-                self.possible_high_value_targets = list(
+            if self.gr_loss_hvn_random_placement:
+                self.possible_high_value_nodes = list(
                     set(nodes).difference(set(self.entry_nodes))
                 )
             # Choose the node that is furthest away from the entry points as the high value target
-            if self.gr_loss_hvt_furthest_away:
+            if self.gr_loss_hvn_furthest_away:
                 # gets all the paths between nodes
                 paths = []
                 for i in self.entry_nodes:
@@ -397,15 +402,15 @@ class NetworkInterface:
                 result = {x: float(sums[x]) / counters[x] for x in sums.keys()}
                 for i in range(number_possible_high_value):
                     current = max(result, key=result.get)
-                    self.possible_high_value_targets.append(current)
+                    self.possible_high_value_nodes.append(current)
                     result.pop(current)
 
-        if self.gr_loss_hvt:
-            self.high_value_target = random.choices(
-                population=self.possible_high_value_targets, k=1
+        if self.gr_loss_hvn:
+            self.high_value_node = random.choices(
+                population=self.possible_high_value_nodes, k=1
             )[0]
         else:
-            self.high_value_target = None
+            self.high_value_node = None
 
         # initialises the deceptive nodes and their names and amount
         self.deceptive_nodes = []
@@ -446,6 +451,14 @@ class NetworkInterface:
     The following block of code contains the getters for the network interface. Getters are methods that (given
     parameters) will return some attribute from the class
     """
+    def get_shortest_distances_to_target(self,nodes:List[str])->List[float]:
+        """
+        
+        """
+        #TODO: add option where only shortest distance provided
+        dist_matrix = dijkstra(csgraph=self.matrix, directed=False, indices=int(self.red_pursues_node), min_only=False)
+        distances = [dist_matrix[int(n)] for n in nodes]
+        return distances
 
     def get_number_base_edges(self) -> int:
         """
@@ -623,9 +636,13 @@ class NetworkInterface:
         """
         return self.current_network_variables[node]["node_position"]
 
-    def get_high_value_target(self):
-        """Get the node index for the high value target."""
-        return self.high_value_target
+    def get_target_node(self):
+        """Get the node index for the target node."""
+        return self.red_pursues_node
+
+    def get_high_value_node(self):
+        """Get the node index for the high value node."""
+        return self.high_value_node
 
     def get_red_location(self) -> str:
         """Get the node index for the red agents current position."""
@@ -869,7 +886,9 @@ class NetworkInterface:
 
         # Gets the locations of any special nodes in the network (entry nodes and high value nodes)
         entry_nodes = []
-        high_value_target = []
+        high_value_node = []
+        target_node = []
+
         if self.obs_special_nodes:
             # gets the entry nodes
             entry_nodes = {name: 0 for name in self.get_nodes()}
@@ -878,13 +897,22 @@ class NetworkInterface:
             entry_nodes = list(entry_nodes.values())
             entry_nodes = np.pad(entry_nodes, (0, open_spaces), "constant")
 
-            if self.gr_loss_hvt:
+            if self.gr_loss_hvn:
                 # gets the high value target node
-                high_value_target = {name: 0 for name in self.get_nodes()}
-                high_value_target[self.high_value_target] = 1
-                high_value_target = list(high_value_target.values())
-                high_value_target = np.pad(
-                    high_value_target, (0, open_spaces), "constant"
+                high_value_node = {name: 0 for name in self.get_nodes()}
+                high_value_node[self.high_value_node] = 1
+                high_value_node = list(high_value_node.values())
+                high_value_node = np.pad(
+                    high_value_node, (0, open_spaces), "constant"
+                )
+
+            if self.red_pursues_node is not None:
+                # gets the high value target node
+                target_node = {name: 0 for name in self.get_nodes()}
+                target_node[self.red_pursues_node] = 1
+                target_node = list(target_node.values())
+                target_node = np.pad(
+                    target_node, (0, open_spaces), "constant"
                 )
 
         # gets the skill of the red agent
@@ -903,7 +931,8 @@ class NetworkInterface:
                 attacking_nodes,
                 attacked_nodes,
                 entry_nodes,
-                high_value_target,
+                high_value_node,
+                target_node,
                 skill,
             ),
             axis=None,
@@ -912,7 +941,7 @@ class NetworkInterface:
 
         return obs
 
-    def get_observation_size(self) -> int:
+    def get_observation_size_base(self,with_feather: bool) -> int:
         """
         Get the size of the observation space.
 
@@ -924,11 +953,15 @@ class NetworkInterface:
         # gets the max number of nodes in the env (including deceptive nodes)
         observation_size = 0
         max_number_of_nodes = self.get_total_num_nodes()
+        if with_feather:
+            node_connections = 500
+        else:
+            node_connections = max_number_of_nodes * max_number_of_nodes
 
         # calculate the size of the observation space
         # the size depends on what observations are turned on/off in the config file
         if self.obs_node_connections:
-            observation_size += max_number_of_nodes * max_number_of_nodes
+            observation_size += node_connections
         if self.obs_compromised_status:
             observation_size += max_number_of_nodes
         if self.obs_node_vuln_status:
@@ -943,12 +976,22 @@ class NetworkInterface:
             observation_size += max_number_of_nodes
         if self.obs_special_nodes:
             observation_size += max_number_of_nodes
-            if self.gr_loss_hvt:
+            # if self.network_interface.gr_loss_tn:
+            if self.get_target_node() is not None:
                 observation_size += max_number_of_nodes
+            if self.gr_loss_hvn:
+                observation_size += max_number_of_nodes
+
         if self.obs_red_agent_skill:
             observation_size += 1
 
         return observation_size
+
+    def get_observation_size(self) -> int:
+        """
+        use base observation size calculator with feather switched off
+        """
+        return self.get_observation_size_base(False)
 
     """
     SETTERS
@@ -1129,17 +1172,17 @@ class NetworkInterface:
             )
             self.entry_nodes = entry_nodes
 
-            if self.gr_loss_hvt and self.reset_move_hvt:
+            if self.gr_loss_hvn and self.reset_move_hvn:
 
-                if self.gr_loss_hvt_random_placement:
-                    self.possible_high_value_targets = list(
+                if self.gr_loss_hvn_random_placement:
+                    self.possible_high_value_nodes = list(
                         set(self.current_graph.nodes()).difference(
                             set(self.entry_nodes)
                         )
                     )
 
-                if self.gr_loss_hvt_furthest_away:
-                    self.possible_high_value_targets = []
+                if self.gr_loss_hvn_furthest_away:
+                    self.possible_high_value_nodes = []
 
                     # Unsure what this is here for - Unused but may be relevant
                     # number_possible_high_value = math.ceil(
@@ -1163,12 +1206,12 @@ class NetworkInterface:
                     # averages the distances to find the node that is, on average, the furthest away
                     result = {x: float(sums[x]) / counters[x] for x in sums.keys()}
                     current = max(result, key=result.get)
-                    self.possible_high_value_targets.append(current)
+                    self.possible_high_value_nodes.append(current)
         # If turned on in the config file then choose a new high value target to defend
-        if self.reset_move_hvt and self.gr_loss_hvt:
+        if self.reset_move_hvn and self.gr_loss_hvn:
             # change the position of the high value target to a new random position
-            self.high_value_target = random.choices(
-                population=self.possible_high_value_targets, k=1
+            self.high_value_node = random.choices(
+                population=self.possible_high_value_nodes, k=1
             )[0]
         if self.reset_random_vulns:
             # change all of the node vulnerabilities to new random values

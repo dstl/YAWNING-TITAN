@@ -17,10 +17,12 @@ def basic_2_agent_loop(request)->ActionLoop:
     matrix, node_positions = network_creator.create_18_node_network()
 
     entry_nodes = ["0"]
+    settings_path = None
 
-    settings_path = Path(__file__).parent / "test_configs/repeatable_threat_config.yaml"
+    if "settings_path" in request.param:
+        settings_path = (Path(__file__).parent / request.param["settings_path"]).as_posix()
 
-    network_interface = NetworkInterface(matrix, node_positions, entry_nodes=entry_nodes, high_value_target='12',settings_path=settings_path.as_posix())
+    network_interface = NetworkInterface(matrix, node_positions, entry_nodes=entry_nodes, high_value_node='12',settings_path=settings_path)
 
     red = RedInterface(network_interface)
     blue = BlueInterface(network_interface)
@@ -36,4 +38,4 @@ def basic_2_agent_loop(request)->ActionLoop:
     agent = agent.learn(total_timesteps=1000)
 
 
-    return ActionLoop(env,agent,episode_count=request.param["episodes"])
+    return ActionLoop(env,agent,episode_count=request.param["episodes"],filename="test_output")

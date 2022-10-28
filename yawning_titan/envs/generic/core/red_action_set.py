@@ -126,6 +126,11 @@ class RedActionSet:
                 weights.append(
                     1 / self.network_interface.get_single_node_vulnerability(node)
                 )
+        elif self.network_interface.red_pursues_node is not None:
+            for dist in self.network_interface.get_shortest_distances_to_target(possible_to_attack):
+                weight = 1 if dist == 0 else 1 / dist
+                print("DIST:",dist," WEIGHT:",weight)
+                weights.append(weight)
         else:
             # if using the configuration checker then this should never happen
             raise Exception(

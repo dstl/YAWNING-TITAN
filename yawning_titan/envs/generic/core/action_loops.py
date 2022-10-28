@@ -3,6 +3,7 @@ The ``ActionLoop`` class helps reduce boilerplate code when evaluating an agent 
 
 Serves a similar function to library helpers such as Stable Baselines 3 ``evaluate_policy()".
 """
+
 import os
 import sys
 from pathlib import Path
@@ -10,9 +11,7 @@ import pandas as pd
 
 import imageio
 import matplotlib.pyplot as plt
-# from stable_baselines3.common.utils import set_random_seed
-
-
+from datetime import datetime
 
 class ActionLoop:
     """A class that represents different post-training action loops for agents."""
@@ -40,6 +39,7 @@ class ActionLoop:
         # new_list = list_path[: index + 1]
         # gets the default settings file path
         image_path = Path().absolute() / "images" #"/".join(new_list) + "/yawning_titan/envs/generic/core/images"
+        complete_results = []
         
         image_path_str = image_path.as_posix()
 
@@ -48,6 +48,7 @@ class ActionLoop:
             os.mkdir(image_path)
 
         for i in range(self.episode_count):
+            results = pd.DataFrame(columns = ["action","rewards","info"]) # temporary log to satisfy repeatability tests until logging can be full implemented
             obs = self.env.reset()
             done = False
             frame_names = []
@@ -80,7 +81,7 @@ class ActionLoop:
 
             if save_gif:
                 with imageio.get_writer(
-                    self.filename + "_" + str(i) + ".gif", mode="I"
+                    self.filename + "_" + datetime.now().strftime("%d%m%Y_%H%M%S") + "_" + str(i) + ".gif", mode="I"
                 ) as writer:
                     # create a gif from the images
                     for filename in frame_names:
@@ -90,8 +91,12 @@ class ActionLoop:
                 for filename in set(frame_names):
                     os.remove(filename)
 
+            complete_results.append(results)
+
         if not prompt_to_close:
             self.env.close()
+
+        return complete_results
 
     def standard_action_loop(self,deterministic=True):
         """Indefintely act within the environment using a trained agent."""
@@ -111,7 +116,7 @@ class ActionLoop:
             
 
     def random_action_loop(self,deterministic=True):
-        """Indefintely act within the environment taking random actions."""
+        """Indefinitely act within the environment taking random actions."""
         for i in range(self.episode_count):
             obs = self.env.reset()
             done = False

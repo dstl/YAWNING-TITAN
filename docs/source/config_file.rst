@@ -213,13 +213,13 @@ Game Rules
         Does the red agent win if it takes n% of all the nodes
  * **percentage_of_nodes_compromised_equals_loss:**
     If red wins if it takes n% of nodes what value is n
- * **lose_when_high_value_target_lost:**
+ * **lose_when_high_value_node_lost:**
 
     Does red win if a special "high value" node is taken
 
-     * **choose_high_value_target_placement_at_random:**
+     * **choose_high_value_node_placement_at_random:**
         Choose the "high value" node at random
-     * **choose_high_value_target_furthest_away_from_entry:**
+     * **choose_high_value_node_furthest_away_from_entry:**
         Choose the "high value" to be one of the nodes furthest from all of the entry points
  * **choose_entry_nodes_randomly:**
     If no entry nodes are supplied choose some at random
@@ -236,7 +236,7 @@ Reset
 ******
  * **randomise_vulnerabilities_on_reset:**
     Pick new vulnerabilities for all the nodes on every reset
- * **choose_new_high_value_target_on_reset:**
+ * **choose_new_high_value_node_on_reset:**
     Pick a new high value target on every reset
  * **choose_new_entry_nodes_on_reset:**
     Pick new entry nodes every reset
