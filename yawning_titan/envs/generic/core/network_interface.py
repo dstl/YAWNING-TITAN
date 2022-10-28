@@ -252,9 +252,12 @@ class NetworkInterface:
         self.gr_loss_pc_node_compromised_pc = self.game_rule_settings[
             "percentage_of_nodes_compromised_equals_loss"
         ]
-        self.gr_number_of_high_value_targets = self.game_rule_settings[
-            "number_of_high_value_targets"
-        ]
+        if not high_value_targets:
+            self.gr_number_of_high_value_targets = self.game_rule_settings[
+                "number_of_high_value_targets"
+            ]
+        else:
+            self.gr_number_of_high_value_targets = len(high_value_targets)
         self.gr_loss_hvt = self.game_rule_settings["lose_when_high_value_target_lost"]
         self.gr_loss_hvt_random_placement = self.game_rule_settings[
             "choose_high_value_targets_placement_at_random"
