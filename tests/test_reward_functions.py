@@ -1,4 +1,7 @@
+import os
+
 import yawning_titan.envs.generic.core.reward_functions as reward_functions
+from tests import TEST_CONFIG_PATH
 from tests.test_generic_environment import generate_generic_env_test_reqs
 
 """
@@ -13,7 +16,8 @@ def test_standard_rewards():
     Will raise an error if the function does not return the expected result
     """
     env = generate_generic_env_test_reqs(
-        "tests/test_configs/base_config.yaml", net_creator_type="mesh", n_nodes=5
+        os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
+        net_creator_type="mesh", n_nodes=5
     )
 
     assert hasattr(reward_functions, "standard_rewards")
@@ -100,7 +104,8 @@ def test_safe_gives_rewards():
     Will raise an error if the function does not return the expected result
     """
     env = generate_generic_env_test_reqs(
-        "tests/test_configs/base_config.yaml", net_creator_type="mesh", n_nodes=5
+        os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
+        net_creator_type="mesh", n_nodes=5
     )
 
     assert hasattr(reward_functions, "safe_nodes_give_rewards")
@@ -140,7 +145,7 @@ def test_punish_bad_actions():
     Will raise an error if the function does not return the expected result
     """
     env = generate_generic_env_test_reqs(
-        "tests/test_configs/base_config.yaml",
+        os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
         net_creator_type="mesh",
         n_nodes=5,
         connectivity=1,
