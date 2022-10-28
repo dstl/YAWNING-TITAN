@@ -212,17 +212,31 @@ class GenericNetworkEnv(gym.Env):
                 reward = self.network_interface.reward_loss
                 # If the game ends before blue has had their turn the the blue action is set to failed
                 blue_action = "failed"
-        if self.network_interface.gr_loss_hvt:
+        if self.network_interface.gr_loss_hvn:
             if (
                 self.network_interface.get_single_node_state(
-                    self.network_interface.get_high_value_target()
+                    self.network_interface.get_high_value_node()
                 )
                 == 1
             ):
-                # If this mode is selected then the game ends if the high value target has been compromised
+                # If this mode is selected then the game ends if the high value node has been compromised
                 done = True
                 reward = self.network_interface.reward_loss
                 blue_action = "failed"
+
+        # if self.network_interface.gr_loss_tn:
+        if self.network_interface.get_target_node() is not None:
+            if (
+                self.network_interface.get_single_node_state(
+                    self.network_interface.get_target_node()
+                )
+                == 1
+            ):
+                # If this mode is selected then the game ends if the target node has been compromised
+                done = True
+                reward = self.network_interface.reward_loss
+                blue_action = "failed"
+
         if done:
             if self.network_interface.reward_reduce_negative_rewards:
                 reward = reward * (
@@ -381,9 +395,9 @@ class GenericNetworkEnv(gym.Env):
             attacks = self.network_interface.get_true_attacks()
         reward = round(self.current_reward, 2)
         special_nodes = {}
-        if self.network_interface.gr_loss_hvt:
-            hvt = self.network_interface.get_high_value_target()
-            special_nodes[hvt] = {
+        if self.network_interface.gr_loss_hvn:
+            hvn = self.network_interface.get_high_value_node()
+            special_nodes[hvn] = {
                 "description": "High Value Target",
                 "colour": "#da2fed",
             }
@@ -403,6 +417,7 @@ class GenericNetworkEnv(gym.Env):
             "RL blue agent vs probabilistic red in a generic network environment",
             special_nodes=special_nodes,
             entrance_nodes=self.network_interface.entry_nodes,
+            target_node=self.network_interface.red_pursues_node,
             show_only_blue_view=show_only_blue_view,
             show_node_names=show_node_names,
         )
@@ -420,35 +435,4 @@ class GenericNetworkEnv(gym.Env):
         Returns:
             The observation space size
         """
-        observation_size = 0
-        max_number_of_nodes = self.network_interface.get_total_num_nodes()
-
-        if with_feather:
-            node_connections = 500
-        else:
-            node_connections = max_number_of_nodes * max_number_of_nodes
-        # calculate the size the observation space should be
-        if self.network_interface.obs_node_connections:
-            observation_size += node_connections
-        if self.network_interface.obs_compromised_status:
-            observation_size += max_number_of_nodes
-        if self.network_interface.obs_node_vuln_status:
-            observation_size += max_number_of_nodes
-        if self.network_interface.obs_avg_vuln:
-            observation_size += 1
-        if self.network_interface.obs_graph_connectivity:
-            observation_size += 1
-        if self.network_interface.obs_attack_sources:
-            observation_size += max_number_of_nodes
-        if self.network_interface.obs_attack_targets:
-            observation_size += max_number_of_nodes
-        if self.network_interface.obs_special_nodes:
-            observation_size += max_number_of_nodes
-
-            if self.network_interface.gr_loss_hvt:
-                observation_size += max_number_of_nodes
-
-        if self.network_interface.obs_red_agent_skill:
-            observation_size += 1
-
-        return observation_size
+        return self.network_interface.get_observation_size_base(with_feather)

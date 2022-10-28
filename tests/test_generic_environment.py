@@ -303,11 +303,11 @@ def test_env_reset():
             assert env.network_interface.detected_attacks == []
 
 
-def test_new_high_value_target():
+def test_new_high_value_node():
     """Test the high value target gaol mechanic - focus on selection."""
     # check that a new high value target is being chosen
     env = generate_generic_env_test_reqs(
-        f"{constants.TEST_CONFIG_PATH}/new_high_value_target.yaml",
+        f"{constants.TEST_CONFIG_PATH}/new_high_value_node.yaml",
         net_creator_type="mesh",
         n_nodes=15,
     )
@@ -319,7 +319,7 @@ def test_new_high_value_target():
             random.randint(0, env.BLUE.get_number_of_actions() - 1)
         )
         if done:
-            hvt = env.network_interface.get_high_value_target()
+            hvt = env.network_interface.get_high_value_node()
             if hvt not in targets:
                 targets[hvt] = 1
             else:
@@ -366,7 +366,7 @@ def test_new_vulnerabilities():
     """Test that new vulnerabilities are chosen at each reset if activated within configuration."""
     # check that new vulnerabilities are being chosen (randomly)
     env = generate_generic_env_test_reqs(
-        f"{constants.TEST_CONFIG_PATH}/new_high_value_target.yaml",
+        f"{constants.TEST_CONFIG_PATH}/new_high_value_node.yaml",
         net_creator_type="mesh",
         n_nodes=15,
     )
@@ -504,7 +504,7 @@ def test_generic_env(env, timesteps):
         if not done:
             if not env.network_interface.gr_loss_hvt_random_placement:
                 assert (
-                    env.network_interface.get_high_value_target() == prev_high_value
+                    env.network_interface.get_high_value_node() == prev_high_value
                     or prev_high_value is None
                 )
 
@@ -922,7 +922,7 @@ def test_generic_env(env, timesteps):
                 if env.network_interface.gr_loss_hvt:
                     assert (
                         env.network_interface.get_single_node_state(
-                            env.network_interface.get_high_value_target()
+                            env.network_interface.get_high_value_node()
                         )
                         == 1
                     )
@@ -939,7 +939,7 @@ def test_generic_env(env, timesteps):
             if env.network_interface.gr_loss_hvt:
                 assert (
                     env.network_interface.get_single_node_state(
-                        env.network_interface.get_high_value_target()
+                        env.network_interface.get_high_value_node()
                     )
                     == 0
                 )

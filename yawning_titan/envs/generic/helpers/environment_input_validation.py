@@ -177,6 +177,7 @@ def check_red(data: dict):
         and (not data["red_prioritises_un_connected_nodes"])
         and (not data["red_prioritises_vulnerable_nodes"])
         and (not data["red_prioritises_resilient_nodes"])
+        and(not data["red_pursues_node"])
     ):
         raise ValueError(
             "'red_prioritises_****' -> Red must choose its target in some way. If you are unsure select 'red_chooses_target_at_random'"  # noqa
@@ -397,9 +398,9 @@ def check_game_rules(data: dict, number_of_nodes: int):
     for name in [
         "lose_when_all_nodes_lost",
         "lose_when_n_percent_of_nodes_lost",
-        "lose_when_high_value_target_lost",
-        "choose_high_value_target_placement_at_random",
-        "choose_high_value_target_furthest_away_from_entry",
+        "lose_when_high_value_node_lost",
+        "choose_high_value_node_placement_at_random",
+        "choose_high_value_node_furthest_away_from_entry",
         "choose_entry_nodes_randomly",
         "prefer_central_nodes_for_entry_nodes",
         "prefer_edge_nodes_for_entry_nodes",
@@ -420,26 +421,26 @@ def check_game_rules(data: dict, number_of_nodes: int):
     if (
         (not data["lose_when_all_nodes_lost"])
         and (not data["lose_when_n_percent_of_nodes_lost"])
-        and (not data["lose_when_high_value_target_lost"])
+        and (not data["lose_when_high_value_node_lost"])
     ):
         raise ValueError(
-            "'lose_when_all_nodes_lost', 'lose_when_n_percent_of_nodes_lost', 'lose_when_high_value_target_lost' -> At least one loose condition must be turned on"  # noqa
+            "'lose_when_all_nodes_lost', 'lose_when_n_percent_of_nodes_lost', 'lose_when_high_value_node_lost' -> At least one loose condition must be turned on"  # noqa
         )
 
-    if data["lose_when_high_value_target_lost"]:
-        if (not data["choose_high_value_target_placement_at_random"]) and (
-            not data["choose_high_value_target_furthest_away_from_entry"]
+    if data["lose_when_high_value_node_lost"]:
+        if (not data["choose_high_value_node_placement_at_random"]) and (
+            not data["choose_high_value_node_furthest_away_from_entry"]
         ):
             raise ValueError(
-                "'choose_high_value_target_placement_at_random', 'choose_high_value_target_furthest_away_from_entry' -> A method of selecting the high value target must be chosen"  # noqa
+                "'choose_high_value_node_placement_at_random', 'choose_high_value_node_furthest_away_from_entry' -> A method of selecting the high value target must be chosen"  # noqa
             )
-    if data["lose_when_high_value_target_lost"]:
+    if data["lose_when_high_value_node_lost"]:
         if (
-            data["choose_high_value_target_placement_at_random"]
-            and data["choose_high_value_target_furthest_away_from_entry"]
+            data["choose_high_value_node_placement_at_random"]
+            and data["choose_high_value_node_furthest_away_from_entry"]
         ):
             raise ValueError(
-                "'choose_high_value_target_placement_at_random', 'choose_high_value_target_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"  # noqa
+                "'choose_high_value_node_placement_at_random', 'choose_high_value_node_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"  # noqa
             )
     if data["grace_period_length"] > data["max_steps"]:
         raise ValueError(
@@ -456,7 +457,7 @@ def check_reset(data: dict):
     """
     for name in [
         "randomise_vulnerabilities_on_reset",
-        "choose_new_high_value_target_on_reset",
+        "choose_new_high_value_node_on_reset",
         "choose_new_entry_nodes_on_reset",
     ]:
         check_type(data, name, [bool])
