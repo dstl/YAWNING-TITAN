@@ -1,7 +1,8 @@
 """Used to test the GenericEnv() class and the associated agent interfaces."""
 import os
 import random
-from typing import Dict
+import warnings
+from typing import Dict, List
 
 import networkx as nx
 import numpy as np
@@ -38,7 +39,7 @@ def open_config_file(settings_path: str) -> Dict:
 
 
 def init_test_env(
-        settings_path: str, adj_matrix: np.array, positions
+        settings_path: str, adj_matrix: np.array, positions, entry_nodes: List[str], high_value_targets: List[str]
 ) -> GenericNetworkEnv:
     """
     Generate the test GenericEnv() and number of actions for the blue agent.
@@ -47,14 +48,18 @@ def init_test_env(
         settings_path: A path to the environment settings file
         adj_matrix: the adjacency matrix used for the network to defend.
         positions: x and y co-ordinates to plot the graph in 2D space
+        entry_nodes: list of strings that dictate which nodes are entry nodes
+        high_value_targets: list of strings that dictate which nodes are high value targets
 
     Returns:
         env: An OpenAI gym environment
     """
-    entry_nodes = ["0", "1", "2"]
+    if not entry_nodes:
+        entry_nodes = ["0", "1", "2"]
 
     network_interface = NetworkInterface(
-        adj_matrix, positions, entry_nodes=entry_nodes, settings_path=settings_path
+        adj_matrix, positions, entry_nodes=entry_nodes, settings_path=settings_path,
+        high_value_targets=high_value_targets
     )
 
     red = RedInterface(network_interface)
@@ -73,6 +78,8 @@ def generate_generic_env_test_reqs(
         net_creator_type="mesh",
         n_nodes: int = 10,
         connectivity: float = 0.7,
+        entry_nodes=None,
+        high_value_targets=None
 ) -> GenericNetworkEnv:
     """
     Generate test environment requirements.
@@ -82,6 +89,8 @@ def generate_generic_env_test_reqs(
         net_creator_type: The type of net creator to use to generate the underlying network
         n_nodes: The number of nodes to create within the network
         connectivity: The connectivity value for the mesh net creator (Only required for mesh network creator type)
+        entry_nodes: list of strings that dictate which nodes are entry nodes
+        high_value_targets: list of strings that dictate which nodes are high value targets
 
     Returns:
         env: An OpenAI gym environment
@@ -100,7 +109,7 @@ def generate_generic_env_test_reqs(
             size=n_nodes, connectivity=connectivity
         )
 
-    env = init_test_env(settings_file_path, adj_matrix, node_positions)
+    env = init_test_env(settings_file_path, adj_matrix, node_positions, entry_nodes, high_value_targets)
 
     return env
 
@@ -175,6 +184,22 @@ def test_input_validation():
             os.path.join(TEST_CONFIG_PATH, "red_config_test_broken_3.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
+        )
+
+        # error thrown because choose_high_value_targets_furthest_away_from_entry is True and
+        # the high value targets is manually provided
+        _, _ = generate_generic_env_test_reqs(
+            os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
+            n_nodes=23,
+            net_creator_type="mesh",
+            high_value_targets=["0"]
+        )
+
+        # error thrown because there are more high value targets than there are nodes in the network
+        _, _ = generate_generic_env_test_reqs(
+            os.path.join(TEST_CONFIG_PATH, "too_many_high_value_targets.yaml"),
+            n_nodes=23,
+            net_creator_type="mesh"
         )
 
 
@@ -343,6 +368,79 @@ def test_new_high_value_target():
     sum_ = sum(targets.values())
     for i in targets.values():
         assert 1 / 10.5 > i / sum_ > 1 / 13.5
+
+
+def test_high_value_target_passed_into_network_interface():
+    """Test the high value target gaol mechanic - manually passed to ."""
+    env = generate_generic_env_test_reqs(
+        os.path.join(TEST_CONFIG_PATH, "high_value_target_provided.yaml"),
+        net_creator_type="mesh",
+        n_nodes=30,
+        high_value_targets=["15", "16"]
+    )
+    check_env(env, warn=True)
+    env.reset()
+    targets = {}
+    for i in range(0, N_TIME_STEPS_LONG):
+        obs, rew, done, notes = env.step(
+            random.randint(0, env.BLUE.get_number_of_actions() - 1)
+        )
+        if done:
+            hvt = env.network_interface.get_high_value_targets()
+
+            # add 1 to each node that gets chosen as a high value target
+            for node in hvt:
+                if node not in targets:
+                    targets[node] = 1
+                else:
+                    targets[node] += 1
+
+            env.reset()
+    # the only 2 targets set are available
+    assert len(targets.keys()) == 2
+
+    # check that the keys are the 15 and 16 that was set
+    assert set(targets.keys()).intersection(["15", "16"])
+
+
+def test_high_value_target_and_entry_nodes_matching():
+    """Test the high value target gaol mechanic - manually passed to ."""
+    with warnings.catch_warnings(record=True) as w:
+        env = generate_generic_env_test_reqs(
+            os.path.join(TEST_CONFIG_PATH, "high_value_target_provided.yaml"),
+            net_creator_type="mesh",
+            n_nodes=30,
+            entry_nodes=["0", "15"],
+            high_value_targets=["15", "16"]
+        )
+        check_env(env, warn=True)
+        env.reset()
+
+        entry = {}
+        targets = {}
+        for i in range(0, N_TIME_STEPS_LONG):
+            obs, rew, done, notes = env.step(
+                random.randint(0, env.BLUE.get_number_of_actions() - 1)
+            )
+            if done:
+                hvt = env.network_interface.get_high_value_targets()
+
+                # add 1 to each node that gets chosen as a high value target
+                for node in hvt:
+                    if node not in targets:
+                        targets[node] = 1
+                    else:
+                        targets[node] += 1
+
+                env.reset()
+        # the only 2 targets set are available
+        assert len(targets.keys()) == 2
+
+        # check that the keys are the 15 and 16 that was set
+        assert set(targets.keys()).intersection(["15", "16"])
+
+        # check that a warning was raised that the entry nodes and high value targets intersect
+        assert str(w[0].message.args[0]) == "Provided entry nodes and high value targets intersect and may cause the training to prematurely end"
 
 
 def test_new_entry_nodes():

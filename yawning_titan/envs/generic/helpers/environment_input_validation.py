@@ -408,11 +408,18 @@ def check_game_rules(data: dict, number_of_nodes: int, high_value_targets: List[
     check_type(data, "max_steps", [int])
     check_type(data, "number_of_entry_nodes", [int])
     check_type(data, "grace_period_length", [int])
-    check_type(data, "number_of_high_value_targets", [int])
+    # ignore if high value targets passed in
+    if not high_value_targets:
+        check_type(data, "number_of_high_value_targets", [int])
+        check_within_range(data, "number_of_high_value_targets", 1, number_of_nodes, True, True)
+    else:
+        # make sure the passed high value targets do not exceed the number of nodes in network
+        check_within_range({'hvt_length': len(high_value_targets)}, "hvt_length", 1, number_of_nodes, True, True)
+
     check_within_range(data, "grace_period_length", 0, 100, True, True)
     check_within_range(data, "max_steps", 0, 10000000, False, True)
     check_within_range(data, "number_of_entry_nodes", 0, number_of_nodes, False, True)
-    check_within_range(data, "number_of_high_value_targets", 1, number_of_nodes, True, True)
+
     # data is boolean
     for name in [
         "lose_when_all_nodes_lost",
