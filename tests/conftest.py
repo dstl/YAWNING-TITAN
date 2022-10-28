@@ -1,6 +1,6 @@
 import pytest
-from pathlib import Path
-
+import os
+from tests import TEST_CONFIG_PATH
 from stable_baselines3 import PPO
 from stable_baselines3.ppo import MlpPolicy as PPOMlp
 from stable_baselines3.common.env_checker import check_env
@@ -28,7 +28,7 @@ def basic_2_agent_loop(request)->ActionLoop:
         entry_nodes = request.param["entry_nodes"]
 
     if "settings_file" in request.param:
-        settings_path = (Path(__file__).parent / "test_configs" / request.param["settings_file"]).as_posix()
+        settings_path = os.path.join(TEST_CONFIG_PATH, request.param["settings_file"])
 
     if "seed" in request.param:
         seed = request.param["seed"]
