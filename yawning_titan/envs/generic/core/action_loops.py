@@ -4,14 +4,13 @@ The ``ActionLoop`` class helps reduce boilerplate code when evaluating an agent 
 Serves a similar function to library helpers such as Stable Baselines 3 ``evaluate_policy()".
 """
 import os
-import sys
-from pathlib import Path
-import pandas as pd
 
 import imageio
 import matplotlib.pyplot as plt
-# from stable_baselines3.common.utils import set_random_seed
+import pandas as pd
 
+
+from yawning_titan import IMAGES_DIR
 
 
 class ActionLoop:
@@ -33,19 +32,16 @@ class ActionLoop:
         self.episode_count = episode_count
 
     def gif_action_loop(self,render_network=True,prompt_to_close=False,save_gif=False,deterministic=True):
-        """Run the agent in evaluation and create a gif from episodes."""
-        # str_path = sys.path[0]
-        # list_path = str_path.split("/")
-        # index = len(list_path) - 1 - list_path[::-1].index("yawning-titan")
-        # new_list = list_path[: index + 1]
-        # gets the default settings file path
-        image_path = Path().absolute() / "images" #"/".join(new_list) + "/yawning_titan/envs/generic/core/images"
-        
-        image_path_str = image_path.as_posix()
+        """
+        Run the agent in evaluation and create a gif from episodes.
 
-        if not image_path.exists():
+        Args:
+            render: Bool to toggle rendering on or off. Has a default
+                value of True.
+        """
+        if not IMAGES_DIR.exists():
             # if the path does not exist, create it
-            os.mkdir(image_path)
+            os.mkdir(IMAGES_DIR)
 
         for i in range(self.episode_count):
             obs = self.env.reset()
@@ -67,7 +63,9 @@ class ActionLoop:
                 # self.env.render(episode=i+1)
 
                 if save_gif:
-                    current_name = f"{image_path_str}/image_{current_image}.png"
+                    current_name = os.path.join(
+                        IMAGES_DIR, f"image_{current_image}.png"
+                    )
                     current_image += 1
                     frame_names.append(current_name)
                     # save the current image
@@ -77,24 +75,30 @@ class ActionLoop:
                     self.env.render()
 
                 
+                current_image += 1
+                frame_names.append(current_name)
+                # save the current image
+                plt.savefig(current_name)
+
 
             if save_gif:
-                with imageio.get_writer(
-                    self.filename + "_" + str(i) + ".gif", mode="I"
-                ) as writer:
+                gif_path = os.path.join(
+                    IMAGES_DIR, f"{self.filename}_{self.episode_count}.gif"
+                )
+                with imageio.get_writer(gif_path, mode="I") as writer:
                     # create a gif from the images
                     for filename in frame_names:
                         image = imageio.imread(filename)
                         writer.append_data(image)
 
-                for filename in set(frame_names):
-                    os.remove(filename)
+                    for filename in set(frame_names):
+                        os.remove(filename)
 
         if not prompt_to_close:
             self.env.close()
 
     def standard_action_loop(self,deterministic=True):
-        """Indefintely act within the environment using a trained agent."""
+        """Indefinitely act within the environment using a trained agent."""
         complete_results = []
         for i in range(self.episode_count):
             results = pd.DataFrame(columns = ["action","rewards","info"]) # temporary log to satisfy repeatability tests until logging can be full implemented
@@ -111,7 +115,7 @@ class ActionLoop:
             
 
     def random_action_loop(self,deterministic=True):
-        """Indefintely act within the environment taking random actions."""
+        """Indefinitely act within the environment taking random actions."""
         for i in range(self.episode_count):
             obs = self.env.reset()
             done = False
