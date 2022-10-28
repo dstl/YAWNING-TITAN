@@ -17,7 +17,7 @@ from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.envs.generic.helpers import network_creator
 
 
-@pytest.mark.e2e_integration_test
+@pytest.mark.e2e_integration_test 
 def test_default_game_mode_e2e():
     runs = True
     try:
@@ -48,8 +48,9 @@ def test_default_game_mode_e2e():
         agent.learn(
             total_timesteps=1000, n_eval_episodes=100, callback=eval_callback
         )
-        os.path.join(tempfile.mkdtemp(), 'something')
+        
         evaluate_policy(agent, env, n_eval_episodes=100)
+        os.path.join(tempfile.mkdtemp(), 'something')
     except Exception:
         # TODO: Remove the catch-all exception once we know how to properly
         #  assert that the e2e run has done what it was supposed to do.
