@@ -35,8 +35,9 @@ def basic_2_agent_loop(request)->ActionLoop:
     if "episodes" in request.param:
         num_episodes = request.param["episodes"]    
     
+    print("E",entry_nodes,",S",settings_path)
 
-    network_interface = NetworkInterface(matrix, node_positions, entry_nodes=entry_nodes, high_value_target='12',settings_path=settings_path)
+    network_interface = NetworkInterface(matrix, node_positions, entry_nodes=entry_nodes, high_value_node='12',settings_path=settings_path)
 
     red = RedInterface(network_interface)
     blue = BlueInterface(network_interface)

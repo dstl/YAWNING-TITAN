@@ -9,9 +9,9 @@ import pytest
 
 @pytest.mark.parametrize("basic_2_agent_loop",
     [
-        {"seed":666,"episodes":2,"settings_path":"test_configs/repeatable_threat_config.yaml"},
-        {"seed":random.randint(1,1000),"episodes":2,"settings_path":"test_configs/repeatable_threat_config.yaml"},
-        {"seed":random.randint(1,1000),"episodes":random.randint(5,12),"settings_path":"test_configs/repeatable_threat_config.yaml"}
+        {"seed":666,"episodes":2,"entry_nodes":["0"],"settings_file":"repeatable_threat_config.yaml"},
+        {"seed":random.randint(1,1000),"episodes":2,"entry_nodes":["0"],"settings_file":"repeatable_threat_config.yaml"},
+        {"seed":666,"episodes":random.randint(5,12),"entry_nodes":["0"],"settings_file":"repeatable_threat_config.yaml"}
     ], indirect=True
 )
 def test_repeatable_episodic_output_set_seed(basic_2_agent_loop:ActionLoop):
@@ -20,7 +20,7 @@ def test_repeatable_episodic_output_set_seed(basic_2_agent_loop:ActionLoop):
     are repeatable across all episodes with a set seed value
     """
 
-    results: List[DataFrame] = basic_2_agent_loop.standard_action_loop() 
+    results: List[DataFrame] = basic_2_agent_loop.standard_action_loop(deterministic=True) 
 
     print(results[0].compare(results[1]))
     
