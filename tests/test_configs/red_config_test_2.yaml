@@ -180,6 +180,8 @@ GAME_RULES:
   prefer_edge_nodes_for_entry_nodes: False
   # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
   grace_period_length: 0
+  # Whether red will always pick the shortest path to target
+  red_always_chooses_shortest_distance_to_target: True
 
 RESET:
   randomise_vulnerabilities_on_reset: False
