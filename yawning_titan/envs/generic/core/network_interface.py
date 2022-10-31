@@ -381,7 +381,7 @@ class NetworkInterface:
 
         self.entry_nodes = entry_nodes
 
-        self.__high_value_target_setup(high_value_targets=high_value_targets)
+        self._high_value_target_setup(high_value_targets=high_value_targets)
 
         # initialises the deceptive nodes and their names and amount
         self.deceptive_nodes = []
@@ -417,7 +417,7 @@ class NetworkInterface:
 
         self.adj_matrix = nx.to_numpy_array(self.current_graph)
 
-    def __high_value_target_setup(
+    def _high_value_target_setup(
             self,
             high_value_targets: List[str]
     ):
@@ -1184,7 +1184,7 @@ class NetworkInterface:
             self.entry_nodes = entry_nodes
 
         # set high value targets
-        self.__high_value_target_setup(high_value_targets=self.high_value_targets)
+        self._high_value_target_setup(high_value_targets=self.high_value_targets)
 
         if self.reset_random_vulns:
             # change all of the node vulnerabilities to new random values
