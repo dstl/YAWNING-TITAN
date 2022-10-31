@@ -13,7 +13,7 @@ from tabulate import tabulate
 
 from yawning_titan.agents.random import RandomAgent
 
-logger = logging.getLogger("yawning_titan")
+logger = logging.getLogger(__name__)
 
 
 def init_env(env: str, experiment_id: str):
