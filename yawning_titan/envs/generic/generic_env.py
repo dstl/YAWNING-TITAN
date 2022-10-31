@@ -36,7 +36,6 @@ class GenericNetworkEnv(gym.Env):
         show_metrics_every: int = 1,
         collect_additional_per_ts_data: bool = True,
         print_per_ts_data: bool = False,
-        seed: Optional[int] = None,
     ):
         """
         Initialise the generic network environment.
@@ -57,7 +56,6 @@ class GenericNetworkEnv(gym.Env):
         """
         super(GenericNetworkEnv, self).__init__()
 
-        self.SEED = seed
         self.RED = red_agent
         self.BLUE = blue_agent
         self.blue_actions = blue_agent.get_number_of_actions()
@@ -74,10 +72,15 @@ class GenericNetworkEnv(gym.Env):
         self.print_metrics = print_metrics
         self.print_notes = print_per_ts_data
 
+        
+        self.SEED = self.network_interface.SEED
+
         self.graph_plotter = None
         self.eval_printout = EvalPrintout(self.avg_every)
 
         self.action_space = spaces.Discrete(self.blue_actions)
+
+
 
         # sets up the observation space. This is a (n+2 by n) matrix. The first two columns show the state of all the
         # nodes. The remaining n columns show the connections between the nodes (effectively the adjacency matrix)

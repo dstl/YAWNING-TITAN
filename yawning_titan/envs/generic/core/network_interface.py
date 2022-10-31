@@ -276,6 +276,10 @@ class NetworkInterface:
 
         # Misc Settings
         self.misc_json_out = self.misc_settings["output_timestep_data_to_json"]
+        self.SEED = self.misc_settings.get("random_seed",None)
+
+        if self.SEED is not None:
+            print("random number generation is deterministic with seed: ",self.SEED)
 
         nodes = [str(i) for i in range(number_of_nodes)]
         df = pd.DataFrame(matrix, index=nodes, columns=nodes)

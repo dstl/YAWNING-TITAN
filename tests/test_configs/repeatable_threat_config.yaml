@@ -232,3 +232,4 @@ MISCELLANEOUS:
   # Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and
   # the attacks that blue saw in that turn
   output_timestep_data_to_json: False
+  random_seed: 666
