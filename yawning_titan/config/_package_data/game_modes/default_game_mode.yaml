@@ -193,16 +193,6 @@ GAME_RULES:
   lose_when_n_percent_of_nodes_lost: False
   # The percentage of nodes that need to be lost for blue to lose
   percentage_of_nodes_compromised_equals_loss: 0.8
-<<<<<<< HEAD
-  # Blue loses if a special 'high value' target it lost (a node picked in the environment)
-  lose_when_high_value_node_lost: True
-  # Blue loses if a target node it lost
-  lose_when_target_node_lost: False
-  # The high value target is picked at random
-  choose_high_value_node_placement_at_random: False
-  # The node furthest away from the entry points to the network is picked as the target
-  choose_high_value_node_furthest_away_from_entry: True
-=======
   # Blue loses if a special 'high value' target is lost (a node picked in the environment)
   lose_when_high_value_target_lost: True
   # If no high value targets are supplied, how many should be chosen
@@ -211,7 +201,6 @@ GAME_RULES:
   choose_high_value_nodes_placement_at_random: False
   # The node furthest away from the entry points to the network is picked as the target
   choose_high_value_nodes_furthest_away_from_entry: True
->>>>>>> methods-YT/dev
   # If no entry nodes are supplied choose some at random
   choose_entry_nodes_randomly: True
   # If no entry nodes are supplied then how many should be chosen
@@ -224,11 +213,7 @@ GAME_RULES:
 
 RESET:
   randomise_vulnerabilities_on_reset: False
-<<<<<<< HEAD
-  choose_new_high_value_node_on_reset: True
-=======
   choose_new_high_value_nodes_on_reset: True
->>>>>>> methods-YT/dev
   choose_new_entry_nodes_on_reset: True
 
 REWARDS:
