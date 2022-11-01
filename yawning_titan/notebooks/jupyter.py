@@ -89,5 +89,3 @@ def start_jupyter_session():
         _LOGGER.error(
             "Feature currently supported on Windows OS."
         )
-
-start_jupyter_session()
