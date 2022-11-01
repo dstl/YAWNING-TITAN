@@ -50,7 +50,6 @@ def test_default_game_mode_e2e():
         )
         
         evaluate_policy(agent, env, n_eval_episodes=100)
-        os.path.join(tempfile.mkdtemp(), 'something')
     except Exception:
         # TODO: Remove the catch-all exception once we know how to properly
         #  assert that the e2e run has done what it was supposed to do.

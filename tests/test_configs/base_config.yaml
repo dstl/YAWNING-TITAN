@@ -49,9 +49,7 @@ RED:
   red_uses_zero_day_action: True
   # The number of zero day attacks that the red agent starts with
   zero_day_start_amount: 1
-  # The amount
-  
-  of 'progress' that need to have passed before the red agent gains a zero day attack
+  # The amount of 'progress' that need to have passed before the red agent gains a zero day attack
   days_required_for_zero_day: 10
   # Whether red will always pick the shortest path to target
   red_always_chooses_shortest_distance_to_target: True
@@ -195,7 +193,7 @@ GAME_RULES:
   # The percentage of nodes that need to be lost for blue to lose
   percentage_of_nodes_compromised_equals_loss: 0.8
   # Blue loses if a special 'high value' target it lost (a node picked in the environment)
-  lose_when_high_value_target_lost: False
+  lose_when_high_value_node_lost: False
   # If no high value targets are supplied, how many should be chosen
   number_of_high_value_nodes: 1
   # The high value target is picked at random
@@ -211,6 +209,7 @@ GAME_RULES:
   prefer_edge_nodes_for_entry_nodes: False
   # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
   grace_period_length: 3
+
 
 RESET:
   randomise_vulnerabilities_on_reset: False

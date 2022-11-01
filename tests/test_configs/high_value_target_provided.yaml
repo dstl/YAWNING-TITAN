@@ -53,6 +53,8 @@ RED:
   days_required_for_zero_day: 10
 
   # CHOOSE ONE OF THE FOLLOWING 5 ITEMS
+  #red pursues target node
+  red_pursues_node:
   # Red picks nodes to attack at random
   red_chooses_target_at_random: False
   # Red sorts the nodes it can attack and chooses the one that has the most connections
@@ -63,6 +65,9 @@ RED:
   red_prioritises_vulnerable_nodes: False
   # Red sorts the nodes is can attack and chooses the one that is the least vulnerable
   red_prioritises_resilient_nodes: False
+
+  # Whether red will always pick the shortest path to target
+  red_always_chooses_shortest_distance_to_target: True
 
 OBSERVATION_SPACE:
   # The blue agent can see the compromised status of all the nodes
@@ -189,7 +194,7 @@ GAME_RULES:
   # The percentage of nodes that need to be lost for blue to lose
   percentage_of_nodes_compromised_equals_loss: 0.8
   # Blue loses if a special 'high value' target it lost (a node picked in the environment)
-  lose_when_high_value_target_lost: True
+  lose_when_high_value_node_lost: True
   # The high value target is picked at random
   choose_high_value_nodes_placement_at_random: False
   # The node furthest away from the entry points to the network is picked as the target

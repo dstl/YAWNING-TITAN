@@ -69,6 +69,9 @@ RED:
   # Red sorts the nodes is can attack and chooses the one that is the least vulnerable
   red_prioritises_resilient_nodes: False
 
+  # Whether red will always pick the shortest path to target
+  red_always_chooses_shortest_distance_to_target: True
+
 OBSERVATION_SPACE:
   # The blue agent can see the compromised status of all the nodes
   compromised_status: False
@@ -164,7 +167,7 @@ GAME_RULES:
   # The percentage of nodes that need to be lost for blue to lose
   percentage_of_nodes_compromised_equals_loss: 0.2
   # Blue loses if a special 'high value' target it lost (a node picked in the environment)
-  lose_when_high_value_target_lost: False
+  lose_when_high_value_node_lost: False
   # If no high value targets are supplied, how many should be chosen
   number_of_high_value_nodes: 1
   # The high value target is picked at random
@@ -180,8 +183,6 @@ GAME_RULES:
   prefer_edge_nodes_for_entry_nodes: False
   # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
   grace_period_length: 0
-  # Whether red will always pick the shortest path to target
-  red_always_chooses_shortest_distance_to_target: True
 
 RESET:
   randomise_vulnerabilities_on_reset: False
