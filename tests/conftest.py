@@ -54,7 +54,7 @@ def basic_2_agent_loop(request,temp_config_from_base)->ActionLoop:
 
     entry_nodes = None
     settings_path = None
-    high_value_target = None
+    high_value_targets = None
     num_episodes = 1
 
     if "settings_file" in request.param:
@@ -69,9 +69,9 @@ def basic_2_agent_loop(request,temp_config_from_base)->ActionLoop:
         num_episodes = request.param["episodes"]    
 
     if "high_value_target" in request.param:
-        high_value_target = request.param["high_value_target"]
+        high_value_targets = request.param["high_value_targets"]
 
-    network_interface = NetworkInterface(matrix, node_positions, entry_nodes=entry_nodes, high_value_target=high_value_target,settings_path=settings_path)
+    network_interface = NetworkInterface(matrix, node_positions, entry_nodes=entry_nodes, high_value_targets=high_value_targets,settings_path=settings_path)
 
     red = RedInterface(network_interface)
     blue = BlueInterface(network_interface)
