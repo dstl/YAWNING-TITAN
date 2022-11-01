@@ -351,10 +351,10 @@ def test_new_high_value_node():
             random.randint(0, env.BLUE.get_number_of_actions() - 1)
         )
         if done:
-            hvt = env.network_interface.get_high_value_nodes()
+            hvn = env.network_interface.get_high_value_nodes()
 
             # add 1 to each node that gets chosen as a high value target
-            for node in hvt:
+            for node in hvn:
                 if node not in targets:
                     targets[node] = 1
                 else:
@@ -386,10 +386,10 @@ def test_high_value_target_passed_into_network_interface():
             random.randint(0, env.BLUE.get_number_of_actions() - 1)
         )
         if done:
-            hvt = env.network_interface.get_high_value_nodes()
+            hvn = env.network_interface.get_high_value_nodes()
 
             # add 1 to each node that gets chosen as a high value target
-            for node in hvt:
+            for node in hvn:
                 if node not in targets:
                     targets[node] = 1
                 else:
@@ -423,10 +423,10 @@ def test_high_value_target_and_entry_nodes_matching():
                 random.randint(0, env.BLUE.get_number_of_actions() - 1)
             )
             if done:
-                hvt = env.network_interface.get_high_value_nodes()
+                hvn = env.network_interface.get_high_value_nodes()
 
                 # add 1 to each node that gets chosen as a high value target
-                for node in hvt:
+                for node in hvn:
                     if node not in targets:
                         targets[node] = 1
                     else:
@@ -614,13 +614,8 @@ def test_generic_env(env, timesteps):
         if not done:
             if not env.network_interface.gr_loss_hvn_random_placement:
                 assert (
-<<<<<<< HEAD
-                    env.network_interface.get_high_value_node() == prev_high_value
-                    or prev_high_value is None
-=======
                         env.network_interface.get_high_value_nodes() == prev_high_value
                         or prev_high_value is None
->>>>>>> methods-YT/dev
                 )
 
         assert (
@@ -1035,24 +1030,15 @@ def test_generic_env(env, timesteps):
                                    / len(env.network_interface.get_nodes())
                            ) >= env.network_interface.gr_loss_pc_node_compromised_pc
                 if env.network_interface.gr_loss_hvn:
-<<<<<<< HEAD
-                    assert (
-                        env.network_interface.get_single_node_state(
-                            env.network_interface.get_high_value_node()
-                        )
-                        == 1
-                    )
-=======
                     # the game ends when a high value node is compromised, this needs to be checked
-                    compromised_hvt = False
+                    compromised_hvn = False
 
                     for node in env.network_interface.get_high_value_nodes():
                         if env.network_interface.get_single_node_state(node) == 1:
-                            compromised_hvt = True
+                            compromised_hvn = True
                             break
 
-                    assert (compromised_hvt is True)
->>>>>>> methods-YT/dev
+                    assert (compromised_hvn is True)
             env.reset()
             number_of_resets += 1
         else:
@@ -1064,25 +1050,16 @@ def test_generic_env(env, timesteps):
                                / len(env.network_interface.get_nodes())
                        ) < env.network_interface.gr_loss_pc_node_compromised_pc
             if env.network_interface.gr_loss_hvn:
-<<<<<<< HEAD
-                assert (
-                    env.network_interface.get_single_node_state(
-                        env.network_interface.get_high_value_node()
-                    )
-                    == 0
-                )
-=======
                 # the game would end if a high value target was compromised, this needs to be checked
-                compromised_hvt = False;
+                compromised_hvn = False;
 
                 # check that none of the high value targets are compromised
                 for node in env.network_interface.get_high_value_nodes():
                     # get_single_node_state returns 1 if compromised
                     if env.network_interface.get_single_node_state(node) == 1:
-                        compromised_hvt = True
+                        compromised_hvn = True
 
-                assert (compromised_hvt is False)
->>>>>>> methods-YT/dev
+                assert (compromised_hvn is False)
 
     # tests on data collected from trial
     if not env.network_interface.blue_deceptive_action and scan_used:

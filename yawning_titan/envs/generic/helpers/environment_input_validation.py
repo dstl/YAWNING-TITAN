@@ -414,7 +414,7 @@ def check_game_rules(data: dict, number_of_nodes: int, high_value_nodes: List[st
         check_within_range(data, "number_of_high_value_nodes", 1, number_of_nodes, True, True)
     else:
         # make sure the passed high value targets do not exceed the number of nodes in network
-        check_within_range({'hvt_length': len(high_value_nodes)}, "hvt_length", 1, number_of_nodes, True, True)
+        check_within_range({'hvn_length': len(high_value_nodes)}, "hvn_length", 1, number_of_nodes, True, True)
 
     check_within_range(data, "grace_period_length", 0, 100, True, True)
     check_within_range(data, "max_steps", 0, 10000000, False, True)

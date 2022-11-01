@@ -168,15 +168,9 @@ GAME_RULES:
   # Blue loses if a target node it lost
   lose_when_target_node_lost: False
   # The high value target is picked at random
-<<<<<<< HEAD
-  choose_high_value_node_placement_at_random: True
-  # The node furthest away from the entry points to the network is picked as the target
-  choose_high_value_node_furthest_away_from_entry: False
-=======
   choose_high_value_nodes_placement_at_random: True
   # The node furthest away from the entry points to the network is picked as the target
   choose_high_value_nodes_furthest_away_from_entry: False
->>>>>>> methods-YT/dev
   # If no entry nodes are supplied choose some at random
   choose_entry_nodes_randomly: False
   # If no entry nodes are supplied then how many should be chosen
@@ -189,11 +183,7 @@ GAME_RULES:
 
 RESET:
   randomise_vulnerabilities_on_reset: False
-<<<<<<< HEAD
-  choose_new_high_value_node_on_reset: False
-=======
   choose_new_high_value_nodes_on_reset: False
->>>>>>> methods-YT/dev
   choose_new_entry_nodes_on_reset: True
 
 REWARDS:

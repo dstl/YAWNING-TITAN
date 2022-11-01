@@ -290,7 +290,7 @@ class NetworkInterface:
         self.reset_random_vulns = self.reset_settings[
             "randomise_vulnerabilities_on_reset"
         ]
-        self.reset_move_hvt = self.reset_settings[
+        self.reset_move_hvn = self.reset_settings[
             "choose_new_high_value_nodes_on_reset"
         ]
         self.reset_move_entry_nodes = self.reset_settings[
