@@ -28,15 +28,14 @@ class GenericNetworkEnv(gym.Env):
     """Class to create a generic YAWNING TITAN gym environment."""
 
     def __init__(
-        self,
-        red_agent: RedInterface,
-        blue_agent: BlueInterface,
-        network_interface: NetworkInterface,
-        print_metrics: bool = False,
-        show_metrics_every: int = 1,
-        collect_additional_per_ts_data: bool = True,
-        print_per_ts_data: bool = False,
-        seed: Optional[int] = None,
+            self,
+            red_agent: RedInterface,
+            blue_agent: BlueInterface,
+            network_interface: NetworkInterface,
+            print_metrics: bool = False,
+            show_metrics_every: int = 1,
+            collect_additional_per_ts_data: bool = True,
+            print_per_ts_data: bool = False,
     ):
         """
         Initialise the generic network environment.
@@ -204,8 +203,8 @@ class GenericNetworkEnv(gym.Env):
         if self.network_interface.gr_loss_pc_nodes_compromised:
             # calculate the number of safe nodes
             percent_comp = (
-                len(self.network_interface.get_nodes(filter_true_compromised=True))
-                / self.network_interface.get_number_of_nodes()
+                    len(self.network_interface.get_nodes(filter_true_compromised=True))
+                    / self.network_interface.get_number_of_nodes()
             )
             if percent_comp >= self.network_interface.gr_loss_pc_node_compromised_pc:
                 done = True
@@ -213,13 +212,16 @@ class GenericNetworkEnv(gym.Env):
                 # If the game ends before blue has had their turn the the blue action is set to failed
                 blue_action = "failed"
         if self.network_interface.gr_loss_hvn:
-            if (
-                self.network_interface.get_single_node_state(
-                    self.network_interface.get_high_value_node()
-                )
-                == 1
-            ):
-                # If this mode is selected then the game ends if the high value node has been compromised
+
+            # check if a high value target was compromised
+            compromised_hvt = False
+            for hvt in self.network_interface.get_high_value_nodes():
+                if self.network_interface.get_single_node_state(hvt) == 1:
+                    compromised_hvt = True
+                    break
+
+            if compromised_hvt:
+                # If this mode is selected then the game ends if the high value target has been compromised
                 done = True
                 reward = self.network_interface.reward_loss
                 blue_action = "failed"
@@ -240,7 +242,7 @@ class GenericNetworkEnv(gym.Env):
         if done:
             if self.network_interface.reward_reduce_negative_rewards:
                 reward = reward * (
-                    1 - (self.current_duration / self.network_interface.gr_max_steps)
+                        1 - (self.current_duration / self.network_interface.gr_max_steps)
                 )
         if not done:
             blue_action, blue_node = self.BLUE.perform_action(action)
@@ -282,8 +284,8 @@ class GenericNetworkEnv(gym.Env):
             if self.current_duration == self.network_interface.gr_max_steps:
                 if self.network_interface.reward_end_multiplier:
                     reward = self.network_interface.reward_end_multiplier * (
-                        len(self.network_interface.get_nodes(filter_true_safe=True))
-                        / self.network_interface.get_number_of_nodes()
+                            len(self.network_interface.get_nodes(filter_true_safe=True))
+                            / self.network_interface.get_number_of_nodes()
                     )
                 else:
                     reward = self.network_interface.reward_success
@@ -361,10 +363,10 @@ class GenericNetworkEnv(gym.Env):
         return self.env_observation, reward, done, notes
 
     def render(
-        self,
-        mode: str = "human",
-        show_only_blue_view: bool = False,
-        show_node_names: bool = False,
+            self,
+            mode: str = "human",
+            show_only_blue_view: bool = False,
+            show_node_names: bool = False,
     ):
         """
         Render the environment using Matplotlib to create an animation.
@@ -396,11 +398,14 @@ class GenericNetworkEnv(gym.Env):
         reward = round(self.current_reward, 2)
         special_nodes = {}
         if self.network_interface.gr_loss_hvn:
-            hvn = self.network_interface.get_high_value_node()
-            special_nodes[hvn] = {
-                "description": "High Value Target",
-                "colour": "#da2fed",
-            }
+            hvt = self.network_interface.get_high_value_nodes()
+
+            # iterate through the high value targets
+            for node in hvt:
+                special_nodes[node] = {
+                    "description": "High Value Target",
+                    "colour": "#da2fed",
+                }
 
         # sends the current information to a graph plotter to display the information visually
         self.graph_plotter.render(

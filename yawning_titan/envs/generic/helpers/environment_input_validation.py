@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List
 
 import yawning_titan.envs.generic.core.reward_functions as reward_functions
 
@@ -19,12 +19,12 @@ def check_type(data: dict, name: str, types: list):
 
 
 def check_within_range(
-    data: dict,
-    name: str,
-    lower: Union[None, float],
-    upper: Union[None, float],
-    l_inclusive: bool,
-    u_inclusive: bool,
+        data: dict,
+        name: str,
+        lower: Union[None, float],
+        upper: Union[None, float],
+        l_inclusive: bool,
+        u_inclusive: bool,
 ):
     """
     Check that an item belonging to a dictionary fits within a certain numerical range (either inclusive or not).
@@ -154,56 +154,60 @@ def check_red(data: dict):
 
     # misc
     if (
-        (not data["red_uses_skill"])
-        and (not data["red_always_succeeds"])
-        and data["red_ignores_defences"]
+            (not data["red_uses_skill"])
+            and (not data["red_always_succeeds"])
+            and data["red_ignores_defences"]
     ):
         raise ValueError(
-            "'red_uses_skill', 'red_always_succeeds', 'red_ignores_defences' -> Red must either use skill, always succeed or not ignore the defences of the nodes"  # noqa
+            "'red_uses_skill', 'red_always_succeeds', 'red_ignores_defences' -> Red must either use skill, always succeed or not ignore the defences of the nodes"
+            # noqa
         )
     if (
-        (not data["red_uses_spread_action"])
-        and (not data["red_uses_random_infect_action"])
-        and (not data["red_uses_zero_day_action"])
-        and (not data["red_uses_basic_attack_action"])
-        and (not data["red_uses_do_nothing_action"])
+            (not data["red_uses_spread_action"])
+            and (not data["red_uses_random_infect_action"])
+            and (not data["red_uses_zero_day_action"])
+            and (not data["red_uses_basic_attack_action"])
+            and (not data["red_uses_do_nothing_action"])
     ):
         raise ValueError(
             "'red_uses_*****' -> Red must have at least one action activated"
         )
     if (
-        (not data["red_chooses_target_at_random"])
-        and (not data["red_prioritises_connected_nodes"])
-        and (not data["red_prioritises_un_connected_nodes"])
-        and (not data["red_prioritises_vulnerable_nodes"])
-        and (not data["red_prioritises_resilient_nodes"])
-        and(not data["red_pursues_node"])
+            (not data["red_chooses_target_at_random"])
+            and (not data["red_prioritises_connected_nodes"])
+            and (not data["red_prioritises_un_connected_nodes"])
+            and (not data["red_prioritises_vulnerable_nodes"])
+            and (not data["red_prioritises_resilient_nodes"])
     ):
         raise ValueError(
-            "'red_prioritises_****' -> Red must choose its target in some way. If you are unsure select 'red_chooses_target_at_random'"  # noqa
+            "'red_prioritises_****' -> Red must choose its target in some way. If you are unsure select 'red_chooses_target_at_random'"
+            # noqa
         )
     if (not data["red_can_only_attack_from_red_agent_node"]) and (
-        not data["red_can_attack_from_any_red_node"]
+            not data["red_can_attack_from_any_red_node"]
     ):
         raise ValueError(
-            "'red_can_only_attack_from_red_agent_node', 'red_can_attack_from_any_red_node' -> The red agent must be able to attack either from every red node or just the red central node"  # noqa
+            "'red_can_only_attack_from_red_agent_node', 'red_can_attack_from_any_red_node' -> The red agent must be able to attack either from every red node or just the red central node"
+            # noqa
         )
     if (
-        data["red_prioritises_vulnerable_nodes"]
-        or data["red_prioritises_resilient_nodes"]
+            data["red_prioritises_vulnerable_nodes"]
+            or data["red_prioritises_resilient_nodes"]
     ):
         if data["red_ignores_defences"]:
             raise ValueError(
-                "'red_ignores_defences', 'red_prioritises_vulnerable_nodes', 'red_prioritises_resilient_nodes' -> It makes no sense for red to prioritise nodes based on a stat that is ignored (vulnerability)"  # noqa
+                "'red_ignores_defences', 'red_prioritises_vulnerable_nodes', 'red_prioritises_resilient_nodes' -> It makes no sense for red to prioritise nodes based on a stat that is ignored (vulnerability)"
+                # noqa
             )
     # spread both 0 but spreading on?
     if data["red_can_naturally_spread"]:
         if (
-            data["chance_to_spread_to_connected_node"] == 0
-            and data["chance_to_spread_to_unconnected_node"] == 0
+                data["chance_to_spread_to_connected_node"] == 0
+                and data["chance_to_spread_to_unconnected_node"] == 0
         ):
             raise ValueError(
-                "'red_can_naturally_spread', 'chance_to_spread_to_connected_node', 'chance_to_spread_to_unconnected_node' -> If red can naturally spread however the probabilities for both types of spreading are 0"  # noqa
+                "'red_can_naturally_spread', 'chance_to_spread_to_connected_node', 'chance_to_spread_to_unconnected_node' -> If red can naturally spread however the probabilities for both types of spreading are 0"
+                # noqa
             )
 
 
@@ -272,105 +276,117 @@ def check_blue(data: dict):
 
     # misc
     if (
-        not data["blue_uses_reduce_vulnerability"]
-        and (not data["blue_uses_restore_node"])
-        and (not data["blue_uses_make_node_safe"])
-        and (not data["blue_uses_scan"])
-        and (not data["blue_uses_isolate_node"])
-        and (not data["blue_uses_reconnect_node"])
-        and (not data["blue_uses_do_nothing"])
-        and (not data["blue_uses_deceptive_nodes"])
+            not data["blue_uses_reduce_vulnerability"]
+            and (not data["blue_uses_restore_node"])
+            and (not data["blue_uses_make_node_safe"])
+            and (not data["blue_uses_scan"])
+            and (not data["blue_uses_isolate_node"])
+            and (not data["blue_uses_reconnect_node"])
+            and (not data["blue_uses_do_nothing"])
+            and (not data["blue_uses_deceptive_nodes"])
     ):
         raise ValueError(
-            "'blue_uses_****' -> Blue must have at least one action selected. If you want blue to do nothing set 'blue_uses_do_nothing' to True"  # noqa
+            "'blue_uses_****' -> Blue must have at least one action selected. If you want blue to do nothing set 'blue_uses_do_nothing' to True"
+            # noqa
         )
 
     if (data["blue_uses_isolate_node"] and (not data["blue_uses_reconnect_node"])) or (
-        (not data["blue_uses_isolate_node"]) and data["blue_uses_reconnect_node"]
+            (not data["blue_uses_isolate_node"]) and data["blue_uses_reconnect_node"]
     ):
         raise ValueError(
-            "'blue_uses_isolate_node', 'blue_uses_reconnect_node' -> Blue should be able to reconnect or isolate nodes if the other is true"  # noqa
+            "'blue_uses_isolate_node', 'blue_uses_reconnect_node' -> Blue should be able to reconnect or isolate nodes if the other is true"
+            # noqa
         )
 
     check_within_range(data, "max_number_deceptive_nodes", 0, None, True, True)
 
     if data["blue_uses_deceptive_nodes"] and (0 == data["max_number_deceptive_nodes"]):
         raise ValueError(
-            "'blue_uses_deceptive_nodes', 'max_number_deceptive_nodes' -> If blue can use deceptive nodes then max_number_deceptive_nodes."  # noqa
+            "'blue_uses_deceptive_nodes', 'max_number_deceptive_nodes' -> If blue can use deceptive nodes then max_number_deceptive_nodes."
+            # noqa
         )
 
     if data["blue_uses_scan"]:
         if data["chance_to_immediately_discover_intrusion"] == 1:
             raise ValueError(
-                "'blue_uses_scan', 'chance_to_immediately_discover_intrusion' -> The scan action is selected yet blue has 100% chance to spot detections. There is no need for the blue to have the scan action in this case"  # noqa
+                "'blue_uses_scan', 'chance_to_immediately_discover_intrusion' -> The scan action is selected yet blue has 100% chance to spot detections. There is no need for the blue to have the scan action in this case"
+                # noqa
             )
     else:
         if data["chance_to_immediately_discover_intrusion"] != 1:
             raise ValueError(
-                "'blue_uses_scan', 'chance_to_immediately_discover_intrusion' -> If the blue agent cannot scan nodes then it should be able to automtically detect the intrusions"  # noqa
+                "'blue_uses_scan', 'chance_to_immediately_discover_intrusion' -> If the blue agent cannot scan nodes then it should be able to automtically detect the intrusions"
+                # noqa
             )
 
     if (
-        data["chance_to_discover_intrusion_on_scan_deceptive_node"]
-        <= data["chance_to_discover_intrusion_on_scan"]
+            data["chance_to_discover_intrusion_on_scan_deceptive_node"]
+            <= data["chance_to_discover_intrusion_on_scan"]
     ):
         if data["chance_to_discover_intrusion_on_scan_deceptive_node"] != 1:
             raise ValueError(
-                "'chance_to_discover_intrusion_on_scan_deceptive_node', 'chance_to_discover_intrusion_on_scan' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"  # noqa
+                "'chance_to_discover_intrusion_on_scan_deceptive_node', 'chance_to_discover_intrusion_on_scan' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"
+                # noqa
             )
 
     if (
-        data["chance_to_discover_failed_attack_deceptive_node"]
-        <= data["chance_to_discover_failed_attack"]
+            data["chance_to_discover_failed_attack_deceptive_node"]
+            <= data["chance_to_discover_failed_attack"]
     ):
         if data["chance_to_discover_failed_attack_deceptive_node"] != 1:
             raise ValueError(
-                "'chance_to_discover_failed_attack_deceptive_node', 'chance_to_discover_failed_attack' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"  # noqa
+                "'chance_to_discover_failed_attack_deceptive_node', 'chance_to_discover_failed_attack' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"
+                # noqa
             )
 
     if (
-        data["chance_to_discover_succeeded_attack_deceptive_node"]
-        <= data["chance_to_discover_succeeded_attack_compromise_known"]
+            data["chance_to_discover_succeeded_attack_deceptive_node"]
+            <= data["chance_to_discover_succeeded_attack_compromise_known"]
     ):
         if data["chance_to_discover_succeeded_attack_deceptive_node"] != 1:
             raise ValueError(
-                "'chance_to_discover_succeeded_attack_deceptive_node', 'chance_to_discover_succeeded_attack_compromise_known' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"  # noqa
+                "'chance_to_discover_succeeded_attack_deceptive_node', 'chance_to_discover_succeeded_attack_compromise_known' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"
+                # noqa
             )
 
     if (
-        data["chance_to_discover_succeeded_attack_deceptive_node"]
-        <= data["chance_to_discover_succeeded_attack_compromise_not_known"]
+            data["chance_to_discover_succeeded_attack_deceptive_node"]
+            <= data["chance_to_discover_succeeded_attack_compromise_not_known"]
     ):
         if data["chance_to_discover_succeeded_attack_deceptive_node"] != 1:
             raise ValueError(
-                "'chance_to_discover_succeeded_attack_deceptive_node', 'chance_to_discover_succeeded_attack_compromise_not_known' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"  # noqa
+                "'chance_to_discover_succeeded_attack_deceptive_node', 'chance_to_discover_succeeded_attack_compromise_not_known' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"
+                # noqa
             )
 
     if (
-        data["making_node_safe_gives_random_vulnerability"]
-        and data["making_node_safe_modifies_vulnerability"]
+            data["making_node_safe_gives_random_vulnerability"]
+            and data["making_node_safe_modifies_vulnerability"]
     ):
         raise ValueError(
-            "'making_node_safe_gives_random_vulnerability', 'making_node_safe_modifies_vulnerability' -> Does not make sense to give a node a random vulnerability and to increase its vulnerability when a node is made safe"  # noqa
+            "'making_node_safe_gives_random_vulnerability', 'making_node_safe_modifies_vulnerability' -> Does not make sense to give a node a random vulnerability and to increase its vulnerability when a node is made safe"
+            # noqa
         )
 
     if (
-        data["chance_to_immediately_discover_intrusion_deceptive_node"]
-        <= data["chance_to_immediately_discover_intrusion"]
+            data["chance_to_immediately_discover_intrusion_deceptive_node"]
+            <= data["chance_to_immediately_discover_intrusion"]
     ):
         if data["chance_to_immediately_discover_intrusion_deceptive_node"] != 1:
             raise ValueError(
-                "'chance_to_immediately_discover_intrusion_deceptive_node', 'chance_to_immediately_discover_intrusion' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"  # noqa
+                "'chance_to_immediately_discover_intrusion_deceptive_node', 'chance_to_immediately_discover_intrusion' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"
+                # noqa
             )
 
 
-def check_game_rules(data: dict, number_of_nodes: int):
+def check_game_rules(data: dict, number_of_nodes: int, high_value_nodes: List[str]):
     """
     Check the settings relating to the game rules.
 
     Args:
         data: The dictionary relating to the game rules settings
         number_of_nodes: The number of nodes in the network
+        high_value_nodes: The list containing the high value targets
 
     """
     # data is int or float
@@ -386,21 +402,31 @@ def check_game_rules(data: dict, number_of_nodes: int):
 
     if data["node_vulnerability_lower_bound"] > data["node_vulnerability_upper_bound"]:
         raise ValueError(
-            "'node_vulnerability_lower_bound', 'node_vulnerability_upper_bound' -> The lower bound for the node vulnerabilities should be less than the upper bound"  # noqa
+            "'node_vulnerability_lower_bound', 'node_vulnerability_upper_bound' -> The lower bound for the node vulnerabilities should be less than the upper bound"
+            # noqa
         )
     check_type(data, "max_steps", [int])
     check_type(data, "number_of_entry_nodes", [int])
     check_type(data, "grace_period_length", [int])
+    # ignore if high value targets passed in
+    if not high_value_nodes:
+        check_type(data, "number_of_high_value_nodes", [int])
+        check_within_range(data, "number_of_high_value_nodes", 1, number_of_nodes, True, True)
+    else:
+        # make sure the passed high value targets do not exceed the number of nodes in network
+        check_within_range({'hvt_length': len(high_value_nodes)}, "hvt_length", 1, number_of_nodes, True, True)
+
     check_within_range(data, "grace_period_length", 0, 100, True, True)
     check_within_range(data, "max_steps", 0, 10000000, False, True)
     check_within_range(data, "number_of_entry_nodes", 0, number_of_nodes, False, True)
+
     # data is boolean
     for name in [
         "lose_when_all_nodes_lost",
         "lose_when_n_percent_of_nodes_lost",
-        "lose_when_high_value_node_lost",
-        "choose_high_value_node_placement_at_random",
-        "choose_high_value_node_furthest_away_from_entry",
+        "lose_when_high_value_target_lost",
+        "choose_high_value_nodes_placement_at_random",
+        "choose_high_value_nodes_furthest_away_from_entry",
         "choose_entry_nodes_randomly",
         "prefer_central_nodes_for_entry_nodes",
         "prefer_edge_nodes_for_entry_nodes",
@@ -411,37 +437,55 @@ def check_game_rules(data: dict, number_of_nodes: int):
         data, "percentage_of_nodes_compromised_equals_loss", 0, 1, False, False
     )
     if (
-        data["prefer_central_nodes_for_entry_nodes"]
-        and data["prefer_edge_nodes_for_entry_nodes"]
+            data["prefer_central_nodes_for_entry_nodes"]
+            and data["prefer_edge_nodes_for_entry_nodes"]
     ):
         raise ValueError(
-            "'prefer_central_nodes_for_entry_nodes', 'prefer_edge_nodes_for_entry_nodes' -> cannot prefer both central and edge nodes"  # noqa
+            "'prefer_central_nodes_for_entry_nodes', 'prefer_edge_nodes_for_entry_nodes' -> cannot prefer both central and edge nodes"
+            # noqa
         )
 
     if (
-        (not data["lose_when_all_nodes_lost"])
-        and (not data["lose_when_n_percent_of_nodes_lost"])
-        and (not data["lose_when_high_value_node_lost"])
+            (not data["lose_when_all_nodes_lost"])
+            and (not data["lose_when_n_percent_of_nodes_lost"])
+            and (not data["lose_when_high_value_target_lost"])
     ):
         raise ValueError(
-            "'lose_when_all_nodes_lost', 'lose_when_n_percent_of_nodes_lost', 'lose_when_high_value_node_lost' -> At least one loose condition must be turned on"  # noqa
+            "'lose_when_all_nodes_lost', 'lose_when_n_percent_of_nodes_lost', 'lose_when_high_value_target_lost' -> At least one loose condition must be turned on"
+            # noqa
         )
 
-    if data["lose_when_high_value_node_lost"]:
-        if (not data["choose_high_value_node_placement_at_random"]) and (
-            not data["choose_high_value_node_furthest_away_from_entry"]
-        ):
-            raise ValueError(
-                "'choose_high_value_node_placement_at_random', 'choose_high_value_node_furthest_away_from_entry' -> A method of selecting the high value target must be chosen"  # noqa
-            )
-    if data["lose_when_high_value_node_lost"]:
+    if data["lose_when_high_value_target_lost"]:
+        # if there is no way to set high value targets
         if (
-            data["choose_high_value_node_placement_at_random"]
-            and data["choose_high_value_node_furthest_away_from_entry"]
+                not high_value_nodes and
+                not data["choose_high_value_nodes_placement_at_random"] and
+                not data["choose_high_value_nodes_furthest_away_from_entry"]
         ):
             raise ValueError(
-                "'choose_high_value_node_placement_at_random', 'choose_high_value_node_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"  # noqa
+                "'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' -> A method of selecting the high value target must be chosen"
+                # noqa
             )
+        # if there are conflicting configurations
+        if (
+                data["choose_high_value_nodes_placement_at_random"]
+                and data["choose_high_value_nodes_furthest_away_from_entry"]
+        ):
+            raise ValueError(
+                "'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"
+                # noqa
+            )
+        # if high value targets are set and these configurations are also set
+        if (
+                high_value_nodes and
+                (data["choose_high_value_nodes_placement_at_random"]
+                 or data["choose_high_value_nodes_furthest_away_from_entry"])
+        ):
+            raise ValueError(
+                "Provided high value targets: " + str(high_value_nodes) + " 'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"
+                # noqa
+            )
+
     if data["grace_period_length"] > data["max_steps"]:
         raise ValueError(
             "'grace_period_length', 'max_steps' -> The grace period cannot be the entire length of the game"
@@ -457,7 +501,7 @@ def check_reset(data: dict):
     """
     for name in [
         "randomise_vulnerabilities_on_reset",
-        "choose_new_high_value_node_on_reset",
+        "choose_new_high_value_nodes_on_reset",
         "choose_new_entry_nodes_on_reset",
     ]:
         check_type(data, name, [bool])
@@ -524,13 +568,14 @@ def check_observation_space(data: dict):
         )
 
 
-def check_input(data: dict, number_of_nodes: int):
+def check_input(data: dict, number_of_nodes: int, high_value_nodes: List[str]):
     """
     Check the settings file making sure that all the required settings are there and that they contain suitable values.
 
     Args:
         data: The settings file (A dictionary)
         number_of_nodes: The number of nodes in the network
+        high_value_nodes: The list containing the high value targets
     """
     try:
         red = data["RED"]
@@ -544,7 +589,7 @@ def check_input(data: dict, number_of_nodes: int):
         # runs the checks for each section of the settings
         check_red(red)
         check_blue(blue)
-        check_game_rules(game, number_of_nodes)
+        check_game_rules(game, number_of_nodes, high_value_nodes)
         check_rewards(rewards)
         check_reward_function_exists(rewards)
         check_misc(misc)
