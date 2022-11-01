@@ -1,13 +1,13 @@
-import logging
+import logging.config
 import os
 from pathlib import Path
 from typing import Final
 
+import yaml
 from gym.envs.registration import register
 from platformdirs import PlatformDirs
 
-# TODO: Set root level logging with defined format with RotatingFileHandler
-logger = logging.getLogger("yawning_titan")
+_YT_ROOT_DIR: Final[Path] = Path(__file__).parent.resolve()
 
 register(
     id="five-node-def-v0",
@@ -64,3 +64,17 @@ IMAGES_DIR: Final[Path] = Path(os.path.join(DATA_DIR, "images"))
 """
 The path to the app images directory as an instance of pathlib.Path.
 """
+
+# Setup root logger format
+with open(os.path.join(
+            _YT_ROOT_DIR, "config", "_package_data", "logging_config.yaml"
+        ), 'r'
+) as stream:
+    config = yaml.load(stream, Loader=yaml.FullLoader)
+LOG_FILE_PATH: Final[str] = os.path.join(
+    LOG_DIR,
+    config["handlers"]["info_rotating_file_handler"]["filename"]
+)
+config["handlers"]["info_rotating_file_handler"]["filename"] = LOG_FILE_PATH
+
+logging.config.dictConfig(config)

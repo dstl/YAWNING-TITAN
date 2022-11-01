@@ -2,7 +2,7 @@ import logging
 import random
 from typing import List, Tuple, Union
 
-logger = logging.getLogger("yawning_titan")
+logger = logging.getLogger(__name__)
 
 
 class NSARed:
