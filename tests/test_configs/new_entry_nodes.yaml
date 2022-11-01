@@ -196,7 +196,7 @@ GAME_RULES:
   # The percentage of nodes that need to be lost for blue to lose
   percentage_of_nodes_compromised_equals_loss: 0.1
   # Blue loses if a special 'high value' target it lost (a node picked in the environment)
-  lose_when_high_value_target_lost: False
+  lose_when_high_value_node_lost: False
   # If no high value targets are supplied, how many should be chosen
   number_of_high_value_nodes: 1
   # The high value target is picked at random

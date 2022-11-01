@@ -267,7 +267,7 @@ class NetworkInterface:
             ]
         else:
             self.gr_number_of_high_value_nodes = len(high_value_nodes)
-        self.gr_loss_hvn = self.game_rule_settings["lose_when_high_value_target_lost"]
+        self.gr_loss_hvn = self.game_rule_settings["lose_when_high_value_node_lost"]
         self.gr_loss_hvn_random_placement = self.game_rule_settings[
             "choose_high_value_nodes_placement_at_random"
         ]
@@ -310,6 +310,10 @@ class NetworkInterface:
 
         # Misc Settings
         self.misc_json_out = self.misc_settings["output_timestep_data_to_json"]
+        self.SEED = self.misc_settings.get("random_seed",None)
+
+        if self.SEED is not None:
+            print("random number generation is deterministic with seed: ",self.SEED)
 
         nodes = [str(i) for i in range(number_of_nodes)]
         df = pd.DataFrame(matrix, index=nodes, columns=nodes)
@@ -553,6 +557,15 @@ class NetworkInterface:
             The number of nodes in the network
         """
         return len(self.current_network_variables.keys())
+
+    def get_target_node(self) -> int:
+        """
+        Get the node which is being targeted in the config
+
+        Returns:
+            The target node if it exists
+        """
+        return self.red_pursues_node
 
     def get_total_num_nodes(self) -> int:
         """

@@ -178,6 +178,7 @@ def check_red(data: dict):
             and (not data["red_prioritises_un_connected_nodes"])
             and (not data["red_prioritises_vulnerable_nodes"])
             and (not data["red_prioritises_resilient_nodes"])
+            and (data["red_pursues_node"] is None)
     ):
         raise ValueError(
             "'red_prioritises_****' -> Red must choose its target in some way. If you are unsure select 'red_chooses_target_at_random'"
@@ -424,7 +425,7 @@ def check_game_rules(data: dict, number_of_nodes: int, high_value_nodes: List[st
     for name in [
         "lose_when_all_nodes_lost",
         "lose_when_n_percent_of_nodes_lost",
-        "lose_when_high_value_target_lost",
+        "lose_when_high_value_node_lost",
         "choose_high_value_nodes_placement_at_random",
         "choose_high_value_nodes_furthest_away_from_entry",
         "choose_entry_nodes_randomly",
@@ -448,14 +449,14 @@ def check_game_rules(data: dict, number_of_nodes: int, high_value_nodes: List[st
     if (
             (not data["lose_when_all_nodes_lost"])
             and (not data["lose_when_n_percent_of_nodes_lost"])
-            and (not data["lose_when_high_value_target_lost"])
+            and (not data["lose_when_high_value_node_lost"])
     ):
         raise ValueError(
-            "'lose_when_all_nodes_lost', 'lose_when_n_percent_of_nodes_lost', 'lose_when_high_value_target_lost' -> At least one loose condition must be turned on"
+            "'lose_when_all_nodes_lost', 'lose_when_n_percent_of_nodes_lost', 'lose_when_high_value_node_lost' -> At least one loose condition must be turned on"
             # noqa
         )
 
-    if data["lose_when_high_value_target_lost"]:
+    if data["lose_when_high_value_node_lost"]:
         # if there is no way to set high value targets
         if (
                 not high_value_nodes and
