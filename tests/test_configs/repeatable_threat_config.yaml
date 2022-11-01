@@ -196,9 +196,9 @@ GAME_RULES:
   # Blue loses if a special 'high value' target it lost (a node picked in the environment)
   lose_when_high_value_target_lost: True
   # The high value targets are picked at random
-  choose_high_value_targets_placement_at_random: False
+  choose_high_value_targets_placement_at_random: True
   # The node furthest away from the entry points to the network is picked as the target
-  choose_high_value_targets_furthest_away_from_entry: True
+  choose_high_value_targets_furthest_away_from_entry: False
   # If no entry nodes are supplied choose some at random
   choose_entry_nodes_randomly: False
   # If no entry nodes are supplied then how many should be chosen
