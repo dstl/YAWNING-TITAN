@@ -465,7 +465,7 @@ def check_game_rules(data: dict, number_of_nodes: int, high_value_targets: List[
             raise ValueError(
                 "'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_furthest_away_from_entry' -> A method of selecting the high value target must be chosen"
                 # noqa
-            )
+            ) # TODO: update this when moved config to class
         # if there are conflicting configurations
         if (
                 data["choose_high_value_targets_placement_at_random"]
