@@ -34,23 +34,23 @@ class CustomEnvGraph:
         plt.show(block=False)
 
     def render(
-        self,
-        current_step: int,
-        g: networkx.Graph,
-        pos: dict,
-        compromised_nodes: dict,
-        uncompromised_nodes: list,
-        attacks: list,
-        current_time_step_reward: float,
-        red_previous_node,
-        vulnerability_dict: dict,
-        made_safe_nodes: list,
-        title: str,
-        special_nodes: dict = None,
-        entrance_nodes: list = None,
-        target_node: str = None,
-        show_only_blue_view: bool = False,
-        show_node_names: bool = False,
+            self,
+            current_step: int,
+            g: networkx.Graph,
+            pos: dict,
+            compromised_nodes: dict,
+            uncompromised_nodes: list,
+            attacks: list,
+            current_time_step_reward: float,
+            red_previous_node,
+            vulnerability_dict: dict,
+            made_safe_nodes: list,
+            title: str,
+            special_nodes: dict = None,
+            entrance_nodes: list = None,
+            show_only_blue_view: bool = False,
+            target_node:str = None,
+            show_node_names: bool = False,
     ):
         """
         Render the current network into an axis.
@@ -200,20 +200,24 @@ class CustomEnvGraph:
         # Some environments may have special custom nodes that they want to add
         if len(special_nodes) > 0:
             for _, node_info in special_nodes.items():
-                # Inserts the object into the legends at position 3. This is because it looks better if there are any
-                # special nodes added that they are added at the some point as the other nodes in the legend
-                legend_objects.insert(
-                    3,
-                    Line2D(
-                        [0],
-                        [0],
-                        color="white",
-                        marker="o",
-                        markerfacecolor=node_info["colour"],
-                        label=node_info["description"],
-                        markersize=15,
-                    ),
-                )
+                repeat_check = lambda node, legend_list: any(legend.get_markerfacecolor() == node["colour"] and legend.get_label() == node["description"] for legend in legend_list)
+
+                # only insert if the legend is not in the list yet
+                if not repeat_check(node_info, legend_objects):
+                    # Inserts the object into the legends at position 3. This is because it looks better if there are any
+                    # special nodes added that they are added at the some point as the other nodes in the legend
+                    legend_objects.insert(
+                        3,
+                        Line2D(
+                            [0],
+                            [0],
+                            color="white",
+                            marker="o",
+                            markerfacecolor=node_info["colour"],
+                            label=node_info["description"],
+                            markersize=15,
+                        ),
+                    )
 
 
         # If entrance nodes are used then they are added to the legend
@@ -369,12 +373,12 @@ class CustomEnvGraph:
         # Creates a string containing information about the current state of the network
 
         info = (
-            "Current Step: "
-            + str(current_step)
-            + "\nReward for current time step: "
-            + str(current_time_step_reward)
-            + "\nCurrent Avg vulnerability: "
-            + str(round(statistics.mean(vulnerability_dict.values()), 2))
+                "Current Step: "
+                + str(current_step)
+                + "\nReward for current time step: "
+                + str(current_time_step_reward)
+                + "\nCurrent Avg vulnerability: "
+                + str(round(statistics.mean(vulnerability_dict.values()), 2))
         )
 
         ax = plt.gca()

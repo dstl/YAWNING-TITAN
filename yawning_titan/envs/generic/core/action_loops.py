@@ -43,7 +43,7 @@ class ActionLoop:
         """
         if not IMAGES_DIR.exists():
             # if the path does not exist, create it
-            os.mkdir(IMAGES_DIR)
+            os.makedirs(IMAGES_DIR)
 
         complete_results = []
         for i in range(self.episode_count):

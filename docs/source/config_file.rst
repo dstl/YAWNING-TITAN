@@ -217,9 +217,17 @@ Game Rules
 
     Does red win if a special "high value" node is taken
 
+<<<<<<< HEAD
      * **choose_high_value_node_placement_at_random:**
         Choose the "high value" node at random
      * **choose_high_value_node_furthest_away_from_entry:**
+=======
+     * **number_of_high_value_nodes:**
+        How many "high value" nodes will be chosen
+     * **choose_high_value_nodes_placement_at_random:**
+        Choose the "high value" node at random
+     * **choose_high_value_nodes_furthest_away_from_entry:**
+>>>>>>> methods-YT/dev
         Choose the "high value" to be one of the nodes furthest from all of the entry points
  * **choose_entry_nodes_randomly:**
     If no entry nodes are supplied choose some at random
@@ -236,8 +244,13 @@ Reset
 ******
  * **randomise_vulnerabilities_on_reset:**
     Pick new vulnerabilities for all the nodes on every reset
+<<<<<<< HEAD
  * **choose_new_high_value_node_on_reset:**
     Pick a new high value target on every reset
+=======
+ * **choose_new_high_value_nodes_on_reset:**
+    Pick new high value targets on every reset
+>>>>>>> methods-YT/dev
  * **choose_new_entry_nodes_on_reset:**
     Pick new entry nodes every reset
 
