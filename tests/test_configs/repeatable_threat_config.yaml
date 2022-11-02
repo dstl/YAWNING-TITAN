@@ -218,8 +218,6 @@ GAME_RULES:
   choose_high_value_nodes_placement_at_random: False
   # The node furthest away from the entry points to the network is picked as the target
   choose_high_value_nodes_furthest_away_from_entry: False
-  # Blue loses if a target node it lost
-  lose_when_target_node_lost: False
 
 
 RESET:
