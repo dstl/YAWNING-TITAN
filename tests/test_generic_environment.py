@@ -1051,7 +1051,7 @@ def test_generic_env(env, timesteps):
                        ) < env.network_interface.gr_loss_pc_node_compromised_pc
             if env.network_interface.gr_loss_hvn:
                 # the game would end if a high value target was compromised, this needs to be checked
-                compromised_hvn = False;
+                compromised_hvn = False
 
                 # check that none of the high value targets are compromised
                 for node in env.network_interface.get_high_value_nodes():

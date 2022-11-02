@@ -212,6 +212,8 @@ GAME_RULES:
   prefer_edge_nodes_for_entry_nodes: False
   # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
   grace_period_length: 0
+  # Blue loses if a target node it lost
+  lose_when_target_node_lost: False
 
 RESET:
   randomise_vulnerabilities_on_reset: False

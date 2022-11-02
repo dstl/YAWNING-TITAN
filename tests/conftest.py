@@ -2,7 +2,7 @@ from datetime import datetime
 import pytest
 import os
 import yaml
-from typing import Dict,Any
+from typing import Dict,Any,List
 from yaml import SafeLoader
 from tests import TEST_CONFIG_PATH
 from stable_baselines3 import PPO
@@ -34,6 +34,8 @@ def temp_config_from_base(tmpdir_factory)->str:
 
         for key,val in updated_settings.items():
             new_settings[key].update(val)
+            for _key,_val in val.items():
+                print(new_settings[key][_key])
 
         temp_config_filename = "tmp_config" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".yaml"
         temp_config_path = os.path.join(tmpdir_factory.mktemp("tmp_config"),temp_config_filename)
@@ -45,50 +47,46 @@ def temp_config_from_base(tmpdir_factory)->str:
     return _temp_config_from_base
 
 @pytest.fixture
-def basic_2_agent_loop(request,temp_config_from_base)->ActionLoop:
-    """
-    Use parameterized settings to return a configured ActionLoop
-    """
-    matrix, node_positions = network_creator.create_18_node_network()
+def basic_2_agent_loop(temp_config_from_base)->ActionLoop:
+    def _basic_2_agent_loop(
+        episodes:int=1,
+        entry_nodes:List[str]=None,
+        high_value_nodes:List[str]=None,
+        settings_file:str=None,         
+        custom_settings:Dict[str,Dict[str,Any]]=None,        
+    )->ActionLoop:
+        """
+        Use parameterized settings to return a configured ActionLoop
+        """
+        matrix, node_positions = network_creator.create_18_node_network()
 
-    entry_nodes = None
-    settings_path = None
-    high_value_nodes = None
-    num_episodes = 1
 
-    if "settings_file" in request.param:
-        settings_path = os.path.join(TEST_CONFIG_PATH, request.param["settings_file"])
-        if "custom_settings" in request.param:
-            settings_path = temp_config_from_base(settings_path,request.param["custom_settings"])
-      
-    if "entry_nodes" in request.param:
-        entry_nodes = request.param["entry_nodes"]
+        if settings_file is not None:
+            settings_path = os.path.join(TEST_CONFIG_PATH, settings_file)
+            if custom_settings is not None:
+                settings_path = temp_config_from_base(settings_path,custom_settings)
+        
 
-    if "episodes" in request.param:
-        num_episodes = request.param["episodes"]    
+        network_interface = NetworkInterface(matrix, node_positions, entry_nodes=entry_nodes, high_value_nodes=high_value_nodes,settings_path=settings_path)
 
-    if "high_value_target" in request.param:
-        high_value_nodes = request.param["high_value_nodes"]
+        red = RedInterface(network_interface)
+        blue = BlueInterface(network_interface)
 
-    network_interface = NetworkInterface(matrix, node_positions, entry_nodes=entry_nodes, high_value_nodes=high_value_nodes,settings_path=settings_path)
+        env = GenericNetworkEnv(red, blue, network_interface)
 
-    red = RedInterface(network_interface)
-    blue = BlueInterface(network_interface)
+        check_env(env, warn=True)
 
-    env = GenericNetworkEnv(red, blue, network_interface)
+        _ = env.reset()
 
-    check_env(env, warn=True)
+        eval_callback = EvalCallback(
+                Monitor(env), eval_freq=1000, deterministic=False, render=False
+            )
 
-    _ = env.reset()
+        agent = PPO(PPOMlp, env, verbose=1, seed=network_interface.SEED) #TODO: allow PPO to inherit environment seed. Monkey patch additional feature?
 
-    eval_callback = EvalCallback(
-            Monitor(env), eval_freq=1000, deterministic=False, render=False
+        agent.learn(
+                total_timesteps=1000, n_eval_episodes=100, callback=eval_callback
         )
 
-    agent = PPO(PPOMlp, env, verbose=1, seed=network_interface.SEED) #TODO: allow PPO to inherit environment seed. Monkey patch additional feature?
-
-    agent.learn(
-            total_timesteps=1000, n_eval_episodes=100, callback=eval_callback
-    )
-
-    return ActionLoop(env,agent,episode_count=num_episodes)
+        return ActionLoop(env,agent,episode_count=episodes)
+    return _basic_2_agent_loop

@@ -450,23 +450,24 @@ def check_game_rules(data: dict, number_of_nodes: int, high_value_nodes: List[st
             (not data["lose_when_all_nodes_lost"])
             and (not data["lose_when_n_percent_of_nodes_lost"])
             and (not data["lose_when_high_value_node_lost"])
+            and (not data["lose_when_target_node_lost"])
     ):
         raise ValueError(
-            "'lose_when_all_nodes_lost', 'lose_when_n_percent_of_nodes_lost', 'lose_when_high_value_node_lost' -> At least one loose condition must be turned on"
+            "'lose_when_all_nodes_lost', 'lose_when_target_node_lost', 'lose_when_n_percent_of_nodes_lost', 'lose_when_high_value_node_lost' -> At least one loose condition must be turned on"
             # noqa
         )
 
     if data["lose_when_high_value_node_lost"]:
         # if there is no way to set high value targets
         if (
-                not high_value_nodes and
+                high_value_nodes is None and
                 not data["choose_high_value_nodes_placement_at_random"] and
                 not data["choose_high_value_nodes_furthest_away_from_entry"]
         ):
             raise ValueError(
-                "'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' -> A method of selecting the high value target must be chosen"
+                "'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' or set from network interface -> A method of selecting the high value target must be chosen"
                 # noqa
-            )
+            ) # TODO: update this when moved config to class
         # if there are conflicting configurations
         if (
                 data["choose_high_value_nodes_placement_at_random"]

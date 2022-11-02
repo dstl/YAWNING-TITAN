@@ -18,7 +18,7 @@ RED:
   red_can_attack_from_any_red_node: True
 
   # The red agent naturally spreads its influence every time-step
-  red_can_naturally_spread: True
+  red_can_naturally_spread: False
   # If a node is connected to a compromised node what chance does it have to become compromised every turn through natural spreading
   chance_to_spread_to_connected_node: 0.05
   # If a node is not connected to a compromised node what chance does it have to become randomly infected through natural spreading
@@ -42,7 +42,7 @@ RED:
   # weighting for action
   basic_attack_action_likelihood: 2
   # DO NOTHING: The red agent does nothing
-  red_uses_do_nothing_action: True
+  red_uses_do_nothing_action: False
   do_nothing_action_likelihood: 1
   # The red agent moves to a different node
   red_uses_move_action: False
@@ -174,7 +174,7 @@ BLUE:
   # Blue re-connects all of the connections to and from a node
   blue_uses_reconnect_node: False
   # Blue agent does nothing
-  blue_uses_do_nothing: False
+  blue_uses_do_nothing: True
   # Blue agent can place down deceptive nodes. These nodes act as just another node in the network but have a different
   # chance of spotting attacks and always show when they are compromised
   blue_uses_deceptive_nodes: False
@@ -183,6 +183,8 @@ BLUE:
   relocating_deceptive_nodes_generates_a_new_node: True
 
 GAME_RULES:
+  # If no high value targets are supplied, how many should be chosen
+  number_of_high_value_nodes: 1
   # A lower vulnerability means that a node is less likely to be compromised
   node_vulnerability_lower_bound: 0.2
   # A higher vulnerability means that a node is more vulnerable
@@ -196,13 +198,9 @@ GAME_RULES:
   # The percentage of nodes that need to be lost for blue to lose
   percentage_of_nodes_compromised_equals_loss: 0.8
   # Blue loses if a special 'high value' target it lost (a node picked in the environment)
-  lose_when_high_value_node_lost: True
-  # Blue loses if a target node it lost
-  lose_when_target_node_lost: False
-  # The high value target is picked at random
-  choose_high_value_node_placement_at_random: False
+  lose_when_high_value_node_lost: False
   # The node furthest away from the entry points to the network is picked as the target
-  choose_high_value_node_furthest_away_from_entry: True
+  choose_high_value_nodes_furthest_away_from_entry: True
   # If no entry nodes are supplied choose some at random
   choose_entry_nodes_randomly: False
   # If no entry nodes are supplied then how many should be chosen
@@ -212,13 +210,15 @@ GAME_RULES:
   prefer_edge_nodes_for_entry_nodes: False
   # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
   grace_period_length: 0
-  # The high value target is picked at random
-  choose_high_value_nodes_placement_at_random: True
+  # The high value nodes are picked at random
+  choose_high_value_nodes_placement_at_random: False
+  # Blue loses if a target node it lost
+  lose_when_target_node_lost: True
   
 
 RESET:
   randomise_vulnerabilities_on_reset: False
-  choose_new_high_value_node_on_reset: False
+  choose_new_high_value_nodes_on_reset: False
   choose_new_entry_nodes_on_reset: False
 
 REWARDS:
