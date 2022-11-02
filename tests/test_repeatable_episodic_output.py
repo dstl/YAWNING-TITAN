@@ -46,13 +46,11 @@ def test_setting_high_value_target_with_seeded_randomisation(basic_2_agent_loop:
     Test that high value node setting is unaffected by seeded randomisation
     """   
     agent_loop = basic_2_agent_loop(entry_nodes=['0'],settings_file="repeatable_threat_config.yaml",custom_settings=custom_random_setting_2)
-    target_occurrences = {str(key):0 for key in range(0,18)}
+    high_value_nodes = set()
     for i in range(0,100): # run a number of action loops 
         agent_loop.standard_action_loop(deterministic=True)   
-        target_occurrences[agent_loop.env.network_interface.get_high_value_nodes()[0]] += 1
+        high_value_nodes.add(agent_loop.env.network_interface.get_high_value_nodes()[0])
 
-    target_occurrences = {key:val for key,val in target_occurrences.items() if val != 0}
-    high_value_node_occurrences = list(target_occurrences.values())[0]
     # check that entry nodes cannot be chosen and that all high value node selected are the same
-    assert len(target_occurrences) == 1 
-    assert high_value_node_occurrences == 100
+    assert len(high_value_nodes) == 1 
+    assert list(high_value_nodes)[0] != '0'
