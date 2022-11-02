@@ -181,6 +181,8 @@ GAME_RULES:
   # If no entry nodes are supplied then what bias is applied to the nodes when choosing random entry nodes
   prefer_central_nodes_for_entry_nodes: False
   prefer_edge_nodes_for_entry_nodes: False
+  # Blue loses if a target node it lost
+  lose_when_target_node_lost: False
 
 RESET:
   randomise_vulnerabilities_on_reset: False

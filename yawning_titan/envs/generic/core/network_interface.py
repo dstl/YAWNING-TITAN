@@ -268,6 +268,7 @@ class NetworkInterface:
         else:
             self.gr_number_of_high_value_nodes = len(high_value_nodes)
         self.gr_loss_hvn = self.game_rule_settings["lose_when_high_value_node_lost"]
+        self.gr_loss_tn = self.game_rule_settings["lose_when_target_node_lost"]
         self.gr_loss_hvn_random_placement = self.game_rule_settings[
             "choose_high_value_nodes_placement_at_random"
         ]
@@ -511,7 +512,7 @@ class NetworkInterface:
     """
     def get_shortest_distances_to_target(self,nodes:List[str])->List[float]:
         """
-        
+        Get a list of the shortest distances from each node to the target
         """
         #TODO: add option where only shortest distance provided
         dist_matrix = dijkstra(csgraph=self.matrix, directed=False, indices=int(self.red_pursues_node), min_only=False)
@@ -950,6 +951,8 @@ class NetworkInterface:
         # Gets the locations of any special nodes in the network (entry nodes and high value nodes)
         entry_nodes = []
         nodes = []
+        target_nodes = []
+
         if self.obs_special_nodes:
             # gets the entry nodes
             entry_nodes = {name: 0 for name in self.get_nodes()}
@@ -958,13 +961,23 @@ class NetworkInterface:
             entry_nodes = list(entry_nodes.values())
             entry_nodes = np.pad(entry_nodes, (0, open_spaces), "constant")
 
+            if self.gr_loss_tn:
+                # gets the target node
+                target_nodes = {name: 0 for name in self.get_nodes()}
+                target_nodes[self.get_target_node()] = 1
+                target_nodes = list(target_nodes.values())
+                target_nodes = np.pad(
+                    target_nodes, (0, open_spaces), "constant"
+                )
+
+
             if self.gr_loss_hvn:
-                # gets the high value target nodes
+                # gets the high value nodes
                 nodes = {name: 0 for name in self.get_nodes()}
 
-                # set high value targets to 1
-                for target in self.high_value_nodes:
-                    nodes[target] = 1
+                # set high value nodes to 1
+                for node in self.high_value_nodes:
+                    nodes[node] = 1
 
                 nodes = list(nodes.values())
                 nodes = np.pad(
@@ -988,6 +1001,7 @@ class NetworkInterface:
                 attacked_nodes,
                 entry_nodes,
                 nodes,
+                target_nodes,
                 skill,
             ),
             axis=None,
@@ -1032,7 +1046,7 @@ class NetworkInterface:
         if self.obs_special_nodes:
             observation_size += max_number_of_nodes
             # if self.network_interface.gr_loss_tn:
-            if self.get_target_node() is not None:
+            if self.gr_loss_tn:
                 observation_size += max_number_of_nodes
             if self.gr_loss_hvn:
                 observation_size += max_number_of_nodes

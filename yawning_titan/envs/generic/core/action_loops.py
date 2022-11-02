@@ -33,7 +33,7 @@ class ActionLoop:
         self.filename = filename
         self.episode_count = episode_count
 
-    def gif_action_loop(self,render_network=True,prompt_to_close=False,save_gif=False,deterministic=True):
+    def gif_action_loop(self,render_network=True,prompt_to_close=False,save_gif=False,deterministic=True,*args,**kwargs):
         """
         Run the agent in evaluation and create a gif from episodes.
 
@@ -62,6 +62,8 @@ class ActionLoop:
                 # step the env
                 obs, rewards, done, info = self.env.step(action)
 
+                results.loc[len(results.index)] = [action,rewards,info]
+
                 # TODO: setup logging properly here
                 # logging.info(f'Observations: {obs.flatten()} Rewards:{rewards} Done:{done}')
                 # self.env.render(episode=i+1)
@@ -75,15 +77,14 @@ class ActionLoop:
                     # save the current image
                     plt.savefig(current_name)
 
+                    current_image += 1
+                    frame_names.append(current_name)
+                    # save the current image
+                    plt.savefig(current_name)
+
+
                 if render_network:
-                    self.env.render()
-
-                
-                current_image += 1
-                frame_names.append(current_name)
-                # save the current image
-                plt.savefig(current_name)
-
+                    self.env.render(*args,**kwargs)       
 
             if save_gif:
                 string_time = datetime.now().strftime("%d%m%Y_%H%M%S")
