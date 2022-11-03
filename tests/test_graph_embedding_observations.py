@@ -75,7 +75,7 @@ def test_obs_range(env: GenericNetworkEnv, num_of_nodes: int) -> None:
         obs = env.reset()
         np.set_printoptions(suppress=True)
         start = 0
-        if env.network_interface.obs_node_connections:
+        if env.network_interface.settings.observation_space.obs_node_connections:
             start = 500
             embedding = obs[0:500]
 
@@ -86,8 +86,8 @@ def test_obs_range(env: GenericNetworkEnv, num_of_nodes: int) -> None:
         for j in obs[start:]:
             assert -1 <= j <= 1
         if (
-            env.network_interface.obs_compromised_status
-            and env.network_interface.obs_node_vuln_status
+            env.network_interface.settings.observation_space.obs_compromised_status
+            and env.network_interface.settings.observation_space.obs_node_vuln_status
         ):
             padded_vulns = obs[start + num_of_nodes : (start + num_of_nodes * 2)]
             assert len(padded_vulns) == num_of_nodes
