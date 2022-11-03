@@ -30,7 +30,7 @@ from yawning_titan.agents.simple_blue import SimpleBlue
 from yawning_titan.envs.specific.core import node_states as nodes
 from yawning_titan.envs.specific.core.machines import Machines
 
-logger = logging.getLogger("yawning_titan")
+logger = logging.getLogger(__name__)
 
 
 class FiveNodeDef(gym.Env):

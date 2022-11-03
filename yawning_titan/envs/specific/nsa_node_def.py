@@ -48,7 +48,7 @@ from yawning_titan.envs.generic.helpers.graph2plot import CustomEnvGraph
 from yawning_titan.envs.generic.helpers.network_creator import create_18_node_network
 from yawning_titan.envs.specific.core.nsa_node_collection import NodeCollection
 
-logger = logging.getLogger("yawning_titan")
+logger = logging.getLogger(__name__)
 
 
 class NodeEnv(gym.Env):
