@@ -3,7 +3,7 @@
 
 RED:
   # The red agents skill level. Higher means that red is more likely to succeed in attacks
-  red_skill: 0
+  red_skill: 1
 
   # CHOOSE AT LEAST ONE OF THE FOLLOWING 3 ITEMS (red_ignore_defences: False counts as choosing an item)
   # Red uses its skill modifier when attacking nodes
@@ -11,7 +11,7 @@ RED:
   # The red agent ignores the defences of nodes
   red_ignores_defences: False
   # Reds attacks always succeed
-  red_always_succeeds: False
+  red_always_succeeds: True
 
   # The red agent will only ever be in one node however it can control any amount of nodes. Can the red agent only
   # attack from its one main node or can it attack from any node that it controls
@@ -21,29 +21,29 @@ RED:
   # The red agent naturally spreads its influence every time-step
   red_can_naturally_spread: True
   # If a node is connected to a compromised node what chance does it have to become compromised every turn through natural spreading
-  chance_to_spread_to_connected_node: 0.02
+  chance_to_spread_to_connected_node: 0.5
   # If a node is not connected to a compromised node what chance does it have to become randomly infected through natural spreading
-  chance_to_spread_to_unconnected_node: 0.02
+  chance_to_spread_to_unconnected_node: 0.5
 
   # CHOOSE AT LEAST ONE OF THE FOLLOWING 6 ITEMS (EACH ITEM HAS ASSOCIATED WEIGHTING)
   # SPREAD: Tries to spread to every node connected to an infected node
-  red_uses_spread_action: False
+  red_uses_spread_action: True
   # weighting for action
   spread_action_likelihood: 1
   # chance for each 'spread' to succeed
   chance_for_red_to_spread: 0.1
   # RANDOM INFECT: Tries to infect every safe node in the environment
-  red_uses_random_infect_action: False
+  red_uses_random_infect_action: True
   # weighting for action
   random_infect_action_likelihood: 1
   # chance for each 'infect' to succeed
   chance_for_red_to_random_compromise: 0.1
   # BASIC ATTACK: The red agent picks a single node connected to an infected node and tries to attack and take over that node
-  red_uses_basic_attack_action: False
+  red_uses_basic_attack_action: True
   # weighting for action
   basic_attack_action_likelihood: 1
   # DO NOTHING: The red agent does nothing
-  red_uses_do_nothing_action: True
+  red_uses_do_nothing_action: False
   do_nothing_action_likelihood: 1
   # The red agent moves to a different node
   red_uses_move_action: False
@@ -190,15 +190,15 @@ GAME_RULES:
   # The blue agent loses if n% of the nodes become compromised
   lose_when_n_percent_of_nodes_lost: True
   # The percentage of nodes that need to be lost for blue to lose
-  percentage_of_nodes_compromised_equals_loss: 0.8
+  percentage_of_nodes_compromised_equals_loss: 0.1
   # Blue loses if a special 'high value' target it lost (a node picked in the environment)
-  lose_when_high_value_target_lost: False
+  lose_when_high_value_target_lost: True
   # If no high value targets are supplied, how many should be chosen
-  number_of_high_value_targets: 1
+  number_of_high_value_targets: 100
   # The high value target is picked at random
   choose_high_value_targets_placement_at_random: False
   # The node furthest away from the entry points to the network is picked as the target
-  choose_high_value_targets_furthest_away_from_entry: True
+  choose_high_value_targets_furthest_away_from_entry: False
   # If no entry nodes are supplied choose some at random
   choose_entry_nodes_randomly: True
   # If no entry nodes are supplied then how many should be chosen
@@ -207,11 +207,11 @@ GAME_RULES:
   prefer_central_nodes_for_entry_nodes: False
   prefer_edge_nodes_for_entry_nodes: False
   # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
-  grace_period_length: 3
+  grace_period_length: 0
 
 RESET:
-  randomise_vulnerabilities_on_reset: False
-  choose_new_high_value_targets_on_reset: False
+  randomise_vulnerabilities_on_reset: True
+  choose_new_high_value_targets_on_reset: True
   choose_new_entry_nodes_on_reset: False
 
 REWARDS:
@@ -220,7 +220,7 @@ REWARDS:
   # Rewards for the blue agent winning
   rewards_for_reaching_max_steps: 100
   # How good the end state is (what % blue controls) is multiplied by the rewards that blue receives for winning
-  end_rewards_are_multiplied_by_end_state: True
+  end_rewards_are_multiplied_by_end_state: False
   # The negative rewards from the red agent winning are reduced the closer to the end the blue agent gets
   reduce_negative_rewards_for_closer_fails: True
   # choose the reward method

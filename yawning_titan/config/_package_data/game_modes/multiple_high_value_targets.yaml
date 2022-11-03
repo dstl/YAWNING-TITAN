@@ -1,9 +1,8 @@
-# A config file where both agents cannot perform any actions. Set up so that the red agent attempts to naturally spread
-# but fails every time. This is used to check the amount that red naturally spreads in the tests
+# This file contains an example config for the generic network environment.
 
 RED:
   # The red agents skill level. Higher means that red is more likely to succeed in attacks
-  red_skill: 0
+  red_skill: 0.5
 
   # CHOOSE AT LEAST ONE OF THE FOLLOWING 3 ITEMS (red_ignore_defences: False counts as choosing an item)
   # Red uses its skill modifier when attacking nodes
@@ -21,9 +20,9 @@ RED:
   # The red agent naturally spreads its influence every time-step
   red_can_naturally_spread: True
   # If a node is connected to a compromised node what chance does it have to become compromised every turn through natural spreading
-  chance_to_spread_to_connected_node: 0.02
+  chance_to_spread_to_connected_node: 0.05
   # If a node is not connected to a compromised node what chance does it have to become randomly infected through natural spreading
-  chance_to_spread_to_unconnected_node: 0.02
+  chance_to_spread_to_unconnected_node: 0
 
   # CHOOSE AT LEAST ONE OF THE FOLLOWING 6 ITEMS (EACH ITEM HAS ASSOCIATED WEIGHTING)
   # SPREAD: Tries to spread to every node connected to an infected node
@@ -39,9 +38,9 @@ RED:
   # chance for each 'infect' to succeed
   chance_for_red_to_random_compromise: 0.1
   # BASIC ATTACK: The red agent picks a single node connected to an infected node and tries to attack and take over that node
-  red_uses_basic_attack_action: False
+  red_uses_basic_attack_action: True
   # weighting for action
-  basic_attack_action_likelihood: 1
+  basic_attack_action_likelihood: 2
   # DO NOTHING: The red agent does nothing
   red_uses_do_nothing_action: True
   do_nothing_action_likelihood: 1
@@ -49,17 +48,17 @@ RED:
   red_uses_move_action: False
   move_action_likelihood: 1
   # ZERO DAY: The red agent will pick a safe node connected to an infect node and take it over with a 100% chance to succeed (can only happen every n timesteps)
-  red_uses_zero_day_action: False
+  red_uses_zero_day_action: True
   # The number of zero day attacks that the red agent starts with
   zero_day_start_amount: 1
   # The amount of 'progress' that need to have passed before the red agent gains a zero day attack
-  days_required_for_zero_day: 10
+  days_required_for_zero_day: 4
 
   # CHOOSE ONE OF THE FOLLOWING 5 ITEMS
   # Red picks nodes to attack at random
-  red_chooses_target_at_random: False
+  red_chooses_target_at_random: True
   # Red sorts the nodes it can attack and chooses the one that has the most connections
-  red_prioritises_connected_nodes: True
+  red_prioritises_connected_nodes: False
   # Red sorts the nodes it can attack and chooses the one that has the least connections
   red_prioritises_un_connected_nodes: False
   # Red sorts the nodes is can attack and chooses the one that is the most vulnerable
@@ -83,7 +82,7 @@ OBSERVATION_SPACE:
   # The blue agent can see all the nodes that have recently been attacked
   attacked_nodes: True
   # The blue agent can see all of the special nodes (entry nodes, high value targets)
-  special_nodes: False
+  special_nodes: True
   # The blue agent can see the skill level of the red agent
   red_agent_skill: True
 
@@ -92,6 +91,7 @@ BLUE:
   max_number_deceptive_nodes: 2
   # Can discover the location an attack came from if the attack failed
   can_discover_failed_attacks: True
+
 
   # The blue agent does not have to have perfect detection. In these settings you can change how much information blue
   # can gain from the red agents actions. There are two different pieces of information blue can get: intrusions and
@@ -119,7 +119,7 @@ BLUE:
   # --INTRUSIONS--
   # -Standard Nodes-
   # Chance for blue to discover a node that red has compromised the instant red compromises the node
-  chance_to_immediately_discover_intrusion: 1
+  chance_to_immediately_discover_intrusion: 0.5
   # When blue performs the scan action this is the chance that a red intrusion is discovered
   chance_to_discover_intrusion_on_scan: 1
 
@@ -154,25 +154,25 @@ BLUE:
   # The amount that the vulnerability of a node changes when it is made safe
   vulnerability_change_during_node_patch: 0.4
   # When fixing a node the vulnerability score is randomised
-  making_node_safe_gives_random_vulnerability: True
+  making_node_safe_gives_random_vulnerability: False
 
   # CHOOSE AT LEAST ONE OF THE FOLLOWING 8 ITEMS
   # Blue picks a node and reduces the vulnerability score
   blue_uses_reduce_vulnerability: False
   # Blue picks a node and restores everything about the node to its state at the beginning of the game
-  blue_uses_restore_node: False
+  blue_uses_restore_node: True
   # Blue fixes a node but does not restore it to its initial state
-  blue_uses_make_node_safe: False
+  blue_uses_make_node_safe: True
   # Blue scans all of the nodes to try and detect any red intrusions
-  blue_uses_scan: False
+  blue_uses_scan: True
   # Blue disables all of the connections to and from a node
   blue_uses_isolate_node: False
   # Blue re-connects all of the connections to and from a node
   blue_uses_reconnect_node: False
   # Blue agent does nothing
-  blue_uses_do_nothing: True
+  blue_uses_do_nothing: False
   # Blue agent can place down deceptive nodes. These nodes act as just another node in the network but have a different
-  #chance of spotting attacks and always show when they are compromised
+  # chance of spotting attacks and always show when they are compromised
   blue_uses_deceptive_nodes: False
   # When the blue agent places a deceptive node and it has none left in stock it will "pick up" the first deceptive node that it used and "relocate it"
   # When relocating a node will the stats for the node (such as the vulnerability and compromised status) be re-generated as if adding a new node or will they carry over from the "old" node
@@ -188,13 +188,13 @@ GAME_RULES:
   # The blue agent loses if all the nodes become compromised
   lose_when_all_nodes_lost: False
   # The blue agent loses if n% of the nodes become compromised
-  lose_when_n_percent_of_nodes_lost: True
+  lose_when_n_percent_of_nodes_lost: False
   # The percentage of nodes that need to be lost for blue to lose
   percentage_of_nodes_compromised_equals_loss: 0.8
-  # Blue loses if a special 'high value' target it lost (a node picked in the environment)
-  lose_when_high_value_target_lost: False
+  # Blue loses if a special 'high value' target is lost (a node picked in the environment)
+  lose_when_high_value_target_lost: True
   # If no high value targets are supplied, how many should be chosen
-  number_of_high_value_targets: 1
+  number_of_high_value_targets: 3
   # The high value target is picked at random
   choose_high_value_targets_placement_at_random: False
   # The node furthest away from the entry points to the network is picked as the target
@@ -205,19 +205,19 @@ GAME_RULES:
   number_of_entry_nodes: 3
   # If no entry nodes are supplied then what bias is applied to the nodes when choosing random entry nodes
   prefer_central_nodes_for_entry_nodes: False
-  prefer_edge_nodes_for_entry_nodes: False
+  prefer_edge_nodes_for_entry_nodes: True
   # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
-  grace_period_length: 3
+  grace_period_length: 0
 
 RESET:
   randomise_vulnerabilities_on_reset: False
-  choose_new_high_value_targets_on_reset: False
-  choose_new_entry_nodes_on_reset: False
+  choose_new_high_value_targets_on_reset: True
+  choose_new_entry_nodes_on_reset: True
 
 REWARDS:
   # Rewards for the blue agent losing
   rewards_for_loss: -100
-  # Rewards for the blue agent winning
+  # Rewards for the blue agent winning by reaching the maximum number of steps
   rewards_for_reaching_max_steps: 100
   # How good the end state is (what % blue controls) is multiplied by the rewards that blue receives for winning
   end_rewards_are_multiplied_by_end_state: True
@@ -228,6 +228,7 @@ REWARDS:
   # You can also create your own reward method by copying one of the built in methods and calling it here
   # built in reward methods: standard_rewards, one_per_timestep, safe_nodes_give_rewards, punish_bad_actions
   reward_function: "standard_rewards"
+
 
 MISCELLANEOUS:
   # Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and
