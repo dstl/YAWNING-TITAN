@@ -496,9 +496,9 @@ def test_new_vulnerabilities():
             env.reset()
     # calculate the average vulnerability
     vulnerabilities = (vulnerabilities / 15) / resets
-    vuln_aim = env.network_interface.gr_node_vuln_lower + 0.5 * (
-            env.network_interface.gr_node_vuln_upper
-            - env.network_interface.gr_node_vuln_lower
+    vuln_aim = env.network_interface.settings.game_rules.gr_node_vuln_lower + 0.5 * (
+            env.network_interface.settings.game_rules.gr_node_vuln_upper
+            - env.network_interface.settings.game_rules.gr_node_vuln_lower
     )
     # ensure the average vulnerability is half way between the upper and lower range
     assert (vuln_aim - 0.01 * vuln_aim) < vulnerabilities < (vuln_aim + 0.01 * vuln_aim)
@@ -612,7 +612,7 @@ def test_generic_env(env, timesteps):
                 assert post_red_state[ns["Target_Nodes"][i]] == 1
         # random high value target placement
         if not done:
-            if not env.network_interface.gr_loss_hvt_random_placement:
+            if not env.network_interface.settings.game_rules.gr_loss_hvt_random_placement:
                 assert (
                         env.network_interface.get_high_value_targets() == prev_high_value
                         or prev_high_value is None
@@ -650,20 +650,20 @@ def test_generic_env(env, timesteps):
         # only use the set number of deceptive nodes
         assert (
                 sum("d" in s for s in env.network_interface.get_nodes())
-                <= env.network_interface.blue_max_deceptive_nodes
+                <= env.network_interface.settings.blue.blue_max_deceptive_nodes
         )
         # cannot place too many deceptive nodes
         assert (
                 initial_edges
                 <= env.network_interface.get_number_base_edges()
-                <= (initial_edges + env.network_interface.blue_max_deceptive_nodes)
+                <= (initial_edges + env.network_interface.settings.blue.blue_max_deceptive_nodes)
         )
 
         # observation space is correct
         adj_matrix = nx.to_numpy_array(env.network_interface.current_graph)
         open_spaces = env.network_interface.get_number_unused_deceptive_nodes()
         adj_matrix = np.pad(adj_matrix, (0, open_spaces), "constant").flatten()
-        if env.network_interface.obs_node_connections:
+        if env.network_interface.settings.obs_node_connections:
             assert np.array_equal(obs[: len(adj_matrix)], adj_matrix)
 
         observation_size = env.calculate_observation_space_size(with_feather=False)
@@ -769,7 +769,7 @@ def test_generic_env(env, timesteps):
             if red_action == "basic_attack":
                 for counter, current_success in enumerate(red_success):
                     if (
-                            env.network_interface.red_chance_to_spread_to_unconnected_node
+                            env.network_interface.settings.red.red_chance_to_spread_to_unconnected_node
                             == 0
                     ):
                         assert (
@@ -806,17 +806,17 @@ def test_generic_env(env, timesteps):
                             discovered_immediately += 1
                         if (
                                 red_target[counter][0] == "d"
-                                and env.network_interface.blue_deception_immediate_detection_chance
+                                and env.network_interface.settings.blue.blue_deception_immediate_detection_chance
                                 == 1
                         ):
                             assert post_red_blue_view[red_target[counter]] == 1
                         if (
-                                env.network_interface.blue_immediate_detection_chance == 0
+                                env.network_interface.settings.blue.blue.blue_immediate_detection_chance == 0
                                 and red_target[counter][0] != "d"
                         ):
                             assert post_red_blue_view[red_target[counter]] == 0
                         if (
-                                env.network_interface.blue_immediate_detection_chance == 1
+                                env.network_interface.settings.blue.blue.blue_immediate_detection_chance == 1
                                 and red_target[counter][0] != "d"
                         ):
                             assert post_red_blue_view[red_target[counter]] == 1
@@ -875,8 +875,8 @@ def test_generic_env(env, timesteps):
                     assert initial_blue_view == post_red_blue_view
             elif red_action == "no_possible_targets":
                 if (
-                        env.network_interface.red_attack_from_any_node
-                        and not env.network_interface.blue_isolate_action
+                        env.network_interface.settings.red.red_attack_from_any_node
+                        and not env.network_interface.settings.blue.blue_isolate_action
                 ):
                     assert (
                             len(env.network_interface.get_nodes(filter_true_safe=True)) == 0
@@ -930,11 +930,11 @@ def test_generic_env(env, timesteps):
                 if end_state[node] != end_blue_view[node]:
                     nodes_missed_scan += 1
                 if "d" not in node:
-                    if env.network_interface.blue_scan_detection_chance == 1:
+                    if env.network_interface.settings.blue.blue_scan_detection_chance == 1:
                         if end_state[node] == 1:
                             assert end_blue_view[node] == 1
                 else:
-                    if env.network_interface.blue_deception_scan_detection_chance == 1:
+                    if env.network_interface.settings.blue.blue_deception_scan_detection_chance == 1:
                         if end_state[node] == 1:
                             assert end_blue_view[node] == 1
 
@@ -964,7 +964,7 @@ def test_generic_env(env, timesteps):
             )
 
             if deceptive_node in post_red_state:
-                if env.network_interface.blue_deceptive_node_make_new:
+                if env.network_interface.settings.blue.blue_deceptive_node_make_new:
                     if post_red_state[deceptive_node] == 1:
                         assert end_state[deceptive_node] == 0
                         assert (
@@ -1010,17 +1010,17 @@ def test_generic_env(env, timesteps):
                     and env.network_interface.get_number_of_nodes() < 15
             ):
                 if (
-                        env.network_interface.blue_make_node_safe_action
-                        or env.network_interface.blue_restore_node_action
+                        env.network_interface.settings.blue.blue_make_node_safe_action
+                        or env.network_interface.settings.blue.blue_restore_node_action
                 ):
                     if "d0" in env.network_interface.get_nodes():
                         assert deceptive_counter != 0
-            if env.current_duration != env.network_interface.gr_max_steps:
-                if env.network_interface.gr_loss_total_compromise:
+            if env.current_duration != env.network_interface.settings.game_rules.gr_max_steps:
+                if env.network_interface.settings.game_rules.gr_loss_total_compromise:
                     assert (
                             len(env.network_interface.get_nodes(filter_true_safe=True)) == 0
                     )
-                if env.network_interface.gr_loss_pc_nodes_compromised:
+                if env.network_interface.settings.game_rules.gr_loss_pc_nodes_compromised:
                     assert (
                                    len(
                                        env.network_interface.get_nodes(
@@ -1028,8 +1028,8 @@ def test_generic_env(env, timesteps):
                                        )
                                    )
                                    / len(env.network_interface.get_nodes())
-                           ) >= env.network_interface.gr_loss_pc_node_compromised_pc
-                if env.network_interface.gr_loss_hvt:
+                           ) >= env.network_interface.settings.game_rules.gr_loss_pc_node_compromised_pc
+                if env.network_interface.settings.game_rules.gr_loss_hvt:
                     # the game ends when a high value node is compromised, this needs to be checked
                     compromised_hvt = False
 
@@ -1042,16 +1042,16 @@ def test_generic_env(env, timesteps):
             env.reset()
             number_of_resets += 1
         else:
-            if env.network_interface.gr_loss_total_compromise:
+            if env.network_interface.settings.game_rules.gr_loss_total_compromise:
                 assert len(env.network_interface.get_nodes(filter_true_safe=True)) != 0
-            if env.network_interface.gr_loss_pc_nodes_compromised:
+            if env.network_interface.settings.game_rules.gr_loss_pc_nodes_compromised:
                 assert (
                                len(env.network_interface.get_nodes(filter_true_compromised=True))
                                / len(env.network_interface.get_nodes())
-                       ) < env.network_interface.gr_loss_pc_node_compromised_pc
-            if env.network_interface.gr_loss_hvt:
+                       ) < env.network_interface.settings.game_rules.gr_loss_pc_node_compromised_pc
+            if env.network_interface.settings.game_rules.gr_loss_hvt:
                 # the game would end if a high value target was compromised, this needs to be checked
-                compromised_hvt = False;
+                compromised_hvt = False
 
                 # check that none of the high value targets are compromised
                 for node in env.network_interface.get_high_value_targets():
@@ -1062,14 +1062,14 @@ def test_generic_env(env, timesteps):
                 assert (compromised_hvt is False)
 
     # tests on data collected from trial
-    if not env.network_interface.blue_deceptive_action and scan_used:
+    if not env.network_interface.settings.blue.blue_deceptive_action and scan_used:
         assert (
-                (0.95 * env.network_interface.blue_scan_detection_chance)
+                (0.95 * env.network_interface.settings.blue.blue_scan_detection_chance)
                 < (
                         discovered_from_scanning
                         / (nodes_missed_scan + discovered_from_scanning)
                 )
-                < (1.05 * env.network_interface.blue_scan_detection_chance)
+                < (1.05 * env.network_interface.settings.blue.blue_scan_detection_chance)
         )
 
     assert (

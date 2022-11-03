@@ -25,6 +25,8 @@ from yawning_titan.envs.generic.helpers.node_attribute_gen import (
     generate_vulnerability,
 )
 
+from yawning_titan.config import Config
+
 _LOGGER = getLogger(__name__)
 
 class NetworkInterface:
@@ -54,14 +56,9 @@ class NetworkInterface:
         # opens the fle the user has specified to be the location of the settings
         if not settings_path:
             settings_path = default_game_mode_path()
-        try:
-            with open(settings_path) as f:
-                settings = yaml.load(f, Loader=SafeLoader)
-        except FileNotFoundError as e:
-            msg = f"Configuration file does not exist: {settings_path}"
-            print(msg)  # TODO: Remove once proper logging is setup
-            _LOGGER.critical(msg, exc_info=True)
-            raise e
+
+        self.settings = Config()
+        self.settings.create_from_file(settings_path)
 
         self.matrix = matrix
         number_of_nodes = len(matrix)
@@ -83,224 +80,6 @@ class NetworkInterface:
                 (set(self.entry_nodes) & set(self.high_value_targets))):
             warnings.warn(
                 "Provided entry nodes and high value targets intersect and may cause the training to prematurely end")
-
-        # check the settings are valid
-        check_input(settings, number_of_nodes, high_value_targets)
-
-        self.settings = settings
-
-        # Top level Groupings
-        self.red_settings = settings["RED"]
-        self.observation_space_settings = settings["OBSERVATION_SPACE"]
-        self.blue_settings = settings["BLUE"]
-        self.game_rule_settings = settings["GAME_RULES"]
-        self.reset_settings = settings["RESET"]
-        self.reward_settings = settings["REWARDS"]
-        self.misc_settings = settings["MISCELLANEOUS"]
-
-        # Red Settings
-        self.red_skill = self.red_settings["red_skill"]
-        self.red_use_skill = self.red_settings["red_uses_skill"]
-        self.red_ignore_defences = self.red_settings["red_ignores_defences"]
-        self.red_always_succeeds = self.red_settings["red_always_succeeds"]
-        self.red_attack_from_current_position = self.red_settings[
-            "red_can_only_attack_from_red_agent_node"
-        ]
-        self.red_attack_from_any_node = self.red_settings[
-            "red_can_attack_from_any_red_node"
-        ]
-        self.red_naturally_spread = self.red_settings["red_can_naturally_spread"]
-        self.red_chance_to_spread_to_connected_node = self.red_settings[
-            "chance_to_spread_to_connected_node"
-        ]
-        self.red_chance_to_spread_to_unconnected_node = self.red_settings[
-            "chance_to_spread_to_unconnected_node"
-        ]
-        self.red_spread_action = self.red_settings["red_uses_spread_action"]
-        self.red_spread_action_likelihood = self.red_settings[
-            "spread_action_likelihood"
-        ]
-        self.red_spread_success_chance = self.red_settings["chance_for_red_to_spread"]
-        self.red_random_infection_action = self.red_settings[
-            "red_uses_random_infect_action"
-        ]
-        self.red_random_infection_likelihood = self.red_settings[
-            "red_uses_random_infect_action"
-        ]
-        self.red_random_infection_success_chance = self.red_settings[
-            "chance_for_red_to_random_compromise"
-        ]
-        self.red_basic_attack_action = self.red_settings["red_uses_basic_attack_action"]
-        self.red_basic_attack_likelihood = self.red_settings[
-            "basic_attack_action_likelihood"
-        ]
-        self.red_do_nothing_action = self.red_settings["red_uses_do_nothing_action"]
-        self.red_do_nothing_likelihood = self.red_settings[
-            "do_nothing_action_likelihood"
-        ]
-        self.red_move_action = self.red_settings["red_uses_move_action"]
-        self.red_move_action_likelihood = self.red_settings["move_action_likelihood"]
-        self.red_zero_day_action = self.red_settings["red_uses_zero_day_action"]
-        self.red_zero_day_start_amount = self.red_settings["zero_day_start_amount"]
-        self.red_zero_day_days_required_to_create = self.red_settings[
-            "days_required_for_zero_day"
-        ]
-        self.red_targeting_random = self.red_settings["red_chooses_target_at_random"]
-        self.red_targeting_prioritise_connected_nodes = self.red_settings[
-            "red_prioritises_connected_nodes"
-        ]
-        self.red_targeting_prioritise_unconnected_nodes = self.red_settings[
-            "red_prioritises_un_connected_nodes"
-        ]
-        self.red_targeting_prioritise_vulnerable_nodes = self.red_settings[
-            "red_prioritises_vulnerable_nodes"
-        ]
-        self.red_targeting_prioritise_resilient_nodes = self.red_settings[
-            "red_prioritises_resilient_nodes"
-        ]
-
-        # Observation Space Settings
-        self.obs_compromised_status = self.observation_space_settings[
-            "compromised_status"
-        ]
-        self.obs_node_vuln_status = self.observation_space_settings["vulnerabilities"]
-        self.obs_node_connections = self.observation_space_settings["node_connections"]
-        self.obs_avg_vuln = self.observation_space_settings["average_vulnerability"]
-        self.obs_graph_connectivity = self.observation_space_settings[
-            "graph_connectivity"
-        ]
-        self.obs_attack_sources = self.observation_space_settings["attacking_nodes"]
-        self.obs_attack_targets = self.observation_space_settings["attacked_nodes"]
-        self.obs_special_nodes = self.observation_space_settings["special_nodes"]
-        self.obs_red_agent_skill = self.observation_space_settings["red_agent_skill"]
-
-        # Blue Settings
-        self.blue_max_deceptive_nodes = self.blue_settings["max_number_deceptive_nodes"]
-        self.blue_immediate_detection_chance = self.blue_settings[
-            "chance_to_immediately_discover_intrusion"
-        ]
-        self.blue_scan_detection_chance = self.blue_settings[
-            "chance_to_discover_intrusion_on_scan"
-        ]
-        self.blue_deception_immediate_detection_chance = self.blue_settings[
-            "chance_to_immediately_discover_intrusion_deceptive_node"
-        ]  # noqa
-        self.blue_deception_scan_detection_chance = self.blue_settings[
-            "chance_to_discover_intrusion_on_scan_deceptive_node"
-        ]  # noqa
-        self.blue_discover_failed_attacks = self.blue_settings[
-            "can_discover_failed_attacks"
-        ]
-        self.blue_discover_attack_source_if_detected = self.blue_settings[
-            "can_discover_succeeded_attacks_if_compromise_is_discovered"
-        ]  # noqa
-        self.blue_discover_attack_source_if_not_detected = self.blue_settings[
-            "can_discover_succeeded_attacks_if_compromise_is_not_discovered"
-        ]  # noqa
-        self.blue_chance_to_discover_source_failed = self.blue_settings[
-            "chance_to_discover_failed_attack"
-        ]
-        self.blue_chance_to_discover_source_succeed_known = self.blue_settings[
-            "chance_to_discover_succeeded_attack_compromise_known"
-        ]  # noqa
-        self.blue_chance_to_discover_source_succeed_unknown = self.blue_settings[
-            "chance_to_discover_succeeded_attack_compromise_not_known"
-        ]  # noqa
-        self.blue_chance_to_discover_source_deceptive_failed = self.blue_settings[
-            "chance_to_discover_failed_attack_deceptive_node"
-        ]  # noqa
-        self.blue_chance_to_discover_source_deceptive_succeed = self.blue_settings[
-            "chance_to_discover_succeeded_attack_deceptive_node"
-        ]  # noqa
-        self.blue_make_node_safe_modifies_vuln = self.blue_settings[
-            "making_node_safe_modifies_vulnerability"
-        ]
-        self.blue_vuln_change_amount_make_safe = self.blue_settings[
-            "vulnerability_change_during_node_patch"
-        ]
-        self.blue_make_safe_random_vuln = self.blue_settings[
-            "making_node_safe_gives_random_vulnerability"
-        ]
-        self.blue_reduce_vuln_action = self.blue_settings[
-            "blue_uses_reduce_vulnerability"
-        ]
-        self.blue_restore_node_action = self.blue_settings["blue_uses_restore_node"]
-        self.blue_make_node_safe_action = self.blue_settings["blue_uses_make_node_safe"]
-        self.blue_scan_action = self.blue_settings["blue_uses_scan"]
-        self.blue_isolate_action = self.blue_settings["blue_uses_isolate_node"]
-        self.blue_reconnect_action = self.blue_settings["blue_uses_reconnect_node"]
-        self.blue_do_nothing_action = self.blue_settings["blue_uses_do_nothing"]
-        self.blue_deceptive_action = self.blue_settings["blue_uses_deceptive_nodes"]
-        self.blue_deceptive_node_make_new = self.blue_settings[
-            "relocating_deceptive_nodes_generates_a_new_node"
-        ]
-
-        # Game Rule Settings
-        self.gr_node_vuln_lower = self.game_rule_settings[
-            "node_vulnerability_lower_bound"
-        ]
-        self.gr_node_vuln_upper = self.game_rule_settings[
-            "node_vulnerability_upper_bound"
-        ]
-        self.gr_max_steps = self.game_rule_settings["max_steps"]
-        self.gr_loss_total_compromise = self.game_rule_settings[
-            "lose_when_all_nodes_lost"
-        ]
-        self.gr_loss_pc_nodes_compromised = self.game_rule_settings[
-            "lose_when_n_percent_of_nodes_lost"
-        ]
-        self.gr_loss_pc_node_compromised_pc = self.game_rule_settings[
-            "percentage_of_nodes_compromised_equals_loss"
-        ]
-        if not high_value_targets:
-            self.gr_number_of_high_value_targets = self.game_rule_settings[
-                "number_of_high_value_targets"
-            ]
-        else:
-            self.gr_number_of_high_value_targets = len(high_value_targets)
-        self.gr_loss_hvt = self.game_rule_settings["lose_when_high_value_target_lost"]
-        self.gr_loss_hvt_random_placement = self.game_rule_settings[
-            "choose_high_value_targets_placement_at_random"
-        ]
-        self.gr_loss_hvt_furthest_away = self.game_rule_settings[
-            "choose_high_value_targets_furthest_away_from_entry"
-        ]
-        self.gr_random_entry_nodes = self.game_rule_settings[
-            "choose_entry_nodes_randomly"
-        ]
-        self.gr_num_entry_nodes = self.game_rule_settings["number_of_entry_nodes"]
-        self.gr_prefer_central_entry = self.game_rule_settings[
-            "prefer_central_nodes_for_entry_nodes"
-        ]
-        self.gr_prefer_edge_nodes = self.game_rule_settings[
-            "prefer_edge_nodes_for_entry_nodes"
-        ]
-        self.gr_grace_period = self.game_rule_settings["grace_period_length"]
-
-        # Reset Settings
-        self.reset_random_vulns = self.reset_settings[
-            "randomise_vulnerabilities_on_reset"
-        ]
-        self.reset_move_hvt = self.reset_settings[
-            "choose_new_high_value_targets_on_reset"
-        ]
-        self.reset_move_entry_nodes = self.reset_settings[
-            "choose_new_entry_nodes_on_reset"
-        ]
-
-        # Reward Settings
-        self.reward_loss = self.reward_settings["rewards_for_loss"]
-        self.reward_success = self.reward_settings["rewards_for_reaching_max_steps"]
-        self.reward_end_multiplier = self.reward_settings[
-            "end_rewards_are_multiplied_by_end_state"
-        ]
-        self.reward_reduce_negative_rewards = self.reward_settings[
-            "reduce_negative_rewards_for_closer_fails"
-        ]
-        self.reward_function = self.reward_settings["reward_function"]
-
-        # Misc Settings
-        self.misc_json_out = self.misc_settings["output_timestep_data_to_json"]
 
         nodes = [str(i) for i in range(number_of_nodes)]
         df = pd.DataFrame(matrix, index=nodes, columns=nodes)
@@ -865,21 +644,21 @@ class NetworkInterface:
 
         # Gets the adj matrix for the current graph
         node_connections = []
-        if self.obs_node_connections:
+        if self.settings.obs_node_connections:
             node_connections = self.adj_matrix
             # pads the array to account for any missing deceptive nodes that may not have been placed yet
             node_connections = np.pad(node_connections, (0, open_spaces), "constant")
 
         # Gets the current safe/compromised status of all of the nodes
         compromised_state = []
-        if self.obs_compromised_status:
+        if self.settings.obs_compromised_status:
             compromised_state = np.asarray(
                 list(self.get_attributes_from_key("true_compromised_status").values())
             )
             compromised_state = np.pad(compromised_state, (0, open_spaces), "constant")
         # Gets the vulnerability score of all of the nodes
         vulnerabilities = []
-        if self.obs_node_vuln_status:
+        if self.settings.obs_node_vuln_status:
             vulnerabilities = np.asarray(
                 list(self.get_attributes_from_key("vulnerability_score").values())
             )
@@ -887,19 +666,19 @@ class NetworkInterface:
 
         # Gets the average vulnerability of all the nodes
         avg_vuln = []
-        if self.obs_avg_vuln:
+        if self.settings.obs_avg_vuln:
             all_vuln = self.get_attributes_from_key("vulnerability_score").values()
             avg_vuln = [sum(all_vuln) / len(all_vuln)]
 
         # Gets the connectivity of the graph, closer to 1 means more edges per node
         connectivity = []
-        if self.obs_graph_connectivity:
+        if self.settings.obs_graph_connectivity:
             connectivity = [self.connectivity]
 
         # Gets the attacks that the blue agent detected
         attacking_nodes = []
         attacked_nodes = []
-        if self.obs_attack_sources or self.obs_attack_targets:
+        if self.settings.obs_attack_sources or self.settings.obs_attack_sources:
             attacking = {name: 0 for name in self.get_nodes()}
             attacked = {name: 0 for name in self.get_nodes()}
             for i in self.detected_attacks:
@@ -908,11 +687,11 @@ class NetworkInterface:
                     attacking[i[0]] = 1
                 # extract the node that was attacked
                 attacked[i[1]] = 1
-            if self.obs_attack_sources:
+            if self.settings.obs_attack_sources:
                 # attacking nodes
                 attacking_nodes = list(attacking.values())
                 attacking_nodes = np.pad(attacking_nodes, (0, open_spaces), "constant")
-            if self.obs_attack_targets:
+            if self.settings.obs_attack_sources:
                 # nodes attacked
                 attacked_nodes = list(attacked.values())
                 attacked_nodes = np.pad(attacked_nodes, (0, open_spaces), "constant")
@@ -920,7 +699,7 @@ class NetworkInterface:
         # Gets the locations of any special nodes in the network (entry nodes and high value nodes)
         entry_nodes = []
         nodes = []
-        if self.obs_special_nodes:
+        if self.settings.obs_special_nodes:
             # gets the entry nodes
             entry_nodes = {name: 0 for name in self.get_nodes()}
             for i in self.entry_nodes:
@@ -944,7 +723,7 @@ class NetworkInterface:
         # gets the skill of the red agent
         skill = []
         if self.obs_red_agent_skill:
-            skill = [self.red_skill]
+            skill = [self.settings.red.red_skill]
 
         # combines all of the env observations together to create the observation that the blue agent gets
         obs = np.concatenate(
@@ -981,21 +760,21 @@ class NetworkInterface:
 
         # calculate the size of the observation space
         # the size depends on what observations are turned on/off in the config file
-        if self.obs_node_connections:
+        if self.settings.obs_node_connections:
             observation_size += max_number_of_nodes * max_number_of_nodes
-        if self.obs_compromised_status:
+        if self.settings.obs_compromised_status:
             observation_size += max_number_of_nodes
-        if self.obs_node_vuln_status:
+        if self.settings.obs_node_vuln_status:
             observation_size += max_number_of_nodes
-        if self.obs_avg_vuln:
+        if self.settings.obs_avg_vuln:
             observation_size += 1
-        if self.obs_graph_connectivity:
+        if self.settings.obs_graph_connectivity:
             observation_size += 1
-        if self.obs_attack_sources:
+        if self.settings.obs_attack_sources:
             observation_size += max_number_of_nodes
-        if self.obs_attack_targets:
+        if self.settings.obs_attack_sources:
             observation_size += max_number_of_nodes
-        if self.obs_special_nodes:
+        if self.settings.obs_special_nodes:
             observation_size += max_number_of_nodes
             if self.gr_loss_hvt:
                 observation_size += max_number_of_nodes
