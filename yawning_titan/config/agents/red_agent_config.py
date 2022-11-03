@@ -6,7 +6,11 @@ from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_type, check_within_range
 
 
+<<<<<<< HEAD
 @dataclass
+=======
+@dataclass()
+>>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure
 class RedAgentConfig(ConfigGroupABC):
     """
     Class that validates and stores the Red Agent Configuration
@@ -106,7 +110,14 @@ class RedAgentConfig(ConfigGroupABC):
     """Is true if the red agent prioritises attacking nodes with the least vulnerability"""
 
     @classmethod
+<<<<<<< HEAD
     def create(cls,settings: Dict[str, Any]) -> RedAgentConfig:
+=======
+    def create(
+            cls,
+            settings: Dict[str, Any]
+    ) -> RedAgentConfig:
+>>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure
         # validate red agent config values
         cls._validate(settings)
 
@@ -306,4 +317,8 @@ class RedAgentConfig(ConfigGroupABC):
                 raise ValueError(
                     "'red_can_naturally_spread', 'chance_to_spread_to_connected_node', 'chance_to_spread_to_unconnected_node' -> If red can naturally spread however the probabilities for both types of spreading are 0"
                     # noqa
+<<<<<<< HEAD
                 )
+=======
+                )
+>>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure

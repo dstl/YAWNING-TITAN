@@ -5,7 +5,11 @@ from typing import Dict, Any
 from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
 
 
+<<<<<<< HEAD
 @dataclass
+=======
+@dataclass()
+>>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure
 class GameRulesConfig(ConfigGroupABC):
     """
     Class that validates and stores Game Rules Configuration
@@ -17,4 +21,8 @@ class GameRulesConfig(ConfigGroupABC):
 
     @classmethod
     def _validate(cls, data: dict):
+<<<<<<< HEAD
         pass
+=======
+        pass
+>>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure

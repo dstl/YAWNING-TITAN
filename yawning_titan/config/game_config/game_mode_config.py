@@ -15,7 +15,11 @@ from yawning_titan.config.game_modes import default_game_mode_path
 _LOGGER = getLogger(__name__)
 
 
+<<<<<<< HEAD
 @dataclass
+=======
+@dataclass()
+>>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure
 class GameModeConfig:
     """
     Class that holds the configuration for YAWNING-TITAN
@@ -55,3 +59,7 @@ class GameModeConfig:
     """
     Is true if the timestep data is output to JSON
     """
+<<<<<<< HEAD
+=======
+
+>>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure

@@ -5,7 +5,11 @@ from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_within_range, check_type
 
 
+<<<<<<< HEAD
 @dataclass
+=======
+@dataclass()
+>>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure
 class BlueAgentConfig(ConfigGroupABC):
     """
     Class that validates and stores the Blue Agent Configuration
@@ -88,7 +92,14 @@ class BlueAgentConfig(ConfigGroupABC):
     """Is true if the blue agent can reuse a deceptive node if it has run out of deceptive nodes it can place"""
 
     @classmethod
+<<<<<<< HEAD
     def create(cls,settings: Dict[str, Any]):
+=======
+    def create(
+            cls,
+            settings: Dict[str, Any],
+    ):
+>>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure
         # validate blue agent config values
         cls._validate(settings)
 
@@ -316,4 +327,8 @@ class BlueAgentConfig(ConfigGroupABC):
                 raise ValueError(
                     "'chance_to_immediately_discover_intrusion_deceptive_node', 'chance_to_immediately_discover_intrusion' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"
                     # noqa
+<<<<<<< HEAD
                 )
+=======
+                )
+>>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure
