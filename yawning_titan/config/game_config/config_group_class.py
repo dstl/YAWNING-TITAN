@@ -10,7 +10,7 @@ class ConfigGroupABC(ABC):
     @abstractmethod
     def create(
             cls,
-            settings: Dict[str, Any]
+            **kwargs
     ):
         pass
 
@@ -18,6 +18,6 @@ class ConfigGroupABC(ABC):
     @abstractmethod
     def _validate(
             cls,
-            data: dict
+            **kwargs
     ):
         pass

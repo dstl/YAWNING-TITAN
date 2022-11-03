@@ -1,5 +1,6 @@
 from logging import getLogger
 
+from yawning_titan.config.environment.network_config import NetworkConfig
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
 
 import yaml
@@ -24,8 +25,12 @@ class GameModeConfigBuilder:
     @classmethod
     def create(
             cls,
+            network_config: NetworkConfig,
             config_path=None
     ) -> GameModeConfig:
+        """
+        Creates an instance of the GameModeConfig class
+        """
         # opens the fle the user has specified to be the location of the settings
         if not config_path:
             settings_path = default_game_mode_path()
@@ -42,7 +47,7 @@ class GameModeConfigBuilder:
             red_agent_config=RedAgentConfig.create(settings["RED"]),
             blue_agent_config=BlueAgentConfig.create(settings["BLUE"]),
             observation_space_config=ObservationSpaceConfig.create(settings["OBSERVATION_SPACE"]),
-            game_rules_config=GameRulesConfig.create(settings["GAME_RULES"]),
+            game_rules_config=GameRulesConfig.create(settings=settings["GAME_RULES"], network_config=network_config),
             reset_config=ResetConfig.create(settings["RESET"]),
             rewards_config=RewardsConfig.create(settings["REWARDS"]),
             output_timestep_data_to_json=True
