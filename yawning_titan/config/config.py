@@ -8,8 +8,9 @@ _LOGGER = getLogger(__name__)
 class BaseConfig:
     def __init__(self,settings_dict,section_name):
         print("$$",section_name)
-        for key,val in settings_dict[section_name].items():
-            setattr(self, key, val)
+        if section_name in settings_dict:
+            for key,val in settings_dict[section_name].items():
+                setattr(self, key, val)
 
     # def __setattr__(self, name, value):
     #     if name != "config_created":
@@ -18,36 +19,44 @@ class BaseConfig:
     #     super().__setattr__(name, value)
 
 class Red(BaseConfig):
-    def __init__(self,settings_dict):    
+    def __init__(self,settings_dict={}):    
         super().__init__(settings_dict,"RED")
 
 class Blue(BaseConfig):
-    def __init__(self,settings_dict):
+    def __init__(self,settings_dict={}):
         super().__init__(settings_dict,"BLUE")
 
 class GameRules(BaseConfig):
-    def __init__(self,settings_dict):
+    def __init__(self,settings_dict={}):
         super().__init__(settings_dict,"GAME_RULES")
 
 class ObservationSpace(BaseConfig):
-    def __init__(self,settings_dict):
+    def __init__(self,settings_dict={}):
         super().__init__(settings_dict,"OBSERVATION_SPACE")
 
 class Reset(BaseConfig):
-    def __init__(self,settings_dict):
+    def __init__(self,settings_dict={}):
         super().__init__(settings_dict,"RESET")
 
 class Rewards(BaseConfig):
-    def __init__(self,settings_dict):
+    def __init__(self,settings_dict={}):
         super().__init__(settings_dict,"REWARDS")
 
 class Miscellaneous(BaseConfig):
-    def __init__(self,settings_dict):
+    def __init__(self,settings_dict={}):
         super().__init__(settings_dict,"MISCELLANEOUS")
 
 class Config:
     def __init__(self) -> None:
-        self.config_created = False    
+        #self.config_created = False    
+        
+        self.red = Red()
+        self.blue = Blue()
+        self.game_rules = GameRules()
+        self.reset = Reset()
+        self.miscellaneous = Miscellaneous()
+        self.observation_space = ObservationSpace()
+        self.rewards = Rewards()
 
     def read_config_file(self,settings_path):
         try:
@@ -77,6 +86,6 @@ class Config:
             yaml.safe_dump(_settings_dict, file)
 
 config = Config()
-config.read_config_file("D:/Pycharm projects/YAWNING-TITAN-DEV/YAWNING-TITAN/tests/test_configs/base_config.yaml")
-config.write_to_file("test.yaml")
-print(config.red.red_skill,config.rewards.reward_function)
+#config.read_config_file("D:/Pycharm projects/YAWNING-TITAN-DEV/YAWNING-TITAN/tests/test_configs/base_config.yaml")
+#config.write_to_file("test.yaml")
+#print(config.red.red_skill,config.rewards.reward_function)
