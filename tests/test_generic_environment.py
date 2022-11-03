@@ -1,7 +1,8 @@
 """Used to test the GenericEnv() class and the associated agent interfaces."""
 import os
 import random
-from typing import Dict
+import warnings
+from typing import Dict, List
 
 import networkx as nx
 import numpy as np
@@ -38,7 +39,7 @@ def open_config_file(settings_path: str) -> Dict:
 
 
 def init_test_env(
-    settings_path: str, adj_matrix: np.array, positions
+        settings_path: str, adj_matrix: np.array, positions, entry_nodes: List[str], high_value_targets: List[str]
 ) -> GenericNetworkEnv:
     """
     Generate the test GenericEnv() and number of actions for the blue agent.
@@ -47,14 +48,18 @@ def init_test_env(
         settings_path: A path to the environment settings file
         adj_matrix: the adjacency matrix used for the network to defend.
         positions: x and y co-ordinates to plot the graph in 2D space
+        entry_nodes: list of strings that dictate which nodes are entry nodes
+        high_value_targets: list of strings that dictate which nodes are high value targets
 
     Returns:
         env: An OpenAI gym environment
     """
-    entry_nodes = ["0", "1", "2"]
+    if not entry_nodes:
+        entry_nodes = ["0", "1", "2"]
 
     network_interface = NetworkInterface(
-        adj_matrix, positions, entry_nodes=entry_nodes, settings_path=settings_path
+        adj_matrix, positions, entry_nodes=entry_nodes, settings_path=settings_path,
+        high_value_targets=high_value_targets
     )
 
     red = RedInterface(network_interface)
@@ -69,10 +74,12 @@ def init_test_env(
 
 
 def generate_generic_env_test_reqs(
-    settings_file_path: str,
-    net_creator_type="mesh",
-    n_nodes: int = 10,
-    connectivity: float = 0.7,
+        settings_file_path: str,
+        net_creator_type="mesh",
+        n_nodes: int = 10,
+        connectivity: float = 0.7,
+        entry_nodes=None,
+        high_value_targets=None
 ) -> GenericNetworkEnv:
     """
     Generate test environment requirements.
@@ -82,6 +89,8 @@ def generate_generic_env_test_reqs(
         net_creator_type: The type of net creator to use to generate the underlying network
         n_nodes: The number of nodes to create within the network
         connectivity: The connectivity value for the mesh net creator (Only required for mesh network creator type)
+        entry_nodes: list of strings that dictate which nodes are entry nodes
+        high_value_targets: list of strings that dictate which nodes are high value targets
 
     Returns:
         env: An OpenAI gym environment
@@ -100,7 +109,7 @@ def generate_generic_env_test_reqs(
             size=n_nodes, connectivity=connectivity
         )
 
-    env = init_test_env(settings_file_path, adj_matrix, node_positions)
+    env = init_test_env(settings_file_path, adj_matrix, node_positions, entry_nodes, high_value_targets)
 
     return env
 
@@ -177,6 +186,22 @@ def test_input_validation():
             net_creator_type="mesh",
         )
 
+        # error thrown because choose_high_value_targets_furthest_away_from_entry is True and
+        # the high value targets is manually provided
+        _, _ = generate_generic_env_test_reqs(
+            os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
+            n_nodes=23,
+            net_creator_type="mesh",
+            high_value_targets=["0"]
+        )
+
+        # error thrown because there are more high value targets than there are nodes in the network
+        _, _ = generate_generic_env_test_reqs(
+            os.path.join(TEST_CONFIG_PATH, "too_many_high_value_targets.yaml"),
+            n_nodes=23,
+            net_creator_type="mesh"
+        )
+
 
 def test_network_interface():
     """Test the network interface class and associated methods work as intended."""
@@ -189,19 +214,19 @@ def test_network_interface():
         assert env.network_interface.get_current_adj_matrix().all() == 0
         assert env.network_interface.get_nodes(filter_true_compromised=True) == []
         assert (
-            env.network_interface.get_nodes(filter_true_safe=True)
-            == env.network_interface.get_nodes()
+                env.network_interface.get_nodes(filter_true_safe=True)
+                == env.network_interface.get_nodes()
         )
         env.network_interface.attack_node(node=node, skill=0.5, guarantee=True)
         assert env.network_interface.get_all_node_compromised_states()[node] == 1
         assert (
-            sum(env.network_interface.get_all_node_compromised_states().values()) == 1
+                sum(env.network_interface.get_all_node_compromised_states().values()) == 1
         )
         assert (
-            sum(
-                env.network_interface.get_all_node_blue_view_compromised_states().values()
-            )
-            == 1
+                sum(
+                    env.network_interface.get_all_node_blue_view_compromised_states().values()
+                )
+                == 1
         )
         assert env.network_interface.get_nodes(filter_true_compromised=True) == [node]
         assert env.network_interface.get_nodes(filter_blue_view_compromised=True) == [
@@ -289,12 +314,12 @@ def test_env_reset():
             assert env.network_interface.red_current_location is None
             # check all nodes are set back to their initial state
             assert (
-                1
-                not in env.network_interface.get_all_node_blue_view_compromised_states().values()
+                    1
+                    not in env.network_interface.get_all_node_blue_view_compromised_states().values()
             )
             assert (
-                1
-                not in env.network_interface.get_all_node_compromised_states().values()
+                    1
+                    not in env.network_interface.get_all_node_compromised_states().values()
             )
             assert env.network_interface.get_nodes(filter_true_compromised=True) == []
             # check deceptive node pointers are reset
@@ -326,18 +351,96 @@ def test_new_high_value_target():
             random.randint(0, env.BLUE.get_number_of_actions() - 1)
         )
         if done:
-            hvt = env.network_interface.get_high_value_target()
-            if hvt not in targets:
-                targets[hvt] = 1
-            else:
-                targets[hvt] += 1
+            hvt = env.network_interface.get_high_value_targets()
+
+            # add 1 to each node that gets chosen as a high value target
+            for node in hvt:
+                if node not in targets:
+                    targets[node] = 1
+                else:
+                    targets[node] += 1
+
             env.reset()
     # check that entry nodes cannot be chosen
+    # 3 entry nodes are configured in new_high_value_target.yaml, so n_nodes - number_of_entry_nodes = 12
     assert len(targets.keys()) == 12
     # check that each node is roughly chosen equally
     sum_ = sum(targets.values())
     for i in targets.values():
         assert 1 / 10.5 > i / sum_ > 1 / 13.5
+
+
+def test_high_value_target_passed_into_network_interface():
+    """Test the high value target gaol mechanic - manually passed to ."""
+    env = generate_generic_env_test_reqs(
+        os.path.join(TEST_CONFIG_PATH, "high_value_target_provided.yaml"),
+        net_creator_type="mesh",
+        n_nodes=30,
+        high_value_targets=["15", "16"]
+    )
+    check_env(env, warn=True)
+    env.reset()
+    targets = {}
+    for i in range(0, N_TIME_STEPS_LONG):
+        obs, rew, done, notes = env.step(
+            random.randint(0, env.BLUE.get_number_of_actions() - 1)
+        )
+        if done:
+            hvt = env.network_interface.get_high_value_targets()
+
+            # add 1 to each node that gets chosen as a high value target
+            for node in hvt:
+                if node not in targets:
+                    targets[node] = 1
+                else:
+                    targets[node] += 1
+
+            env.reset()
+    # the only 2 targets set are available
+    assert len(targets.keys()) == 2
+
+    # check that the keys are the 15 and 16 that was set
+    assert set(targets.keys()).intersection(["15", "16"])
+
+
+def test_high_value_target_and_entry_nodes_matching():
+    """Test the high value target gaol mechanic - manually passed to ."""
+    with warnings.catch_warnings(record=True) as w:
+        env = generate_generic_env_test_reqs(
+            os.path.join(TEST_CONFIG_PATH, "high_value_target_provided.yaml"),
+            net_creator_type="mesh",
+            n_nodes=30,
+            entry_nodes=["0", "15"],
+            high_value_targets=["15", "16"]
+        )
+        check_env(env, warn=True)
+        env.reset()
+
+        entry = {}
+        targets = {}
+        for i in range(0, N_TIME_STEPS_LONG):
+            obs, rew, done, notes = env.step(
+                random.randint(0, env.BLUE.get_number_of_actions() - 1)
+            )
+            if done:
+                hvt = env.network_interface.get_high_value_targets()
+
+                # add 1 to each node that gets chosen as a high value target
+                for node in hvt:
+                    if node not in targets:
+                        targets[node] = 1
+                    else:
+                        targets[node] += 1
+
+                env.reset()
+        # the only 2 targets set are available
+        assert len(targets.keys()) == 2
+
+        # check that the keys are the 15 and 16 that was set
+        assert set(targets.keys()).intersection(["15", "16"])
+
+        # check that a warning was raised that the entry nodes and high value targets intersect
+        assert str(w[0].message.args[0]) == "Provided entry nodes and high value targets intersect and may cause the training to prematurely end"
 
 
 def test_new_entry_nodes():
@@ -394,8 +497,8 @@ def test_new_vulnerabilities():
     # calculate the average vulnerability
     vulnerabilities = (vulnerabilities / 15) / resets
     vuln_aim = env.network_interface.gr_node_vuln_lower + 0.5 * (
-        env.network_interface.gr_node_vuln_upper
-        - env.network_interface.gr_node_vuln_lower
+            env.network_interface.gr_node_vuln_upper
+            - env.network_interface.gr_node_vuln_lower
     )
     # ensure the average vulnerability is half way between the upper and lower range
     assert (vuln_aim - 0.01 * vuln_aim) < vulnerabilities < (vuln_aim + 0.01 * vuln_aim)
@@ -511,13 +614,13 @@ def test_generic_env(env, timesteps):
         if not done:
             if not env.network_interface.gr_loss_hvt_random_placement:
                 assert (
-                    env.network_interface.get_high_value_target() == prev_high_value
-                    or prev_high_value is None
+                        env.network_interface.get_high_value_targets() == prev_high_value
+                        or prev_high_value is None
                 )
 
         assert (
-            env.network_interface.adj_matrix.all()
-            == nx.to_numpy_array(env.network_interface.current_graph).all()
+                env.network_interface.adj_matrix.all()
+                == nx.to_numpy_array(env.network_interface.current_graph).all()
         )
 
         # making sure that attacks come from a connected node
@@ -528,7 +631,7 @@ def test_generic_env(env, timesteps):
             prev_attacks.append(i[1])
             if blue_action != "isolate" and blue_action != "add_deceptive_node":
                 if i[0] not in env.network_interface.get_current_connected_nodes(
-                    i[1]
+                        i[1]
                 ) + [None]:
                     raise AssertionError(
                         i,
@@ -546,14 +649,14 @@ def test_generic_env(env, timesteps):
 
         # only use the set number of deceptive nodes
         assert (
-            sum("d" in s for s in env.network_interface.get_nodes())
-            <= env.network_interface.blue_max_deceptive_nodes
+                sum("d" in s for s in env.network_interface.get_nodes())
+                <= env.network_interface.blue_max_deceptive_nodes
         )
         # cannot place too many deceptive nodes
         assert (
-            initial_edges
-            <= env.network_interface.get_number_base_edges()
-            <= (initial_edges + env.network_interface.blue_max_deceptive_nodes)
+                initial_edges
+                <= env.network_interface.get_number_base_edges()
+                <= (initial_edges + env.network_interface.blue_max_deceptive_nodes)
         )
 
         # observation space is correct
@@ -574,8 +677,8 @@ def test_generic_env(env, timesteps):
         # red location (if using the red can only attack from central red node)
         if initial_red_location is None:
             assert (
-                post_red_red_location in env.network_interface.get_entry_nodes()
-                or post_red_red_location is None
+                    post_red_red_location in env.network_interface.get_entry_nodes()
+                    or post_red_red_location is None
             )
         elif post_red_red_location is None:
             assert final_red_location is None
@@ -591,12 +694,12 @@ def test_generic_env(env, timesteps):
                 ]
                 if len(connected) == 0:
                     assert final_red_location == post_red_red_location or (
-                        (
-                            blue_action == "restore_node"
-                            or blue_action == "make_node_safe"
-                        )
-                        and blue_node == post_red_red_location
-                        and final_red_location is None
+                            (
+                                    blue_action == "restore_node"
+                                    or blue_action == "make_node_safe"
+                            )
+                            and blue_node == post_red_red_location
+                            and final_red_location is None
                     )
                 else:
                     if blue_action == "restore_node" or blue_action == "make_node_safe":
@@ -611,12 +714,12 @@ def test_generic_env(env, timesteps):
                 initial_red_location
             )
         if blue_action != "isolate" or (
-            blue_node != post_red_red_location and blue_node != initial_red_location
+                blue_node != post_red_red_location and blue_node != initial_red_location
         ):
             if blue_action != "add_deceptive_node":
                 assert (
-                    post_red_red_location in connected
-                    or post_red_red_location == initial_red_location
+                        post_red_red_location in connected
+                        or post_red_red_location == initial_red_location
                 )
 
         assert 0 in initial_state.values()
@@ -666,8 +769,8 @@ def test_generic_env(env, timesteps):
             if red_action == "basic_attack":
                 for counter, current_success in enumerate(red_success):
                     if (
-                        env.network_interface.red_chance_to_spread_to_unconnected_node
-                        == 0
+                            env.network_interface.red_chance_to_spread_to_unconnected_node
+                            == 0
                     ):
                         assert (
                             not env.network_interface.get_single_node_isolation_status(
@@ -676,45 +779,45 @@ def test_generic_env(env, timesteps):
                         )
                     if current_success:
                         if blue_action != "isolate" or (
-                            blue_action == "isolate"
-                            and blue_node != red_attacking_node[counter]
-                            and blue_node != red_target[counter]
+                                blue_action == "isolate"
+                                and blue_node != red_attacking_node[counter]
+                                and blue_node != red_target[counter]
                         ):
                             if blue_action != "add_deceptive_node" or (
-                                blue_action == "add_deceptive_node"
-                                and red_target[counter] != blue_node[0]
-                                and red_attacking_node[counter] != blue_node[0]
-                                and not (
+                                    blue_action == "add_deceptive_node"
+                                    and red_target[counter] != blue_node[0]
+                                    and red_attacking_node[counter] != blue_node[0]
+                                    and not (
                                     red_target[counter] in blue_node[1]
                                     and red_attacking_node[counter] in blue_node[1]
-                                )
+                            )
                             ):
                                 if (
-                                    red_target[counter]
-                                    not in env.network_interface.get_entry_nodes()
+                                        red_target[counter]
+                                        not in env.network_interface.get_entry_nodes()
                                 ):
                                     assert red_target[
-                                        counter
-                                    ] in env.network_interface.get_current_connected_nodes(
+                                               counter
+                                           ] in env.network_interface.get_current_connected_nodes(
                                         red_attacking_node[counter]
                                     )
                         assert post_red_state[red_target[counter]] == 1
                         if post_red_blue_view[red_target[counter]] == 1:
                             discovered_immediately += 1
                         if (
-                            red_target[counter][0] == "d"
-                            and env.network_interface.blue_deception_immediate_detection_chance
-                            == 1
+                                red_target[counter][0] == "d"
+                                and env.network_interface.blue_deception_immediate_detection_chance
+                                == 1
                         ):
                             assert post_red_blue_view[red_target[counter]] == 1
                         if (
-                            env.network_interface.blue_immediate_detection_chance == 0
-                            and red_target[counter][0] != "d"
+                                env.network_interface.blue_immediate_detection_chance == 0
+                                and red_target[counter][0] != "d"
                         ):
                             assert post_red_blue_view[red_target[counter]] == 0
                         if (
-                            env.network_interface.blue_immediate_detection_chance == 1
-                            and red_target[counter][0] != "d"
+                                env.network_interface.blue_immediate_detection_chance == 1
+                                and red_target[counter][0] != "d"
                         ):
                             assert post_red_blue_view[red_target[counter]] == 1
             elif red_action == "zero_day":
@@ -740,28 +843,28 @@ def test_generic_env(env, timesteps):
                 for counter, current_success in enumerate(red_success):
                     if current_success:
                         if blue_action != "isolate" or (
-                            blue_action == "isolate"
-                            and blue_node != red_attacking_node[counter]
-                            and blue_node != red_target[counter]
+                                blue_action == "isolate"
+                                and blue_node != red_attacking_node[counter]
+                                and blue_node != red_target[counter]
                         ):
                             if blue_action != "add_deceptive_node" or (
-                                blue_action == "add_deceptive_node"
-                                and red_target[counter] != blue_node[0]
-                                and red_attacking_node[counter] != blue_node[0]
-                                and not (
+                                    blue_action == "add_deceptive_node"
+                                    and red_target[counter] != blue_node[0]
+                                    and red_attacking_node[counter] != blue_node[0]
+                                    and not (
                                     red_target[counter] in blue_node[1]
                                     and red_attacking_node[counter] in blue_node[1]
-                                )
+                            )
                             ):
                                 if red_attacking_node[counter] is None:
                                     assert (
-                                        red_target[counter]
-                                        in env.network_interface.get_entry_nodes()
+                                            red_target[counter]
+                                            in env.network_interface.get_entry_nodes()
                                     )
                                 else:
                                     assert red_target[
-                                        counter
-                                    ] in env.network_interface.get_current_connected_nodes(
+                                               counter
+                                           ] in env.network_interface.get_current_connected_nodes(
                                         red_attacking_node[counter]
                                     )
             elif red_action == "do_nothing":
@@ -772,11 +875,11 @@ def test_generic_env(env, timesteps):
                     assert initial_blue_view == post_red_blue_view
             elif red_action == "no_possible_targets":
                 if (
-                    env.network_interface.red_attack_from_any_node
-                    and not env.network_interface.blue_isolate_action
+                        env.network_interface.red_attack_from_any_node
+                        and not env.network_interface.blue_isolate_action
                 ):
                     assert (
-                        len(env.network_interface.get_nodes(filter_true_safe=True)) == 0
+                            len(env.network_interface.get_nodes(filter_true_safe=True)) == 0
                     )
                 assert initial_vulnerabilities == post_red_vulnerabilities
             elif red_action == "natural_spread":
@@ -797,7 +900,7 @@ def test_generic_env(env, timesteps):
                 deceptive_counter += 1
         elif blue_action == "isolate":
             assert (
-                len(env.network_interface.get_current_connected_nodes(blue_node)) == 0
+                    len(env.network_interface.get_current_connected_nodes(blue_node)) == 0
             )
             assert env.network_interface.get_single_node_isolation_status(blue_node)
         elif blue_action == "connect":
@@ -812,7 +915,7 @@ def test_generic_env(env, timesteps):
         elif blue_action == "reduce_vulnerability":
             assert 0 < final_vulnerabilities[blue_node] < 1
             assert (
-                final_vulnerabilities[blue_node] <= post_red_vulnerabilities[blue_node]
+                    final_vulnerabilities[blue_node] <= post_red_vulnerabilities[blue_node]
             )
 
         elif blue_action == "scan":
@@ -841,23 +944,23 @@ def test_generic_env(env, timesteps):
             node2 = blue_node[1][1]
             assert node2 not in env.network_interface.get_base_connected_nodes(node1)
             assert [
-                i
-                for i in env.network_interface.get_base_connected_nodes(deceptive_node)
-                if i != node1 and i != node2
-            ] == []
+                       i
+                       for i in env.network_interface.get_base_connected_nodes(deceptive_node)
+                       if i != node1 and i != node2
+                   ] == []
             for i in env.network_interface.get_nodes():
                 if i != node1 and i != node2:
                     assert (
-                        deceptive_node
-                        not in env.network_interface.get_base_connected_nodes(i)
+                            deceptive_node
+                            not in env.network_interface.get_base_connected_nodes(i)
                     )
             assert env.network_interface.current_deceptive_nodes != 0
             assert (
-                env.network_interface.get_single_node_vulnerability(deceptive_node)
-                is not None
+                    env.network_interface.get_single_node_vulnerability(deceptive_node)
+                    is not None
             )
             assert (
-                env.network_interface.get_single_node_state(deceptive_node) is not None
+                    env.network_interface.get_single_node_state(deceptive_node) is not None
             )
 
             if deceptive_node in post_red_state:
@@ -865,28 +968,28 @@ def test_generic_env(env, timesteps):
                     if post_red_state[deceptive_node] == 1:
                         assert end_state[deceptive_node] == 0
                         assert (
-                            env.network_interface.get_single_node_isolation_status(
-                                deceptive_node
-                            )
-                            == 0
+                                env.network_interface.get_single_node_isolation_status(
+                                    deceptive_node
+                                )
+                                == 0
                         )
                 else:
                     assert end_state[deceptive_node] == post_red_state[deceptive_node]
                     assert (
-                        final_vulnerabilities[deceptive_node]
-                        == post_red_vulnerabilities[deceptive_node]
+                            final_vulnerabilities[deceptive_node]
+                            == post_red_vulnerabilities[deceptive_node]
                     )
                     assert (
-                        end_blue_view[deceptive_node]
-                        == post_red_blue_view[deceptive_node]
+                            end_blue_view[deceptive_node]
+                            == post_red_blue_view[deceptive_node]
                     )
             else:
                 assert end_state[deceptive_node] == 0
                 assert (
-                    env.network_interface.get_single_node_isolation_status(
-                        deceptive_node
-                    )
-                    == 0
+                        env.network_interface.get_single_node_isolation_status(
+                            deceptive_node
+                        )
+                        == 0
                 )
             assert env.network_interface.get_single_node_position(deceptive_node) != 0
 
@@ -903,36 +1006,39 @@ def test_generic_env(env, timesteps):
 
         if done is True:
             if (
-                env.current_duration > 500
-                and env.network_interface.get_number_of_nodes() < 15
+                    env.current_duration > 500
+                    and env.network_interface.get_number_of_nodes() < 15
             ):
                 if (
-                    env.network_interface.blue_make_node_safe_action
-                    or env.network_interface.blue_restore_node_action
+                        env.network_interface.blue_make_node_safe_action
+                        or env.network_interface.blue_restore_node_action
                 ):
                     if "d0" in env.network_interface.get_nodes():
                         assert deceptive_counter != 0
             if env.current_duration != env.network_interface.gr_max_steps:
                 if env.network_interface.gr_loss_total_compromise:
                     assert (
-                        len(env.network_interface.get_nodes(filter_true_safe=True)) == 0
+                            len(env.network_interface.get_nodes(filter_true_safe=True)) == 0
                     )
                 if env.network_interface.gr_loss_pc_nodes_compromised:
                     assert (
-                        len(
-                            env.network_interface.get_nodes(
-                                filter_true_compromised=True
-                            )
-                        )
-                        / len(env.network_interface.get_nodes())
-                    ) >= env.network_interface.gr_loss_pc_node_compromised_pc
+                                   len(
+                                       env.network_interface.get_nodes(
+                                           filter_true_compromised=True
+                                       )
+                                   )
+                                   / len(env.network_interface.get_nodes())
+                           ) >= env.network_interface.gr_loss_pc_node_compromised_pc
                 if env.network_interface.gr_loss_hvt:
-                    assert (
-                        env.network_interface.get_single_node_state(
-                            env.network_interface.get_high_value_target()
-                        )
-                        == 1
-                    )
+                    # the game ends when a high value node is compromised, this needs to be checked
+                    compromised_hvt = False
+
+                    for node in env.network_interface.get_high_value_targets():
+                        if env.network_interface.get_single_node_state(node) == 1:
+                            compromised_hvt = True
+                            break
+
+                    assert (compromised_hvt is True)
             env.reset()
             number_of_resets += 1
         else:
@@ -940,31 +1046,35 @@ def test_generic_env(env, timesteps):
                 assert len(env.network_interface.get_nodes(filter_true_safe=True)) != 0
             if env.network_interface.gr_loss_pc_nodes_compromised:
                 assert (
-                    len(env.network_interface.get_nodes(filter_true_compromised=True))
-                    / len(env.network_interface.get_nodes())
-                ) < env.network_interface.gr_loss_pc_node_compromised_pc
+                               len(env.network_interface.get_nodes(filter_true_compromised=True))
+                               / len(env.network_interface.get_nodes())
+                       ) < env.network_interface.gr_loss_pc_node_compromised_pc
             if env.network_interface.gr_loss_hvt:
-                assert (
-                    env.network_interface.get_single_node_state(
-                        env.network_interface.get_high_value_target()
-                    )
-                    == 0
-                )
+                # the game would end if a high value target was compromised, this needs to be checked
+                compromised_hvt = False;
+
+                # check that none of the high value targets are compromised
+                for node in env.network_interface.get_high_value_targets():
+                    # get_single_node_state returns 1 if compromised
+                    if env.network_interface.get_single_node_state(node) == 1:
+                        compromised_hvt = True
+
+                assert (compromised_hvt is False)
 
     # tests on data collected from trial
     if not env.network_interface.blue_deceptive_action and scan_used:
         assert (
-            (0.95 * env.network_interface.blue_scan_detection_chance)
-            < (
-                discovered_from_scanning
-                / (nodes_missed_scan + discovered_from_scanning)
-            )
-            < (1.05 * env.network_interface.blue_scan_detection_chance)
+                (0.95 * env.network_interface.blue_scan_detection_chance)
+                < (
+                        discovered_from_scanning
+                        / (nodes_missed_scan + discovered_from_scanning)
+                )
+                < (1.05 * env.network_interface.blue_scan_detection_chance)
         )
 
     assert (
-        sum(red_action_count[True].values()) + sum(red_action_count[False].values())
-        == timesteps
+            sum(red_action_count[True].values()) + sum(red_action_count[False].values())
+            == timesteps
     )
     assert sum(blue_action_count.values()) == timesteps
 
