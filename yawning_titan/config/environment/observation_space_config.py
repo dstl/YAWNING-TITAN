@@ -6,7 +6,11 @@ from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_type
 
 
+<<<<<<< HEAD
 @dataclass
+=======
+@dataclass()
+>>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure
 class ObservationSpaceConfig(ConfigGroupABC):
     """
     Class that validates and stores the Observation Space configuration
@@ -84,3 +88,7 @@ class ObservationSpaceConfig(ConfigGroupABC):
             raise ValueError(
                 "At least one option from OBSERVATION_SPACE must be enabled. The observation space must contain at least one item"
             )
+<<<<<<< HEAD
+=======
+
+>>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure

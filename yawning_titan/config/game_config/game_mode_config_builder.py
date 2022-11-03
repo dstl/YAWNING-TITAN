@@ -46,4 +46,8 @@ class GameModeConfigBuilder:
             reset_config=ResetConfig.create(settings["RESET"]),
             rewards_config=RewardsConfig.create(settings["REWARDS"]),
             output_timestep_data_to_json=True
+<<<<<<< HEAD
         )
+=======
+        )
+>>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure
