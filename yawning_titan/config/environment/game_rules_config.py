@@ -13,6 +13,9 @@ class GameRulesConfig(ConfigGroupABC):
     Class that validates and stores Game Rules Configuration
     """
 
+    gr_min_number_of_network_nodes: int
+    """The minimum number of nodes the game mode will be allowed to run on"""
+
     gr_node_vuln_lower: float
     """Lower bound of the node vulnerability"""
 
@@ -61,19 +64,12 @@ class GameRulesConfig(ConfigGroupABC):
     @classmethod
     def create(
             cls,
-            settings: Dict[str, Any],
-            network_config: NetworkConfig
+            settings: Dict[str, Any]
     ) -> GameRulesConfig:
-        cls._validate(settings, network_config)
-
-        if not network_config.high_value_targets:
-            gr_number_of_high_value_targets = settings[
-                "number_of_high_value_targets"
-            ]
-        else:
-            gr_number_of_high_value_targets = len(network_config.matrix)
+        cls._validate(settings)
 
         game_rule_config = GameRulesConfig(
+            gr_min_number_of_network_nodes=settings["min_number_of_network_nodes"],
             gr_node_vuln_lower=settings[
                 "node_vulnerability_lower_bound"
             ],
@@ -90,7 +86,7 @@ class GameRulesConfig(ConfigGroupABC):
             gr_loss_pc_node_compromised_pc=settings[
                 "percentage_of_nodes_compromised_equals_loss"
             ],
-            gr_number_of_high_value_targets=gr_number_of_high_value_targets,
+            gr_number_of_high_value_targets=["number_of_high_value_targets"],
             gr_loss_hvt=settings["lose_when_high_value_target_lost"],
             gr_loss_hvt_random_placement=settings[
                 "choose_high_value_targets_placement_at_random"
@@ -117,12 +113,8 @@ class GameRulesConfig(ConfigGroupABC):
     @classmethod
     def _validate(
             cls,
-            data: dict,
-            network_config: NetworkConfig
+            data: dict
     ):
-        high_value_targets = network_config.high_value_targets
-        number_of_nodes = len(network_config.matrix)
-
         # data is int or float
         for name in [
             "node_vulnerability_lower_bound",
@@ -137,23 +129,19 @@ class GameRulesConfig(ConfigGroupABC):
         if data["node_vulnerability_lower_bound"] > data["node_vulnerability_upper_bound"]:
             raise ValueError(
                 "'node_vulnerability_lower_bound', 'node_vulnerability_upper_bound' -> The lower bound for the node vulnerabilities should be less than the upper bound"
-                # noqa
             )
         check_type(data, "max_steps", [int])
         check_type(data, "number_of_entry_nodes", [int])
         check_type(data, "grace_period_length", [int])
-        # ignore if high value targets passed in
-        if not high_value_targets:
-            check_type(data, "number_of_high_value_targets", [int])
-            check_within_range(data, "number_of_high_value_targets", 1, number_of_nodes, True, True)
-        else:
-            # make sure the passed high value targets do not exceed the number of nodes in network
-            check_within_range({'hvt_length': len(high_value_targets)}, "hvt_length", 1, number_of_nodes, True,
-                               True)
+        check_type(data, "min_number_of_network_nodes", [int])
+        check_type(data, "number_of_high_value_targets", [int])
+        # make sure high value targets is not more than the number of minimum number of nodes in network
+        check_within_range(data, "number_of_high_value_targets", 1, data["min_number_of_network_nodes"], True, True)
 
         check_within_range(data, "grace_period_length", 0, 100, True, True)
         check_within_range(data, "max_steps", 0, 10000000, False, True)
-        check_within_range(data, "number_of_entry_nodes", 0, number_of_nodes, False, True)
+        # make sure entry nodes is not more than the number of minimum number of nodes in network
+        check_within_range(data, "number_of_entry_nodes", 0, data["min_number_of_network_nodes"], False, True)
 
         # data is boolean
         for name in [
