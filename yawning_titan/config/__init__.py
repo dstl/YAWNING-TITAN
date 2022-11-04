@@ -7,6 +7,5 @@ The path to the library config root directory as an instance of pathlib.Path.
 """
 
 from .agents import BlueAgentConfig,RedAgentConfig
-from .environment import GameRulesConfig,ObservationSpaceConfig,ResetConfig,RewardsConfig
+from .environment import GameRulesConfig,ObservationSpaceConfig,ResetConfig,RewardsConfig,NetworkConfig
 from .config import Config
-#from .game_config import 

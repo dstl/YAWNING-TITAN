@@ -5,7 +5,7 @@ RED:
   # The red agents skill level. Higher means that red is more likely to succeed in attacks
   red_skill: 0.8
 
-  # CHOOSE AT LEAST ONE OF THE FOLLOWING 3 ITEMS (red_ignore_defences: False counts as choosing an item)
+  # CHOOSE AT LEAST ONE OF THE FOLLOWING 3 ITEMS (red_ignores_defences: False counts as choosing an item)
   # Red uses its skill modifier when attacking nodes
   red_uses_skill: yes
   # The red agent ignores the defences of nodes
@@ -177,6 +177,8 @@ GAME_RULES:
   # If no entry nodes are supplied then what bias is applied to the nodes when choosing random entry nodes
   prefer_central_nodes_for_entry_nodes: False
   prefer_edge_nodes_for_entry_nodes: False
+  #set the high value targets manually
+  high_value_targets:
 
 RESET:
   randomise_vulnerabilities_on_reset: False

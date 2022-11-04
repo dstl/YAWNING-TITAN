@@ -8,11 +8,7 @@ from yawning_titan.envs.generic.core import reward_functions
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_type
 
 
-<<<<<<< HEAD
 @dataclass
-=======
-@dataclass()
->>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure
 class RewardsConfig(ConfigGroupABC):
     """
     Class that validates and stores Rewards Configuration
@@ -44,10 +40,7 @@ class RewardsConfig(ConfigGroupABC):
     """
 
     @classmethod
-    def create(
-            cls,
-            settings: Dict[str, Any]
-    ) -> RewardsConfig:
+    def create(cls,settings: Dict[str, Any]) -> RewardsConfig:
         rewards = RewardsConfig(
             reward_loss=settings["rewards_for_loss"],
             reward_success=settings["rewards_for_reaching_max_steps"],
@@ -76,8 +69,4 @@ class RewardsConfig(ConfigGroupABC):
                 "The reward function '"
                 + data["reward_function"]
                 + "' does not exist inside: yawning_titan.envs.helpers.reward_functions"
-<<<<<<< HEAD
             )
-=======
-            )
->>>>>>> methods-YT/feature/AIDT-67-define-config-class-structure
