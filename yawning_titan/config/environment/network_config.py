@@ -4,7 +4,7 @@ from typing import Dict, Any, List
 import numpy as np
 
 
-from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
+from yawning_titan.config.config_group_class import ConfigGroupABC
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_type,check_within_range
 
 
