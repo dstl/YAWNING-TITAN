@@ -104,7 +104,7 @@ def test_safe_gives_rewards(generate_generic_env_test_reqs):
 
     Will raise an error if the function does not return the expected result
     """
-    env = generate_generic_env_test_reqs(
+    env:GenericNetworkEnv = generate_generic_env_test_reqs(
         os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
         net_creator_type="mesh", n_nodes=5
     )
