@@ -7,7 +7,7 @@ RED:
   # The red agents skill level. Higher means that red is more likely to succeed in attacks
   red_skill: 0.5
 
-  # CHOOSE AT LEAST ONE OF THE FOLLOWING 3 ITEMS (red_ignore_defences: False counts as choosing an item)
+  # CHOOSE AT LEAST ONE OF THE FOLLOWING 3 ITEMS (red_ignores_defences: False counts as choosing an item)
   # Red uses its skill modifier when attacking nodes
   red_uses_skill: True
   # The red agent ignores the defences of nodes
@@ -180,6 +180,8 @@ GAME_RULES:
   prefer_edge_nodes_for_entry_nodes: False
   # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
   grace_period_length: 5
+  #set the high value targets manually
+  high_value_targets:
 
 RESET:
   randomise_vulnerabilities_on_reset: False

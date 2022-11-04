@@ -136,7 +136,7 @@ def standard_rewards(args: dict) -> float:
 
     # rewards for reducing node vulnerabilities
     if (
-        network_interface.settings["RED"]["red_ignores_defences"] is False
+        network_interface.settings.red.red_ignores_defences is False
         and blue_action == "reduce_vulnerability"
     ):
         initial_cumulative_vuln = sum(start_vulnerabilities.values())

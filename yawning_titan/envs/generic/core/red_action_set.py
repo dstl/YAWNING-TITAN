@@ -34,10 +34,10 @@ class RedActionSet:
             action_probabilities: The likelihood of those actions being chosen (list)
         """
         self.network_interface = network_interface
-        self.skill = self.network_interface.red.red_skill
-        self.zero_day_amount = self.network_interface.settings.red_zero_day_start_amount
+        self.skill = self.network_interface.settings.red.red_skill
+        self.zero_day_amount = self.network_interface.settings.red.red_zero_day_start_amount
         self.zero_day_required = (
-            self.network_interface.settings.red_zero_day_days_required_to_create
+            self.network_interface.settings.red.red_zero_day_days_required_to_create
         )
         self.zero_day_current_day = 0
         self.action_set = action_set
@@ -54,7 +54,7 @@ class RedActionSet:
         # creates a set of nodes that the red agent could attack
         possible_to_attack = set()
         original_node = {}
-        if self.network_interface.settings.red_attack_from_any_node:
+        if self.network_interface.settings.red.red_attack_from_any_node:
             nodes = self.network_interface.get_nodes(filter_true_compromised=True)
             # runs through the connected nodes and adds the safe nodes to a set of possible nodes to attack
             for node in nodes:
@@ -67,7 +67,7 @@ class RedActionSet:
                     ):
                         original_node[connected_node] = node
                         possible_to_attack.add(connected_node)
-        elif self.network_interface.settings.red_attack_from_current_position:
+        elif self.network_interface.settings.red.red_attack_from_current_position:
             # If red can only attack from the central red node
             red_location = self.network_interface.get_red_location()
             if red_location is not None:
@@ -89,17 +89,17 @@ class RedActionSet:
 
         weights = []
         # red can prioritise nodes based on some different parameters chosen in the settings menu
-        if self.network_interface.settings.red_targeting_random:
+        if self.network_interface.settings.red.red_targeting_random:
             for _ in possible_to_attack:
                 # equal weighting for all nodes
                 weights.append(1)
-        elif self.network_interface.settings.red_targeting_prioritise_connected_nodes:
+        elif self.network_interface.settings.red.red_targeting_prioritise_connected_nodes:
             for node in possible_to_attack:
                 # more connections means a higher weight
                 weights.append(
                     len(self.network_interface.get_current_connected_nodes(node))
                 )
-        elif self.network_interface.settings.red_targeting_prioritise_unconnected_nodes:
+        elif self.network_interface.settings.red.red_targeting_prioritise_unconnected_nodes:
             for node in possible_to_attack:
                 # higher connections means a lower weight
                 current_connected = len(
@@ -108,13 +108,13 @@ class RedActionSet:
                 if current_connected == 0:
                     current_connected = 0.1
                 weights.append(1 / current_connected)
-        elif self.network_interface.settings.red_targeting_prioritise_vulnerable_nodes:
+        elif self.network_interface.settings.red.red_targeting_prioritise_vulnerable_nodes:
             for node in possible_to_attack:
                 # higher vulnerability means a higher weight
                 weights.append(
                     self.network_interface.get_single_node_vulnerability(node)
                 )
-        elif self.network_interface.settings.red_targeting_prioritise_resilient_nodes:
+        elif self.network_interface.settings.red.red_targeting_prioritise_resilient_nodes:
             for node in possible_to_attack:
                 # higher vulnerability means a lower weight
                 weights.append(
@@ -311,9 +311,9 @@ class RedActionSet:
         attack_status = self.network_interface.attack_node(
             target,
             skill=self.skill,
-            use_skill=self.network_interface.settings.red_use_skill,
-            use_vulnerability=(not self.network_interface.settings.red_ignore_defences),
-            guarantee=self.network_interface.settings.red_always_succeeds,
+            use_skill=self.network_interface.settings.red.red_use_skill,
+            use_vulnerability=(not self.network_interface.settings.red.red_ignores_defences),
+            guarantee=self.network_interface.settings.red.red_always_succeeds,
         )
         if attack_status:
             # update the location of the red agent if applicable
@@ -374,22 +374,22 @@ class RedActionSet:
                     set_of_spreading_nodes.add(node)
                     attacking_node_map[node] = compromised_node
 
-        if self.network_interface.settings.red_chance_to_spread_to_connected_node > 0:
+        if self.network_interface.settings.red.red_chance_to_spread_to_connected_node > 0:
             for node in set_of_spreading_nodes:
                 if (
                     random.randint(0, 100)
-                    < self.network_interface.settings.red_chance_to_spread_to_connected_node
+                    < self.network_interface.settings.red.red_chance_to_spread_to_connected_node
                     * 100
                 ):
                     # try to naturally spread to the node based on a percentage change listed in the config file
                     attack_status = self.network_interface.attack_node(
                         node,
                         skill=self.skill,
-                        use_skill=self.network_interface.settings.red_use_skill,
+                        use_skill=self.network_interface.settings.red.red_use_skill,
                         use_vulnerability=(
-                            not self.network_interface.settings.red_ignore_defences
+                            not self.network_interface.settings.red.red_ignores_defences
                         ),
-                        guarantee=self.network_interface.settings.red_always_succeeds,
+                        guarantee=self.network_interface.settings.red.red_always_succeeds,
                     )
                     if attack_status:
                         # If the attack succeeds
@@ -400,7 +400,7 @@ class RedActionSet:
                     attacking_nodes.append(attacking_node_map[node])
                     targets.append(node)
 
-        if self.network_interface.settings.red_chance_to_spread_to_unconnected_node:
+        if self.network_interface.settings.red.red_chance_to_spread_to_unconnected_node:
             # Calculate the list of nodes that are not connected to a compromised node
             nodes_not_connected_to_red = (
                 set(self.network_interface.get_nodes())
@@ -412,18 +412,18 @@ class RedActionSet:
             for node in nodes_not_connected_to_red:
                 if (
                     random.randint(0, 100)
-                    < self.network_interface.settings.red_chance_to_spread_to_unconnected_node
+                    < self.network_interface.settings.red.red_chance_to_spread_to_unconnected_node
                     * 100
                 ):
                     # Try to naturally randomly infect nodes based on a percentage chance in the config file
                     attack_status = self.network_interface.attack_node(
                         node,
                         skill=self.skill,
-                        use_skill=self.network_interface.settings.red_use_skill,
+                        use_skill=self.network_interface.settings.red.red_use_skill,
                         use_vulnerability=(
-                            not self.network_interface.settings.red_ignore_defences
+                            not self.network_interface.settings.red.red_ignores_defences
                         ),
-                        guarantee=self.network_interface.settings.red_always_succeeds,
+                        guarantee=self.network_interface.settings.red.red_always_succeeds,
                     )
                     targets.append(node)
                     if attack_status:
@@ -456,11 +456,11 @@ class RedActionSet:
         """
         compromised_nodes = []
         # check the nodes red can attack based on the current configuration
-        if self.network_interface.settings.red_attack_from_any_node:
+        if self.network_interface.settings.red.red_attack_from_any_node:
             compromised_nodes = self.network_interface.get_nodes(
                 filter_true_compromised=True
             )
-        if self.network_interface.settings.red_attack_from_current_position:
+        if self.network_interface.settings.red.red_attack_from_current_position:
             compromised_nodes = [self.network_interface.get_red_location()]
         nodes = []
         # store the location the attack originated from
@@ -490,10 +490,10 @@ class RedActionSet:
                 nodes.append(connected_node)
                 attack_status = self.network_interface.attack_node(
                     connected_node,
-                    skill=self.network_interface.settings.red_spread_success_chance,
+                    skill=self.network_interface.settings.red.red_spread_success_chance,
                     use_skill=True,
-                    use_vulnerability=(not self.network_interface.settings.red_ignore_defences),
-                    guarantee=self.network_interface.settings.red_always_succeeds,
+                    use_vulnerability=(not self.network_interface.settings.red.red_ignores_defences),
+                    guarantee=self.network_interface.settings.red.red_always_succeeds,
                 )
                 if attack_status:
                     # If the attack succeeds
@@ -534,10 +534,10 @@ class RedActionSet:
         for node in safe_nodes:
             attack_status = self.network_interface.attack_node(
                 node,
-                skill=self.network_interface.settings.red_random_infection_success_chance,
+                skill=self.network_interface.settings.red.red_random_infection_success_chance,
                 use_skill=True,
-                use_vulnerability=(not self.network_interface.settings.red_ignore_defences),
-                guarantee=self.network_interface.settings.red_always_succeeds,
+                use_vulnerability=(not self.network_interface.settings.red.red_ignores_defences),
+                guarantee=self.network_interface.settings.red.red_always_succeeds,
             )
             nodes.append(node)
             if attack_status:

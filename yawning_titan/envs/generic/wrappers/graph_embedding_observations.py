@@ -77,7 +77,7 @@ class FeatherGraphEmbedObservation(ObservationWrapper):
             self.latest_graph_embedding = self.make_embedding()
 
         standard_obs = self.env.network_interface.get_current_observation()
-        if self.network_interface.settings.obs_node_connections:
+        if self.network_interface.settings.observation_space.obs_node_connections:
             size_standard_adj = self.network_interface.get_total_num_nodes() ** 2
 
             extra_obs = standard_obs[size_standard_adj:]

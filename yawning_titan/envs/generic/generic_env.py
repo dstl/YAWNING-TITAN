@@ -263,13 +263,13 @@ class GenericNetworkEnv(gym.Env):
 
             # if the total number of steps reaches the set end then the blue agent wins and is rewarded accordingly
             if self.current_duration == self.network_interface.settings.game_rules.gr_max_steps:
-                if self.network_interface.reward_end_multiplier:
-                    reward = self.network_interface.reward_end_multiplier * (
+                if self.network_interface.settings.rewards.reward_end_multiplier:
+                    reward = self.network_interface.settings.rewards.reward_end_multiplier * (
                             len(self.network_interface.get_nodes(filter_true_safe=True))
                             / self.network_interface.get_number_of_nodes()
                     )
                 else:
-                    reward = self.network_interface.reward_success
+                    reward = self.network_interface.settings.rewards.reward_success
                 done = True
 
         # Gets the state of the environment at the end of the current time step
@@ -291,7 +291,7 @@ class GenericNetworkEnv(gym.Env):
                 self.network_interface.get_red_location()
             )
 
-        if self.network_interface.misc_json_out:
+        if self.network_interface.settings.miscellaneous.misc_json_out:
             current_state = self.network_interface.create_json_time_step()
             self.network_interface.save_json(current_state, self.current_duration)
 
