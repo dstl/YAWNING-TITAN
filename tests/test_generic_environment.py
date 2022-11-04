@@ -40,143 +40,8 @@ def open_config_file(settings_path: str) -> Dict:
     return settings_data
 
 
-def init_test_env(
-    settings_path: str,
-    adj_matrix: np.array,
-    positions,
-    entry_nodes: List[str],
-    high_value_targets: List[str],
-) -> GenericNetworkEnv:
-    """
-    Generate the test GenericEnv() and number of actions for the blue agent.
-
-    Args:
-        settings_path: A path to the environment settings file
-        adj_matrix: the adjacency matrix used for the network to defend.
-        positions: x and y co-ordinates to plot the graph in 2D space
-        entry_nodes: list of strings that dictate which nodes are entry nodes
-        high_value_targets: list of strings that dictate which nodes are high value targets
-
-    Returns:
-        env: An OpenAI gym environment
-    """
-    if not entry_nodes:
-        entry_nodes = ["0", "1", "2"]
-
-    network_config = NetworkConfig.create(
-        {
-            "high_value_targets":high_value_targets,
-            "entry_nodes":entry_nodes,
-            "vulnerabilities":None
-        }
-    )
-    network_config.matrix = adj_matrix
-
-    config = Config(network_config=network_config)
-    config.create_from_file(settings_path)
-
-    network_interface = NetworkInterface(positions,config=config)
-
-    red = RedInterface(network_interface)
-    blue = BlueInterface(network_interface)
-
-    env = GenericNetworkEnv(red, blue, network_interface)
-
-    check_env(env, warn=True)
-    env.reset()
-
-    return env
-
-
-def generate_generic_env_test_reqs(
-    settings_file_path: Optional[str]=default_game_mode_path(),
-    net_creator_type="mesh",
-    n_nodes: int = 10,
-    connectivity: float = 0.7,
-    entry_nodes=None,
-    high_value_targets=None,
-) -> GenericNetworkEnv:
-    """
-    Generate test environment requirements.
-
-    Args:
-        settings_file_path: A path to the environment settings file
-        net_creator_type: The type of net creator to use to generate the underlying network
-        n_nodes: The number of nodes to create within the network
-        connectivity: The connectivity value for the mesh net creator (Only required for mesh network creator type)
-        entry_nodes: list of strings that dictate which nodes are entry nodes
-        high_value_targets: list of strings that dictate which nodes are high value targets
-
-    Returns:
-        env: An OpenAI gym environment
-
-    """
-    valid_net_creator_types = ["18node", "mesh"]
-    if net_creator_type not in valid_net_creator_types:
-        raise ValueError(
-            f"net_creator_type is {net_creator_type}, Must be 18_node or mesh"
-        )
-
-    if net_creator_type == "18node":
-        adj_matrix, node_positions = network_creator.create_18_node_network()
-    if net_creator_type == "mesh":
-        adj_matrix, node_positions = network_creator.create_mesh(
-            size=n_nodes, connectivity=connectivity
-        )
-
-    env = init_test_env(
-        settings_file_path, adj_matrix, node_positions, entry_nodes, high_value_targets
-    )
-
-    return env
-
-
-# test 1
-test_1_env = generate_generic_env_test_reqs(
-    os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
-    net_creator_type="18node",
-    n_nodes=18,
-)
-
-# test 2
-test_2_env = generate_generic_env_test_reqs(
-    os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
-    net_creator_type="mesh",
-    n_nodes=50,
-)
-
-# test 3
-test_3_env = generate_generic_env_test_reqs(
-    os.path.join(TEST_CONFIG_PATH, "base_config.yaml"), n_nodes=50
-)
-
-# test 4
-test_4_env = generate_generic_env_test_reqs(
-    os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml"), n_nodes=50
-)
-
-# test 5
-test_5_env = generate_generic_env_test_reqs(
-    os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"), n_nodes=100
-)
-
-# test 6
-test_6_env = generate_generic_env_test_reqs(
-    os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"), n_nodes=250
-)
-# test 7
-test_7_env = generate_generic_env_test_reqs(
-    os.path.join(TEST_CONFIG_PATH, "red_config_test_4.yaml"), n_nodes=5
-)
-
-# test 8
-test_8_env = generate_generic_env_test_reqs(
-    os.path.join(TEST_CONFIG_PATH, "red_config_test_5.yaml"), n_nodes=24
-)
-
-
 # tests to check invalid config files return errors
-def test_input_validation():
+def test_input_validation(generate_generic_env_test_reqs):
     """Test that incorrect/broken configuration files raise errors."""
     with pytest.raises(ValueError):
         _, _ = generate_generic_env_test_reqs(
@@ -214,7 +79,7 @@ def test_input_validation():
         )
 
 
-def test_network_interface():
+def test_network_interface(generate_generic_env_test_reqs):
     """Test the network interface class and associated methods work as intended."""
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
         os.path.join(TEST_CONFIG_PATH, "everything_guaranteed.yaml"),
@@ -277,11 +142,11 @@ def test_network_interface():
         env.reset()
 
 
-def test_natural_spreading():
+def test_natural_spreading(generate_generic_env_test_reqs):
     """Test the natural spreading simulation mechanic works as intended."""
     # generate an env
     n_nodes = 100
-    env = generate_generic_env_test_reqs(
+    env:GenericNetworkEnv = generate_generic_env_test_reqs(
         os.path.join(TEST_CONFIG_PATH, "spreading_config.yaml"),
         net_creator_type="mesh",
         n_nodes=n_nodes,
@@ -299,9 +164,9 @@ def test_natural_spreading():
 
 
 # check to make sure than when an env is reset all of the proper values are reset too
-def test_env_reset():
+def test_env_reset(generate_generic_env_test_reqs):
     """Test environment resets clean up properly."""
-    env = generate_generic_env_test_reqs(
+    env:GenericNetworkEnv = generate_generic_env_test_reqs(
         os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
@@ -346,10 +211,10 @@ def test_env_reset():
             assert env.network_interface.detected_attacks == []
 
 
-def test_new_high_value_target():
+def test_new_high_value_target(generate_generic_env_test_reqs):
     """Test the high value target gaol mechanic - focus on selection."""
     # check that a new high value target is being chosen
-    env = generate_generic_env_test_reqs(
+    env:GenericNetworkEnv = generate_generic_env_test_reqs(
         os.path.join(TEST_CONFIG_PATH, "new_high_value_target.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
@@ -381,9 +246,9 @@ def test_new_high_value_target():
         assert 1 / 10.5 > i / sum_ > 1 / 13.5
 
 
-def test_high_value_target_passed_into_network_interface():
+def test_high_value_target_passed_into_network_interface(generate_generic_env_test_reqs):
     """Test the high value target gaol mechanic - manually passed to ."""
-    env = generate_generic_env_test_reqs(
+    env:GenericNetworkEnv = generate_generic_env_test_reqs(
         os.path.join(TEST_CONFIG_PATH, "high_value_target_provided.yaml"),
         net_creator_type="mesh",
         n_nodes=30,
@@ -414,10 +279,10 @@ def test_high_value_target_passed_into_network_interface():
     assert set(targets.keys()).intersection(["15", "16"])
 
 
-def test_high_value_target_and_entry_nodes_matching():
+def test_high_value_target_and_entry_nodes_matching(generate_generic_env_test_reqs):
     """Test the high value target gaol mechanic - manually passed to ."""
     with warnings.catch_warnings(record=True) as w:
-        env = generate_generic_env_test_reqs(
+        env:GenericNetworkEnv = generate_generic_env_test_reqs(
             os.path.join(TEST_CONFIG_PATH, "high_value_target_provided.yaml"),
             net_creator_type="mesh",
             n_nodes=30,
@@ -457,9 +322,9 @@ def test_high_value_target_and_entry_nodes_matching():
         )
 
 
-def test_new_entry_nodes():
+def test_new_entry_nodes(generate_generic_env_test_reqs):
     """Test the selection of entry nodes and validate they are correct."""
-    env = generate_generic_env_test_reqs(
+    env:GenericNetworkEnv = generate_generic_env_test_reqs(
         os.path.join(TEST_CONFIG_PATH, "new_entry_nodes.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
@@ -486,10 +351,10 @@ def test_new_entry_nodes():
         assert np.isclose(i, 1000, atol=100)
 
 
-def test_new_vulnerabilities():
+def test_new_vulnerabilities(generate_generic_env_test_reqs):
     """Test that new vulnerabilities are chosen at each reset if activated within configuration."""
     # check that new vulnerabilities are being chosen (randomly)
-    env = generate_generic_env_test_reqs(
+    env:GenericNetworkEnv = generate_generic_env_test_reqs(
         os.path.join(TEST_CONFIG_PATH, "new_high_value_target.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
@@ -550,24 +415,26 @@ class RandomGen:
 
 
 @pytest.mark.parametrize(
-    ("env", "timesteps"),
+    ("path","creator_type","num_nodes","timesteps"),
     [
-        (test_1_env, N_TIME_STEPS),
-        (test_2_env, N_TIME_STEPS),
-        (test_3_env, N_TIME_STEPS),
-        (test_4_env, N_TIME_STEPS),
-        (test_5_env, N_TIME_STEPS),
-        (test_6_env, N_TIME_STEPS),
-        (test_7_env, N_TIME_STEPS),
-        (test_8_env, N_TIME_STEPS),
+        (os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),"18node",18,N_TIME_STEPS),
+        (os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),"mesh",50,N_TIME_STEPS),
+        (os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),"mesh",50,N_TIME_STEPS),
+        (os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml"),"mesh",50,N_TIME_STEPS),
+        (os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"),"mesh",100,N_TIME_STEPS),
+        (os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"),"mesh",250,N_TIME_STEPS),
+        (os.path.join(TEST_CONFIG_PATH, "red_config_test_4.yaml"),"mesh",5,N_TIME_STEPS),
+        (os.path.join(TEST_CONFIG_PATH, "red_config_test_5.yaml"),"mesh",24,N_TIME_STEPS),
     ],
 )
-def test_generic_env(env:GenericNetworkEnv, timesteps):
+def test_generic_env(generate_generic_env_test_reqs,path:str,creator_type:str,num_nodes:int,timesteps:int):
     """
     Test the generic environment across a number of test environments.
 
     Args:
-        env: The GenerciEnv() OpenAI gym used for as the test environment
+        settings_file_path: A path to the environment settings file
+        net_creator_type: The type of net creator to use to generate the underlying network
+        n_nodes: The number of nodes to create within the network
         timesteps: The number of timesteps to test for
     """
     # Counters for later
@@ -578,6 +445,8 @@ def test_generic_env(env:GenericNetworkEnv, timesteps):
     number_of_resets = 0
     wins = 0
     deceptive_counter = 0
+
+    env:GenericNetworkEnv = generate_generic_env_test_reqs(path,creator_type,num_nodes)
 
     red_action_count = {True: {}, False: {}}
     multi_attack_count = {True: {}, False: {}}
