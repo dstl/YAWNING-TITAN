@@ -5,7 +5,7 @@ from typing import Dict, Any, List
 from logging import getLogger
 from dataclasses import asdict,dataclass
 from yawning_titan.config import RedAgentConfig, BlueAgentConfig, GameRulesConfig, ObservationSpaceConfig, ResetConfig, RewardsConfig, NetworkConfig
-from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
+from yawning_titan.config.config_group_class import ConfigGroupABC
 
 
 _LOGGER = getLogger(__name__)
@@ -29,6 +29,50 @@ class MiscellaneousConfig(ConfigGroupABC):
         pass
 
 class Config:
+    """
+    Class that holds the configuration for YAWNING-TITAN
+    """
+
+    red: RedAgentConfig
+    """
+    Red agent configuration object
+    """
+
+    blue: BlueAgentConfig
+    """
+    Blue agent configuration object
+    """
+
+    observation_spaceg: ObservationSpaceConfig
+    """
+    Observation space configuration object
+    """
+
+    game_rules: GameRulesConfig
+    """
+    Game rules configuration object
+    """
+
+    reset: ResetConfig
+    """
+    Reset configuration object
+    """
+
+    miscellaneous: MiscellaneousConfig
+    """
+    Miscellaneous configuration object
+    """
+
+    network_config: NetworkConfig
+    """
+    Network configuration object
+    """
+
+    rewards: RewardsConfig
+    """
+    Rewards configuration object
+    """
+
     def __init__(
         self,
         red=RedAgentConfig,
