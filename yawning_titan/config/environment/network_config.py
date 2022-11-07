@@ -10,7 +10,7 @@ from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
 
 
 @dataclass()
-class NetworkConfig(ConfigGroupABC):
+class Network(ConfigGroupABC):
     """
     Class that validates and stores Network Configuration
     """
@@ -41,7 +41,7 @@ class NetworkConfig(ConfigGroupABC):
     ):
         cls._validate()
 
-        network_config = NetworkConfig(
+        network_config = Network(
             matrix=matrix,
             positions=positions,
             entry_nodes=entry_nodes,
