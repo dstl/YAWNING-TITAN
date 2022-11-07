@@ -39,7 +39,13 @@ class NetworkConfig(ConfigGroupABC):
             vulnerabilities: Optional[Dict] = None,
             high_value_targets: Optional[List[str]] = None
     ):
-        cls._validate()
+        cls._validate(
+            matrix=matrix,
+            positions=positions,
+            entry_nodes=entry_nodes,
+            vulnerabilities=vulnerabilities,
+            high_value_targets=high_value_targets
+        )
 
         network_config = NetworkConfig(
             matrix=matrix,
