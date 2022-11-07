@@ -1,12 +1,15 @@
 import yaml
 import inspect
+import ruamel.yaml as ry
+
 from yaml import SafeLoader
 from typing import Dict, Any, List
 from logging import getLogger
 from dataclasses import asdict,dataclass
-from yawning_titan.config import RedAgentConfig, BlueAgentConfig, GameRulesConfig, ObservationSpaceConfig, ResetConfig, RewardsConfig, NetworkConfig
-from yawning_titan.config.config_group_class import ConfigGroupABC
-
+from yawning_titan.config.agents import BlueAgentConfig,RedAgentConfig
+from yawning_titan.config.environment import ObservationSpaceConfig, ResetConfig, RewardsConfig, NetworkConfig, GameRulesConfig
+from yawning_titan.envs.generic.helpers import network_creator
+from yawning_titan.config import ConfigGroupABC
 
 _LOGGER = getLogger(__name__)
 
@@ -80,22 +83,21 @@ class Config:
         game_rules=GameRulesConfig,
         reset=ResetConfig,
         miscellaneous=MiscellaneousConfig,
-        network_config=NetworkConfig,
+        network=NetworkConfig,
         observation_space=ObservationSpaceConfig,
         rewards=RewardsConfig
     ) -> None:
        
-        self.red = red
-        self.blue = blue
-        self.game_rules = game_rules
-        self.reset = reset
-        self.miscellaneous = miscellaneous
-        self.network_config = network_config
-        self.observation_space = observation_space
-        self.rewards = rewards
+        self.red:RedAgentConfig = red
+        self.blue:BlueAgentConfig = blue
+        self.game_rules:GameRulesConfig = game_rules
+        self.reset:ResetConfig = reset
+        self.miscellaneous:MiscellaneousConfig = miscellaneous
+        self.network:NetworkConfig = network_config
+        self.observation_space:ObservationSpaceConfig = observation_space
+        self.rewards:RewardsConfig = rewards
 
-
-        if all(inspect.isclass(c) for c in [red,blue,game_rules,reset,miscellaneous,network_config,observation_space,rewards]):
+        if all(inspect.isclass(c) for c in self.__dict__.values()):
             self.config_created = True
         else:
             self.config_created = False
@@ -107,7 +109,10 @@ class Config:
             return obj.create(settings,*args, **kwargs)
         return obj
 
-    def create_from_file(self, settings_path:str):
+    def create_from_file(self, settings_path:str)->None:
+        """
+        Create a config class from a YAML file
+        """
         try:
             with open(settings_path) as f:
                 settings_dict: Dict[str, Dict[str, Any]] = yaml.load(f, Loader=SafeLoader)
@@ -129,13 +134,64 @@ class Config:
 
         self.config_created = True
 
-    def write_to_file(self, settings_path):
-        settings_dict = {key: val for key, val in self.__dict__.items() if key != "config_created"}
+    def as_formatted_dict(self):
+        settings_dict = {key: val for key, val in self.__dict__.items() if isinstance(val,ConfigGroupABC)}
         _settings_dict = {}
 
         for section_name, section_class in settings_dict.items():
-            _settings_dict[section_name.upper()] = asdict(section_class)
+            section_dict = {key:val for key,val in asdict(section_class).items() if type(val) in [int,str,list,bool]}
+            _settings_dict[section_name.upper()] = section_dict
+        return _settings_dict
 
+    def write_to_file(self, settings_path):
+        self.file_path = settings_path
         with open(settings_path, 'w') as file:
-            yaml.safe_dump(_settings_dict, file)
+            yaml.safe_dump(self.as_formatted_dict(), file)
 
+    def write_to_file_with_comments(self,file_path):
+        
+        
+        settings_dict = self.as_formatted_dict()
+        data = ry.round_trip_load(ry.round_trip_dump(settings_dict))
+        MAPIND = 4
+
+        _yaml = ry.YAML()
+        _yaml.indent(mapping=2)
+
+        with open(file_path,"w") as f:
+            #data = _yaml.load(f)
+            print("DOC",data)
+
+            for section_name, section_config in settings_dict.items():
+                data[section_name].yaml_set_start_comment('after test2', indent=2)
+                s = ry.CommentedMap(section_config)
+                for key,val in section_config.items():
+                    #print("k",self.__dict__[section_name.lower()].__dict__[key].__doc__)
+                    s.yaml_set_comment_before_after_key(key,"test comment",indent=2)
+                data[section_name] = s
+                    
+            print(data)
+            _yaml.dump(data,f)
+
+
+
+node_positions,matrix = network_creator.create_18_node_network()
+network_config = NetworkConfig.create(
+    {
+        "high_value_targets": ["9"],
+        "entry_nodes": ["0", "1", "2"],
+        "vulnerabilities":None,
+        "positions": node_positions,
+        "matrix": matrix
+    }
+)
+
+print("="*150)
+print(NetworkConfig.high_value_targets.__doc__)
+for key,val in network_config.__dict__.items():
+    print("k",key,val,val.__doc__)
+# conf = Config(network_config=network_config)
+# conf.create_from_file(r"D:\Pycharm projects\YAWNING-TITAN-DEV\YAWNING-TITAN\tests\test_configs\base_config.yaml")
+# print(conf.red.red_always_succeeds)
+# #conf.write_to_file("test.yaml")
+# conf.write_to_file_with_comments("test.yaml")

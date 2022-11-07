@@ -1,0 +1,162 @@
+RED:
+  # test comment
+  red_use_skill: true
+  # test comment
+  red_ignores_defences: false
+  # test comment
+  red_always_succeeds: false
+  # test comment
+  red_attack_from_current_position: false
+  # test comment
+  red_attack_from_any_node: true
+  # test comment
+  red_naturally_spread: true
+  # test comment
+  red_spread_action: false
+  # test comment
+  red_spread_action_likelihood: 1
+  # test comment
+  red_random_infection_action: false
+  # test comment
+  red_random_infection_likelihood: 1
+  # test comment
+  red_basic_attack_action: true
+  # test comment
+  red_basic_attack_likelihood: 1
+  # test comment
+  red_do_nothing_action: true
+  # test comment
+  red_do_nothing_likelihood: 1
+  # test comment
+  red_move_action: false
+  # test comment
+  red_move_action_likelihood: 1
+  # test comment
+  red_zero_day_action: true
+  # test comment
+  red_zero_day_start_amount: 1
+  # test comment
+  red_zero_day_days_required_to_create: 10
+  # test comment
+  red_targeting_random: false
+  # test comment
+  red_targeting_prioritise_connected_nodes: true
+  # test comment
+  red_targeting_prioritise_unconnected_nodes: false
+  # test comment
+  red_targeting_prioritise_vulnerable_nodes: false
+  # test comment
+  red_targeting_prioritise_resilient_nodes: false
+BLUE:
+  # test comment
+  blue_max_deceptive_nodes: 2
+  # test comment
+  blue_deception_immediate_detection_chance: 1
+  # test comment
+  blue_deception_scan_detection_chance: 1
+  # test comment
+  blue_discover_failed_attacks: true
+  # test comment
+  blue_discover_attack_source_if_detected: true
+  # test comment
+  blue_discover_attack_source_if_not_detected: true
+  # test comment
+  blue_chance_to_discover_source_deceptive_failed: 1
+  # test comment
+  blue_chance_to_discover_source_deceptive_succeed: 1
+  # test comment
+  blue_make_node_safe_modifies_vuln: false
+  # test comment
+  blue_make_safe_random_vuln: true
+  # test comment
+  blue_reduce_vuln_action: true
+  # test comment
+  blue_restore_node_action: true
+  # test comment
+  blue_make_node_safe_action: true
+  # test comment
+  blue_scan_action: true
+  # test comment
+  blue_isolate_action: true
+  # test comment
+  blue_reconnect_action: true
+  # test comment
+  blue_do_nothing_action: true
+  # test comment
+  blue_deceptive_action: true
+  # test comment
+  blue_deceptive_node_make_new: true
+GAME_RULES:
+  # test comment
+  gr_max_steps: 1000
+  # test comment
+  gr_loss_total_compromise: false
+  # test comment
+  gr_loss_pc_nodes_compromised: true
+  # test comment
+  gr_number_of_high_value_targets: 1
+  # test comment
+  gr_loss_hvt: false
+  # test comment
+  gr_loss_hvt_random_placement: false
+  # test comment
+  gr_loss_hvt_furthest_away: true
+  # test comment
+  gr_random_entry_nodes: true
+  # test comment
+  gr_num_entry_nodes: 3
+  # test comment
+  gr_prefer_central_entry: false
+  # test comment
+  gr_prefer_edge_nodes: false
+  # test comment
+  gr_grace_period: 3
+RESET:
+  # test comment
+  reset_random_vulns: false
+  # test comment
+  reset_move_hvt: false
+  # test comment
+  reset_move_entry_nodes: false
+MISCELLANEOUS:
+  # test comment
+  misc_json_out: false
+NETWORK_CONFIG:
+  # test comment
+  high_value_targets:
+  - '9'
+  # test comment
+  entry_nodes:
+  - '0'
+  - '1'
+  - '2'
+OBSERVATION_SPACE:
+  # test comment
+  obs_compromised_status: true
+  # test comment
+  obs_node_vuln_status: true
+  # test comment
+  obs_node_connections: true
+  # test comment
+  obs_avg_vuln: false
+  # test comment
+  obs_graph_connectivity: true
+  # test comment
+  obs_attack_sources: true
+  # test comment
+  obs_attack_targets: true
+  # test comment
+  obs_special_nodes: false
+  # test comment
+  obs_red_agent_skill: true
+REWARDS:
+  # test comment
+  reward_loss: -100
+  # test comment
+  reward_success: 100
+  # test comment
+  reward_end_multiplier: true
+  # test comment
+  reward_reduce_negative_rewards: false
+  # test comment
+  reward_function: standard_rewards

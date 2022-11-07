@@ -2,6 +2,17 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Dict, Any
 
+def set_prop(x, doc):
+    def _get(self):
+        return getattr(self, '_' + x)
+
+    def _set(self, val):
+        setattr(self, '_' + x, val)
+
+    def _del(self):
+        delattr(self, '_' + x)
+
+    return property(_get, _set, _del, doc)
 
 @dataclass
 class ConfigGroupABC(ABC):
