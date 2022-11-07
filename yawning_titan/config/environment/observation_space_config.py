@@ -1,6 +1,6 @@
 from __future__ import annotations
-from dataclasses import dataclass
-from typing import Dict, Any, Tuple
+from dataclasses import dataclass,field
+from typing import Dict, Any, NamedTuple, Tuple
 
 from yawning_titan.config.game_config.config_group_class import ConfigGroupABC, ConfigItem
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_type
@@ -12,31 +12,34 @@ class ObservationSpaceConfig(ConfigGroupABC):
     Class that validates and stores the Observation Space configuration
     """
 
-    obs_compromised_status: Tuple[bool,str] = ConfigItem(value=None,description=
-    """Is true if the blue agent can see the compromised status of all the nodes""")
+    obs_compromised_status: bool = set_prop
+    _obs_compromised_status: bool = field(init=False, repr=False)
+    
+    
+    """Is true if the blue agent can see the compromised status of all the nodes"""
 
-    obs_node_vuln_status: Tuple[bool,str]= ConfigItem(value=None,description=
+    obs_node_vuln_status: ConfigItem= ConfigItem(value=None,description=
     """Is true if the blue agent can see the vulnerability scores of all the nodes""")
 
-    obs_node_connections: Tuple[bool,str]= ConfigItem(value=None,description=
+    obs_node_connections: ConfigItem= ConfigItem(value=None,description=
     """Is true if blue agent can see what nodes are connected to what other nodes""")
 
-    obs_avg_vuln: Tuple[bool,str]= ConfigItem(value=None,description=
+    obs_avg_vuln: ConfigItem= ConfigItem(value=None,description=
     """Is true if the blue agent can see the average vulnerability of all the nodes""")
 
-    obs_graph_connectivity: Tuple[bool,str]= ConfigItem(value=None,description=
+    obs_graph_connectivity: ConfigItem= ConfigItem(value=None,description=
     """Is true if the blue agent can see a graph connectivity score""")
 
-    obs_attack_sources: Tuple[bool,str]= ConfigItem(value=None,description=
+    obs_attack_sources: ConfigItem= ConfigItem(value=None,description=
     """Is true if the blue agent can see all of the nodes that have recently attacked a safe node""")
 
-    obs_attack_targets: Tuple[bool,str]= ConfigItem(value=None,description=
+    obs_attack_targets: ConfigItem= ConfigItem(value=None,description=
     """Is true if the blue agent can see all the nodes that have recently been attacked""")
 
-    obs_special_nodes: Tuple[bool,str]= ConfigItem(value=None,description=
+    obs_special_nodes: ConfigItem= ConfigItem(value=None,description=
     """Is true if the blue agent can see all of the special nodes (entry nodes, high value targets)""")
 
-    obs_red_agent_skill: Tuple[bool,str]= ConfigItem(value=None,description=
+    obs_red_agent_skill: ConfigItem= ConfigItem(value=None,description=
     """Is true if the blue agent can see the skill level of the red agent""")
 
     @classmethod
@@ -47,9 +50,7 @@ class ObservationSpaceConfig(ConfigGroupABC):
         cls._validate(settings)
 
         observation_space = ObservationSpaceConfig(
-            obs_compromised_status=settings[
-                "compromised_status"
-            ],
+            obs_compromised_status=ConfigItem(value=settings["compromised_status"],description="Is true if the blue agent can see the compromised status of all the nodes"),
             obs_node_vuln_status=settings["vulnerabilities"],
             obs_node_connections=settings["node_connections"],
             obs_avg_vuln=settings["average_vulnerability"],
