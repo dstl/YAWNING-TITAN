@@ -86,7 +86,7 @@ class GameRulesConfig(ConfigGroupABC):
             gr_loss_pc_node_compromised_pc=settings[
                 "percentage_of_nodes_compromised_equals_loss"
             ],
-            gr_number_of_high_value_targets=["number_of_high_value_targets"],
+            gr_number_of_high_value_targets=settings["number_of_high_value_targets"],
             gr_loss_hvt=settings["lose_when_high_value_target_lost"],
             gr_loss_hvt_random_placement=settings[
                 "choose_high_value_targets_placement_at_random"
@@ -136,7 +136,7 @@ class GameRulesConfig(ConfigGroupABC):
         check_type(data, "min_number_of_network_nodes", [int])
         check_type(data, "number_of_high_value_targets", [int])
         # make sure high value targets is not more than the number of minimum number of nodes in network
-        check_within_range(data, "number_of_high_value_targets", 1, data["min_number_of_network_nodes"], True, True)
+        check_within_range(data, "number_of_high_value_targets", 0, data["min_number_of_network_nodes"], True, True)
 
         check_within_range(data, "grace_period_length", 0, 100, True, True)
         check_within_range(data, "max_steps", 0, 10000000, False, True)
@@ -181,7 +181,6 @@ class GameRulesConfig(ConfigGroupABC):
         if data["lose_when_high_value_target_lost"]:
             # if there is no way to set high value targets
             if (
-                    not high_value_targets and
                     not data["choose_high_value_targets_placement_at_random"] and
                     not data["choose_high_value_targets_furthest_away_from_entry"]
             ):
@@ -196,17 +195,6 @@ class GameRulesConfig(ConfigGroupABC):
             ):
                 raise ValueError(
                     "'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"
-                    # noqa
-                )
-            # if high value targets are set and these configurations are also set
-            if (
-                    high_value_targets and
-                    (data["choose_high_value_targets_placement_at_random"]
-                     or data["choose_high_value_targets_furthest_away_from_entry"])
-            ):
-                raise ValueError(
-                    "Provided high value targets: " + str(
-                        high_value_targets) + " 'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"
                     # noqa
                 )
 
