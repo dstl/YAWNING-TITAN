@@ -44,6 +44,8 @@ class RewardsConfig(ConfigGroupABC):
             cls,
             settings: Dict[str, Any]
     ) -> RewardsConfig:
+        cls._validate(settings)
+
         rewards = RewardsConfig(
             reward_loss=settings["rewards_for_loss"],
             reward_success=settings["rewards_for_reaching_max_steps"],
