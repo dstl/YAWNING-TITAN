@@ -25,7 +25,6 @@ class NetworkInterface:
 
     def __init__(
         self,
-        positions: dict,
         config: Optional[Config] = None,
     ):
         """
@@ -48,6 +47,7 @@ class NetworkInterface:
         self.settings = config
         
         self.matrix = self.settings.network_config.matrix
+        self.positions = self.settings.network_config.positions
         number_of_nodes = len(self.matrix)
 
         # check if high value targets were provided
@@ -90,7 +90,7 @@ class NetworkInterface:
                 "vulnerability_score"
             ] = vulnerabilities[node]
             # node positions
-            self.initial_network_variables[node]["node_position"] = positions[node]
+            self.initial_network_variables[node]["node_position"] = self.positions[node]
 
         self.current_network_variables = copy.deepcopy(self.initial_network_variables)
 

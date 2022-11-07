@@ -41,15 +41,16 @@ def init_test_env():
             {
                 "high_value_targets":high_value_targets,
                 "entry_nodes":entry_nodes,
-                "vulnerabilities":None
+                "vulnerabilities":None,
+                "matrix":adj_matrix,
+                "positions":positions
             }
         )
-        network_config.matrix = adj_matrix
 
         config = Config(network_config=network_config)
         config.create_from_file(settings_path)
 
-        network_interface = NetworkInterface(positions,config=config)
+        network_interface = NetworkInterface(config=config)
 
         red = RedInterface(network_interface)
         blue = BlueInterface(network_interface)
