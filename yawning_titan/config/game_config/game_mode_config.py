@@ -65,9 +65,14 @@ class GameModeConfig:
         """
         Creates an instance of the GameModeConfig class
         """
-        # opens the fle the user has specified to be the location of the settings
+        
+        # if no config provided, use default game mode
         if not config_path:
             settings_path = default_game_mode_path()
+        # otherwise, the settings path will be the path provided
+        else:
+            settings_path = config_path
+
         try:
             with open(settings_path) as f:
                 settings = yaml.load(f, Loader=SafeLoader)
@@ -84,5 +89,5 @@ class GameModeConfig:
             game_rules_config=GameRulesConfig.create(settings=settings["GAME_RULES"]),
             reset_config=ResetConfig.create(settings["RESET"]),
             rewards_config=RewardsConfig.create(settings["REWARDS"]),
-            output_timestep_data_to_json=True
+            output_timestep_data_to_json=settings["MISCELLANEOUS"]["output_timestep_data_to_json"]
         )
