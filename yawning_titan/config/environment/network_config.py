@@ -1,53 +1,66 @@
 from __future__ import annotations
+
+import warnings
 from dataclasses import dataclass
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
+
 import numpy as np
 
-from yawning_titan.config.config_group_class import ConfigGroupABC,set_prop
-from yawning_titan.envs.generic.helpers.environment_input_validation import check_type,check_within_range
+from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
 
 
-@dataclass
+@dataclass()
 class NetworkConfig(ConfigGroupABC):
     """
-    Class that validates and stores Game Rules Configuration
+    Class that validates and stores Network Configuration
     """
 
-    high_value_targets: List[str] = set_prop("high_value_targets","A name of a node that when taken means the red agent instantly wins")
-    #"""A name of a node that when taken means the red agent instantly wins"""
+    matrix: np.array
+    """Stores the matrix dictating how each node is connected to each other"""
 
-    entry_nodes: List[str] = set_prop("entry_nodes","A list of nodes that act as gateways or doors in the network for the red agent. While the red")
-    #"""A list of nodes that act as gateways or doors in the network for the red agent. While the red"""
+    positions: Dict
+    """Dictionary containing the positions of the nodes in the network (when displayed as a graph)"""
 
-    vulnerabilities: List[Dict] = set_prop("vulnerabilities","A dictionary containing the vulnerabilities of the nodes")
-    #"""A dictionary containing the vulnerabilities of the nodes"""
+    entry_nodes: Optional[List[str]]
+    """List of entry nodes"""
 
-    matrix: np.array = set_prop("matrix","An adjacency matrix containing the connections between nodes in the network")
-    #"""An adjacency matrix containing the connections between nodes in the network"""
+    vulnerabilities: Optional[Dict]
+    """Dictionary containing the vulnerabilities of the nodes"""
 
-    positions: dict = set_prop("matrix","A dictionary containing the positions of the nodes in the network (when displayed as a graph")
-    #"""A dictionary containing the positions of the nodes in the network (when displayed as a graph)"""
-
-
-    #topology: str
+    high_value_targets: Optional[List[str]]
+    """List of high value nodes"""
 
     @classmethod
-    def create(cls, settings: Dict[str, Any]):
-        cls._validate(settings)
-        network_settings = NetworkConfig(
-            high_value_targets = settings["high_value_targets"],
-            entry_nodes = settings["entry_nodes"],
-            vulnerabilities= settings["vulnerabilities"],
-            matrix=settings["matrix"],
-            positions=settings["positions"]
-            #topology = settings["network_topology"]
+    def create(
+            cls,
+            matrix: np.array,
+            positions: Dict,
+            entry_nodes: Optional[List[str]] = None,
+            vulnerabilities: Optional[Dict] = None,
+            high_value_targets: Optional[List[str]] = None
+    ):
+        cls._validate()
+
+        network_config = NetworkConfig(
+            matrix=matrix,
+            positions=positions,
+            entry_nodes=entry_nodes,
+            vulnerabilities=vulnerabilities,
+            high_value_targets=high_value_targets
         )
 
-        return network_settings
+        return network_config
 
     @classmethod
-    def _validate(cls, data: dict):
-       #TODO: add validation of network topology file availability
-       check_type(data,"high_value_targets",[list,None])
-       check_type(data,"entry_nodes",[list,None])
-       check_type(data,"vulnerabilities",[Dict,None])
+    def _validate(
+            cls,
+            matrix: np.array,
+            positions: Dict,
+            entry_nodes: Optional[List[str]] = None,
+            vulnerabilities: Optional[Dict] = None,
+            high_value_targets: Optional[List[str]] = None
+    ):
+        # check that no entry nodes and high value nodes intersect
+        if set(entry_nodes) & set(high_value_targets):
+            warnings.warn(
+                "Provided entry nodes and high value targets intersect and may cause the training to prematurely end")
