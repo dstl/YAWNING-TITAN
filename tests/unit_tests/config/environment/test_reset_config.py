@@ -16,7 +16,7 @@ def test_read_valid_config():
 
     assert reset_config.reset_random_vulns is False
 
-    assert reset_config.reset_move_hvt is False
+    assert reset_config.reset_move_hvn is False
 
     assert reset_config.reset_move_entry_nodes is False
 
@@ -26,8 +26,8 @@ def test_read_valid_config():
     [
         ("randomise_vulnerabilities_on_reset", "fail",
          "'randomise_vulnerabilities_on_reset' needs to be of type: <class 'bool'>"),
-        ("choose_new_high_value_targets_on_reset", "fail",
-         "'choose_new_high_value_targets_on_reset' needs to be of type: <class 'bool'>"),
+        ("choose_new_high_value_nodes_on_reset", "fail",
+         "'choose_new_high_value_nodes_on_reset' needs to be of type: <class 'bool'>"),
         ("choose_new_entry_nodes_on_reset", "fail",
          "'choose_new_entry_nodes_on_reset' needs to be of type: <class 'bool'>"),
     ]

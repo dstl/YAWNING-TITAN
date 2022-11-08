@@ -178,7 +178,7 @@ def check_red(data: dict):
             and (not data["red_prioritises_un_connected_nodes"])
             and (not data["red_prioritises_vulnerable_nodes"])
             and (not data["red_prioritises_resilient_nodes"])
-            and (data["red_pursues_node"] is None)
+            and (data["red_target_node"] is None)
     ):
         raise ValueError(
             "'red_prioritises_****' -> Red must choose its target in some way. If you are unsure select 'red_chooses_target_at_random'"

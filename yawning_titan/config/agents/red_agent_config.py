@@ -298,7 +298,7 @@ class RedAgentConfig(ConfigGroupABC):
                 and (not data["red_prioritises_resilient_nodes"])
         ):
             raise ValueError(
-                "'red_prioritises_****' -> Red must choose its target in some way. If you are unsure select 'red_chooses_target_at_random'"
+                "'red_target_node', 'red_prioritises_****' -> Red must choose its target in some way. If you are unsure select 'red_chooses_target_at_random'"
                 # noqa
             )
         if (not data["red_can_only_attack_from_red_agent_node"]) and (
@@ -312,7 +312,7 @@ class RedAgentConfig(ConfigGroupABC):
                 data["red_prioritises_vulnerable_nodes"]
                 or data["red_prioritises_resilient_nodes"]
         ):
-            if data["red_ignores_defences"]:
+            if not data["red_ignores_defences"]:
                 raise ValueError(
                     "'red_ignores_defences', 'red_prioritises_vulnerable_nodes', 'red_prioritises_resilient_nodes' -> It makes no sense for red to prioritise nodes based on a stat that is ignored (vulnerability)"
                     # noqa

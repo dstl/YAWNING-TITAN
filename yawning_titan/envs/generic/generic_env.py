@@ -426,7 +426,7 @@ class GenericNetworkEnv(gym.Env):
             "RL blue agent vs probabilistic red in a generic network environment",
             special_nodes=special_nodes,
             entrance_nodes=self.network_interface.entry_nodes,
-            target_node=self.network_interface.red_pursues_node,
+            target_node=self.network_interface.red_target_node,
             show_only_blue_view=show_only_blue_view,
             show_node_names=show_node_names,
         )

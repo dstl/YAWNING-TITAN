@@ -28,13 +28,15 @@ def test_read_valid_config():
 
     assert game_rules.gr_loss_pc_node_compromised_pc == 0.8
 
-    assert game_rules.gr_number_of_high_value_targets == 1
+    assert game_rules.gr_number_of_high_value_nodes == 1
 
-    assert game_rules.gr_loss_hvt is False
+    assert game_rules.gr_loss_hvn is False
+    
+    assert game_rules.gr_loss_tn is False
+    
+    assert game_rules.gr_loss_hvn_random_placement is False
 
-    assert game_rules.gr_loss_hvt_random_placement is False
-
-    assert game_rules.gr_loss_hvt_furthest_away is True
+    assert game_rules.gr_loss_hvn_furthest_away is True
 
     assert game_rules.gr_random_entry_nodes is True
 
@@ -65,8 +67,8 @@ def test_read_valid_config():
          "'min_number_of_network_nodes' needs to be of type: <class 'int'>"),
         ("max_steps", 0.5,
          "'max_steps' needs to be of type: <class 'int'>"),
-        ("number_of_high_value_targets", 0.5,
-         "'number_of_high_value_targets' needs to be of type: <class 'int'>"),
+        ("number_of_high_value_nodes", 0.5,
+         "'number_of_high_value_nodes' needs to be of type: <class 'int'>"),
         ("number_of_entry_nodes", 0.5,
          "'number_of_entry_nodes' needs to be of type: <class 'int'>"),
         ("grace_period_length", 0.5,
@@ -76,12 +78,14 @@ def test_read_valid_config():
          "'lose_when_all_nodes_lost' needs to be of type: <class 'bool'>"),
         ("lose_when_n_percent_of_nodes_lost", 0.5,
          "'lose_when_n_percent_of_nodes_lost' needs to be of type: <class 'bool'>"),
+        ("lose_when_target_node_lost", 0.5,
+         "'lose_when_target_node_lost' needs to be of type: <class 'bool'>"),
         ("lose_when_high_value_target_lost", 0.5,
          "'lose_when_high_value_target_lost' needs to be of type: <class 'bool'>"),
-        ("choose_high_value_targets_placement_at_random", 0.5,
-         "'choose_high_value_targets_placement_at_random' needs to be of type: <class 'bool'>"),
-        ("choose_high_value_targets_furthest_away_from_entry", 0.5,
-         "'choose_high_value_targets_furthest_away_from_entry' needs to be of type: <class 'bool'>"),
+        ("choose_high_value_nodes_placement_at_random", 0.5,
+         "'choose_high_value_nodes_placement_at_random' needs to be of type: <class 'bool'>"),
+        ("choose_high_value_nodes_furthest_away_from_entry", 0.5,
+         "'choose_high_value_nodes_furthest_away_from_entry' needs to be of type: <class 'bool'>"),
         ("choose_entry_nodes_randomly", 0.5,
          "'choose_entry_nodes_randomly' needs to be of type: <class 'bool'>"),
         ("prefer_central_nodes_for_entry_nodes", 0.5,
@@ -113,10 +117,10 @@ def test_invalid_config_type(config_item_to_test: str, config_value: Any, expect
          "'node_vulnerability_lower_bound' Needs to have a value less than: 1 (inclusive)"),
 
         # MORE THAN OR EQUAL TO 0 BUT LESS THAN MIN NUM OF NODES
-        ("number_of_high_value_targets", -1,
-         "'number_of_high_value_targets' Needs to have a value greater than: 0 (inclusive)"),
-        ("number_of_high_value_targets", 19,
-         "'number_of_high_value_targets' Needs to have a value less than: 18 (inclusive)"),
+        ("number_of_high_value_nodes", -1,
+         "'number_of_high_value_nodes' Needs to have a value greater than: 0 (inclusive)"),
+        ("number_of_high_value_nodes", 19,
+         "'number_of_high_value_nodes' Needs to have a value less than: 18 (inclusive)"),
         ("number_of_entry_nodes", -1,
          "'number_of_entry_nodes' Needs to have a value greater than: 0 (not inclusive)"),
         ("number_of_entry_nodes", 19,
