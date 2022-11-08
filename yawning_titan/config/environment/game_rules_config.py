@@ -169,10 +169,10 @@ class GameRulesConfig(ConfigGroupABC):
             True,
         )
         # make sure the required node is not more than the number of minimum number of nodes in network
-        if target_node is not None:
+        if red_target_node is not None:
             check_within_range(
                 data,
-                target_node,
+                red_target_node,
                 0,
                 data["min_number_of_network_nodes"],
                 False,
@@ -222,7 +222,7 @@ class GameRulesConfig(ConfigGroupABC):
                     # noqa
                 )
 
-        if data["lose_when_high_value_node_lost"] and red_target_node is None:
+        if data["lose_when_target_node_lost"] and red_target_node is None:
             raise ValueError("target node must be provided for game to end when target node captured")
 
         if data["grace_period_length"] > data["max_steps"]:
