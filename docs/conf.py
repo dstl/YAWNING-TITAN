@@ -21,11 +21,11 @@ sys.path.insert(0, os.path.abspath("../"))
 # -- Project information -----------------------------------------------------
 
 project = "YAWNING TITAN"
-copyright = "Crown Copyright (C) Dstl 2022."
+copyright = "Crown Copyright (C) Dstl 2022"
 author = "Defence Science and Technology Laboratory UK"
 
-# The short X.Y version
-version = "0.1"
+# The short Major.Minor.Build version
+version = "0.1.0"
 # The full version, including alpha/beta/rc tags
 release = "0.1.0"
 
