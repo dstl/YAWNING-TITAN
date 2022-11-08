@@ -54,7 +54,7 @@ def test_read_created_yaml(tmpdir_factory):
     config_file = os.path.join(tmpdir_factory.mktemp("temp"),"test.yaml")
     game_mode.write_to_file(config_file)
     new_game_mode = GameModeConfig.create_from_yaml(config_file)
-    assert new_game_mode.as_formatted_dict() == config_dict
+    assert new_game_mode.to_formatted_dict() == config_dict
 
 
 def test_invalid_path():

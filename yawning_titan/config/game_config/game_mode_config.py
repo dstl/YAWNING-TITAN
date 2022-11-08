@@ -91,7 +91,7 @@ class GameModeConfig:
             raise e
         return cls.create(settings=settings)
 
-    def as_formatted_dict(self,alias=True):
+    def to_formatted_dict(self,alias=True):
         settings_dict = {
             key: val
             for key, val in self.__dict__.items()
@@ -106,10 +106,10 @@ class GameModeConfig:
     def write_to_file(self, settings_path):
         self.file_path = settings_path
         with open(settings_path, "w") as file:
-            yaml.safe_dump(self.as_formatted_dict(), file)
+            yaml.safe_dump(self.to_formatted_dict(), file)
 
     def write_to_file_with_comments(self, file_path):
-        settings_dict = self.as_formatted_dict()
+        settings_dict = self.to_formatted_dict()
         data = ry.round_trip_load(ry.round_trip_dump(settings_dict))
 
         _yaml = ry.YAML()
