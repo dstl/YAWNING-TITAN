@@ -1,5 +1,5 @@
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, Any
 
 from yawning_titan.config.environment.network_config import NetworkConfig
@@ -13,52 +13,52 @@ class GameRulesConfig(ConfigGroupABC):
     Class that validates and stores Game Rules Configuration
     """
 
-    gr_min_number_of_network_nodes: int
+    gr_min_number_of_network_nodes: int = field(metadata="The minimum number of nodes the game mode will be allowed to run on")
     """The minimum number of nodes the game mode will be allowed to run on"""
 
-    gr_node_vuln_lower: float
+    gr_node_vuln_lower: float = field(metadata="Lower bound of the node vulnerability")
     """Lower bound of the node vulnerability"""
 
-    gr_node_vuln_upper: float
+    gr_node_vuln_upper: float = field(metadata="Upper bound of the node vulnerability")
     """Upper bound of the node vulnerability"""
 
-    gr_max_steps: int
+    gr_max_steps: int = field(metadata="Timesteps the game will go on for")
     """Timesteps the game will go on for"""
 
-    gr_loss_total_compromise: bool
+    gr_loss_total_compromise: bool = field(metadata="Is true if the game ends when all nodes are lost")
     """Is true if the game ends when all nodes are lost"""
 
-    gr_loss_pc_nodes_compromised: bool
+    gr_loss_pc_nodes_compromised: bool = field(metadata="Is true if the game ends when a percentage of nodes is compromised")
     """Is true if the game ends when a percentage of nodes is compromised"""
 
-    gr_loss_pc_node_compromised_pc: float
+    gr_loss_pc_node_compromised_pc: float = field(metadata="Percentage of the nodes becoming infected for the game to be considered lost by the blue agent")
     """Percentage of the nodes becoming infected for the game to be considered lost by the blue agent"""
 
-    gr_number_of_high_value_targets: int
+    gr_number_of_high_value_targets: int = field(metadata="Number of nodes to be marked as high value in network")
     """Number of nodes to be marked as high value in network"""
 
-    gr_loss_hvt: bool
+    gr_loss_hvt: bool = field(metadata="Is true if the game ends if the high value node is lost")
     """Is true if the game ends if the high value node is lost"""
 
-    gr_loss_hvt_random_placement: bool
+    gr_loss_hvt_random_placement: bool = field(metadata="Is true if the high value nodes are set randomly across the network")
     """Is true if the high value nodes are set randomly across the network"""
 
-    gr_loss_hvt_furthest_away: bool
+    gr_loss_hvt_furthest_away: bool = field(metadata="Is true if the high value nodes are set furthest away from the entry nodes")
     """Is true if the high value nodes are set furthest away from the entry nodes"""
 
-    gr_random_entry_nodes: bool
+    gr_random_entry_nodes: bool = field(metadata="Is true if the entry nodes will be placed randomly across the network")
     """Is true if the entry nodes will be placed randomly across the network"""
 
-    gr_num_entry_nodes: int
+    gr_num_entry_nodes: int = field(metadata="Number of nodes to be marked as entry nodes in network")
     """Number of nodes to be marked as entry nodes in network"""
 
-    gr_prefer_central_entry: bool
+    gr_prefer_central_entry: bool = field(metadata="Is true if the entry nodes will be placed centrally in the network")
     """Is true if the entry nodes will be placed centrally in the network"""
 
-    gr_prefer_edge_nodes: bool
+    gr_prefer_edge_nodes: bool = field(metadata="Is true if the entry nodes will be placed on the edges of the network")
     """Is true if the entry nodes will be placed on the edges of the network"""
 
-    gr_grace_period: int
+    gr_grace_period: int = field(metadata="Number of timesteps the blue agent has to prepare")
     """Number of timesteps the blue agent has to prepare"""
 
     @classmethod

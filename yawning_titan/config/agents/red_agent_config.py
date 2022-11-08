@@ -1,5 +1,5 @@
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, Any
 
 from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
@@ -13,96 +13,96 @@ class RedAgentConfig(ConfigGroupABC):
     """
 
     # red agent skill
-    red_skill: float
+    red_skill: float = field(metadata="Red agent's skill modifier")
     """Red agent's skill modifier"""
 
-    red_use_skill: bool
+    red_use_skill: bool = field(metadata="Is true if red agent will use the skill modifier when attacking a node")
     """Is true if red agent will use the skill modifier when attacking a node"""
 
     # red agent attack pattern
-    red_ignore_defences: bool
+    red_ignore_defences: bool = field(metadata="Is true if red agent will ignore node defences")
     """Is true if red agent will ignore node defences"""
 
-    red_always_succeeds: bool
+    red_always_succeeds: bool = field(metadata="Is true if red agent will always succeed when attacking")
     """Is true if red agent will always succeed when attacking"""
 
-    red_attack_from_current_position: bool
+    red_attack_from_current_position: bool = field(metadata="Is true if red agent can only attack from its current position")
     """Is true if red agent can only attack from its current position"""
 
-    red_attack_from_any_node: bool
+    red_attack_from_any_node: bool = field(metadata="Is true if red can attack any safe node anywhere in the network")
     """Is true if red can attack any safe node anywhere in the network"""
 
     # red spread
-    red_naturally_spread: bool
+    red_naturally_spread: bool = field(metadata="Is true if red can naturally spread every timestep")
     """Is true if red can naturally spread every timestep"""
 
-    red_chance_to_spread_to_connected_node: float
+    red_chance_to_spread_to_connected_node: float = field(metadata="Chance of red agent spreading to a connected safe node")
     """Chance of red agent spreading to a connected safe node"""
 
-    red_chance_to_spread_to_unconnected_node: float
+    red_chance_to_spread_to_unconnected_node: float = field(metadata="Chance of red agent spreading to an unconnected safe node")
     """Chance of red agent spreading to an unconnected safe node"""
 
-    red_spread_action: bool
+    red_spread_action: bool = field(metadata="Is true if red can try to spread to every connected safe node")
     """Is true if red can try to spread to every connected safe node"""
 
-    red_spread_action_likelihood: float
+    red_spread_action_likelihood: float = field(metadata="Chance of red agent to try and spread to every connected safe node")
     """Chance of red agent to try and spread to every connected safe node"""
 
-    red_spread_success_chance: float
+    red_spread_success_chance: float = field(metadata="Chance for red agent spread action to succeed")
     """Chance for red agent spread action to succeed"""
 
-    red_random_infection_action: bool
+    red_random_infection_action: bool = field(metadata="Is true if red agent can attack any safe node in the network")
     """Is true if red agent can attack any safe node in the network"""
 
-    red_random_infection_likelihood: float
+    red_random_infection_likelihood: float = field(metadata="Chance of the red agent attacking any random safe node")
     """Chance of the red agent attacking any random safe node"""
 
-    red_random_infection_success_chance: float
+    red_random_infection_success_chance: float = field(metadata="Chance of the random safe node attacks from succeeding")
     """Chance of the random safe node attacks from succeeding"""
 
-    red_basic_attack_action: bool
+    red_basic_attack_action: bool = field(metadata="Is true if red uses a basic attack to take over a safe node connected to an infected node")
     """Is true if red uses a basic attack to take over a safe node connected to an infected node"""
 
-    red_basic_attack_likelihood: float
+    red_basic_attack_likelihood: float = field(metadata="Chance of the basic attack succeeding")
     """Chance of the basic attack succeeding"""
 
     # red do nothing
-    red_do_nothing_action: bool
+    red_do_nothing_action: bool = field(metadata="Is true if the red agent can choose to do nothing")
     """Is true if the red agent can choose to do nothing"""
-    red_do_nothing_likelihood: float
+    red_do_nothing_likelihood: float = field(metadata="Chance of the red agent from doing nothing")
     """Chance of the red agent from doing nothing"""
 
     # red movement
-    red_move_action: bool
+    red_move_action: bool = field(metadata="Is true if the red agent can choose to move to another infected node")
     """Is true if the red agent can choose to move to another infected node"""
 
-    red_move_action_likelihood: float
+    red_move_action_likelihood: float = field(metadata="Chance of red agent choosing to move to another infected node")
     """Chance of red agent choosing to move to another infected node"""
 
     # red zero days
-    red_zero_day_action: bool
+    red_zero_day_action: bool = field(metadata="Is true if the red agent can use a zero day to infect a node with 100% success")
     """Is true if the red agent can use a zero day to infect a node with 100% success"""
 
-    red_zero_day_start_amount: int
+    red_zero_day_start_amount: int = field(metadata="Integer value specifying how many zero days the red agent can use at the start of the game")
     """Integer value specifying how many zero days the red agent can use at the start of the game"""
 
-    red_zero_day_days_required_to_create: int
+    red_zero_day_days_required_to_create: int = field(metadata="Integer value specifying how many timesteps is needed until the red agent can get another zero day")
     """Integer value specifying how many timesteps is needed until the red agent can get another zero day"""
 
     # red targeting
-    red_targeting_random: bool
+    red_targeting_random: bool = field(metadata="Is true if the red agent targets safe nodes at random")
     """Is true if the red agent targets safe nodes at random"""
 
-    red_targeting_prioritise_connected_nodes: bool
+    red_targeting_prioritise_connected_nodes: bool = field(metadata="Is true if the red agent prioritises attacking nodes with the most connections")
     """Is true if the red agent prioritises attacking nodes with the most connections"""
 
-    red_targeting_prioritise_unconnected_nodes: bool
+    red_targeting_prioritise_unconnected_nodes: bool = field(metadata="Is true if the red agent prioritises attacking nodes with the least connections")
     """Is true if the red agent prioritises attacking nodes with the least connections"""
 
-    red_targeting_prioritise_vulnerable_nodes: bool
+    red_targeting_prioritise_vulnerable_nodes: bool = field(metadata="Is true if the red agent prioritises attacking nodes with the most vulnerability")
     """Is true if the red agent prioritises attacking nodes with the most vulnerability"""
 
-    red_targeting_prioritise_resilient_nodes: bool
+    red_targeting_prioritise_resilient_nodes: bool = field(metadata="Is true if the red agent prioritises attacking nodes with the least vulnerability")
     """Is true if the red agent prioritises attacking nodes with the least vulnerability"""
 
     @classmethod
