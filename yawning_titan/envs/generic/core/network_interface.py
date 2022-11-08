@@ -67,6 +67,8 @@ class NetworkInterface:
             _LOGGER.critical(msg, exc_info=True)
             raise e
 
+        # TODO - store network configuration in NetworkConfig Class
+
         self.matrix = matrix
         number_of_nodes = len(matrix)
 
