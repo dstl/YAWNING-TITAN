@@ -151,6 +151,8 @@ BLUE:
   relocating_deceptive_nodes_generates_a_new_node: True
 
 GAME_RULES:
+  # Minimum number of nodes the network this game mode is allowed to run on
+  min_number_of_network_nodes: 18
   # A lower vulnerability means that a node is less likely to be compromised
   node_vulnerability_lower_bound: 0.2
   # A higher vulnerability means that a node is more vulnerable
