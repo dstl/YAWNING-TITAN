@@ -2,13 +2,13 @@ from typing import Dict, Any
 
 import pytest
 
-from tests.unit_tests.config.agents import TEST_RED_AGENT_CONFIG_PATH
-from tests.unit_tests.config.config_test_utils import read_yaml_file
+from tests import TEST_BASE_CONFIG_PATH
+from tests.config_test_utils import read_yaml_file
 from yawning_titan.config.agents.red_agent_config import RedAgentConfig
 
 
 def get_config_dict() -> Dict:
-    return read_yaml_file(TEST_RED_AGENT_CONFIG_PATH)
+    return read_yaml_file(TEST_BASE_CONFIG_PATH)["RED"]
 
 
 def test_read_valid_config():
@@ -36,10 +36,10 @@ def test_read_valid_config():
     assert red_agent.red_naturally_spread is True
 
     # chance_to_spread_to_connected_node
-    assert red_agent.red_chance_to_spread_to_connected_node == 0.05
+    assert red_agent.red_chance_to_spread_to_connected_node == 0.01
 
     # chance_to_spread_to_unconnected_node
-    assert red_agent.red_chance_to_spread_to_unconnected_node == 0
+    assert red_agent.red_chance_to_spread_to_unconnected_node == 0.005
 
     # red_uses_spread_action
     assert red_agent.red_spread_action is False
@@ -63,7 +63,7 @@ def test_read_valid_config():
     assert red_agent.red_basic_attack_action is True
 
     # basic_attack_action_likelihood
-    assert red_agent.red_basic_attack_likelihood == 2
+    assert red_agent.red_basic_attack_likelihood == 1
 
     # red_uses_do_nothing_action
     assert red_agent.red_do_nothing_action is True
@@ -84,13 +84,13 @@ def test_read_valid_config():
     assert red_agent.red_zero_day_start_amount == 1
 
     # days_required_for_zero_day
-    assert red_agent.red_zero_day_days_required_to_create == 4
+    assert red_agent.red_zero_day_days_required_to_create == 10
 
     # red_chooses_target_at_random
-    assert red_agent.red_targeting_random is True
+    assert red_agent.red_targeting_random is False
 
     # red_prioritises_connected_nodes
-    assert red_agent.red_targeting_prioritise_connected_nodes is False
+    assert red_agent.red_targeting_prioritise_connected_nodes is True
 
     # red_prioritises_un_connected_nodes
     assert red_agent.red_targeting_prioritise_unconnected_nodes is False
