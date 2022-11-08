@@ -2,13 +2,13 @@ from typing import Dict, Any
 
 import pytest
 
-from tests.unit_tests.config.config_test_utils import read_yaml_file
-from tests.unit_tests.config.environment import TEST_OBSERVATION_SPACE_CONFIG_PATH
+from tests import TEST_BASE_CONFIG_PATH
+from tests.config_test_utils import read_yaml_file
 from yawning_titan.config.environment.observation_space_config import ObservationSpaceConfig
 
 
 def get_config_dict() -> Dict:
-    return read_yaml_file(TEST_OBSERVATION_SPACE_CONFIG_PATH)
+    return read_yaml_file(TEST_BASE_CONFIG_PATH)["OBSERVATION_SPACE"]
 
 
 def test_read_valid_config():
@@ -28,7 +28,7 @@ def test_read_valid_config():
 
     assert obs_space.obs_attack_targets is True
 
-    assert obs_space.obs_special_nodes is True
+    assert obs_space.obs_special_nodes is False
 
     assert obs_space.obs_red_agent_skill is True
 
