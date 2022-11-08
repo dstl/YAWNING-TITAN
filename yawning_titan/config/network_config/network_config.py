@@ -27,7 +27,7 @@ class NetworkConfig(ConfigGroupABC):
     vulnerabilities: Optional[Dict]
     """Dictionary containing the vulnerabilities of the nodes"""
 
-    high_value_targets: Optional[List[str]]
+    high_value_nodes: Optional[List[str]]
     """List of high value nodes"""
 
     @classmethod
@@ -37,14 +37,14 @@ class NetworkConfig(ConfigGroupABC):
             positions: Dict,
             entry_nodes: Optional[List[str]] = None,
             vulnerabilities: Optional[Dict] = None,
-            high_value_targets: Optional[List[str]] = None
+            high_value_nodes: Optional[List[str]] = None
     ):
         cls._validate(
             matrix=matrix,
             positions=positions,
             entry_nodes=entry_nodes,
             vulnerabilities=vulnerabilities,
-            high_value_targets=high_value_targets
+            high_value_nodes=high_value_nodes
         )
 
         network_config = NetworkConfig(
@@ -52,7 +52,7 @@ class NetworkConfig(ConfigGroupABC):
             positions=positions,
             entry_nodes=entry_nodes,
             vulnerabilities=vulnerabilities,
-            high_value_targets=high_value_targets
+            high_value_nodes=high_value_nodes
         )
 
         return network_config
@@ -64,9 +64,9 @@ class NetworkConfig(ConfigGroupABC):
             positions: Dict,
             entry_nodes: Optional[List[str]] = None,
             vulnerabilities: Optional[Dict] = None,
-            high_value_targets: Optional[List[str]] = None
+            high_value_nodes: Optional[List[str]] = None
                   ):
         # check that no entry nodes and high value nodes intersect
-        if set(entry_nodes) & set(high_value_targets):
+        if set(entry_nodes) & set(high_value_nodes):
             warnings.warn(
-                "Provided entry nodes and high value targets intersect and may cause the training to prematurely end")
+                "Provided entry nodes and high value nodes intersect and may cause the training to prematurely end")

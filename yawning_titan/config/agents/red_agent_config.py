@@ -33,6 +33,10 @@ class RedAgentConfig(ConfigGroupABC):
     """Is true if red can attack any safe node anywhere in the network"""
 
     # red spread
+       
+    red_target_node: str
+    """a specific node number for Red agent to target"""
+
     red_naturally_spread: bool
     """Is true if red can naturally spread every timestep"""
 
@@ -104,6 +108,10 @@ class RedAgentConfig(ConfigGroupABC):
 
     red_targeting_prioritise_resilient_nodes: bool
     """Is true if the red agent prioritises attacking nodes with the least vulnerability"""
+
+    red_always_chooses_shortest_distance_to_target: bool
+    """Is true if the red agent disregards the weighted distances and always chooses shortest distance"""
+    
 
     @classmethod
     def create(
@@ -226,6 +234,7 @@ class RedAgentConfig(ConfigGroupABC):
             "red_prioritises_vulnerable_nodes",
             "red_prioritises_resilient_nodes",
             "red_can_naturally_spread",
+            "red_always_chooses_shortest_distance_to_target"
         ]:
             check_type(data, name, [bool])
 
@@ -273,8 +282,9 @@ class RedAgentConfig(ConfigGroupABC):
             raise ValueError(
                 "'red_uses_*****' -> Red must have at least one action activated"
             )
-        if (
-                (not data["red_chooses_target_at_random"])
+        if (    
+                data["red_target_node"] is None
+                and (not data["red_chooses_target_at_random"])
                 and (not data["red_prioritises_connected_nodes"])
                 and (not data["red_prioritises_un_connected_nodes"])
                 and (not data["red_prioritises_vulnerable_nodes"])

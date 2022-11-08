@@ -34,7 +34,7 @@ class ObservationSpaceConfig(ConfigGroupABC):
     """Is true if the blue agent can see all the nodes that have recently been attacked"""
 
     obs_special_nodes: bool
-    """Is true if the blue agent can see all of the special nodes (entry nodes, high value targets)"""
+    """Is true if the blue agent can see all of the special nodes (entry nodes, high value nodes)"""
 
     obs_red_agent_skill: bool
     """Is true if the blue agent can see the skill level of the red agent"""

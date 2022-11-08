@@ -16,7 +16,7 @@ class ResetConfig(ConfigGroupABC):
     reset_random_vulns: bool
     """Is true if the vulnerabilities are re-randomised on reset"""
 
-    reset_move_hvt: bool
+    reset_move_hvn: bool
     """Is true if new high value nodes are chosen on reset"""
 
     reset_move_entry_nodes: bool
@@ -33,8 +33,8 @@ class ResetConfig(ConfigGroupABC):
             reset_random_vulns=settings[
                 "randomise_vulnerabilities_on_reset"
             ],
-            reset_move_hvt=settings[
-                "choose_new_high_value_targets_on_reset"
+            reset_move_hvn=settings[
+                "choose_new_high_value_nodes_on_reset"
             ],
             reset_move_entry_nodes=settings[
                 "choose_new_entry_nodes_on_reset"
@@ -47,7 +47,7 @@ class ResetConfig(ConfigGroupABC):
     def _validate(cls, data: dict):
         for name in [
             "randomise_vulnerabilities_on_reset",
-            "choose_new_high_value_targets_on_reset",
+            "choose_new_high_value_nodes_on_reset",
             "choose_new_entry_nodes_on_reset",
         ]:
             check_type(data, name, [bool])

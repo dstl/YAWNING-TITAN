@@ -85,7 +85,7 @@ class GameModeConfig:
             red_agent_config=RedAgentConfig.create(settings["RED"]),
             blue_agent_config=BlueAgentConfig.create(settings["BLUE"]),
             observation_space_config=ObservationSpaceConfig.create(settings["OBSERVATION_SPACE"]),
-            game_rules_config=GameRulesConfig.create(settings=settings["GAME_RULES"]),
+            game_rules_config=GameRulesConfig.create(settings=settings["GAME_RULES"],required_node=settings["RED"]["red_target_node"]),
             reset_config=ResetConfig.create(settings["RESET"]),
             rewards_config=RewardsConfig.create(settings["REWARDS"]),
             output_timestep_data_to_json=settings["MISCELLANEOUS"]["output_timestep_data_to_json"]
