@@ -112,6 +112,7 @@ setup(
         "torch==1.12.1 ",
         "tensorboard==2.10.1 ",
         "dm-tree==0.1.7",
+        "ruamel.yaml>=0.17.21"
     ],
     extras_require={
         "dev": [
