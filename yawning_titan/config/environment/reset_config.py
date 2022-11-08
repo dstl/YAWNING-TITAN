@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, Any
 
 from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
@@ -13,13 +13,13 @@ class ResetConfig(ConfigGroupABC):
     Class that validates and stores the Reset Configuration
     """
 
-    reset_random_vulns: bool
+    reset_random_vulns: bool = field(metadata="Is true if the vulnerabilities are re-randomised on reset")
     """Is true if the vulnerabilities are re-randomised on reset"""
 
-    reset_move_hvt: bool
+    reset_move_hvt: bool = field(metadata="Is true if new high value nodes are chosen on reset")
     """Is true if new high value nodes are chosen on reset"""
 
-    reset_move_entry_nodes: bool
+    reset_move_entry_nodes: bool = field(metadata="Is true if new entry nodes are chosen on reset")
     """Is true if new entry nodes are chosen on reset"""
 
     @classmethod

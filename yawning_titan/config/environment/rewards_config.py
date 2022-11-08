@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, Any
 
 from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
@@ -14,16 +14,16 @@ class RewardsConfig(ConfigGroupABC):
     Class that validates and stores Rewards Configuration
     """
 
-    reward_loss: float
+    reward_loss: float = field(metadata="Reward for the blue agent losing")
     """Reward for the blue agent losing"""
 
-    reward_success: float
+    reward_success: float = field(metadata="Reward for the blue agent winning")
     """Reward for the blue agent winning"""
 
-    reward_end_multiplier: bool
+    reward_end_multiplier: bool = field(metadata="Is true if reward is multiplied by percentage of nodes not compromised")
     """Is true if reward is multiplied by percentage of nodes not compromised"""
 
-    reward_reduce_negative_rewards:bool
+    reward_reduce_negative_rewards:bool = field(metadata="Is true if red agent rewards are reduced the closer to the end timesteps the game ends at")
     """Is true if red agent rewards are reduced the closer to the end timesteps the game ends at"""
 
     reward_function: str

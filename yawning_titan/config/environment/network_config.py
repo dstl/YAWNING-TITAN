@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import warnings
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, Any, List, Optional
 
 import numpy as np
@@ -15,19 +15,19 @@ class NetworkConfig(ConfigGroupABC):
     Class that validates and stores Network Configuration
     """
 
-    matrix: np.array
+    matrix: np.array = field(metadata="Stores the matrix dictating how each node is connected to each other")
     """Stores the matrix dictating how each node is connected to each other"""
 
-    positions: Dict
+    positions: Dict = field(metadata="Dictionary containing the positions of the nodes in the network (when displayed as a graph)")
     """Dictionary containing the positions of the nodes in the network (when displayed as a graph)"""
 
-    entry_nodes: Optional[List[str]]
+    entry_nodes: Optional[List[str]] = field(metadata="List of entry nodes")
     """List of entry nodes"""
 
-    vulnerabilities: Optional[Dict]
+    vulnerabilities: Optional[Dict] = field(metadata="Dictionary containing the vulnerabilities of the nodes")
     """Dictionary containing the vulnerabilities of the nodes"""
 
-    high_value_targets: Optional[List[str]]
+    high_value_targets: Optional[List[str]] = field(metadata="List of high value nodes")
     """List of high value nodes"""
 
     @classmethod

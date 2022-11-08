@@ -1,5 +1,5 @@
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Dict
 
 from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
@@ -12,80 +12,80 @@ class BlueAgentConfig(ConfigGroupABC):
     Class that validates and stores the Blue Agent Configuration
     """
 
-    blue_max_deceptive_nodes: int
+    blue_max_deceptive_nodes: int = field(metadata="Integer value specifying how many deceptive nodes the blue agent can place in the network")
     """Integer value specifying how many deceptive nodes the blue agent can place in the network"""
 
-    blue_immediate_detection_chance: float
+    blue_immediate_detection_chance: float = field(metadata="Chance for the blue agent to immediately discover the node compromised by the red agent")
     """Chance for the blue agent to immediately discover the node compromised by the red agent"""
 
-    blue_scan_detection_chance: float
+    blue_scan_detection_chance: float = field(metadata="Chance for the blue agent to discover a compromised node on scan")
     """Chance for the blue agent to discover a compromised node on scan"""
 
-    blue_deception_immediate_detection_chance: float
+    blue_deception_immediate_detection_chance: float = field(metadata="Chance for the blue agent to immediately discover that a deceptive node has been compromised")
     """Chance for the blue agent to immediately discover that a deceptive node has been compromised"""
 
-    blue_deception_scan_detection_chance: float
+    blue_deception_scan_detection_chance: float = field(metadata="Chance for the blue agent to discover that a deceptive node has been compromised on scan")
     """Chance for the blue agent to discover that a deceptive node has been compromised on scan"""
 
-    blue_discover_failed_attacks: bool
+    blue_discover_failed_attacks: bool = field(metadata="Is true if blue agent can discover failed attacks")
     """Is true if blue agent can discover failed attacks"""
 
-    blue_discover_attack_source_if_detected: bool
+    blue_discover_attack_source_if_detected: bool = field(metadata="Is true if the blue agent can learn information about an attack that succeeds if the compromise is known")
     """Is true if the blue agent can learn information about an attack that succeeds if the compromise is known"""
 
-    blue_discover_attack_source_if_not_detected: bool
+    blue_discover_attack_source_if_not_detected: bool = field(metadata="Is true if the blue agent can learn information about an attack that succeeds if the compromise is not known")
     """Is true if the blue agent can learn information about an attack that succeeds if the compromise is not known"""
 
-    blue_chance_to_discover_source_failed: float
+    blue_chance_to_discover_source_failed: float = field(metadata="Chance for blue to discover information about a failed attack")
     """Chance for blue to discover information about a failed attack"""
 
-    blue_chance_to_discover_source_succeed_known: float
+    blue_chance_to_discover_source_succeed_known: float = field(metadata="Chance for blue to discover information about an attack that succeeded and the compromise was known")
     """Chance for blue to discover information about an attack that succeeded and the compromise was known"""
 
-    blue_chance_to_discover_source_succeed_unknown: float
+    blue_chance_to_discover_source_succeed_unknown: float = field(metadata="Chance for blue to discover information about an attack that succeeded and the compromise was not known")
     """Chance for blue to discover information about an attack that succeeded and the compromise was not known"""
 
-    blue_chance_to_discover_source_deceptive_failed: float
+    blue_chance_to_discover_source_deceptive_failed: float = field(metadata="Chance to discover the location of a failed attack on a deceptive node")
     """Chance to discover the location of a failed attack on a deceptive node"""
 
-    blue_chance_to_discover_source_deceptive_succeed: float
+    blue_chance_to_discover_source_deceptive_succeed: float = field(metadata="Chance to discover the location of a succeeded attack against a deceptive node")
     """Chance to discover the location of a succeeded attack against a deceptive node"""
 
-    blue_make_node_safe_modifies_vuln: bool
+    blue_make_node_safe_modifies_vuln: bool = field(metadata="Is true if blue agent can fix a node to decrease its vulnerability")
     """Is true if blue agent can fix a node to decrease its vulnerability"""
 
-    blue_vuln_change_amount_make_safe: float
+    blue_vuln_change_amount_make_safe: float = field(metadata="The amount the vulnerability score will change when blue agent fixes a node")
     """The amount the vulnerability score will change when blue agent fixes a node"""
 
-    blue_make_safe_random_vuln: bool
+    blue_make_safe_random_vuln: bool = field(metadata="Is true if the vulnerability score is randomised when blue agent fixes a node")
     """Is true if the vulnerability score is randomised when blue agent fixes a node"""
 
-    blue_reduce_vuln_action: bool
+    blue_reduce_vuln_action: bool = field(metadata="Is true if blue agent will try to reduce a node's vulnerability score")
     """Is true if blue agent will try to reduce a node's vulnerability score"""
 
-    blue_restore_node_action: bool
+    blue_restore_node_action: bool = field(metadata="Is true if the blue agent will try to reset the node state to what it was at the beginning of the game")
     """Is true if the blue agent will try to reset the node state to what it was at the beginning of the game"""
 
-    blue_make_node_safe_action: bool
+    blue_make_node_safe_action: bool = field(metadata="Is true if the blue agent will try to fix a node without resetting the node to what it was at the beginning of the game")
     """Is true if the blue agent will try to fix a node without resetting the node to what it was at the beginning
     of the game"""
 
-    blue_scan_action: bool
+    blue_scan_action: bool = field(metadata="Is true if blue can scan all nodes in the network to detect red agent intrusions")
     """Is true if blue can scan all nodes in the network to detect red agent intrusions"""
 
-    blue_isolate_action: bool
+    blue_isolate_action: bool = field(metadata="Is true if blue agent can isolate a node i.e. remove connections to and from a node")
     """Is true if blue agent can isolate a node i.e. remove connections to and from a node"""
 
-    blue_reconnect_action: bool
+    blue_reconnect_action: bool = field(metadata="Is true if blue agent can reinstate node connections after the node is isolated")
     """Is true if blue agent can reinstate node connections after the node is isolated"""
 
-    blue_do_nothing_action: bool
+    blue_do_nothing_action: bool = field(metadata="Is true if the blue agent can decide to do nothing")
     """Is true if the blue agent can decide to do nothing"""
 
-    blue_deceptive_action: bool
+    blue_deceptive_action: bool = field(metadata="Is true if the blue agent can use deceptive nodes")
     """Is true if the blue agent can use deceptive nodes"""
 
-    blue_deceptive_node_make_new: bool
+    blue_deceptive_node_make_new: bool = field(metadata="Is true if the blue agent can reuse a deceptive node if it has run out of deceptive nodes it can place")
     """Is true if the blue agent can reuse a deceptive node if it has run out of deceptive nodes it can place"""
 
     @classmethod
