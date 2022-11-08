@@ -48,6 +48,7 @@ The best place to start is diving into the :ref:`getting-started`
    /source/enhancing_yawning_titan
    /source/modules.rst
    /source/tests.rst
+   /source/glossary.rst
 
 
 Indices and tables
