@@ -91,7 +91,7 @@ class GameModeConfig:
             raise e
         return cls.create(settings=settings)
 
-    def as_formatted_dict(self):
+    def as_formatted_dict(self,alias=True):
         settings_dict = {
             key: val
             for key, val in self.__dict__.items()
@@ -99,7 +99,7 @@ class GameModeConfig:
         }
         _settings_dict = {}
         for section_name, section_class in settings_dict.items():
-            section_dict = section_class.to_dict()
+            section_dict = section_class.to_dict(alias)
             _settings_dict[section_name.upper()] = section_dict
         return _settings_dict
 

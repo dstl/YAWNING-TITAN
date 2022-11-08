@@ -13,13 +13,25 @@ class ResetConfig(ConfigGroupABC):
     Class that validates and stores the Reset Configuration
     """
 
-    reset_random_vulns: bool = field(metadata="Is true if the vulnerabilities are re-randomised on reset")
+    reset_random_vulns: bool = field(metadata={
+            "description":"Is true if the vulnerabilities are re-randomised on reset",
+            "alias": "randomise_vulnerabilities_on_reset",
+        }
+    )
     """Is true if the vulnerabilities are re-randomised on reset"""
 
-    reset_move_hvt: bool = field(metadata="Is true if new high value nodes are chosen on reset")
+    reset_move_hvt: bool = field(metadata={
+            "description":"Is true if new high value nodes are chosen on reset",
+            "alias": "choose_new_high_value_targets_on_reset",
+        }
+    )
     """Is true if new high value nodes are chosen on reset"""
 
-    reset_move_entry_nodes: bool = field(metadata="Is true if new entry nodes are chosen on reset")
+    reset_move_entry_nodes: bool = field(metadata={
+            "description":"Is true if new entry nodes are chosen on reset",
+            "alias": "choose_new_entry_nodes_on_reset",
+        }
+    )
     """Is true if new entry nodes are chosen on reset"""
 
     @classmethod
