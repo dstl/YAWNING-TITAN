@@ -2,13 +2,13 @@ from typing import Dict, Any
 
 import pytest
 
-from tests.unit_tests.config.config_test_utils import read_yaml_file
-from tests.unit_tests.config.environment import TEST_RESET_CONFIG_PATH
+from tests import TEST_BASE_CONFIG_PATH
+from tests.config_test_utils import read_yaml_file
 from yawning_titan.config.environment.reset_config import ResetConfig
 
 
 def get_config_dict() -> Dict:
-    return read_yaml_file(TEST_RESET_CONFIG_PATH)
+    return read_yaml_file(TEST_BASE_CONFIG_PATH)["RESET"]
 
 
 def test_read_valid_config():
@@ -16,9 +16,9 @@ def test_read_valid_config():
 
     assert reset_config.reset_random_vulns is False
 
-    assert reset_config.reset_move_hvt is True
+    assert reset_config.reset_move_hvt is False
 
-    assert reset_config.reset_move_entry_nodes is True
+    assert reset_config.reset_move_entry_nodes is False
 
 
 @pytest.mark.parametrize(

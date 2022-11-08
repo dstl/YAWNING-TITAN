@@ -2,13 +2,13 @@ from typing import Dict, Any
 
 import pytest
 
-from tests.unit_tests.config.config_test_utils import read_yaml_file
-from tests.unit_tests.config.environment import TEST_GAME_RULES_CONFIG_PATH
+from tests import TEST_BASE_CONFIG_PATH
+from tests.config_test_utils import read_yaml_file
 from yawning_titan.config.environment.game_rules_config import GameRulesConfig
 
 
 def get_config_dict() -> Dict:
-    return read_yaml_file(TEST_GAME_RULES_CONFIG_PATH)
+    return read_yaml_file(TEST_BASE_CONFIG_PATH)["GAME_RULES"]
 
 
 def test_read_valid_config():
@@ -24,13 +24,13 @@ def test_read_valid_config():
 
     assert game_rules.gr_loss_total_compromise is False
 
-    assert game_rules.gr_loss_pc_nodes_compromised is False
+    assert game_rules.gr_loss_pc_nodes_compromised is True
 
     assert game_rules.gr_loss_pc_node_compromised_pc == 0.8
 
     assert game_rules.gr_number_of_high_value_targets == 1
 
-    assert game_rules.gr_loss_hvt is True
+    assert game_rules.gr_loss_hvt is False
 
     assert game_rules.gr_loss_hvt_random_placement is False
 
@@ -40,11 +40,11 @@ def test_read_valid_config():
 
     assert game_rules.gr_num_entry_nodes == 3
 
-    assert game_rules.gr_prefer_central_entry is True
+    assert game_rules.gr_prefer_central_entry is False
 
     assert game_rules.gr_prefer_edge_nodes is False
 
-    assert game_rules.gr_grace_period == 0
+    assert game_rules.gr_grace_period == 3
 
 
 @pytest.mark.parametrize(

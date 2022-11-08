@@ -1,15 +1,14 @@
-import os
 from typing import Dict, Any
 
 import pytest
 
-from tests.unit_tests.config.agents import TEST_BLUE_AGENT_CONFIG_PATH
-from tests.unit_tests.config.config_test_utils import read_yaml_file
+from tests import TEST_BASE_CONFIG_PATH
+from tests.config_test_utils import read_yaml_file
 from yawning_titan.config.agents.blue_agent_config import BlueAgentConfig
 
 
 def get_config_dict() -> Dict:
-    return read_yaml_file(TEST_BLUE_AGENT_CONFIG_PATH)
+    return read_yaml_file(TEST_BASE_CONFIG_PATH)["BLUE"]
 
 
 def test_read_valid_config():
@@ -19,10 +18,10 @@ def test_read_valid_config():
     assert blue_agent.blue_max_deceptive_nodes == 2
 
     # chance_to_immediately_discover_intrusion
-    assert blue_agent.blue_immediate_detection_chance
+    assert blue_agent.blue_immediate_detection_chance == 0.5
 
     # chance_to_discover_intrusion_on_scan
-    assert blue_agent.blue_scan_detection_chance == 1
+    assert blue_agent.blue_scan_detection_chance == 0.7
 
     # chance_to_immediately_discover_intrusion_deceptive_node
     assert blue_agent.blue_deception_immediate_detection_chance == 1
@@ -40,13 +39,13 @@ def test_read_valid_config():
     assert blue_agent.blue_discover_attack_source_if_not_detected is True
 
     # chance_to_discover_failed_attack
-    assert blue_agent.blue_chance_to_discover_source_failed == 1
+    assert blue_agent.blue_chance_to_discover_source_failed == 0.5
 
     # chance_to_discover_succeeded_attack_compromise_known
-    assert blue_agent.blue_chance_to_discover_source_succeed_known == 1
+    assert blue_agent.blue_chance_to_discover_source_succeed_known == 0.3
 
     # chance_to_discover_succeeded_attack_compromise_not_known
-    assert blue_agent.blue_chance_to_discover_source_succeed_unknown == 1
+    assert blue_agent.blue_chance_to_discover_source_succeed_unknown == 0.1
 
     # chance_to_discover_failed_attack_deceptive_node
     assert blue_agent.blue_chance_to_discover_source_deceptive_failed == 1
@@ -61,10 +60,10 @@ def test_read_valid_config():
     assert blue_agent.blue_vuln_change_amount_make_safe == 0.4
 
     # making_node_safe_gives_random_vulnerability
-    assert blue_agent.blue_make_safe_random_vuln is False
+    assert blue_agent.blue_make_safe_random_vuln is True
 
     # blue_uses_reduce_vulnerability
-    assert blue_agent.blue_reduce_vuln_action is False
+    assert blue_agent.blue_reduce_vuln_action is True
 
     # blue_uses_restore_node
     assert blue_agent.blue_restore_node_action is True
@@ -76,16 +75,16 @@ def test_read_valid_config():
     assert blue_agent.blue_scan_action is True
 
     # blue_uses_isolate_node
-    assert blue_agent.blue_isolate_action is False
+    assert blue_agent.blue_isolate_action is True
 
     # blue_uses_reconnect_node
-    assert blue_agent.blue_reconnect_action is False
+    assert blue_agent.blue_reconnect_action is True
 
     # blue_uses_do_nothing is False
-    assert blue_agent.blue_do_nothing_action is False
+    assert blue_agent.blue_do_nothing_action is True
 
     # blue_uses_deceptive_nodes
-    assert blue_agent.blue_deceptive_action is False
+    assert blue_agent.blue_deceptive_action is True
 
     # relocating_deceptive_nodes_generates_a_new_node
     assert blue_agent.blue_deceptive_node_make_new is True

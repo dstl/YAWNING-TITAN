@@ -4,8 +4,8 @@ from typing import Dict
 
 import pytest
 
-from tests import TEST_CONFIG_PATH
-from tests.unit_tests.config.config_test_utils import read_yaml_file
+from tests import TEST_BASE_CONFIG_PATH
+from tests.config_test_utils import read_yaml_file
 from yawning_titan.config.agents.blue_agent_config import BlueAgentConfig
 from yawning_titan.config.agents.red_agent_config import RedAgentConfig
 from yawning_titan.config.environment.game_rules_config import GameRulesConfig
@@ -17,7 +17,7 @@ from yawning_titan.config.game_modes import default_game_mode_path
 
 
 def get_config_dict() -> Dict:
-    return read_yaml_file(Path(os.path.join(TEST_CONFIG_PATH, "base_config.yaml")))
+    return read_yaml_file(TEST_BASE_CONFIG_PATH)
 
 
 def get_default_config_dict() -> Dict:
@@ -25,7 +25,7 @@ def get_default_config_dict() -> Dict:
 
 
 def test_read_valid_path_and_valid_config():
-    game_mode = GameModeConfig.create(os.path.join(TEST_CONFIG_PATH, "base_config.yaml"))
+    game_mode = GameModeConfig.create(TEST_BASE_CONFIG_PATH)
 
     assert game_mode.red_agent_config == RedAgentConfig.create(get_config_dict()["RED"])
     assert game_mode.blue_agent_config == BlueAgentConfig.create(get_config_dict()["BLUE"])
