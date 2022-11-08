@@ -48,6 +48,14 @@ def test_read_default_config():
     assert game_mode.rewards == RewardsConfig.create(config_dict["REWARDS"])
     assert game_mode.miscellaneous == MiscellaneousConfig.create(config_dict["MISCELLANEOUS "])
 
+def test_read_created_yaml(tmpdir_factory):
+    game_mode:GameModeConfig = GameModeConfig.create()
+    config_dict = get_default_config_dict()
+    config_dir = tmpdir_factory.mktemp("temp")
+    game_mode.write_to_file(config_dir)
+    new_game_mode = GameModeConfig.create_from_yaml(config_dir)
+    assert new_game_mode.as_formatted_dict() == config_dict
+
 
 def test_invalid_path():
     with pytest.raises(FileNotFoundError) as err_info:

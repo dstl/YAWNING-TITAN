@@ -12,17 +12,10 @@ def get_config_dict() -> Dict:
 
 
 def test_read_valid_config():
-    rewards_config = RewardsConfig.create(get_config_dict())
+    config_dict = get_config_dict()
+    rewards = RewardsConfig.create(config_dict)
+    assert rewards.to_dict() == config_dict
 
-    assert rewards_config.reward_loss == -100
-
-    assert rewards_config.reward_success == 100
-
-    assert rewards_config.reward_end_multiplier is True
-
-    assert rewards_config.reward_reduce_negative_rewards is False
-
-    assert rewards_config.reward_function == "standard_rewards"
 
 
 @pytest.mark.parametrize(

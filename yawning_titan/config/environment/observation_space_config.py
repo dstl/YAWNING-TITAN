@@ -12,31 +12,67 @@ class ObservationSpaceConfig(ConfigGroupABC):
     Class that validates and stores the Observation Space configuration
     """
 
-    obs_compromised_status: bool = field(metadata="Is true if the blue agent can see the compromised status of all the nodes")
+    obs_compromised_status: bool = field(metadata={
+            "description":"Is true if the blue agent can see the compromised status of all the nodes",
+            "alias": "compromised_status",
+        }
+    )
     """Is true if the blue agent can see the compromised status of all the nodes"""
 
-    obs_node_vuln_status: bool = field(metadata="Is true if the blue agent can see the vulnerability scores of all the nodes")
+    obs_node_vuln_status: bool = field(metadata={
+            "description":"Is true if the blue agent can see the vulnerability scores of all the nodes",
+            "alias": "vulnerabilities",
+        }
+    )
     """Is true if the blue agent can see the vulnerability scores of all the nodes"""
 
-    obs_node_connections: bool = field(metadata="Is true if blue agent can see what nodes are connected to what other nodes")
+    obs_node_connections: bool = field(metadata={
+            "description":"Is true if blue agent can see what nodes are connected to what other nodes",
+            "alias": "node_connections",
+        }
+    )
     """Is true if blue agent can see what nodes are connected to what other nodes"""
 
-    obs_avg_vuln: bool = field(metadata="Is true if the blue agent can see the average vulnerability of all the nodes")
+    obs_avg_vuln: bool = field(metadata={
+            "description":"Is true if the blue agent can see the average vulnerability of all the nodes",
+            "alias": "average_vulnerability",
+        }
+    )
     """Is true if the blue agent can see the average vulnerability of all the nodes"""
 
-    obs_graph_connectivity: bool = field(metadata="Is true if the blue agent can see a graph connectivity score")
+    obs_graph_connectivity: bool = field(metadata={
+            "description":"Is true if the blue agent can see a graph connectivity score",
+            "alias": "graph_connectivity",
+        }
+    )
     """Is true if the blue agent can see a graph connectivity score"""
 
-    obs_attack_sources: bool = field(metadata="Is true if the blue agent can see all of the nodes that have recently attacked a safe node")
+    obs_attack_sources: bool = field(metadata={
+            "description":"Is true if the blue agent can see all of the nodes that have recently attacked a safe node",
+            "alias": "attacking_nodes",
+        }
+    )
     """Is true if the blue agent can see all of the nodes that have recently attacked a safe node"""
 
-    obs_attack_targets: bool = field(metadata="Is true if the blue agent can see all the nodes that have recently been attacked")
+    obs_attack_targets: bool = field(metadata={
+            "description":"Is true if the blue agent can see all the nodes that have recently been attacked",
+            "alias": "attacked_nodes",
+        }
+    )
     """Is true if the blue agent can see all the nodes that have recently been attacked"""
 
-    obs_special_nodes: bool = field(metadata="Is true if the blue agent can see all of the special nodes (entry nodes, high value targets)")
+    obs_special_nodes: bool = field(metadata={
+            "description":"Is true if the blue agent can see all of the special nodes (entry nodes, high value targets)",
+            "alias": "special_nodes",
+        }
+    )
     """Is true if the blue agent can see all of the special nodes (entry nodes, high value targets)"""
 
-    obs_red_agent_skill: bool = field(metadata="Is true if the blue agent can see the skill level of the red agent")
+    obs_red_agent_skill: bool = field(metadata={
+            "description":"Is true if the blue agent can see the skill level of the red agent",
+            "alias": "red_agent_skill",
+        }
+    )
     """Is true if the blue agent can see the skill level of the red agent"""
 
     @classmethod
