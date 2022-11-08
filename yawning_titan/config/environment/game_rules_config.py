@@ -67,7 +67,7 @@ class GameRulesConfig(ConfigGroupABC):
     """Number of timesteps the blue agent has to prepare"""
 
     @classmethod
-    def create(cls, settings: Dict[str, Any], required_node: str) -> GameRulesConfig:
+    def create(cls, settings: Dict[str, Any], required_node: str=None) -> GameRulesConfig:
         cls._validate(settings, required_node)
 
         game_rule_config = GameRulesConfig(
@@ -105,7 +105,18 @@ class GameRulesConfig(ConfigGroupABC):
             "node_vulnerability_upper_bound",
             "percentage_of_nodes_compromised_equals_loss",
         ]:
+            check_type(data, name, [int])
+        
+        # data is int
+        for name in [
+            "max_steps",
+            "number_of_entry_nodes",
+            "grace_period_length",
+            "min_number_of_network_nodes",
+            "number_of_high_value_nodes"
+        ]:
             check_type(data, name, [float, int])
+
         # data s between 0 and 1 inclusive
         for name in [
             "node_vulnerability_lower_bound",
@@ -120,11 +131,7 @@ class GameRulesConfig(ConfigGroupABC):
             raise ValueError(
                 "'node_vulnerability_lower_bound', 'node_vulnerability_upper_bound' -> The lower bound for the node vulnerabilities should be less than the upper bound"
             )
-        check_type(data, "max_steps", [int])
-        check_type(data, "number_of_entry_nodes", [int])
-        check_type(data, "grace_period_length", [int])
-        check_type(data, "min_number_of_network_nodes", [int])
-        check_type(data, "number_of_high_value_nodes", [int])
+   
         # make sure high value nodes is not more than the number of minimum number of nodes in network
         check_within_range(
             data,
