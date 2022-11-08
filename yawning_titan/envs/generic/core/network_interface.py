@@ -76,17 +76,17 @@ class NetworkInterface:
             self.entry_nodes = entry_nodes
             self.entry_nodes_provided = True
 
-        # check if high value targets were provided
+        # check if high value nodes were provided
         self.high_value_nodes_provided = False
         if high_value_nodes:
             self.high_value_nodes = high_value_nodes
             self.high_value_nodes_provided = True
 
-        # check if any of the defined high value targets intersect with entry nodes, then send a warning
+        # check if any of the defined high value nodes intersect with entry nodes, then send a warning
         if (self.high_value_nodes_provided and self.entry_nodes_provided and
                 (set(self.entry_nodes) & set(self.high_value_nodes))):
             warnings.warn(
-                "Provided entry nodes and high value targets intersect and may cause the training to prematurely end")
+                "Provided entry nodes and high value nodes intersect and may cause the training to prematurely end")
 
         # check the settings are valid
         check_input(settings, number_of_nodes, high_value_nodes)
@@ -436,37 +436,37 @@ class NetworkInterface:
             high_value_nodes: List[str]
     ):
         """
-        Sets up the high value targets to be used by the training environment
+        Sets up the high value nodes to be used by the training environment
 
         Args:
-            high_value_nodes: a list of strings that identify which nodes are to be marked as high value targets
+            high_value_nodes: a list of strings that identify which nodes are to be marked as high value nodes
         """
         nodes = [str(i) for i in range(len(self.matrix))]
 
-        # number of possible high value targets
+        # number of possible high value nodes
         # calculated by seeing how many nodes there are minus the entry nodes, then only having 15% of the nodes
-        # left over to be high value targets
+        # left over to be high value nodes
         number_possible_high_value = math.ceil(
             (len(self.current_graph.nodes) - len(self.entry_nodes) + 1) * 0.15
         )
 
-        # print warning that the number of high value targets exceed the above
+        # print warning that the number of high value nodes exceed the above
         # preferably this would be handled elsewhere i.e. configuration
         if self.gr_number_of_high_value_nodes > number_possible_high_value:
             warnings.warn(
-                "The configured number of high value targets exceed the allowable number in the given network. " +
-                str(number_possible_high_value) + " high value targets will be created")
+                "The configured number of high value nodes exceed the allowable number in the given network. " +
+                str(number_possible_high_value) + " high value nodes will be created")
             self.gr_number_of_high_value_nodes = number_possible_high_value
 
-        # if no high value targets set, set up the possible high value target list
+        # if no high value nodes set, set up the possible high value node list
         if not self.high_value_nodes_provided:
             self.possible_high_value_nodes = []
-            # chooses a random node to be the high value target
+            # chooses a random node to be the high value node
             if self.gr_loss_hvn_random_placement:
                 self.possible_high_value_nodes = list(
                     set(nodes).difference(set(self.entry_nodes))
                 )
-            # Choose the node that is furthest away from the entry points as the high value target
+            # Choose the node that is furthest away from the entry points as the high value node
             if self.gr_loss_hvn_furthest_away:
                 # gets all the paths between nodes
                 paths = []
@@ -488,17 +488,17 @@ class NetworkInterface:
                     self.possible_high_value_nodes.append(current)
                     result.pop(current)
 
-                # prevent high value targets from becoming entry nodes
+                # prevent high value nodes from becoming entry nodes
                 self.possible_high_value_nodes = list(
                     set(self.possible_high_value_nodes).difference(self.entry_nodes))
 
         if self.gr_loss_hvn:
-            # if high value targets were provided, use them
+            # if high value nodes were provided, use them
             if self.high_value_nodes_provided:
                 self.high_value_nodes = high_value_nodes
-            # else randomly pick a configured number of high value targets from the list of possible targets
+            # else randomly pick a configured number of high value nodes from the list of possible targets
             else:
-                # randomly pick unique nodes from a list of possible high value targets
+                # randomly pick unique nodes from a list of possible high value nodes
                 self.high_value_nodes = random.sample(
                     set(self.possible_high_value_nodes), self.gr_number_of_high_value_nodes
                 )
@@ -705,7 +705,7 @@ class NetworkInterface:
         return self.current_network_variables[node]["node_position"]
 
     def get_high_value_nodes(self) -> List[str]:
-        """Get the node index for the high value target."""
+        """Get the node index for the high value node."""
         return self.high_value_nodes
 
     def get_red_location(self) -> str:
@@ -1241,7 +1241,7 @@ class NetworkInterface:
             )
             self.entry_nodes = entry_nodes
 
-        # set high value targets
+        # set high value nodes
         self._high_value_target_setup(high_value_nodes=self.high_value_nodes)
 
         if self.reset_random_vulns:

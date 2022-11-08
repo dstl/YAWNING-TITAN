@@ -217,7 +217,7 @@ class GenericNetworkEnv(gym.Env):
                 blue_action = "failed"
         if self.network_interface.gr_loss_hvn:
 
-            # check if a high value target was compromised
+            # check if a high value node was compromised
             compromised_hvn = False
             for hvn in self.network_interface.get_high_value_nodes():
                 if self.network_interface.get_single_node_state(hvn) == 1:
@@ -225,7 +225,7 @@ class GenericNetworkEnv(gym.Env):
                     break
 
             if compromised_hvn:
-                # If this mode is selected then the game ends if the high value target has been compromised
+                # If this mode is selected then the game ends if the high value node has been compromised
                 done = True
                 reward = self.network_interface.reward_loss
                 blue_action = "failed"
@@ -404,10 +404,10 @@ class GenericNetworkEnv(gym.Env):
         if self.network_interface.gr_loss_hvn:
             hvn = self.network_interface.get_high_value_nodes()
 
-            # iterate through the high value targets
+            # iterate through the high value nodes
             for node in hvn:
                 special_nodes[node] = {
-                    "description": "High Value Target",
+                    "description": "high value node",
                     "colour": "#da2fed",
                 }
 

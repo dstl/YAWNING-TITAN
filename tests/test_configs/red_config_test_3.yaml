@@ -88,7 +88,7 @@ OBSERVATION_SPACE:
   attacking_nodes: True
   # The blue agent can see all the nodes that have recently been attacked
   attacked_nodes: False
-  # The blue agent can see all of the special nodes (entry nodes, high value targets)
+  # The blue agent can see all of the special nodes (entry nodes, high value nodes)
   special_nodes: False
   # The blue agent can see the skill level of the red agent
   red_agent_skill: True
@@ -167,13 +167,13 @@ GAME_RULES:
   lose_when_n_percent_of_nodes_lost: True
   # The percentage of nodes that need to be lost for blue to lose
   percentage_of_nodes_compromised_equals_loss: 0.3
-  # Blue loses if a special 'high value' target it lost (a node picked in the environment)
+  # Blue loses if a special 'high value' node it lost (a node picked in the environment)
   lose_when_high_value_node_lost: False
-  # If no high value targets are supplied, how many should be chosen
+  # If no high value nodes are supplied, how many should be chosen
   number_of_high_value_nodes: 1
-  # The high value target is picked at random
+  # The high value node is picked at random
   choose_high_value_nodes_placement_at_random: False
-  # The node furthest away from the entry points to the network is picked as the target
+  # The node furthest away from the entry points to the network is picked as the high value node
   choose_high_value_nodes_furthest_away_from_entry: True
   # If no entry nodes are supplied choose some at random
   choose_entry_nodes_randomly: True

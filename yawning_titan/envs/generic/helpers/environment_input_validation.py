@@ -387,7 +387,7 @@ def check_game_rules(data: dict, number_of_nodes: int, high_value_nodes: List[st
     Args:
         data: The dictionary relating to the game rules settings
         number_of_nodes: The number of nodes in the network
-        high_value_nodes: The list containing the high value targets
+        high_value_nodes: The list containing the high value nodes
 
     """
     # data is int or float
@@ -409,12 +409,12 @@ def check_game_rules(data: dict, number_of_nodes: int, high_value_nodes: List[st
     check_type(data, "max_steps", [int])
     check_type(data, "number_of_entry_nodes", [int])
     check_type(data, "grace_period_length", [int])
-    # ignore if high value targets passed in
+    # ignore if high value nodes passed in
     if not high_value_nodes:
         check_type(data, "number_of_high_value_nodes", [int])
         check_within_range(data, "number_of_high_value_nodes", 1, number_of_nodes, True, True)
     else:
-        # make sure the passed high value targets do not exceed the number of nodes in network
+        # make sure the passed high value nodes do not exceed the number of nodes in network
         check_within_range({'hvn_length': len(high_value_nodes)}, "hvn_length", 1, number_of_nodes, True, True)
 
     check_within_range(data, "grace_period_length", 0, 100, True, True)
@@ -458,14 +458,14 @@ def check_game_rules(data: dict, number_of_nodes: int, high_value_nodes: List[st
         )
 
     if data["lose_when_high_value_node_lost"]:
-        # if there is no way to set high value targets
+        # if there is no way to set high value nodes
         if (
                 high_value_nodes is None and
                 not data["choose_high_value_nodes_placement_at_random"] and
                 not data["choose_high_value_nodes_furthest_away_from_entry"]
         ):
             raise ValueError(
-                "'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' or set from network interface -> A method of selecting the high value target must be chosen"
+                "'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' or set from network interface -> A method of selecting the high value node must be chosen"
                 # noqa
             ) # TODO: update this when moved config to class
         # if there are conflicting configurations
@@ -474,17 +474,17 @@ def check_game_rules(data: dict, number_of_nodes: int, high_value_nodes: List[st
                 and data["choose_high_value_nodes_furthest_away_from_entry"]
         ):
             raise ValueError(
-                "'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"
+                "'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' -> Only one method of selecting a high value node should be selected"
                 # noqa
             )
-        # if high value targets are set and these configurations are also set
+        # if high value nodes are set and these configurations are also set
         if (
                 high_value_nodes and
                 (data["choose_high_value_nodes_placement_at_random"]
                  or data["choose_high_value_nodes_furthest_away_from_entry"])
         ):
             raise ValueError(
-                "Provided high value targets: " + str(high_value_nodes) + " 'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"
+                "Provided high value nodes: " + str(high_value_nodes) + " 'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' -> Only one method of selecting a high value node should be selected"
                 # noqa
             )
 
@@ -577,7 +577,7 @@ def check_input(data: dict, number_of_nodes: int, high_value_nodes: List[str]):
     Args:
         data: The settings file (A dictionary)
         number_of_nodes: The number of nodes in the network
-        high_value_nodes: The list containing the high value targets
+        high_value_nodes: The list containing the high value nodes
     """
     try:
         red = data["RED"]

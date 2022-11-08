@@ -110,7 +110,7 @@ Observation Space settings
  * **attacked_nodes:**
     The blue agent can see all the nodes that have recently been attacked
  * **special_nodes:**
-    The blue agent can see all of the special nodes (entry nodes, high value targets)
+    The blue agent can see all of the special nodes (entry nodes, high value nodes)
  * **red_agent_skill:**
     The blue agent can see the skill level of the red agent
 
@@ -239,7 +239,7 @@ Reset
  * **randomise_vulnerabilities_on_reset:**
     Pick new vulnerabilities for all the nodes on every reset
  * **choose_new_high_value_nodes_on_reset:**
-    Pick new high value targets on every reset
+    Pick new high value nodes on every reset
  * **choose_new_entry_nodes_on_reset:**
     Pick new entry nodes every reset
 

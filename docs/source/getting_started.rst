@@ -148,7 +148,7 @@ There are also some optional parameters that you can use in the the network inte
     A dictionary of node names and vulnerabilities. A vulnerability is a number between 0 and 1
     that represents how easy a node is to compromise (1 very easy, 0 very hard). If left
     blank then generated randomly.
-* high value target
+* high value node
     If the config is set up so that the red agent wins if it compromises a high value
     target then you can set the name of the node to be the target. Generated automatically
     if left blank.
