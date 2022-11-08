@@ -24,7 +24,7 @@ def test_config_properties():
 
 def test_hvn_entry_node_matching():
     with warnings.catch_warnings(record=True) as w:
-        network_config = NetworkConfig.create(
+        NetworkConfig.create(
             matrix=matrix,
             positions=node_positions,
             entry_nodes=["0"],

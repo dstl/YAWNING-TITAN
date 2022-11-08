@@ -78,7 +78,6 @@ class GameModeConfig:
                 settings = yaml.load(f, Loader=SafeLoader)
         except FileNotFoundError as e:
             msg = f"Configuration file does not exist: {settings_path}"
-            print(msg)  # TODO: Remove once proper logging is setup
             _LOGGER.critical(msg, exc_info=True)
             raise e
 

@@ -2,13 +2,13 @@ from typing import Dict, Any
 
 import pytest
 
-from tests.unit_tests.config.config_test_utils import read_yaml_file
-from tests.unit_tests.config.environment import TEST_REWARDS_CONFIG_PATH
+from tests import TEST_BASE_CONFIG_PATH
+from tests.config_test_utils import read_yaml_file
 from yawning_titan.config.environment.rewards_config import RewardsConfig
 
 
 def get_config_dict() -> Dict:
-    return read_yaml_file(TEST_REWARDS_CONFIG_PATH)
+    return read_yaml_file(TEST_BASE_CONFIG_PATH)["REWARDS"]
 
 
 def test_read_valid_config():
@@ -20,7 +20,7 @@ def test_read_valid_config():
 
     assert rewards_config.reward_end_multiplier is True
 
-    assert rewards_config.reward_reduce_negative_rewards is True
+    assert rewards_config.reward_reduce_negative_rewards is False
 
     assert rewards_config.reward_function == "standard_rewards"
 
