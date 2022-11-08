@@ -32,28 +32,3 @@ class ConfigGroupABC(ABC):
             **kwargs
     ):
         pass
-
-
-@dataclass()
-class MiscellaneousConfig(ConfigGroupABC):
-    """
-    Class that validates and stores Rewards Configuration
-    """
-
-    output_timestep_data_to_json: bool = field(metadata="Is true if the timestep data is output to JSON")
-    """Is true if the timestep data is output to JSON"""
-
-    @classmethod
-    def create(
-            cls,
-            settings: Dict[str, Any]
-    ) -> MiscellaneousConfig:
-        cls._validate(settings)
-
-        misc = MiscellaneousConfig(output_timestep_data_to_json=settings["output_timestep_data_to_json"])        
-
-        return misc
-
-    @classmethod
-    def _validate(cls, data: dict):
-        pass

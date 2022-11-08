@@ -13,6 +13,7 @@ from yawning_titan.config.environment.observation_space_config import Observatio
 from yawning_titan.config.environment.reset_config import ResetConfig
 from yawning_titan.config.environment.rewards_config import RewardsConfig
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
+from yawning_titan.config.game_config.miscellaneous_config import MiscellaneousConfig
 from yawning_titan.config.game_modes import default_game_mode_path
 
 
@@ -25,29 +26,27 @@ def get_default_config_dict() -> Dict:
 
 
 def test_read_valid_path_and_valid_config():
-    game_mode = GameModeConfig.create(TEST_BASE_CONFIG_PATH)
-
-    assert game_mode.red_agent_config == RedAgentConfig.create(get_config_dict()["RED"])
-    assert game_mode.blue_agent_config == BlueAgentConfig.create(get_config_dict()["BLUE"])
-    assert game_mode.observation_space_config == ObservationSpaceConfig.create(get_config_dict()["OBSERVATION_SPACE"])
-    assert game_mode.game_rules_config == GameRulesConfig.create(get_config_dict()["GAME_RULES"])
-    assert game_mode.reset_config == ResetConfig.create(get_config_dict()["RESET"])
-    assert game_mode.rewards_config == RewardsConfig.create(get_config_dict()["REWARDS"])
-    assert game_mode.output_timestep_data_to_json == get_config_dict()["MISCELLANEOUS"]["output_timestep_data_to_json"]
+    config_dict = get_config_dict()
+    game_mode = GameModeConfig.create_from_yaml(TEST_BASE_CONFIG_PATH)    
+    assert game_mode.red == RedAgentConfig.create(config_dict["RED"])
+    assert game_mode.blue == BlueAgentConfig.create(config_dict["BLUE"])
+    assert game_mode.observation_space == ObservationSpaceConfig.create(config_dict["OBSERVATION_SPACE"])
+    assert game_mode.game_rules == GameRulesConfig.create(config_dict["GAME_RULES"])
+    assert game_mode.reset== ResetConfig.create(config_dict["RESET"])
+    assert game_mode.rewards == RewardsConfig.create(config_dict["REWARDS"])
+    assert game_mode.miscellaneous == MiscellaneousConfig.create(config_dict["MISCELLANEOUS"])
 
 
 def test_read_default_config():
-    game_mode = GameModeConfig.create()
-
-    assert game_mode.red_agent_config == RedAgentConfig.create(get_default_config_dict()["RED"])
-    assert game_mode.blue_agent_config == BlueAgentConfig.create(get_default_config_dict()["BLUE"])
-    assert game_mode.observation_space_config == ObservationSpaceConfig.create(
-        get_default_config_dict()["OBSERVATION_SPACE"])
-    assert game_mode.game_rules_config == GameRulesConfig.create(get_default_config_dict()["GAME_RULES"])
-    assert game_mode.reset_config == ResetConfig.create(get_default_config_dict()["RESET"])
-    assert game_mode.rewards_config == RewardsConfig.create(get_default_config_dict()["REWARDS"])
-    assert game_mode.output_timestep_data_to_json == get_default_config_dict()["MISCELLANEOUS"][
-        "output_timestep_data_to_json"]
+    game_mode:GameModeConfig = GameModeConfig.create()
+    config_dict = get_default_config_dict()
+    assert game_mode.red == RedAgentConfig.create(config_dict["RED"])
+    assert game_mode.blue == BlueAgentConfig.create(config_dict["BLUE"])
+    assert game_mode.observation_space == ObservationSpaceConfig.create(config_dict["OBSERVATION_SPACE"])
+    assert game_mode.game_rules == GameRulesConfig.create(config_dict["GAME_RULES"])
+    assert game_mode.reset == ResetConfig.create(config_dict["RESET"])
+    assert game_mode.rewards == RewardsConfig.create(config_dict["REWARDS"])
+    assert game_mode.miscellaneous == MiscellaneousConfig.create(config_dict["MISCELLANEOUS "])
 
 
 def test_invalid_path():

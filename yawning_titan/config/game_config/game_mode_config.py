@@ -10,15 +10,11 @@ from yaml import SafeLoader
 from yawning_titan.config.agents.red_agent_config import RedAgentConfig
 from yawning_titan.config.agents.blue_agent_config import BlueAgentConfig
 from yawning_titan.config.environment.game_rules_config import GameRulesConfig
-from yawning_titan.config.environment.observation_space_config import (
-    ObservationSpaceConfig,
-)
+from yawning_titan.config.environment.observation_space_config import ObservationSpaceConfig
 from yawning_titan.config.environment.reset_config import ResetConfig
 from yawning_titan.config.environment.rewards_config import RewardsConfig
-from yawning_titan.config.game_config.config_group_class import (
-    ConfigGroupABC,
-    MiscellaneousConfig,
-)
+from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
+from yawning_titan.config.game_config.miscellaneous_config import MiscellaneousConfig
 from yawning_titan.config.game_modes import default_game_mode_path
 
 import ruamel.yaml as ry
