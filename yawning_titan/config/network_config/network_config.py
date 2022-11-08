@@ -65,7 +65,7 @@ class NetworkConfig(ConfigGroupABC):
             entry_nodes: Optional[List[str]] = None,
             vulnerabilities: Optional[Dict] = None,
             high_value_targets: Optional[List[str]] = None
-                  ):
+    ):
         # check that no entry nodes and high value nodes intersect
         if set(entry_nodes) & set(high_value_targets):
             warnings.warn(
