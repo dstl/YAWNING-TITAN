@@ -168,7 +168,7 @@ class NetworkInterface:
         self.red_targeting_prioritise_resilient_nodes = self.red_settings[
             "red_prioritises_resilient_nodes"
         ]
-        self.red_pursues_node = str(self.red_settings["red_pursues_node"]) if self.red_settings["red_pursues_node"] is not None else None
+        self.red_target_node = str(self.red_settings["red_target_node"]) if self.red_settings["red_target_node"] is not None else None
 
         # Observation Space Settings
         self.obs_compromised_status = self.observation_space_settings[
@@ -517,7 +517,7 @@ class NetworkInterface:
         Get a list of the shortest distances from each node to the target
         """
         #TODO: add option where only shortest distance provided
-        dist_matrix = dijkstra(csgraph=self.matrix, directed=False, indices=int(self.red_pursues_node), min_only=False)
+        dist_matrix = dijkstra(csgraph=self.matrix, directed=False, indices=int(self.red_target_node), min_only=False)
         distances = [dist_matrix[int(n)] for n in nodes]
         return distances
 
@@ -568,7 +568,7 @@ class NetworkInterface:
         Returns:
             The target node if it exists
         """
-        return self.red_pursues_node
+        return self.red_target_node
 
     def get_total_num_nodes(self) -> int:
         """

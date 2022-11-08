@@ -61,7 +61,7 @@ RED:
   # Red picks nodes to attack at random
   red_chooses_target_at_random: False
   # Red targets a specific node
-  red_pursues_node:
+  red_target_node:
   # Red sorts the nodes it can attack and chooses the one that has the most connections
   red_prioritises_connected_nodes: True
   # Red sorts the nodes it can attack and chooses the one that has the least connections

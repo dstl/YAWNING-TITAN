@@ -126,7 +126,7 @@ class RedActionSet:
                 weights.append(
                     1 / self.network_interface.get_single_node_vulnerability(node)
                 )
-        elif self.network_interface.red_pursues_node is not None:
+        elif self.network_interface.red_target_node is not None:
             distances = self.network_interface.get_shortest_distances_to_target(possible_to_attack)
             for dist in distances:
                 if self.network_interface.red_always_chooses_shortest_distance_to_target:

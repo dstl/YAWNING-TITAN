@@ -67,8 +67,8 @@ class GameRulesConfig(ConfigGroupABC):
     """Number of timesteps the blue agent has to prepare"""
 
     @classmethod
-    def create(cls, settings: Dict[str, Any], required_node: str=None) -> GameRulesConfig:
-        cls._validate(settings, required_node)
+    def create(cls, settings: Dict[str, Any], red_target_node: str=None) -> GameRulesConfig:
+        cls._validate(settings, red_target_node)
 
         game_rule_config = GameRulesConfig(
             gr_min_number_of_network_nodes=settings["min_number_of_network_nodes"],
@@ -80,6 +80,7 @@ class GameRulesConfig(ConfigGroupABC):
             gr_loss_pc_node_compromised_pc=settings[
                 "percentage_of_nodes_compromised_equals_loss"
             ],
+            gr_loss_tn=settings["lose_when_target_node_lost"],
             gr_number_of_high_value_nodes=settings["number_of_high_value_nodes"],
             gr_loss_hvn=settings["lose_when_high_value_node_lost"],
             gr_loss_hvn_random_placement=settings[
@@ -98,14 +99,14 @@ class GameRulesConfig(ConfigGroupABC):
         return game_rule_config
 
     @classmethod
-    def _validate(cls, data: dict, required_node:str):
+    def _validate(cls, data: dict, red_target_node:str):
         # data is int or float
         for name in [
             "node_vulnerability_lower_bound",
             "node_vulnerability_upper_bound",
             "percentage_of_nodes_compromised_equals_loss",
         ]:
-            check_type(data, name, [int])
+            check_type(data, name, [float,int])
         
         # data is int
         for name in [
@@ -115,7 +116,21 @@ class GameRulesConfig(ConfigGroupABC):
             "min_number_of_network_nodes",
             "number_of_high_value_nodes"
         ]:
-            check_type(data, name, [float, int])
+            check_type(data, name, [int])
+
+         # data is boolean
+        for name in [
+            "lose_when_all_nodes_lost",
+            "lose_when_target_node_lost",
+            "lose_when_n_percent_of_nodes_lost",
+            "lose_when_high_value_node_lost",
+            "choose_high_value_nodes_placement_at_random",
+            "choose_high_value_nodes_furthest_away_from_entry",
+            "choose_entry_nodes_randomly",
+            "prefer_central_nodes_for_entry_nodes",
+            "prefer_edge_nodes_for_entry_nodes",
+        ]:
+            check_type(data, name, [bool])
 
         # data s between 0 and 1 inclusive
         for name in [
@@ -154,27 +169,15 @@ class GameRulesConfig(ConfigGroupABC):
             True,
         )
         # make sure the required node is not more than the number of minimum number of nodes in network
-        check_within_range(
-            data,
-            required_node,
-            0,
-            data["min_number_of_network_nodes"],
-            False,
-            True,
-        )
-
-        # data is boolean
-        for name in [
-            "lose_when_all_nodes_lost",
-            "lose_when_n_percent_of_nodes_lost",
-            "lose_when_high_value_node_lost",
-            "choose_high_value_nodes_placement_at_random",
-            "choose_high_value_nodes_furthest_away_from_entry",
-            "choose_entry_nodes_randomly",
-            "prefer_central_nodes_for_entry_nodes",
-            "prefer_edge_nodes_for_entry_nodes",
-        ]:
-            check_type(data, name, [bool])
+        if target_node is not None:
+            check_within_range(
+                data,
+                target_node,
+                0,
+                data["min_number_of_network_nodes"],
+                False,
+                True,
+            )
 
         check_within_range(
             data, "percentage_of_nodes_compromised_equals_loss", 0, 1, False, False
@@ -190,11 +193,12 @@ class GameRulesConfig(ConfigGroupABC):
 
         if (
             (not data["lose_when_all_nodes_lost"])
+            and (not data["lose_when_target_node_lost"])
             and (not data["lose_when_n_percent_of_nodes_lost"])
             and (not data["lose_when_high_value_node_lost"])
         ):
             raise ValueError(
-                "'lose_when_all_nodes_lost', 'lose_when_n_percent_of_nodes_lost', 'lose_when_high_value_node_lost' -> At least one loose condition must be turned on"
+                "'lose_when_target_node_lost', 'lose_when_all_nodes_lost', 'lose_when_n_percent_of_nodes_lost', 'lose_when_high_value_node_lost' -> At least one loose condition must be turned on"
                 # noqa
             )
 
@@ -217,6 +221,9 @@ class GameRulesConfig(ConfigGroupABC):
                     "'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' -> Only one method of selecting a high value node should be selected"
                     # noqa
                 )
+
+        if data["lose_when_high_value_node_lost"] and red_target_node is None:
+            raise ValueError("target node must be provided for game to end when target node captured")
 
         if data["grace_period_length"] > data["max_steps"]:
             raise ValueError(
