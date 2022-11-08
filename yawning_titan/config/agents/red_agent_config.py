@@ -133,6 +133,7 @@ class RedAgentConfig(ConfigGroupABC):
             red_attack_from_any_node=settings[
                 "red_can_attack_from_any_red_node"
             ],
+            red_target_node=settings["red_target_node"],
             red_naturally_spread=settings["red_can_naturally_spread"],
             red_chance_to_spread_to_connected_node=settings[
                 "chance_to_spread_to_connected_node"
@@ -181,6 +182,9 @@ class RedAgentConfig(ConfigGroupABC):
             ],
             red_targeting_prioritise_resilient_nodes=settings[
                 "red_prioritises_resilient_nodes"
+            ],
+            red_always_chooses_shortest_distance_to_target=settings[
+                "red_always_chooses_shortest_distance_to_target"
             ]
         )
 
@@ -214,6 +218,9 @@ class RedAgentConfig(ConfigGroupABC):
         # int
         for name in ["zero_day_start_amount", "days_required_for_zero_day"]:
             check_type(data, name, [int])
+
+        if data["red_target_node"] is not None:
+            check_type(data,"red_target_node",[str])
 
         # type of data is bool
         for name in [
