@@ -22,14 +22,14 @@ from numpy.random import choice
 from yaml.loader import SafeLoader
 
 from yawning_titan.config.game_modes import default_game_mode_path
-from yawning_titan.envs.generic.helpers.environment_input_validation import \
-    check_input
+from yawning_titan.envs.generic.helpers.environment_input_validation import check_input
 from yawning_titan.envs.generic.helpers.node_attribute_gen import (
     generate_vulnerabilities,
     generate_vulnerability,
 )
 
 _LOGGER = getLogger(__name__)
+
 
 class NetworkInterface:
     """The primary interface between both red and blue agents and the underlying environment."""
@@ -85,10 +85,14 @@ class NetworkInterface:
             self.high_value_nodes_provided = True
 
         # check if any of the defined high value nodes intersect with entry nodes, then send a warning
-        if (self.high_value_nodes_provided and self.entry_nodes_provided and
-                (set(self.entry_nodes) & set(self.high_value_nodes))):
+        if (
+            self.high_value_nodes_provided
+            and self.entry_nodes_provided
+            and (set(self.entry_nodes) & set(self.high_value_nodes))
+        ):
             warnings.warn(
-                "Provided entry nodes and high value nodes intersect and may cause the training to prematurely end")
+                "Provided entry nodes and high value nodes intersect and may cause the training to prematurely end"
+            )
 
         # check the settings are valid
         check_input(settings, number_of_nodes, high_value_nodes)
@@ -168,7 +172,11 @@ class NetworkInterface:
         self.red_targeting_prioritise_resilient_nodes = self.red_settings[
             "red_prioritises_resilient_nodes"
         ]
-        self.red_target_node = str(self.red_settings["red_target_node"]) if self.red_settings["red_target_node"] is not None else None
+        self.red_target_node = (
+            str(self.red_settings["red_target_node"])
+            if self.red_settings["red_target_node"] is not None
+            else None
+        )
 
         # Observation Space Settings
         self.obs_compromised_status = self.observation_space_settings[
@@ -313,10 +321,10 @@ class NetworkInterface:
 
         # Misc Settings
         self.misc_json_out = self.misc_settings["output_timestep_data_to_json"]
-        self.SEED = self.misc_settings.get("random_seed",None)
+        self.SEED = self.misc_settings.get("random_seed", None)
 
         if self.SEED is not None:
-            print("random number generation is deterministic with seed: ",self.SEED)
+            print("random number generation is deterministic with seed: ", self.SEED)
 
         nodes = [str(i) for i in range(number_of_nodes)]
         df = pd.DataFrame(matrix, index=nodes, columns=nodes)
@@ -377,7 +385,7 @@ class NetworkInterface:
                 if self.gr_prefer_edge_nodes:
                     weights = list(map(lambda x: (1 / x) ** 4, weights))
                 elif self.gr_prefer_central_entry:
-                    weights = list(map(lambda x: x ** 4, weights))
+                    weights = list(map(lambda x: x**4, weights))
                 else:
                     weights = [1] * len(all_nodes)
 
@@ -426,17 +434,14 @@ class NetworkInterface:
         self.current_network_variables = copy.deepcopy(self.initial_network_variables)
 
         edges_per_node = len(self.current_graph.edges) / (
-                2 * len(self.current_graph.nodes)
+            2 * len(self.current_graph.nodes)
         )
 
         self.connectivity = -math.exp(-0.1 * edges_per_node) + 1
 
         self.adj_matrix = nx.to_numpy_array(self.current_graph)
 
-    def _high_value_node_setup(
-            self,
-            high_value_nodes: List[str]
-    ):
+    def _high_value_node_setup(self, high_value_nodes: List[str]):
         """
         Sets up the high value nodes to be used by the training environment
 
@@ -456,8 +461,10 @@ class NetworkInterface:
         # preferably this would be handled elsewhere i.e. configuration
         if self.gr_number_of_high_value_nodes > number_possible_high_value:
             warnings.warn(
-                "The configured number of high value nodes exceed the allowable number in the given network. " +
-                str(number_possible_high_value) + " high value nodes will be created")
+                "The configured number of high value nodes exceed the allowable number in the given network. "
+                + str(number_possible_high_value)
+                + " high value nodes will be created"
+            )
             self.gr_number_of_high_value_nodes = number_possible_high_value
 
         # if no high value nodes set, set up the possible high value node list
@@ -492,7 +499,8 @@ class NetworkInterface:
 
                 # prevent high value nodes from becoming entry nodes
                 self.possible_high_value_nodes = list(
-                    set(self.possible_high_value_nodes).difference(self.entry_nodes))
+                    set(self.possible_high_value_nodes).difference(self.entry_nodes)
+                )
 
         if self.gr_loss_hvn:
             # if high value nodes were provided, use them
@@ -502,7 +510,8 @@ class NetworkInterface:
             else:
                 # randomly pick unique nodes from a list of possible high value nodes
                 self.high_value_nodes = random.sample(
-                    set(self.possible_high_value_nodes), self.gr_number_of_high_value_nodes
+                    set(self.possible_high_value_nodes),
+                    self.gr_number_of_high_value_nodes,
                 )
         else:
             self.high_value_nodes = None
@@ -512,12 +521,18 @@ class NetworkInterface:
     The following block of code contains the getters for the network interface. Getters are methods that (given
     parameters) will return some attribute from the class
     """
-    def get_shortest_distances_to_target(self,nodes:List[str])->List[float]:
+
+    def get_shortest_distances_to_target(self, nodes: List[str]) -> List[float]:
         """
         Get a list of the shortest distances from each node to the target
         """
-        #TODO: add option where only shortest distance provided
-        dist_matrix = dijkstra(csgraph=self.matrix, directed=False, indices=int(self.red_target_node), min_only=False)
+        # TODO: add option where only shortest distance provided
+        dist_matrix = dijkstra(
+            csgraph=self.matrix,
+            directed=False,
+            indices=int(self.red_target_node),
+            min_only=False,
+        )
         distances = [dist_matrix[int(n)] for n in nodes]
         return distances
 
@@ -751,15 +766,15 @@ class NetworkInterface:
         return out
 
     def get_nodes(
-            self,
-            filter_true_compromised: bool = False,
-            filter_blue_view_compromised: bool = False,
-            filter_true_safe: bool = False,
-            filter_blue_view_safe: bool = False,
-            filter_isolated: bool = False,
-            filter_non_isolated: bool = False,
-            filter_deceptive: bool = False,
-            filter_non_deceptive: bool = False,
+        self,
+        filter_true_compromised: bool = False,
+        filter_blue_view_compromised: bool = False,
+        filter_true_safe: bool = False,
+        filter_blue_view_safe: bool = False,
+        filter_isolated: bool = False,
+        filter_non_isolated: bool = False,
+        filter_deceptive: bool = False,
+        filter_non_deceptive: bool = False,
     ) -> List[str]:
         """
         Get all of the nodes from the network and apply a filter(s) to extract a specific subset of the nodes.
@@ -782,29 +797,29 @@ class NetworkInterface:
             # Return true if compromised status is 1
             filter_functions.append(
                 lambda x: self.current_network_variables[x]["true_compromised_status"]
-                          == 1
+                == 1
             )
         if filter_blue_view_compromised:
             # Return True if blue view compromised status is 1
             filter_functions.append(
                 lambda x: self.current_network_variables[x][
-                              "blue_view_compromised_status"
-                          ]
-                          == 1
+                    "blue_view_compromised_status"
+                ]
+                == 1
             )
         if filter_true_safe:
             # Return True if compromised status is 0
             filter_functions.append(
                 lambda x: self.current_network_variables[x]["true_compromised_status"]
-                          == 0
+                == 0
             )
         if filter_blue_view_safe:
             # Return True if blue view compromised status is 0
             filter_functions.append(
                 lambda x: self.current_network_variables[x][
-                              "blue_view_compromised_status"
-                          ]
-                          == 0
+                    "blue_view_compromised_status"
+                ]
+                == 0
             )
         if filter_isolated:
             # Return True if isolated is True
@@ -968,10 +983,7 @@ class NetworkInterface:
                 target_nodes = {name: 0 for name in self.get_nodes()}
                 target_nodes[self.get_target_node()] = 1
                 target_nodes = list(target_nodes.values())
-                target_nodes = np.pad(
-                    target_nodes, (0, open_spaces), "constant"
-                )
-
+                target_nodes = np.pad(target_nodes, (0, open_spaces), "constant")
 
             if self.gr_loss_hvn:
                 # gets the high value nodes
@@ -982,9 +994,7 @@ class NetworkInterface:
                     nodes[node] = 1
 
                 nodes = list(nodes.values())
-                nodes = np.pad(
-                    nodes, (0, open_spaces), "constant"
-                )
+                nodes = np.pad(nodes, (0, open_spaces), "constant")
 
         # gets the skill of the red agent
         skill = []
@@ -1012,7 +1022,7 @@ class NetworkInterface:
 
         return obs
 
-    def get_observation_size_base(self,with_feather: bool) -> int:
+    def get_observation_size_base(self, with_feather: bool) -> int:
         """
         Get the size of the observation space.
 
@@ -1120,7 +1130,7 @@ class NetworkInterface:
         self.red_current_location = location
 
     def update_stored_attacks(
-            self, attacking_nodes: List[str], target_nodes: List[str], success: List[bool]
+        self, attacking_nodes: List[str], target_nodes: List[str], success: List[bool]
     ):
         """
         Update this turns current attacks.
@@ -1140,15 +1150,15 @@ class NetworkInterface:
                 if k:
                     # chance of seeing the attack if the attack succeeded
                     if (
-                            100 * self.blue_chance_to_discover_source_deceptive_succeed
-                            > random.randint(0, 99)
+                        100 * self.blue_chance_to_discover_source_deceptive_succeed
+                        > random.randint(0, 99)
                     ):
                         self.detected_attacks.append([i, j])
                 else:
                     # chance of seeing the attack if the attack fails
                     if (
-                            100 * self.blue_chance_to_discover_source_deceptive_failed
-                            > random.randint(0, 99)
+                        100 * self.blue_chance_to_discover_source_deceptive_failed
+                        > random.randint(0, 99)
                     ):
                         self.detected_attacks.append([i, j])
             else:
@@ -1156,32 +1166,32 @@ class NetworkInterface:
                 if k is False:
                     if self.blue_discover_failed_attacks:
                         if (
-                                100 * self.blue_chance_to_discover_source_failed
-                                > random.randint(0, 99)
+                            100 * self.blue_chance_to_discover_source_failed
+                            > random.randint(0, 99)
                         ):
                             # Adds the attack to the list of current attacks for this turn
                             self.detected_attacks.append([i, j])
                 else:
                     # If the attack succeeded and the blue agent detected it
                     if (
-                            self.current_network_variables[j][
-                                "blue_view_compromised_status"
-                            ]
-                            == 1
+                        self.current_network_variables[j][
+                            "blue_view_compromised_status"
+                        ]
+                        == 1
                     ):
                         if self.blue_discover_attack_source_if_detected:
                             if (
-                                    self.blue_chance_to_discover_source_succeed_known
-                                    > random.randint(0, 99)
+                                self.blue_chance_to_discover_source_succeed_known
+                                > random.randint(0, 99)
                             ):
                                 self.detected_attacks.append([i, j])
                     else:
                         # If the attack succeeded but blue did not detect it
                         if self.blue_chance_to_discover_source_succeed_unknown:
                             if (
-                                    100
-                                    * self.blue_chance_to_discover_source_succeed_unknown
-                                    > random.randint(0, 99)
+                                100
+                                * self.blue_chance_to_discover_source_succeed_unknown
+                                > random.randint(0, 99)
                             ):
                                 self.detected_attacks.append([i, j])
             # Also compiles a list of all the attacks even those that blue did not "see"
@@ -1342,8 +1352,8 @@ class NetworkInterface:
 
             # check the isolation status of the nodes
             if (node1, node2) in self.current_graph.edges(node1) or (
-                    node2,
-                    node1,
+                node2,
+                node1,
             ) in self.current_graph.edges(node1):
                 # neither are isolated: use the insert between method to insert the new node on the current graph
                 self.__insert_node_between(node_name, node1, node2, self.current_graph)
@@ -1438,7 +1448,7 @@ class NetworkInterface:
         graph.remove_node(node_name)
 
     def __insert_node_between(
-            self, new_node: str, node1: str, node2: str, graph: nx.Graph
+        self, new_node: str, node1: str, node2: str, graph: nx.Graph
     ) -> None:
         """
         Insert a node in between two nodes.
@@ -1486,12 +1496,12 @@ class NetworkInterface:
         self.adj_matrix = self.adj_matrix = nx.to_numpy_array(self.current_graph)
 
     def attack_node(
-            self,
-            node: str,
-            skill: float = 0.5,
-            use_skill: bool = False,
-            use_vulnerability: bool = False,
-            guarantee: bool = False,
+        self,
+        node: str,
+        skill: float = 0.5,
+        use_skill: bool = False,
+        use_vulnerability: bool = False,
+        guarantee: bool = False,
     ) -> bool:
         """
         Attack a target node.
@@ -1561,17 +1571,17 @@ class NetworkInterface:
         """
         true_state = self.current_network_variables[node]["true_compromised_status"]
         if (
-                self.current_network_variables[node]["blue_knows_intrusion"] is True
+            self.current_network_variables[node]["blue_knows_intrusion"] is True
         ):  # if we have seen the intrusion before we don't want to forget about it
             self.current_network_variables[node][
                 "blue_view_compromised_status"
             ] = true_state
         if true_state == 1:
             if (
-                    random.randint(0, 99)
-                    < self.settings["BLUE"]["chance_to_immediately_discover_intrusion"]
-                    * 100
-                    or node in self.deceptive_nodes
+                random.randint(0, 99)
+                < self.settings["BLUE"]["chance_to_immediately_discover_intrusion"]
+                * 100
+                or node in self.deceptive_nodes
             ):
                 self.current_network_variables[node][
                     "blue_view_compromised_status"
@@ -1585,7 +1595,7 @@ class NetworkInterface:
             ] = true_state
 
     def __immediate_attempt_view_update_with_specified_chance(
-            self, node: str, chance: float
+        self, node: str, chance: float
     ):
         """
         Update the blue view of a node but with a specified chance and not the chance used in the settings file.
@@ -1618,8 +1628,8 @@ class NetworkInterface:
             true_state = self.current_network_variables[node]["true_compromised_status"]
             if true_state == 1:
                 if (
-                        random.randint(0, 99) < self.blue_scan_detection_chance * 100
-                        or self.current_network_variables[node]["deceptive_node"]
+                    random.randint(0, 99) < self.blue_scan_detection_chance * 100
+                    or self.current_network_variables[node]["deceptive_node"]
                 ):
                     self.current_network_variables[node]["blue_knows_intrusion"] = True
                     self.current_network_variables[node][
@@ -1637,11 +1647,11 @@ class NetworkInterface:
         now = datetime.now()
         time_stamp = str(datetime.timestamp(now)).replace(".", "")
         name = (
-                "yawning_titan/envs/helpers/json_timesteps/output_"
-                + str(ts)
-                + "_"
-                + str(time_stamp)
-                + ".json"
+            "yawning_titan/envs/helpers/json_timesteps/output_"
+            + str(ts)
+            + "_"
+            + str(time_stamp)
+            + ".json"
         )
         with open(name, "w+") as json_file:
             json.dump(data_dict, json_file)
