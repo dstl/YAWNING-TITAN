@@ -38,7 +38,7 @@ def test_read_valid_path_and_valid_config():
 
 
 def test_read_default_config():
-    game_mode:GameModeConfig = GameModeConfig.create()
+    game_mode:GameModeConfig = GameModeConfig.create_from_yaml()
     config_dict = get_default_config_dict()
     assert game_mode.red == RedAgentConfig.create(config_dict["RED"])
     assert game_mode.blue == BlueAgentConfig.create(config_dict["BLUE"])
@@ -46,20 +46,20 @@ def test_read_default_config():
     assert game_mode.game_rules == GameRulesConfig.create(config_dict["GAME_RULES"])
     assert game_mode.reset == ResetConfig.create(config_dict["RESET"])
     assert game_mode.rewards == RewardsConfig.create(config_dict["REWARDS"])
-    assert game_mode.miscellaneous == MiscellaneousConfig.create(config_dict["MISCELLANEOUS "])
+    assert game_mode.miscellaneous == MiscellaneousConfig.create(config_dict["MISCELLANEOUS"])
 
 def test_read_created_yaml(tmpdir_factory):
-    game_mode:GameModeConfig = GameModeConfig.create()
+    game_mode:GameModeConfig = GameModeConfig.create_from_yaml()
     config_dict = get_default_config_dict()
-    config_dir = tmpdir_factory.mktemp("temp")
-    game_mode.write_to_file(config_dir)
-    new_game_mode = GameModeConfig.create_from_yaml(config_dir)
+    config_file = os.path.join(tmpdir_factory.mktemp("temp"),"test.yaml")
+    game_mode.write_to_file(config_file)
+    new_game_mode = GameModeConfig.create_from_yaml(config_file)
     assert new_game_mode.as_formatted_dict() == config_dict
 
 
 def test_invalid_path():
     with pytest.raises(FileNotFoundError) as err_info:
-        GameModeConfig.create(Path("fake_test_path"))
+        GameModeConfig.create_from_yaml("fake_test_path")
 
     # assert that the error message is as expected
     assert err_info.value.args[1] == "No such file or directory"
