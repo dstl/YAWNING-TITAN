@@ -13,10 +13,12 @@ class MiscellaneousConfig(ConfigGroupABC):
     """
 
     output_timestep_data_to_json: bool = field(
-        metadata="""
-        Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and
-        the attacks that blue saw in that turn
-    """
+        metadata={
+            "description": """
+            Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and
+            the attacks that blue saw in that turn
+        """
+        }
     )
     """
     Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and

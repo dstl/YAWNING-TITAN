@@ -9,7 +9,7 @@ import ruamel.yaml as ry
 class ConfigGroupABC(ABC):
     def to_dict(self,alias=True):
         if alias:
-            return {self.__dataclass_fields__[key].metadata["alias"]:val for key,val in asdict(self).items()}
+            return {self.__dataclass_fields__[key].metadata.get("alias",key):val for key,val in asdict(self).items()}
         return asdict(self)
             
     def as_commented_yaml(self):
