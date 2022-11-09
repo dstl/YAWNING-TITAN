@@ -86,7 +86,7 @@ def basic_2_agent_loop(request,temp_config_from_base)->ActionLoop:
             Monitor(env), eval_freq=1000, deterministic=False, render=False
         )
 
-    agent = PPO(PPOMlp, env, verbose=1, seed=network_interface.SEED) #TODO: allow PPO to inherit environment seed. Monkey patch additional feature?
+    agent = PPO(PPOMlp, env, verbose=1, seed=network_interface.random_seed) #TODO: allow PPO to inherit environment random_seed. Monkey patch additional feature?
 
     agent.learn(
             total_timesteps=1000, n_eval_episodes=100, callback=eval_callback

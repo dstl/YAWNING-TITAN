@@ -73,7 +73,7 @@ class GenericNetworkEnv(gym.Env):
         self.print_notes = print_per_ts_data
 
         
-        self.SEED = self.network_interface.SEED
+        self.random_seed = self.network_interface.random_seed
 
         self.graph_plotter = None
         self.eval_printout = EvalPrintout(self.avg_every)
@@ -103,8 +103,8 @@ class GenericNetworkEnv(gym.Env):
         Returns:
             A new starting observation (numpy array)
         """
-        if self.SEED is not None: # conditionally set seed
-            set_random_seed(self.SEED,True) # TODO: may need to add customization of cuda setting
+        if self.random_seed is not None: # conditionally set random_seed
+            set_random_seed(self.random_seed,True) # TODO: may need to add customization of cuda setting
         self.network_interface.reset()
         self.RED.reset()
         self.current_duration = 0

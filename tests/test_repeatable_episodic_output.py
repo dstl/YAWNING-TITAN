@@ -21,15 +21,13 @@ custom_random_setting_3 = {"GAME_RULES":{"choose_high_value_targets_placement_at
         {"episodes":1,"settings_file":"repeatable_threat_config.yaml","custom_settings":custom_random_setting_3}
     ], indirect=True
 )
-def test_repeatable_episodic_output_set_seed(basic_2_agent_loop:ActionLoop):
+def test_repeatable_episodic_output_set_random_seed(basic_2_agent_loop:ActionLoop):
     """
     Test to check that actions undertaken by the red attacking agent
-    are repeatable across all episodes with a set seed value
+    are repeatable across all episodes with a set random_seed value
     """   
 
     results: List[DataFrame] = basic_2_agent_loop.standard_action_loop(deterministic=True) 
-
-    #print(results[0].compare(results[1]))
     
     assert_frame_equal(results[0],results[-1])
 
@@ -38,9 +36,9 @@ def test_repeatable_episodic_output_set_seed(basic_2_agent_loop:ActionLoop):
         {"episodes":1,"entry_nodes":["0"],"settings_file":"repeatable_threat_config.yaml"}
     ], indirect=True
 )
-def test_setting_high_value_target_with_seeded_randomisation(basic_2_agent_loop:ActionLoop):
+def test_setting_high_value_target_with_random_seeded_randomisation(basic_2_agent_loop:ActionLoop):
     """
-    Test that high value node setting is unaffected by seeded randomisation
+    Test that high value node setting is unaffected by random_seeded randomisation
     """   
     target_occurrences = {str(key):0 for key in range(0,18)}
     for i in range(0,100): # run a number of action loops 
