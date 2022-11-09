@@ -1,167 +1,443 @@
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Dict
 
-from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
-from yawning_titan.envs.generic.helpers.environment_input_validation import check_within_range, check_type
+from yawning_titan.config.game_config.config_abc import ConfigABC
+from yawning_titan.envs.generic.helpers.environment_input_validation import \
+    check_within_range, check_type
 
 
 @dataclass()
-class BlueAgentConfig(ConfigGroupABC):
+class BlueAgentConfig(ConfigABC):
     """
     Class that validates and stores the Blue Agent Configuration
+    
+    Notes from the DSTL
+    -------------------
+    The blue agent does not have to have perfect detection. In these settings
+    you can change how much information blue can gain from the red agents
+    actions. There are two different pieces of information blue can get:
+    intrusions and attacks.
+
+    Intrusions
+        An intrusion is when the red agent takes over a node and compromises
+        it. You can change the chance that blue has to be able to detect
+        this using the "chance_to_immediately_discover_intrusion". If blue
+        does not detect an intrusion then it can use the scan action to try
+        and discover these intrusions with
+        "chance_to_discover_intrusion_on_scan".
+
+        There are also deceptive nodes that blue can place down. These nodes
+        are used as detectors to inform blue when they are compromised. They
+        should have a chance to detect of 1 so that they can detect
+        everything (at the very least they should have a chance to detect
+        higher than the normal chance to detect) but you can modify it if
+        you so wish  with
+        "chance_to_immediately_discover_intrusion_deceptive_node" and
+        "chance_to_discover_intrusion_on_scan_deceptive_node".
+
+    Attacks
+        Attacks are the actual attacks that the red agent does to compromise
+        the nodes. For example you may be able to see that node 14 is
+        compromised but using the attack detection, the blue agent may be
+        able to see that it was node 12 that attacked node 14. You can
+        modify the chance for blue to see attacks that failed, succeeded (
+        and blue was able to detect that the node was compromised) and
+        attacks that succeeded and the blue agent did not detect the intrusion.
+
+    Again there are settings to change the likelihood that a deceptive node
+    can detect an attack. While this should remain at 1, it is open for you
+    to change.
     """
+    _max_number_deceptive_nodes: int
+    _can_discover_failed_attacks: bool
+    _chance_to_immediately_discover_intrusion: int
+    _chance_to_discover_intrusion_on_scan: int
+    _chance_to_immediately_discover_intrusion_deceptive_node: int
+    _chance_to_discover_intrusion_on_scan_deceptive_node: int
+    _chance_to_discover_failed_attack: int
+    _can_discover_succeeded_attacks_if_compromise_is_discovered: bool
+    _can_discover_succeeded_attacks_if_compromise_is_not_discovered: bool
+    _chance_to_discover_succeeded_attack_compromise_known: int
+    _chance_to_discover_succeeded_attack_compromise_not_known: int
+    _chance_to_discover_failed_attack_deceptive_node: int
+    _chance_to_discover_succeeded_attack_deceptive_node: int
+    _making_node_safe_modifies_vulnerability: bool
+    _vulnerability_change_during_node_patch: int
+    _making_node_safe_gives_random_vulnerability: bool
+    _blue_uses_reduce_vulnerability: bool
+    _blue_uses_restore_node: bool
+    _blue_uses_make_node_safe: bool
+    _blue_uses_scan: bool
+    _blue_uses_isolate_node: bool
+    _blue_uses_reconnect_node: bool
+    _blue_uses_do_nothing: bool
+    _blue_uses_deceptive_nodes: bool
+    _relocating_deceptive_nodes_generates_a_new_node: bool
 
-    blue_max_deceptive_nodes: int
-    """Integer value specifying how many deceptive nodes the blue agent can place in the network"""
+    # region Getters
+    @property
+    def max_number_deceptive_nodes(self) -> int:
+        """
+        The max number of deceptive nodes that blue can place.
+        """
+        return self._max_number_deceptive_nodes
 
-    blue_immediate_detection_chance: float
-    """Chance for the blue agent to immediately discover the node compromised by the red agent"""
+    @property
+    def can_discover_failed_attacks(self) -> bool:
+        """
+        Can discover the location an attack came from if the attack failed.
+        """
+        return self._can_discover_failed_attacks
 
-    blue_scan_detection_chance: float
-    """Chance for the blue agent to discover a compromised node on scan"""
+    @property
+    def chance_to_immediately_discover_intrusion(self) -> int:
+        """
+        Chance for blue to discover a node that red has compromised the
+        instant red compromises the node.
+        """
+        return self._chance_to_immediately_discover_intrusion
 
-    blue_deception_immediate_detection_chance: float
-    """Chance for the blue agent to immediately discover that a deceptive node has been compromised"""
+    @property
+    def chance_to_discover_intrusion_on_scan(self) -> int:
+        """
+        When blue performs the scan action this is the chance that a red
+        intrusion is discovered.
+        """
+        return self._chance_to_discover_intrusion_on_scan
 
-    blue_deception_scan_detection_chance: float
-    """Chance for the blue agent to discover that a deceptive node has been compromised on scan"""
+    @property
+    def chance_to_immediately_discover_intrusion_deceptive_node(self) -> int:
+        """
+        Chance for blue to discover a deceptive node that red has
+        compromised the instant red compromises the node.
+        """
+        return self._chance_to_immediately_discover_intrusion_deceptive_node
 
-    blue_discover_failed_attacks: bool
-    """Is true if blue agent can discover failed attacks"""
+    @property
+    def chance_to_discover_intrusion_on_scan_deceptive_node(self) -> int:
+        """
+        When blue uses the scan action what is the chance that blue will
+        detect an intrusion in a deceptive node.
+        """
+        return self._chance_to_discover_intrusion_on_scan_deceptive_node
 
-    blue_discover_attack_source_if_detected: bool
-    """Is true if the blue agent can learn information about an attack that succeeds if the compromise is known"""
+    @property
+    def chance_to_discover_failed_attack(self) -> int:
+        """
+        Chance for blue to discover information about a failed attack.
+        """
+        return self._chance_to_discover_failed_attack
 
-    blue_discover_attack_source_if_not_detected: bool
-    """Is true if the blue agent can learn information about an attack that succeeds if the compromise is not known"""
+    @property
+    def can_discover_succeeded_attacks_if_compromise_is_discovered(self) -> \
+            bool:
+        """
+        Can blue learn information about an attack that succeeds if the
+        compromise is known.
+        """
+        return self._can_discover_succeeded_attacks_if_compromise_is_discovered
 
-    blue_chance_to_discover_source_failed: float
-    """Chance for blue to discover information about a failed attack"""
+    @property
+    def can_discover_succeeded_attacks_if_compromise_is_not_discovered(self) \
+            -> bool:
+        """
+        Can blue learn information about an attack that succeeds if the
+        compromise is NOT known.
+        """
+        return self._can_discover_succeeded_attacks_if_compromise_is_not_discovered
 
-    blue_chance_to_discover_source_succeed_known: float
-    """Chance for blue to discover information about an attack that succeeded and the compromise was known"""
+    @property
+    def chance_to_discover_succeeded_attack_compromise_known(self) -> int:
+        """
+        Chance for blue to discover information about an attack that succeeded
+        and the compromise was known.
+        """
+        return self._chance_to_discover_succeeded_attack_compromise_known
 
-    blue_chance_to_discover_source_succeed_unknown: float
-    """Chance for blue to discover information about an attack that succeeded and the compromise was not known"""
+    @property
+    def chance_to_discover_succeeded_attack_compromise_not_known(self) -> int:
+        """
+        Chance for blue to discover information about an attack that
+        succeeded and the compromise was NOT known.
+        """
+        return self._chance_to_discover_succeeded_attack_compromise_not_known
 
-    blue_chance_to_discover_source_deceptive_failed: float
-    """Chance to discover the location of a failed attack on a deceptive node"""
+    @property
+    def chance_to_discover_failed_attack_deceptive_node(self) -> int:
+        """
+        Chance to discover the location of a failed attack on a deceptive node.
+        """
+        return self._chance_to_discover_failed_attack_deceptive_node
 
-    blue_chance_to_discover_source_deceptive_succeed: float
-    """Chance to discover the location of a succeeded attack against a deceptive node"""
+    @property
+    def chance_to_discover_succeeded_attack_deceptive_node(self) -> int:
+        """
+        Chance to discover the location of a succeeded attack against a
+        deceptive node.
+        """
+        return self._chance_to_discover_succeeded_attack_deceptive_node
 
-    blue_make_node_safe_modifies_vuln: bool
-    """Is true if blue agent can fix a node to decrease its vulnerability"""
+    @property
+    def making_node_safe_modifies_vulnerability(self) -> bool:
+        """
+        If blue fixes a node then the vulnerability score of that node
+        increases.
+        """
+        return self._making_node_safe_modifies_vulnerability
 
-    blue_vuln_change_amount_make_safe: float
-    """The amount the vulnerability score will change when blue agent fixes a node"""
+    @property
+    def vulnerability_change_during_node_patch(self) -> int:
+        """
+        The amount that the vulnerability of a node changes when it is made
+        safe.
+        """
+        return self._vulnerability_change_during_node_patch
 
-    blue_make_safe_random_vuln: bool
-    """Is true if the vulnerability score is randomised when blue agent fixes a node"""
+    @property
+    def making_node_safe_gives_random_vulnerability(self) -> bool:
+        """
+        When fixing a node the vulnerability score is randomised.
+        """
+        return self._making_node_safe_gives_random_vulnerability
 
-    blue_reduce_vuln_action: bool
-    """Is true if blue agent will try to reduce a node's vulnerability score"""
+    @property
+    def blue_uses_reduce_vulnerability(self) -> bool:
+        """
+        Blue picks a node and reduces the vulnerability score.
+        """
+        return self._blue_uses_reduce_vulnerability
 
-    blue_restore_node_action: bool
-    """Is true if the blue agent will try to reset the node state to what it was at the beginning of the game"""
+    @property
+    def blue_uses_restore_node(self):
+        """
+        Blue picks a node and restores everything about the node to its
+        state at the beginning of the game.
+        """
+        return self._blue_uses_restore_node
 
-    blue_make_node_safe_action: bool
-    """Is true if the blue agent will try to fix a node without resetting the node to what it was at the beginning
-    of the game"""
+    @property
+    def blue_uses_make_node_safe(self):
+        """
+        Blue fixes a node but does not restore it to its initial state.
+        """
+        return self._blue_uses_make_node_safe
 
-    blue_scan_action: bool
-    """Is true if blue can scan all nodes in the network to detect red agent intrusions"""
+    @property
+    def blue_uses_scan(self):
+        """
+        Blue scans all of the nodes to try and detect any red intrusions.
+        """
+        return self._blue_uses_scan
 
-    blue_isolate_action: bool
-    """Is true if blue agent can isolate a node i.e. remove connections to and from a node"""
+    @property
+    def blue_uses_isolate_node(self):
+        """
+        Blue disables all of the connections to and from a node.
+        """
+        return self._blue_uses_isolate_node
 
-    blue_reconnect_action: bool
-    """Is true if blue agent can reinstate node connections after the node is isolated"""
+    @property
+    def blue_uses_reconnect_node(self):
+        """
+        Blue re-connects all of the connections to and from a node.
+        """
+        return self._blue_uses_reconnect_node
 
-    blue_do_nothing_action: bool
-    """Is true if the blue agent can decide to do nothing"""
+    @property
+    def blue_uses_do_nothing(self):
+        """
+        Blue agent does nothing.
+        """
+        return self._blue_uses_do_nothing
 
-    blue_deceptive_action: bool
-    """Is true if the blue agent can use deceptive nodes"""
+    @property
+    def blue_uses_deceptive_nodes(self):
+        """
+        Blue agent can place down deceptive nodes. These nodes act as just
+        another node in the network but have a different chance of spotting
+        attacks and always show when they are compromised.
+        """
+        return self._blue_uses_deceptive_nodes
 
-    blue_deceptive_node_make_new: bool
-    """Is true if the blue agent can reuse a deceptive node if it has run out of deceptive nodes it can place"""
+    @property
+    def relocating_deceptive_nodes_generates_a_new_node(self):
+        """
+        When the blue agent places a deceptive node and it has none left in
+        stock it will "pick up" the first deceptive node that it used and
+        "relocate it" When relocating a node will the stats for the node (
+        such as the vulnerability and compromised status) be re-generated as
+        if adding a new node or will they carry over from the "old" node.
+        """
+        return self._relocating_deceptive_nodes_generates_a_new_node
+
+    # endregion
+
+    # region Setters
+    @max_number_deceptive_nodes.setter
+    def max_number_deceptive_nodes(self, value):
+        self._max_number_deceptive_nodes = value
+
+    @can_discover_failed_attacks.setter
+    def can_discover_failed_attacks(self, value):
+        self._can_discover_failed_attacks = value
+
+    @chance_to_immediately_discover_intrusion.setter
+    def chance_to_immediately_discover_intrusion(self, value):
+        self._chance_to_immediately_discover_intrusion = value
+
+    @chance_to_discover_intrusion_on_scan.setter
+    def chance_to_discover_intrusion_on_scan(self, value):
+        self._chance_to_discover_intrusion_on_scan = value
+
+    @chance_to_immediately_discover_intrusion_deceptive_node.setter
+    def chance_to_immediately_discover_intrusion_deceptive_node(self, value):
+        self._chance_to_immediately_discover_intrusion_deceptive_node = value
+
+    @chance_to_discover_intrusion_on_scan_deceptive_node.setter
+    def chance_to_discover_intrusion_on_scan_deceptive_node(self, value):
+        self._chance_to_discover_intrusion_on_scan_deceptive_node = value
+
+    @chance_to_discover_failed_attack.setter
+    def chance_to_discover_failed_attack(self, value):
+        self._chance_to_discover_failed_attack = value
+
+    @can_discover_succeeded_attacks_if_compromise_is_discovered.setter
+    def can_discover_succeeded_attacks_if_compromise_is_discovered(self, value):
+        self._can_discover_succeeded_attacks_if_compromise_is_discovered = value
+
+    @can_discover_succeeded_attacks_if_compromise_is_not_discovered.setter
+    def can_discover_succeeded_attacks_if_compromise_is_not_discovered(self, value):
+        self._can_discover_succeeded_attacks_if_compromise_is_not_discovered = value
+
+    @chance_to_discover_succeeded_attack_compromise_known.setter
+    def chance_to_discover_succeeded_attack_compromise_known(self, value):
+        self._chance_to_discover_succeeded_attack_compromise_known = value
+
+    @chance_to_discover_succeeded_attack_compromise_not_known.setter
+    def chance_to_discover_succeeded_attack_compromise_not_known(self, value):
+        self._chance_to_discover_succeeded_attack_compromise_not_known = value
+
+    @chance_to_discover_failed_attack_deceptive_node.setter
+    def chance_to_discover_failed_attack_deceptive_node(self, value):
+        self._chance_to_discover_failed_attack_deceptive_node = value
+
+    @chance_to_discover_succeeded_attack_deceptive_node.setter
+    def chance_to_discover_succeeded_attack_deceptive_node(self, value):
+        self._chance_to_discover_succeeded_attack_deceptive_node = value
+
+    @making_node_safe_modifies_vulnerability.setter
+    def making_node_safe_modifies_vulnerability(self, value):
+        self._making_node_safe_modifies_vulnerability = value
+
+    @vulnerability_change_during_node_patch.setter
+    def vulnerability_change_during_node_patch(self, value):
+        self._vulnerability_change_during_node_patch = value
+
+    @making_node_safe_gives_random_vulnerability.setter
+    def making_node_safe_gives_random_vulnerability(self, value):
+        self._making_node_safe_gives_random_vulnerability = value
+
+    @blue_uses_reduce_vulnerability.setter
+    def blue_uses_reduce_vulnerability(self, value):
+        self._blue_uses_reduce_vulnerability = value
+
+    @blue_uses_restore_node.setter
+    def blue_uses_restore_node(self, value):
+        self._blue_uses_restore_node = value
+
+    @blue_uses_make_node_safe.setter
+    def blue_uses_make_node_safe(self, value):
+        self._blue_uses_make_node_safe = value
+
+    @blue_uses_scan.setter
+    def blue_uses_scan(self, value):
+        self._blue_uses_scan = value
+
+    @blue_uses_isolate_node.setter
+    def blue_uses_isolate_node(self, value):
+        self._blue_uses_isolate_node = value
+
+    @blue_uses_reconnect_node.setter
+    def blue_uses_reconnect_node(self, value):
+        self._blue_uses_reconnect_node = value
+
+    @blue_uses_do_nothing.setter
+    def blue_uses_do_nothing(self, value):
+        self._blue_uses_do_nothing = value
+
+    @blue_uses_deceptive_nodes.setter
+    def blue_uses_deceptive_nodes(self, value):
+        self._blue_uses_deceptive_nodes = value
+
+    @relocating_deceptive_nodes_generates_a_new_node.setter
+    def relocating_deceptive_nodes_generates_a_new_node(self, value):
+        self._relocating_deceptive_nodes_generates_a_new_node = value
+    # endregion
 
     @classmethod
-    def create(
-            cls,
-            settings: Dict[str, Any],
-    ):
-        # validate blue agent config values
-        cls._validate(settings)
+    def create(cls, config_dict: Dict[str, Any]) -> BlueAgentConfig:
+        """
+        Creates an instance of `BlueAgentConfig` after calling `.validate`.
 
-        blue_agent = BlueAgentConfig(
-            blue_max_deceptive_nodes=settings["max_number_deceptive_nodes"],
-            blue_immediate_detection_chance=settings[
-                "chance_to_immediately_discover_intrusion"
-            ],
-            blue_scan_detection_chance=settings[
-                "chance_to_discover_intrusion_on_scan"
-            ],
-            blue_deception_immediate_detection_chance=settings[
-                "chance_to_immediately_discover_intrusion_deceptive_node"
-            ],
-            blue_deception_scan_detection_chance=settings[
-                "chance_to_discover_intrusion_on_scan_deceptive_node"
-            ],
-            blue_discover_failed_attacks=settings[
-                "can_discover_failed_attacks"
-            ],
-            blue_discover_attack_source_if_detected=settings[
-                "can_discover_succeeded_attacks_if_compromise_is_discovered"
-            ],
-            blue_discover_attack_source_if_not_detected=settings[
-                "can_discover_succeeded_attacks_if_compromise_is_not_discovered"
-            ],
-            blue_chance_to_discover_source_failed=settings[
-                "chance_to_discover_failed_attack"
-            ],
-            blue_chance_to_discover_source_succeed_known=settings[
-                "chance_to_discover_succeeded_attack_compromise_known"
-            ],
-            blue_chance_to_discover_source_succeed_unknown=settings[
-                "chance_to_discover_succeeded_attack_compromise_not_known"
-            ],
-            blue_chance_to_discover_source_deceptive_failed=settings[
-                "chance_to_discover_failed_attack_deceptive_node"
-            ],
-            blue_chance_to_discover_source_deceptive_succeed=settings[
-                "chance_to_discover_succeeded_attack_deceptive_node"
-            ],
-            blue_make_node_safe_modifies_vuln=settings[
-                "making_node_safe_modifies_vulnerability"
-            ],
-            blue_vuln_change_amount_make_safe=settings[
-                "vulnerability_change_during_node_patch"
-            ],
-            blue_make_safe_random_vuln=settings[
-                "making_node_safe_gives_random_vulnerability"
-            ],
-            blue_reduce_vuln_action=settings[
-                "blue_uses_reduce_vulnerability"
-            ],
-            blue_restore_node_action=settings["blue_uses_restore_node"],
-            blue_make_node_safe_action=settings["blue_uses_make_node_safe"],
-            blue_scan_action=settings["blue_uses_scan"],
-            blue_isolate_action=settings["blue_uses_isolate_node"],
-            blue_reconnect_action=settings["blue_uses_reconnect_node"],
-            blue_do_nothing_action=settings["blue_uses_do_nothing"],
-            blue_deceptive_action=settings["blue_uses_deceptive_nodes"],
-            blue_deceptive_node_make_new=settings[
-                "relocating_deceptive_nodes_generates_a_new_node"
-            ]
+        Args:
+            config_dict: A config dict with the required key/values pairs.
+        """
+        cls._validate(config_dict)
+        blue_agent_config = BlueAgentConfig(
+            _max_number_deceptive_nodes=config_dict[
+                "max_number_deceptive_nodes"],
+            _can_discover_failed_attacks=config_dict[
+                "can_discover_failed_attacks"],
+            _chance_to_immediately_discover_intrusion=config_dict[
+                "chance_to_immediately_discover_intrusion"],
+            _chance_to_discover_intrusion_on_scan=config_dict[
+                "chance_to_discover_intrusion_on_scan"],
+            _chance_to_immediately_discover_intrusion_deceptive_node=
+            config_dict[
+                "chance_to_immediately_discover_intrusion_deceptive_node"],
+            _chance_to_discover_intrusion_on_scan_deceptive_node=config_dict[
+                "chance_to_discover_intrusion_on_scan_deceptive_node"],
+            _chance_to_discover_failed_attack=config_dict[
+                "chance_to_discover_failed_attack"],
+            _can_discover_succeeded_attacks_if_compromise_is_discovered=
+            config_dict[
+                "can_discover_succeeded_attacks_if_compromise_is_discovered"],
+            _can_discover_succeeded_attacks_if_compromise_is_not_discovered=
+            config_dict[
+                "can_discover_succeeded_attacks_if_compromise_is_not_discovered"],
+            _chance_to_discover_succeeded_attack_compromise_known=config_dict[
+                "chance_to_discover_succeeded_attack_compromise_known"],
+            _chance_to_discover_succeeded_attack_compromise_not_known=
+            config_dict[
+                "chance_to_discover_succeeded_attack_compromise_not_known"],
+            _chance_to_discover_failed_attack_deceptive_node=config_dict[
+                "chance_to_discover_failed_attack_deceptive_node"],
+            _chance_to_discover_succeeded_attack_deceptive_node=config_dict[
+                "chance_to_discover_succeeded_attack_deceptive_node"],
+            _making_node_safe_modifies_vulnerability=config_dict[
+                "making_node_safe_modifies_vulnerability"],
+            _vulnerability_change_during_node_patch=config_dict[
+                "vulnerability_change_during_node_patch"],
+            _making_node_safe_gives_random_vulnerability=config_dict[
+                "making_node_safe_gives_random_vulnerability"],
+            _blue_uses_reduce_vulnerability=config_dict[
+                "blue_uses_reduce_vulnerability"],
+            _blue_uses_restore_node=config_dict["blue_uses_restore_node"],
+            _blue_uses_make_node_safe=config_dict["blue_uses_make_node_safe"],
+            _blue_uses_scan=config_dict["blue_uses_scan"],
+            _blue_uses_isolate_node=config_dict["blue_uses_isolate_node"],
+            _blue_uses_reconnect_node=config_dict["blue_uses_reconnect_node"],
+            _blue_uses_do_nothing=config_dict["blue_uses_do_nothing"],
+            _blue_uses_deceptive_nodes=config_dict[
+                "blue_uses_deceptive_nodes"],
+            _relocating_deceptive_nodes_generates_a_new_node=config_dict[
+                "relocating_deceptive_nodes_generates_a_new_node"],
         )
-
-        return blue_agent
+        return blue_agent_config
 
     @classmethod
-    def _validate(cls, data: dict):
+    def _validate(cls, config_dict: dict):
         # data is int or float
         for name in [
             "chance_to_immediately_discover_intrusion",
@@ -176,10 +452,10 @@ class BlueAgentConfig(ConfigGroupABC):
             "chance_to_discover_succeeded_attack_deceptive_node",
             "vulnerability_change_during_node_patch",
         ]:
-            check_type(data, name, [int, float])
+            check_type(config_dict, name, [int, float])
         # data is int
         for name in ["max_number_deceptive_nodes"]:
-            check_type(data, name, [int])
+            check_type(config_dict, name, [int])
 
         # data is bool
         for name in [
@@ -198,7 +474,7 @@ class BlueAgentConfig(ConfigGroupABC):
             "can_discover_succeeded_attacks_if_compromise_is_not_discovered",
             "relocating_deceptive_nodes_generates_a_new_node",
         ]:
-            check_type(data, name, [bool])
+            check_type(config_dict, name, [bool])
 
         # data is between 0 and 1 inclusive
         for name in [
@@ -212,100 +488,106 @@ class BlueAgentConfig(ConfigGroupABC):
             "chance_to_discover_failed_attack_deceptive_node",
             "chance_to_discover_succeeded_attack_deceptive_node",
         ]:
-            check_within_range(data, name, 0, 1, True, True)
+            check_within_range(config_dict, name, 0, 1, True, True)
 
         check_within_range(
-            data, "vulnerability_change_during_node_patch", -1, 1, True, True
+            config_dict, "vulnerability_change_during_node_patch", -1, 1, True, True
         )
 
         # misc
         if (
-                not data["blue_uses_reduce_vulnerability"]
-                and (not data["blue_uses_restore_node"])
-                and (not data["blue_uses_make_node_safe"])
-                and (not data["blue_uses_scan"])
-                and (not data["blue_uses_isolate_node"])
-                and (not data["blue_uses_reconnect_node"])
-                and (not data["blue_uses_do_nothing"])
-                and (not data["blue_uses_deceptive_nodes"])
+                not config_dict["blue_uses_reduce_vulnerability"]
+                and (not config_dict["blue_uses_restore_node"])
+                and (not config_dict["blue_uses_make_node_safe"])
+                and (not config_dict["blue_uses_scan"])
+                and (not config_dict["blue_uses_isolate_node"])
+                and (not config_dict["blue_uses_reconnect_node"])
+                and (not config_dict["blue_uses_do_nothing"])
+                and (not config_dict["blue_uses_deceptive_nodes"])
         ):
             raise ValueError(
                 "'blue_uses_****' -> Blue must have at least one action selected. If you want blue to do nothing set 'blue_uses_do_nothing' to True"
                 # noqa
             )
 
-        if (data["blue_uses_isolate_node"] and (not data["blue_uses_reconnect_node"])) or (
-                (not data["blue_uses_isolate_node"]) and data["blue_uses_reconnect_node"]
+        if (config_dict["blue_uses_isolate_node"] and (
+                not config_dict["blue_uses_reconnect_node"])) or (
+                (not config_dict["blue_uses_isolate_node"]) and config_dict[
+            "blue_uses_reconnect_node"]
         ):
             raise ValueError(
                 "'blue_uses_isolate_node', 'blue_uses_reconnect_node' -> Blue should be able to reconnect or isolate nodes if the other is true"
                 # noqa
             )
 
-        check_within_range(data, "max_number_deceptive_nodes", 0, None, True, True)
+        check_within_range(config_dict, "max_number_deceptive_nodes", 0, None, True,
+                           True)
 
-        if data["blue_uses_deceptive_nodes"] and (0 == data["max_number_deceptive_nodes"]):
+        if config_dict["blue_uses_deceptive_nodes"] and (
+                0 == config_dict["max_number_deceptive_nodes"]):
             raise ValueError(
                 "'blue_uses_deceptive_nodes', 'max_number_deceptive_nodes' -> If blue can use deceptive nodes then max_number_deceptive_nodes."
                 # noqa
             )
 
-        if data["blue_uses_scan"]:
-            if data["chance_to_immediately_discover_intrusion"] == 1:
+        if config_dict["blue_uses_scan"]:
+            if config_dict["chance_to_immediately_discover_intrusion"] == 1:
                 raise ValueError(
                     "'blue_uses_scan', 'chance_to_immediately_discover_intrusion' -> The scan action is selected yet blue has 100% chance to spot detections. There is no need for the blue to have the scan action in this case"
                     # noqa
                 )
         else:
-            if data["chance_to_immediately_discover_intrusion"] != 1:
+            if config_dict["chance_to_immediately_discover_intrusion"] != 1:
                 raise ValueError(
                     "'blue_uses_scan', 'chance_to_immediately_discover_intrusion' -> If the blue agent cannot scan nodes then it should be able to automtically detect the intrusions"
                     # noqa
                 )
 
         if (
-                data["chance_to_discover_intrusion_on_scan_deceptive_node"]
-                <= data["chance_to_discover_intrusion_on_scan"]
+                config_dict["chance_to_discover_intrusion_on_scan_deceptive_node"]
+                <= config_dict["chance_to_discover_intrusion_on_scan"]
         ):
-            if data["chance_to_discover_intrusion_on_scan_deceptive_node"] != 1:
+            if config_dict[
+                "chance_to_discover_intrusion_on_scan_deceptive_node"] != 1:
                 raise ValueError(
                     "'chance_to_discover_intrusion_on_scan_deceptive_node', 'chance_to_discover_intrusion_on_scan' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"
                     # noqa
                 )
 
         if (
-                data["chance_to_discover_failed_attack_deceptive_node"]
-                <= data["chance_to_discover_failed_attack"]
+                config_dict["chance_to_discover_failed_attack_deceptive_node"]
+                <= config_dict["chance_to_discover_failed_attack"]
         ):
-            if data["chance_to_discover_failed_attack_deceptive_node"] != 1:
+            if config_dict["chance_to_discover_failed_attack_deceptive_node"] != 1:
                 raise ValueError(
                     "'chance_to_discover_failed_attack_deceptive_node', 'chance_to_discover_failed_attack' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"
                     # noqa
                 )
 
         if (
-                data["chance_to_discover_succeeded_attack_deceptive_node"]
-                <= data["chance_to_discover_succeeded_attack_compromise_known"]
+                config_dict["chance_to_discover_succeeded_attack_deceptive_node"]
+                <= config_dict["chance_to_discover_succeeded_attack_compromise_known"]
         ):
-            if data["chance_to_discover_succeeded_attack_deceptive_node"] != 1:
+            if config_dict["chance_to_discover_succeeded_attack_deceptive_node"] != 1:
                 raise ValueError(
                     "'chance_to_discover_succeeded_attack_deceptive_node', 'chance_to_discover_succeeded_attack_compromise_known' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"
                     # noqa
                 )
 
         if (
-                data["chance_to_discover_succeeded_attack_deceptive_node"]
-                <= data["chance_to_discover_succeeded_attack_compromise_not_known"]
+                config_dict["chance_to_discover_succeeded_attack_deceptive_node"]
+                <= config_dict[
+            "chance_to_discover_succeeded_attack_compromise_not_known"]
         ):
-            if data["chance_to_discover_succeeded_attack_deceptive_node"] != 1:
+            if config_dict["chance_to_discover_succeeded_attack_deceptive_node"] != 1:
                 raise ValueError(
                     "'chance_to_discover_succeeded_attack_deceptive_node', 'chance_to_discover_succeeded_attack_compromise_not_known' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"
                     # noqa
                 )
 
         if (
-                data["making_node_safe_gives_random_vulnerability"]
-                and data["making_node_safe_modifies_vulnerability"]
+                config_dict["making_node_safe_gives_random_vulnerability"]
+                and config_dict["making_node_safe_modifies_vulnerability"]
         ):
             raise ValueError(
                 "'making_node_safe_gives_random_vulnerability', 'making_node_safe_modifies_vulnerability' -> Does not make sense to give a node a random vulnerability and to increase its vulnerability when a node is made safe"
@@ -313,10 +595,11 @@ class BlueAgentConfig(ConfigGroupABC):
             )
 
         if (
-                data["chance_to_immediately_discover_intrusion_deceptive_node"]
-                <= data["chance_to_immediately_discover_intrusion"]
+                config_dict["chance_to_immediately_discover_intrusion_deceptive_node"]
+                <= config_dict["chance_to_immediately_discover_intrusion"]
         ):
-            if data["chance_to_immediately_discover_intrusion_deceptive_node"] != 1:
+            if config_dict[
+                "chance_to_immediately_discover_intrusion_deceptive_node"] != 1:
                 raise ValueError(
                     "'chance_to_immediately_discover_intrusion_deceptive_node', 'chance_to_immediately_discover_intrusion' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"
                     # noqa

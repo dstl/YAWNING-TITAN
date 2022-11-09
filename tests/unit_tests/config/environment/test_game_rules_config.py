@@ -12,41 +12,10 @@ def get_config_dict() -> Dict:
 
 
 def test_read_valid_config():
-    game_rules = GameRulesConfig.create(get_config_dict())
-
-    assert game_rules.gr_min_number_of_network_nodes == 18
-
-    assert game_rules.gr_node_vuln_lower == 0.2
-
-    assert game_rules.gr_node_vuln_upper == 0.8
-
-    assert game_rules.gr_max_steps == 1000
-
-    assert game_rules.gr_loss_total_compromise is False
-
-    assert game_rules.gr_loss_pc_nodes_compromised is True
-
-    assert game_rules.gr_loss_pc_node_compromised_pc == 0.8
-
-    assert game_rules.gr_number_of_high_value_targets == 1
-
-    assert game_rules.gr_loss_hvt is False
-
-    assert game_rules.gr_loss_hvt_random_placement is False
-
-    assert game_rules.gr_loss_hvt_furthest_away is True
-
-    assert game_rules.gr_random_entry_nodes is True
-
-    assert game_rules.gr_num_entry_nodes == 3
-
-    assert game_rules.gr_prefer_central_entry is False
-
-    assert game_rules.gr_prefer_edge_nodes is False
-
-    assert game_rules.gr_grace_period == 3
-
-
+    config_dict = get_config_dict()
+    game_rules = GameRulesConfig.create(config_dict)
+    assert game_rules.to_dict() == config_dict
+    
 @pytest.mark.parametrize(
     ("config_item_to_test", "config_value", "expected_err"),
     [
