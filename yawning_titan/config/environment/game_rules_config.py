@@ -2,7 +2,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Dict, Any
 
-from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
+from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.envs.generic.helpers.environment_input_validation import (
     check_type,
     check_within_range,
@@ -10,216 +10,305 @@ from yawning_titan.envs.generic.helpers.environment_input_validation import (
 
 
 @dataclass()
-class GameRulesConfig(ConfigGroupABC):
+class GameRulesConfig(ConfigABC):
     """
     Class that validates and stores Game Rules Configuration
     """
+    _min_number_of_network_nodes: int
+    _node_vulnerability_lower_bound: float
+    _node_vulnerability_upper_bound: float
+    _max_steps: int
+    _lose_when_all_nodes_lost: bool
+    _lose_when_n_percent_of_nodes_lost: bool
+    _percentage_of_nodes_compromised_equals_loss: float
+    _lose_when_high_value_target_lost: bool
+    _number_of_high_value_targets: int
+    _choose_high_value_targets_placement_at_random: bool
+    _choose_high_value_targets_furthest_away_from_entry: bool
+    _choose_entry_nodes_randomly: bool
+    _number_of_entry_nodes: int
+    _prefer_central_nodes_for_entry_nodes: bool
+    _prefer_edge_nodes_for_entry_nodes: bool
+    _grace_period_length: int
 
-    gr_min_number_of_network_nodes: int = field(
-        metadata={
-            "description": "The minimum number of nodes the game mode will be allowed to run on",
-            "alias": "min_number_of_network_nodes",
-        }
-    )
-    """The minimum number of nodes the game mode will be allowed to run on"""
+    # region Getters
+    @property
+    def min_number_of_network_nodes(self) -> int:
+        """
+        Minimum number of nodes the network this game mode is allowed to run
+        on.
+        """
+        return self._min_number_of_network_nodes
 
-    gr_node_vuln_lower: float = field(
-        metadata={
-            "description": "Lower bound of the node vulnerability", 
-            "alias": "node_vulnerability_lower_bound"
-        }
-    )
-    """Lower bound of the node vulnerability"""
+    @property
+    def node_vulnerability_lower_bound(self) -> float:
+        """
+        A lower vulnerability means that a node is less likely to be
+        compromised.
+        """
+        return self._node_vulnerability_lower_bound
 
-    gr_node_vuln_upper: float = field(
-        metadata={
-            "description": "Upper bound of the node vulnerability", 
-            "alias": "node_vulnerability_upper_bound"
-        }
-    )
-    """Upper bound of the node vulnerability"""
+    @property
+    def node_vulnerability_upper_bound(self) -> float:
+        """
+        A higher vulnerability means that a node is more vulnerable.
+        """
+        return self._node_vulnerability_upper_bound
 
-    gr_max_steps: int = field(
-        metadata={
-            "description": "Timesteps the game will go on for", 
-            "alias": "max_steps"
-        }
-    )
-    """Timesteps the game will go on for"""
+    @property
+    def max_steps(self) -> int:
+        """
+        The max steps that a game can go on for. If the blue agent reaches
+        this they win.
+        """
+        return self._max_steps
 
-    gr_loss_total_compromise: bool = field(
-        metadata={
-            "description": "Is true if the game ends when all nodes are lost",
-            "alias": "lose_when_all_nodes_lost",
-        }
-    )
-    """Is true if the game ends when all nodes are lost"""
+    @property
+    def lose_when_all_nodes_lost(self) -> bool:
+        """
+        The blue agent loses if all the nodes become compromised.
+        """
+        return self._lose_when_all_nodes_lost
 
-    gr_loss_pc_nodes_compromised: bool = field(
-        metadata={
-            "description": "Is true if the game ends when a percentage of nodes is compromised",
-            "alias": "lose_when_n_percent_of_nodes_lost",
-        }
-    )
-    """Is true if the game ends when a percentage of nodes is compromised"""
+    @property
+    def lose_when_n_percent_of_nodes_lost(self) -> bool:
+        """
+        The blue agent loses if n% of the nodes become compromised.
+        """
+        return self._lose_when_n_percent_of_nodes_lost
 
-    gr_loss_pc_node_compromised_pc: float = field(
-        metadata={
-            "description": "Percentage of the nodes becoming infected for the game to be considered lost by the blue agent",
-            "alias": "percentage_of_nodes_compromised_equals_loss",
-        }
-    )
-    """Percentage of the nodes becoming infected for the game to be considered lost by the blue agent"""
+    @property
+    def percentage_of_nodes_compromised_equals_loss(self) -> float:
+        """
+        The percentage of nodes that need to be lost for blue to lose.
+        """
+        return self._percentage_of_nodes_compromised_equals_loss
 
-    gr_number_of_high_value_targets: int = field(
-        metadata={
-            "description": "Number of nodes to be marked as high value in network",
-            "alias": "number_of_high_value_targets",
-        }
-    )
-    """Number of nodes to be marked as high value in network"""
+    @property
+    def lose_when_high_value_target_lost(self) -> bool:
+        """
+        Blue loses if a special 'high value' target is lost (a node picked
+        in the environment).
+        """
+        return self._lose_when_high_value_target_lost
 
-    gr_loss_hvt: bool = field(
-        metadata={
-            "description": "Is true if the game ends if the high value node is lost",
-            "alias": "lose_when_high_value_target_lost",
-        }
-    )
-    """Is true if the game ends if the high value node is lost"""
+    @property
+    def number_of_high_value_targets(self) -> int:
+        """
+        If no high value targets are supplied, how many should be chosen.
+        """
+        return self._number_of_high_value_targets
 
-    gr_loss_hvt_random_placement: bool = field(
-        metadata={
-            "description": "Is true if the high value nodes are set randomly across the network",
-            "alias": "choose_high_value_targets_placement_at_random",
-        }
-    )
-    """Is true if the high value nodes are set randomly across the network"""
+    @property
+    def choose_high_value_targets_placement_at_random(self) -> bool:
+        """
+        The high value target is picked at random.
+        """
+        return self._choose_high_value_targets_placement_at_random
 
-    gr_loss_hvt_furthest_away: bool = field(
-        metadata={
-            "description": "Is true if the high value nodes are set furthest away from the entry nodes",
-            "alias": "choose_high_value_targets_furthest_away_from_entry",
-        }
-    )
-    """Is true if the high value nodes are set furthest away from the entry nodes"""
+    @property
+    def choose_high_value_targets_furthest_away_from_entry(self) -> bool:
+        """
+        The node furthest away from the entry points to the network is
+        picked as the target.
+        """
+        return self._choose_high_value_targets_furthest_away_from_entry
 
-    gr_random_entry_nodes: bool = field(
-        metadata={
-            "description": "Is true if the entry nodes will be placed randomly across the network",
-            "alias": "choose_entry_nodes_randomly",
-        }
-    )
-    """Is true if the entry nodes will be placed randomly across the network"""
+    @property
+    def choose_entry_nodes_randomly(self) -> bool:
+        """
+        If no entry nodes are supplied choose some at random.
+        """
+        return self._choose_entry_nodes_randomly
 
-    gr_num_entry_nodes: int = field(
-        metadata={
-            "description": "Number of nodes to be marked as entry nodes in network",
-            "alias": "number_of_entry_nodes",
-        }
-    )
-    """Number of nodes to be marked as entry nodes in network"""
+    @property
+    def number_of_entry_nodes(self) -> int:
+        """
+        If no entry nodes are supplied then how many should be chosen.
+        """
+        return self._number_of_entry_nodes
 
-    gr_prefer_central_entry: bool = field(
-        metadata={
-            "description": "Is true if the entry nodes will be placed centrally in the network",
-            "alias": "prefer_central_nodes_for_entry_nodes",
-        }
-    )
-    """Is true if the entry nodes will be placed centrally in the network"""
+    @property
+    def prefer_central_nodes_for_entry_nodes(self) -> bool:
+        """
+        If no entry nodes are supplied then what bias is applied to the
+        nodes when choosing random entry nodes.
+        """
+        return self._prefer_central_nodes_for_entry_nodes
 
-    gr_prefer_edge_nodes: bool = field(
-        metadata={
-            "description": "Is true if the entry nodes will be placed on the edges of the network",
-            "alias": "prefer_edge_nodes_for_entry_nodes",
-        }
-    )
-    """Is true if the entry nodes will be placed on the edges of the network"""
+    @property
+    def prefer_edge_nodes_for_entry_nodes(self) -> bool:
+        """
+        If no entry nodes are supplied then what bias is applied to the
+        nodes when choosing random entry nodes.
+        """
+        return self._prefer_edge_nodes_for_entry_nodes
 
-    gr_grace_period: int = field(
-        metadata={
-            "description": "Number of timesteps the blue agent has to prepare",
-            "alias": "grace_period_length",
-        }
-    )
-    """Number of timesteps the blue agent has to prepare"""
+    @property
+    def grace_period_length(self) -> int:
+        """
+        The length of a grace period at the start of the game. During this
+        time the red agent cannot act. This gives the blue agent a chance to
+        "prepare" (A length of 0 means that there is no grace period).
+        """
+        return self._grace_period_length
+    # endregion
+
+    # region Setters
+    @min_number_of_network_nodes.setter
+    def min_number_of_network_nodes(self, value):
+        self._min_number_of_network_nodes = value
+
+    @node_vulnerability_lower_bound.setter
+    def node_vulnerability_lower_bound(self, value):
+        self._node_vulnerability_lower_bound = value
+
+    @node_vulnerability_upper_bound.setter
+    def node_vulnerability_upper_bound(self, value):
+        self._node_vulnerability_upper_bound = value
+
+    @max_steps.setter
+    def max_steps(self, value):
+        self._max_steps = value
+
+    @lose_when_all_nodes_lost.setter
+    def lose_when_all_nodes_lost(self, value):
+        self._lose_when_all_nodes_lost = value
+
+    @lose_when_n_percent_of_nodes_lost.setter
+    def lose_when_n_percent_of_nodes_lost(self, value):
+        self._lose_when_n_percent_of_nodes_lost = value
+
+    @percentage_of_nodes_compromised_equals_loss.setter
+    def percentage_of_nodes_compromised_equals_loss(self, value):
+        self._percentage_of_nodes_compromised_equals_loss = value
+
+    @lose_when_high_value_target_lost.setter
+    def lose_when_high_value_target_lost(self, value):
+        self._lose_when_high_value_target_lost = value
+
+    @number_of_high_value_targets.setter
+    def number_of_high_value_targets(self, value):
+        self._number_of_high_value_targets = value
+
+    @choose_high_value_targets_placement_at_random.setter
+    def choose_high_value_targets_placement_at_random(self, value):
+        self._choose_high_value_targets_placement_at_random = value
+
+    @choose_high_value_targets_furthest_away_from_entry.setter
+    def choose_high_value_targets_furthest_away_from_entry(self, value):
+        self._choose_high_value_targets_furthest_away_from_entry = value
+
+    @choose_entry_nodes_randomly.setter
+    def choose_entry_nodes_randomly(self, value):
+        self._choose_entry_nodes_randomly = value
+
+    @number_of_entry_nodes.setter
+    def number_of_entry_nodes(self, value):
+        self._number_of_entry_nodes = value
+
+    @prefer_central_nodes_for_entry_nodes.setter
+    def prefer_central_nodes_for_entry_nodes(self, value):
+        self._prefer_central_nodes_for_entry_nodes = value
+
+    @prefer_edge_nodes_for_entry_nodes.setter
+    def prefer_edge_nodes_for_entry_nodes(self, value):
+        self._prefer_edge_nodes_for_entry_nodes = value
+
+    @grace_period_length.setter
+    def grace_period_length(self, value):
+        self._grace_period_length = value
+    # endregion
 
     @classmethod
-    def create(cls, settings: Dict[str, Any]) -> GameRulesConfig:
-        cls._validate(settings)
+    def create(cls, config_dict: Dict[str, Any]) -> GameRulesConfig:
+        """
+        Creates an instance of `GameRulesConfig` after calling `.validate`.
+
+        Args:
+            config_dict: A config dict with the required key/values pairs.
+        """
+        cls._validate(config_dict)
 
         game_rule_config = GameRulesConfig(
-            gr_min_number_of_network_nodes=settings["min_number_of_network_nodes"],
-            gr_node_vuln_lower=settings["node_vulnerability_lower_bound"],
-            gr_node_vuln_upper=settings["node_vulnerability_upper_bound"],
-            gr_max_steps=settings["max_steps"],
-            gr_loss_total_compromise=settings["lose_when_all_nodes_lost"],
-            gr_loss_pc_nodes_compromised=settings["lose_when_n_percent_of_nodes_lost"],
-            gr_loss_pc_node_compromised_pc=settings[
-                "percentage_of_nodes_compromised_equals_loss"
-            ],
-            gr_number_of_high_value_targets=settings["number_of_high_value_targets"],
-            gr_loss_hvt=settings["lose_when_high_value_target_lost"],
-            gr_loss_hvt_random_placement=settings[
-                "choose_high_value_targets_placement_at_random"
-            ],
-            gr_loss_hvt_furthest_away=settings[
-                "choose_high_value_targets_furthest_away_from_entry"
-            ],
-            gr_random_entry_nodes=settings["choose_entry_nodes_randomly"],
-            gr_num_entry_nodes=settings["number_of_entry_nodes"],
-            gr_prefer_central_entry=settings["prefer_central_nodes_for_entry_nodes"],
-            gr_prefer_edge_nodes=settings["prefer_edge_nodes_for_entry_nodes"],
-            gr_grace_period=settings["grace_period_length"],
+            _min_number_of_network_nodes=config_dict[
+                "min_number_of_network_nodes"],
+            _node_vulnerability_lower_bound=config_dict[
+                "node_vulnerability_lower_bound"],
+            _node_vulnerability_upper_bound=config_dict[
+                "node_vulnerability_upper_bound"],
+            _max_steps=config_dict["max_steps"],
+            _lose_when_all_nodes_lost=config_dict["lose_when_all_nodes_lost"],
+            _lose_when_n_percent_of_nodes_lost=config_dict[
+                "lose_when_n_percent_of_nodes_lost"],
+            _percentage_of_nodes_compromised_equals_loss=config_dict[
+                "percentage_of_nodes_compromised_equals_loss"],
+            _lose_when_high_value_target_lost=config_dict[
+                "lose_when_high_value_target_lost"],
+            _number_of_high_value_targets=config_dict[
+                "number_of_high_value_targets"],
+            _choose_high_value_targets_placement_at_random=config_dict[
+                "choose_high_value_targets_placement_at_random"],
+            _choose_high_value_targets_furthest_away_from_entry=config_dict[
+                "choose_high_value_targets_furthest_away_from_entry"],
+            _choose_entry_nodes_randomly=config_dict[
+                "choose_entry_nodes_randomly"],
+            _number_of_entry_nodes=config_dict["number_of_entry_nodes"],
+            _prefer_central_nodes_for_entry_nodes=config_dict[
+                "prefer_central_nodes_for_entry_nodes"],
+            _prefer_edge_nodes_for_entry_nodes=config_dict[
+                "prefer_edge_nodes_for_entry_nodes"],
+            _grace_period_length=config_dict["grace_period_length"],
         )
 
         return game_rule_config
 
     @classmethod
-    def _validate(cls, data: dict):
+    def _validate(cls, config_dict: dict):
         # data is int or float
         for name in [
             "node_vulnerability_lower_bound",
             "node_vulnerability_upper_bound",
             "percentage_of_nodes_compromised_equals_loss",
         ]:
-            check_type(data, name, [float, int])
+            check_type(config_dict, name, [float, int])
         # data s between 0 and 1 inclusive
         for name in [
             "node_vulnerability_lower_bound",
             "node_vulnerability_upper_bound",
         ]:
-            check_within_range(data, name, 0, 1, True, True)
+            check_within_range(config_dict, name, 0, 1, True, True)
 
         if (
-            data["node_vulnerability_lower_bound"]
-            > data["node_vulnerability_upper_bound"]
+            config_dict["node_vulnerability_lower_bound"]
+            > config_dict["node_vulnerability_upper_bound"]
         ):
             raise ValueError(
                 "'node_vulnerability_lower_bound', 'node_vulnerability_upper_bound' -> The lower bound for the node vulnerabilities should be less than the upper bound"
             )
-        check_type(data, "max_steps", [int])
-        check_type(data, "number_of_entry_nodes", [int])
-        check_type(data, "grace_period_length", [int])
-        check_type(data, "min_number_of_network_nodes", [int])
-        check_type(data, "number_of_high_value_targets", [int])
+        check_type(config_dict, "max_steps", [int])
+        check_type(config_dict, "number_of_entry_nodes", [int])
+        check_type(config_dict, "grace_period_length", [int])
+        check_type(config_dict, "min_number_of_network_nodes", [int])
+        check_type(config_dict, "number_of_high_value_targets", [int])
         # make sure high value targets is not more than the number of minimum number of nodes in network
         check_within_range(
-            data,
+            config_dict,
             "number_of_high_value_targets",
             0,
-            data["min_number_of_network_nodes"],
+            config_dict["min_number_of_network_nodes"],
             True,
             True,
         )
 
-        check_within_range(data, "grace_period_length", 0, 100, True, True)
-        check_within_range(data, "max_steps", 0, 10000000, False, True)
+        check_within_range(config_dict, "grace_period_length", 0, 100, True, True)
+        check_within_range(config_dict, "max_steps", 0, 10000000, False, True)
         # make sure entry nodes is not more than the number of minimum number of nodes in network
         check_within_range(
-            data,
+            config_dict,
             "number_of_entry_nodes",
             0,
-            data["min_number_of_network_nodes"],
+            config_dict["min_number_of_network_nodes"],
             False,
             True,
         )
@@ -235,14 +324,14 @@ class GameRulesConfig(ConfigGroupABC):
             "prefer_central_nodes_for_entry_nodes",
             "prefer_edge_nodes_for_entry_nodes",
         ]:
-            check_type(data, name, [bool])
+            check_type(config_dict, name, [bool])
 
         check_within_range(
-            data, "percentage_of_nodes_compromised_equals_loss", 0, 1, False, False
+            config_dict, "percentage_of_nodes_compromised_equals_loss", 0, 1, False, False
         )
         if (
-            data["prefer_central_nodes_for_entry_nodes"]
-            and data["prefer_edge_nodes_for_entry_nodes"]
+            config_dict["prefer_central_nodes_for_entry_nodes"]
+            and config_dict["prefer_edge_nodes_for_entry_nodes"]
         ):
             raise ValueError(
                 "'prefer_central_nodes_for_entry_nodes', 'prefer_edge_nodes_for_entry_nodes' -> cannot prefer both central and edge nodes"
@@ -250,20 +339,20 @@ class GameRulesConfig(ConfigGroupABC):
             )
 
         if (
-            (not data["lose_when_all_nodes_lost"])
-            and (not data["lose_when_n_percent_of_nodes_lost"])
-            and (not data["lose_when_high_value_target_lost"])
+            (not config_dict["lose_when_all_nodes_lost"])
+            and (not config_dict["lose_when_n_percent_of_nodes_lost"])
+            and (not config_dict["lose_when_high_value_target_lost"])
         ):
             raise ValueError(
                 "'lose_when_all_nodes_lost', 'lose_when_n_percent_of_nodes_lost', 'lose_when_high_value_target_lost' -> At least one loose condition must be turned on"
                 # noqa
             )
 
-        if data["lose_when_high_value_target_lost"]:
+        if config_dict["lose_when_high_value_target_lost"]:
             # if there is no way to set high value targets
             if (
-                not data["choose_high_value_targets_placement_at_random"]
-                and not data["choose_high_value_targets_furthest_away_from_entry"]
+                not config_dict["choose_high_value_targets_placement_at_random"]
+                and not config_dict["choose_high_value_targets_furthest_away_from_entry"]
             ):
                 raise ValueError(
                     "'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_furthest_away_from_entry' -> A method of selecting the high value target must be chosen"
@@ -271,15 +360,15 @@ class GameRulesConfig(ConfigGroupABC):
                 )
             # if there are conflicting configurations
             if (
-                data["choose_high_value_targets_placement_at_random"]
-                and data["choose_high_value_targets_furthest_away_from_entry"]
+                config_dict["choose_high_value_targets_placement_at_random"]
+                and config_dict["choose_high_value_targets_furthest_away_from_entry"]
             ):
                 raise ValueError(
                     "'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"
                     # noqa
                 )
 
-        if data["grace_period_length"] > data["max_steps"]:
+        if config_dict["grace_period_length"] > config_dict["max_steps"]:
             raise ValueError(
                 "'grace_period_length', 'max_steps' -> The grace period cannot be the entire length of the game"
             )
