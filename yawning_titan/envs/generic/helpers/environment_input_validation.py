@@ -12,6 +12,9 @@ def check_type(data: dict, name: str, types: list):
         name: The name of the key of the item to check
         types: A list of types that the item must belong to
     """
+    if None in types and data[name] is None:
+        return
+
     if type(data[name]) not in types:
         raise ValueError(
             "'" + name + "' needs to be of type: " + " or ".join(map(str, types))

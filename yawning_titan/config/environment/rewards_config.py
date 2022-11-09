@@ -8,7 +8,7 @@ from yawning_titan.envs.generic.core import reward_functions
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_type
 
 
-@dataclass()
+@dataclass
 class RewardsConfig(ConfigGroupABC):
     """
     Class that validates and stores Rewards Configuration

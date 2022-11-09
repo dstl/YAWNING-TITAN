@@ -12,12 +12,13 @@ class MiscellaneousConfig(ConfigGroupABC):
     Class that validates and stores the Miscellaneous Configuration
     """
 
-    output_timestep_data_to_json: bool = field(
+    misc_json_out: bool = field(
         metadata={
             "description": """
             Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and
             the attacks that blue saw in that turn
-        """
+            """,
+            "alias": "output_timestep_data_to_json",
         }
     )
     """
@@ -30,7 +31,7 @@ class MiscellaneousConfig(ConfigGroupABC):
         cls._validate(settings)
 
         misc_config = MiscellaneousConfig(
-            output_timestep_data_to_json=settings["output_timestep_data_to_json"],
+            misc_json_out=settings["output_timestep_data_to_json"],
         )
 
         return misc_config
@@ -38,3 +39,4 @@ class MiscellaneousConfig(ConfigGroupABC):
     @classmethod
     def _validate(cls, data: dict):
         pass
+            

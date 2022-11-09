@@ -7,7 +7,7 @@ from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_type
 
 
-@dataclass()
+@dataclass
 class ResetConfig(ConfigGroupABC):
     """
     Class that validates and stores the Reset Configuration
@@ -35,10 +35,7 @@ class ResetConfig(ConfigGroupABC):
     """Is true if new entry nodes are chosen on reset"""
 
     @classmethod
-    def create(
-            cls,
-            settings: Dict[str, Any]
-    ) -> ResetConfig:
+    def create(cls,settings: Dict[str, Any]) -> ResetConfig:
         cls._validate(settings)
 
         reset_config = ResetConfig(
