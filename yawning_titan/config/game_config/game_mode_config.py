@@ -6,7 +6,6 @@ from logging import getLogger
 from pathlib import Path
 from typing import Any, Dict
 
-import ruamel.yaml as ry
 import yaml
 from yaml import SafeLoader
 
