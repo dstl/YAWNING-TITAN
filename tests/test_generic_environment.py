@@ -688,7 +688,7 @@ def test_generic_env(generate_generic_env_test_reqs,path:str,creator_type:str,nu
                             discovered_immediately += 1
                         if (
                             red_target[counter][0] == "d"
-                            and env.network_interface.game_mode.blue.chance_to_immediately_discover_intrusion
+                            and env.network_interface.game_mode.blue.chance_to_immediately_discover_intrusion_deceptive_node
                             == 1
                         ):
                             assert post_red_blue_view[red_target[counter]] == 1

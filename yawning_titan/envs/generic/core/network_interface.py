@@ -551,7 +551,7 @@ class NetworkInterface:
         # Gets the attacks that the blue agent detected
         attacking_nodes = []
         attacked_nodes = []
-        if self.game_mode.observation_space.attacking_nodes or self.game_mode.observation_space.attacking_nodes:
+        if self.game_mode.observation_space.attacking_nodes or self.game_mode.observation_space.attacked_nodes:
             attacking = {name: 0 for name in self.get_nodes()}
             attacked = {name: 0 for name in self.get_nodes()}
             for i in self.detected_attacks:
@@ -564,7 +564,7 @@ class NetworkInterface:
                 # attacking nodes
                 attacking_nodes = list(attacking.values())
                 attacking_nodes = np.pad(attacking_nodes, (0, open_spaces), "constant")
-            if self.game_mode.observation_space.attacking_nodes:
+            if self.game_mode.observation_space.attacked_nodes:
                 # nodes attacked
                 attacked_nodes = list(attacked.values())
                 attacked_nodes = np.pad(attacked_nodes, (0, open_spaces), "constant")
@@ -645,7 +645,7 @@ class NetworkInterface:
             observation_size += 1
         if self.game_mode.observation_space.attacking_nodes:
             observation_size += max_number_of_nodes
-        if self.game_mode.observation_space.attacking_nodes:
+        if self.game_mode.observation_space.attacked_nodes:
             observation_size += max_number_of_nodes
         if self.game_mode.observation_space.special_nodes:
             observation_size += max_number_of_nodes
@@ -913,7 +913,7 @@ class NetworkInterface:
                                 self.detected_attacks.append([i, j])
                     else:
                         # If the attack succeeded but blue did not detect it
-                        if self.game_mode.blue.can_discover_succeeded_attacks_if_compromise_is_not_discovered:
+                        if self.game_mode.blue.chance_to_discover_succeeded_attack_compromise_not_known:
                             if (
                                     100
                                     * self.game_mode.blue.chance_to_discover_succeeded_attack_compromise_not_known

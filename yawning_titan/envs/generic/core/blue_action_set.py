@@ -84,7 +84,7 @@ class BlueActionSet:
         self.network_interface.make_node_safe(node)
 
         # Settings change the effects of making a node safe
-        if self.network_interface.game_mode.blue.making_node_safe_gives_random_vulnerability:
+        if self.network_interface.game_mode.blue.making_node_safe_modifies_vulnerability:
             # Modifies the vulnerability by a set amount (cannot increase it past the limit in the config file)
             change_amount = self.network_interface.game_mode.blue.vulnerability_change_during_node_patch
             current_vulnerability = (

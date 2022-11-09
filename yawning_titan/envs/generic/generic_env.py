@@ -440,7 +440,7 @@ class GenericNetworkEnv(gym.Env):
             observation_size += 1
         if self.network_interface.game_mode.observation_space.attacking_nodes:
             observation_size += max_number_of_nodes
-        if self.network_interface.game_mode.observation_space.attacking_nodes:
+        if self.network_interface.game_mode.observation_space.attacked_nodes:
             observation_size += max_number_of_nodes
         if self.network_interface.game_mode.observation_space.special_nodes:
             observation_size += max_number_of_nodes
