@@ -3,40 +3,47 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Dict, Any
 
-from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
+from yawning_titan.config.game_config.config_abc import ConfigABC
 
 
 @dataclass()
-class MiscellaneousConfig(ConfigGroupABC):
+class MiscellaneousConfig(ConfigABC):
     """
     Class that validates and stores the Miscellaneous Configuration
     """
+    _output_timestep_data_to_json: bool
 
-    misc_json_out: bool = field(
-        metadata={
-            "description": """
-            Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and
-            the attacks that blue saw in that turn
-            """,
-            "alias": "output_timestep_data_to_json",
-        }
-    )
-    """
-    Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and
-    the attacks that blue saw in that turn
-    """
+    @property
+    def output_timestep_data_to_json(self) -> bool:
+        """
+        Toggle to output a json file for each step that contains the
+        connections between nodes, the states of the nodes and the attacks
+        that blue saw in that turn.
+        """
+        return self._output_timestep_data_to_json
+
+    @output_timestep_data_to_json.setter
+    def output_timestep_data_to_json(self, value):
+        self._output_timestep_data_to_json = value
 
     @classmethod
-    def create(cls, settings: Dict[str, Any]) -> MiscellaneousConfig:
-        cls._validate(settings)
+    def create(cls, config_dict: Dict[str, Any]) -> MiscellaneousConfig:
+        """
+        Creates an instance of `MiscellaneousConfig` after calling `.validate`.
+
+        Args:
+            config_dict: A config dict with the required key/values pairs.
+        """
+        cls._validate(config_dict)
 
         misc_config = MiscellaneousConfig(
-            misc_json_out=settings["output_timestep_data_to_json"],
+            _output_timestep_data_to_json=config_dict[
+                "output_timestep_data_to_json"],
         )
 
         return misc_config
 
     @classmethod
-    def _validate(cls, data: dict):
+    def _validate(cls, config_dict: Dict[str, Any]):
         pass
             
