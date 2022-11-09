@@ -77,12 +77,12 @@ class SineWaveRedAgent(RedInterface):
         # calculate the number of attacks that the red agent will get this go
         number_runs = calculate_number_moves(current_strength)
 
-        if self.network_interface.game_mode.red.red_naturally_spread:
+        if self.network_interface.game_mode.red.red_uses_spread_action:
             current_turn_attack_info[action_counter] = self.natural_spread()
 
         zd = False
         # tries to use a zero day attack if it is enabled (not in the main dictionary as it tries it every turn)
-        if self.network_interface.game_mode.red.red_zero_day_action:
+        if self.network_interface.game_mode.red.red_uses_zero_day_action:
             inter = self.zero_day_attack()
             if True in inter["Successes"]:
                 current_turn_attack_info[action_counter] = inter
@@ -107,7 +107,7 @@ class SineWaveRedAgent(RedInterface):
                 action_counter += 1
 
         # increments the day for the zero day
-        if self.network_interface.game_mode.red.red_zero_day_action:
+        if self.network_interface.game_mode.red.red_uses_zero_day_action:
             self.increment_day()
 
         all_attacking = [

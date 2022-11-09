@@ -21,36 +21,36 @@ class BlueInterface(BlueActionSet):
         action_number = 0
         self.deceptive_actions = 0
         # all of the actions that blue can do
-        if self.network_interface.game_mode.blue.blue_reduce_vuln_action:
+        if self.network_interface.game_mode.blue.blue_uses_reduce_vulnerability:
             # Checks if the action is enabled in the settings file
             self.action_dict[action_number] = self.reduce_node_vulnerability
             action_number += 1
-        if self.network_interface.game_mode.blue.blue_restore_node_action:
+        if self.network_interface.game_mode.blue.blue_uses_restore_node:
             self.action_dict[action_number] = self.restore_node
             action_number += 1
-        if self.network_interface.game_mode.blue.blue_make_node_safe_action:
+        if self.network_interface.game_mode.blue.blue_uses_make_node_safe:
             self.action_dict[action_number] = self.make_safe_node
             action_number += 1
-        if self.network_interface.game_mode.blue.blue_isolate_action:
+        if self.network_interface.game_mode.blue.blue_uses_isolate_node:
             self.action_dict[action_number] = self.isolate_node
             action_number += 1
-        if self.network_interface.game_mode.blue.blue_reconnect_action:
+        if self.network_interface.game_mode.blue.blue_uses_reconnect_node:
             self.action_dict[action_number] = self.reconnect_node
             action_number += 1
 
         # deceptive actions -> since the number of edges is not equal to the number of nodes this has to be done
         # separately
-        if self.network_interface.game_mode.blue.blue_deceptive_action:
+        if self.network_interface.game_mode.blue.blue_uses_deceptive_nodes:
             self.deceptive_actions = self.network_interface.get_number_base_edges()
 
         # global actions (don't apply to a single node)
         self.global_action_dict = {}
         global_action_number = 0
-        if self.network_interface.game_mode.blue.blue_scan_action:
+        if self.network_interface.game_mode.blue.blue_uses_scan:
             # scans all of the nodes in the network
             self.global_action_dict[global_action_number] = self.scan_all_nodes
             global_action_number += 1
-        if self.network_interface.game_mode.blue.blue_do_nothing_action:
+        if self.network_interface.game_mode.blue.blue_uses_do_nothing:
             # does nothing
             self.global_action_dict[global_action_number] = self.do_nothing
             global_action_number += 1
