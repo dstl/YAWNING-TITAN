@@ -358,7 +358,7 @@ def check_blue(data: dict):
     ):
         if data["chance_to_discover_succeeded_attack_deceptive_node"] != 1:
             raise ValueError(
-                "'chance_to_discover_succeeded_attack_deceptive_node', 'chance_to_discover_succeeded_attack_compromise_not_known' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"
+                "'chance_to_discover_succeeded_attack_deceptive_node', 'chance_to_discover_succeeded_attack_compromise_not_known' -> The deceptive nodes should have a higher chance at detecting intrusions than the regular nodes"
                 # noqa
             )
 

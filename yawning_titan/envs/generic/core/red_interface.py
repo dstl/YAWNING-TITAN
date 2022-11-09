@@ -79,7 +79,7 @@ class RedInterface(RedActionSet):
         current_turn_attack_info = {}
         action_count = 0
 
-        if self.network_interface.game_mode.red.red_uses_spread_action:
+        if self.network_interface.game_mode.red.red_can_naturally_spread:
             current_turn_attack_info[action_count] = self.natural_spread()
             action_count += 1
 
