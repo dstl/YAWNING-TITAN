@@ -12,25 +12,9 @@ def get_config_dict() -> Dict:
 
 
 def test_read_valid_config():
-    obs_space = ObservationSpaceConfig.create(get_config_dict())
-
-    assert obs_space.obs_compromised_status is True
-
-    assert obs_space.obs_node_vuln_status is True
-
-    assert obs_space.obs_node_connections is True
-
-    assert obs_space.obs_avg_vuln is False
-
-    assert obs_space.obs_graph_connectivity is True
-
-    assert obs_space.obs_attack_sources is True
-
-    assert obs_space.obs_attack_targets is True
-
-    assert obs_space.obs_special_nodes is False
-
-    assert obs_space.obs_red_agent_skill is True
+    config_dict = get_config_dict()
+    observations_space = ObservationSpaceConfig.create(config_dict)
+    assert observations_space.to_dict() == config_dict
 
 
 @pytest.mark.parametrize(
