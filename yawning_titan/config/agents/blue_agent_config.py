@@ -6,7 +6,7 @@ from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_within_range, check_type
 
 
-@dataclass()
+@dataclass
 class BlueAgentConfig(ConfigGroupABC):
     """
     Class that validates and stores the Blue Agent Configuration
@@ -164,10 +164,7 @@ class BlueAgentConfig(ConfigGroupABC):
     """Is true if the blue agent can reuse a deceptive node if it has run out of deceptive nodes it can place"""
 
     @classmethod
-    def create(
-            cls,
-            settings: Dict[str, Any],
-    ):
+    def create(cls,settings: Dict[str, Any]):
         # validate blue agent config values
         cls._validate(settings)
 

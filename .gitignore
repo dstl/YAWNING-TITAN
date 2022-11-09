@@ -1,8 +1,9 @@
-*venv/
+venv/
 .idea/
 *.egg-info
 dist/
 build/
+YTFrontEnd/
 logs/*
 !logs/.gitkeep
 *__pycache__

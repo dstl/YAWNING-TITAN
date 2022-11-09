@@ -3,13 +3,11 @@ from dataclasses import dataclass, field
 from typing import Dict, Any
 
 from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
-from yawning_titan.envs.generic.helpers.environment_input_validation import (
-    check_type,
-    check_within_range,
-)
+
+from yawning_titan.envs.generic.helpers.environment_input_validation import check_type, check_within_range
 
 
-@dataclass()
+@dataclass
 class RedAgentConfig(ConfigGroupABC):
     """
     Class that validates and stores the Red Agent Configuration
@@ -30,7 +28,7 @@ class RedAgentConfig(ConfigGroupABC):
     """Is true if red agent will use the skill modifier when attacking a node"""
 
     # red agent attack pattern
-    red_ignore_defences: bool = field(
+    red_ignores_defences: bool = field(
         metadata={
             "description": "Is true if red agent will ignore node defences",
             "alias": "red_ignores_defences",
@@ -258,7 +256,7 @@ class RedAgentConfig(ConfigGroupABC):
         red_agent = RedAgentConfig(
             red_skill=settings["red_skill"],
             red_use_skill=settings["red_uses_skill"],
-            red_ignore_defences=settings["red_ignores_defences"],
+            red_ignores_defences=settings["red_ignores_defences"],
             red_always_succeeds=settings["red_always_succeeds"],
             red_attack_from_current_position=settings[
                 "red_can_only_attack_from_red_agent_node"

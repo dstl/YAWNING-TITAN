@@ -9,7 +9,7 @@ from yawning_titan.envs.generic.helpers.environment_input_validation import (
 )
 
 
-@dataclass()
+@dataclass
 class GameRulesConfig(ConfigGroupABC):
     """
     Class that validates and stores Game Rules Configuration

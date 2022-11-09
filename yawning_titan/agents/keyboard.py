@@ -23,14 +23,14 @@ class KeyboardAgent:
 
         """
         network_interface = self.env.network_interface
-        settings = network_interface.settings
+        settings = network_interface.game_mode
         full_action_dict = {}
         top_level_action_mask = {}
         actions = 0
         standard_actions = 0
 
         # checks the settings for the currently active blue actions
-        if settings["BLUE"]["blue_uses_deceptive_nodes"]:
+        if settings.blue.blue_uses_deceptive_nodes:
             # If the actions are active then creates a map using dictionaries between the AI gym action number and the
             # action name and any sub actions that this action has
             edge_list = network_interface.edge_map.values()
@@ -39,35 +39,35 @@ class KeyboardAgent:
             actions += len(edge_list)
             standard_actions += len(edge_list)
 
-        if settings["BLUE"]["blue_uses_scan"]:
+        if settings.blue.blue_uses_scan:
             full_action_dict["scan"] = None
             top_level_action_mask["scan"] = actions
             actions += 1
             standard_actions += 1
-        if settings["BLUE"]["blue_uses_do_nothing"]:
+        if settings.blue.blue_uses_do_nothing:
             full_action_dict["do_nothing"] = None
             top_level_action_mask["do_nothing"] = actions
             actions += 1
             standard_actions += 1
 
         node_list = ["Node " + i for i in network_interface.get_nodes()]
-        if settings["BLUE"]["blue_uses_reduce_vulnerability"]:
+        if settings.blue.blue_uses_reduce_vulnerability:
             full_action_dict["reduce_vulnerability"] = node_list
             top_level_action_mask["reduce_vulnerability"] = actions
             actions += 1
-        if settings["BLUE"]["blue_uses_restore_node"]:
+        if settings.blue.blue_uses_restore_node:
             full_action_dict["restore_node"] = node_list
             top_level_action_mask["restore_node"] = actions
             actions += 1
-        if settings["BLUE"]["blue_uses_make_node_safe"]:
+        if settings.blue.blue_uses_make_node_safe:
             full_action_dict["make_node_safe"] = node_list
             top_level_action_mask["make_node_safe"] = actions
             actions += 1
-        if settings["BLUE"]["blue_uses_isolate_node"]:
+        if settings.blue.blue_uses_isolate_node:
             full_action_dict["isolate"] = node_list
             top_level_action_mask["isolate"] = actions
             actions += 1
-        if settings["BLUE"]["blue_uses_reconnect_node"]:
+        if settings.blue.blue_uses_reconnect_node:
             full_action_dict["connect"] = node_list
             top_level_action_mask["connect"] = actions
             actions += 1
