@@ -376,72 +376,6 @@ class BlueAgentConfig(ConfigABC):
     # endregion
 
     @classmethod
-<<<<<<< HEAD
-    def create(cls,settings: Dict[str, Any]):
-        # validate blue agent config values
-        cls._validate(settings)
-
-        blue_agent = BlueAgentConfig(
-            blue_max_deceptive_nodes=settings["max_number_deceptive_nodes"],
-            blue_immediate_detection_chance=settings[
-                "chance_to_immediately_discover_intrusion"
-            ],
-            blue_scan_detection_chance=settings[
-                "chance_to_discover_intrusion_on_scan"
-            ],
-            blue_deception_immediate_detection_chance=settings[
-                "chance_to_immediately_discover_intrusion_deceptive_node"
-            ],
-            blue_deception_scan_detection_chance=settings[
-                "chance_to_discover_intrusion_on_scan_deceptive_node"
-            ],
-            blue_discover_failed_attacks=settings[
-                "can_discover_failed_attacks"
-            ],
-            blue_discover_attack_source_if_detected=settings[
-                "can_discover_succeeded_attacks_if_compromise_is_discovered"
-            ],
-            blue_discover_attack_source_if_not_detected=settings[
-                "can_discover_succeeded_attacks_if_compromise_is_not_discovered"
-            ],
-            blue_chance_to_discover_source_failed=settings[
-                "chance_to_discover_failed_attack"
-            ],
-            blue_chance_to_discover_source_succeed_known=settings[
-                "chance_to_discover_succeeded_attack_compromise_known"
-            ],
-            blue_chance_to_discover_source_succeed_unknown=settings[
-                "chance_to_discover_succeeded_attack_compromise_not_known"
-            ],
-            blue_chance_to_discover_source_deceptive_failed=settings[
-                "chance_to_discover_failed_attack_deceptive_node"
-            ],
-            blue_chance_to_discover_source_deceptive_succeed=settings[
-                "chance_to_discover_succeeded_attack_deceptive_node"
-            ],
-            blue_make_node_safe_modifies_vuln=settings[
-                "making_node_safe_modifies_vulnerability"
-            ],
-            blue_vuln_change_amount_make_safe=settings[
-                "vulnerability_change_during_node_patch"
-            ],
-            blue_make_safe_random_vuln=settings[
-                "making_node_safe_gives_random_vulnerability"
-            ],
-            blue_reduce_vuln_action=settings[
-                "blue_uses_reduce_vulnerability"
-            ],
-            blue_restore_node_action=settings["blue_uses_restore_node"],
-            blue_make_node_safe_action=settings["blue_uses_make_node_safe"],
-            blue_scan_action=settings["blue_uses_scan"],
-            blue_isolate_action=settings["blue_uses_isolate_node"],
-            blue_reconnect_action=settings["blue_uses_reconnect_node"],
-            blue_do_nothing_action=settings["blue_uses_do_nothing"],
-            blue_deceptive_action=settings["blue_uses_deceptive_nodes"],
-            blue_deceptive_node_make_new=settings[
-                "relocating_deceptive_nodes_generates_a_new_node"
-            ]
-=======
     def create(cls, config_dict: Dict[str, Any]) -> BlueAgentConfig:
         """
         Creates an instance of `BlueAgentConfig` after calling `.validate`.
@@ -499,7 +433,6 @@ class BlueAgentConfig(ConfigABC):
                 "blue_uses_deceptive_nodes"],
             _relocating_deceptive_nodes_generates_a_new_node=config_dict[
                 "relocating_deceptive_nodes_generates_a_new_node"],
->>>>>>> methods-YT/dev
         )
         return blue_agent_config
 
