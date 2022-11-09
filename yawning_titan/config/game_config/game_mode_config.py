@@ -1,23 +1,26 @@
 from __future__ import annotations
-from ast import Dict
-from dataclasses import asdict, dataclass
-from logging import getLogger
-from typing import Any
 
+from ast import Dict
+from dataclasses import dataclass
+from logging import getLogger
+from pathlib import Path
+from typing import Any, Dict
+
+import ruamel.yaml as ry
 import yaml
 from yaml import SafeLoader
 
-from yawning_titan.config.agents.red_agent_config import RedAgentConfig
 from yawning_titan.config.agents.blue_agent_config import BlueAgentConfig
+from yawning_titan.config.agents.red_agent_config import RedAgentConfig
 from yawning_titan.config.environment.game_rules_config import GameRulesConfig
-from yawning_titan.config.environment.observation_space_config import ObservationSpaceConfig
+from yawning_titan.config.environment.observation_space_config import \
+    ObservationSpaceConfig
 from yawning_titan.config.environment.reset_config import ResetConfig
 from yawning_titan.config.environment.rewards_config import RewardsConfig
-from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
-from yawning_titan.config.game_config.miscellaneous_config import MiscellaneousConfig
+from yawning_titan.config.game_config.config_abc import ConfigABC
+from yawning_titan.config.game_config.miscellaneous_config import \
+    MiscellaneousConfig
 from yawning_titan.config.game_modes import default_game_mode_path
-
-import ruamel.yaml as ry
 
 _LOGGER = getLogger(__name__)
 
@@ -27,100 +30,113 @@ class GameModeConfig:
     """
     Class that holds the configuration for YAWNING-TITAN
     """
+    _red: RedAgentConfig
+    _observation_space: ObservationSpaceConfig
+    _blue: BlueAgentConfig
+    _game_rules: GameRulesConfig
+    _reset: ResetConfig
+    _rewards: RewardsConfig
+    _miscellaneous: MiscellaneousConfig
 
-    red: RedAgentConfig
-    """
-    Red agent configuration object
-    """
+    # region Getters
+    @property
+    def red(self) -> RedAgentConfig:
+        """
+        The RegAgentConfig.
+        """
+        return self._red
 
-    blue: BlueAgentConfig
-    """
-    Blue agent configuration object
-    """
+    @property
+    def observation_space(self) -> ObservationSpaceConfig:
+        """
+        The ObservationSpaceConfig.
+        """
+        return self._observation_space
 
-    observation_space: ObservationSpaceConfig
-    """
-    Observation space configuration object
-    """
+    @property
+    def blue(self) -> BlueAgentConfig:
+        """
+        The BlueAgentConfig.
+        """
+        return self._blue
 
-    game_rules: GameRulesConfig
-    """
-    Game rules configuration object
-    """
+    @property
+    def game_rules(self) -> GameRulesConfig:
+        """
+        The GameRulesConfig.
+        """
+        return self._game_rules
 
-    reset: ResetConfig
-    """
-    Reset configuration object
-    """
+    @property
+    def reset(self) -> ResetConfig:
+        """
+        The ResetConfig.
+        """
+        return self._reset
 
-    rewards: RewardsConfig
-    """
-    Rewards configuration object
-    """
+    @property
+    def rewards(self) -> RewardsConfig:
+        """
+        The RewardsConfig.
+        """
+        return self._rewards
 
-    miscellaneous: MiscellaneousConfig
-    """
-    Is true if the timestep data is output to JSON
-    """
+    @property
+    def miscellaneous(self) -> MiscellaneousConfig:
+        """
+        The MiscellaneousConfig.
+        """
+        return self._miscellaneous
+
+    # endregion
 
     @classmethod
-    def create(cls, settings:Dict[str, Dict[str, Any]]) -> GameModeConfig:
+    def create(cls, config_dict: Dict[str, Dict[str, Any]]) -> GameModeConfig:
         """
-        Creates an instance of the GameModeConfig class
+        Creates an instance of `GameModeConfig` after calling.
+
+        Args:
+            config_dict: A config dict with the required key/values pairs.
         """
         return GameModeConfig(
-            red=RedAgentConfig.create(settings["RED"]),
-            blue=BlueAgentConfig.create(settings["BLUE"]),
-            observation_space=ObservationSpaceConfig.create(
-                settings["OBSERVATION_SPACE"]
+            _red=RedAgentConfig.create(config_dict["RED"]),
+            _observation_space=ObservationSpaceConfig.create(
+                config_dict["OBSERVATION_SPACE"]
             ),
-            game_rules=GameRulesConfig.create(settings=settings["GAME_RULES"]),
-            reset=ResetConfig.create(settings["RESET"]),
-            rewards=RewardsConfig.create(settings["REWARDS"]),
-            miscellaneous=MiscellaneousConfig.create(settings["MISCELLANEOUS"]),
+            _blue=BlueAgentConfig.create(config_dict["BLUE"]),
+            _game_rules=GameRulesConfig.create(config_dict["GAME_RULES"]),
+            _reset=ResetConfig.create(config_dict["RESET"]),
+            _rewards=RewardsConfig.create(config_dict["REWARDS"]),
+            _miscellaneous=MiscellaneousConfig.create(
+                config_dict["MISCELLANEOUS"]
+            )
         )
 
     @classmethod
-    def create_from_yaml(cls, settings_path=default_game_mode_path()) -> GameModeConfig:
+    def create_from_yaml(
+            cls,
+            config_path=default_game_mode_path()
+    ) -> GameModeConfig:
         try:
-            with open(settings_path) as f:
-                settings = yaml.load(f, Loader=SafeLoader)
+            with open(config_path) as f:
+                config_dict = yaml.load(f, Loader=SafeLoader)
         except FileNotFoundError as e:
-            msg = f"Configuration file does not exist: {settings_path}"
+            msg = f"Configuration file does not exist: {config_path}"
             _LOGGER.critical(msg, exc_info=True)
             raise e
-        return cls.create(settings=settings)
+        return cls.create(config_dict)
 
-    def to_formatted_dict(self,alias=True):
-        settings_dict = {
-            key: val
-            for key, val in self.__dict__.items()
-            if isinstance(val, ConfigGroupABC)
-        }
-        _settings_dict = {}
-        for section_name, section_class in settings_dict.items():
-            section_dict = section_class.to_dict(alias)
-            _settings_dict[section_name.upper()] = section_dict
-        return _settings_dict
+    def to_dict(self, key_upper: bool = False) -> Dict[str, Any]:
+        d = {}
+        for k, v in self.__dict__.items():
+            if k.startswith("_"):
+                k = k[1:]
+                if isinstance(v, ConfigABC):
+                    v = v.to_dict()
+            d[k.upper() if key_upper else k] = v
+        return d
 
-    def write_to_file(self, settings_path):
-        self.file_path = settings_path
+    def to_yaml(self, settings_path: Path):
         with open(settings_path, "w") as file:
-            yaml.safe_dump(self.to_formatted_dict(), file)
+            yaml.safe_dump(self.to_dict(key_upper=True), file)
 
-    def write_to_file_with_comments(self, file_path):
-        settings_dict = self.to_formatted_dict()
-        data = ry.round_trip_load(ry.round_trip_dump(settings_dict))
-
-        _yaml = ry.YAML()
-        _yaml.indent(mapping=2)
-
-        with open(file_path, "w") as f:
-            section_name: str
-            section_class: ConfigGroupABC
-            for section_name, section_class in self.__dict__.items():
-                if isinstance(section_class, ConfigGroupABC):
-                    section_name = section_name.upper()
-                    # data[section_name].yaml_set_start_comment(, indent=2) TODO: add description for individual config object
-                    data[section_name] = section_class.as_commented_yaml()
-            _yaml.dump(data, f)
