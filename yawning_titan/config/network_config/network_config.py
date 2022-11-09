@@ -6,11 +6,11 @@ from typing import Dict, Any, List, Optional
 
 import numpy as np
 
-from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
+from yawning_titan.config.game_config.config_abc import ConfigABC
 
-
+# TODO: Update this class as part of AIDT-88.
 @dataclass()
-class NetworkConfig(ConfigGroupABC):
+class NetworkConfig(ConfigABC):
     """
     Class that validates and stores Network Configuration
     """
