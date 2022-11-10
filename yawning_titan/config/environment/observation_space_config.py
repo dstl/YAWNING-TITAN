@@ -171,4 +171,3 @@ class ObservationSpaceConfig(ConfigABC):
             raise ValueError(
                 "At least one option from OBSERVATION_SPACE must be enabled. The observation space must contain at least one item"
             )
-

@@ -12,7 +12,7 @@ class PostDevelopCommand(develop):
 
     def run(self):
         develop.run(self)
-        from yawning_titan.config.app import create_app_dirs
+        from yawning_titan.app import create_app_dirs
         create_app_dirs()
 
 
@@ -23,7 +23,7 @@ class PostInstallCommand(install):
 
     def run(self):
         install.run(self)
-        from yawning_titan.config.app import create_app_dirs
+        from yawning_titan.app import create_app_dirs
         create_app_dirs()
 
 
