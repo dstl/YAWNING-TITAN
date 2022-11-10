@@ -38,6 +38,10 @@ class ActionLoop:
         Args:
             render: Bool to toggle rendering on or off. Has a default
                 value of True.
+            prompt_to_close: Bool to toggle if the output window should 
+                close immediately on loop ending
+            save_gif: Bool to toggle if gif file should be saved to AppData
+            deterministic: Bool to toggle if the agents actions should be deterministic
         """
         if not IMAGES_DIR.exists():
             # if the path does not exist, create it
