@@ -13,7 +13,7 @@ class MiscellaneousConfig(ConfigABC):
     Class that validates and stores the Miscellaneous Configuration
     """
     _output_timestep_data_to_json: bool
-    _random_seed: int
+    _random_seed: Optional[int]
 
     @property
     def output_timestep_data_to_json(self) -> bool:
