@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-*venv/
-*YT-dev/
-=======
 venv/
 YTFrontEnd/
->>>>>>> methods-YT/dev
 .idea/
 *.egg-info
 dist/
