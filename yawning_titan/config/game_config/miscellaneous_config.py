@@ -29,7 +29,7 @@ class MiscellaneousConfig(ConfigABC):
         self._output_timestep_data_to_json = value
 
     @property
-    def random_seed(self) -> bool:
+    def random_seed(self) -> Optional[int]:
         """
         A random_seed used for the random number generators in
         both python and numpy to create a deterministic
