@@ -74,9 +74,6 @@ def init_test_env():
         Returns:
             env: An OpenAI gym environment
         """
-        if not entry_nodes:
-            entry_nodes = ["0", "1", "2"]
-
         network = NetworkConfig.create(            
             high_value_targets=high_value_targets,
             entry_nodes=entry_nodes,

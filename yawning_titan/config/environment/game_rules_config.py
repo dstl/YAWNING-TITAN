@@ -26,7 +26,6 @@ class GameRulesConfig(ConfigABC):
     _number_of_high_value_targets: int
     _choose_high_value_targets_placement_at_random: bool
     _choose_high_value_targets_furthest_away_from_entry: bool
-    _choose_high_value_targets_placement_manually: bool
     _choose_entry_nodes_randomly: bool
     _number_of_entry_nodes: int
     _prefer_central_nodes_for_entry_nodes: bool
@@ -117,13 +116,6 @@ class GameRulesConfig(ConfigABC):
         return self._choose_high_value_targets_furthest_away_from_entry
 
     @property
-    def choose_high_value_targets_placement_manually(self) -> bool:
-        """
-        The user manually picks high value nodes
-        """
-        return self._choose_high_value_targets_placement_manually
-
-    @property
     def choose_entry_nodes_randomly(self) -> bool:
         """
         If no entry nodes are supplied choose some at random.
@@ -209,10 +201,6 @@ class GameRulesConfig(ConfigABC):
     def choose_high_value_targets_furthest_away_from_entry(self, value):
         self._choose_high_value_targets_furthest_away_from_entry = value
 
-    @choose_high_value_targets_placement_manually.setter
-    def choose_high_value_targets_placement_manually(self, value):
-        self._choose_high_value_targets_placement_manually = value
-
     @choose_entry_nodes_randomly.setter
     def choose_entry_nodes_randomly(self, value):
         self._choose_entry_nodes_randomly = value
@@ -270,9 +258,6 @@ class GameRulesConfig(ConfigABC):
             ],
             _choose_high_value_targets_furthest_away_from_entry=config_dict[
                 "choose_high_value_targets_furthest_away_from_entry"
-            ],
-            _choose_high_value_targets_placement_manually=config_dict[
-                "choose_high_value_targets_placement_manually"
             ],
             _choose_entry_nodes_randomly=config_dict["choose_entry_nodes_randomly"],
             _number_of_entry_nodes=config_dict["number_of_entry_nodes"],
@@ -384,20 +369,18 @@ class GameRulesConfig(ConfigABC):
                 and not config_dict[
                     "choose_high_value_targets_furthest_away_from_entry"
                 ]
-                and not config_dict["choose_high_value_targets_placement_manually"]
             ):
                 raise ValueError(
-                    "'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_placement_manually', 'choose_high_value_targets_furthest_away_from_entry' -> A method of selecting the high value target must be chosen"
+                    "'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_furthest_away_from_entry' -> A method of selecting the high value target must be chosen"
                     # noqa
                 )
             # if there are conflicting configurations
             if (
                 config_dict["choose_high_value_targets_placement_at_random"]
-                and (config_dict["choose_high_value_targets_furthest_away_from_entry"]
-                or config_dict["choose_high_value_targets_placement_manually"])
+                and config_dict["choose_high_value_targets_furthest_away_from_entry"]
             ):
                 raise ValueError(
-                    "'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_placement_manually', 'choose_high_value_targets_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"
+                    "'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"
                     # noqa
                 )
 
