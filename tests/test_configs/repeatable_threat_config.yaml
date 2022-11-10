@@ -183,6 +183,8 @@ BLUE:
   relocating_deceptive_nodes_generates_a_new_node: True
 
 GAME_RULES:
+  # Minimum number of nodes the network this game mode is allowed to run on
+  min_number_of_network_nodes: 18
   # If no high value nodes are supplied, how many should be chosen
   number_of_high_value_nodes: 1
   # A lower vulnerability means that a node is less likely to be compromised
@@ -202,9 +204,9 @@ GAME_RULES:
   # Blue loses if a target node it lost
   lose_when_target_node_lost: False
   # The high value node is picked at random
-  choose_high_value_node_placement_at_random: False
+  choose_high_value_nodes_placement_at_random: True
   # The node furthest away from the entry points to the network is picked as the high value node
-  choose_high_value_node_furthest_away_from_entry: True
+  choose_high_value_nodes_furthest_away_from_entry: False
   # If no entry nodes are supplied choose some at random
   choose_entry_nodes_randomly: False
   # If no entry nodes are supplied then how many should be chosen
@@ -214,11 +216,6 @@ GAME_RULES:
   prefer_edge_nodes_for_entry_nodes: False
   # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
   grace_period_length: 0
-  # Should the high value node location be chosen at random
-  choose_high_value_nodes_placement_at_random: False
-  # The node furthest away from the entry points to the network is picked as the high value node
-  choose_high_value_nodes_furthest_away_from_entry: False
-
 
 RESET:
   randomise_vulnerabilities_on_reset: False
@@ -246,4 +243,5 @@ MISCELLANEOUS:
   # Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and
   # the attacks that blue saw in that turn
   output_timestep_data_to_json: False
+  # seed to inform the random number generation of python and numpy thereby creating deterministic game outputs
   random_seed: 666

@@ -60,7 +60,7 @@ RED:
   # Red picks nodes to attack at random
   red_chooses_target_at_random: False
   # Red targets a specific node
-  red_target_node: 9
+  red_target_node: "9"
   # Red sorts the nodes it can attack and chooses the one that has the most connections
   red_prioritises_connected_nodes: False
   # Red sorts the nodes it can attack and chooses the one that has the least connections
@@ -183,6 +183,8 @@ BLUE:
   relocating_deceptive_nodes_generates_a_new_node: True
 
 GAME_RULES:
+  # Minimum number of nodes the network this game mode is allowed to run on
+  min_number_of_network_nodes: 18
   # If no high value nodes are supplied, how many should be chosen
   number_of_high_value_nodes: 1
   # A lower vulnerability means that a node is less likely to be compromised
@@ -241,3 +243,5 @@ MISCELLANEOUS:
   # Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and
   # the attacks that blue saw in that turn
   output_timestep_data_to_json: False
+  # seed to inform the random number generation of python and numpy thereby creating deterministic game outputs
+  random_seed:

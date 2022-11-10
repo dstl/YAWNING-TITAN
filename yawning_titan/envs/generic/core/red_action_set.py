@@ -46,7 +46,7 @@ class RedActionSet:
         self.reset()
 
     def reset(self):
-        self.zero_day_amount = self.network_interface.red_zero_day_start_amount
+        self.zero_day_amount = self.network_interface.game_mode.red.zero_day_start_amount
         self.zero_day_current_day = 0
 
     def choose_target_node(self) -> Union[Tuple[str, str], Tuple[bool, bool]]:
@@ -126,10 +126,10 @@ class RedActionSet:
                 weights.append(
                     1 / self.network_interface.get_single_node_vulnerability(node)
                 )
-        elif self.network_interface.red_target_node is not None:
+        elif self.network_interface.game_mode.red.red_target_node is not None:
             distances = self.network_interface.get_shortest_distances_to_target(possible_to_attack)
             for dist in distances:
-                if self.network_interface.red_always_chooses_shortest_distance_to_target:
+                if self.network_interface.game_mode.red.red_always_chooses_shortest_distance_to_target:
                     weight = 1 if dist == min(distances) else 0
                 else:
                     weight = 1 if dist == 0 else dist / sum(distances)

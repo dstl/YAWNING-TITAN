@@ -207,7 +207,7 @@ GAME_RULES:
   # The node furthest away from the entry points to the network is picked as the high value node
   choose_high_value_nodes_furthest_away_from_entry: False
   # If no entry nodes are supplied choose some at random
-  choose_entry_nodes_randomly: True
+  choose_entry_nodes_randomly: False
   # If no entry nodes are supplied then how many should be chosen
   number_of_entry_nodes: 3
   # If no entry nodes are supplied then what bias is applied to the nodes when choosing random entry nodes
@@ -217,8 +217,6 @@ GAME_RULES:
   grace_period_length: 0
   # Blue loses if a target node it lost
   lose_when_target_node_lost: False
-  #set the high value targets manually
-  choose_high_value_targets_placement_manually: False
 
 RESET:
   randomise_vulnerabilities_on_reset: True
@@ -244,3 +242,5 @@ MISCELLANEOUS:
   # Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and
   # the attacks that blue saw in that turn
   output_timestep_data_to_json: False
+  # seed to inform the random number generation of python and numpy thereby creating deterministic game outputs
+  random_seed:

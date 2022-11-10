@@ -22,11 +22,11 @@ class GameRulesConfig(ConfigABC):
     _lose_when_all_nodes_lost: bool
     _lose_when_n_percent_of_nodes_lost: bool
     _percentage_of_nodes_compromised_equals_loss: float
-    _lose_when_high_value_target_lost: bool
-    _number_of_high_value_targets: int
-    _choose_high_value_targets_placement_at_random: bool
-    _choose_high_value_targets_furthest_away_from_entry: bool
-    _choose_high_value_targets_placement_manually: bool
+    _lose_when_high_value_node_lost: bool
+    _lose_when_target_node_lost: bool
+    _number_of_high_value_nodes: int
+    _choose_high_value_nodes_placement_at_random: bool
+    _choose_high_value_nodes_furthest_away_from_entry: bool
     _choose_entry_nodes_randomly: bool
     _number_of_entry_nodes: int
     _prefer_central_nodes_for_entry_nodes: bool
@@ -87,41 +87,43 @@ class GameRulesConfig(ConfigABC):
         return self._percentage_of_nodes_compromised_equals_loss
 
     @property
-    def lose_when_high_value_target_lost(self) -> bool:
+    def lose_when_high_value_node_lost(self) -> bool:
         """
         Blue loses if a special 'high value' target is lost (a node picked
         in the environment).
         """
-        return self._lose_when_high_value_target_lost
+        return self._lose_when_high_value_node_lost
+
+    
+    @property
+    def lose_when_target_node_lost(self) -> bool:
+        """
+        Blue loses if the target node is lost (a node picked
+        in the environment).
+        """
+        return self._lose_when_target_node_lost
 
     @property
-    def number_of_high_value_targets(self) -> int:
+    def number_of_high_value_nodes(self) -> int:
         """
-        If no high value targets are supplied, how many should be chosen.
+        If no high value nodes are supplied, how many should be chosen.
         """
-        return self._number_of_high_value_targets
+        return self._number_of_high_value_nodes
 
     @property
-    def choose_high_value_targets_placement_at_random(self) -> bool:
+    def choose_high_value_nodes_placement_at_random(self) -> bool:
         """
-        The high value target is picked at random.
+        The high value node is picked at random.
         """
-        return self._choose_high_value_targets_placement_at_random
+        return self._choose_high_value_nodes_placement_at_random
 
     @property
-    def choose_high_value_targets_furthest_away_from_entry(self) -> bool:
+    def choose_high_value_nodes_furthest_away_from_entry(self) -> bool:
         """
         The node furthest away from the entry points to the network is
         picked as the target.
         """
-        return self._choose_high_value_targets_furthest_away_from_entry
-
-    @property
-    def choose_high_value_targets_placement_manually(self) -> bool:
-        """
-        The user manually picks high value nodes
-        """
-        return self._choose_high_value_targets_placement_manually
+        return self._choose_high_value_nodes_furthest_away_from_entry
 
     @property
     def choose_entry_nodes_randomly(self) -> bool:
@@ -193,25 +195,25 @@ class GameRulesConfig(ConfigABC):
     def percentage_of_nodes_compromised_equals_loss(self, value):
         self._percentage_of_nodes_compromised_equals_loss = value
 
-    @lose_when_high_value_target_lost.setter
-    def lose_when_high_value_target_lost(self, value):
-        self._lose_when_high_value_target_lost = value
+    @lose_when_high_value_node_lost.setter
+    def lose_when_high_value_node_lost(self, value):
+        self._lose_when_high_value_node_lost = value
 
-    @number_of_high_value_targets.setter
-    def number_of_high_value_targets(self, value):
-        self._number_of_high_value_targets = value
+    @lose_when_target_node_lost.setter
+    def lose_when_target_node_lost(self, value):
+        self._lose_when_target_node_lost = value
 
-    @choose_high_value_targets_placement_at_random.setter
-    def choose_high_value_targets_placement_at_random(self, value):
-        self._choose_high_value_targets_placement_at_random = value
+    @number_of_high_value_nodes.setter
+    def number_of_high_value_nodes(self, value):
+        self._number_of_high_value_nodes = value
 
-    @choose_high_value_targets_furthest_away_from_entry.setter
-    def choose_high_value_targets_furthest_away_from_entry(self, value):
-        self._choose_high_value_targets_furthest_away_from_entry = value
+    @choose_high_value_nodes_placement_at_random.setter
+    def choose_high_value_nodes_placement_at_random(self, value):
+        self._choose_high_value_nodes_placement_at_random = value
 
-    @choose_high_value_targets_placement_manually.setter
-    def choose_high_value_targets_placement_manually(self, value):
-        self._choose_high_value_targets_placement_manually = value
+    @choose_high_value_nodes_furthest_away_from_entry.setter
+    def choose_high_value_nodes_furthest_away_from_entry(self, value):
+        self._choose_high_value_nodes_furthest_away_from_entry = value
 
     @choose_entry_nodes_randomly.setter
     def choose_entry_nodes_randomly(self, value):
@@ -261,18 +263,18 @@ class GameRulesConfig(ConfigABC):
             _percentage_of_nodes_compromised_equals_loss=config_dict[
                 "percentage_of_nodes_compromised_equals_loss"
             ],
-            _lose_when_high_value_target_lost=config_dict[
-                "lose_when_high_value_target_lost"
+            _lose_when_high_value_node_lost=config_dict[
+                "lose_when_high_value_node_lost"
             ],
-            _number_of_high_value_targets=config_dict["number_of_high_value_targets"],
-            _choose_high_value_targets_placement_at_random=config_dict[
-                "choose_high_value_targets_placement_at_random"
+            _lose_when_target_node_lost=config_dict[
+                "lose_when_target_node_lost"
             ],
-            _choose_high_value_targets_furthest_away_from_entry=config_dict[
-                "choose_high_value_targets_furthest_away_from_entry"
+            _number_of_high_value_nodes=config_dict["number_of_high_value_nodes"],
+            _choose_high_value_nodes_placement_at_random=config_dict[
+                "choose_high_value_nodes_placement_at_random"
             ],
-            _choose_high_value_targets_placement_manually=config_dict[
-                "choose_high_value_targets_placement_manually"
+            _choose_high_value_nodes_furthest_away_from_entry=config_dict[
+                "choose_high_value_nodes_furthest_away_from_entry"
             ],
             _choose_entry_nodes_randomly=config_dict["choose_entry_nodes_randomly"],
             _number_of_entry_nodes=config_dict["number_of_entry_nodes"],
@@ -314,11 +316,11 @@ class GameRulesConfig(ConfigABC):
         check_type(config_dict, "number_of_entry_nodes", [int])
         check_type(config_dict, "grace_period_length", [int])
         check_type(config_dict, "min_number_of_network_nodes", [int])
-        check_type(config_dict, "number_of_high_value_targets", [int])
-        # make sure high value targets is not more than the number of minimum number of nodes in network
+        check_type(config_dict, "number_of_high_value_nodes", [int])
+        # make sure high value nodes is not more than the number of minimum number of nodes in network
         check_within_range(
             config_dict,
-            "number_of_high_value_targets",
+            "number_of_high_value_nodes",
             0,
             config_dict["min_number_of_network_nodes"],
             True,
@@ -341,9 +343,10 @@ class GameRulesConfig(ConfigABC):
         for name in [
             "lose_when_all_nodes_lost",
             "lose_when_n_percent_of_nodes_lost",
-            "lose_when_high_value_target_lost",
-            "choose_high_value_targets_placement_at_random",
-            "choose_high_value_targets_furthest_away_from_entry",
+            "lose_when_high_value_node_lost",
+            "lose_when_target_node_lost",
+            "choose_high_value_nodes_placement_at_random",
+            "choose_high_value_nodes_furthest_away_from_entry",
             "choose_entry_nodes_randomly",
             "prefer_central_nodes_for_entry_nodes",
             "prefer_edge_nodes_for_entry_nodes",
@@ -370,34 +373,33 @@ class GameRulesConfig(ConfigABC):
         if (
             (not config_dict["lose_when_all_nodes_lost"])
             and (not config_dict["lose_when_n_percent_of_nodes_lost"])
-            and (not config_dict["lose_when_high_value_target_lost"])
+            and (not config_dict["lose_when_high_value_node_lost"])
+            and (not config_dict["lose_when_target_node_lost"])
         ):
             raise ValueError(
                 "'lose_when_target_node_lost', 'lose_when_all_nodes_lost', 'lose_when_n_percent_of_nodes_lost', 'lose_when_high_value_node_lost' -> At least one loose condition must be turned on"
                 # noqa
             )
 
-        if config_dict["lose_when_high_value_target_lost"]:
-            # if there is no way to set high value targets
+        if config_dict["lose_when_high_value_node_lost"]:
+            # if there is no way to set high value nodes
             if (
-                not config_dict["choose_high_value_targets_placement_at_random"]
+                not config_dict["choose_high_value_nodes_placement_at_random"]
                 and not config_dict[
-                    "choose_high_value_targets_furthest_away_from_entry"
+                    "choose_high_value_nodes_furthest_away_from_entry"
                 ]
-                and not config_dict["choose_high_value_targets_placement_manually"]
             ):
                 raise ValueError(
-                    "'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_placement_manually', 'choose_high_value_targets_furthest_away_from_entry' -> A method of selecting the high value target must be chosen"
+                    "'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' -> A method of selecting a high value node must be chosen"
                     # noqa
                 )
             # if there are conflicting configurations
             if (
-                config_dict["choose_high_value_targets_placement_at_random"]
-                and (config_dict["choose_high_value_targets_furthest_away_from_entry"]
-                or config_dict["choose_high_value_targets_placement_manually"])
+                config_dict["choose_high_value_nodes_placement_at_random"]
+                and config_dict["choose_high_value_nodes_furthest_away_from_entry"]
             ):
                 raise ValueError(
-                    "'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_placement_manually', 'choose_high_value_targets_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"
+                    "'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' -> Only one method of selecting a high value node should be selected"
                     # noqa
                 )
 

@@ -19,7 +19,7 @@ class GraphExplore(gym.Env):
 
     metadata = {"render.modes": ["human"]}
     NODES = 10  # the number of nodes within the network
-    SEED = 1010  # the initial seed of the random network generated
+    random_seed = 1010  # the initial random_seed of the random network generated
     GAME_MAX = 1000  # the number of game moves allowed
     visualisation = None
 
@@ -31,7 +31,7 @@ class GraphExplore(gym.Env):
         # They must be gym.spaces objects
 
         # Example when using discrete actions:
-        self.G = nx.random_internet_as_graph(n=self.NODES, seed=self.SEED)
+        self.G = nx.random_internet_as_graph(n=self.NODES, random_seed=self.random_seed)
         self.pos = nx.spring_layout(self.G)
         self.action_space = gym.spaces.Discrete(self.NODES + 1)
         # Example for using image as input:
@@ -134,7 +134,7 @@ class GraphExplore(gym.Env):
         # Reset the state of the environment to an initial state
         print("GAME RESET")
         self.CURRENT_STEP = 0
-        self.G = nx.random_internet_as_graph(n=self.NODES, seed=self.SEED)
+        self.G = nx.random_internet_as_graph(n=self.NODES, random_seed=self.random_seed)
         self.pos = nx.spring_layout(self.G)
         self.INITIAL_BLUE = random.choice(list(self.G.nodes()))
         self.POS_BLUE = self.INITIAL_BLUE
