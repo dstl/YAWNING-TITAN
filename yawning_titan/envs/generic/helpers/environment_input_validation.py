@@ -12,6 +12,9 @@ def check_type(data: dict, name: str, types: list):
         name: The name of the key of the item to check
         types: A list of types that the item must belong to
     """
+    if None in types and data[name] is None:
+        return
+
     if type(data[name]) not in types:
         raise ValueError(
             "'" + name + "' needs to be of type: " + " or ".join(map(str, types))
@@ -355,7 +358,7 @@ def check_blue(data: dict):
     ):
         if data["chance_to_discover_succeeded_attack_deceptive_node"] != 1:
             raise ValueError(
-                "'chance_to_discover_succeeded_attack_deceptive_node', 'chance_to_discover_succeeded_attack_compromise_not_known' -> The deceptive nodes should have a higher chance at detecting intrusions that the regular nodes"
+                "'chance_to_discover_succeeded_attack_deceptive_node', 'chance_to_discover_succeeded_attack_compromise_not_known' -> The deceptive nodes should have a higher chance at detecting intrusions than the regular nodes"
                 # noqa
             )
 

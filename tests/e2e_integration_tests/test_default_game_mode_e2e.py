@@ -8,32 +8,15 @@ from stable_baselines3.common.env_checker import check_env
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.ppo import MlpPolicy as PPOMlp
-
-from yawning_titan.envs.generic.core.blue_interface import BlueInterface
-from yawning_titan.envs.generic.core.network_interface import \
-    NetworkInterface
-from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
-from yawning_titan.envs.generic.helpers import network_creator
 
 
 @pytest.mark.e2e_integration_test
-def test_default_game_mode_e2e():
+def test_default_game_mode_e2e(generate_generic_env_test_reqs):
     runs = True
     try:
-        matrix, node_positions = network_creator.create_18_node_network()
-
         entry_nodes = ["0", "1", "2"]
-
-        network_interface = NetworkInterface(
-            matrix, node_positions, entry_nodes=entry_nodes,
-        )
-
-        red = RedInterface(network_interface)
-
-        blue = BlueInterface(network_interface)
-
-        env = GenericNetworkEnv(red, blue, network_interface)
+        env:GenericNetworkEnv = generate_generic_env_test_reqs(entry_nodes=entry_nodes)
 
         check_env(env, warn=True)
 
