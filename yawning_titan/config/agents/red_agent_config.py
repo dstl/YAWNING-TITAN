@@ -40,10 +40,12 @@ class RedAgentConfig(ConfigABC):
     _zero_day_start_amount: int
     _days_required_for_zero_day: int
     _red_chooses_target_at_random: bool
+    _red_target_node: str
     _red_prioritises_connected_nodes: bool
     _red_prioritises_un_connected_nodes: bool
     _red_prioritises_vulnerable_nodes: bool
     _red_prioritises_resilient_nodes: bool
+    _red_always_chooses_shortest_distance_to_target: bool
 
     # region Getters
     @property
@@ -233,6 +235,13 @@ class RedAgentConfig(ConfigABC):
         return self._red_chooses_target_at_random
 
     @property
+    def red_target_node(self) -> bool:
+        """
+        Red targets a specific node
+        """
+        return self._red_target_node
+
+    @property
     def red_prioritises_connected_nodes(self) -> bool:
         """
         Red sorts the nodes it can attack and chooses the one that has the
@@ -263,6 +272,15 @@ class RedAgentConfig(ConfigABC):
         least vulnerable.
         """
         return self._red_prioritises_resilient_nodes
+    
+    @property
+    def red_always_chooses_shortest_distance_to_target(self) -> bool:
+        """
+        Red always chooses the absolute shortest distance to target with 
+        no randomisation.
+        """
+        return self._red_always_chooses_shortest_distance_to_target
+
     # endregion
 
     # region Setters
@@ -366,6 +384,10 @@ class RedAgentConfig(ConfigABC):
     def red_chooses_target_at_random(self, value):
         self._red_chooses_target_at_random = value
 
+    @red_target_node.setter
+    def red_target_node(self,value):
+        self.__red_target_node = value
+
     @red_prioritises_connected_nodes.setter
     def red_prioritises_connected_nodes(self, value):
         self._red_prioritises_connected_nodes = value
@@ -381,6 +403,10 @@ class RedAgentConfig(ConfigABC):
     @red_prioritises_resilient_nodes.setter
     def red_prioritises_resilient_nodes(self, value):
         self._red_prioritises_resilient_nodes = value
+
+    @red_always_chooses_shortest_distance_to_target.setter
+    def red_always_chooses_shortest_distance_to_target(self, value):
+        self._red_always_chooses_shortest_distance_to_target = value
     # endregion
 
 
@@ -434,6 +460,7 @@ class RedAgentConfig(ConfigABC):
                 "days_required_for_zero_day"],
             _red_chooses_target_at_random=config_dict[
                 "red_chooses_target_at_random"],
+            _red_target_node=config_dict["red_target_node"],
             _red_prioritises_connected_nodes=config_dict[
                 "red_prioritises_connected_nodes"],
             _red_prioritises_un_connected_nodes=config_dict[
@@ -442,6 +469,9 @@ class RedAgentConfig(ConfigABC):
                 "red_prioritises_vulnerable_nodes"],
             _red_prioritises_resilient_nodes=config_dict[
                 "red_prioritises_resilient_nodes"],
+            _red_always_chooses_shortest_distance_to_target=config_dict[
+                "red_always_chooses_shortest_distance_to_target"
+            ]
         )
 
         return red_agent_config
@@ -538,6 +568,7 @@ class RedAgentConfig(ConfigABC):
             )
         if (
             (not config_dict["red_chooses_target_at_random"])
+            and (config_dict["red_target_node"] is None)
             and (not config_dict["red_prioritises_connected_nodes"])
             and (not config_dict["red_prioritises_un_connected_nodes"])
             and (not config_dict["red_prioritises_vulnerable_nodes"])

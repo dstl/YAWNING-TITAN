@@ -167,6 +167,8 @@ GAME_RULES:
   # The blue agent loses if n% of the nodes become compromised
   lose_when_n_percent_of_nodes_lost: False
   # The percentage of nodes that need to be lost for blue to lose
+  # Blue loses if a target node it lost
+  lose_when_target_node_lost: False
   percentage_of_nodes_compromised_equals_loss: 0.8
   # Blue loses if a special 'high value' node it lost (a node picked in the environment)
   lose_when_high_value_node_lost: True
@@ -183,10 +185,11 @@ GAME_RULES:
   # If no entry nodes are supplied then what bias is applied to the nodes when choosing random entry nodes
   prefer_central_nodes_for_entry_nodes: False
   prefer_edge_nodes_for_entry_nodes: False
-  # Blue loses if a target node it lost
-  lose_when_target_node_lost: False
-  #set the high value targets manually
-  choose_high_value_targets_placement_manually: False
+  # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
+  grace_period_length: 0
+
+
+
 
 RESET:
   randomise_vulnerabilities_on_reset: False
@@ -212,3 +215,5 @@ MISCELLANEOUS:
   # Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and
   # the attacks that blue saw in that turn
   output_timestep_data_to_json: False
+  # seed to inform the random number generation of python and numpy thereby creating deterministic game outputs
+  random_seed:

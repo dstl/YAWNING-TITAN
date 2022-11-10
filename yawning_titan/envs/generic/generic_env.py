@@ -73,7 +73,7 @@ class GenericNetworkEnv(gym.Env):
         self.print_notes = print_per_ts_data
 
         
-        self.SEED = self.network_interface.SEED
+        self.random_seed = self.network_interface.random_seed
 
         self.graph_plotter = None
         self.eval_printout = EvalPrintout(self.avg_every)
@@ -103,8 +103,8 @@ class GenericNetworkEnv(gym.Env):
         Returns:
             A new starting observation (numpy array)
         """
-        if self.SEED is not None: # conditionally set seed
-            set_random_seed(self.SEED,True) # TODO: may need to add customization of cuda setting
+        if self.random_seed is not None: # conditionally set random_seed
+            set_random_seed(self.random_seed,True) # TODO: may need to add customization of cuda setting
         self.network_interface.reset()
         self.RED.reset()
         self.current_duration = 0
@@ -215,7 +215,7 @@ class GenericNetworkEnv(gym.Env):
                 reward = self.network_interface.game_mode.rewards.rewards_for_loss
                 # If the game ends before blue has had their turn the the blue action is set to failed
                 blue_action = "failed"
-        if self.network_interface.game_mode.game_rules.lose_when_high_value_target_lost:
+        if self.network_interface.game_mode.game_rules.lose_when_high_value_node_lost:
 
             # check if a high value node was compromised
             compromised_hvn = False
@@ -240,7 +240,7 @@ class GenericNetworkEnv(gym.Env):
             ):
                 # If this mode is selected then the game ends if the target node has been compromised
                 done = True
-                reward = self.network_interface.reward_loss
+                reward = self.network_interface.game_mode.rewards.rewards_for_loss
                 blue_action = "failed"
 
         if done:
@@ -401,8 +401,8 @@ class GenericNetworkEnv(gym.Env):
             attacks = self.network_interface.get_true_attacks()
         reward = round(self.current_reward, 2)
         special_nodes = {}
-        if self.network_interface.game_mode.game_rules.lose_when_high_value_target_lost:
-            hvt = self.network_interface.get_high_value_targets()
+        if self.network_interface.game_mode.game_rules.lose_when_high_value_node_lost:
+            hvn = self.network_interface.get_high_value_nodes()
 
             # iterate through the high value nodes
             for node in hvn:
@@ -426,7 +426,7 @@ class GenericNetworkEnv(gym.Env):
             "RL blue agent vs probabilistic red in a generic network environment",
             special_nodes=special_nodes,
             entrance_nodes=self.network_interface.entry_nodes,
-            target_node=self.network_interface.red_target_node,
+            target_node=self.network_interface.game_mode.red.red_target_node,
             show_only_blue_view=show_only_blue_view,
             show_node_names=show_node_names,
         )

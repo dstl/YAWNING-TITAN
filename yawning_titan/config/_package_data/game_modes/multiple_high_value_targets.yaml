@@ -214,13 +214,8 @@ GAME_RULES:
   prefer_edge_nodes_for_entry_nodes: True
   # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
   grace_period_length: 0
-<<<<<<< HEAD
   # Blue loses if a target node it lost
   lose_when_target_node_lost: False
-=======
-  #set the high value targets manually
-  choose_high_value_targets_placement_manually: False
->>>>>>> methods-YT/dev
 
 RESET:
   randomise_vulnerabilities_on_reset: False
@@ -247,3 +242,5 @@ MISCELLANEOUS:
   # Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and
   # the attacks that blue saw in that turn
   output_timestep_data_to_json: False
+  # seed to inform the random number generation of python and numpy thereby creating deterministic game outputs
+  random_seed:

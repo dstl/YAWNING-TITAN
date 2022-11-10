@@ -76,7 +76,7 @@ class ObservationSpaceConfig(ConfigABC):
     def special_nodes(self) -> bool:
         """
         The blue agent can see all of the special nodes (entry nodes,
-        high value targets).
+        high value nodes).
         """
         return self._special_nodes
 

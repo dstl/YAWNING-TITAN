@@ -11,13 +11,8 @@ from stable_baselines3.ppo import MlpPolicy as PPOMlp
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 
-<<<<<<< HEAD
-@pytest.mark.e2e_integration_test 
-def test_default_game_mode_e2e():
-=======
 @pytest.mark.e2e_integration_test
 def test_default_game_mode_e2e(generate_generic_env_test_reqs):
->>>>>>> methods-YT/dev
     runs = True
     try:
         entry_nodes = ["0", "1", "2"]

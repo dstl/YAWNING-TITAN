@@ -186,8 +186,6 @@ GAME_RULES:
   grace_period_length: 3
   # Blue loses if a target node it lost
   lose_when_target_node_lost: False
-  #set the high value targets manually
-  choose_high_value_targets_placement_manually: False
 
 RESET:
   randomise_vulnerabilities_on_reset: True
@@ -213,3 +211,5 @@ MISCELLANEOUS:
   # Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and
   # the attacks that blue saw in that turn
   output_timestep_data_to_json: False
+  # seed to inform the random number generation of python and numpy thereby creating deterministic game outputs
+  random_seed:

@@ -198,7 +198,7 @@ GAME_RULES:
   # Blue loses if a special 'high value' node it lost (a node picked in the environment)
   lose_when_high_value_node_lost: True
   # The high value node is picked at random
-  choose_high_value_nodes_placement_at_random: False
+  choose_high_value_nodes_placement_at_random: True
   # The node furthest away from the entry points to the network is picked as the high value node
   choose_high_value_nodes_furthest_away_from_entry: False
   # If no entry nodes are supplied choose some at random
@@ -212,10 +212,9 @@ GAME_RULES:
   grace_period_length: 3
   # Blue loses if a target node it lost
   lose_when_target_node_lost: False
-  #the number of high value targets to generate
-  number_of_high_value_targets: 3
-  #set the high value targets manually
-  choose_high_value_targets_placement_manually: True
+  #the number of high value nodes to generate
+  number_of_high_value_nodes: 3
+  #the game should use the high value nodes set in the network
 
 RESET:
   randomise_vulnerabilities_on_reset: False
@@ -241,3 +240,5 @@ MISCELLANEOUS:
   # Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and
   # the attacks that blue saw in that turn
   output_timestep_data_to_json: False
+  # seed to inform the random number generation of python and numpy thereby creating deterministic game outputs
+  random_seed:
