@@ -1,5 +1,5 @@
-*venv/
-*YT-dev/
+venv/
+YTFrontEnd/
 .idea/
 *.egg-info
 dist/

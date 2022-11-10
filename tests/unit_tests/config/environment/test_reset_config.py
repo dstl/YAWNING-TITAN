@@ -12,13 +12,10 @@ def get_config_dict() -> Dict:
 
 
 def test_read_valid_config():
-    reset_config = ResetConfig.create(get_config_dict())
+    config_dict = get_config_dict()
+    reset = ResetConfig.create(config_dict)
+    assert reset.to_dict() == config_dict
 
-    assert reset_config.reset_random_vulns is False
-
-    assert reset_config.reset_move_hvn is False
-
-    assert reset_config.reset_move_entry_nodes is False
 
 
 @pytest.mark.parametrize(

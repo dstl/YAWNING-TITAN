@@ -12,95 +12,9 @@ def get_config_dict() -> Dict:
 
 
 def test_read_valid_config():
-    red_agent = RedAgentConfig.create(get_config_dict())
-
-    # red_skill
-    assert red_agent.red_skill == 0.5
-
-    # red_uses_skill
-    assert red_agent.red_use_skill is True
-
-    # red_ignores_defences
-    assert red_agent.red_ignore_defences is False
-
-    # red_always_succeeds
-    assert red_agent.red_always_succeeds is False
-
-    # red_can_only_attack_from_red_agent_node
-    assert red_agent.red_attack_from_current_position is False
-
-    # red_can_attack_from_any_red_node
-    assert red_agent.red_attack_from_any_node is True
-
-    # red_can_naturally_spread
-    assert red_agent.red_naturally_spread is True
-
-    # chance_to_spread_to_connected_node
-    assert red_agent.red_chance_to_spread_to_connected_node == 0.01
-
-    # chance_to_spread_to_unconnected_node
-    assert red_agent.red_chance_to_spread_to_unconnected_node == 0.005
-
-    # red_uses_spread_action
-    assert red_agent.red_spread_action is False
-
-    # spread_action_likelihood
-    assert red_agent.red_spread_action_likelihood == 1
-
-    # chance_for_red_to_spread
-    assert red_agent.red_spread_success_chance == 0.1
-
-    # red_uses_random_infect_action
-    assert red_agent.red_random_infection_action is False
-
-    # random_infect_action_likelihood
-    assert red_agent.red_random_infection_likelihood == 1
-
-    # chance_for_red_to_random_compromise
-    assert red_agent.red_random_infection_success_chance == 0.1
-
-    # red_uses_basic_attack_action
-    assert red_agent.red_basic_attack_action is True
-
-    # basic_attack_action_likelihood
-    assert red_agent.red_basic_attack_likelihood == 1
-
-    # red_uses_do_nothing_action
-    assert red_agent.red_do_nothing_action is True
-
-    # do_nothing_action_likelihood
-    assert red_agent.red_do_nothing_likelihood == 1
-
-    # red_uses_move_action
-    assert red_agent.red_move_action is False
-
-    # move_action_likelihood
-    assert red_agent.red_move_action_likelihood == 1
-
-    # red_uses_zero_day_action
-    assert red_agent.red_zero_day_action is True
-
-    # zero_day_start_amount
-    assert red_agent.red_zero_day_start_amount == 1
-
-    # days_required_for_zero_day
-    assert red_agent.red_zero_day_days_required_to_create == 10
-
-    # red_chooses_target_at_random
-    assert red_agent.red_targeting_random is False
-
-    # red_prioritises_connected_nodes
-    assert red_agent.red_targeting_prioritise_connected_nodes is True
-
-    # red_prioritises_un_connected_nodes
-    assert red_agent.red_targeting_prioritise_unconnected_nodes is False
-
-    # red_prioritises_vulnerable_nodes
-    assert red_agent.red_targeting_prioritise_vulnerable_nodes is False
-
-    # red_prioritises_resilient_nodes
-    assert red_agent.red_targeting_prioritise_resilient_nodes is False
-
+    config_dict = get_config_dict()
+    red_agent = RedAgentConfig.create(config_dict)
+    assert red_agent.to_dict() == config_dict
 
 @pytest.mark.parametrize(
     ("config_item_to_test", "config_value", "expected_err"),

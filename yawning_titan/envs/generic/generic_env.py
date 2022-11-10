@@ -150,7 +150,7 @@ class GenericNetworkEnv(gym.Env):
         self.network_interface.reset_stored_attacks()
 
         # The red agent performs their turn
-        if self.network_interface.gr_grace_period <= self.current_duration:
+        if self.network_interface.game_mode.game_rules.grace_period_length <= self.current_duration:
             red_info = self.RED.perform_action()
         else:
             red_info = {
@@ -199,23 +199,23 @@ class GenericNetworkEnv(gym.Env):
         blue_node = None
 
         # Check if the game is over and red has won
-        if self.network_interface.gr_loss_total_compromise:
+        if self.network_interface.game_mode.game_rules.lose_when_all_nodes_lost:
             if number_uncompromised == 0:
                 done = True
-                reward = self.network_interface.reward_loss
+                reward = self.network_interface.game_mode.rewards.rewards_for_loss
                 blue_action = "failed"
-        if self.network_interface.gr_loss_pc_nodes_compromised:
+        if self.network_interface.game_mode.game_rules.lose_when_n_percent_of_nodes_lost:
             # calculate the number of safe nodes
             percent_comp = (
                     len(self.network_interface.get_nodes(filter_true_compromised=True))
                     / self.network_interface.get_number_of_nodes()
             )
-            if percent_comp >= self.network_interface.gr_loss_pc_node_compromised_pc:
+            if percent_comp >= self.network_interface.game_mode.game_rules.percentage_of_nodes_compromised_equals_loss:
                 done = True
-                reward = self.network_interface.reward_loss
+                reward = self.network_interface.game_mode.rewards.rewards_for_loss
                 # If the game ends before blue has had their turn the the blue action is set to failed
                 blue_action = "failed"
-        if self.network_interface.gr_loss_hvn:
+        if self.network_interface.game_mode.game_rules.lose_when_high_value_target_lost:
 
             # check if a high value node was compromised
             compromised_hvn = False
@@ -227,7 +227,7 @@ class GenericNetworkEnv(gym.Env):
             if compromised_hvn:
                 # If this mode is selected then the game ends if the high value node has been compromised
                 done = True
-                reward = self.network_interface.reward_loss
+                reward = self.network_interface.game_mode.rewards.rewards_for_loss
                 blue_action = "failed"
 
         # if self.network_interface.gr_loss_tn:
@@ -244,9 +244,9 @@ class GenericNetworkEnv(gym.Env):
                 blue_action = "failed"
 
         if done:
-            if self.network_interface.reward_reduce_negative_rewards:
+            if self.network_interface.game_mode.rewards.reduce_negative_rewards_for_closer_fails:
                 reward = reward * (
-                        1 - (self.current_duration / self.network_interface.gr_max_steps)
+                        1 - (self.current_duration / self.network_interface.game_mode.game_rules.max_steps)
                 )
         if not done:
             blue_action, blue_node = self.BLUE.perform_action(action)
@@ -274,7 +274,7 @@ class GenericNetworkEnv(gym.Env):
                 "end_blue": self.network_interface.get_all_node_blue_view_compromised_states(),
             }
 
-            reward = getattr(reward_functions, self.network_interface.reward_function)(
+            reward = getattr(reward_functions, self.network_interface.game_mode.rewards.reward_function)(
                 reward_args
             )
 
@@ -285,14 +285,14 @@ class GenericNetworkEnv(gym.Env):
             self.current_duration += 1
 
             # if the total number of steps reaches the set end then the blue agent wins and is rewarded accordingly
-            if self.current_duration == self.network_interface.gr_max_steps:
-                if self.network_interface.reward_end_multiplier:
-                    reward = self.network_interface.reward_end_multiplier * (
+            if self.current_duration == self.network_interface.game_mode.game_rules.max_steps:
+                if self.network_interface.game_mode.rewards.end_rewards_are_multiplied_by_end_state:
+                    reward = self.network_interface.game_mode.rewards.end_rewards_are_multiplied_by_end_state * (
                             len(self.network_interface.get_nodes(filter_true_safe=True))
                             / self.network_interface.get_number_of_nodes()
                     )
                 else:
-                    reward = self.network_interface.reward_success
+                    reward = self.network_interface.game_mode.rewards.rewards_for_reaching_max_steps
                 done = True
 
         # Gets the state of the environment at the end of the current time step
@@ -314,7 +314,7 @@ class GenericNetworkEnv(gym.Env):
                 self.network_interface.get_red_location()
             )
 
-        if self.network_interface.misc_json_out:
+        if self.network_interface.game_mode.miscellaneous.output_timestep_data_to_json:
             current_state = self.network_interface.create_json_time_step()
             self.network_interface.save_json(current_state, self.current_duration)
 
@@ -324,7 +324,7 @@ class GenericNetworkEnv(gym.Env):
             self.total_games += 1
 
             # Populate the current game's dictionary of stats with the episode winner and the number of timesteps
-            if self.current_duration == self.network_interface.gr_max_steps:
+            if self.current_duration == self.network_interface.game_mode.game_rules.max_steps:
 
                 self.current_game_stats = {
                     "Winner": "blue",
@@ -401,8 +401,8 @@ class GenericNetworkEnv(gym.Env):
             attacks = self.network_interface.get_true_attacks()
         reward = round(self.current_reward, 2)
         special_nodes = {}
-        if self.network_interface.gr_loss_hvn:
-            hvn = self.network_interface.get_high_value_nodes()
+        if self.network_interface.game_mode.game_rules.lose_when_high_value_target_lost:
+            hvt = self.network_interface.get_high_value_targets()
 
             # iterate through the high value nodes
             for node in hvn:

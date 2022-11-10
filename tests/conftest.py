@@ -75,18 +75,52 @@ def basic_2_agent_loop(temp_config_from_base)->ActionLoop:
         env = GenericNetworkEnv(red, blue, network_interface)
 
         check_env(env, warn=True)
+        env.reset()
 
-        _ = env.reset()
+        return env
+    return _init_test_env
 
-        eval_callback = EvalCallback(
-                Monitor(env), eval_freq=1000, deterministic=False, render=False
+@pytest.fixture
+def generate_generic_env_test_reqs(init_test_env):
+    def _generate_generic_env_test_reqs(
+        settings_file_path: Optional[str]=default_game_mode_path(),
+        net_creator_type="mesh",
+        n_nodes: int = 10,
+        connectivity: float = 0.7,
+        entry_nodes=None,
+        high_value_targets=None
+    ) -> GenericNetworkEnv:
+        """
+        Generate test environment requirements.
+
+        Args:
+            settings_file_path: A path to the environment settings file
+            net_creator_type: The type of net creator to use to generate the underlying network
+            n_nodes: The number of nodes to create within the network
+            connectivity: The connectivity value for the mesh net creator (Only required for mesh network creator type)
+            entry_nodes: list of strings that dictate which nodes are entry nodes
+            high_value_targets: list of strings that dictate which nodes are high value targets
+
+        Returns:
+            env: An OpenAI gym environment
+
+        """
+        valid_net_creator_types = ["18node", "mesh"]
+        if net_creator_type not in valid_net_creator_types:
+            raise ValueError(
+                f"net_creator_type is {net_creator_type}, Must be 18_node or mesh"
             )
 
-        agent = PPO(PPOMlp, env, verbose=1, seed=network_interface.SEED) #TODO: allow PPO to inherit environment seed. Monkey patch additional feature?
+        if net_creator_type == "18node":
+            adj_matrix, node_positions = network_creator.create_18_node_network()
+        if net_creator_type == "mesh":
+            adj_matrix, node_positions = network_creator.create_mesh(
+                size=n_nodes, connectivity=connectivity
+            )
 
-        agent.learn(
-                total_timesteps=1000, n_eval_episodes=100, callback=eval_callback
+        env = init_test_env(
+            settings_file_path, adj_matrix, node_positions, entry_nodes, high_value_targets
         )
 
-        return ActionLoop(env,agent,episode_count=episodes)
-    return _basic_2_agent_loop
+        return env
+    return _generate_generic_env_test_reqs
