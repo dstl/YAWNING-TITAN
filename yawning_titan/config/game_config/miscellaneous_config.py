@@ -46,3 +46,4 @@ class MiscellaneousConfig(ConfigABC):
     @classmethod
     def _validate(cls, config_dict: Dict[str, Any]):
         pass
+            

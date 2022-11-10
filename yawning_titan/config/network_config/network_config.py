@@ -73,7 +73,8 @@ class NetworkConfig(ConfigABC):
         high_value_targets: Optional[List[str]] = None,
     ):
         # check that no entry nodes and high value nodes intersect
-        if set(entry_nodes) & set(high_value_targets):
-            warnings.warn(
-                "Provided entry nodes and high value targets intersect and may cause the training to prematurely end"
-            )
+        if entry_nodes is not None and high_value_targets is not None:
+            if set(entry_nodes) & set(high_value_targets):
+                warnings.warn(
+                    "Provided entry nodes and high value targets intersect and may cause the training to prematurely end"
+                )
