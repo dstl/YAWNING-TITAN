@@ -12,7 +12,7 @@ class PostDevelopCommand(develop):
 
     def run(self):
         develop.run(self)
-        from yawning_titan.config.app import create_app_dirs
+        from yawning_titan.app import create_app_dirs
         create_app_dirs()
 
 
@@ -23,7 +23,7 @@ class PostInstallCommand(install):
 
     def run(self):
         install.run(self)
-        from yawning_titan.config.app import create_app_dirs
+        from yawning_titan.app import create_app_dirs
         create_app_dirs()
 
 
@@ -111,7 +111,7 @@ setup(
         "typing-extensions==4.0.1",
         "torch==1.12.1 ",
         "tensorboard==2.10.1 ",
-        "dm-tree==0.1.7",
+        "dm-tree==0.1.7"
     ],
     extras_require={
         "dev": [

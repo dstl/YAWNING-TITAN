@@ -1,77 +1,125 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, Any
 
-from yawning_titan.config.game_config.config_group_class import ConfigGroupABC
+from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.envs.generic.core import reward_functions
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_type
 
 
 @dataclass()
-class RewardsConfig(ConfigGroupABC):
+class RewardsConfig(ConfigABC):
     """
     Class that validates and stores Rewards Configuration
     """
+    _rewards_for_loss: int
+    _rewards_for_reaching_max_steps: int
+    _end_rewards_are_multiplied_by_end_state: bool
+    _reduce_negative_rewards_for_closer_fails: bool
+    _reward_function: str
 
-    reward_loss: float
-    """Reward for the blue agent losing"""
+    # region Getters
+    @property
+    def rewards_for_loss(self) -> int:
+        """
+        Rewards for the blue agent losing.
+        """
+        return self._rewards_for_loss
 
-    reward_success: float
-    """Reward for the blue agent winning"""
+    @property
+    def rewards_for_reaching_max_steps(self) -> int:
+        """
+        Rewards for the blue agent winning by reaching the maximum number of
+        steps.
+        """
+        return self._rewards_for_reaching_max_steps
 
-    reward_end_multiplier: bool
-    """Is true if reward is multiplied by percentage of nodes not compromised"""
+    @property
+    def end_rewards_are_multiplied_by_end_state(self) -> bool:
+        """
+        How good the end state is (what % blue controls) is multiplied by
+        the rewards that blue receives for winning.
+        """
+        return self._end_rewards_are_multiplied_by_end_state
 
-    reward_reduce_negative_rewards:bool
-    """Is true if red agent rewards are reduced the closer to the end timesteps the game ends at"""
+    @property
+    def reduce_negative_rewards_for_closer_fails(self) -> bool:
+        """
+        The negative rewards from the red agent winning are reduced the
+        closer to the end the blue agent gets.
+        """
+        return self._reduce_negative_rewards_for_closer_fails
 
-    reward_function: str
-    """
-    The reward method used for giving rewards:
-    - standard_rewards
-    - experimental_rewards
-    - one_per_timestep
-    - zero_reward
-    - safe_nodes_give_rewards
-    - punish_bad_actions
-    - num_nodes_safe
-    - dcbo_cost_func
-    """
+    @property
+    def reward_function(self) -> str:
+        """
+        There are several built in example reward methods that you can
+        choose from (shown below). You can also create your own reward
+        method by copying one of the built in methods and calling it here
+        built in reward methods: standard_rewards, one_per_timestep,
+        safe_nodes_give_rewards, punish_bad_actions.
+        """
+        return self._reward_function
+    # endregion
+
+    # region Setters
+    @rewards_for_loss.setter
+    def rewards_for_loss(self, value):
+        self._rewards_for_loss = value
+
+    @rewards_for_reaching_max_steps.setter
+    def rewards_for_reaching_max_steps(self, value):
+        self._rewards_for_reaching_max_steps = value
+
+    @end_rewards_are_multiplied_by_end_state.setter
+    def end_rewards_are_multiplied_by_end_state(self, value):
+        self._end_rewards_are_multiplied_by_end_state = value
+
+    @reduce_negative_rewards_for_closer_fails.setter
+    def reduce_negative_rewards_for_closer_fails(self, value):
+        self._reduce_negative_rewards_for_closer_fails = value
+
+    @reward_function.setter
+    def reward_function(self, value):
+        self._reward_function = value
+    # endregion
 
     @classmethod
-    def create(
-            cls,
-            settings: Dict[str, Any]
-    ) -> RewardsConfig:
-        cls._validate(settings)
+    def create(cls, config_dict: Dict[str, Any]) -> RewardsConfig:
+        """
+        Creates an instance of `RewardsConfig` after calling `.validate`.
+
+        Args:
+            config_dict: A config dict with the required key/values pairs.
+        """
+        cls._validate(config_dict)
 
         rewards = RewardsConfig(
-            reward_loss=settings["rewards_for_loss"],
-            reward_success=settings["rewards_for_reaching_max_steps"],
-            reward_end_multiplier=settings[
-                "end_rewards_are_multiplied_by_end_state"
-            ],
-            reward_reduce_negative_rewards=settings[
-                "reduce_negative_rewards_for_closer_fails"
-            ],
-            reward_function=settings["reward_function"]
+            _rewards_for_loss=config_dict["rewards_for_loss"],
+            _rewards_for_reaching_max_steps=config_dict[
+                "rewards_for_reaching_max_steps"],
+            _end_rewards_are_multiplied_by_end_state=config_dict[
+                "end_rewards_are_multiplied_by_end_state"],
+            _reduce_negative_rewards_for_closer_fails=config_dict[
+                "reduce_negative_rewards_for_closer_fails"],
+            _reward_function=config_dict["reward_function"],
         )
 
         return rewards
 
     @classmethod
-    def _validate(cls, data: dict):
+    def _validate(cls, config_dict: dict):
         # validate types
-        check_type(data, "rewards_for_loss", [int, float])
-        check_type(data, "rewards_for_reaching_max_steps", [int, float])
-        check_type(data, "end_rewards_are_multiplied_by_end_state", [bool])
-        check_type(data, "reduce_negative_rewards_for_closer_fails", [bool])
+        check_type(config_dict, "rewards_for_loss", [int, float])
+        check_type(config_dict, "rewards_for_reaching_max_steps", [int, float])
+        check_type(config_dict, "end_rewards_are_multiplied_by_end_state", [bool])
+        check_type(config_dict, "reduce_negative_rewards_for_closer_fails", [bool])
 
         # make sure the reward type exists
-        if not hasattr(reward_functions, data["reward_function"]):
+        if not hasattr(reward_functions, config_dict["reward_function"]):
             raise ValueError(
                 "The reward function '"
-                + data["reward_function"]
+                + config_dict["reward_function"]
                 + "' does not exist inside: yawning_titan.envs.helpers.reward_functions"
             )
