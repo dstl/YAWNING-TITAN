@@ -12,8 +12,8 @@ from tests import TEST_CONFIG_PATH
 REPEATABLE_TEST_CONFIG_PATH = TEST_CONFIG_PATH / "repeatable_threat_config.yaml"
 
 custom_random_setting_1 = {"MISCELLANEOUS":{"random_seed":random.randint(1,1000)}}
-custom_random_setting_2 = {"GAME_RULES":{"choose_high_value_targets_placement_at_random":True,"choose_high_value_targets_placement_manually":False}}
-custom_random_setting_3 = {"GAME_RULES":{**custom_random_setting_2,"choose_entry_nodes_randomly": True}}
+# custom_random_setting_2 = {"GAME_RULES":{"choose_high_value_targets_placement_at_random":True}}
+# custom_random_setting_3 = {"GAME_RULES":{**custom_random_setting_2,"choose_entry_nodes_randomly": True}}
 
 
 @pytest.mark.parametrize(
@@ -22,8 +22,8 @@ custom_random_setting_3 = {"GAME_RULES":{**custom_random_setting_2,"choose_entry
         (2,                     ["0"],["12"],custom_random_setting_1),
         (2,                     ["0"],["12"],None),
         (random.randint(50,300),["0"],["12"],None),
-        (random.randint(50,300),["0"],None,  custom_random_setting_2),
-        (1,                     None, None,  custom_random_setting_3)
+        (random.randint(50,300),["0"],None,  None),
+        (1,                     None, None,  None)
     ]
 )
 def test_repeatable_episodic_output_set_random_seed(basic_2_agent_loop:ActionLoop,episodes,entry_nodes,high_value_targets,custom_settings):
@@ -51,7 +51,6 @@ def test_setting_high_value_target_with_random_seeded_randomisation(basic_2_agen
         num_episodes=1,
         entry_nodes=["0"],
         settings_file_path=REPEATABLE_TEST_CONFIG_PATH,
-        custom_settings=custom_random_setting_2
     )
     target_occurrences = {str(key):0 for key in range(0,18)}
     for i in range(0,100): # run a number of action loops 

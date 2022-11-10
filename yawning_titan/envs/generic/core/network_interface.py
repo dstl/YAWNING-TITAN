@@ -736,7 +736,8 @@ class NetworkInterface:
                     entry_nodes.append(nodes[i])
 
             self.entry_nodes = entry_nodes
-        self.entry_nodes = self.network.entry_nodes
+        else:
+            self.entry_nodes = self.network.entry_nodes
 
     def set_high_value_targets(self):
         """
@@ -795,6 +796,7 @@ class NetworkInterface:
                         set(self.possible_high_value_targets).difference(self.entry_nodes))
 
                 # randomly pick unique nodes from a list of possible high value targets
+                print("POS",self.possible_high_value_targets)
                 self.high_value_targets = random.sample(
                     set(self.possible_high_value_targets), self.game_mode.game_rules.number_of_high_value_targets
                 )

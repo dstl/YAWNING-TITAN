@@ -193,7 +193,7 @@ GAME_RULES:
   # Blue loses if a special 'high value' target it lost (a node picked in the environment)
   lose_when_high_value_target_lost: True
   # The high value target is picked at random
-  choose_high_value_targets_placement_at_random: False
+  choose_high_value_targets_placement_at_random: True
   # The node furthest away from the entry points to the network is picked as the target
   choose_high_value_targets_furthest_away_from_entry: False
   # If no entry nodes are supplied choose some at random
@@ -207,8 +207,7 @@ GAME_RULES:
   grace_period_length: 3
   #the number of high value targets to generate
   number_of_high_value_targets: 3
-  #set the high value targets manually
-  choose_high_value_targets_placement_manually: True
+  #the game should use the high value nodes set in the network
 
 RESET:
   randomise_vulnerabilities_on_reset: False

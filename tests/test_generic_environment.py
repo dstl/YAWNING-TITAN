@@ -42,18 +42,21 @@ def test_input_validation(generate_generic_env_test_reqs):
             os.path.join(TEST_CONFIG_PATH, "red_config_test_broken_1.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
+            entry_nodes=["0", "1", "2"]
         )
 
         _, _ = generate_generic_env_test_reqs(
             os.path.join(TEST_CONFIG_PATH, "red_config_test_broken_2.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
+            entry_nodes=["0", "1", "2"]
         )
 
         _, _ = generate_generic_env_test_reqs(
             os.path.join(TEST_CONFIG_PATH, "red_config_test_broken_3.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
+            entry_nodes=["0", "1", "2"]
         )
 
         # error thrown because choose_high_value_targets_furthest_away_from_entry is True and
@@ -63,6 +66,7 @@ def test_input_validation(generate_generic_env_test_reqs):
             n_nodes=23,
             net_creator_type="mesh",
             high_value_targets=["0"],
+            entry_nodes=["0", "1", "2"]
         )
 
         # error thrown because there are more high value targets than there are nodes in the network
@@ -70,6 +74,7 @@ def test_input_validation(generate_generic_env_test_reqs):
             os.path.join(TEST_CONFIG_PATH, "too_many_high_value_targets.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
+            entry_nodes=["0", "1", "2"]
         )
 
 
@@ -79,6 +84,7 @@ def test_network_interface(generate_generic_env_test_reqs):
         os.path.join(TEST_CONFIG_PATH, "everything_guaranteed.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
+        entry_nodes=['0','1','2']
     )
     for node in env.network_interface.get_nodes():
         assert env.network_interface.get_current_adj_matrix().all() == 0
@@ -144,6 +150,7 @@ def test_natural_spreading(generate_generic_env_test_reqs):
         os.path.join(TEST_CONFIG_PATH, "spreading_config.yaml"),
         net_creator_type="mesh",
         n_nodes=n_nodes,
+        entry_nodes=["0", "1", "2"]
     )
     check_env(env, warn=True)
     env.reset()
@@ -164,6 +171,7 @@ def test_env_reset(generate_generic_env_test_reqs):
         os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
+        entry_nodes=["0", "1", "2"]
     )
 
     check_env(env, warn=True)
@@ -212,6 +220,7 @@ def test_new_high_value_target(generate_generic_env_test_reqs):
         os.path.join(TEST_CONFIG_PATH, "new_high_value_target.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
+        entry_nodes=["0", "1", "2"]
     )
     check_env(env, warn=True)
     env.reset()
@@ -247,6 +256,7 @@ def test_high_value_target_passed_into_network_interface(generate_generic_env_te
         net_creator_type="mesh",
         n_nodes=30,
         high_value_targets=["15", "16"],
+        entry_nodes=["0", "1", "2"]
     )
     check_env(env, warn=True)
     env.reset()
@@ -322,6 +332,7 @@ def test_new_entry_nodes(generate_generic_env_test_reqs):
         os.path.join(TEST_CONFIG_PATH, "new_entry_nodes.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
+        entry_nodes=["0", "1", "2"]
     )
     check_env(env, warn=True)
     env.reset()
@@ -352,6 +363,7 @@ def test_new_vulnerabilities(generate_generic_env_test_reqs):
         os.path.join(TEST_CONFIG_PATH, "new_high_value_target.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
+        entry_nodes=["0", "1", "2"]
     )
     check_env(env, warn=True)
     env.reset()
@@ -440,7 +452,7 @@ def test_generic_env(generate_generic_env_test_reqs,path:str,creator_type:str,nu
     wins = 0
     deceptive_counter = 0
 
-    env:GenericNetworkEnv = generate_generic_env_test_reqs(path,creator_type,num_nodes)
+    env:GenericNetworkEnv = generate_generic_env_test_reqs(path,creator_type,num_nodes,entry_nodes=["0", "1", "2"])
 
     red_action_count = {True: {}, False: {}}
     multi_attack_count = {True: {}, False: {}}
