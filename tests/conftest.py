@@ -1,23 +1,29 @@
-from datetime import datetime
-import pytest
 import os
+from datetime import datetime
+from typing import Any, Dict, List, Optional
+
+import numpy as np
+import pytest
 import yaml
-from typing import Dict,Any
-from yaml import SafeLoader
-from tests import TEST_CONFIG_PATH
 from stable_baselines3 import PPO
-from stable_baselines3.ppo import MlpPolicy as PPOMlp
+from stable_baselines3.common.callbacks import EvalCallback
 from stable_baselines3.common.env_checker import check_env
 from stable_baselines3.common.evaluation import evaluate_policy
-from stable_baselines3.common.callbacks import EvalCallback
 from stable_baselines3.common.monitor import Monitor
+from stable_baselines3.ppo import MlpPolicy as PPOMlp
+from yaml import SafeLoader
 
+from tests import TEST_CONFIG_PATH
+from yawning_titan.config.game_config.game_mode_config import GameModeConfig
+from yawning_titan.config.game_modes import default_game_mode_path
+from yawning_titan.config.network_config.network_config import NetworkConfig
+from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
+from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.envs.generic.helpers import network_creator
-from yawning_titan.envs.generic.core.action_loops import ActionLoop
-from yawning_titan.envs.generic.core.network_interface import NetworkInterface
+
 
 @pytest.fixture
 def temp_config_from_base(tmpdir_factory)->str:
@@ -45,51 +51,134 @@ def temp_config_from_base(tmpdir_factory)->str:
         return temp_config_path
     return _temp_config_from_base
 
+
 @pytest.fixture
-def basic_2_agent_loop(request,temp_config_from_base)->ActionLoop:
-    """
-    Use parameterized settings to return a configured ActionLoop
-    """
-    matrix, node_positions = network_creator.create_18_node_network()
+def init_test_env():
+    def _init_test_env(
+        settings_path: str,
+        adj_matrix: np.array,
+        positions,
+        entry_nodes: List[str],
+        high_value_targets: List[str],
+    ) -> GenericNetworkEnv:
+        """
+        Generate the test GenericEnv() and number of actions for the blue agent.
 
-    entry_nodes = None
-    settings_path = None
-    high_value_targets = None
-    num_episodes = 1
+        Args:
+            settings_path: A path to the environment settings file
+            adj_matrix: the adjacency matrix used for the network to defend.
+            positions: x and y co-ordinates to plot the graph in 2D space
+            entry_nodes: list of strings that dictate which nodes are entry nodes
+            high_value_targets: list of strings that dictate which nodes are high value targets
 
-    if "settings_file" in request.param:
-        settings_path = os.path.join(TEST_CONFIG_PATH, request.param["settings_file"])
-        if "custom_settings" in request.param:
-            settings_path = temp_config_from_base(settings_path,request.param["custom_settings"])
-      
-    if "entry_nodes" in request.param:
-        entry_nodes = request.param["entry_nodes"]
+        Returns:
+            env: An OpenAI gym environment
+        """
+        if not entry_nodes:
+            entry_nodes = ["0", "1", "2"]
 
-    if "episodes" in request.param:
-        num_episodes = request.param["episodes"]    
-
-    if "high_value_target" in request.param:
-        high_value_targets = request.param["high_value_targets"]
-
-    network_interface = NetworkInterface(matrix, node_positions, entry_nodes=entry_nodes, high_value_targets=high_value_targets,settings_path=settings_path)
-
-    red = RedInterface(network_interface)
-    blue = BlueInterface(network_interface)
-
-    env = GenericNetworkEnv(red, blue, network_interface)
-
-    check_env(env, warn=True)
-
-    _ = env.reset()
-
-    eval_callback = EvalCallback(
-            Monitor(env), eval_freq=1000, deterministic=False, render=False
+        network = NetworkConfig.create(            
+            high_value_targets=high_value_targets,
+            entry_nodes=entry_nodes,
+            vulnerabilities=None,
+            matrix=adj_matrix,
+            positions=positions            
         )
 
-    agent = PPO(PPOMlp, env, verbose=1, seed=network_interface.random_seed) #TODO: allow PPO to inherit environment random_seed. Monkey patch additional feature?
+        game_mode = GameModeConfig.create_from_yaml(settings_path)
 
-    agent.learn(
-            total_timesteps=1000, n_eval_episodes=100, callback=eval_callback
-    )
+        network_interface = NetworkInterface(game_mode=game_mode,network=network)
 
-    return ActionLoop(env,agent,episode_count=num_episodes)
+        red = RedInterface(network_interface)
+        blue = BlueInterface(network_interface)
+
+        env = GenericNetworkEnv(red, blue, network_interface)
+
+        check_env(env, warn=True)
+        env.reset()
+
+        return env
+    return _init_test_env
+
+@pytest.fixture
+def generate_generic_env_test_reqs(init_test_env):
+    def _generate_generic_env_test_reqs(
+        settings_file_path: Optional[str]=default_game_mode_path(),
+        net_creator_type="mesh",
+        n_nodes: int = 10,
+        connectivity: float = 0.7,
+        entry_nodes=None,
+        high_value_targets=None
+    ) -> GenericNetworkEnv:
+        """
+        Generate test environment requirements.
+
+        Args:
+            settings_file_path: A path to the environment settings file
+            net_creator_type: The type of net creator to use to generate the underlying network
+            n_nodes: The number of nodes to create within the network
+            connectivity: The connectivity value for the mesh net creator (Only required for mesh network creator type)
+            entry_nodes: list of strings that dictate which nodes are entry nodes
+            high_value_targets: list of strings that dictate which nodes are high value targets
+
+        Returns:
+            env: An OpenAI gym environment
+
+        """
+        valid_net_creator_types = ["18node", "mesh"]
+        if net_creator_type not in valid_net_creator_types:
+            raise ValueError(
+                f"net_creator_type is {net_creator_type}, Must be 18_node or mesh"
+            )
+
+        if net_creator_type == "18node":
+            adj_matrix, node_positions = network_creator.create_18_node_network()
+        if net_creator_type == "mesh":
+            adj_matrix, node_positions = network_creator.create_mesh(
+                size=n_nodes, connectivity=connectivity
+            )
+
+        env = init_test_env(
+            settings_file_path, adj_matrix, node_positions, entry_nodes, high_value_targets
+        )
+
+        return env
+    return _generate_generic_env_test_reqs
+
+
+@pytest.fixture
+def basic_2_agent_loop(generate_generic_env_test_reqs,temp_config_from_base)->ActionLoop:
+    def _basic_2_agent_loop(
+        settings_file_path: Optional[str]=default_game_mode_path(),
+        entry_nodes=None,
+        high_value_targets=None,
+        num_episodes=1,
+        custom_settings=None
+    )->ActionLoop:
+        """
+        Use parameterized settings to return a configured ActionLoop
+        """
+        if custom_settings is not None:
+            settings_file_path = temp_config_from_base(
+                settings_file_path,custom_settings
+            )
+
+        env:GenericNetworkEnv = generate_generic_env_test_reqs(
+            settings_file_path=settings_file_path,
+            net_creator_type="18node",
+            entry_nodes=entry_nodes,
+            high_value_targets=high_value_targets
+        )
+
+        eval_callback = EvalCallback(
+                Monitor(env), eval_freq=1000, deterministic=False, render=False
+            )
+
+        agent = PPO(PPOMlp, env, verbose=1, seed=env.network_interface.random_seed) #TODO: allow PPO to inherit environment random_seed. Monkey patch additional feature?
+
+        agent.learn(
+                total_timesteps=1000, n_eval_episodes=100, callback=eval_callback
+        )
+
+        return ActionLoop(env,agent,episode_count=num_episodes)
+    return _basic_2_agent_loop

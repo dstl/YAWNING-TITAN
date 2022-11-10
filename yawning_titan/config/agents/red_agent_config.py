@@ -8,6 +8,7 @@ from yawning_titan.envs.generic.helpers.environment_input_validation import (
     check_within_range,
 )
 
+from yawning_titan.envs.generic.helpers.environment_input_validation import check_type, check_within_range
 
 @dataclass()
 class RedAgentConfig(ConfigABC):

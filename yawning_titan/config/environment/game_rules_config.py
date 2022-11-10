@@ -14,6 +14,7 @@ class GameRulesConfig(ConfigABC):
     """
     Class that validates and stores Game Rules Configuration
     """
+
     _min_number_of_network_nodes: int
     _node_vulnerability_lower_bound: float
     _node_vulnerability_upper_bound: float
@@ -25,6 +26,7 @@ class GameRulesConfig(ConfigABC):
     _number_of_high_value_targets: int
     _choose_high_value_targets_placement_at_random: bool
     _choose_high_value_targets_furthest_away_from_entry: bool
+    _choose_high_value_targets_placement_manually: bool
     _choose_entry_nodes_randomly: bool
     _number_of_entry_nodes: int
     _prefer_central_nodes_for_entry_nodes: bool
@@ -115,6 +117,13 @@ class GameRulesConfig(ConfigABC):
         return self._choose_high_value_targets_furthest_away_from_entry
 
     @property
+    def choose_high_value_targets_placement_manually(self) -> bool:
+        """
+        The user manually picks high value nodes
+        """
+        return self._choose_high_value_targets_placement_manually
+
+    @property
     def choose_entry_nodes_randomly(self) -> bool:
         """
         If no entry nodes are supplied choose some at random.
@@ -152,6 +161,7 @@ class GameRulesConfig(ConfigABC):
         "prepare" (A length of 0 means that there is no grace period).
         """
         return self._grace_period_length
+
     # endregion
 
     # region Setters
@@ -199,6 +209,10 @@ class GameRulesConfig(ConfigABC):
     def choose_high_value_targets_furthest_away_from_entry(self, value):
         self._choose_high_value_targets_furthest_away_from_entry = value
 
+    @choose_high_value_targets_placement_manually.setter
+    def choose_high_value_targets_placement_manually(self, value):
+        self._choose_high_value_targets_placement_manually = value
+
     @choose_entry_nodes_randomly.setter
     def choose_entry_nodes_randomly(self, value):
         self._choose_entry_nodes_randomly = value
@@ -218,6 +232,7 @@ class GameRulesConfig(ConfigABC):
     @grace_period_length.setter
     def grace_period_length(self, value):
         self._grace_period_length = value
+
     # endregion
 
     @classmethod
@@ -231,33 +246,42 @@ class GameRulesConfig(ConfigABC):
         cls._validate(config_dict)
 
         game_rule_config = GameRulesConfig(
-            _min_number_of_network_nodes=config_dict[
-                "min_number_of_network_nodes"],
+            _min_number_of_network_nodes=config_dict["min_number_of_network_nodes"],
             _node_vulnerability_lower_bound=config_dict[
-                "node_vulnerability_lower_bound"],
+                "node_vulnerability_lower_bound"
+            ],
             _node_vulnerability_upper_bound=config_dict[
-                "node_vulnerability_upper_bound"],
+                "node_vulnerability_upper_bound"
+            ],
             _max_steps=config_dict["max_steps"],
             _lose_when_all_nodes_lost=config_dict["lose_when_all_nodes_lost"],
             _lose_when_n_percent_of_nodes_lost=config_dict[
-                "lose_when_n_percent_of_nodes_lost"],
+                "lose_when_n_percent_of_nodes_lost"
+            ],
             _percentage_of_nodes_compromised_equals_loss=config_dict[
-                "percentage_of_nodes_compromised_equals_loss"],
+                "percentage_of_nodes_compromised_equals_loss"
+            ],
             _lose_when_high_value_target_lost=config_dict[
-                "lose_when_high_value_target_lost"],
-            _number_of_high_value_targets=config_dict[
-                "number_of_high_value_targets"],
+                "lose_when_high_value_target_lost"
+            ],
+            _number_of_high_value_targets=config_dict["number_of_high_value_targets"],
             _choose_high_value_targets_placement_at_random=config_dict[
-                "choose_high_value_targets_placement_at_random"],
+                "choose_high_value_targets_placement_at_random"
+            ],
             _choose_high_value_targets_furthest_away_from_entry=config_dict[
-                "choose_high_value_targets_furthest_away_from_entry"],
-            _choose_entry_nodes_randomly=config_dict[
-                "choose_entry_nodes_randomly"],
+                "choose_high_value_targets_furthest_away_from_entry"
+            ],
+            _choose_high_value_targets_placement_manually=config_dict[
+                "choose_high_value_targets_placement_manually"
+            ],
+            _choose_entry_nodes_randomly=config_dict["choose_entry_nodes_randomly"],
             _number_of_entry_nodes=config_dict["number_of_entry_nodes"],
             _prefer_central_nodes_for_entry_nodes=config_dict[
-                "prefer_central_nodes_for_entry_nodes"],
+                "prefer_central_nodes_for_entry_nodes"
+            ],
             _prefer_edge_nodes_for_entry_nodes=config_dict[
-                "prefer_edge_nodes_for_entry_nodes"],
+                "prefer_edge_nodes_for_entry_nodes"
+            ],
             _grace_period_length=config_dict["grace_period_length"],
         )
 
@@ -327,7 +351,12 @@ class GameRulesConfig(ConfigABC):
             check_type(config_dict, name, [bool])
 
         check_within_range(
-            config_dict, "percentage_of_nodes_compromised_equals_loss", 0, 1, False, False
+            config_dict,
+            "percentage_of_nodes_compromised_equals_loss",
+            0,
+            1,
+            False,
+            False,
         )
         if (
             config_dict["prefer_central_nodes_for_entry_nodes"]
@@ -352,19 +381,23 @@ class GameRulesConfig(ConfigABC):
             # if there is no way to set high value targets
             if (
                 not config_dict["choose_high_value_targets_placement_at_random"]
-                and not config_dict["choose_high_value_targets_furthest_away_from_entry"]
+                and not config_dict[
+                    "choose_high_value_targets_furthest_away_from_entry"
+                ]
+                and not config_dict["choose_high_value_targets_placement_manually"]
             ):
                 raise ValueError(
-                    "'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_furthest_away_from_entry' -> A method of selecting the high value target must be chosen"
+                    "'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_placement_manually', 'choose_high_value_targets_furthest_away_from_entry' -> A method of selecting the high value target must be chosen"
                     # noqa
                 )
             # if there are conflicting configurations
             if (
                 config_dict["choose_high_value_targets_placement_at_random"]
-                and config_dict["choose_high_value_targets_furthest_away_from_entry"]
+                and (config_dict["choose_high_value_targets_furthest_away_from_entry"]
+                or config_dict["choose_high_value_targets_placement_manually"])
             ):
                 raise ValueError(
-                    "'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"
+                    "'choose_high_value_targets_placement_at_random', 'choose_high_value_targets_placement_manually', 'choose_high_value_targets_furthest_away_from_entry' -> Only one method of selecting a high value target should be selected"
                     # noqa
                 )
 
