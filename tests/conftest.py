@@ -59,7 +59,7 @@ def init_test_env():
         adj_matrix: np.array,
         positions,
         entry_nodes: List[str],
-        high_value_targets: List[str],
+        high_value_nodes: List[str],
     ) -> GenericNetworkEnv:
         """
         Generate the test GenericEnv() and number of actions for the blue agent.
@@ -69,13 +69,13 @@ def init_test_env():
             adj_matrix: the adjacency matrix used for the network to defend.
             positions: x and y co-ordinates to plot the graph in 2D space
             entry_nodes: list of strings that dictate which nodes are entry nodes
-            high_value_targets: list of strings that dictate which nodes are high value targets
+            high_value_nodes: list of strings that dictate which nodes are high value nodes
 
         Returns:
             env: An OpenAI gym environment
         """
         network = NetworkConfig.create(            
-            high_value_targets=high_value_targets,
+            high_value_nodes=high_value_nodes,
             entry_nodes=entry_nodes,
             vulnerabilities=None,
             matrix=adj_matrix,
@@ -100,23 +100,23 @@ def init_test_env():
 @pytest.fixture
 def generate_generic_env_test_reqs(init_test_env):
     def _generate_generic_env_test_reqs(
-        settings_file_path: Optional[str]=default_game_mode_path(),
+        settings_path: Optional[str]=default_game_mode_path(),
         net_creator_type="mesh",
         n_nodes: int = 10,
         connectivity: float = 0.7,
         entry_nodes=None,
-        high_value_targets=None
+        high_value_nodes=None
     ) -> GenericNetworkEnv:
         """
         Generate test environment requirements.
 
         Args:
-            settings_file_path: A path to the environment settings file
+            settings_path: A path to the environment settings file
             net_creator_type: The type of net creator to use to generate the underlying network
             n_nodes: The number of nodes to create within the network
             connectivity: The connectivity value for the mesh net creator (Only required for mesh network creator type)
             entry_nodes: list of strings that dictate which nodes are entry nodes
-            high_value_targets: list of strings that dictate which nodes are high value targets
+            high_value_nodes: list of strings that dictate which nodes are high value nodes
 
         Returns:
             env: An OpenAI gym environment
@@ -136,7 +136,7 @@ def generate_generic_env_test_reqs(init_test_env):
             )
 
         env = init_test_env(
-            settings_file_path, adj_matrix, node_positions, entry_nodes, high_value_targets
+            settings_path, adj_matrix, node_positions, entry_nodes, high_value_nodes
         )
 
         return env
@@ -146,9 +146,9 @@ def generate_generic_env_test_reqs(init_test_env):
 @pytest.fixture
 def basic_2_agent_loop(generate_generic_env_test_reqs,temp_config_from_base)->ActionLoop:
     def _basic_2_agent_loop(
-        settings_file_path: Optional[str]=default_game_mode_path(),
+        settings_path: Optional[str]=default_game_mode_path(),
         entry_nodes=None,
-        high_value_targets=None,
+        high_value_nodes=None,
         num_episodes=1,
         custom_settings=None
     )->ActionLoop:
@@ -156,15 +156,15 @@ def basic_2_agent_loop(generate_generic_env_test_reqs,temp_config_from_base)->Ac
         Use parameterized settings to return a configured ActionLoop
         """
         if custom_settings is not None:
-            settings_file_path = temp_config_from_base(
-                settings_file_path,custom_settings
+            settings_path = temp_config_from_base(
+                settings_path,custom_settings
             )
 
         env:GenericNetworkEnv = generate_generic_env_test_reqs(
-            settings_file_path=settings_file_path,
+            settings_path=settings_path,
             net_creator_type="18node",
             entry_nodes=entry_nodes,
-            high_value_targets=high_value_targets
+            high_value_nodes=high_value_nodes
         )
 
         eval_callback = EvalCallback(
