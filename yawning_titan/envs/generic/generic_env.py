@@ -9,7 +9,7 @@ and topology of the network being defended and what data should be collected dur
 import copy
 import json
 from collections import Counter
-from typing import Tuple
+from typing import Tuple,Optional
 
 import gym
 import numpy as np
@@ -21,6 +21,7 @@ from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.helpers.eval_printout import EvalPrintout
 from yawning_titan.envs.generic.helpers.graph2plot import CustomEnvGraph
+from stable_baselines3.common.utils import set_random_seed
 
 
 class GenericNetworkEnv(gym.Env):
@@ -71,10 +72,15 @@ class GenericNetworkEnv(gym.Env):
         self.print_metrics = print_metrics
         self.print_notes = print_per_ts_data
 
+        
+        self.random_seed = self.network_interface.random_seed
+
         self.graph_plotter = None
         self.eval_printout = EvalPrintout(self.avg_every)
 
         self.action_space = spaces.Discrete(self.blue_actions)
+
+
 
         # sets up the observation space. This is a (n+2 by n) matrix. The first two columns show the state of all the
         # nodes. The remaining n columns show the connections between the nodes (effectively the adjacency matrix)
@@ -97,7 +103,10 @@ class GenericNetworkEnv(gym.Env):
         Returns:
             A new starting observation (numpy array)
         """
+        if self.random_seed is not None: # conditionally set random_seed
+            set_random_seed(self.random_seed,True) # TODO: may need to add customization of cuda setting
         self.network_interface.reset()
+        self.RED.reset()
         self.current_duration = 0
         self.env_observation = self.network_interface.get_current_observation()
         self.current_game_blue = {}
@@ -206,20 +215,34 @@ class GenericNetworkEnv(gym.Env):
                 reward = self.network_interface.game_mode.rewards.rewards_for_loss
                 # If the game ends before blue has had their turn the the blue action is set to failed
                 blue_action = "failed"
-        if self.network_interface.game_mode.game_rules.lose_when_high_value_target_lost:
+        if self.network_interface.game_mode.game_rules.lose_when_high_value_node_lost:
 
-            # check if a high value target was compromised
-            compromised_hvt = False
-            for hvt in self.network_interface.get_high_value_targets():
-                if self.network_interface.get_single_node_state(hvt) == 1:
-                    compromised_hvt = True
+            # check if a high value node was compromised
+            compromised_hvn = False
+            for hvn in self.network_interface.get_high_value_nodes():
+                if self.network_interface.get_single_node_state(hvn) == 1:
+                    compromised_hvn = True
                     break
 
-            if compromised_hvt:
-                # If this mode is selected then the game ends if the high value target has been compromised
+            if compromised_hvn:
+                # If this mode is selected then the game ends if the high value node has been compromised
                 done = True
                 reward = self.network_interface.game_mode.rewards.rewards_for_loss
                 blue_action = "failed"
+
+        # if self.network_interface.gr_loss_tn:
+        if self.network_interface.get_target_node() is not None:
+            if (
+                self.network_interface.get_single_node_state(
+                    self.network_interface.get_target_node()
+                )
+                == 1
+            ):
+                # If this mode is selected then the game ends if the target node has been compromised
+                done = True
+                reward = self.network_interface.game_mode.rewards.rewards_for_loss
+                blue_action = "failed"
+
         if done:
             if self.network_interface.game_mode.rewards.reduce_negative_rewards_for_closer_fails:
                 reward = reward * (
@@ -378,13 +401,13 @@ class GenericNetworkEnv(gym.Env):
             attacks = self.network_interface.get_true_attacks()
         reward = round(self.current_reward, 2)
         special_nodes = {}
-        if self.network_interface.game_mode.game_rules.lose_when_high_value_target_lost:
-            hvt = self.network_interface.get_high_value_targets()
+        if self.network_interface.game_mode.game_rules.lose_when_high_value_node_lost:
+            hvn = self.network_interface.get_high_value_nodes()
 
-            # iterate through the high value targets
-            for node in hvt:
+            # iterate through the high value nodes
+            for node in hvn:
                 special_nodes[node] = {
-                    "description": "High Value Target",
+                    "description": "high value node",
                     "colour": "#da2fed",
                 }
 
@@ -403,6 +426,7 @@ class GenericNetworkEnv(gym.Env):
             "RL blue agent vs probabilistic red in a generic network environment",
             special_nodes=special_nodes,
             entrance_nodes=self.network_interface.entry_nodes,
+            target_node=self.network_interface.game_mode.red.red_target_node,
             show_only_blue_view=show_only_blue_view,
             show_node_names=show_node_names,
         )
@@ -420,35 +444,4 @@ class GenericNetworkEnv(gym.Env):
         Returns:
             The observation space size
         """
-        observation_size = 0
-        max_number_of_nodes = self.network_interface.get_total_num_nodes()
-
-        if with_feather:
-            node_connections = 500
-        else:
-            node_connections = max_number_of_nodes * max_number_of_nodes
-        # calculate the size the observation space should be
-        if self.network_interface.game_mode.observation_space.node_connections:
-            observation_size += node_connections
-        if self.network_interface.game_mode.observation_space.compromised_status:
-            observation_size += max_number_of_nodes
-        if self.network_interface.game_mode.observation_space.vulnerabilities:
-            observation_size += max_number_of_nodes
-        if self.network_interface.game_mode.observation_space.average_vulnerability:
-            observation_size += 1
-        if self.network_interface.game_mode.observation_space.graph_connectivity:
-            observation_size += 1
-        if self.network_interface.game_mode.observation_space.attacking_nodes:
-            observation_size += max_number_of_nodes
-        if self.network_interface.game_mode.observation_space.attacked_nodes:
-            observation_size += max_number_of_nodes
-        if self.network_interface.game_mode.observation_space.special_nodes:
-            observation_size += max_number_of_nodes
-
-            if self.network_interface.game_mode.game_rules.lose_when_high_value_target_lost:
-                observation_size += max_number_of_nodes
-
-        if self.network_interface.game_mode.observation_space.red_agent_skill:
-            observation_size += 1
-
-        return observation_size
+        return self.network_interface.get_observation_size_base(with_feather)

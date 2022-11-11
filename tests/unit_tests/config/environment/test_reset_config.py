@@ -23,8 +23,8 @@ def test_read_valid_config():
     [
         ("randomise_vulnerabilities_on_reset", "fail",
          "'randomise_vulnerabilities_on_reset' needs to be of type: <class 'bool'>"),
-        ("choose_new_high_value_targets_on_reset", "fail",
-         "'choose_new_high_value_targets_on_reset' needs to be of type: <class 'bool'>"),
+        ("choose_new_high_value_nodes_on_reset", "fail",
+         "'choose_new_high_value_nodes_on_reset' needs to be of type: <class 'bool'>"),
         ("choose_new_entry_nodes_on_reset", "fail",
          "'choose_new_entry_nodes_on_reset' needs to be of type: <class 'bool'>"),
     ]

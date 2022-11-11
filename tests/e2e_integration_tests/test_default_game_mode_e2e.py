@@ -31,7 +31,7 @@ def test_default_game_mode_e2e(generate_generic_env_test_reqs):
         agent.learn(
             total_timesteps=1000, n_eval_episodes=100, callback=eval_callback
         )
-        os.path.join(tempfile.mkdtemp(), 'something')
+        
         evaluate_policy(agent, env, n_eval_episodes=100)
     except Exception:
         # TODO: Remove the catch-all exception once we know how to properly

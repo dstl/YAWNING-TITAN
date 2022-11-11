@@ -39,9 +39,15 @@ class RedActionSet:
         self.zero_day_required = (
             self.network_interface.game_mode.red.days_required_for_zero_day
         )
-        self.zero_day_current_day = 0
+       
         self.action_set = action_set
         self.action_probabilities = action_probabilities
+
+        self.reset()
+
+    def reset(self):
+        self.zero_day_amount = self.network_interface.game_mode.red.zero_day_start_amount
+        self.zero_day_current_day = 0
 
     def choose_target_node(self) -> Union[Tuple[str, str], Tuple[bool, bool]]:
         """
@@ -85,7 +91,7 @@ class RedActionSet:
                 possible_to_attack.add(node)
                 original_node[node] = None
 
-        possible_to_attack = list(possible_to_attack)
+        possible_to_attack =  sorted(list(possible_to_attack))
 
         weights = []
         # red can prioritise nodes based on some different parameters chosen in the settings menu
@@ -120,6 +126,14 @@ class RedActionSet:
                 weights.append(
                     1 / self.network_interface.get_single_node_vulnerability(node)
                 )
+        elif self.network_interface.game_mode.red.red_target_node is not None:
+            distances = self.network_interface.get_shortest_distances_to_target(possible_to_attack)
+            for dist in distances:
+                if self.network_interface.game_mode.red.red_always_chooses_shortest_distance_to_target:
+                    weight = 1 if dist == min(distances) else 0
+                else:
+                    weight = 1 if dist == 0 else dist / sum(distances)
+                weights.append(weight)
         else:
             # if using the configuration checker then this should never happen
             raise Exception(

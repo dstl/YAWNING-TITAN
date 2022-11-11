@@ -48,13 +48,13 @@ class FeatherGraphEmbedObservation(ObservationWrapper):
 
     def observation(self, observation: np.ndarray) -> np.ndarray:
         """
-        Observation Tranformation Function.
+        Observation Transformation Function.
 
-        1. Generates a networkx graph object from the current adjency matrix
+        1. Generates a networkx graph object from the current adjacency matrix
         2. Collects the current vulnerability scores and node status's
-        3. Pads the returned arrays to ensure length is 100 (currently arbitaryily set)
-        4. Embeds the networkx graph using the Feather Graph alogirhtm from Karateclub
-        5. Concats the graph embedding, padded vulnerability scores and padded node status's together
+        3. Pads the returned arrays to ensure length is 100 (currently arbitrarily set)
+        4. Embeds the networkx graph using the Feather Graph algorithm from Karateclub
+        5. Concatenates the graph embedding, padded vulnerability scores and padded node status's together
         6. Returns new observation
 
         Args:
