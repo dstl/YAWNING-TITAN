@@ -13,7 +13,7 @@ class ResetConfig(ConfigABC):
     Class that validates and stores the Reset Configuration
     """
     _randomise_vulnerabilities_on_reset: bool
-    _choose_new_high_value_targets_on_reset: bool
+    _choose_new_high_value_nodes_on_reset: bool
     _choose_new_entry_nodes_on_reset: bool
 
     # region Getters
@@ -25,11 +25,11 @@ class ResetConfig(ConfigABC):
         return self._randomise_vulnerabilities_on_reset
 
     @property
-    def choose_new_high_value_targets_on_reset(self) -> bool:
+    def choose_new_high_value_nodes_on_reset(self) -> bool:
         """
-        Choose new high value targets on reset.
+        Choose new high value nodes on reset.
         """
-        return self._choose_new_high_value_targets_on_reset
+        return self._choose_new_high_value_nodes_on_reset
 
     @property
     def choose_new_entry_nodes_on_reset(self) -> bool:
@@ -44,9 +44,9 @@ class ResetConfig(ConfigABC):
     def randomise_vulnerabilities_on_reset(self, value):
         self._randomise_vulnerabilities_on_reset = value
 
-    @choose_new_high_value_targets_on_reset.setter
-    def choose_new_high_value_targets_on_reset(self, value):
-        self._choose_new_high_value_targets_on_reset = value
+    @choose_new_high_value_nodes_on_reset.setter
+    def choose_new_high_value_nodes_on_reset(self, value):
+        self._choose_new_high_value_nodes_on_reset = value
 
     @choose_new_entry_nodes_on_reset.setter
     def choose_new_entry_nodes_on_reset(self, value):
@@ -65,8 +65,8 @@ class ResetConfig(ConfigABC):
         reset_config = ResetConfig(
             _randomise_vulnerabilities_on_reset=config_dict[
                 "randomise_vulnerabilities_on_reset"],
-            _choose_new_high_value_targets_on_reset=config_dict[
-                "choose_new_high_value_targets_on_reset"],
+            _choose_new_high_value_nodes_on_reset=config_dict[
+                "choose_new_high_value_nodes_on_reset"],
             _choose_new_entry_nodes_on_reset=config_dict[
                 "choose_new_entry_nodes_on_reset"],
         )
@@ -77,7 +77,7 @@ class ResetConfig(ConfigABC):
     def _validate(cls, config_dict: dict):
         for name in [
             "randomise_vulnerabilities_on_reset",
-            "choose_new_high_value_targets_on_reset",
+            "choose_new_high_value_nodes_on_reset",
             "choose_new_entry_nodes_on_reset",
         ]:
             check_type(config_dict, name, [bool])

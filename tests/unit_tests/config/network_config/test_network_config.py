@@ -13,13 +13,13 @@ def test_config_properties():
         matrix=matrix,
         positions=node_positions,
         entry_nodes=["0"],
-        high_value_targets=["1"]
+        high_value_nodes=["1"]
     )
 
     assert np.array_equal(network_config.matrix, matrix) is True
     assert network_config.positions == node_positions
     assert network_config.entry_nodes[0] == "0"
-    assert network_config.high_value_targets[0] == "1"
+    assert network_config.high_value_nodes[0] == "1"
 
 
 def test_hvn_entry_node_matching():
@@ -28,9 +28,9 @@ def test_hvn_entry_node_matching():
             matrix=matrix,
             positions=node_positions,
             entry_nodes=["0"],
-            high_value_targets=["0"]
+            high_value_nodes=["0"]
         )
 
-        # check that a warning was raised that the entry nodes and high value targets intersect
+        # check that a warning was raised that the entry nodes and high value nodes intersect
         assert str(w[0].message.args[
-                       0]) == "Provided entry nodes and high value targets intersect and may cause the training to prematurely end"
+                       0]) == "Provided entry nodes and high value nodes intersect and may cause the training to prematurely end"

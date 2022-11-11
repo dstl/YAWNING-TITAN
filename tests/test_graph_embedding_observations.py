@@ -24,7 +24,7 @@ from yawning_titan.envs.generic.wrappers.graph_embedding_observations import (
 )
 def test_wrapped_env(generate_generic_env_test_reqs,path:str,creator_type:str,num_nodes:int) -> None:
     """Test that the environment get correctly wrapped with the Feather Observation Wrapper."""
-    env:GenericNetworkEnv = FeatherGraphEmbedObservation(generate_generic_env_test_reqs(path,creator_type,num_nodes),num_nodes)
+    env:GenericNetworkEnv = FeatherGraphEmbedObservation(generate_generic_env_test_reqs(path,creator_type,num_nodes,entry_nodes=["0", "1", "2"]),num_nodes)
     assert is_wrapped(env, FeatherGraphEmbedObservation)
 
 
@@ -39,7 +39,7 @@ def test_wrapped_env(generate_generic_env_test_reqs,path:str,creator_type:str,nu
 )
 def test_obs_size(generate_generic_env_test_reqs,path:str,creator_type:str,num_nodes:int) -> None:
     """Test that the observation size returned by the environment is the correct length."""
-    env:GenericNetworkEnv = FeatherGraphEmbedObservation(generate_generic_env_test_reqs(path,creator_type,num_nodes),num_nodes)
+    env:GenericNetworkEnv = FeatherGraphEmbedObservation(generate_generic_env_test_reqs(path,creator_type,num_nodes,entry_nodes=["0", "1", "2"]),num_nodes)
     observation_size = env.calculate_observation_space_size(with_feather=True)
 
     for i in range(5):
@@ -64,7 +64,7 @@ def test_obs_range(generate_generic_env_test_reqs,path:str,creator_type:str,num_
         - 500 value graph embedding
         - other features from the env based on input from the settings file
     """
-    env:GenericNetworkEnv = FeatherGraphEmbedObservation(generate_generic_env_test_reqs(path,creator_type,num_nodes),num_nodes)
+    env:GenericNetworkEnv = FeatherGraphEmbedObservation(generate_generic_env_test_reqs(path,creator_type,num_nodes,entry_nodes=["0", "1", "2"]),num_nodes)
     for i in range(5):
         obs = env.reset()
         np.set_printoptions(suppress=True)
@@ -95,4 +95,4 @@ def test_obs_range(generate_generic_env_test_reqs,path:str,creator_type:str,num_
 
 def test_env_check(generate_generic_env_test_reqs) -> None:
     """Test to Stable Baselines 3 Environment checker compliance once wrapped."""
-    check_env(generate_generic_env_test_reqs(str(low_skill_red_with_random_infection_perfect_detection_path()),"mesh",18))
+    check_env(generate_generic_env_test_reqs(str(low_skill_red_with_random_infection_perfect_detection_path()),"mesh",18,entry_nodes=["0", "1", "2"]))
