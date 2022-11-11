@@ -54,10 +54,14 @@ RED:
   zero_day_start_amount: 1
   # The amount of 'progress' that need to have passed before the red agent gains a zero day attack
   days_required_for_zero_day: 10
+  # Whether red will always pick the shortest path to target
+  red_always_chooses_shortest_distance_to_target: True
 
   # CHOOSE ONE OF THE FOLLOWING 5 ITEMS
   # Red picks nodes to attack at random
   red_chooses_target_at_random: False
+  # Red targets a specific node
+  red_target_node:
   # Red sorts the nodes it can attack and chooses the one that has the most connections
   red_prioritises_connected_nodes: True
   # Red sorts the nodes it can attack and chooses the one that has the least connections
@@ -82,7 +86,7 @@ OBSERVATION_SPACE:
   attacking_nodes: True
   # The blue agent can see all the nodes that have recently been attacked
   attacked_nodes: True
-  # The blue agent can see all of the special nodes (entry nodes, high value targets)
+  # The blue agent can see all of the special nodes (entry nodes, high value nodes)
   special_nodes: False
   # The blue agent can see the skill level of the red agent
   red_agent_skill: True
@@ -193,14 +197,14 @@ GAME_RULES:
   lose_when_n_percent_of_nodes_lost: True
   # The percentage of nodes that need to be lost for blue to lose
   percentage_of_nodes_compromised_equals_loss: 0.1
-  # Blue loses if a special 'high value' target it lost (a node picked in the environment)
-  lose_when_high_value_target_lost: False
-  # If no high value targets are supplied, how many should be chosen
-  number_of_high_value_targets: 1
-  # The high value target is picked at random
-  choose_high_value_targets_placement_at_random: True
-  # The node furthest away from the entry points to the network is picked as the target
-  choose_high_value_targets_furthest_away_from_entry: False
+  # Blue loses if a special 'high value' node it lost (a node picked in the environment)
+  lose_when_high_value_node_lost: False
+  # If no high value nodes are supplied, how many should be chosen
+  number_of_high_value_nodes: 1
+  # The high value node is picked at random
+  choose_high_value_nodes_placement_at_random: True
+  # The node furthest away from the entry points to the network is picked as the high value node
+  choose_high_value_nodes_furthest_away_from_entry: False
   # If no entry nodes are supplied choose some at random
   choose_entry_nodes_randomly: True
   # If no entry nodes are supplied then how many should be chosen
@@ -210,11 +214,13 @@ GAME_RULES:
   prefer_edge_nodes_for_entry_nodes: False
   # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
   grace_period_length: 0
-  
+  # Blue loses if a target node it lost
+  lose_when_target_node_lost: False
+
 
 RESET:
   randomise_vulnerabilities_on_reset: False
-  choose_new_high_value_targets_on_reset: False
+  choose_new_high_value_nodes_on_reset: False
   choose_new_entry_nodes_on_reset: True
 
 REWARDS:

@@ -110,7 +110,7 @@ Observation Space settings
  * **attacked_nodes:**
     The blue agent can see all the nodes that have recently been attacked
  * **special_nodes:**
-    The blue agent can see all of the special nodes (entry nodes, high value targets)
+    The blue agent can see all of the special nodes (entry nodes, high value nodes)
  * **red_agent_skill:**
     The blue agent can see the skill level of the red agent
 
@@ -213,15 +213,15 @@ Game Rules
         Does the red agent win if it takes n% of all the nodes
  * **percentage_of_nodes_compromised_equals_loss:**
     If red wins if it takes n% of nodes what value is n
- * **lose_when_high_value_target_lost:**
+ * **lose_when_high_value_node_lost:**
 
     Does red win if a special "high value" node is taken
 
-     * **number_of_high_value_targets:**
+     * **number_of_high_value_nodes:**
         How many "high value" nodes will be chosen
-     * **choose_high_value_targets_placement_at_random:**
+     * **choose_high_value_nodes_placement_at_random:**
         Choose the "high value" node at random
-     * **choose_high_value_targets_furthest_away_from_entry:**
+     * **choose_high_value_nodes_furthest_away_from_entry:**
         Choose the "high value" to be one of the nodes furthest from all of the entry points
  * **choose_entry_nodes_randomly:**
     If no entry nodes are supplied choose some at random
@@ -238,8 +238,8 @@ Reset
 ******
  * **randomise_vulnerabilities_on_reset:**
     Pick new vulnerabilities for all the nodes on every reset
- * **choose_new_high_value_targets_on_reset:**
-    Pick new high value targets on every reset
+ * **choose_new_high_value_nodes_on_reset:**
+    Pick new high value nodes on every reset
  * **choose_new_entry_nodes_on_reset:**
     Pick new entry nodes every reset
 

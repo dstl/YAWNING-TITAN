@@ -57,6 +57,8 @@ RED:
   # CHOOSE ONE OF THE FOLLOWING 5 ITEMS
   # Red picks nodes to attack at random
   red_chooses_target_at_random: True
+  # Red targets a specific node
+  red_target_node:
   # Red sorts the nodes it can attack and chooses the one that has the most connections
   red_prioritises_connected_nodes: False
   # Red sorts the nodes it can attack and chooses the one that has the least connections
@@ -65,6 +67,8 @@ RED:
   red_prioritises_vulnerable_nodes: False
   # Red sorts the nodes is can attack and chooses the one that is the least vulnerable
   red_prioritises_resilient_nodes: False
+  # Red always chooses the absolute shortest distance to target with no randomisation
+  red_always_chooses_shortest_distance_to_target: True
 
 OBSERVATION_SPACE:
   # The blue agent can see the compromised status of all the nodes
@@ -81,7 +85,7 @@ OBSERVATION_SPACE:
   attacking_nodes: True
   # The blue agent can see all the nodes that have recently been attacked
   attacked_nodes: True
-  # The blue agent can see all of the special nodes (entry nodes, high value targets)
+  # The blue agent can see all of the special nodes (entry nodes, high value nodes)
   special_nodes: True
   # The blue agent can see the skill level of the red agent
   red_agent_skill: True
@@ -193,14 +197,16 @@ GAME_RULES:
   lose_when_n_percent_of_nodes_lost: False
   # The percentage of nodes that need to be lost for blue to lose
   percentage_of_nodes_compromised_equals_loss: 0.8
-  # Blue loses if a special 'high value' target is lost (a node picked in the environment)
-  lose_when_high_value_target_lost: True
-  # If no high value targets are supplied, how many should be chosen
-  number_of_high_value_targets: 1
-  # The high value target is picked at random
-  choose_high_value_targets_placement_at_random: False
-  # The node furthest away from the entry points to the network is picked as the target
-  choose_high_value_targets_furthest_away_from_entry: True
+  # Blue loses if a special 'high value' node is lost (a node picked in the environment)
+  lose_when_high_value_node_lost: True
+  # If no high value nodes are supplied, how many should be chosen
+  # Blue loses if a target node it lost
+  lose_when_target_node_lost: False
+  number_of_high_value_nodes: 1
+  # The high value node is picked at random
+  choose_high_value_nodes_placement_at_random: False
+  # The node furthest away from the entry points to the network is picked as the high value node
+  choose_high_value_nodes_furthest_away_from_entry: True
   # If no entry nodes are supplied choose some at random
   choose_entry_nodes_randomly: True
   # If no entry nodes are supplied then how many should be chosen
@@ -214,7 +220,7 @@ GAME_RULES:
 
 RESET:
   randomise_vulnerabilities_on_reset: False
-  choose_new_high_value_targets_on_reset: True
+  choose_new_high_value_nodes_on_reset: True
   choose_new_entry_nodes_on_reset: True
 
 REWARDS:
