@@ -33,7 +33,15 @@ class ActionLoop:
         self.filename = filename
         self.episode_count = episode_count
 
-    def gif_action_loop(self,render_network=True,prompt_to_close=False,save_gif=False,deterministic=True,*args,**kwargs):
+    def gif_action_loop(
+        self,
+        render_network=True,
+        prompt_to_close=False,
+        save_gif=False,
+        deterministic=True,
+        *args,
+        **kwargs
+    ):
         """
         Run the agent in evaluation and create a gif from episodes.
 
