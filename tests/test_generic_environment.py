@@ -246,7 +246,7 @@ def test_new_high_value_node(generate_generic_env_test_reqs):
     # check that each node is roughly chosen equally
     sum_ = sum(targets.values())
     for i in targets.values():
-        assert 1 / 10.5 > i / sum_ > 1 / 13.6
+        assert 1 / 10.5 > i / sum_ > 1 / 13.75
 
 
 def test_high_value_node_passed_into_network_interface(generate_generic_env_test_reqs):
