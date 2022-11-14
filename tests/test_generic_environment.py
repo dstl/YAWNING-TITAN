@@ -14,6 +14,7 @@ from yaml.loader import SafeLoader
 from tests import TEST_CONFIG_PATH
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
+TOLERANCE = 0.1
 N_TIME_STEPS = 1000
 N_TIME_STEPS_LONG = 10000
 
@@ -224,7 +225,7 @@ def test_new_high_value_node(generate_generic_env_test_reqs):
     )
     check_env(env, warn=True)
     env.reset()
-    targets = {}
+    nodes = {}
     for i in range(0, N_TIME_STEPS_LONG):
         obs, rew, done, notes = env.step(
             random.randint(0, env.BLUE.get_number_of_actions() - 1)
@@ -234,19 +235,19 @@ def test_new_high_value_node(generate_generic_env_test_reqs):
 
             # add 1 to each node that gets chosen as a high value node
             for node in hvn:
-                if node not in targets:
-                    targets[node] = 1
+                if node not in nodes:
+                    nodes[node] = 1
                 else:
-                    targets[node] += 1
+                    nodes[node] += 1
 
             env.reset()
     # check that entry nodes cannot be chosen
     # 3 entry nodes are configured in new_high_value_node.yaml, so n_nodes - number_of_entry_nodes = 12
-    assert len(targets.keys()) == 12
+    assert len(nodes.keys()) == 12
     # check that each node is roughly chosen equally
-    sum_ = sum(targets.values())
-    for i in targets.values():
-        assert 1 / 10.5 > i / sum_ > 1 / 13.75
+    target_count = N_TIME_STEPS_LONG / len(nodes.values())
+    for i in nodes.values():
+        assert np.isclose(i, target_count, atol=(target_count*TOLERANCE))
 
 
 def test_high_value_node_passed_into_network_interface(generate_generic_env_test_reqs):
@@ -352,8 +353,9 @@ def test_new_entry_nodes(generate_generic_env_test_reqs):
     # check that entry nodes cannot be chosen
     assert len(entry_nodes.keys()) == 15
     # check that each node is roughly chosen equally
+    target_count = N_TIME_STEPS_LONG / len(entry_nodes.values()) * 3 # num entry nodes = 3
     for i in entry_nodes.values():
-        assert np.isclose(i, 1000, atol=100)
+        assert np.isclose(i, target_count, atol=(target_count*TOLERANCE))
 
 
 def test_new_vulnerabilities(generate_generic_env_test_reqs):
