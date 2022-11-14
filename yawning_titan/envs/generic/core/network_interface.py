@@ -3,11 +3,8 @@ import functools
 import itertools
 import json
 import math
-import pathlib
 import random
-import sys
 
-from scipy.sparse.csgraph import dijkstra
 from collections import Counter, defaultdict
 from datetime import datetime
 from logging import getLogger
@@ -156,13 +153,9 @@ class NetworkInterface:
         Get a list of the shortest distances from each node to the target
         """
         # TODO: add option where only shortest distance provided
-        dist_matrix = dijkstra(
-            csgraph=self.network.matrix,
-            directed=False,
-            indices=int(self.game_mode.red.red_target_node),
-            min_only=False,
-        )
-        distances = [dist_matrix[int(n)] for n in nodes]
+
+        dist_matrix = dict(nx.single_source_shortest_path_length(self.current_graph,self.get_target_node()))
+        distances = [dist_matrix[n] for n in nodes]
         return distances
 
     def get_number_base_edges(self) -> int:
@@ -688,7 +681,6 @@ class NetworkInterface:
             observation_size += max_number_of_nodes
         if self.game_mode.observation_space.special_nodes:
             observation_size += max_number_of_nodes
-            # if self.network_interface.gr_loss_tn:
             if self.game_mode.game_rules.lose_when_target_node_lost:
                 observation_size += max_number_of_nodes
             if self.game_mode.game_rules.lose_when_high_value_node_lost:
