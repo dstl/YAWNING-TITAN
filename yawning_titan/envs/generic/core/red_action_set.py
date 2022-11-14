@@ -46,6 +46,9 @@ class RedActionSet:
         self.reset()
 
     def reset(self):
+        """
+        Reset red agent episode dependent variables to initial value.
+        """
         self.zero_day_amount = self.network_interface.game_mode.red.zero_day_start_amount
         self.zero_day_current_day = 0
 
