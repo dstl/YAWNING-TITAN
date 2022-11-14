@@ -10,10 +10,7 @@ import os
 import imageio
 import matplotlib.pyplot as plt
 import pandas as pd
-
-
 from yawning_titan import IMAGES_DIR
-
 
 class ActionLoop:
     """A class that represents different post-training action loops for agents."""
