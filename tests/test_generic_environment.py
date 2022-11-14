@@ -15,7 +15,7 @@ from tests import TEST_CONFIG_PATH
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 N_TIME_STEPS = 1000
-N_TIME_STEPS_LONG = 5000
+N_TIME_STEPS_LONG = 10000
 
 
 def open_config_file(settings_path: str) -> Dict:

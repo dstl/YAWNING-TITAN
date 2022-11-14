@@ -235,7 +235,7 @@ class RedAgentConfig(ConfigABC):
         return self._red_chooses_target_at_random
 
     @property
-    def red_target_node(self) -> bool:
+    def red_target_node(self) -> str:
         """
         Red targets a specific node
         """
@@ -386,7 +386,7 @@ class RedAgentConfig(ConfigABC):
 
     @red_target_node.setter
     def red_target_node(self,value):
-        self.__red_target_node = value
+        self._red_target_node = value
 
     @red_prioritises_connected_nodes.setter
     def red_prioritises_connected_nodes(self, value):
