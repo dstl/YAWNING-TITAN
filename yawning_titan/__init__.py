@@ -68,4 +68,7 @@ LOG_FILE_PATH: Final[str] = os.path.join(
 )
 config["handlers"]["info_rotating_file_handler"]["filename"] = LOG_FILE_PATH
 
-logging.config.dictConfig(config)
+try:
+    logging.config.dictConfig(config)
+except Exception as e:
+    print(e)
