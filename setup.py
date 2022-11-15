@@ -1,65 +1,6 @@
-import os.path
 import sys
-from pathlib import Path
 
 from setuptools import find_packages, setup
-from setuptools.command.develop import develop
-from setuptools.command.install import install
-
-
-def _create_app_dirs():
-    """
-    Uses platformdirs to create the required app directories in the correct
-    locations based on the users OS.
-    """
-    from platformdirs import PlatformDirs
-
-    dirs = PlatformDirs(appname="yawning_titan", appauthor="DSTL")
-
-    # Creates the app config directory
-    dirs.user_config_path.mkdir(parents=True, exist_ok=True)
-
-    # Creates the app log directory
-    dirs.user_log_path.mkdir(parents=True, exist_ok=True)
-
-    # Creates the app data directory
-    dirs.user_data_path.mkdir(parents=True, exist_ok=True)
-
-    # Sets and creates the app game modes directory
-    game_modes_dir = os.path.join(dirs.user_config_path, "game_modes")
-    Path(game_modes_dir).mkdir(parents=True, exist_ok=True)
-
-    # Sets and creates the app notebooks directory
-    notebooks_dir = os.path.join(dirs.user_data_path, "notebooks")
-    Path(notebooks_dir).mkdir(parents=True, exist_ok=True)
-
-    # Sets and creates the app docs directory
-    docs_dir = os.path.join(dirs.user_data_path, "docs")
-    Path(docs_dir).mkdir(parents=True, exist_ok=True)
-
-    # Sets and creates the app images directory
-    docs_dir = os.path.join(dirs.user_data_path, "images")
-    Path(docs_dir).mkdir(parents=True, exist_ok=True)
-
-
-class PostDevelopCommand(develop):
-    """
-    Post-installation command class for development mode.
-    """
-
-    def run(self):
-        develop.run(self)
-        _create_app_dirs()
-
-
-class PostInstallCommand(install):
-    """
-    Post-installation command class for installation mode.
-    """
-
-    def run(self):
-        install.run(self)
-        _create_app_dirs()
 
 
 def _ray_3_beta_rllib_py_platform_pip_install() -> str:
@@ -173,6 +114,5 @@ setup(
         #  package_data to be able to run tests from installed YT rather
         #  than from cloned repo directory.
     },
-    include_package_data=True,
-    cmdclass={"install": PostInstallCommand, "develop": PostDevelopCommand},
+    include_package_data=True
 )
