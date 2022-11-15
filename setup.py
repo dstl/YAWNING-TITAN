@@ -1,19 +1,59 @@
+import os.path
 import sys
+from pathlib import Path
 
 from setuptools import find_packages, setup
 from setuptools.command.develop import develop
 from setuptools.command.install import install
 
 
+def _create_app_dirs():
+    """
+    Uses platformdirs to create the required app directories in the correct
+    locations based on the users OS.
+
+    This function is duplicated here (for now) so that we're not importing
+    Yawning-Titan from the setup.py of Yawning-Titan, even if it is inside
+    on a post-install class.
+    """
+    from platformdirs import PlatformDirs
+
+    dirs = PlatformDirs(appname="yawning_titan", appauthor="DSTL")
+
+    # Creates the app config directory
+    dirs.user_config_path.mkdir(parents=True, exist_ok=True)
+
+    # Creates the app log directory
+    dirs.user_log_path.mkdir(parents=True, exist_ok=True)
+
+    # Creates the app data directory
+    dirs.user_data_path.mkdir(parents=True, exist_ok=True)
+
+    # Sets and creates the app game modes directory
+    game_modes_dir = os.path.join(dirs.user_config_path, "game_modes")
+    Path(game_modes_dir).mkdir(parents=True, exist_ok=True)
+
+    # Sets and creates the app notebooks directory
+    notebooks_dir = os.path.join(dirs.user_data_path, "notebooks")
+    Path(notebooks_dir).mkdir(parents=True, exist_ok=True)
+
+    # Sets and creates the app docs directory
+    docs_dir = os.path.join(dirs.user_data_path, "docs")
+    Path(docs_dir).mkdir(parents=True, exist_ok=True)
+
+    # Sets and creates the app images directory
+    docs_dir = os.path.join(dirs.user_data_path, "images")
+    Path(docs_dir).mkdir(parents=True, exist_ok=True)
+
+
 class PostDevelopCommand(develop):
     """
-     Post-installation command class for development mode.
-     """
+    Post-installation command class for development mode.
+    """
 
     def run(self):
         develop.run(self)
-        from yawning_titan.app import create_app_dirs
-        create_app_dirs()
+        _create_app_dirs()
 
 
 class PostInstallCommand(install):
@@ -23,8 +63,7 @@ class PostInstallCommand(install):
 
     def run(self):
         install.run(self)
-        from yawning_titan.app import create_app_dirs
-        create_app_dirs()
+        _create_app_dirs()
 
 
 def _ray_3_beta_rllib_py_platform_pip_install() -> str:
@@ -59,7 +98,7 @@ def _ray_3_beta_rllib_py_platform_pip_install() -> str:
             (3, 8): "/ray-3.0.0.dev0-cp38-cp38-win_amd64.whl",
             (3, 9): "/ray-3.0.0.dev0-cp39-cp39-win_amd64.whl",
             (3, 10): "/ray-3.0.0.dev0-cp310-cp310-win_amd64.whl",
-        }
+        },
     }
     py_v = sys.version_info
     py_v_major_minor = py_v[:2]
@@ -88,8 +127,7 @@ setup(
     maintainer="Defence Science and Technology Laboratory UK",
     maintainer_email="oss@dstl.gov.uk",
     url="https://github.com/dstl/YAWNING-TITAN",
-    description="An abstract, flexible and configurable cyber security "
-                "simulation",
+    description="An abstract, flexible and configurable cyber security " "simulation",
     python_requires=">=3.8",
     version="0.1.0",
     license="MIT",
@@ -111,7 +149,7 @@ setup(
         "typing-extensions==4.0.1",
         "torch==1.12.1 ",
         "tensorboard==2.10.1 ",
-        "dm-tree==0.1.7"
+        "dm-tree==0.1.7",
     ],
     extras_require={
         "dev": [
@@ -124,7 +162,7 @@ setup(
             "pre-commit",
         ],
         "tensorflow": ["tensorflow"],  # TODO: Determine version and lock it in
-        "jupyter": ["jupyter"]
+        "jupyter": ["jupyter"],
     },
     package_data={
         "yawning_titan": [
@@ -140,8 +178,5 @@ setup(
         #  than from cloned repo directory.
     },
     include_package_data=True,
-    cmdclass={
-        "install": PostInstallCommand,
-        "develop": PostDevelopCommand
-    }
+    cmdclass={"install": PostInstallCommand, "develop": PostDevelopCommand},
 )
