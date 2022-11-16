@@ -47,21 +47,19 @@ def _create_app_dirs():
 
 
 class PostDevelopCommand(develop):
-    """
-    Post-installation command class for development mode.
-    """
+    """Post-installation command class for development mode."""
 
     def run(self):
+        """Run the installation command then create the app dirs."""
         develop.run(self)
         _create_app_dirs()
 
 
 class PostInstallCommand(install):
-    """
-    Post-installation command class for installation mode.
-    """
+    """Post-installation command class for installation mode."""
 
     def run(self):
+        """Run the installation command then create the app dirs."""
         install.run(self)
         _create_app_dirs()
 

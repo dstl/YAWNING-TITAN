@@ -19,7 +19,7 @@ def default_game_mode_path() -> Path:
             _LIB_CONFIG_ROOT_PATH,
             "_package_data",
             "game_modes",
-            "default_game_mode.yaml"
+            "default_game_mode.yaml",
         )
     )
 
@@ -35,6 +35,6 @@ def low_skill_red_with_random_infection_perfect_detection_path() -> Path:
             _LIB_CONFIG_ROOT_PATH,
             "_package_data",
             "game_modes",
-            "low_skill_red_with_random_infection_perfect_detection.yaml"
+            "low_skill_red_with_random_infection_perfect_detection.yaml",
         )
     )

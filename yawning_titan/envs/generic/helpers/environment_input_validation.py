@@ -1,6 +1,4 @@
-from typing import Union, List
-
-import yawning_titan.envs.generic.core.reward_functions as reward_functions
+from typing import Union
 
 
 def check_type(data: dict, name: str, types: list):
@@ -21,12 +19,12 @@ def check_type(data: dict, name: str, types: list):
 
 
 def check_within_range(
-        data: dict,
-        name: str,
-        lower: Union[None, float],
-        upper: Union[None, float],
-        l_inclusive: bool,
-        u_inclusive: bool,
+    data: dict,
+    name: str,
+    lower: Union[None, float],
+    upper: Union[None, float],
+    l_inclusive: bool,
+    u_inclusive: bool,
 ):
     """
     Check that an item belonging to a dictionary fits within a certain numerical range (either inclusive or not).

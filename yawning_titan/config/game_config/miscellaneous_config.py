@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Dict, Any, Optional
+from dataclasses import dataclass
+from typing import Any, Dict, Optional
 
 from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_type
@@ -9,9 +9,8 @@ from yawning_titan.envs.generic.helpers.environment_input_validation import chec
 
 @dataclass()
 class MiscellaneousConfig(ConfigABC):
-    """
-    Class that validates and stores the Miscellaneous Configuration
-    """
+    """Class that validates and stores the Miscellaneous Configuration"""
+
     _output_timestep_data_to_json: bool
     _random_seed: Optional[int]
 
@@ -41,7 +40,6 @@ class MiscellaneousConfig(ConfigABC):
     def random_seed(self, value):
         self._random_seed = value
 
-
     @classmethod
     def create(cls, config_dict: Dict[str, Any]) -> MiscellaneousConfig:
         """
@@ -53,13 +51,12 @@ class MiscellaneousConfig(ConfigABC):
         cls._validate(config_dict)
 
         misc_config = MiscellaneousConfig(
-            _output_timestep_data_to_json=config_dict[
-                "output_timestep_data_to_json"],
-            _random_seed=config_dict["random_seed"]
+            _output_timestep_data_to_json=config_dict["output_timestep_data_to_json"],
+            _random_seed=config_dict["random_seed"],
         )
 
         return misc_config
 
     @classmethod
     def _validate(cls, config_dict: Dict[str, Any]):
-        check_type(config_dict,"random_seed",[int,None])
+        check_type(config_dict, "random_seed", [int, None])

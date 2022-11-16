@@ -216,7 +216,7 @@ GAME_RULES:
   choose_high_value_nodes_placement_at_random: False
   # Blue loses if a target node it lost
   lose_when_target_node_lost: True
-  
+
 
 RESET:
   randomise_vulnerabilities_on_reset: False

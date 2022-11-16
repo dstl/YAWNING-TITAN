@@ -1,38 +1,49 @@
 """
 A new node network that can be configured for multiple different configurations.
 
-Paper: https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9
+Paper:
+https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf
 
 Currently suppports:
-- 18 node network from the research paper
-- a network creator that allows you to use multiple topologies and change the connectivity of the network
+    - 18 node network from the research paper.
+    - a network creator that allows you to use multiple topologies and change the connectivity of the network.
 
 Red agent actions:
-
-    Spread - Tries to spread to each node connected to a compromised node
-    Randomly infect - Tries to randomly infect every currently un-compromised node
+    Spread:
+        Tries to spread to each node connected to a compromised node.
+    Randomly infect:
+        Tries to randomly infect every currently un-compromised node.
 
 Configurable parameters:
-
-    chance_to_spread - This is the chance for the red agent to spread between nodes
-    chance_to_spread_during_patch - There is a chance that when a compromised node is patched the red agent "escapes" to
-                                    neaby nodes and compromises them
-    chance_to_randomly_compromise - This is the chance that the red agent randomly infects a un-compromised node
-    cost_of_isolate - The cost (negative reward) associated with performing the isolate action (initially set to 10 based on
-                      data from the paper)
-    cost_of_patch - The cost (negative reward) associated with performing the patch action (initially set to 5 based on
-                    data from the paper)
-    cost_of_nothing - The cost (negative reward) associated with performing the do nothing action (initially set to 0 based on
-                      data from the paper)
-    end - The number of steps that the blue agent must survive for to win
-    spread_vs_random_intrusion - The chance that the red agent will choose the spread action on its turn as aposed to
-                                 the random intrusion action
-    punish_for_isolate - Either True or False. If True then each step the agent is punished based on the number of
-                         isolated nodes there are
-    reward_method - Either 0, 1 or 2. Each constitutes a different method of rewarding the agent:
-                        - 0 is the papers reward system
-                        - 1 is my reward system rewarding based on number of un-compromised nodes
-                        - 2 is the minimal reward system. The agent gets 1 for a win or -1 for a loss
+    chance_to_spread
+        This is the chance for the red agent to spread between nodes
+    chance_to_spread_during_patch
+        There is a chance that when a compromised node is patched the red agent "escapes" to neaby nodes and compromises
+        them.
+    chance_to_randomly_compromise
+        This is the chance that the red agent randomly infects a un-compromised node.
+    cost_of_isolate
+        The cost (negative reward) associated with performing the isolate action (initially set to 10 based on data
+        from the paper).
+    cost_of_patch
+        The cost (negative reward) associated with performing the patch action (initially set to 5 based on data from
+        the paper).
+    cost_of_nothing
+        The cost (negative reward) associated with performing the do nothing action (initially set to 0
+        based on data from the paper).
+    end
+        The number of steps that the blue agent must survive for to win.
+    spread_vs_random_intrusio
+        The chance that the red agent will choose the spread action on its turn as apposed to the random intrusion
+        action.
+    punish_for_isolate
+        Either True or False. If True then each step the agent is punished based on the number of isolated nodes there
+        are.
+    reward_method
+        Either 0, 1 or 2. Each constitutes a different method of rewarding the agent:
+            - 0 is the papers reward system.
+            - 1 is my reward system rewarding based on number of un-compromised nodes.
+            - 2 is the minimal reward system. The agent gets 1 for a win or -1 for a loss.
 
 """
 
@@ -232,7 +243,8 @@ class NodeEnv(gym.Env):
             reward = reward - 0.5 * self.state.get_number_of_isolated()
 
         logger.debug(
-            f"Total Reward: {reward} Total No. of Steps : {reward} No. of Compromised Machines: {len(self.state.get_compromised_nodes())} "
+            f"Total Reward: {reward} Total No. of Steps : {reward} "
+            f"No. of Compromised Machines: {len(self.state.get_compromised_nodes())} "
         )
 
         return (

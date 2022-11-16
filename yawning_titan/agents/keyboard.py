@@ -3,9 +3,13 @@ from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 class KeyboardAgent:
     """
-    The keyboard agent provides a basic means for a human player to play the YAWNING TITAN simulation.
+    A means for a human player to play the YAWNING-TITAN simulation.
 
-    An example of using this class can be found within the `notebooks/Creating and playing as a Keyboard Agent.ipynb`
+    The keyboard agent provides a basic means for a human player to play the
+    YAWNING-TITAN simulation.
+
+    An example of using this class can be found within the `notebooks/Creating and
+    playing as a Keyboard Agent.ipynb`
     """
 
     def __init__(self, env: GenericNetworkEnv):
@@ -13,14 +17,16 @@ class KeyboardAgent:
 
     def get_move_set(self):
         """
-        Get the action set for the given environment and map it to the action numbers used by the open AI gym env.
+        Return the action set mapped to action numbers.
+
+        Get the action set for the given environment and map it to the action numbers
+        used by the open AI gym env.
 
         Returns:
-            An action mask for top level actions to the first action number in the environment
-            A full dictionary of all the actions that can be taken
-            The action number where the standard actions start (actions that can be applied to every node)
-            The number of standard actions
-
+            An action mask for top level actions to the first action number in the
+            environment. A full dictionary of all the actions that can be taken. The
+            action number where the standard actions start (actions that can be applied
+            to every node). The number of standard actions
         """
         network_interface = self.env.network_interface
         settings = network_interface.game_mode
@@ -31,7 +37,8 @@ class KeyboardAgent:
 
         # checks the settings for the currently active blue actions
         if settings.blue.blue_uses_deceptive_nodes:
-            # If the actions are active then creates a map using dictionaries between the AI gym action number and the
+            # If the actions are active then creates a map using dictionaries between
+            # the AI gym action number and the
             # action name and any sub actions that this action has
             edge_list = network_interface.edge_map.values()
             full_action_dict["add_deceptive_node"] = edge_list
@@ -88,8 +95,8 @@ class KeyboardAgent:
         effect of the action on the envionrment.
 
         Args:
-            render_graphically: If True render using the matplotlib renderer, if False display if state of the
-                environment in the console
+            render_graphically: If True render using the matplotlib renderer, if False
+                display if state of the environment in the console.
 
         """
         done = False
@@ -98,9 +105,12 @@ class KeyboardAgent:
         # Runs until the game has been won
         while not done:
             # Gets the possible top level actions
-            top, move_set, start_of_standard_actions, number_of_standard_actions = (
-                self.get_move_set()
-            )
+            (
+                top,
+                move_set,
+                start_of_standard_actions,
+                number_of_standard_actions,
+            ) = self.get_move_set()
             possible_top_actions = list(top.keys())
             print("Current possible actions:")
             for counter, i in enumerate(possible_top_actions):
@@ -108,7 +118,8 @@ class KeyboardAgent:
                 print(counter, ")", i)
             top_action_legal = False
             chosen_top_action = ""
-            # If the user does not input a legal action then they are forced to retry until they do
+            # If the user does not input a legal action then they are forced to retry
+            # until they do
             while not top_action_legal:
                 try:
                     chosen_top_action = int(input("Chosen Action: "))
@@ -164,7 +175,8 @@ class KeyboardAgent:
                     raise EnvironmentError(
                         "Action selected was not the action taken by the environment"
                     )
-            # renders the environment to show the effect of the action and the red agents turn
+            # renders the environment to show the effect of the action and the red
+            # agents turn
             if render_graphically:
                 self.env.render(show_only_blue_view=True, show_node_names=True)
             else:

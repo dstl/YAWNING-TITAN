@@ -3,7 +3,8 @@ from gym import Space
 
 class RandomAgent(object):
     """
-    A simple implementation of a Random Agent capable of randomly acting within an OpenAI Gym environment.
+    A simple implementation of a Random Agent capable of randomly acting within an
+    OpenAI Gym environment.
 
     *Note: Both act and predict methods are provided to fit with different tutorials
     online that use different terminology for the same thing.*
