@@ -5,7 +5,4 @@ extend-ignore =
     D100 # Req for docstring at the top of each module
     D104 # Req for docstring in public package
     E203 # Whitespace before :
-
     D401 # First line should be in imperative mood
-    D400 # First line should end with a period
-    D205 # 1 blank line required between summary line and description

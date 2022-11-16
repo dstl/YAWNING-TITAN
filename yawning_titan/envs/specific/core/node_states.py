@@ -44,8 +44,7 @@ def get_linked_compromised_nodes(
     current_position: int, network: nx.Graph, machine_states: List[List[float]]
 ) -> List[int]:
     """
-    Return a list containing all the linked compromised nodes relative to the red
-    agents current position.
+    Return a list containing all the linked compromised nodes relative to the red agents current position.
 
     Args:
         current_position: The red teams current position
@@ -70,8 +69,7 @@ def get_linked_uncompromised_nodes(
     current_position: int, network: nx.Graph, machine_states: List[List[float]]
 ) -> List[int]:
     """
-    Return a list containing all the linked uncompromised nodes relative to the red
-    agents current position.
+    Return a list containing all the linked uncompromised nodes relative to the red agents current position.
 
     Args:
         current_position: The red teams current position

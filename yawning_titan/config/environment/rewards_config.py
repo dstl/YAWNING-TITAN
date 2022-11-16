@@ -27,6 +27,8 @@ class RewardsConfig(ConfigABC):
     @property
     def rewards_for_reaching_max_steps(self) -> int:
         """
+        Rewards for reaching max steps.
+
         Rewards for the blue agent winning by reaching the maximum number of
         steps.
         """
@@ -35,6 +37,8 @@ class RewardsConfig(ConfigABC):
     @property
     def end_rewards_are_multiplied_by_end_state(self) -> bool:
         """
+        End rewards are multiplied by end state.
+
         How good the end state is (what % blue controls) is multiplied by
         the rewards that blue receives for winning.
         """
@@ -43,6 +47,8 @@ class RewardsConfig(ConfigABC):
     @property
     def reduce_negative_rewards_for_closer_fails(self) -> bool:
         """
+        Reduce negative rewards for closer fails.
+
         The negative rewards from the red agent winning are reduced the
         closer to the end the blue agent gets.
         """
@@ -51,6 +57,8 @@ class RewardsConfig(ConfigABC):
     @property
     def reward_function(self) -> str:
         """
+        Reward function.
+
         There are several built in example reward methods that you can
         choose from (shown below). You can also create your own reward
         method by copying one of the built in methods and calling it here

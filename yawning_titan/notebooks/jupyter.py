@@ -1,6 +1,8 @@
 """
-The jupyter module handles 'resetting' the default Jupyter notebooks in the
-app jupyter directory, and for starting a new jupyter notebook environment.
+The Jupyter module.
+
+The jupyter module handles 'resetting' the default Jupyter notebooks in the app jupyter directory, and for starting a
+new jupyter notebook environment.
 """
 import filecmp
 import importlib.util
@@ -17,11 +19,11 @@ _LOGGER = getLogger(__name__)
 
 def reset_default_jupyter_notebooks(overwrite_existing: bool = True):
     """
-    Resets the default jupyter notebooks in the app notebooks directory by
-    copying the templates over from the library notebooks package data if they
-    do not already exist. If a notebook does already exist, but it has been
-    edited, passing overwrite_existing=True as a parameter will replace the
-    edited notebook with the original.
+    Resets the default jupyter notebooks in the app notebooks directory.
+
+    This is done by copying the templates over from the library notebooks package data if they do not already exist.
+    If a notebook does already exist, but it has been edited, passing overwrite_existing=True as a parameter will
+    replace the edited notebook with the original.
 
     Default notebooks:
     ------------------
@@ -65,10 +67,7 @@ def reset_default_jupyter_notebooks(overwrite_existing: bool = True):
 
 
 def start_jupyter_session():
-    """
-    Starts a new Jupyter notebook session in the app notebooks directory.
-    Currently only works on Windows OS.
-    """
+    """Starts a new Jupyter notebook session. in the app notebooks directory. Currently only works on Windows OS."""
     reset_default_jupyter_notebooks(overwrite_existing=False)
     # TODO: Figure out how to get this working for Linux and MacOS too.
     if sys.platform == "win32":

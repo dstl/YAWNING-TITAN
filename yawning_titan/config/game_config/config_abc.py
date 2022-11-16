@@ -8,15 +8,18 @@ from typing import Any, Dict
 @dataclass()
 class ConfigABC(ABC):
     """
-    The `ConfigABC` class is an abstract base class Yawning-Titan config
-    classes inherit from. `ConfigABC` has two abstract class methods,
-    `.create` and `._validate`. `ConfigABC` also has a `to_dict()` function
-    with predefined logic.
+    The `ConfigABC` class is an ABS that config classes inherit from.
+
+    `ConfigABC` has two abstract class methods, `.create` and
+    `._validate`. `ConfigABC` also has a `to_dict()` function with
+    predefined logic.
     """
 
     def to_dict(self) -> Dict:
         """
-        Serializes a subclass of ConfigABC as a dict. As instances of
+        Serializes a subclass of ConfigABC as a dict.
+
+        As instances of
         ConfigABC are dataclasses, the default `__dict__` method is
         used to access the attributes. The private key name of each
         attribute has its underscore prefix removed before the key and value
@@ -36,6 +39,8 @@ class ConfigABC(ABC):
     @abstractmethod
     def create(cls, config_dict: Dict[str, Any]):
         """
+        Create abstract class method.
+
         An abstract class method that is to be implemented by subclasses of
         `ConfigGroupClass`. The `.create` method should take a dict
         containing the config item keys and values required to instantiate
@@ -47,6 +52,8 @@ class ConfigABC(ABC):
     @abstractmethod
     def _validate(cls, config_dict: Dict[str, Any]):
         """
+        Validate abstract class method.
+
         An abstract class method that is to be implemented by subclasses of
         `ConfigGroupClass`. The `._validate` method should take a dict
         containing the config item keys and values that are to be validated.

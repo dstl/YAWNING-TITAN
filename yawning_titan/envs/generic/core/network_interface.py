@@ -198,7 +198,7 @@ class NetworkInterface:
 
     def get_target_node(self) -> int:
         """
-        Get the node which is being targeted in the config
+        Get the node which is being targeted in the config.
 
         Returns:
             The target node if it exists
@@ -700,6 +700,7 @@ class NetworkInterface:
     def generate_vulnerability(self) -> float:
         """
         Generate a single vulnerability value.
+
         Args:
             lower_bound: lower bound of random generation
             upper_bound: upper bound of random generation
@@ -718,6 +719,7 @@ class NetworkInterface:
     def generate_vulnerabilities(self) -> dict:
         """
         Generate vulnerability values for n nodes.
+
         These values are randomly generated between the upper and lower bounds within the
         game_mode.
         Args:

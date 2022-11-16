@@ -9,7 +9,7 @@ from yawning_titan.envs.generic.helpers.environment_input_validation import chec
 
 @dataclass()
 class ObservationSpaceConfig(ConfigABC):
-    """Class that validates and stores the Observation Space configuration"""
+    """Class that validates and stores the Observation Space configuration."""
 
     _compromised_status: bool
     _vulnerabilities: bool
@@ -111,8 +111,7 @@ class ObservationSpaceConfig(ConfigABC):
     @classmethod
     def create(cls, config_dict: Dict[str, Any]) -> ObservationSpaceConfig:
         """
-        Creates an instance of `ObservationSpaceConfig` after calling
-        `.validate`.
+        Creates an instance of `ObservationSpaceConfig` after calling `.validate`.
 
         Args:
             config_dict: A config dict with the required key/values pairs.

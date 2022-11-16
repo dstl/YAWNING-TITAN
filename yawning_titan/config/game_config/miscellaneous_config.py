@@ -9,7 +9,7 @@ from yawning_titan.envs.generic.helpers.environment_input_validation import chec
 
 @dataclass()
 class MiscellaneousConfig(ConfigABC):
-    """Class that validates and stores the Miscellaneous Configuration"""
+    """Class that validates and stores the Miscellaneous Configuration."""
 
     _output_timestep_data_to_json: bool
     _random_seed: Optional[int]
@@ -17,9 +17,10 @@ class MiscellaneousConfig(ConfigABC):
     @property
     def output_timestep_data_to_json(self) -> bool:
         """
-        Toggle to output a json file for each step that contains the
-        connections between nodes, the states of the nodes and the attacks
-        that blue saw in that turn.
+        Toggle to output a json file.
+
+        For each step that contains the connections between nodes, the
+        states of the nodes and the attacks that blue saw in that turn.
         """
         return self._output_timestep_data_to_json
 
@@ -30,7 +31,9 @@ class MiscellaneousConfig(ConfigABC):
     @property
     def random_seed(self) -> Optional[int]:
         """
-        A random_seed used for the random number generators in
+        A random_seed int.
+
+        Used for the random number generators in
         both python and numpy to create a deterministic
         output for the game.
         """

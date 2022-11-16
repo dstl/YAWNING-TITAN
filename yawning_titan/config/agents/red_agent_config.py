@@ -50,6 +50,8 @@ class RedAgentConfig(ConfigABC):
     @property
     def red_skill(self) -> int:
         """
+        Red Skill.
+
         The red agents skill level. Higher means that red is more likely to
         succeed in attacks.
         """
@@ -73,6 +75,8 @@ class RedAgentConfig(ConfigABC):
     @property
     def red_can_only_attack_from_red_agent_node(self) -> bool:
         """
+        Red can only attack from red agent node.
+
         The red agent will only ever be in one node however it can control any
         amount of nodes. Can the red agent only attack from its one main
         node or can it attack from any node that it controls.
@@ -82,6 +86,8 @@ class RedAgentConfig(ConfigABC):
     @property
     def red_can_attack_from_any_red_node(self) -> bool:
         """
+        Red can attack from any node.
+
         The red agent will only ever be in one node however it can control any
         amount of nodes. Can the red agent only attack from its one main
         node or can it attack from any node that it controls.
@@ -96,6 +102,8 @@ class RedAgentConfig(ConfigABC):
     @property
     def chance_to_spread_to_connected_node(self) -> int:
         """
+        Chance to spread to connected node.
+
         If a node is connected to a compromised node what chance does it have
         to become compromised every turn through natural spreading.
         """
@@ -104,6 +112,8 @@ class RedAgentConfig(ConfigABC):
     @property
     def chance_to_spread_to_unconnected_node(self) -> int:
         """
+        Chance to spread to unconnected node.
+
         If a node is not connected to a compromised node what chance does it
         have to become randomly infected through natural spreading.
         """
@@ -142,6 +152,8 @@ class RedAgentConfig(ConfigABC):
     @property
     def red_uses_basic_attack_action(self) -> bool:
         """
+        Red uses basic attack action.
+
         The red agent picks a single node connected to an infected node and
         tries to attack and take over that node.
         """
@@ -175,6 +187,8 @@ class RedAgentConfig(ConfigABC):
     @property
     def red_uses_zero_day_action(self) -> bool:
         """
+        Red uses zero day action.
+
         The red agent will pick a safe node connected to an infected node and
         take it over with a 100% chance to succeed (can only happen every n
         timesteps).
@@ -188,10 +202,7 @@ class RedAgentConfig(ConfigABC):
 
     @property
     def days_required_for_zero_day(self) -> int:
-        """
-        The amount of 'progress' that need to have passed before the red
-        agent gains a zero day attack.
-        """
+        """The amount of 'progress' that need to have passed before the red agent gains a zero day attack."""
         return self._days_required_for_zero_day
 
     @property
@@ -206,42 +217,27 @@ class RedAgentConfig(ConfigABC):
 
     @property
     def red_prioritises_connected_nodes(self) -> bool:
-        """
-        Red sorts the nodes it can attack and chooses the one that has the
-        most connections.
-        """
+        """Red sorts the nodes it can attack and chooses the one that has the most connections."""
         return self._red_prioritises_connected_nodes
 
     @property
     def red_prioritises_un_connected_nodes(self) -> bool:
-        """
-        Red sorts the nodes it can attack and chooses the one that has the
-        least connections.
-        """
+        """Red sorts the nodes it can attack and chooses the one that has the least connections."""
         return self._red_prioritises_un_connected_nodes
 
     @property
     def red_prioritises_vulnerable_nodes(self) -> bool:
-        """
-        Red sorts the nodes is can attack and chooses the one that is the
-        most vulnerable.
-        """
+        """Red sorts the nodes is can attack and chooses the one that is the most vulnerable."""
         return self._red_prioritises_vulnerable_nodes
 
     @property
     def red_prioritises_resilient_nodes(self) -> bool:
-        """
-        Red sorts the nodes is can attack and chooses the one that is the
-        least vulnerable.
-        """
+        """Red sorts the nodes is can attack and chooses the one that is the least vulnerable."""
         return self._red_prioritises_resilient_nodes
 
     @property
     def red_always_chooses_shortest_distance_to_target(self) -> bool:
-        """
-        Red always chooses the absolute shortest distance to target with
-        no randomisation.
-        """
+        """Red always chooses the absolute shortest distance to target with no randomisation."""
         return self._red_always_chooses_shortest_distance_to_target
 
     # endregion
