@@ -148,7 +148,7 @@ setup(
         "pandas==1.3.5",
         "platformdirs==2.5.2",
         "pyyaml==5.4.1",
-        "typing-extensions==4.0.1",
+        "typing-extensions==4.4.0",
         "torch==1.12.1 ",
         "tensorboard==2.10.1 ",
         "dm-tree==0.1.7",
@@ -162,6 +162,7 @@ setup(
             "sphinx_rtd_theme",
             "sphinx",
             "pre-commit",
+            "nbmake==1.3.4",
         ],
         "tensorflow": ["tensorflow"],  # TODO: Determine version and lock it in
         "jupyter": ["jupyter"],
