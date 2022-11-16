@@ -1,6 +1,7 @@
 from __future__ import annotations
-from dataclasses import dataclass, field
-from typing import Dict, Any
+
+from dataclasses import dataclass
+from typing import Any, Dict
 
 from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.envs.generic.helpers.environment_input_validation import (
@@ -11,9 +12,7 @@ from yawning_titan.envs.generic.helpers.environment_input_validation import (
 
 @dataclass()
 class GameRulesConfig(ConfigABC):
-    """
-    Class that validates and stores Game Rules Configuration
-    """
+    """Class that validates and stores Game Rules Configuration."""
 
     _min_number_of_network_nodes: int
     _node_vulnerability_lower_bound: float
@@ -36,131 +35,91 @@ class GameRulesConfig(ConfigABC):
     # region Getters
     @property
     def min_number_of_network_nodes(self) -> int:
-        """
-        Minimum number of nodes the network this game mode is allowed to run
-        on.
-        """
+        """Minimum number of nodes the network this game mode is allowed to run on."""
         return self._min_number_of_network_nodes
 
     @property
     def node_vulnerability_lower_bound(self) -> float:
-        """
-        A lower vulnerability means that a node is less likely to be
-        compromised.
-        """
+        """A lower vulnerability means that a node is less likely to be compromised."""
         return self._node_vulnerability_lower_bound
 
     @property
     def node_vulnerability_upper_bound(self) -> float:
-        """
-        A higher vulnerability means that a node is more vulnerable.
-        """
+        """A higher vulnerability means that a node is more vulnerable."""
         return self._node_vulnerability_upper_bound
 
     @property
     def max_steps(self) -> int:
-        """
-        The max steps that a game can go on for. If the blue agent reaches
-        this they win.
-        """
+        """The max steps that a game can go on for. If the blue agent reaches this they win."""
         return self._max_steps
 
     @property
     def lose_when_all_nodes_lost(self) -> bool:
-        """
-        The blue agent loses if all the nodes become compromised.
-        """
+        """The blue agent loses if all the nodes become compromised."""
         return self._lose_when_all_nodes_lost
 
     @property
     def lose_when_n_percent_of_nodes_lost(self) -> bool:
-        """
-        The blue agent loses if n% of the nodes become compromised.
-        """
+        """The blue agent loses if n% of the nodes become compromised."""
         return self._lose_when_n_percent_of_nodes_lost
 
     @property
     def percentage_of_nodes_compromised_equals_loss(self) -> float:
-        """
-        The percentage of nodes that need to be lost for blue to lose.
-        """
+        """The percentage of nodes that need to be lost for blue to lose."""
         return self._percentage_of_nodes_compromised_equals_loss
 
     @property
     def lose_when_high_value_node_lost(self) -> bool:
-        """
-        Blue loses if a special 'high value' target is lost (a node picked
-        in the environment).
-        """
+        """Blue loses if a special 'high value' target is lost (a node picked in the environment)."""
         return self._lose_when_high_value_node_lost
 
-    
     @property
     def lose_when_target_node_lost(self) -> bool:
-        """
-        Blue loses if the target node is lost (a node picked
-        in the environment).
-        """
+        """Blue loses if the target node is lost (a node picked in the environment)."""
         return self._lose_when_target_node_lost
 
     @property
     def number_of_high_value_nodes(self) -> int:
-        """
-        If no high value nodes are supplied, how many should be chosen.
-        """
+        """If no high value nodes are supplied, how many should be chosen."""
         return self._number_of_high_value_nodes
 
     @property
     def choose_high_value_nodes_placement_at_random(self) -> bool:
-        """
-        The high value node is picked at random.
-        """
+        """The high value node is picked at random."""
         return self._choose_high_value_nodes_placement_at_random
 
     @property
     def choose_high_value_nodes_furthest_away_from_entry(self) -> bool:
-        """
-        The node furthest away from the entry points to the network is
-        picked as the target.
-        """
+        """The node the furthest away from the entry points to the network is picked as the target."""
         return self._choose_high_value_nodes_furthest_away_from_entry
 
     @property
     def choose_entry_nodes_randomly(self) -> bool:
-        """
-        If no entry nodes are supplied choose some at random.
-        """
+        """If no entry nodes are supplied choose some at random."""
         return self._choose_entry_nodes_randomly
 
     @property
     def number_of_entry_nodes(self) -> int:
-        """
-        If no entry nodes are supplied then how many should be chosen.
-        """
+        """If no entry nodes are supplied then how many should be chosen."""
         return self._number_of_entry_nodes
 
     @property
     def prefer_central_nodes_for_entry_nodes(self) -> bool:
-        """
-        If no entry nodes are supplied then what bias is applied to the
-        nodes when choosing random entry nodes.
-        """
+        """If no entry nodes are supplied then what bias is applied to the  nodes when choosing random entry nodes."""
         return self._prefer_central_nodes_for_entry_nodes
 
     @property
     def prefer_edge_nodes_for_entry_nodes(self) -> bool:
-        """
-        If no entry nodes are supplied then what bias is applied to the
-        nodes when choosing random entry nodes.
-        """
+        """If no entry nodes are supplied then what bias is applied to the nodes when choosing random entry nodes."""
         return self._prefer_edge_nodes_for_entry_nodes
 
     @property
     def grace_period_length(self) -> int:
         """
-        The length of a grace period at the start of the game. During this
-        time the red agent cannot act. This gives the blue agent a chance to
-        "prepare" (A length of 0 means that there is no grace period).
+        The length of a grace period at the start of the game.
+
+        During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0
+        means that there is no grace period).
         """
         return self._grace_period_length
 
@@ -266,9 +225,7 @@ class GameRulesConfig(ConfigABC):
             _lose_when_high_value_node_lost=config_dict[
                 "lose_when_high_value_node_lost"
             ],
-            _lose_when_target_node_lost=config_dict[
-                "lose_when_target_node_lost"
-            ],
+            _lose_when_target_node_lost=config_dict["lose_when_target_node_lost"],
             _number_of_high_value_nodes=config_dict["number_of_high_value_nodes"],
             _choose_high_value_nodes_placement_at_random=config_dict[
                 "choose_high_value_nodes_placement_at_random"
@@ -310,7 +267,8 @@ class GameRulesConfig(ConfigABC):
             > config_dict["node_vulnerability_upper_bound"]
         ):
             raise ValueError(
-                "'node_vulnerability_lower_bound', 'node_vulnerability_upper_bound' -> The lower bound for the node vulnerabilities should be less than the upper bound"
+                "'node_vulnerability_lower_bound', 'node_vulnerability_upper_bound' -> The lower bound for the node "
+                "vulnerabilities should be less than the upper bound "
             )
         check_type(config_dict, "max_steps", [int])
         check_type(config_dict, "number_of_entry_nodes", [int])
@@ -366,7 +324,8 @@ class GameRulesConfig(ConfigABC):
             and config_dict["prefer_edge_nodes_for_entry_nodes"]
         ):
             raise ValueError(
-                "'prefer_central_nodes_for_entry_nodes', 'prefer_edge_nodes_for_entry_nodes' -> cannot prefer both central and edge nodes"
+                "'prefer_central_nodes_for_entry_nodes', 'prefer_edge_nodes_for_entry_nodes' -> cannot prefer both "
+                "central and edge nodes "
                 # noqa
             )
 
@@ -377,7 +336,8 @@ class GameRulesConfig(ConfigABC):
             and (not config_dict["lose_when_target_node_lost"])
         ):
             raise ValueError(
-                "'lose_when_target_node_lost', 'lose_when_all_nodes_lost', 'lose_when_n_percent_of_nodes_lost', 'lose_when_high_value_node_lost' -> At least one loose condition must be turned on"
+                "'lose_when_target_node_lost', 'lose_when_all_nodes_lost', 'lose_when_n_percent_of_nodes_lost', "
+                "'lose_when_high_value_node_lost' -> At least one loose condition must be turned on "
                 # noqa
             )
 
@@ -385,12 +345,12 @@ class GameRulesConfig(ConfigABC):
             # if there is no way to set high value nodes
             if (
                 not config_dict["choose_high_value_nodes_placement_at_random"]
-                and not config_dict[
-                    "choose_high_value_nodes_furthest_away_from_entry"
-                ]
+                and not config_dict["choose_high_value_nodes_furthest_away_from_entry"]
             ):
                 raise ValueError(
-                    "'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' -> A method of selecting a high value node must be chosen"
+                    "'choose_high_value_nodes_placement_at_random', "
+                    "'choose_high_value_nodes_furthest_away_from_entry' -> A method of selecting a high value node "
+                    "must be chosen "
                     # noqa
                 )
             # if there are conflicting configurations
@@ -399,7 +359,9 @@ class GameRulesConfig(ConfigABC):
                 and config_dict["choose_high_value_nodes_furthest_away_from_entry"]
             ):
                 raise ValueError(
-                    "'choose_high_value_nodes_placement_at_random', 'choose_high_value_nodes_furthest_away_from_entry' -> Only one method of selecting a high value node should be selected"
+                    "'choose_high_value_nodes_placement_at_random', "
+                    "'choose_high_value_nodes_furthest_away_from_entry' -> Only one method of selecting a high value "
+                    "node should be selected "
                     # noqa
                 )
 

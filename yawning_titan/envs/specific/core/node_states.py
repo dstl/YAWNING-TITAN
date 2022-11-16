@@ -5,8 +5,8 @@ import networkx as nx
 """
 node_states.py
 
-This module contains helper functions to find compromised and uncompromised nodes for the four-node-def-v0 and
-five-node-def-v0 environments
+This module contains helper functions to find compromised and uncompromised nodes for
+the four-node-def-v0 and five-node-def-v0 environments.
 """
 
 
@@ -44,7 +44,7 @@ def get_linked_compromised_nodes(
     current_position: int, network: nx.Graph, machine_states: List[List[float]]
 ) -> List[int]:
     """
-    Return a list containing all of the linked compromised nodes relative to the red agents current position.
+    Return a list containing all the linked compromised nodes relative to the red agents current position.
 
     Args:
         current_position: The red teams current position
@@ -69,7 +69,7 @@ def get_linked_uncompromised_nodes(
     current_position: int, network: nx.Graph, machine_states: List[List[float]]
 ) -> List[int]:
     """
-    Return a list containing all of the linked uncompromised nodes relative to the red agents current position.
+    Return a list containing all the linked uncompromised nodes relative to the red agents current position.
 
     Args:
         current_position: The red teams current position

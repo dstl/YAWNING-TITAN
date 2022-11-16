@@ -10,10 +10,10 @@ from yawning_titan import LOG_FILE_PATH
 @pytest.mark.unit_test
 def test_log_file_location():
     """
-    Tests the Yawning-Titan logging config by asserting that the log file
-    exists in the assumed place, and by testing that a unique entry in the log
-    is written by reading it back in, parsing the log, and comparing the
-    message.
+    Tests the application log file.
+
+    Tests the Yawning-Titan logging config by asserting that the log file exists in the assumed place, and by testing
+    that a unique entry in the log is written by reading it back in, parsing the log, and comparing the message.
     """
     expected_location = LOG_FILE_PATH
     _LOGGER = getLogger(__name__)

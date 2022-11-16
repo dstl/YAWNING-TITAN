@@ -221,7 +221,7 @@ RESET:
   randomise_vulnerabilities_on_reset: False
   choose_new_high_value_nodes_on_reset: False
   choose_new_entry_nodes_on_reset: False
-  
+
 
 REWARDS:
   # Rewards for the blue agent losing

@@ -1,6 +1,7 @@
 from __future__ import annotations
-from dataclasses import dataclass,field
-from typing import Dict, Any
+
+from dataclasses import dataclass
+from typing import Any, Dict
 
 from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_type
@@ -8,9 +9,8 @@ from yawning_titan.envs.generic.helpers.environment_input_validation import chec
 
 @dataclass()
 class ObservationSpaceConfig(ConfigABC):
-    """
-    Class that validates and stores the Observation Space configuration
-    """
+    """Class that validates and stores the Observation Space configuration."""
+
     _compromised_status: bool
     _vulnerabilities: bool
     _node_connections: bool
@@ -24,68 +24,49 @@ class ObservationSpaceConfig(ConfigABC):
     # region Getters
     @property
     def compromised_status(self) -> bool:
-        """
-        The blue agent can see the compromised status of all the nodes.
-        """
+        """The blue agent can see the compromised status of all the nodes."""
         return self._compromised_status
 
     @property
     def vulnerabilities(self) -> bool:
-        """
-        The blue agent can see the vulnerability scores of all the nodes.
-        """
+        """The blue agent can see the vulnerability scores of all the nodes."""
         return self._vulnerabilities
 
     @property
     def node_connections(self) -> bool:
-        """
-        The blue agent can see what nodes are connected to what other nodes.
-        """
+        """The blue agent can see what nodes are connected to what other nodes."""
         return self._node_connections
 
     @property
     def average_vulnerability(self) -> bool:
-        """
-        The blue agent can see the average vulnerability of all the nodes.
-        """
+        """The blue agent can see the average vulnerability of all the nodes."""
         return self._average_vulnerability
 
     @property
     def graph_connectivity(self) -> bool:
-        """
-        The blue agent can see a graph connectivity score.
-        """
+        """The blue agent can see a graph connectivity score."""
         return self._graph_connectivity
 
     @property
     def attacking_nodes(self) -> bool:
-        """
-        The blue agent can see all of the nodes that have recently attacked
-        a safe node.
-        """
+        """The blue agent can see all the nodes that have recently attacked a safe node."""
         return self._attacking_nodes
 
     @property
     def attacked_nodes(self) -> bool:
-        """
-        The blue agent can see all the nodes that have recently been attacked.
-        """
+        """The blue agent can see all the nodes that have recently been attacked."""
         return self._attacked_nodes
 
     @property
     def special_nodes(self) -> bool:
-        """
-        The blue agent can see all of the special nodes (entry nodes,
-        high value nodes).
-        """
+        """The blue agent can see all the special nodes (entry nodes,high value nodes)."""
         return self._special_nodes
 
     @property
     def red_agent_skill(self) -> bool:
-        """
-        The blue agent can see the skill level of the red agent.
-        """
+        """The blue agent can see the skill level of the red agent."""
         return self._red_agent_skill
+
     # endregion
 
     # region Setters
@@ -124,13 +105,13 @@ class ObservationSpaceConfig(ConfigABC):
     @red_agent_skill.setter
     def red_agent_skill(self, value):
         self._red_agent_skill = value
+
     # endregion
 
     @classmethod
     def create(cls, config_dict: Dict[str, Any]) -> ObservationSpaceConfig:
         """
-        Creates an instance of `ObservationSpaceConfig` after calling
-        `.validate`.
+        Creates an instance of `ObservationSpaceConfig` after calling `.validate`.
 
         Args:
             config_dict: A config dict with the required key/values pairs.
@@ -169,5 +150,6 @@ class ObservationSpaceConfig(ConfigABC):
 
         if True not in list(map(lambda x: config_dict[x], all_obs)):
             raise ValueError(
-                "At least one option from OBSERVATION_SPACE must be enabled. The observation space must contain at least one item"
+                "At least one option from OBSERVATION_SPACE must be enabled. The observation space must contain at "
+                "least one item "
             )

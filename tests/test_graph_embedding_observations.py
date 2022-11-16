@@ -6,40 +6,56 @@ from stable_baselines3.common.env_checker import check_env
 from stable_baselines3.common.env_util import is_wrapped
 
 from tests import TEST_CONFIG_PATH
-from yawning_titan.config.game_modes import \
-    low_skill_red_with_random_infection_perfect_detection_path
+from yawning_titan.config.game_modes import (
+    low_skill_red_with_random_infection_perfect_detection_path,
+)
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.envs.generic.wrappers.graph_embedding_observations import (
     FeatherGraphEmbedObservation,
 )
 
+
 @pytest.mark.parametrize(
-    ("path","creator_type","num_nodes"),
+    ("path", "creator_type", "num_nodes"),
     [
-        (str(low_skill_red_with_random_infection_perfect_detection_path()),"mesh",18),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml"),"18node",50),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"),"mesh",100),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"),"mesh",250),
+        (str(low_skill_red_with_random_infection_perfect_detection_path()), "mesh", 18),
+        (os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml"), "18node", 50),
+        (os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"), "mesh", 100),
+        (os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"), "mesh", 250),
     ],
 )
-def test_wrapped_env(generate_generic_env_test_reqs,path:str,creator_type:str,num_nodes:int) -> None:
+def test_wrapped_env(
+    generate_generic_env_test_reqs, path: str, creator_type: str, num_nodes: int
+) -> None:
     """Test that the environment get correctly wrapped with the Feather Observation Wrapper."""
-    env:GenericNetworkEnv = FeatherGraphEmbedObservation(generate_generic_env_test_reqs(path,creator_type,num_nodes,entry_nodes=["0", "1", "2"]),num_nodes)
+    env: GenericNetworkEnv = FeatherGraphEmbedObservation(
+        generate_generic_env_test_reqs(
+            path, creator_type, num_nodes, entry_nodes=["0", "1", "2"]
+        ),
+        num_nodes,
+    )
     assert is_wrapped(env, FeatherGraphEmbedObservation)
 
 
 @pytest.mark.parametrize(
-    ("path","creator_type","num_nodes"),
+    ("path", "creator_type", "num_nodes"),
     [
-        (str(low_skill_red_with_random_infection_perfect_detection_path()),"mesh",18),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml"),"18node",50),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"),"mesh",100),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"),"mesh",250),
+        (str(low_skill_red_with_random_infection_perfect_detection_path()), "mesh", 18),
+        (os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml"), "18node", 50),
+        (os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"), "mesh", 100),
+        (os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"), "mesh", 250),
     ],
 )
-def test_obs_size(generate_generic_env_test_reqs,path:str,creator_type:str,num_nodes:int) -> None:
+def test_obs_size(
+    generate_generic_env_test_reqs, path: str, creator_type: str, num_nodes: int
+) -> None:
     """Test that the observation size returned by the environment is the correct length."""
-    env:GenericNetworkEnv = FeatherGraphEmbedObservation(generate_generic_env_test_reqs(path,creator_type,num_nodes,entry_nodes=["0", "1", "2"]),num_nodes)
+    env: GenericNetworkEnv = FeatherGraphEmbedObservation(
+        generate_generic_env_test_reqs(
+            path, creator_type, num_nodes, entry_nodes=["0", "1", "2"]
+        ),
+        num_nodes,
+    )
     observation_size = env.calculate_observation_space_size(with_feather=True)
 
     for i in range(5):
@@ -48,15 +64,26 @@ def test_obs_size(generate_generic_env_test_reqs,path:str,creator_type:str,num_n
 
 
 @pytest.mark.parametrize(
-    ("path","creator_type","num_nodes","num_nodes_check"),
+    ("path", "creator_type", "num_nodes", "num_nodes_check"),
     [
-        (str(low_skill_red_with_random_infection_perfect_detection_path()),"mesh",18,18),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml"),"18node",50,52),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"),"mesh",100,100),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"),"mesh",250,252),
+        (
+            str(low_skill_red_with_random_infection_perfect_detection_path()),
+            "mesh",
+            18,
+            18,
+        ),
+        (os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml"), "18node", 50, 52),
+        (os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"), "mesh", 100, 100),
+        (os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"), "mesh", 250, 252),
     ],
 )
-def test_obs_range(generate_generic_env_test_reqs,path:str,creator_type:str,num_nodes:int,num_nodes_check: int) -> None:
+def test_obs_range(
+    generate_generic_env_test_reqs,
+    path: str,
+    creator_type: str,
+    num_nodes: int,
+    num_nodes_check: int,
+) -> None:
     """
     Test that each component of the observation space in the environment has the correct length and value range.
 
@@ -64,7 +91,12 @@ def test_obs_range(generate_generic_env_test_reqs,path:str,creator_type:str,num_
         - 500 value graph embedding
         - other features from the env based on input from the settings file
     """
-    env:GenericNetworkEnv = FeatherGraphEmbedObservation(generate_generic_env_test_reqs(path,creator_type,num_nodes,entry_nodes=["0", "1", "2"]),num_nodes)
+    env: GenericNetworkEnv = FeatherGraphEmbedObservation(
+        generate_generic_env_test_reqs(
+            path, creator_type, num_nodes, entry_nodes=["0", "1", "2"]
+        ),
+        num_nodes,
+    )
     for i in range(5):
         obs = env.reset()
         np.set_printoptions(suppress=True)
@@ -95,4 +127,11 @@ def test_obs_range(generate_generic_env_test_reqs,path:str,creator_type:str,num_
 
 def test_env_check(generate_generic_env_test_reqs) -> None:
     """Test to Stable Baselines 3 Environment checker compliance once wrapped."""
-    check_env(generate_generic_env_test_reqs(str(low_skill_red_with_random_infection_perfect_detection_path()),"mesh",18,entry_nodes=["0", "1", "2"]))
+    check_env(
+        generate_generic_env_test_reqs(
+            str(low_skill_red_with_random_infection_perfect_detection_path()),
+            "mesh",
+            18,
+            entry_nodes=["0", "1", "2"],
+        )
+    )

@@ -9,6 +9,8 @@ from setuptools.command.install import install
 
 def _create_app_dirs():
     """
+    Creates the app dirs.
+
     Uses platformdirs to create the required app directories in the correct
     locations based on the users OS.
 
@@ -47,27 +49,27 @@ def _create_app_dirs():
 
 
 class PostDevelopCommand(develop):
-    """
-    Post-installation command class for development mode.
-    """
+    """Post-installation command class for development mode."""
 
     def run(self):
+        """Run the installation command then create the app dirs."""
         develop.run(self)
         _create_app_dirs()
 
 
 class PostInstallCommand(install):
-    """
-    Post-installation command class for installation mode.
-    """
+    """Post-installation command class for installation mode."""
 
     def run(self):
+        """Run the installation command then create the app dirs."""
         install.run(self)
         _create_app_dirs()
 
 
 def _ray_3_beta_rllib_py_platform_pip_install() -> str:
     """
+    Python version and OS version map to ray 3.0.0.dev0 .whel.
+
     Maps the operating system and the Python version to the relevant .whl
     file for Ray 3.0.0.dev0 beta version. Uses it to build a pip install
     string for installing Ray 3.0.0.dev0 with the [rllib] extra.

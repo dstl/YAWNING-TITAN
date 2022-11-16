@@ -62,7 +62,7 @@ with open(
     os.path.join(_YT_ROOT_DIR, "config", "_package_data", "logging_config.yaml"), "r"
 ) as stream:
     config = yaml.load(stream, Loader=yaml.FullLoader)
-    
+
 LOG_FILE_PATH: Final[str] = os.path.join(
     LOG_DIR, config["handlers"]["info_rotating_file_handler"]["filename"]
 )

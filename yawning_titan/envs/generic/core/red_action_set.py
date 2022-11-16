@@ -35,21 +35,23 @@ class RedActionSet:
         """
         self.network_interface = network_interface
         self.skill = self.network_interface.game_mode.red.red_skill
-        self.zero_day_amount = self.network_interface.game_mode.red.zero_day_start_amount
+        self.zero_day_amount = (
+            self.network_interface.game_mode.red.zero_day_start_amount
+        )
         self.zero_day_required = (
             self.network_interface.game_mode.red.days_required_for_zero_day
         )
-       
+
         self.action_set = action_set
         self.action_probabilities = action_probabilities
 
         self.reset()
 
     def reset(self):
-        """
-        Reset red agent episode dependent variables to initial value.
-        """
-        self.zero_day_amount = self.network_interface.game_mode.red.zero_day_start_amount
+        """Reset red agent episode dependent variables to initial value."""
+        self.zero_day_amount = (
+            self.network_interface.game_mode.red.zero_day_start_amount
+        )
         self.zero_day_current_day = 0
 
     def choose_target_node(self) -> Union[Tuple[str, str], Tuple[bool, bool]]:
@@ -76,7 +78,9 @@ class RedActionSet:
                     ):
                         original_node[connected_node] = node
                         possible_to_attack.add(connected_node)
-        elif self.network_interface.game_mode.red.red_can_only_attack_from_red_agent_node:
+        elif (
+            self.network_interface.game_mode.red.red_can_only_attack_from_red_agent_node
+        ):
             # If red can only attack from the central red node
             red_location = self.network_interface.get_red_location()
             if red_location is not None:
@@ -94,7 +98,7 @@ class RedActionSet:
                 possible_to_attack.add(node)
                 original_node[node] = None
 
-        possible_to_attack =  sorted(list(possible_to_attack))
+        possible_to_attack = sorted(list(possible_to_attack))
 
         weights = []
         # red can prioritise nodes based on some different parameters chosen in the settings menu
@@ -130,9 +134,13 @@ class RedActionSet:
                     1 / self.network_interface.get_single_node_vulnerability(node)
                 )
         elif self.network_interface.game_mode.red.red_target_node is not None:
-            distances = self.network_interface.get_shortest_distances_to_target(possible_to_attack)
+            distances = self.network_interface.get_shortest_distances_to_target(
+                possible_to_attack
+            )
             for dist in distances:
-                if self.network_interface.game_mode.red.red_always_chooses_shortest_distance_to_target:
+                if (
+                    self.network_interface.game_mode.red.red_always_chooses_shortest_distance_to_target
+                ):
                     weight = 1 if dist == min(distances) else 0
                 else:
                     weight = 1 if dist == 0 else dist / sum(distances)
@@ -329,7 +337,9 @@ class RedActionSet:
             target,
             skill=self.skill,
             use_skill=self.network_interface.game_mode.red.red_uses_skill,
-            use_vulnerability=(not self.network_interface.game_mode.red.red_ignores_defences),
+            use_vulnerability=(
+                not self.network_interface.game_mode.red.red_ignores_defences
+            ),
             guarantee=self.network_interface.game_mode.red.red_always_succeeds,
         )
         if attack_status:
@@ -391,7 +401,10 @@ class RedActionSet:
                     set_of_spreading_nodes.add(node)
                     attacking_node_map[node] = compromised_node
 
-        if self.network_interface.game_mode.red.chance_to_spread_to_unconnected_node > 0:
+        if (
+            self.network_interface.game_mode.red.chance_to_spread_to_unconnected_node
+            > 0
+        ):
             for node in set_of_spreading_nodes:
                 if (
                     random.randint(0, 100)
@@ -509,7 +522,9 @@ class RedActionSet:
                     connected_node,
                     skill=self.network_interface.game_mode.red.chance_for_red_to_spread,
                     use_skill=True,
-                    use_vulnerability=(not self.network_interface.game_mode.red.red_ignores_defences),
+                    use_vulnerability=(
+                        not self.network_interface.game_mode.red.red_ignores_defences
+                    ),
                     guarantee=self.network_interface.game_mode.red.red_always_succeeds,
                 )
                 if attack_status:
@@ -553,12 +568,15 @@ class RedActionSet:
                 node,
                 skill=self.network_interface.game_mode.red.chance_for_red_to_random_compromise,
                 use_skill=True,
-                use_vulnerability=(not self.network_interface.game_mode.red.red_ignores_defences),
+                use_vulnerability=(
+                    not self.network_interface.game_mode.red.red_ignores_defences
+                ),
                 guarantee=self.network_interface.game_mode.red.red_always_succeeds,
             )
             nodes.append(node)
             if attack_status:
-                # Agent remembers each of the successes or failures for each node it attempts to intrude
+                # Agent remembers each of the successes or failures for each node it
+                # attempts to intrude
                 success.append(True)
             else:
                 success.append(False)

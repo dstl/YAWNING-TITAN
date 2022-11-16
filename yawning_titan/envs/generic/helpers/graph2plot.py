@@ -1,9 +1,30 @@
 import math
 import statistics
+from typing import Dict, List
 
 import matplotlib.pyplot as plt
 import networkx
 from matplotlib.lines import Line2D
+
+
+def repeat_check(node: Dict, legend_list: List[Line2D]):
+    """
+    Checks if a node already exists by comparing the nodes colour and description with nodes already in the legend.
+
+    Args:
+        node: A node dict.
+        legend_list: The legend list.
+
+    Returns:
+        `True` if is already exists, otherwise `False`.
+    """
+    for legend in legend_list:
+        if (
+            legend.get_markerfacecolor() == node["colour"]
+            and legend.get_label() == node["description"]
+        ):
+            return True
+    return False
 
 
 class CustomEnvGraph:
@@ -34,23 +55,23 @@ class CustomEnvGraph:
         plt.show(block=False)
 
     def render(
-            self,
-            current_step: int,
-            g: networkx.Graph,
-            pos: dict,
-            compromised_nodes: dict,
-            uncompromised_nodes: list,
-            attacks: list,
-            current_time_step_reward: float,
-            red_previous_node,
-            vulnerability_dict: dict,
-            made_safe_nodes: list,
-            title: str,
-            special_nodes: dict = None,
-            entrance_nodes: list = None,
-            show_only_blue_view: bool = False,
-            target_node:str = None,
-            show_node_names: bool = False,
+        self,
+        current_step: int,
+        g: networkx.Graph,
+        pos: dict,
+        compromised_nodes: dict,
+        uncompromised_nodes: list,
+        attacks: list,
+        current_time_step_reward: float,
+        red_previous_node,
+        vulnerability_dict: dict,
+        made_safe_nodes: list,
+        title: str,
+        special_nodes: dict = None,
+        entrance_nodes: list = None,
+        show_only_blue_view: bool = False,
+        target_node: str = None,
+        show_node_names: bool = False,
     ):
         """
         Render the current network into an axis.
@@ -148,30 +169,38 @@ class CustomEnvGraph:
                 )
             )
             # plots the target node
-            plt.scatter([pos[str(target_node)][0]], [pos[str(target_node)][1]], color="#2c195e", s=324, zorder=8)
-
-        legend_objects.extend([   
-            # An edge that red has attacked along this turn
-            Line2D(
-                [0],
-                [0],
-                color="red",
-                marker="_",
-                markerfacecolor="red",
-                label="Attack Path",
-                markersize=15,
-            ),
-            # An edge
-            Line2D(
-                [0],
-                [0],
-                color="gray",
-                marker="_",
-                markerfacecolor="gray",
-                label="Connection",
-                markersize=15,
+            plt.scatter(
+                [pos[str(target_node)][0]],
+                [pos[str(target_node)][1]],
+                color="#2c195e",
+                s=324,
+                zorder=8,
             )
-        ])
+
+        legend_objects.extend(
+            [
+                # An edge that red has attacked along this turn
+                Line2D(
+                    [0],
+                    [0],
+                    color="red",
+                    marker="_",
+                    markerfacecolor="red",
+                    label="Attack Path",
+                    markersize=15,
+                ),
+                # An edge
+                Line2D(
+                    [0],
+                    [0],
+                    color="gray",
+                    marker="_",
+                    markerfacecolor="gray",
+                    label="Connection",
+                    markersize=15,
+                ),
+            ]
+        )
 
         # If only showing the blue view then only render red nodes that blue can see
         if not show_only_blue_view:
@@ -200,7 +229,6 @@ class CustomEnvGraph:
         # Some environments may have special custom nodes that they want to add
         if len(special_nodes) > 0:
             for _, node_info in special_nodes.items():
-                repeat_check = lambda node, legend_list: any(legend.get_markerfacecolor() == node["colour"] and legend.get_label() == node["description"] for legend in legend_list)
 
                 # only insert if the legend is not in the list yet
                 if not repeat_check(node_info, legend_objects):
@@ -218,7 +246,6 @@ class CustomEnvGraph:
                             markersize=15,
                         ),
                     )
-
 
         # If entrance nodes are used then they are added to the legend
         if entrance_nodes is not None:
@@ -373,12 +400,12 @@ class CustomEnvGraph:
         # Creates a string containing information about the current state of the network
 
         info = (
-                "Current Step: "
-                + str(current_step)
-                + "\nReward for current time step: "
-                + str(current_time_step_reward)
-                + "\nCurrent Avg vulnerability: "
-                + str(round(statistics.mean(vulnerability_dict.values()), 2))
+            "Current Step: "
+            + str(current_step)
+            + "\nReward for current time step: "
+            + str(current_time_step_reward)
+            + "\nCurrent Avg vulnerability: "
+            + str(round(statistics.mean(vulnerability_dict.values()), 2))
         )
 
         ax = plt.gca()
