@@ -2,8 +2,10 @@ import os
 
 import pytest
 
-from yawning_titan.config.game_modes import default_game_mode_path, \
-    low_skill_red_with_random_infection_perfect_detection_path
+from yawning_titan.config.game_modes import (
+    default_game_mode_path,
+    low_skill_red_with_random_infection_perfect_detection_path,
+)
 
 
 @pytest.mark.unit_test
@@ -22,6 +24,4 @@ def test_low_skill_red_with_random_infection_perfect_detection_path():
     low_skill_red_with_random_infection_perfect_detection.yaml file returns a
     Path to the file that exists.
     """
-    assert os.path.isfile(
-        low_skill_red_with_random_infection_perfect_detection_path()
-    )
+    assert os.path.isfile(low_skill_red_with_random_infection_perfect_detection_path())

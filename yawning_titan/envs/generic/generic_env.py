@@ -9,11 +9,12 @@ and topology of the network being defended and what data should be collected dur
 import copy
 import json
 from collections import Counter
-from typing import Tuple,Optional
+from typing import Tuple
 
 import gym
 import numpy as np
 from gym import spaces
+from stable_baselines3.common.utils import set_random_seed
 
 import yawning_titan.envs.generic.core.reward_functions as reward_functions
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
@@ -21,21 +22,20 @@ from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.helpers.eval_printout import EvalPrintout
 from yawning_titan.envs.generic.helpers.graph2plot import CustomEnvGraph
-from stable_baselines3.common.utils import set_random_seed
 
 
 class GenericNetworkEnv(gym.Env):
     """Class to create a generic YAWNING TITAN gym environment."""
 
     def __init__(
-            self,
-            red_agent: RedInterface,
-            blue_agent: BlueInterface,
-            network_interface: NetworkInterface,
-            print_metrics: bool = False,
-            show_metrics_every: int = 1,
-            collect_additional_per_ts_data: bool = True,
-            print_per_ts_data: bool = False,
+        self,
+        red_agent: RedInterface,
+        blue_agent: BlueInterface,
+        network_interface: NetworkInterface,
+        print_metrics: bool = False,
+        show_metrics_every: int = 1,
+        collect_additional_per_ts_data: bool = True,
+        print_per_ts_data: bool = False,
     ):
         """
         Initialise the generic network environment.
@@ -72,15 +72,12 @@ class GenericNetworkEnv(gym.Env):
         self.print_metrics = print_metrics
         self.print_notes = print_per_ts_data
 
-        
         self.random_seed = self.network_interface.random_seed
 
         self.graph_plotter = None
         self.eval_printout = EvalPrintout(self.avg_every)
 
         self.action_space = spaces.Discrete(self.blue_actions)
-
-
 
         # sets up the observation space. This is a (n+2 by n) matrix. The first two columns show the state of all the
         # nodes. The remaining n columns show the connections between the nodes (effectively the adjacency matrix)
@@ -103,8 +100,10 @@ class GenericNetworkEnv(gym.Env):
         Returns:
             A new starting observation (numpy array)
         """
-        if self.random_seed is not None: # conditionally set random_seed
-            set_random_seed(self.random_seed,True) # TODO: may need to add customization of cuda setting
+        if self.random_seed is not None:  # conditionally set random_seed
+            set_random_seed(
+                self.random_seed, True
+            )  # TODO: may need to add customization of cuda setting
         self.network_interface.reset()
         self.RED.reset()
         self.current_duration = 0
@@ -150,7 +149,10 @@ class GenericNetworkEnv(gym.Env):
         self.network_interface.reset_stored_attacks()
 
         # The red agent performs their turn
-        if self.network_interface.game_mode.game_rules.grace_period_length <= self.current_duration:
+        if (
+            self.network_interface.game_mode.game_rules.grace_period_length
+            <= self.current_duration
+        ):
             red_info = self.RED.perform_action()
         else:
             red_info = {
@@ -204,13 +206,18 @@ class GenericNetworkEnv(gym.Env):
                 done = True
                 reward = self.network_interface.game_mode.rewards.rewards_for_loss
                 blue_action = "failed"
-        if self.network_interface.game_mode.game_rules.lose_when_n_percent_of_nodes_lost:
+        if (
+            self.network_interface.game_mode.game_rules.lose_when_n_percent_of_nodes_lost
+        ):
             # calculate the number of safe nodes
             percent_comp = (
-                    len(self.network_interface.get_nodes(filter_true_compromised=True))
-                    / self.network_interface.get_number_of_nodes()
+                len(self.network_interface.get_nodes(filter_true_compromised=True))
+                / self.network_interface.get_number_of_nodes()
             )
-            if percent_comp >= self.network_interface.game_mode.game_rules.percentage_of_nodes_compromised_equals_loss:
+            if (
+                percent_comp
+                >= self.network_interface.game_mode.game_rules.percentage_of_nodes_compromised_equals_loss
+            ):
                 done = True
                 reward = self.network_interface.game_mode.rewards.rewards_for_loss
                 # If the game ends before blue has had their turn the the blue action is set to failed
@@ -244,9 +251,15 @@ class GenericNetworkEnv(gym.Env):
                 blue_action = "failed"
 
         if done:
-            if self.network_interface.game_mode.rewards.reduce_negative_rewards_for_closer_fails:
+            if (
+                self.network_interface.game_mode.rewards.reduce_negative_rewards_for_closer_fails
+            ):
                 reward = reward * (
-                        1 - (self.current_duration / self.network_interface.game_mode.game_rules.max_steps)
+                    1
+                    - (
+                        self.current_duration
+                        / self.network_interface.game_mode.game_rules.max_steps
+                    )
                 )
         if not done:
             blue_action, blue_node = self.BLUE.perform_action(action)
@@ -274,9 +287,10 @@ class GenericNetworkEnv(gym.Env):
                 "end_blue": self.network_interface.get_all_node_blue_view_compromised_states(),
             }
 
-            reward = getattr(reward_functions, self.network_interface.game_mode.rewards.reward_function)(
-                reward_args
-            )
+            reward = getattr(
+                reward_functions,
+                self.network_interface.game_mode.rewards.reward_function,
+            )(reward_args)
 
             # gets the current observation from the environment
             self.env_observation = (
@@ -285,14 +299,24 @@ class GenericNetworkEnv(gym.Env):
             self.current_duration += 1
 
             # if the total number of steps reaches the set end then the blue agent wins and is rewarded accordingly
-            if self.current_duration == self.network_interface.game_mode.game_rules.max_steps:
-                if self.network_interface.game_mode.rewards.end_rewards_are_multiplied_by_end_state:
-                    reward = self.network_interface.game_mode.rewards.end_rewards_are_multiplied_by_end_state * (
+            if (
+                self.current_duration
+                == self.network_interface.game_mode.game_rules.max_steps
+            ):
+                if (
+                    self.network_interface.game_mode.rewards.end_rewards_are_multiplied_by_end_state
+                ):
+                    reward = (
+                        self.network_interface.game_mode.rewards.end_rewards_are_multiplied_by_end_state
+                        * (
                             len(self.network_interface.get_nodes(filter_true_safe=True))
                             / self.network_interface.get_number_of_nodes()
+                        )
                     )
                 else:
-                    reward = self.network_interface.game_mode.rewards.rewards_for_reaching_max_steps
+                    reward = (
+                        self.network_interface.game_mode.rewards.rewards_for_reaching_max_steps
+                    )
                 done = True
 
         # Gets the state of the environment at the end of the current time step
@@ -324,7 +348,10 @@ class GenericNetworkEnv(gym.Env):
             self.total_games += 1
 
             # Populate the current game's dictionary of stats with the episode winner and the number of timesteps
-            if self.current_duration == self.network_interface.game_mode.game_rules.max_steps:
+            if (
+                self.current_duration
+                == self.network_interface.game_mode.game_rules.max_steps
+            ):
 
                 self.current_game_stats = {
                     "Winner": "blue",
@@ -367,10 +394,10 @@ class GenericNetworkEnv(gym.Env):
         return self.env_observation, reward, done, notes
 
     def render(
-            self,
-            mode: str = "human",
-            show_only_blue_view: bool = False,
-            show_node_names: bool = False,
+        self,
+        mode: str = "human",
+        show_only_blue_view: bool = False,
+        show_node_names: bool = False,
     ):
         """
         Render the environment using Matplotlib to create an animation.

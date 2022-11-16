@@ -1,6 +1,4 @@
-"""
-The app module handles configuration at the application level.
-"""
+"""The app module handles configuration at the application level."""
 import os.path
 from pathlib import Path
 
@@ -11,6 +9,7 @@ def create_app_dirs():
     locations based on the users OS.
     """
     from platformdirs import PlatformDirs
+
     dirs = PlatformDirs(appname="yawning_titan", appauthor="DSTL")
 
     # Creates the app config directory

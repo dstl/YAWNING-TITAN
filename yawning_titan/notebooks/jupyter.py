@@ -33,12 +33,10 @@ def reset_default_jupyter_notebooks(overwrite_existing: bool = True):
         overwrite_existing: A bool to toggle replacing existing edited
             notebooks on or off.
     """
-    from yawning_titan.notebooks import _LIB_NOTEBOOKS_ROOT_PATH
     from yawning_titan import NOTEBOOKS_DIR
+    from yawning_titan.notebooks import _LIB_NOTEBOOKS_ROOT_PATH
 
-    default_notebooks_root = os.path.join(
-        _LIB_NOTEBOOKS_ROOT_PATH, "_package_data"
-    )
+    default_notebooks_root = os.path.join(_LIB_NOTEBOOKS_ROOT_PATH, "_package_data")
     for subdir, dirs, files in os.walk(default_notebooks_root):
         if subdir != default_notebooks_root:
             lib_subdir = str(subdir).split(os.sep)[-1]
@@ -82,10 +80,6 @@ def start_jupyter_session():
             os.chdir(working_dir)
         else:
             # Jupyter is not installed
-            _LOGGER.error(
-                "Cannot start jupyter notebook as it is not installed"
-            )
+            _LOGGER.error("Cannot start jupyter notebook as it is not installed")
     else:
-        _LOGGER.error(
-            "Feature currently supported on Windows OS."
-        )
+        _LOGGER.error("Feature currently supported on Windows OS.")

@@ -13,6 +13,7 @@ class ConfigABC(ABC):
     `.create` and `._validate`. `ConfigABC` also has a `to_dict()` function
     with predefined logic.
     """
+
     def to_dict(self) -> Dict:
         """
         Serializes a subclass of ConfigABC as a dict. As instances of

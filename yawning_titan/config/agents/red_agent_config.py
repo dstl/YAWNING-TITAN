@@ -1,6 +1,7 @@
 from __future__ import annotations
-from dataclasses import dataclass, field
-from typing import Dict, Any
+
+from dataclasses import dataclass
+from typing import Any, Dict
 
 from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.envs.generic.helpers.environment_input_validation import (
@@ -8,13 +9,11 @@ from yawning_titan.envs.generic.helpers.environment_input_validation import (
     check_within_range,
 )
 
-from yawning_titan.envs.generic.helpers.environment_input_validation import check_type, check_within_range
 
 @dataclass()
 class RedAgentConfig(ConfigABC):
-    """
-    Class that validates and stores the Red Agent Configuration
-    """
+    """Class that validates and stores the Red Agent Configuration."""
+
     _red_skill: int
     _red_uses_skill: bool
     _red_ignores_defences: bool
@@ -58,23 +57,17 @@ class RedAgentConfig(ConfigABC):
 
     @property
     def red_uses_skill(self) -> bool:
-        """
-        Red uses its skill modifier when attacking nodes.
-        """
+        """Red uses its skill modifier when attacking nodes."""
         return self._red_uses_skill
 
     @property
     def red_ignores_defences(self) -> bool:
-        """
-        The red agent ignores the defences of nodes.
-        """
+        """The red agent ignores the defences of nodes."""
         return self._red_ignores_defences
 
     @property
     def red_always_succeeds(self) -> bool:
-        """
-        Reds attacks always succeed.
-        """
+        """Reds attacks always succeed."""
         return self._red_always_succeeds
 
     @property
@@ -97,9 +90,7 @@ class RedAgentConfig(ConfigABC):
 
     @property
     def red_can_naturally_spread(self) -> bool:
-        """
-        The red agent naturally spreads its influence every time-step.
-        """
+        """The red agent naturally spreads its influence every time-step."""
         return self._red_can_naturally_spread
 
     @property
@@ -120,44 +111,32 @@ class RedAgentConfig(ConfigABC):
 
     @property
     def red_uses_spread_action(self) -> bool:
-        """
-        Tries to spread to every node connected to an infected node.
-        """
+        """Tries to spread to every node connected to an infected node."""
         return self._red_uses_spread_action
 
     @property
     def spread_action_likelihood(self) -> int:
-        """
-        Weighting for red_uses_spread_action.
-        """
+        """Weighting for red_uses_spread_action."""
         return self._spread_action_likelihood
 
     @property
     def chance_for_red_to_spread(self) -> int:
-        """
-        Chance for each 'spread' to succeed.
-        """
+        """Chance for each 'spread' to succeed."""
         return self._chance_for_red_to_spread
 
     @property
     def red_uses_random_infect_action(self) -> bool:
-        """
-        Tries to infect every safe node in the environment.
-        """
+        """Tries to infect every safe node in the environment."""
         return self._red_uses_random_infect_action
 
     @property
     def random_infect_action_likelihood(self) -> int:
-        """
-        Weighting for red_uses_random_infect_action.
-        """
+        """Weighting for red_uses_random_infect_action."""
         return self._random_infect_action_likelihood
 
     @property
     def chance_for_red_to_random_compromise(self) -> int:
-        """
-        chance for each 'infect' to succeed.
-        """
+        """Chance for each 'infect' to succeed."""
         return self._chance_for_red_to_random_compromise
 
     @property
@@ -170,37 +149,27 @@ class RedAgentConfig(ConfigABC):
 
     @property
     def basic_attack_action_likelihood(self) -> int:
-        """
-        Weighting for red_uses_basic_attack_action.
-        """
+        """Weighting for red_uses_basic_attack_action."""
         return self._basic_attack_action_likelihood
 
     @property
     def red_uses_do_nothing_action(self) -> bool:
-        """
-        The red agent does nothing.
-        """
+        """The red agent does nothing."""
         return self._red_uses_do_nothing_action
 
     @property
     def do_nothing_action_likelihood(self) -> int:
-        """
-        Chance for red_uses_do_nothing_action.
-        """
+        """Chance for red_uses_do_nothing_action."""
         return self._do_nothing_action_likelihood
 
     @property
     def red_uses_move_action(self) -> bool:
-        """
-        The red agent moves to a different node.
-        """
+        """The red agent moves to a different node."""
         return self._red_uses_move_action
 
     @property
     def move_action_likelihood(self) -> int:
-        """
-        Chance of red_uses_move_action.
-        """
+        """Chance of red_uses_move_action."""
         return self._move_action_likelihood
 
     @property
@@ -214,9 +183,7 @@ class RedAgentConfig(ConfigABC):
 
     @property
     def zero_day_start_amount(self) -> int:
-        """
-        The number of zero day attacks that the red agent starts with.
-        """
+        """The number of zero-day attacks that the red agent starts with."""
         return self._zero_day_start_amount
 
     @property
@@ -229,16 +196,12 @@ class RedAgentConfig(ConfigABC):
 
     @property
     def red_chooses_target_at_random(self) -> bool:
-        """
-        Red picks nodes to attack at random.
-        """
+        """Red picks nodes to attack at random."""
         return self._red_chooses_target_at_random
 
     @property
     def red_target_node(self) -> str:
-        """
-        Red targets a specific node
-        """
+        """Red targets a specific node."""
         return self._red_target_node
 
     @property
@@ -272,11 +235,11 @@ class RedAgentConfig(ConfigABC):
         least vulnerable.
         """
         return self._red_prioritises_resilient_nodes
-    
+
     @property
     def red_always_chooses_shortest_distance_to_target(self) -> bool:
         """
-        Red always chooses the absolute shortest distance to target with 
+        Red always chooses the absolute shortest distance to target with
         no randomisation.
         """
         return self._red_always_chooses_shortest_distance_to_target
@@ -385,7 +348,7 @@ class RedAgentConfig(ConfigABC):
         self._red_chooses_target_at_random = value
 
     @red_target_node.setter
-    def red_target_node(self,value):
+    def red_target_node(self, value):
         self._red_target_node = value
 
     @red_prioritises_connected_nodes.setter
@@ -407,8 +370,8 @@ class RedAgentConfig(ConfigABC):
     @red_always_chooses_shortest_distance_to_target.setter
     def red_always_chooses_shortest_distance_to_target(self, value):
         self._red_always_chooses_shortest_distance_to_target = value
-    # endregion
 
+    # endregion
 
     @classmethod
     def create(cls, config_dict: Dict[str, Any]) -> RedAgentConfig:
@@ -427,51 +390,56 @@ class RedAgentConfig(ConfigABC):
             _red_ignores_defences=config_dict["red_ignores_defences"],
             _red_always_succeeds=config_dict["red_always_succeeds"],
             _red_can_only_attack_from_red_agent_node=config_dict[
-                "red_can_only_attack_from_red_agent_node"],
+                "red_can_only_attack_from_red_agent_node"
+            ],
             _red_can_attack_from_any_red_node=config_dict[
-                "red_can_attack_from_any_red_node"],
+                "red_can_attack_from_any_red_node"
+            ],
             _red_can_naturally_spread=config_dict["red_can_naturally_spread"],
             _chance_to_spread_to_connected_node=config_dict[
-                "chance_to_spread_to_connected_node"],
+                "chance_to_spread_to_connected_node"
+            ],
             _chance_to_spread_to_unconnected_node=config_dict[
-                "chance_to_spread_to_unconnected_node"],
+                "chance_to_spread_to_unconnected_node"
+            ],
             _red_uses_spread_action=config_dict["red_uses_spread_action"],
             _spread_action_likelihood=config_dict["spread_action_likelihood"],
             _chance_for_red_to_spread=config_dict["chance_for_red_to_spread"],
-            _red_uses_random_infect_action=config_dict[
-                "red_uses_random_infect_action"],
+            _red_uses_random_infect_action=config_dict["red_uses_random_infect_action"],
             _random_infect_action_likelihood=config_dict[
-                "random_infect_action_likelihood"],
+                "random_infect_action_likelihood"
+            ],
             _chance_for_red_to_random_compromise=config_dict[
-                "chance_for_red_to_random_compromise"],
-            _red_uses_basic_attack_action=config_dict[
-                "red_uses_basic_attack_action"],
+                "chance_for_red_to_random_compromise"
+            ],
+            _red_uses_basic_attack_action=config_dict["red_uses_basic_attack_action"],
             _basic_attack_action_likelihood=config_dict[
-                "basic_attack_action_likelihood"],
-            _red_uses_do_nothing_action=config_dict[
-                "red_uses_do_nothing_action"],
-            _do_nothing_action_likelihood=config_dict[
-                "do_nothing_action_likelihood"],
+                "basic_attack_action_likelihood"
+            ],
+            _red_uses_do_nothing_action=config_dict["red_uses_do_nothing_action"],
+            _do_nothing_action_likelihood=config_dict["do_nothing_action_likelihood"],
             _red_uses_move_action=config_dict["red_uses_move_action"],
             _move_action_likelihood=config_dict["move_action_likelihood"],
             _red_uses_zero_day_action=config_dict["red_uses_zero_day_action"],
             _zero_day_start_amount=config_dict["zero_day_start_amount"],
-            _days_required_for_zero_day=config_dict[
-                "days_required_for_zero_day"],
-            _red_chooses_target_at_random=config_dict[
-                "red_chooses_target_at_random"],
+            _days_required_for_zero_day=config_dict["days_required_for_zero_day"],
+            _red_chooses_target_at_random=config_dict["red_chooses_target_at_random"],
             _red_target_node=config_dict["red_target_node"],
             _red_prioritises_connected_nodes=config_dict[
-                "red_prioritises_connected_nodes"],
+                "red_prioritises_connected_nodes"
+            ],
             _red_prioritises_un_connected_nodes=config_dict[
-                "red_prioritises_un_connected_nodes"],
+                "red_prioritises_un_connected_nodes"
+            ],
             _red_prioritises_vulnerable_nodes=config_dict[
-                "red_prioritises_vulnerable_nodes"],
+                "red_prioritises_vulnerable_nodes"
+            ],
             _red_prioritises_resilient_nodes=config_dict[
-                "red_prioritises_resilient_nodes"],
+                "red_prioritises_resilient_nodes"
+            ],
             _red_always_chooses_shortest_distance_to_target=config_dict[
                 "red_always_chooses_shortest_distance_to_target"
-            ]
+            ],
         )
 
         return red_agent_config
@@ -497,7 +465,7 @@ class RedAgentConfig(ConfigABC):
             check_type(config_dict, name, [int])
 
         if config_dict["red_target_node"] is not None:
-            check_type(config_dict,"red_target_node",[str])
+            check_type(config_dict, "red_target_node", [str])
 
         # type of data is bool
         for name in [
@@ -518,7 +486,7 @@ class RedAgentConfig(ConfigABC):
             "red_prioritises_vulnerable_nodes",
             "red_prioritises_resilient_nodes",
             "red_can_naturally_spread",
-            "red_always_chooses_shortest_distance_to_target"
+            "red_always_chooses_shortest_distance_to_target",
         ]:
             check_type(config_dict, name, [bool])
 
@@ -591,7 +559,8 @@ class RedAgentConfig(ConfigABC):
         ):
             if config_dict["red_ignores_defences"]:
                 raise ValueError(
-                    "'red_ignores_defences', 'red_prioritises_vulnerable_nodes', 'red_prioritises_resilient_nodes' -> It makes no sense for red to prioritise nodes based on a stat that is ignored (vulnerability)"
+                    "'red_ignores_defences', 'red_prioritises_vulnerable_nodes', 'red_prioritises_resilient_nodes' -> "
+                    "It makes no sense for red to prioritise nodes based on a stat that is ignored (vulnerability) "
                     # noqa
                 )
         # spread both 0 but spreading on?
@@ -601,6 +570,8 @@ class RedAgentConfig(ConfigABC):
                 and config_dict["chance_to_spread_to_unconnected_node"] == 0
             ):
                 raise ValueError(
-                    "'red_can_naturally_spread', 'chance_to_spread_to_connected_node', 'chance_to_spread_to_unconnected_node' -> If red can naturally spread however the probabilities for both types of spreading are 0"
+                    "'red_can_naturally_spread', 'chance_to_spread_to_connected_node', "
+                    "'chance_to_spread_to_unconnected_node' -> If red can naturally spread however the probabilities "
+                    "for both types of spreading are 0 "
                     # noqa
                 )
