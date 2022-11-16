@@ -1,5 +1,5 @@
 [flake8]
-max-line-length=200
+max-line-length=88 # Black default line length
 extend-ignore =
     D107 # Missing docstring in __init__
     D100 # Req for docstring at the top of each module
