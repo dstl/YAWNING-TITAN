@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Dict, Any
+from dataclasses import dataclass
+from typing import Any, Dict
 
 from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.envs.generic.core import reward_functions
@@ -10,9 +10,8 @@ from yawning_titan.envs.generic.helpers.environment_input_validation import chec
 
 @dataclass()
 class RewardsConfig(ConfigABC):
-    """
-    Class that validates and stores Rewards Configuration
-    """
+    """Class that validates and stores Rewards Configuration."""
+
     _rewards_for_loss: int
     _rewards_for_reaching_max_steps: int
     _end_rewards_are_multiplied_by_end_state: bool
@@ -22,14 +21,14 @@ class RewardsConfig(ConfigABC):
     # region Getters
     @property
     def rewards_for_loss(self) -> int:
-        """
-        Rewards for the blue agent losing.
-        """
+        """Rewards for the blue agent losing."""
         return self._rewards_for_loss
 
     @property
     def rewards_for_reaching_max_steps(self) -> int:
         """
+        Rewards for reaching max steps.
+
         Rewards for the blue agent winning by reaching the maximum number of
         steps.
         """
@@ -38,6 +37,8 @@ class RewardsConfig(ConfigABC):
     @property
     def end_rewards_are_multiplied_by_end_state(self) -> bool:
         """
+        End rewards are multiplied by end state.
+
         How good the end state is (what % blue controls) is multiplied by
         the rewards that blue receives for winning.
         """
@@ -46,6 +47,8 @@ class RewardsConfig(ConfigABC):
     @property
     def reduce_negative_rewards_for_closer_fails(self) -> bool:
         """
+        Reduce negative rewards for closer fails.
+
         The negative rewards from the red agent winning are reduced the
         closer to the end the blue agent gets.
         """
@@ -54,6 +57,8 @@ class RewardsConfig(ConfigABC):
     @property
     def reward_function(self) -> str:
         """
+        Reward function.
+
         There are several built in example reward methods that you can
         choose from (shown below). You can also create your own reward
         method by copying one of the built in methods and calling it here
@@ -61,6 +66,7 @@ class RewardsConfig(ConfigABC):
         safe_nodes_give_rewards, punish_bad_actions.
         """
         return self._reward_function
+
     # endregion
 
     # region Setters
@@ -83,6 +89,7 @@ class RewardsConfig(ConfigABC):
     @reward_function.setter
     def reward_function(self, value):
         self._reward_function = value
+
     # endregion
 
     @classmethod
@@ -98,11 +105,14 @@ class RewardsConfig(ConfigABC):
         rewards = RewardsConfig(
             _rewards_for_loss=config_dict["rewards_for_loss"],
             _rewards_for_reaching_max_steps=config_dict[
-                "rewards_for_reaching_max_steps"],
+                "rewards_for_reaching_max_steps"
+            ],
             _end_rewards_are_multiplied_by_end_state=config_dict[
-                "end_rewards_are_multiplied_by_end_state"],
+                "end_rewards_are_multiplied_by_end_state"
+            ],
             _reduce_negative_rewards_for_closer_fails=config_dict[
-                "reduce_negative_rewards_for_closer_fails"],
+                "reduce_negative_rewards_for_closer_fails"
+            ],
             _reward_function=config_dict["reward_function"],
         )
 

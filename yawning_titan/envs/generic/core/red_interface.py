@@ -1,8 +1,7 @@
 from typing import Dict, List, Union
 
-from yawning_titan.envs.generic.core.red_action_set import RedActionSet
-
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
+from yawning_titan.envs.generic.core.red_action_set import RedActionSet
 
 """
 An interface to the parent red agent that selects what actions it wants to use base on the settings and then uses a
@@ -13,7 +12,7 @@ dictionary to call these actions.
 class RedInterface(RedActionSet):
     """The interface used by the Red Agents to act within the environment."""
 
-    def __init__(self, network_interface:NetworkInterface):
+    def __init__(self, network_interface: NetworkInterface):
         """
         Initialise the red interface.
 
@@ -47,17 +46,23 @@ class RedInterface(RedActionSet):
         if self.network_interface.game_mode.red.red_uses_basic_attack_action:
             self.action_dict[action_number] = self.basic_attack
             action_set.append(action_number)
-            probabilities_set.append(self.network_interface.game_mode.red.basic_attack_action_likelihood)
+            probabilities_set.append(
+                self.network_interface.game_mode.red.basic_attack_action_likelihood
+            )
             action_number += 1
         if self.network_interface.game_mode.red.red_uses_do_nothing_action:
             self.action_dict[action_number] = self.do_nothing
             action_set.append(action_number)
-            probabilities_set.append(self.network_interface.game_mode.red.do_nothing_action_likelihood)
+            probabilities_set.append(
+                self.network_interface.game_mode.red.do_nothing_action_likelihood
+            )
             action_number += 1
         if self.network_interface.game_mode.red.red_uses_move_action:
             self.action_dict[action_number] = self.random_move
             action_set.append(action_number)
-            probabilities_set.append(self.network_interface.game_mode.red.move_action_likelihood)
+            probabilities_set.append(
+                self.network_interface.game_mode.red.move_action_likelihood
+            )
             action_number += 1
 
         # normalises the weights so they work with numpy choices
