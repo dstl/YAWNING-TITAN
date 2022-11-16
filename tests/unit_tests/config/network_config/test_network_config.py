@@ -5,12 +5,11 @@ import numpy as np
 from yawning_titan.config.network_config.network_config import NetworkConfig
 from yawning_titan.envs.generic.helpers import network_creator
 
-matrix, node_positions = network_creator.create_18_node_network()
-
 
 def test_config_properties():
     """Tests creation of `NetworkConfig`."""
-    network_config = NetworkConfig.create(
+    matrix, node_positions = network_creator.create_18_node_network()
+    network_config = NetworkConfig.create_from_args(
         matrix=matrix,
         positions=node_positions,
         entry_nodes=["0"],
@@ -26,7 +25,8 @@ def test_config_properties():
 def test_hvn_entry_node_matching():
     """Tests when high value node is also an entry node."""
     with warnings.catch_warnings(record=True) as w:
-        NetworkConfig.create(
+        matrix, node_positions = network_creator.create_18_node_network()
+        NetworkConfig.create_from_args(
             matrix=matrix,
             positions=node_positions,
             entry_nodes=["0"],

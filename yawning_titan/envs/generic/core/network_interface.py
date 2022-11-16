@@ -26,16 +26,17 @@ class NetworkInterface:
 
     def __init__(self, game_mode: GameModeConfig, network: NetworkConfig):
         """
-        Initialise the Network Interface and initialises all of the necessary components.
+        Initialise the Network Interface and initialises all the necessary components.
 
         Args:
-            matrix: An adjacency matrix containing the connections between nodes in the network
-            positions: A dictionary containing the positions of the nodes in the network (when displayed as a graph)
-            game_mode_path: The file path that locates the game_mode page. If no path is supplied then the default game_mode page is used
+            matrix: An adjacency matrix containing the connections between nodes in the network.
+            positions: A dictionary containing the positions of the nodes in the network (when displayed as a graph).
+            game_mode_path: The file path that locates the game_mode page. If no path is supplied then the default
+                game_mode page is used.
             entry_nodes: A list of nodes that act as gateways or doors in the network for the red agent. While the red
-            agent does not start in the network, they can access the network at these nodes.
-            vulnerabilities: A dictionary containing the vulnerabilities of the nodes
-            high_value_nodes: A name of a node that when taken means the red agent instantly wins
+                agent does not start in the network, they can access the network at these nodes.
+            vulnerabilities: A dictionary containing the vulnerabilities of the nodes.
+            high_value_nodes: A name of a node that when taken means the red agent instantly wins.
         """
         # opens the fle the user has specified to be the location of the game_mode
 
@@ -101,7 +102,7 @@ class NetworkInterface:
             set(self.entry_nodes) & set(self.high_value_nodes)
         ):
             warnings.warn(
-                "Provided entry nodes and high value nodes intersect and may cause the training to prematurely end"
+                "Provided entry nodes and high value nodes intersect and may cause the training to prematurely end."
             )
 
         # initialises the deceptive nodes and their names and amount
