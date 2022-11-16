@@ -9,6 +9,8 @@ from yawning_titan.envs.generic.core.action_loops import ActionLoop
 
 def test_target_specific_node(basic_2_agent_loop: ActionLoop):
     """
+    Test target specific node.
+
     Test to check that with no other actions available
     the RED agent will follow a prescribed path to a target node
     avoiding all other nodes

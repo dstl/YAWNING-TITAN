@@ -90,10 +90,7 @@ class GameRulesConfig(ConfigABC):
 
     @property
     def choose_high_value_nodes_furthest_away_from_entry(self) -> bool:
-        """
-        The node the furthest away from the entry points to the network is
-        picked as the target.
-        """
+        """The node the furthest away from the entry points to the network is picked as the target."""
         return self._choose_high_value_nodes_furthest_away_from_entry
 
     @property
@@ -108,26 +105,21 @@ class GameRulesConfig(ConfigABC):
 
     @property
     def prefer_central_nodes_for_entry_nodes(self) -> bool:
-        """
-        If no entry nodes are supplied then what bias is applied to the
-        nodes when choosing random entry nodes.
-        """
+        """If no entry nodes are supplied then what bias is applied to the  nodes when choosing random entry nodes."""
         return self._prefer_central_nodes_for_entry_nodes
 
     @property
     def prefer_edge_nodes_for_entry_nodes(self) -> bool:
-        """
-        If no entry nodes are supplied then what bias is applied to the
-        nodes when choosing random entry nodes.
-        """
+        """If no entry nodes are supplied then what bias is applied to the nodes when choosing random entry nodes."""
         return self._prefer_edge_nodes_for_entry_nodes
 
     @property
     def grace_period_length(self) -> int:
         """
-        The length of a grace period at the start of the game. During this
-        time the red agent cannot act. This gives the blue agent a chance to
-        "prepare" (A length of 0 means that there is no grace period).
+        The length of a grace period at the start of the game.
+
+        During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0
+        means that there is no grace period).
         """
         return self._grace_period_length
 

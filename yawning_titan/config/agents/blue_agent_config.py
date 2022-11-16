@@ -13,7 +13,7 @@ from yawning_titan.envs.generic.helpers.environment_input_validation import (
 @dataclass()
 class BlueAgentConfig(ConfigABC):
     """
-    Class that validates and stores the Blue Agent Configuration
+    Class that validates and stores the Blue Agent Configuration.
 
     Notes from the DSTL
     -------------------
@@ -92,34 +92,22 @@ class BlueAgentConfig(ConfigABC):
 
     @property
     def chance_to_immediately_discover_intrusion(self) -> int:
-        """
-        Chance for blue to discover a node that red has compromised the
-        instant red compromises the node.
-        """
+        """Chance for blue to discover a node that red has compromised the instant red compromises the node."""
         return self._chance_to_immediately_discover_intrusion
 
     @property
     def chance_to_discover_intrusion_on_scan(self) -> int:
-        """
-        When blue performs the scan action this is the chance that a red
-        intrusion is discovered.
-        """
+        """When blue performs the scan action this is the chance that a red intrusion is discovered."""
         return self._chance_to_discover_intrusion_on_scan
 
     @property
     def chance_to_immediately_discover_intrusion_deceptive_node(self) -> int:
-        """
-        Chance for blue to discover a deceptive node that red has
-        compromised the instant red compromises the node.
-        """
+        """Chance for blue to discover a deceptive node that red has compromised the instant it is compromised."""
         return self._chance_to_immediately_discover_intrusion_deceptive_node
 
     @property
     def chance_to_discover_intrusion_on_scan_deceptive_node(self) -> int:
-        """
-        When blue uses the scan action what is the chance that blue will
-        detect an intrusion in a deceptive node.
-        """
+        """When blue uses the scan action what is the chance that blue will detect an intrusion in a deceptive node."""
         return self._chance_to_discover_intrusion_on_scan_deceptive_node
 
     @property
@@ -129,34 +117,22 @@ class BlueAgentConfig(ConfigABC):
 
     @property
     def can_discover_succeeded_attacks_if_compromise_is_discovered(self) -> bool:
-        """
-        Can blue learn information about an attack that succeeds if the
-        compromise is known.
-        """
+        """Can blue learn information about an attack that succeeds if the compromise is known."""
         return self._can_discover_succeeded_attacks_if_compromise_is_discovered
 
     @property
     def can_discover_succeeded_attacks_if_compromise_is_not_discovered(self) -> bool:
-        """
-        Can blue learn information about an attack that succeeds if the
-        compromise is NOT known.
-        """
+        """Can blue learn information about an attack that succeeds if the compromise is NOT known."""
         return self._can_discover_succeeded_attacks_if_compromise_is_not_discovered
 
     @property
     def chance_to_discover_succeeded_attack_compromise_known(self) -> int:
-        """
-        Chance for blue to discover information about an attack that succeeded
-        and the compromise was known.
-        """
+        """Chance for blue to discover information about an attack that succeeded and the compromise was known."""
         return self._chance_to_discover_succeeded_attack_compromise_known
 
     @property
     def chance_to_discover_succeeded_attack_compromise_not_known(self) -> int:
-        """
-        Chance for blue to discover information about an attack that
-        succeeded and the compromise was NOT known.
-        """
+        """Chance for blue to discover information about an attack that succeeded and the compromise was NOT known."""
         return self._chance_to_discover_succeeded_attack_compromise_not_known
 
     @property
@@ -166,26 +142,17 @@ class BlueAgentConfig(ConfigABC):
 
     @property
     def chance_to_discover_succeeded_attack_deceptive_node(self) -> int:
-        """
-        Chance to discover the location of a succeeded attack against a
-        deceptive node.
-        """
+        """Chance to discover the location of a succeeded attack against a deceptive node."""
         return self._chance_to_discover_succeeded_attack_deceptive_node
 
     @property
     def making_node_safe_modifies_vulnerability(self) -> bool:
-        """
-        If blue fixes a node then the vulnerability score of that node
-        increases.
-        """
+        """If blue fixes a node then the vulnerability score of that node increases."""
         return self._making_node_safe_modifies_vulnerability
 
     @property
     def vulnerability_change_during_node_patch(self) -> int:
-        """
-        The amount that the vulnerability of a node changes when it is made
-        safe.
-        """
+        """The amount that the vulnerability of a node changes when it is made safe."""
         return self._vulnerability_change_during_node_patch
 
     @property
@@ -200,10 +167,7 @@ class BlueAgentConfig(ConfigABC):
 
     @property
     def blue_uses_restore_node(self):
-        """
-        Blue picks a node and restores everything about the node to its
-        state at the beginning of the game.
-        """
+        """Blue picks a node and restores everything about the node to its starting state."""
         return self._blue_uses_restore_node
 
     @property
@@ -234,15 +198,19 @@ class BlueAgentConfig(ConfigABC):
     @property
     def blue_uses_deceptive_nodes(self):
         """
-        Blue agent can place down deceptive nodes. These nodes act as just
-        another node in the network but have a different chance of spotting
-        attacks and always show when they are compromised.
+        Blue agent can place down deceptive nodes.
+
+        These nodes act as just another node in the network but have a
+        different chance of spotting attacks and always show when they
+        are compromised.
         """
         return self._blue_uses_deceptive_nodes
 
     @property
     def relocating_deceptive_nodes_generates_a_new_node(self):
         """
+        Relocating deceptive nodes generates a new node.
+
         When the blue agent places a deceptive node and it has none left in
         stock it will "pick up" the first deceptive node that it used and
         "relocate it" When relocating a node will the stats for the node (

@@ -30,10 +30,7 @@ def test_repeatable_episodic_output_set_random_seed(
     high_value_nodes,
     custom_settings,
 ):
-    """
-    Test to check that actions undertaken by the red attacking agent
-    are repeatable across all episodes with a set random_seed value
-    """
+    """Tests that actions undertaken by the red agent are repeatable with a set random_seed value."""
     action_loop: ActionLoop = basic_2_agent_loop(
         num_episodes=episodes,
         entry_nodes=entry_nodes,
