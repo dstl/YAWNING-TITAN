@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_type
@@ -13,7 +13,7 @@ class MiscellaneousConfig(ConfigABC):
     Class that validates and stores the Miscellaneous Configuration
     """
     _output_timestep_data_to_json: bool
-    _random_seed: int
+    _random_seed: Optional[int]
 
     @property
     def output_timestep_data_to_json(self) -> bool:
@@ -29,7 +29,7 @@ class MiscellaneousConfig(ConfigABC):
         self._output_timestep_data_to_json = value
 
     @property
-    def random_seed(self) -> bool:
+    def random_seed(self) -> Optional[int]:
         """
         A random_seed used for the random number generators in
         both python and numpy to create a deterministic

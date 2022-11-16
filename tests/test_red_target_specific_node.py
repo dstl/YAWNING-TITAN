@@ -18,7 +18,7 @@ def test_target_specific_node(basic_2_agent_loop:ActionLoop):
     target_nodes = set()
 
     for i in range(0,10):   
-        action_loop = basic_2_agent_loop(num_episodes=1,entry_nodes=["0"],settings_path=TARGET_NODE_CONFIG)
+        action_loop:ActionLoop = basic_2_agent_loop(num_episodes=1,entry_nodes=["0"],settings_path=TARGET_NODE_CONFIG)
         results: List[DataFrame] = action_loop.standard_action_loop()
         x = list(chain.from_iterable(chain.from_iterable([[info['red_info'][0]['Target_Nodes'] for info in result['info'].to_list()] for result in results])))
         target_nodes.update(x)
