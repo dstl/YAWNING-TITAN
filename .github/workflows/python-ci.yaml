@@ -41,6 +41,3 @@ jobs:
       - name: Test with pytest
         run: |
           pytest
-      - name: Test Jupyter Notebooks with pytest and nbmake
-        run: |
-          pytest --nbmake "yawning_titan/notebooks/_package_data/sb3/"
