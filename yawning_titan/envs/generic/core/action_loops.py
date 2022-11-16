@@ -10,10 +10,7 @@ import os
 import imageio
 import matplotlib.pyplot as plt
 import pandas as pd
-
-
 from yawning_titan import IMAGES_DIR
-
 
 class ActionLoop:
     """A class that represents different post-training action loops for agents."""
@@ -33,13 +30,25 @@ class ActionLoop:
         self.filename = filename
         self.episode_count = episode_count
 
-    def gif_action_loop(self,render_network=True,prompt_to_close=False,save_gif=False,deterministic=True,*args,**kwargs):
+    def gif_action_loop(
+        self,
+        render_network=True,
+        prompt_to_close=False,
+        save_gif=False,
+        deterministic=True,
+        *args,
+        **kwargs
+    ):
         """
         Run the agent in evaluation and create a gif from episodes.
 
         Args:
             render: Bool to toggle rendering on or off. Has a default
                 value of True.
+            prompt_to_close: Bool to toggle if the output window should 
+                close immediately on loop ending
+            save_gif: Bool to toggle if gif file should be saved to AppData
+            deterministic: Bool to toggle if the agents actions should be deterministic
         """
         if not IMAGES_DIR.exists():
             # if the path does not exist, create it
