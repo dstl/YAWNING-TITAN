@@ -21,22 +21,8 @@ def main():
 
 
 if __name__ == "__main__":
-    # create appdata directories if necessary
+    """run from console with no arguments after filename to load headless gui"""
+    if len(sys.argv) == 1:
+        sys.argv = [sys.argv[0],"run_gui"]
     main()
-    # from pathlib import Path
-    # from platformdirs import PlatformDirs    
-    # dirs = PlatformDirs(appname="yawning_titan", appauthor="DSTL")
-
-
-    # print("Setup complete")
-
-    # if Path(dirs.user_data_path).exists():      
-
-    #     from flaskwebgui import FlaskUI
-    #     from yt_front_end.wsgi import application as app    
-
-    #     print(f"running app with {sys.executable}")
-    #     FlaskUI(app=app, server="django").run()
-
-    # else:
-    #     print("Error please use the install.exe to create the yawning titan package folders")
+    
