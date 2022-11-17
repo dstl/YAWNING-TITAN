@@ -180,6 +180,9 @@ setup(
             "sphinx",
             "pre-commit",
             "nbmake==1.3.4",
+            "Django==4.1.2",
+            "flaskwebgui==1.0.1",
+            "pyinstaller==5.6.2"
         ],
         "tensorflow": ["tensorflow"],
         "jupyter": ["jupyter"],
