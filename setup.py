@@ -187,7 +187,7 @@ setup(
     },
     package_data={
         "yawning_titan": [
-            "config/_package_data/logging_config.yaml"
+            "config/_package_data/logging_config.yaml",
             "config/_package_data/game_modes/default_game_mode.yaml",
             "config/_package_data/game_modes/low_skill_red_with_random_infection_perfect_detection.yaml",
             "notebooks/_package_data/sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb",
