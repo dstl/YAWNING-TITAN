@@ -17,8 +17,6 @@ DATA_DIR = Path(dirs.user_data_path)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-ROOT_DIR = BASE_DIR.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -41,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'yt_front_end'
+    'yt_front_end',
+    'yawning_titan',
+    'dir_setup'
 ]
 
 MIDDLEWARE = [
