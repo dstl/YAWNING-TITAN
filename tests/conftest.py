@@ -82,12 +82,11 @@ def init_test_env():
         Returns:
             env: An OpenAI gym environment
         """
-        network = NetworkConfig.create(
-            high_value_nodes=high_value_nodes,
-            entry_nodes=entry_nodes,
-            vulnerabilities=None,
+        network = NetworkConfig.create_from_args(
             matrix=adj_matrix,
             positions=positions,
+            entry_nodes=entry_nodes,
+            high_value_nodes=high_value_nodes,
         )
 
         game_mode = GameModeConfig.create_from_yaml(settings_path)
