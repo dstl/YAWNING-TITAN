@@ -1,6 +1,4 @@
-import os.path
 import sys
-from pathlib import Path
 
 from setuptools import find_packages, setup
 from setuptools.command.develop import develop
@@ -9,43 +7,60 @@ from setuptools.command.install import install
 
 def _create_app_dirs():
     """
-    Creates the app dirs.
+    Handles creation of application directories and user directories.
 
-    Uses platformdirs to create the required app directories in the correct
+    Uses `platformdirs.PlatformDirs` and `pathlib.Path` to create the required app directories in the correct
     locations based on the users OS.
-
-    This function is duplicated here (for now) so that we're not importing
-    Yawning-Titan from the setup.py of Yawning-Titan, even if it is inside
-    on a post-install class.
     """
+    import sys
+    from pathlib import Path, PosixPath
+    from typing import Final, Union
+
     from platformdirs import PlatformDirs
 
-    dirs = PlatformDirs(appname="yawning_titan", appauthor="DSTL")
+    _YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(
+        appname="yawning_titan", appauthor="DSTL"
+    )
+    """An instance of `PlatformDirs` set with appname='yawning_titan' and appauthor='DSTL'."""
 
-    # Creates the app config directory
-    dirs.user_config_path.mkdir(parents=True, exist_ok=True)
+    app_dirs = [_YT_PLATFORM_DIRS.user_data_path]
+    if sys.platform == "win32":
+        app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "config")
+        app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "logs")
+        _YT_USER_DIRS: Final[Union[Path, PosixPath]] = (
+            Path.home() / "DSTL" / "yawning_titan"
+        )
+    else:
+        app_dirs.append(_YT_PLATFORM_DIRS.user_config_path)
+        app_dirs.append(_YT_PLATFORM_DIRS.user_log_path)
+        _YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "yawning_titan"
 
-    # Creates the app log directory
-    dirs.user_log_path.mkdir(parents=True, exist_ok=True)
+    app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "docs")
+    app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "db")
+    app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "app_images")
+    app_dirs.append(_YT_USER_DIRS / "notebooks")
+    app_dirs.append(_YT_USER_DIRS / "game_modes")
+    app_dirs.append(_YT_USER_DIRS / "images")
+    app_dirs.append(_YT_USER_DIRS / "agents")
 
-    # Creates the app data directory
-    dirs.user_data_path.mkdir(parents=True, exist_ok=True)
+    for app_dir in app_dirs:
+        app_dir.mkdir(parents=True, exist_ok=True)
 
-    # Sets and creates the app game modes directory
-    game_modes_dir = os.path.join(dirs.user_config_path, "game_modes")
-    Path(game_modes_dir).mkdir(parents=True, exist_ok=True)
 
-    # Sets and creates the app notebooks directory
-    notebooks_dir = os.path.join(dirs.user_data_path, "notebooks")
-    Path(notebooks_dir).mkdir(parents=True, exist_ok=True)
+def _copy_package_data_notebooks_to_notebooks_dir():
+    """
+    Call the reset_default_jupyter_notebooks without overwriting if notebooks are already there.
 
-    # Sets and creates the app docs directory
-    docs_dir = os.path.join(dirs.user_data_path, "docs")
-    Path(docs_dir).mkdir(parents=True, exist_ok=True)
+    As this is a post install script, it should be possible to import Yawning-Titan, but it may not. This
+    `ImportError` is handled so that setup doesn't fail.
+    """
+    try:
+        from yawning_titan.notebooks.jupyter import reset_default_jupyter_notebooks
 
-    # Sets and creates the app images directory
-    docs_dir = os.path.join(dirs.user_data_path, "images")
-    Path(docs_dir).mkdir(parents=True, exist_ok=True)
+        reset_default_jupyter_notebooks(overwrite_existing=False)
+    except ImportError:
+        # Failed as, although this is a post-install script, YT can't be imported
+        pass
 
 
 class PostDevelopCommand(develop):
@@ -55,6 +70,7 @@ class PostDevelopCommand(develop):
         """Run the installation command then create the app dirs."""
         develop.run(self)
         _create_app_dirs()
+        _copy_package_data_notebooks_to_notebooks_dir()
 
 
 class PostInstallCommand(install):
@@ -64,6 +80,7 @@ class PostInstallCommand(install):
         """Run the installation command then create the app dirs."""
         install.run(self)
         _create_app_dirs()
+        _copy_package_data_notebooks_to_notebooks_dir()
 
 
 def _ray_3_beta_rllib_py_platform_pip_install() -> str:
@@ -164,21 +181,18 @@ setup(
             "pre-commit",
             "nbmake==1.3.4",
         ],
-        "tensorflow": ["tensorflow"],  # TODO: Determine version and lock it in
+        "tensorflow": ["tensorflow"],
         "jupyter": ["jupyter"],
     },
     package_data={
         "yawning_titan": [
-            "config/_package_data/logging_config.yaml"
+            "config/_package_data/logging_config.yaml",
             "config/_package_data/game_modes/default_game_mode.yaml",
             "config/_package_data/game_modes/low_skill_red_with_random_infection_perfect_detection.yaml",
             "notebooks/_package_data/sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb",
             "notebooks/_package_data/sb3/Using an Evaluation Callback to monitor progress during training.ipynb",
             "notebooks/_package_data/Creating and playing as a Keyboard Agent.ipynb",
         ]
-        # TODO: Determine whether tests config needs to be included in
-        #  package_data to be able to run tests from installed YT rather
-        #  than from cloned repo directory.
     },
     include_package_data=True,
     cmdclass={"install": PostInstallCommand, "develop": PostDevelopCommand},
