@@ -546,7 +546,11 @@ class NetworkInterface:
         compromised_state = []
         if self.game_mode.observation_space.compromised_status:
             compromised_state = np.asarray(
-                list(self.get_attributes_from_key("true_compromised_status").values())
+                list(
+                    self.get_attributes_from_key(
+                        "blue_view_compromised_status"
+                    ).values()
+                )
             )
             compromised_state = np.pad(compromised_state, (0, open_spaces), "constant")
         # Gets the vulnerability score of all of the nodes
