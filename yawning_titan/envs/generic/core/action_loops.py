@@ -6,12 +6,13 @@ Serves a similar function to library helpers such as Stable Baselines 3 ``evalua
 
 import os
 from datetime import datetime
+from uuid import uuid4
 
 import imageio
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from yawning_titan import IMAGES_DIR
+from yawning_titan import APP_IMAGES_DIR, IMAGES_DIR
 
 
 class ActionLoop:
@@ -52,9 +53,7 @@ class ActionLoop:
             save_gif: Bool to toggle if gif file should be saved to AppData
             deterministic: Bool to toggle if the agents actions should be deterministic
         """
-        if not IMAGES_DIR.exists():
-            # if the path does not exist, create it
-            os.makedirs(IMAGES_DIR)
+        gif_uuid = str(uuid4())
 
         complete_results = []
         for i in range(self.episode_count):
@@ -83,7 +82,7 @@ class ActionLoop:
 
                 if save_gif:
                     current_name = os.path.join(
-                        IMAGES_DIR, f"image_{current_image}.png"
+                        APP_IMAGES_DIR, f"{gif_uuid}_{current_image}.png"
                     )
                     current_image += 1
                     frame_names.append(current_name)

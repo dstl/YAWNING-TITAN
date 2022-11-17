@@ -1,13 +1,12 @@
 import logging.config
 import os
-from pathlib import Path
-from typing import Final
+import sys
+from pathlib import Path, PosixPath
+from typing import Final, Union
 
 import yaml
 from gym.envs.registration import register
 from platformdirs import PlatformDirs
-
-_YT_ROOT_DIR: Final[Path] = Path(__file__).parent.resolve()
 
 register(id="five-node-def-v0", entry_point="yawning_titan.envs.specific:FiveNodeDef")
 
@@ -20,46 +19,147 @@ register(
 
 register(id="18-node-env-v0", entry_point="yawning_titan.envs.specific:NodeEnv")
 
-_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs("yawning_titan", "DSTL")
+# Below handles application directories and user directories.
+# Uses `platformdirs.PlatformDirs` and `pathlib.Path` to create the required app directories in the correct locations
+# based on the users OS.
 
-CONFIG_DIR: Final[Path] = _PLATFORM_DIRS.user_config_path
+_YT_ROOT_DIR: Final[Union[Path, PosixPath]] = Path(__file__).parent.resolve()
+
+_YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(
+    appname="yawning_titan", appauthor="DSTL"
+)
+"""An instance of `PlatformDirs` set with appname='yawning_titan' and appauthor='DSTL'."""
+
+_YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "DSTL" / "yawning_titan"
+"""The users home space for YT which is located at: ~/DSTL/yawning_titan."""
+
+
+def _data_dir() -> Union[Path, PosixPath]:
+    dir_path = _YT_PLATFORM_DIRS.user_data_path
+    # Create if it doesn't already exist and bypass if it does already exist
+    dir_path.mkdir(parents=True, exist_ok=True)
+    return dir_path
+
+
+def _config_dir() -> Union[Path, PosixPath]:
+    if sys.platform == "win32":
+        dir_path = _YT_PLATFORM_DIRS.user_data_path / "config"
+    else:
+        dir_path = _YT_PLATFORM_DIRS.user_config_path
+    # Create if it doesn't already exist and bypass if it does already exist
+    dir_path.mkdir(parents=True, exist_ok=True)
+    return dir_path
+
+
+def _log_dir() -> Union[Path, PosixPath]:
+    if sys.platform == "win32":
+        dir_path = _YT_PLATFORM_DIRS.user_data_path / "logs"
+    else:
+        dir_path = _YT_PLATFORM_DIRS.user_log_path
+    # Create if it doesn't already exist and bypass if it does already exist
+    dir_path.mkdir(parents=True, exist_ok=True)
+    return dir_path
+
+
+def _docs_dir() -> Union[Path, PosixPath]:
+    dir_path = _YT_PLATFORM_DIRS.user_data_path / "docs"
+    # Create if it doesn't already exist and bypass if it does already exist
+    dir_path.mkdir(parents=True, exist_ok=True)
+    return dir_path
+
+
+def _db_dir() -> Union[Path, PosixPath]:
+    dir_path = _YT_PLATFORM_DIRS.user_data_path / "db"
+    # Create if it doesn't already exist and bypass if it does already exist
+    dir_path.mkdir(parents=True, exist_ok=True)
+    return dir_path
+
+
+def _app_images_dir() -> Union[Path, PosixPath]:
+    dir_path = _YT_PLATFORM_DIRS.user_data_path / "app_images"
+    # Create if it doesn't already exist and bypass if it does already exist
+    dir_path.mkdir(parents=True, exist_ok=True)
+    return dir_path
+
+
+def _notebooks_dir() -> Union[Path, PosixPath]:
+    dir_path = _YT_USER_DIRS / "notebooks"
+    # Create if it doesn't already exist and bypass if it does already exist
+    dir_path.mkdir(parents=True, exist_ok=True)
+    return dir_path
+
+
+def _game_modes_dir() -> Union[Path, PosixPath]:
+    dir_path = _YT_USER_DIRS / "game_modes"
+    # Create if it doesn't already exist and bypass if it does already exist
+    dir_path.mkdir(parents=True, exist_ok=True)
+    return dir_path
+
+
+def _images_dir() -> Union[Path, PosixPath]:
+    dir_path = _YT_USER_DIRS / "images"
+    # Create if it doesn't already exist and bypass if it does already exist
+    dir_path.mkdir(parents=True, exist_ok=True)
+    return dir_path
+
+
+def _agents_dir() -> Union[Path, PosixPath]:
+    dir_path = _YT_USER_DIRS / "agents"
+    # Create if it doesn't already exist and bypass if it does already exist
+    dir_path.mkdir(parents=True, exist_ok=True)
+    return dir_path
+
+
+# Force all to be created if not already
+DATA_DIR: Final[Union[Path, PosixPath]] = _data_dir()
+"""The path to the app data directory as an instance of `Path` or `PosixPath`, depending on the OS."""
+
+CONFIG_DIR: Final[Union[Path, PosixPath]] = _config_dir()
+"""The path to the app config directory as an instance of `Path` or `PosixPath`, depending on the OS."""
+
+LOG_DIR: Final[Union[Path, PosixPath]] = _log_dir()
+"""The path to the app log directory as an instance of `Path` or `PosixPath`, depending on the OS."""
+
+DOCS_DIR: Final[Union[Path, PosixPath]] = _docs_dir()
+"""The path to the app docs directory as an instance of `Path` or `PosixPath`, depending on the OS."""
+
+DB_DIR: Final[Union[Path, PosixPath]] = _db_dir()
+"""The path to the app db directory as an instance of `Path` or `PosixPath`, depending on the OS."""
+
+APP_IMAGES_DIR: Final[Union[Path, PosixPath]] = _app_images_dir()
+"""The path to the app images directory as an instance of `Path` or `PosixPath`, depending on the OS."""
+
+NOTEBOOKS_DIR: Final[Union[Path, PosixPath]] = _notebooks_dir()
 """
-The path to the app config directory as an instance of pathlib.Path.
+The path to the users notebooks directory as an instance of `Path` or `PosixPath`, depending on the OS.
+
+Users notebooks are stored at: ~/DSTL/yawning_titan/notebooks.
 """
 
-LOG_DIR: Final[Path] = _PLATFORM_DIRS.user_log_path
+GAME_MODES_DIR: Final[Union[Path, PosixPath]] = _game_modes_dir()
 """
-The path to the app log directory as an instance of pathlib.Path.
+The path to the users game modes directory as an instance of `Path` or `PosixPath`, depending on the OS.
+
+Users game modes are stored at: ~/DSTL/yawning_titan/game_modes.
 """
 
-DATA_DIR: Final[Path] = _PLATFORM_DIRS.user_data_path
+IMAGES_DIR: Final[Union[Path, PosixPath]] = _images_dir()
 """
-The path to the app data directory as an instance of pathlib.Path.
+The path to the users images directory as an instance of `Path` or `PosixPath`, depending on the OS.
+
+Users images are stored at: ~/DSTL/yawning_titan/images.
 """
 
-GAME_MODES_DIR: Final[Path] = Path(os.path.join(CONFIG_DIR, "game_modes"))
+AGENTS_DIR: Final[Union[Path, PosixPath]] = _agents_dir()
 """
-The path to the app game modes directory as an instance of pathlib.Path.
-"""
+The path to the users agents directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
-NOTEBOOKS_DIR: Final[Path] = Path(os.path.join(DATA_DIR, "notebooks"))
-"""
-The path to the app notebooks directory as an instance of pathlib.Path.
-"""
-
-DOCS_DIR: Final[Path] = Path(os.path.join(DATA_DIR, "docs"))
-"""
-The path to the app docs directory as an instance of pathlib.Path.
-"""
-
-IMAGES_DIR: Final[Path] = Path(os.path.join(DATA_DIR, "images"))
-"""
-The path to the app images directory as an instance of pathlib.Path.
+Users images are stored at: ~/DSTL/yawning_titan/agents.
 """
 
 # Setup root logger format
 with open(
-    os.path.join(_YT_ROOT_DIR, "config", "_package_data", "logging_config.yaml"), "r"
+    _YT_ROOT_DIR / "config" / "_package_data" / "logging_config.yaml", "r"
 ) as stream:
     config = yaml.load(stream, Loader=yaml.FullLoader)
 

@@ -61,9 +61,12 @@ def reset_default_jupyter_notebooks(overwrite_existing: bool = True):
                     # Exists, but check if files match
                     copy_file = not filecmp.cmp(fp, target_fp)
             if copy_file:
-                print(fp)
                 shutil.copy2(fp, target_fp)
                 _LOGGER.info(f"Reset default notebook: {target_fp}")
+
+
+# Ensures default notebooks exist in the directory without overwriting
+reset_default_jupyter_notebooks(overwrite_existing=False)
 
 
 def start_jupyter_session():
