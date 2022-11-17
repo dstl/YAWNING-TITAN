@@ -23,18 +23,17 @@ def _create_app_dirs():
     )
     """An instance of `PlatformDirs` set with appname='yawning_titan' and appauthor='DSTL'."""
 
-    _YT_USER_DIRS: Final[Union[Path, PosixPath]] = (
-        Path.home() / "DSTL" / "yawning_titan"
-    )
-    """The users home space for YT which is located at: ~/DSTL/yawning_titan."""
-
     app_dirs = [_YT_PLATFORM_DIRS.user_data_path]
     if sys.platform == "win32":
         app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "config")
         app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "logs")
+        _YT_USER_DIRS: Final[Union[Path, PosixPath]] = (
+            Path.home() / "DSTL" / "yawning_titan"
+        )
     else:
         app_dirs.append(_YT_PLATFORM_DIRS.user_config_path)
         app_dirs.append(_YT_PLATFORM_DIRS.user_log_path)
+        _YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "yawning_titan"
 
     app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "docs")
     app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "db")

@@ -4,18 +4,22 @@ The `dirs.py` module handles application directories and user directories.
 Uses `platformdirs.PlatformDirs` and `pathlib.Path` to create the required app directories in the correct locations
 based on the users OS.
 """
-from pathlib import Path
-from typing import Final
+import sys
+from pathlib import Path, PosixPath
+from typing import Final, Union
 
 from platformdirs import PlatformDirs
 
 _YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(
     appname="yawning_titan", appauthor="DSTL"
 )
-"""An instance of `PlatformDirs` set with appname='yawning_titan' and appauthor='DSTL'."""
 
-_YT_USER_DIRS: Final[Path] = Path.home() / "DSTL" / "yawning_titan"
-"""The users home space for YT which is located at: ~/DSTL/yawning_titan."""
+if sys.platform == "win32":
+    _YT_USER_DIRS: Final[Union[Path, PosixPath]] = (
+        Path.home() / "DSTL" / "yawning_titan"
+    )
+else:
+    _YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "yawning_titan"
 
 
 def data_dir() -> Path:
@@ -28,7 +32,10 @@ def data_dir() -> Path:
 
 def config_dir() -> Path:
     """The path to the app config directory as an instance of pathlib.Path."""
-    dir_path = _YT_PLATFORM_DIRS.user_config_path
+    if sys.platform == "win32":
+        dir_path = _YT_PLATFORM_DIRS.user_data_path / "config"
+    else:
+        dir_path = _YT_PLATFORM_DIRS.user_config_path
     # Create if it doesn't already exist and bypass if it does already exist
     dir_path.mkdir(parents=True, exist_ok=True)
     return dir_path
@@ -36,7 +43,10 @@ def config_dir() -> Path:
 
 def log_dir() -> Path:
     """The path to the app log directory as an instance of pathlib.Path."""
-    dir_path = _YT_PLATFORM_DIRS.user_log_path
+    if sys.platform == "win32":
+        dir_path = _YT_PLATFORM_DIRS.user_data_path / "logs"
+    else:
+        dir_path = _YT_PLATFORM_DIRS.user_log_path
     # Create if it doesn't already exist and bypass if it does already exist
     dir_path.mkdir(parents=True, exist_ok=True)
     return dir_path
@@ -60,7 +70,7 @@ def db_dir() -> Path:
 
 def app_images_dir() -> Path:
     """The path to the app images directory as an instance of pathlib.Path."""
-    dir_path = _YT_PLATFORM_DIRS.user_data_path / "db"
+    dir_path = _YT_PLATFORM_DIRS.user_data_path / "app_images"
     # Create if it doesn't already exist and bypass if it does already exist
     dir_path.mkdir(parents=True, exist_ok=True)
     return dir_path
