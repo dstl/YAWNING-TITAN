@@ -25,8 +25,6 @@ register(id="18-node-env-v0", entry_point="yawning_titan.envs.specific:NodeEnv")
 
 _YT_ROOT_DIR: Final[Union[Path, PosixPath]] = Path(__file__).parent.resolve()
 
-PACKAGE_DIR:Final[Union[Path, PosixPath]] = _YT_ROOT_DIR.parent.resolve()
-
 _YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(
     appname="yawning_titan", appauthor="DSTL"
 )
