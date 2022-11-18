@@ -1,3 +1,4 @@
+from pathlib import Path
 import shutil
 from django.core.management.base import BaseCommand
 class Command(BaseCommand):
@@ -5,23 +6,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         print("Running setup...")
-        from yawning_titan import DATA_DIR#,_create_app_dirs
-        from yawning_titan_gui import _YT_FRONT_ROOT_DIR
-        from yawning_titan.notebooks.jupyter import reset_default_jupyter_notebooks
-        
-        try:
-            from dirs import _create_app_dirs
-            _create_app_dirs()
-        except ImportError as e:
-            print("IMPORT ERROR",e)
-        
-        try:
-            from yawning_titan.notebooks.jupyter import reset_default_jupyter_notebooks
-            reset_default_jupyter_notebooks(overwrite_existing=False)
-        except ImportError:
-            pass
+        from yawning_titan import DATA_DIR
+        from yawning_titan_gui import _YT_FRONT_ROOT_DIR        
+        from dirs import _create_app_dirs,_copy_package_data_notebooks_to_notebooks_dir
 
-        reset_default_jupyter_notebooks(overwrite_existing=False)
+        _create_app_dirs()
+        _copy_package_data_notebooks_to_notebooks_dir()
+        
         # Creates the static ui files copy in the data directory
         shutil.copytree(
             (_YT_FRONT_ROOT_DIR / "static").as_posix(), 
