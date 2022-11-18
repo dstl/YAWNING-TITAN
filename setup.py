@@ -149,7 +149,7 @@ setup(
     description="An abstract, flexible and configurable cyber security " "simulation",
     python_requires=">=3.8",
     version="1.0.0",
-    license="MIT",
+    license="MIT License",
     packages=find_packages(),
     install_requires=[
         "gym==0.21.0",
