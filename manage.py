@@ -23,8 +23,5 @@ if __name__ == "__main__":
     """run from console with no arguments after filename to load headless gui"""
     if len(sys.argv) == 1:
         sys.argv = [sys.argv[0],"run_gui"]
-    
-    for path in sys.path:
-        print(path)
     main()
     
