@@ -1,3 +1,43 @@
+"""
+The `yawning_titan` top-level __init__.
+
+`gym.envs` registered:
+    `five-node-def-v0`
+        entry_point: `yawning_titan.envs.specific:FiveNodeDef`
+    `four-node-def-v0`
+        entry_point: `yawning_titan.envs.specific:FourNodeDef`
+    `network-graph-explore-v0`
+        entry_point: `yawning_titan.envs.specific:GraphExplore`
+    `18-node-env-v0`
+        entry_point: `yawning_titan.envs.specific:NodeEnv`
+App directories initialised:
+    `DATA_DIR`:
+        The path to the app data directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `CONFIG_DIR`:
+        The path to the app config directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `LOG_DIR`:
+        The path to the app log directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `DOCS_DIR`:
+        The path to the app docs directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `DB_DIR`:
+        The path to the app db directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `APP_IMAGES_DIR`:
+        The path to the app images directory as an instance of `Path` or `PosixPath`, depending on the OS.
+
+User directories initialised:
+    `NOTEBOOKS_DIR`:
+        The path to the users notebooks directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `GAME_MODES_DIR`:
+        The path to the users game modes directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `IMAGES_DIR`:
+        The path to the users images directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `AGENTS_DIR`:
+        The path to the users agents directory as an instance of `Path` or `PosixPath`, depending on the OS.
+
+Logging configured from the root:
+    Logging is configured using the `yawning_titan.config._package_data.logging_config.yaml` config file.
+"""
+__version__ = "1.0.0"
 import logging.config
 import os
 import sys
