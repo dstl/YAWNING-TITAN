@@ -18,7 +18,6 @@ def main():
     execute_from_command_line(sys.argv)
 
 
-
 if __name__ == "__main__":
     """run from console with no arguments after filename to load headless gui"""
     if len(sys.argv) == 1:
