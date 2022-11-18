@@ -11,9 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-from platformdirs import PlatformDirs    
-dirs = PlatformDirs(appname="yawning_titan", appauthor="DSTL")
-DATA_DIR = Path(dirs.user_data_path)
+from yawning_titan import DATA_DIR
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -134,3 +132,5 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+print("DD=",list(DATA_DIR.iterdir()))
