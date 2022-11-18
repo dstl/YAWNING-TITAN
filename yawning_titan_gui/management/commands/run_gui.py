@@ -8,7 +8,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         if DATA_DIR.exists():
             from flaskwebgui import FlaskUI
-            from yt_front_end.wsgi import application as app    
+            from yawning_titan_gui.wsgi import application as app    
 
             print(f"running app with {sys.executable}")
             FlaskUI(app=app, server="django").run()

@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'yt_front_end.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'yawning_titan_gui.settings')
 
 application = get_asgi_application()
