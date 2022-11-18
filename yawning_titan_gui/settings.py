@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'yt_front_end',
+    'yawning_titan_gui',
     'yawning_titan',
-    'dir_setup'
+    'setup'
 ]
 
 MIDDLEWARE = [
@@ -54,13 +54,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'yt_front_end.urls'
+ROOT_URLCONF = 'yawning_titan_gui.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / "yt_front_end/templates",
+            BASE_DIR / "yawning_titan_gui/templates",
             BASE_DIR / "docs/_build/html"
         ],
         'APP_DIRS': True,
@@ -75,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'yt_front_end.wsgi.application'
+WSGI_APPLICATION = 'yawning_titan_gui.wsgi.application'
 
 
 # Database
@@ -126,7 +126,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = DATA_DIR
 STATICFILES_DIRS = [
-    BASE_DIR / "yt_front_end/static"
+    BASE_DIR / "yawning_titan_gui/static"
 ]
 
 # Default primary key field type
