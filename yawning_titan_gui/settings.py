@@ -40,8 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'yawning_titan_gui',
-    'yawning_titan',
-    'setup'
+    'yawning_titan'
 ]
 
 MIDDLEWARE = [
