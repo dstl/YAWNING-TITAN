@@ -3,25 +3,7 @@ import sys
 from setuptools import find_packages, setup
 from setuptools.command.develop import develop
 from setuptools.command.install import install
-
-from yawning_titan import _create_app_dirs
-
-
-def _copy_package_data_notebooks_to_notebooks_dir():
-    """
-    Call the reset_default_jupyter_notebooks without overwriting if notebooks are already there.
-    As this is a post install script, it should be possible to import Yawning-Titan, but it may not. This
-    `ImportError` is handled so that setup doesn't fail.
-    """
-    try:
-        from yawning_titan.notebooks.jupyter import reset_default_jupyter_notebooks
-
-        reset_default_jupyter_notebooks(overwrite_existing=False)
-    except ImportError:
-        # Failed as, although this is a post-install script, YT can't be imported
-        pass
-
-
+from dirs import _create_app_dirs,_copy_package_data_notebooks_to_notebooks_dir
 class PostDevelopCommand(develop):
     """Post-installation command class for development mode."""
 
@@ -30,7 +12,6 @@ class PostDevelopCommand(develop):
         develop.run(self)
         _create_app_dirs()
         _copy_package_data_notebooks_to_notebooks_dir()
-
 
 class PostInstallCommand(install):
     """Post-installation command class for installation mode."""
