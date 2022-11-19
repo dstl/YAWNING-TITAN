@@ -36,7 +36,6 @@ _YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "DSTL" / "yawning_t
 
 def _data_dir() -> Union[Path, PosixPath]:
     dir_path = _YT_PLATFORM_DIRS.user_data_path
-    print("DATA DIR",dir_path)
     # Create if it doesn't already exist and bypass if it does already exist
     dir_path.mkdir(parents=True, exist_ok=True)
     return dir_path
