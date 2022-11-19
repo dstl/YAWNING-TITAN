@@ -11,15 +11,13 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-# from yawning_titan import DATA_DIR
-from platformdirs import PlatformDirs
-
-DATA_DIR = PlatformDirs(appname="yawning_titan", appauthor="DSTL").user_data_path
-"""An instance of `PlatformDirs` set with appname='yawning_titan' and appauthor='DSTL'."""
-
+from platformdirs import PlatformDirs    
+dirs = PlatformDirs(appname="yawning_titan", appauthor="DSTL")
+DATA_DIR = Path(dirs.user_data_path)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -36,18 +34,16 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    #'django.contrib.admin',
-    #'django.contrib.auth',
+    # 'django.contrib.admin',
+    # 'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'yawning_titan_gui',
-    'yawning_titan'
+    'django.contrib.staticfiles'
 ]
 
 MIDDLEWARE = [
-    #'django.middleware.security.SecurityMiddleware',
+    # 'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -56,28 +52,25 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'yawning_titan_gui.urls'
+ROOT_URLCONF = 'yt_front_end.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / "yawning_titan_gui/templates",
-            #BASE_DIR / "docs/_build/html"
-        ],
+        'DIRS': [BASE_DIR / "yt_front_end/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                #'django.contrib.auth.context_processors.auth',
+                # 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'yawning_titan_gui.wsgi.application'
+WSGI_APPLICATION = 'yt_front_end.wsgi.application'
 
 
 # Database
@@ -126,14 +119,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = DATA_DIR
-# STATICFILES_DIRS = [
-#     BASE_DIR / "yawning_titan_gui/static"
-# ]
+STATIC_ROOT = DATA_DIR
+STATICFILES_DIRS = [
+    BASE_DIR / "yt_front_end/static"
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 X_FRAME_OPTIONS = 'SAMEORIGIN'
