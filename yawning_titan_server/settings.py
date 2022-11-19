@@ -11,13 +11,13 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+#from yawning_titan import DATA_DIR
 from platformdirs import PlatformDirs    
 dirs = PlatformDirs(appname="yawning_titan", appauthor="DSTL")
 DATA_DIR = Path(dirs.user_data_path)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
+    'yawning_titan',
+    'yawning_titan_gui'
 ]
 
 MIDDLEWARE = [
@@ -52,12 +54,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'yt_front_end.urls'
+ROOT_URLCONF = 'yawning_titan_server.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "yt_front_end/templates"],
+        'DIRS': [BASE_DIR / "yawning_titan_gui/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'yt_front_end.wsgi.application'
+WSGI_APPLICATION = 'yawning_titan_gui.wsgi.application'
 
 
 # Database
@@ -121,7 +123,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = DATA_DIR
 STATICFILES_DIRS = [
-    BASE_DIR / "yt_front_end/static"
+    BASE_DIR / "yawning_titan_gui/static"
 ]
 
 # Default primary key field type
