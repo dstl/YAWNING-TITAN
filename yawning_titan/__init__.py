@@ -63,7 +63,6 @@ def _log_dir() -> Union[Path, PosixPath]:
 
 def _docs_dir() -> Union[Path, PosixPath]:
     dir_path = _YT_PLATFORM_DIRS.user_data_path / "docs"
-    print(dir_path,type(dir_path),"DD")
     # Create if it doesn't already exist and bypass if it does already exist
     dir_path.mkdir(parents=True, exist_ok=True)
     return dir_path
@@ -85,7 +84,6 @@ def _app_images_dir() -> Union[Path, PosixPath]:
 
 def _notebooks_dir() -> Union[Path, PosixPath]:
     dir_path = _YT_USER_DIRS / "notebooks"
-    print(dir_path,type(dir_path),"NB")
     # Create if it doesn't already exist and bypass if it does already exist
     dir_path.mkdir(parents=True, exist_ok=True)
     return dir_path
