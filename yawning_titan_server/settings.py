@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-#from yawning_titan import DATA_DIR
+# from yawning_titan import DATA_DIR
 from platformdirs import PlatformDirs    
 dirs = PlatformDirs(appname="yawning_titan", appauthor="DSTL")
 DATA_DIR = Path(dirs.user_data_path)
@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'yawning_titan',
+    #'yawning_titan',
     'yawning_titan_gui'
 ]
 
