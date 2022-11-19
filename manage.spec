@@ -10,8 +10,6 @@ a = Analysis(
     binaries=[],
     datas=[
         ("yawning_titan_gui/templates/home.html","yawning_titan_gui/templates"),
-        ("yawning_titan_gui/templates/base.html","yawning_titan_gui/templates"),
-        ("yawning_titan_gui/static/js/app.js","yawning_titan_gui/static/js"),
         ("yawning_titan_gui/static/ytlogo.ico","yawning_titan_gui/static"),
         ("venv/Lib/site-packages/stable_baselines3/version.txt","stable_baselines3"),
         ("yawning_titan/config/_package_data/logging_config.yaml","yawning_titan/config/_package_data"),
