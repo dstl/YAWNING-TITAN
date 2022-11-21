@@ -7,6 +7,7 @@ from setuptools.command.install import install
 def _create_app_dirs():
     """
     Handles creation of application directories and user directories.
+    
     Uses `platformdirs.PlatformDirs` and `pathlib.Path` to create the required app directories in the correct
     locations based on the users OS.
     """
@@ -48,6 +49,7 @@ def _create_app_dirs():
 def _copy_package_data_notebooks_to_notebooks_dir():
     """
     Call the reset_default_jupyter_notebooks without overwriting if notebooks are already there.
+
     As this is a post install script, it should be possible to import Yawning-Titan, but it may not. This
     `ImportError` is handled so that setup doesn't fail.
     """
