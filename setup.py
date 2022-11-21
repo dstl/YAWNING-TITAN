@@ -4,6 +4,7 @@ from setuptools import find_packages, setup
 from setuptools.command.develop import develop
 from setuptools.command.install import install
 
+
 def _create_app_dirs():
     """
     Handles creation of application directories and user directories.
@@ -61,6 +62,7 @@ def _copy_package_data_notebooks_to_notebooks_dir():
         # Failed as, although this is a post-install script, YT can't be imported
         pass
 
+
 class PostDevelopCommand(develop):
     """Post-installation command class for development mode."""
 
@@ -69,6 +71,7 @@ class PostDevelopCommand(develop):
         develop.run(self)
         _create_app_dirs()
         _copy_package_data_notebooks_to_notebooks_dir()
+
 
 class PostInstallCommand(install):
     """Post-installation command class for installation mode."""
@@ -83,14 +86,16 @@ class PostInstallCommand(install):
 def _ray_3_beta_rllib_py_platform_pip_install() -> str:
     """
     Python version and OS version map to ray 3.0.0.dev0 .whel.
+
     Maps the operating system and the Python version to the relevant .whl
     file for Ray 3.0.0.dev0 beta version. Uses it to build a pip install
     string for installing Ray 3.0.0.dev0 with the [rllib] extra.
 
     whl source: https://docs.ray.io/en/master/ray-overview/installation.html
+
     * A temporary measure to allow for use on Linux, Windows, and MacOS
     while we wait for ray 3.0.0 release with full Windows support. *
-    
+
     Returns: A pip install string to install Ray 3.0.0.dev0 with the [rllib]
         extra for the given OS and Python version.
     Raises EnvironmentError: When either the operating system is not
@@ -177,7 +182,7 @@ setup(
             "nbmake==1.3.4",
             "Django==4.1.2",
             "flaskwebgui==1.0.1",
-            #"pyinstaller==5.6.2",
+            # "pyinstaller==5.6.2"
             "git+https://github.com/rumbelows/pyinstaller.git@django_4_x_fixes"
         ],
         "tensorflow": ["tensorflow"],
