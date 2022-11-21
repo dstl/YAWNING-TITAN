@@ -3,7 +3,13 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
+function update_tooltip(selector,replace,replace_with){
+    $(selector).attr('data-bs-original-title',$(selector).data("bs-original-title").replace(replace,replace_with));
+}
+
 $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+
     $('#sandwich-icon').click(function(){
 		$(this).toggleClass('open');
         $($(this).data("sidebar")).toggleClass('open');

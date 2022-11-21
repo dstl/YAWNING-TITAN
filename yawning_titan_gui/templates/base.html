@@ -38,19 +38,19 @@
     </nav>
     <div id="window-container">
         <div id="toolbar">
-            <div id="game-mode-set" class="stage">
+            <div id="game-mode-set" class="stage" data-toggle="tooltip" data-placement="right" title="Game mode config incomplete">
                 <i class="bi bi-gear"></i>
                 <i class="bi bi-gear-fill"></i>
             </div>
-            <div class="stage">
+            <div class="stage" data-toggle="tooltip" data-placement="right" title="Network config incomplete">
                 <i class="bi bi-diagram-2"></i>
                 <i class="bi bi-diagram-2-fill"></i>
             </div>            
-            <div class="stage">
+            <div class="stage" data-toggle="tooltip" data-placement="right" title="Run config incomplete">
                 <i class="bi bi-collection-play"></i>
                 <i class="bi bi-collection-play-fill"></i>
             </div>            
-            <div class="stage">
+            <div class="stage" data-toggle="tooltip" data-placement="right" title="Run game">
                 <i class="bi bi-play"></i>
                 <i class="bi bi-play-fill"></i>
             </div>           
@@ -100,6 +100,8 @@
         --light: #323233;
         --mid: #252526;
         --dark: #1e1e1e;
+
+        --text-superlight: #fff;
         --text-light: #999;
         --text-mid: #888;
         
@@ -265,8 +267,8 @@
         border: none;
     }
     .accordion-button:not(.collapsed){
-        background-color: var(--primary-light);
-        color: var(--primary);
+        background-color: var(--primary);
+        color: var(--text-superlight);
     }
     .accordion-button.collapsed::after {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23888'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
@@ -287,8 +289,9 @@
         filter: blur(5px);
     }
     .btn-primary{
-        background-color: var(--primary-light);
-        border-color: var(--primary-light);
+        background-color: var(--primary);
+        border-color: var(--primary);
+        color: var(--text-superlight) !important;
     }
     .btn{
         color: var(--text-light);
