@@ -7,6 +7,7 @@ from setuptools.command.install import install
 def _create_app_dirs():
     """
     Handles creation of application directories and user directories.
+
     Uses `platformdirs.PlatformDirs` and `pathlib.Path` to create the required app directories in the correct
     locations based on the users OS.
     """
@@ -48,6 +49,7 @@ def _create_app_dirs():
 def _copy_package_data_notebooks_to_notebooks_dir():
     """
     Call the reset_default_jupyter_notebooks without overwriting if notebooks are already there.
+
     As this is a post install script, it should be possible to import Yawning-Titan, but it may not. This
     `ImportError` is handled so that setup doesn't fail.
     """
@@ -84,9 +86,11 @@ def _ray_3_beta_rllib_py_platform_pip_install() -> str:
     Maps the operating system and the Python version to the relevant .whl
     file for Ray 3.0.0.dev0 beta version. Uses it to build a pip install
     string for installing Ray 3.0.0.dev0 with the [rllib] extra.
+
     whl source: https://docs.ray.io/en/master/ray-overview/installation.html
     * A temporary measure to allow for use on Linux, Windows, and MacOS
     while we wait for ray 3.0.0 release with full Windows support. *
+    
     Returns: A pip install string to install Ray 3.0.0.dev0 with the [rllib]
         extra for the given OS and Python version.
     Raises EnvironmentError: When either the operating system is not
