@@ -1,3 +1,26 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 {% load tags %}
+<!-- <!DOCTYPE html> -->
+
+{% block main %}
+<div id="center-container" class="small">
+    <button>Load project</button>
+    <a>Something about loading</a>
+</div>
+{% endblock %}
+
+{% block style %}
+<style>
+    #center-container>*{
+        margin: var(--increment);
+        padding: 2px;
+        background-color: var(--primary-light);
+        color: var(--text-light);
+        font-size: 1.5rem;
+        border-radius: .25rem;       
+        text-align: center;     
+        cursor: pointer;   
+    }
+</style>
+{% endblock %}
