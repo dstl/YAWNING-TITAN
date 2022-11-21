@@ -34,14 +34,11 @@ jobs:
       - name: Build Yawning-Titan
         run: |
           python setup.py sdist
-          ls ./dist
-          YT=$(ls ./dist/yawningtitan-*.*.*.tar.gz)
-          echo $YT
       - name: Install Yawning-Titan
         run: |
+          YT=$(ls ./dist/yawningtitan-*.*.*.tar.gz)
           python -m pip install torch==1.11+cpu -f https://download.pytorch.org/whl/torch_stable.html
-          python -m pip install $YT --default-timeout 1000
-          python -m pip install pytest, pytest-flake8
+          python -m pip install $YT[dev] --default-timeout 1000
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
