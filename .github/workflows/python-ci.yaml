@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 10
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.8", "3.10"]
 
     steps:
       - uses: actions/checkout@v3
@@ -26,12 +26,18 @@ jobs:
           sudo apt update
           sudo add-apt-repository ppa:deadsnakes/ppa -y
           sudo apt install python${{ matrix.python-version}}-dev -y
-      - name: Install dependencies
+      - name: Install Build Dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install wheel
+          pip install build
+          pip install wheel
+      - name: Build Yawning-Titan
+        run: |
+          python setup.py sdist
+      - name: Install Yawning-Titan
+        run: |
           python -m pip install torch==1.11+cpu -f https://download.pytorch.org/whl/torch_stable.html
-          python -m pip install .[dev] --default-timeout 1000
+          python -m pip install $YT[dev] --default-timeout 1000
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
