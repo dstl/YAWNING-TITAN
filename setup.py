@@ -183,7 +183,7 @@ setup(
             "Django==4.1.2",
             "flaskwebgui==1.0.1",
             # "pyinstaller==5.6.2"
-            "git+https://github.com/rumbelows/pyinstaller.git@django_4_x_fixes"
+            "git+https://github.com/rumbelows/pyinstaller.git@7d7d298c83aa6882a5234833ee97c882e7a8f452=PyInstaller-5.6.2"
         ],
         "tensorflow": ["tensorflow"],
         "jupyter": ["jupyter"],
