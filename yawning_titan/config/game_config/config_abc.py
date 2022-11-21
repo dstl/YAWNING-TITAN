@@ -2,8 +2,32 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Dict
+from typing import Any, Dict, List
 
+class ConfigItem:
+    def __init__(
+        self,
+        value:Any,
+        type:type,
+        description:str='',
+        depends_on:List[str]=[],
+        group:str=''
+    ) -> None:
+        self.value = value
+        self.type = type
+        self.description = description
+        self.depends_on = depends_on
+        self.group = group
+
+    def __repr__(self) -> str:
+        return self.value
+
+    def __str__(self) -> str:
+        return str(self.value)
+
+a = ConfigItem(2,int)
+
+print(a)
 
 @dataclass()
 class ConfigABC(ABC):
