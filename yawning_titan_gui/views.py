@@ -1,6 +1,8 @@
 from django.views import View
 from django.shortcuts import render
-from yt_front_end.settings import STATIC_URL
+from yawning_titan_server.settings import STATIC_URL
+
+from yawning_titan_gui.forms import red_config_form
 
 def static_url(type,file_path):
     return  f"{STATIC_URL}/{type}/{file_path.name}"
@@ -60,16 +62,22 @@ class GameModes(View):
     def post(self, request, *args, **kwargs):
         pass
 
-
+    
 class GameModeConfig(View):
     def get(self, request, *args, **kwargs):
-        return render(
-            request,
-            "game_modes_config.html",
-            {
-                "forms":
-            }
-        )
+        self.forms = {
+            "RED":red_config_form,
+        }
+        return self.render_page(request)
 
     def post(self, request, *args, **kwargs):
         pass
+
+    def render_page(self, request):
+        return render(
+            request,
+            "game_mode_config.html",
+            {
+                "forms":self.forms
+            }
+        )
