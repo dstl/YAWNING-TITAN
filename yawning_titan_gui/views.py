@@ -59,3 +59,17 @@ class GameModes(View):
 
     def post(self, request, *args, **kwargs):
         pass
+
+
+class GameModeConfig(View):
+    def get(self, request, *args, **kwargs):
+        return render(
+            request,
+            "game_modes_config.html",
+            {
+                "forms":
+            }
+        )
+
+    def post(self, request, *args, **kwargs):
+        pass

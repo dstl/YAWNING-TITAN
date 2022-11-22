@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% load tags %}
-<!-- <!DOCTYPE html> -->
 
 {% block main %}
 {% for form_name, form in forms.items %}
@@ -35,15 +34,48 @@
 
 {% block style %}
 <style>
-    #center-container>*{
-        margin: var(--increment);
-        padding: 2px;
-        background-color: var(--primary-light);
-        color: var(--text-light);
-        font-size: 1.5rem;
-        border-radius: .25rem;       
-        text-align: center;     
-        cursor: pointer;   
+    .mb-3{
+        display: flex;
+        flex-wrap: wrap;
+        margin: 3px;
+    }
+    .help-text{
+        font-size: .8em;
+        color: #888;
+        flex-basis: 100%;
+        margin: 0;
+    }
+    .mb-3 label{
+        width: 400px;
+        display: flex;      
+        align-items: center;
+        margin: 0;
+    }
+    .mb-3 input{
+        height: 25px;
+    }
+    .mb-3>div{
+        flex: 1;
+    }
+    .field-container>*{
+        width:100%;
+    }
+    .selector{
+        width: 100%;
+        /* border-radius: .2rem; */
+        /* border: 1px solid #888; */
+        border: none;
+        border-bottom: 1px solid #888;
+        background: transparent;
+        text-align: left;
+        margin-bottom: 5px;
+    }
+    .selector:hover{
+        background-color: aliceblue;
+    }
+
+    div.mb-3:has(.hidden){
+        display: none;
     }
 </style>
 {% endblock %}
