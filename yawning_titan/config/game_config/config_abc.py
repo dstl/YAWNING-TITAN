@@ -2,33 +2,8 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Any, Dict, List
-from collections import defaultdict
+from typing import Any, Dict
 
-class ConfigItem:
-    def __init__(
-        self,
-        value:Any,
-        type:type,
-        description:str=None,
-        depends_on:List[str]=[],
-        group:str=None
-    ) -> None:
-        self.value = value
-        self.type = type
-        self.description = description
-        self.depends_on = depends_on
-        self.group = group
-
-    def __repr__(self) -> str:
-        return self.value
-
-    def __str__(self) -> str:
-        return str(self.value)
-
-a = ConfigItem(2,int)
-
-print(a)
 
 @dataclass()
 class ConfigABC(ABC):
@@ -59,20 +34,6 @@ class ConfigABC(ABC):
                 k = k[1:]
             d[k] = v
         return d
-
-    def get_groups(self) -> Dict[str,List[ConfigItem]]:
-        """
-        Serializes items of subclass of ConfigABC 
-        that belong to a group as a dict of group name
-        mapped to list of ConfigItem's
-
-        Returns:
-            The grouped elements of ConfigABC as a dict.
-        """
-        d = defaultdict(list)
-        for k, v in self.__dict__.items():
-            if v.group is not None:
-                d[v.group].append(v)
 
     @classmethod
     @abstractmethod
