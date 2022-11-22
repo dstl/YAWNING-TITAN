@@ -6,7 +6,7 @@ $(document).ready(function(){
         $(".game-mode").find(".subhead:not(:contains(" + $(this).val() + "))").closest(".game-mode").addClass("hidden");
     });
 
-    $(".game-mode").click(function(){   
+    $(".game-mode.selectable").click(function(){   
         console.log($("#game-mode-set").data("bs-original-title").replace("incomplete","complete"));
         if($(this).hasClass("selected")){
             $(this).removeClass("selected");
