@@ -182,7 +182,7 @@ setup(
             "nbmake==1.3.4",
             "Django==4.1.2",
             "flaskwebgui==1.0.1",
-            "pyinstaller @ git+https://github.com/rumbelows/pyinstaller.git@7d7d298c83aa6882a5234833ee97c882e7a8f452#egg=pyinstaller"
+            "pyinstaller @ git+https://github.com/pyinstaller/pyinstaller.git@develop2#egg=pyinstaller"
         ],
         "tensorflow": ["tensorflow"],
         "jupyter": ["jupyter"],
