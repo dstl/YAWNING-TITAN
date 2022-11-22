@@ -4,10 +4,33 @@
 <!-- <!DOCTYPE html> -->
 
 {% block main %}
-<div id="center-container" class="small">
-    <button>Load project</button>
-    <a>Something about loading</a>
+{% for form_name, form in forms.items %}
+<div id="{{form_name}}-config-form-container">
+    <div class="accordion-body">
+        <form id="{{form_name}}-config-form" class="config-form" action="" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-3">
+                <div class="info">
+                    <label for="id_{{field.name}}" class="form-label">{{field.label}}</label>
+                    <p class="help-text">{{field.help_text}}</p>
+                </div>                    
+                <div class="field-container">
+                    {{ field }}
+                </div>                  
+                {% if field.errors %}
+                <ul style="color:var(--bs-danger)">
+                    {% for error in field.errors %}
+                    <li><strong>{{ error|escapejs }}</strong></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </form>
+    </div>
 </div>
+{% endfor %}
 {% endblock %}
 
 {% block style %}
