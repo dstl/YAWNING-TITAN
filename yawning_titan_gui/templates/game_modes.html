@@ -20,7 +20,7 @@
     </div>   
     <div id="game-modes">
         {% for game_mode in game_modes %}
-            {% include 'elements/el_game_mode.html' with name=game_mode.name description=game_mode.description %}
+            {% include 'elements/el_game_mode.html' with name=game_mode.name description=game_mode.description editable=True %}
         {% endfor %}
     </div>
 </div>

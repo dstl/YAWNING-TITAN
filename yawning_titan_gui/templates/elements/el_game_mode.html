@@ -4,14 +4,17 @@
         <p class="description">{{description}}</p>
     </div>
     <div class="icons">
+        {% if editable %}
         <div class="icon">
             <i class="bi bi-pencil"></i>
         </div>
         <div class="icon delete">
             <i class="bi bi-trash3"></i>
         </div>   
-        <!-- <div class="icon">
+        {% else %}
+        <div class="icon">
             <i class="bi bi-check-lg"></i>
-        </div> -->
+        </div>
+        {% endif %}
     </div>
 </div>
