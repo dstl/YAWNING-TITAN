@@ -2,9 +2,15 @@ name: Python package
 
 on:
   push:
-    branches: [main, dev]
+    branches:
+      - main
+      - dev
+      - 'releases/**'
   pull_request:
-    branches: [main, dev]
+    branches:
+      - main
+      - dev
+      - 'releases/**'
 
 jobs:
   build:
