@@ -52,7 +52,23 @@ $(document).ready(function(){
     });
 
     $("#game-config-submit").click(function(){
-        $.ajax()
+        $(".config-form").each(function(){
+            $.ajax({
+                type: "POST",
+                url: window.location.href,
+                data: Object.assign({},
+                    {"form_name":$(this).data("form-name")},
+                    $(this).serialize()
+                ),
+                dataType: "json",
+                success: function(response){
+                    console.log("RESP",response)
+                },
+                error: function(response){
+                    console.log("ERROR",response.error)
+                }
+            });
+        });        
     });
 
 });
