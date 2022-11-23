@@ -20,7 +20,7 @@
     </div>   
     <div id="game-modes">
         {% for game_mode in game_modes %}
-            {% include 'elements/el_game_mode.html' with name=game_mode.name description=game_mode.description editable=True %}
+            {% include 'elements/el_game_mode.html' with name=game_mode.name description=game_mode.description filename=game_mode.filename editable=True %}
         {% endfor %}
     </div>
 </div>
@@ -55,18 +55,6 @@
     }
     #search-container span{
         background-color: var(--primary-light);
-    }
-    input[type='search']{
-        background-color: var(--mid);
-        color: var(--text-light);
-    }
-    input[type='search']:focus{
-        background-color: var(--mid);
-        color: var(--text-light);
-    }
-    input[type='search'].rounded{
-        border-top-right-radius:0 !important;
-        border-bottom-right-radius:0 !important;
     }
 
     /* Game mode elements */

@@ -14,27 +14,27 @@ from yawning_titan.envs.generic.helpers.environment_input_validation import (
 class RedAgentConfig(ConfigABC):
     """Class that validates and stores the Red Agent Configuration."""
 
-    _red_skill: int
+    _red_skill: float
     _red_uses_skill: bool
     _red_ignores_defences: bool
     _red_always_succeeds: bool
     _red_can_only_attack_from_red_agent_node: bool
     _red_can_attack_from_any_red_node: bool
     _red_can_naturally_spread: bool
-    _chance_to_spread_to_connected_node: int
-    _chance_to_spread_to_unconnected_node: int
+    _chance_to_spread_to_connected_node: float
+    _chance_to_spread_to_unconnected_node: float
     _red_uses_spread_action: bool
-    _spread_action_likelihood: int
-    _chance_for_red_to_spread: int
+    _spread_action_likelihood: float
+    _chance_for_red_to_spread: float
     _red_uses_random_infect_action: bool
-    _random_infect_action_likelihood: int
-    _chance_for_red_to_random_compromise: int
+    _random_infect_action_likelihood: float
+    _chance_for_red_to_random_compromise: float
     _red_uses_basic_attack_action: bool
-    _basic_attack_action_likelihood: int
+    _basic_attack_action_likelihood: float
     _red_uses_do_nothing_action: bool
-    _do_nothing_action_likelihood: int
+    _do_nothing_action_likelihood: float
     _red_uses_move_action: bool
-    _move_action_likelihood: int
+    _move_action_likelihood: float
     _red_uses_zero_day_action: bool
     _zero_day_start_amount: int
     _days_required_for_zero_day: int
@@ -48,7 +48,7 @@ class RedAgentConfig(ConfigABC):
 
     # region Getters
     @property
-    def red_skill(self) -> int:
+    def red_skill(self) -> float:
         """
         Red Skill.
 
@@ -100,7 +100,7 @@ class RedAgentConfig(ConfigABC):
         return self._red_can_naturally_spread
 
     @property
-    def chance_to_spread_to_connected_node(self) -> int:
+    def chance_to_spread_to_connected_node(self) -> float:
         """
         Chance to spread to connected node.
 
@@ -110,7 +110,7 @@ class RedAgentConfig(ConfigABC):
         return self._chance_to_spread_to_connected_node
 
     @property
-    def chance_to_spread_to_unconnected_node(self) -> int:
+    def chance_to_spread_to_unconnected_node(self) -> float:
         """
         Chance to spread to unconnected node.
 
@@ -125,12 +125,12 @@ class RedAgentConfig(ConfigABC):
         return self._red_uses_spread_action
 
     @property
-    def spread_action_likelihood(self) -> int:
+    def spread_action_likelihood(self) -> float:
         """Weighting for red_uses_spread_action."""
         return self._spread_action_likelihood
 
     @property
-    def chance_for_red_to_spread(self) -> int:
+    def chance_for_red_to_spread(self) -> float:
         """Chance for each 'spread' to succeed."""
         return self._chance_for_red_to_spread
 
@@ -140,12 +140,12 @@ class RedAgentConfig(ConfigABC):
         return self._red_uses_random_infect_action
 
     @property
-    def random_infect_action_likelihood(self) -> int:
+    def random_infect_action_likelihood(self) -> float:
         """Weighting for red_uses_random_infect_action."""
         return self._random_infect_action_likelihood
 
     @property
-    def chance_for_red_to_random_compromise(self) -> int:
+    def chance_for_red_to_random_compromise(self) -> float:
         """Chance for each 'infect' to succeed."""
         return self._chance_for_red_to_random_compromise
 
@@ -160,7 +160,7 @@ class RedAgentConfig(ConfigABC):
         return self._red_uses_basic_attack_action
 
     @property
-    def basic_attack_action_likelihood(self) -> int:
+    def basic_attack_action_likelihood(self) -> float:
         """Weighting for red_uses_basic_attack_action."""
         return self._basic_attack_action_likelihood
 
@@ -170,7 +170,7 @@ class RedAgentConfig(ConfigABC):
         return self._red_uses_do_nothing_action
 
     @property
-    def do_nothing_action_likelihood(self) -> int:
+    def do_nothing_action_likelihood(self) -> float:
         """Chance for red_uses_do_nothing_action."""
         return self._do_nothing_action_likelihood
 
@@ -180,7 +180,7 @@ class RedAgentConfig(ConfigABC):
         return self._red_uses_move_action
 
     @property
-    def move_action_likelihood(self) -> int:
+    def move_action_likelihood(self) -> float:
         """Chance of red_uses_move_action."""
         return self._move_action_likelihood
 
