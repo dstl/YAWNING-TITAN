@@ -35,8 +35,9 @@ def get_url(url_name: str):
     except Exception:
         return ""
 
+
 @register.filter
-def next_key(_dict:dict,key_index: int):
+def next_key(_dict: dict, key_index: int):
     """"""
     if key_index < (len(_dict.keys()) - 2):
         return list(_dict.keys())[key_index + 1]

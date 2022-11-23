@@ -17,7 +17,7 @@
         </div>
         <div class="icon observaton_space">
             <i class="bi bi-binoculars"></i>
-        </div>        
+        </div>
         <div class="icon game_rules">
             <i class="bi bi-clipboard"></i>
         </div>
@@ -29,9 +29,9 @@
         </div>
         <div class="icon miscellanious">
             <i class="bi bi-brush"></i>
-        </div>        
+        </div>
     </div>
-    {% for form_name, form in forms.items %}    
+    {% for form_name, form in forms.items %}
     <div id="{{form_name}}-config-form-container" class="form-container {% if not forloop.first %}hidden{% endif %}">
         <form id="{{form_name}}-config-form" class="config-form" action="" method="post" data-form-name="{{form_name}}">
             {% csrf_token %}
@@ -57,7 +57,7 @@
         </form>
     </div>
     {% endfor %}
-    
+
 </div>
 <button id="game-config-submit" type="submit" class="btn btn-primary">Submit</button>
 {% endblock %}
@@ -87,13 +87,13 @@
         font-size: 30px;
         color: var(--text-light);
         background-color: var(--dark);
-        border-right: 2px solid var(--text-light);        
+        border-right: 2px solid var(--text-light);
     }
     #config-form-icons>.icon{
         margin-left: 0;
         margin-top: var(--increment);
         margin-bottom:  var(--increment);
-        transform: translate(50%,0%);        
+        transform: translate(50%,0%);
     }
 
     .form-container{

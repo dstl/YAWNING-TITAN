@@ -162,7 +162,7 @@ class GameModeConfigView(View):
         forms[form_name] = self.forms[form_name](request.POST)
 
         if forms[form_name].is_valid():
-            print("TTT",forms[form_name].cleaned_data)
+            print("TTT", forms[form_name].cleaned_data)
             self.configs[form_name] = self.configs[form_name].create(
                 game_mode_from_default(
                     forms[form_name].cleaned_data,
