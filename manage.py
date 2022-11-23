@@ -6,7 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'yawning_titan_server.settings')
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "yawning_titan_server.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -21,6 +21,5 @@ def main():
 if __name__ == "__main__":
     """run from console with no arguments after filename to load headless gui"""
     if len(sys.argv) == 1:
-        sys.argv = [sys.argv[0],"run_gui"]
+        sys.argv = [sys.argv[0], "run_gui"]
     main()
-    

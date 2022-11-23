@@ -3,8 +3,8 @@
 {% load tags %}
 <!-- <!DOCTYPE html> -->
 
-{% block scripts %}   
-<script src="{% static 'js/game_mode.js' %}"></script>             
+{% block scripts %}
+<script src="{% static 'js/game_mode.js' %}"></script>
 {% endblock %}
 
 {% block main %}
@@ -17,7 +17,7 @@
             </span>
             <!-- TODO: add advanced filtered search from db -->
         </div>
-    </div>   
+    </div>
     <div id="game-modes">
         {% for game_mode in game_modes %}
             {% include 'elements/el_game_mode.html' with name=game_mode.name description=game_mode.description filename=game_mode.filename editable=True %}
@@ -76,19 +76,13 @@
         /* margin: 11px; */
     }
     .game-mode:hover .icon:has(.bi-check-lg),.game-mode.selected .icon:has(.bi-check-lg){
-        background-color: var(--text-mid); 
+        background-color: var(--text-mid);
     }
     .game-mode:hover .bi-check-lg,.game-mode.selected .bi-check-lg{
         color: lawngreen;
     }
-    .game-mode .icon{
-        border-radius: 50%;
-        background-color: var(--light);
-        margin-left: var(--increment);
-        padding: .5rem;
-    }
     .game-mode .icon:hover{
-        background-color: var(--text-mid);        
+        background-color: var(--text-mid);
     }
     .game-mode .icon:hover>.bi-trash3{
         color: red;
@@ -117,7 +111,7 @@
         max-width: 100%;
         padding: 0;
         margin: 0;
-        vertical-align: middle;        
+        vertical-align: middle;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -127,6 +121,6 @@
     }
     .game-mode .description{
         color: var(--text-dark);
-    }    
+    }
 </style>
 {% endblock %}

@@ -12,7 +12,7 @@ class MiscellaneousConfig(ConfigABC):
     """Class that validates and stores the Miscellaneous Configuration."""
 
     _output_timestep_data_to_json: bool
-    _random_seed: Optional[int]
+    _random_seed: int
 
     @property
     def output_timestep_data_to_json(self) -> bool:
@@ -29,7 +29,7 @@ class MiscellaneousConfig(ConfigABC):
         self._output_timestep_data_to_json = value
 
     @property
-    def random_seed(self) -> Optional[int]:
+    def random_seed(self) -> int:
         """
         A random_seed int.
 
