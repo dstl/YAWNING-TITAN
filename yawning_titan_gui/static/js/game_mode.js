@@ -81,7 +81,7 @@ $(document).ready(function(){
 
     $("#game-config-submit").click(function(){
         $(".config-form").each(function(){
-            submit_form(this);            
+            submit_form(this);
         });
     });
 

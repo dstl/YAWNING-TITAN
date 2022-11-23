@@ -1,10 +1,12 @@
 from dataclasses import fields
 from typing import Any, Dict
 
+import yaml
 from django import forms
 from django.forms import widgets
-from yawning_titan import GAME_MODES_DIR
+from yaml import SafeLoader
 
+from yawning_titan import GAME_MODES_DIR
 from yawning_titan.config.agents.blue_agent_config import BlueAgentConfig
 from yawning_titan.config.agents.red_agent_config import RedAgentConfig
 from yawning_titan.config.environment.game_rules_config import GameRulesConfig
@@ -16,8 +18,6 @@ from yawning_titan.config.environment.rewards_config import RewardsConfig
 from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.config.game_config.miscellaneous_config import MiscellaneousConfig
 
-from yaml import SafeLoader
-import yaml
 
 class RangeInput(widgets.NumberInput):
     """Custom widget for range input range input field."""
@@ -106,14 +106,15 @@ rewards_config_form_map = {"groups": {}, "dependencies": {}}
 miscellaneous_config_form_map = {"groups": {}, "dependencies": {}}
 
 config_form_maps = {
-    "red":red_config_form_map,
-    "blue":blue_config_form_map,
+    "red": red_config_form_map,
+    "blue": blue_config_form_map,
     "game_rules": game_rules_config_form_map,
     "observation_space": observation_space_config_form_map,
     "reset": reset_config_form_map,
     "rewards": rewards_config_form_map,
-    "miscellaneous": miscellaneous_config_form_map
+    "miscellaneous": miscellaneous_config_form_map,
 }
+
 
 class ConfigForm(forms.Form):
     """
@@ -268,10 +269,10 @@ def game_mode_from_default(gui_options: Dict[str, Dict[str, Any]], section: str)
     """
     with open(GAME_MODES_DIR / "everything_off_config.yaml") as f:
         new_settings: Dict[str, Dict[str, Any]] = yaml.load(f, Loader=SafeLoader)
-    
+
     # add settings items for selection values
     for name in config_form_maps[section]["groups"].keys():
-        print("NN",section,name,new_settings[section.upper()])
+        print("NN", section, name, new_settings[section.upper()])
         new_settings[section.upper()][gui_options[name]] = True
         del gui_options[name]
 
