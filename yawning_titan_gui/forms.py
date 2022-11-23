@@ -65,8 +65,65 @@ red_config_form_map = {
         ],
         "red_target_node":[
             "red_always_chooses_shortest_distance_to_target"
+        ],
+        "red_uses_skill":[
+            "red_skill"
         ]
     }
+}
+
+blue_config_form_map = {
+    "groups":{},
+    "dependencies":{}
+}
+
+observation_space_config_form_map = {
+    "groups":{},
+    "dependencies":{
+        "can_discover_failed_attacks":[
+            "chance_to_discover_failed_attack"
+        ],
+        "can_discover_succeeded_attacks_if_compromise_is_not_discovered":[
+            "chance_to_discover_succeeded_attack_compromise_not_known"
+        ],
+        "can_discover_succeeded_attacks_if_compromise_is_discovered":[
+            "chance_to_discover_succeeded_attack_compromise_known"
+        ],
+        "making_node_safe_modifies_vulnerability":[
+            "vulnerability_change_during_node_patch",
+            "making_node_safe_gives_random_vulnerability"
+        ]
+    }
+}
+
+game_rules_config_form_map = {
+    "groups":{
+        "target node choice":[
+            "choose_high_value_nodes_placement_at_random",
+            "choose_high_value_nodes_furthest_away_from_entry"
+        ],
+        "entry node choice":[
+            "choose_entry_nodes_randomly",
+            "prefer_central_nodes_for_entry_nodes",
+            "prefer_edge_nodes_for_entry_nodes"
+        ]
+    },
+    "dependencies":{}
+}
+
+reset_config_form_map = {
+    "groups":{},
+    "dependencies":{}
+}
+
+rewards_config_form_map = {
+    "groups":{},
+    "dependencies":{}
+}
+
+miscellaneous_config_form_map = {
+    "groups":{},
+    "dependencies":{}
 }
 
 class ConfigForm(forms.Form):
@@ -92,9 +149,9 @@ class ConfigForm(forms.Form):
                 help_text="this will be replaced with description"
             )
             grouped_elements.extend(group)
-
        
         for parent,dependents in config_form_map["dependencies"].items():
+            attrs[parent] = f" {parent} grouped parent"
             for field in dependents:
                 attrs[field] = f" {parent} grouped hidden"
 
@@ -102,13 +159,13 @@ class ConfigForm(forms.Form):
             _class = attrs.get(name,"")
             if name in grouped_elements:
                 continue
-            if type(_type) == bool:
+            if _type == "bool":
                 bool_elements[name] = forms.BooleanField(
-                    widget=widgets.CheckboxInput(attrs={"class": "form-check-input"}),
+                    widget=widgets.CheckboxInput(attrs={"class": "form-check-input" + _class}),
                     required=False,
                     help_text=getattr(ConfigClass,name).__doc__,
                 )
-            elif type(_type) == float:
+            elif _type == "float":
                 integer_elements[name] = forms.FloatField(
                     widget=RangeInput(attrs={"class": "form-control" + _class,'step': "0.01"}), 
                     required=False,
@@ -116,7 +173,7 @@ class ConfigForm(forms.Form):
                     min_value=0,
                     max_value=1
                 )
-            elif type(_type) == int:
+            elif _type == "int":
                 integer_elements[name] = forms.IntegerField(
                     widget=widgets.NumberInput(attrs={"class": "form-control" + _class}), 
                     required=False,
@@ -129,5 +186,3 @@ class ConfigForm(forms.Form):
                     help_text=getattr(ConfigClass,name).__doc__,
                 )
         self.fields = {**dropdown_elements,**bool_elements,**freetext_elements, **integer_elements}
-
-red_config_form = ConfigForm(red_config_form_map,RedAgentConfig)

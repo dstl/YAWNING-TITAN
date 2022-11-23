@@ -55,17 +55,17 @@ class BlueAgentConfig(ConfigABC):
 
     _max_number_deceptive_nodes: int
     _can_discover_failed_attacks: bool
-    _chance_to_immediately_discover_intrusion: int
-    _chance_to_discover_intrusion_on_scan: int
-    _chance_to_immediately_discover_intrusion_deceptive_node: int
-    _chance_to_discover_intrusion_on_scan_deceptive_node: int
-    _chance_to_discover_failed_attack: int
+    _chance_to_immediately_discover_intrusion: float
+    _chance_to_discover_intrusion_on_scan: float
+    _chance_to_immediately_discover_intrusion_deceptive_node: float
+    _chance_to_discover_intrusion_on_scan_deceptive_node: float
+    _chance_to_discover_failed_attack: float
     _can_discover_succeeded_attacks_if_compromise_is_discovered: bool
     _can_discover_succeeded_attacks_if_compromise_is_not_discovered: bool
-    _chance_to_discover_succeeded_attack_compromise_known: int
-    _chance_to_discover_succeeded_attack_compromise_not_known: int
-    _chance_to_discover_failed_attack_deceptive_node: int
-    _chance_to_discover_succeeded_attack_deceptive_node: int
+    _chance_to_discover_succeeded_attack_compromise_known: float
+    _chance_to_discover_succeeded_attack_compromise_not_known: float
+    _chance_to_discover_failed_attack_deceptive_node: float
+    _chance_to_discover_succeeded_attack_deceptive_node: float
     _making_node_safe_modifies_vulnerability: bool
     _vulnerability_change_during_node_patch: int
     _making_node_safe_gives_random_vulnerability: bool

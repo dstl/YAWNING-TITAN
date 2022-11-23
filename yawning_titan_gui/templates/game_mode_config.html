@@ -2,10 +2,14 @@
 {% load static %}
 {% load tags %}
 
+{% block scripts %}   
+<script src="{% static 'js/game_mode.js' %}"></script>             
+{% endblock %}
+
 {% block main %}
-{% for form_name, form in forms.items %}
-<div id="{{form_name}}-config-form-container">
-    <div class="accordion-body">
+<div>
+    {% for form_name, form in forms.items %}
+    <div id="{{form_name}}-config-form-container" class="form-container">
         <form id="{{form_name}}-config-form" class="config-form" action="" method="post">
             {% csrf_token %}
             {% for field in form %}
@@ -28,16 +32,33 @@
             {% endfor %}
         </form>
     </div>
+    {% endfor %}
+    <button id="game-config-submit" type="submit" class="btn btn-primary">Submit</button>
 </div>
-{% endfor %}
+
 {% endblock %}
 
 {% block style %}
 <style>
+    input{
+        border: none !important;
+    }
+    input,select{
+        background-color: var(--light) !important;
+        color: var(--text-light) !important;
+        border: none !important;
+    }
+    .form-container{
+        padding: var(--padding);
+        background-color: var(--dark);
+    }
     .mb-3{
         display: flex;
         flex-wrap: wrap;
         margin: 3px;
+    }
+    .form-label{
+        color: var(--text-superlight);
     }
     .help-text{
         font-size: .8em;
@@ -46,7 +67,6 @@
         margin: 0;
     }
     .mb-3 label{
-        width: 400px;
         display: flex;      
         align-items: center;
         margin: 0;
@@ -56,6 +76,9 @@
     }
     .mb-3>div{
         flex: 1;
+    }
+    .field-container{
+        max-width: 500px;
     }
     .field-container>*{
         width:100%;

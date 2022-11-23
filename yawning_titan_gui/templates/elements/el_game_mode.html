@@ -5,7 +5,7 @@
     </div>
     <div class="icons">
         {% if editable %}
-        <a class="icon" href="{% url 'game mode config' %}">
+        <a class="icon" href="{% url 'game mode config' game_mode_file=filename %}">
             <i class="bi bi-pencil"></i>
         </a>
         <div class="icon delete">
