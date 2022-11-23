@@ -2,21 +2,20 @@ from dataclasses import fields
 from typing import Dict
 from django import forms
 from django.forms import widgets
+from yawning_titan.config.agents.red_agent_config import RedAgentConfig
+from yawning_titan.config.agents.blue_agent_config import BlueAgentConfig
+from yawning_titan.config.environment.game_rules_config import GameRulesConfig
+from yawning_titan.config.environment.observation_space_config import ObservationSpaceConfig
+from yawning_titan.config.environment.reset_config import ResetConfig
+from yawning_titan.config.environment.rewards_config import RewardsConfig
+
+from yawning_titan.config.game_config.miscellaneous_config import MiscellaneousConfig
+
 
 #D:\Pycharm projects\YAWNING-TITAN-DEV\YAWNING-TITAN\yawning_titan
 
 #TEMP USE OF YAML FORM
 from yawning_titan.config.game_config.config_abc import ConfigABC
-
-from yawning_titan.config.agents.blue_agent_config import BlueAgentConfig
-from yawning_titan.config.agents.red_agent_config import RedAgentConfig
-from yawning_titan.config.environment.game_rules_config import GameRulesConfig
-from yawning_titan.config.environment.observation_space_config import (
-    ObservationSpaceConfig,
-)
-from yawning_titan.config.environment.reset_config import ResetConfig
-from yawning_titan.config.environment.rewards_config import RewardsConfig
-from yawning_titan.config.game_config.miscellaneous_config import MiscellaneousConfig
 
 class RangeInput(widgets.NumberInput):
     input_type = "range"
@@ -186,3 +185,32 @@ class ConfigForm(forms.Form):
                     help_text=getattr(ConfigClass,name).__doc__,
                 )
         self.fields = {**dropdown_elements,**bool_elements,**freetext_elements, **integer_elements}
+
+
+class RedAgentForm(ConfigForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(red_config_form_map, RedAgentConfig, *args, **kwargs)
+
+class BlueAgentForm(ConfigForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(blue_config_form_map, BlueAgentConfig, *args, **kwargs)
+
+class ObservationSpaceForm(ConfigForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(observation_space_config_form_map, ObservationSpaceConfig, *args, **kwargs)
+
+class ResetForm(ConfigForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(reset_config_form_map, ResetConfig, *args, **kwargs)
+
+class RewardsForm(ConfigForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(rewards_config_form_map, RewardsConfig, *args, **kwargs)
+
+class GameRulesForm(ConfigForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(rewards_config_form_map, GameRulesConfig, *args, **kwargs)
+
+class MiscellaneousForm(ConfigForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(miscellaneous_config_form_map, MiscellaneousConfig, *args, **kwargs)
