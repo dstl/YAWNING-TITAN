@@ -1,3 +1,4 @@
+import json
 from django.views import View
 from django.shortcuts import render
 from yawning_titan.config.agents.blue_agent_config import BlueAgentConfig
@@ -126,10 +127,23 @@ class GameModeConfigView(View):
             "RESET": reset_config_form,
             "MISCELLANEOUS": miscellaneous_config_form
         }
+
+        self.configs = {
+            "RED":RedAgentConfig,
+            "BLUE":BlueAgentConfig,
+            "OBSERVATION SPACE": ObservationSpaceConfig,
+            "GAME RULES": GameRulesConfig,
+            "REWARDS": RewardsConfig,
+            "RESET": ResetConfig,
+            "MISCELLANEOUS": MiscellaneousConfig
+        }
+
         return self.render_page(request)
 
-    def post(self, request, *args, **kwargs):
-        print(request.get())
+    def post(self, request, *args, **kwargs):     
+        form_name = request.POST.pop("form_name")
+        print(request.POST)
+        self.configs[form_name].create(json.(request.POST))
 
     def render_page(self, request):
         return render(
