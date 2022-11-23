@@ -53,6 +53,10 @@ def game_mode_from_default(
         new_settings: Dict[str, Dict[str, Any]] = yaml.load(
             f, Loader=SafeLoader
         )
+
+    # add settings items for selection values
+    
+
     new_settings[section.upper()].update(updated_settings)
     return new_settings[section.upper()]
     
