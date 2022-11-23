@@ -10,8 +10,7 @@ class Command(BaseCommand):
         from setup import _create_app_dirs,_copy_package_data_notebooks_to_notebooks_dir
 
         _create_app_dirs()
-        _copy_package_data_notebooks_to_notebooks_dir()
-        
+        _copy_package_data_notebooks_to_notebooks_dir()        
         # Creates the static ui files copy in the data directory
         shutil.copytree(
             (_YT_GUI_ROOT_DIR / "static").as_posix(), 
