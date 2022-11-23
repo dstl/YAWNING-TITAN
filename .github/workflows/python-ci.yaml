@@ -2,10 +2,17 @@ name: Python package
 
 on:
   push:
-    branches: [main, dev, dev-gui]  # dev-gui to be removed once dev-gui branch is dropped
+    branches:
+      - main
+      - dev
+      - dev-gui
+      - 'releases/**'  # dev-gui to be removed once dev-gui branch is dropped
   pull_request:
-    branches: [main, dev, dev-gui]  # dev-gui to be removed once dev-gui branch is dropped
-
+    branches:
+      - main
+      - dev
+      - dev-gui
+      - 'releases/**'  # dev-gui to be removed once dev-gui branch is dropped
 jobs:
   build:
 

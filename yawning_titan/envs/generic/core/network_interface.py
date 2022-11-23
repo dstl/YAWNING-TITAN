@@ -798,41 +798,57 @@ class NetworkInterface:
             self.entry_nodes = self.network.entry_nodes
 
     def set_high_value_nodes(self):
-        """Sets up the high value nodes to be used by the training environment."""
-        nodes = [str(i) for i in range(len(self.network.matrix))]
+        """
+        Sets up the high value nodes (HVNs) to be used by the training environment.
 
-        # number of possible high value nodes
-        # calculated by seeing how many nodes there are minus the entry nodes, then only having 15% of the nodes
-        # left over to be high value nodes
-        number_possible_high_value = math.ceil(
-            (len(self.current_graph.nodes) - len(self.entry_nodes) + 1) * 0.15
-        )
+        If HVNs are supplied in the `NetworkConfig`, they are used. However, if they are not supplied, the following
+        logic is applied:
+            If game_mode.game_rules.lose_when_high_value_node_lost is True:
+                An acceptable amount (math.ceil((len(current_graph.nodes) - len(entry_nodes) + 1) * 0.15) of
+                HVNs are defined from a list of potential HVSn at random after steps are taken to ensure that HVNs are
+                not entry nodes.
+            Otherwise:
+                HVNs are set to an empty list.
+        """
+        if self.network.high_value_nodes:
+            # if high value nodes were provided, use them
+            self.high_value_nodes = self.network.high_value_nodes
+        else:
+            # if no high value nodes set, set up the possible high value node list
+            if self.game_mode.game_rules.lose_when_high_value_node_lost:
+                # number of possible high value nodes calculated by seeing how many nodes there are minus the entry
+                # nodes, then only having 15% of the nodes left over to be high value nodes.
+                number_possible_high_value = math.ceil(
+                    (len(self.current_graph.nodes) - len(self.entry_nodes) + 1) * 0.15
+                )
 
-        # print warning that the number of high value nodes exceed the above
-        # preferably this would be handled elsewhere i.e. configuration
-        if (
-            self.game_mode.game_rules.number_of_high_value_nodes
-            > number_possible_high_value
-        ):
-            warnings.warn(
-                "The configured number of high value nodes exceed the allowable number in the given network. "
-                + str(number_possible_high_value)
-                + " high value nodes will be created"
-            )
-            self.number_of_high_value_nodes = number_possible_high_value
+                # print warning that the number of high value nodes exceed the above preferably this would be handled
+                # elsewhere i.e. configuration.
+                if (
+                    self.game_mode.game_rules.number_of_high_value_nodes
+                    > number_possible_high_value
+                ):
+                    msg = (
+                        f"The configured number of high value nodes exceed the allowable number in the given "
+                        f"network. {str(number_possible_high_value)} high value nodes will be created."
+                    )
+                    warnings.warn(msg)
+                    number_of_high_value_nodes = number_possible_high_value
+                else:
+                    number_of_high_value_nodes = (
+                        self.game_mode.game_rules.number_of_high_value_nodes
+                    )
 
-        # if no high value nodes set, set up the possible high value node list
-        if self.game_mode.game_rules.lose_when_high_value_node_lost:
-            if self.network.high_value_nodes is None:
                 self.possible_high_value_nodes = []
                 # chooses a random node to be the high value node
                 if (
                     self.game_mode.game_rules.choose_high_value_nodes_placement_at_random
                 ):
+                    nodes = [str(i) for i in range(len(self.network.matrix))]
                     self.possible_high_value_nodes = list(
                         set(nodes).difference(set(self.entry_nodes))
                     )
-                # Choose the node that is furthest away from the entry points as the high value node
+                # Choose the node that is the furthest away from the entry points as the high value node
                 if (
                     self.game_mode.game_rules.choose_high_value_nodes_furthest_away_from_entry
                 ):
@@ -866,14 +882,11 @@ class NetworkInterface:
                 # randomly pick unique nodes from a list of possible high value nodes
                 self.high_value_nodes = random.sample(
                     set(self.possible_high_value_nodes),
-                    self.game_mode.game_rules.number_of_high_value_nodes,
+                    number_of_high_value_nodes,
                 )
             else:
-                # if high value nodes were provided, use them
-                self.high_value_nodes = self.network.high_value_nodes
-
-        else:
-            self.high_value_nodes = None
+                # set high value nodes to an empty list
+                self.high_value_nodes = []
 
     def update_single_node_compromised_status(self, node: str, value: int):
         """
