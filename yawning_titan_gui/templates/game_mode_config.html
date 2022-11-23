@@ -10,7 +10,7 @@
 <div>
     {% for form_name, form in forms.items %}
     <div id="{{form_name}}-config-form-container" class="form-container">
-        <form id="{{form_name}}-config-form" class="config-form" action="" method="post">
+        <form id="{{form_name}}-config-form" class="config-form" action="" method="post" data-form-name="{{form_name}}">
             {% csrf_token %}
             {% for field in form %}
             <div class="mb-3">

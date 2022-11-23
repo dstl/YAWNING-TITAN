@@ -129,7 +129,7 @@ class GameModeConfigView(View):
         return self.render_page(request)
 
     def post(self, request, *args, **kwargs):
-        pass
+        print(request.get())
 
     def render_page(self, request):
         return render(
