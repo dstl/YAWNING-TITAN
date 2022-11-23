@@ -7,18 +7,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
      <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
-    
+
     <script type="text/javascript">
         const CSRF_TOKEN = "{{ csrf_token }}";
     </script>
 
     <script src="{% static 'js/app.js' %}"></script>
 
-    {% block scripts %}   
+    {% block scripts %}
 
     {% endblock %}
 </head>
@@ -45,15 +45,15 @@
             <div class="stage" data-toggle="tooltip" data-placement="right" title="Network config incomplete">
                 <i class="bi bi-diagram-2"></i>
                 <i class="bi bi-diagram-2-fill"></i>
-            </div>            
+            </div>
             <div class="stage" data-toggle="tooltip" data-placement="right" title="Run config incomplete">
                 <i class="bi bi-collection-play"></i>
                 <i class="bi bi-collection-play-fill"></i>
-            </div>            
+            </div>
             <div class="stage" data-toggle="tooltip" data-placement="right" title="Run game">
                 <i class="bi bi-play"></i>
                 <i class="bi bi-play-fill"></i>
-            </div>           
+            </div>
         </div>
         <div id="window">
             <div id="sidebar-left">
@@ -72,25 +72,25 @@
                             {% endfor %}
                             </div>
                         </div>
-                    </div> 
-                    {% endfor %}    
-                </div> 
+                    </div>
+                    {% endfor %}
+                </div>
                 {% block sidebar %}
-                
+
                 {% endblock %}
             </div>
             <div id="main">
                 {% block main %}
 
                 {% endblock %}
-            </div>    
+            </div>
         </div>
     </div>
     <div id="mask" class="hidden">
         {% block dialogues %}
 
         {% endblock %}
-    </div>  
+    </div>
 </body>
 
 <style>
@@ -104,7 +104,7 @@
         --text-superlight: #fff;
         --text-light: #999;
         --text-mid: #888;
-        
+
         --increment: 5px;
         --padding: 50px;
     }
@@ -115,7 +115,7 @@
         flex-direction: column;
         background-color: var(--light);
         color: #666;
-        line-height: auto; 
+        line-height: auto;
         position: relative;
     }
     input:checked{
@@ -190,20 +190,21 @@
         transition: all 0.8s ease;
         margin-left: -700px;
         /* transform: translate(-700px, 0); */
-    }   
+    }
     #sidebar-left.open{
-        
+
         margin-left: 0px;
-    } 
+    }
     #main{
         position: relative;
         flex: 1;
         height: 100%;
-        padding: var(--padding);        
+        padding: var(--padding);
+        overflow-y: auto;
     }
 
-    #center-container{       
-        position: absolute;       
+    #center-container{
+        position: absolute;
         top: 50%;
         left: 50%;
         padding: 30px;
@@ -225,6 +226,13 @@
         max-height: 100%;
     }
 
+    .icon{
+        border-radius: 50%;
+        background-color: var(--light);
+        margin-left: var(--increment);
+        padding: .5rem;
+    }
+
     /* dialogue boxes */
     #mask{
         position: absolute;
@@ -243,7 +251,7 @@
         padding: calc(2*var(--increment));
         display: flex;
         flex-direction: column;
-        justify-content: space-between;       
+        justify-content: space-between;
         background-color: var(--light);
         border-radius: .5rem;
         transform: translate(-50%,-50%);
@@ -284,7 +292,7 @@
     .accordion{
         width:100%;
         max-height: 100%;
-        margin: var(--increment);        
+        margin: var(--increment);
     }
     .accordion-item,.accordion-header,.accordion-button{
         background-color: var(--light);

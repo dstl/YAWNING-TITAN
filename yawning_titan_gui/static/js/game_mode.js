@@ -5,7 +5,7 @@ $(document).ready(function(){
         $(".game-mode").find(".subhead:not(:contains(" + $(this).val() + "))").closest(".game-mode").addClass("hidden");
     });
 
-    $(".game-mode.selectable").click(function(){   
+    $(".game-mode.selectable").click(function(){
         if($(this).hasClass("selected")){
             $(this).removeClass("selected");
             $("#game-mode-set").removeClass("complete");
@@ -15,7 +15,7 @@ $(document).ready(function(){
             $(this).addClass("selected");
             $("#game-mode-set").addClass("complete");
             update_tooltip("#game-mode-set","incomplete","complete");
-        }               
+        }
     });
 
     $(".icon.delete").click(function(e){
@@ -24,7 +24,7 @@ $(document).ready(function(){
         $("#delete-dialogue h3").text("Delete " + $(this).closest(".game-mode").find(".subhead").first().text());
     });
 
-    // update select dependencies 
+    // update select dependencies
     $(document).on("change","select",function(){
         $(".grouped").addClass("hidden");
         el =  $("."+$("option:selected",this).text().replaceAll(" ","_"));
@@ -51,27 +51,38 @@ $(document).ready(function(){
         }
     });
 
+    function submit_form(form_element){
+        config = new FormData($(form_element)[0]);
+        config.append('form_name',$(form_element).data("form-name"));
+        $.ajax({
+            type: "POST",
+            url: window.location.href,
+            data: config,
+            processData: false,
+            contentType: false,
+            cache: false,
+            dataType: "json",
+            success: function(response){
+                console.log("RESP",response)
+            },
+            error: function(response){
+                console.log("ERROR",response.error)
+            }
+        });
+    }
+
+    $(".next-form").click(function(){
+        let next_form_el = $(this).data("next-form-el");
+        $(this).closest(".form-container").addClass("hidden");
+        $(next_form_el).parent().removeClass("hidden");
+        submit_form($(this).closest(".config-form"));
+        $(next_form_el).data()
+    });
+
     $("#game-config-submit").click(function(){
         $(".config-form").each(function(){
-            config = new FormData($(this)[0]);
-            config.append('form_name',$(this).data("form-name"));
-            console.log(config);
-            $.ajax({
-                type: "POST",
-                url: window.location.href,
-                data: config,
-                processData: false,
-                contentType: false,
-                cache: false,
-                dataType: "json",
-                success: function(response){
-                    console.log("RESP",response)
-                },
-                error: function(response){
-                    console.log("ERROR",response.error)
-                }
-            });
-        });        
+            submit_form(this);            
+        });
     });
 
 });

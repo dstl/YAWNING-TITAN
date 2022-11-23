@@ -2,14 +2,37 @@
 {% load static %}
 {% load tags %}
 
-{% block scripts %}   
-<script src="{% static 'js/game_mode.js' %}"></script>             
+{% block scripts %}
+<script src="{% static 'js/game_mode.js' %}"></script>
 {% endblock %}
 
 {% block main %}
-<div>
-    {% for form_name, form in forms.items %}
-    <div id="{{form_name}}-config-form-container" class="form-container">
+<div id="config-forms">
+    <div id="config-form-icons">
+        <div class="icon red">
+            <i class="bi bi-lightning"></i>
+        </div>
+        <div class="icon blue">
+            <i class="bi bi-shield"></i>
+        </div>
+        <div class="icon observaton_space">
+            <i class="bi bi-binoculars"></i>
+        </div>        
+        <div class="icon game_rules">
+            <i class="bi bi-clipboard"></i>
+        </div>
+        <div class="icon reset">
+            <i class="bi bi-arrow-clockwise"></i>
+        </div>
+        <div class="icon rewards">
+            <i class="bi bi-star"></i>
+        </div>
+        <div class="icon miscellanious">
+            <i class="bi bi-brush"></i>
+        </div>        
+    </div>
+    {% for form_name, form in forms.items %}    
+    <div id="{{form_name}}-config-form-container" class="form-container {% if not forloop.first %}hidden{% endif %}">
         <form id="{{form_name}}-config-form" class="config-form" action="" method="post" data-form-name="{{form_name}}">
             {% csrf_token %}
             {% for field in form %}
@@ -17,10 +40,10 @@
                 <div class="info">
                     <label for="id_{{field.name}}" class="form-label">{{field.label}}</label>
                     <p class="help-text">{{field.help_text}}</p>
-                </div>                    
+                </div>
                 <div class="field-container">
                     {{ field }}
-                </div>                  
+                </div>
                 {% if field.errors %}
                 <ul style="color:var(--bs-danger)">
                     {% for error in field.errors %}
@@ -30,12 +53,13 @@
                 {% endif %}
             </div>
             {% endfor %}
+            <button type="button" class="btn btn-primary next-form" data-next-form-el="#{{forms|next_key:forloop.counter}}-config-form-container">Next</button>
         </form>
     </div>
     {% endfor %}
-    <button id="game-config-submit" type="submit" class="btn btn-primary">Submit</button>
+    
 </div>
-
+<button id="game-config-submit" type="submit" class="btn btn-primary">Submit</button>
 {% endblock %}
 
 {% block style %}
@@ -48,7 +72,32 @@
         color: var(--text-light) !important;
         border: none !important;
     }
+
+    #config-forms{
+        display: flex;
+        flex-direction: row;
+        margin-bottom: var(--padding);
+    }
+
+    #config-form-icons{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 30px;
+        color: var(--text-light);
+        background-color: var(--dark);
+        border-right: 2px solid var(--text-light);        
+    }
+    #config-form-icons>.icon{
+        margin-left: 0;
+        margin-top: var(--increment);
+        margin-bottom:  var(--increment);
+        transform: translate(50%,0%);        
+    }
+
     .form-container{
+        flex: 1;
         padding: var(--padding);
         background-color: var(--dark);
     }
@@ -67,7 +116,7 @@
         margin: 0;
     }
     .mb-3 label{
-        display: flex;      
+        display: flex;
         align-items: center;
         margin: 0;
     }

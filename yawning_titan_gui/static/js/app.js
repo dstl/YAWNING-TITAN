@@ -18,7 +18,7 @@ $(document).ready(function(){
     $(".dialogue-center .cancel").click(function(){
         toggle_dialogue($(this).closest(".dialogue-center"))
     });
-    
+
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
