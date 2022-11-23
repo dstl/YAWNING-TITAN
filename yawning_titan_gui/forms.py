@@ -140,7 +140,7 @@ class ConfigForm(forms.Form):
         #created dropdowns from grouped elements
         for name,group in config_form_map["groups"].items():
             dropdown_elements[name] = forms.ChoiceField(
-                choices=((str(i),val.replace("_"," ")) for i,val in enumerate(group)),
+                choices=((val,val.replace("_"," ")) for i,val in enumerate(group)),
                 widget=forms.Select(
                     attrs={"class": "form-control"},                    
                 ),
