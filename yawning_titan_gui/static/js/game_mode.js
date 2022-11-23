@@ -53,13 +53,16 @@ $(document).ready(function(){
 
     $("#game-config-submit").click(function(){
         $(".config-form").each(function(){
+            config = new FormData($(this)[0]);
+            config.append('form_name',$(this).data("form-name"));
+            console.log(config);
             $.ajax({
                 type: "POST",
                 url: window.location.href,
-                data: Object.assign({},
-                    {"form_name":$(this).data("form-name")},
-                    $(this).serialize()
-                ),
+                data: config,
+                processData: false,
+                contentType: false,
+                cache: false,
                 dataType: "json",
                 success: function(response){
                     console.log("RESP",response)
