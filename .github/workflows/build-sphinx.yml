@@ -22,10 +22,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -x
-          apt-get update
-          apt-get install -y git
-          add-apt-repository ppa:deadsnakes/ppa -y
-          apt install python3.10 -y
+          sudo apt-get update
+          sudp apt-get install -y git
+          sudo add-apt-repository ppa:deadsnakes/ppa -y
+          sudo apt install python3.10 -y
           python -m pip install --upgrade pip
           git clone "https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
         shell: bash
