@@ -16,35 +16,38 @@ def _create_app_dirs():
     from pathlib import Path, PosixPath
     from typing import Final, Union
 
-    from platformdirs import PlatformDirs
+    try:
+        from platformdirs import PlatformDirs
 
-    _YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(
-        appname="yawning_titan", appauthor="DSTL"
-    )
-    """An instance of `PlatformDirs` set with appname='yawning_titan' and appauthor='DSTL'."""
-
-    app_dirs = [_YT_PLATFORM_DIRS.user_data_path]
-    if sys.platform == "win32":
-        app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "config")
-        app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "logs")
-        _YT_USER_DIRS: Final[Union[Path, PosixPath]] = (
-            Path.home() / "DSTL" / "yawning_titan"
+        _YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(
+            appname="yawning_titan", appauthor="DSTL"
         )
-    else:
-        app_dirs.append(_YT_PLATFORM_DIRS.user_config_path)
-        app_dirs.append(_YT_PLATFORM_DIRS.user_log_path)
-        _YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "yawning_titan"
+        """An instance of `PlatformDirs` set with appname='yawning_titan' and appauthor='DSTL'."""
 
-    app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "docs")
-    app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "db")
-    app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "app_images")
-    app_dirs.append(_YT_USER_DIRS / "notebooks")
-    app_dirs.append(_YT_USER_DIRS / "game_modes")
-    app_dirs.append(_YT_USER_DIRS / "images")
-    app_dirs.append(_YT_USER_DIRS / "agents")
+        app_dirs = [_YT_PLATFORM_DIRS.user_data_path]
+        if sys.platform == "win32":
+            app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "config")
+            app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "logs")
+            _YT_USER_DIRS: Final[Union[Path, PosixPath]] = (
+                Path.home() / "DSTL" / "yawning_titan"
+            )
+        else:
+            app_dirs.append(_YT_PLATFORM_DIRS.user_config_path)
+            app_dirs.append(_YT_PLATFORM_DIRS.user_log_path)
+            _YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "yawning_titan"
 
-    for app_dir in app_dirs:
-        app_dir.mkdir(parents=True, exist_ok=True)
+        app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "docs")
+        app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "db")
+        app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "app_images")
+        app_dirs.append(_YT_USER_DIRS / "notebooks")
+        app_dirs.append(_YT_USER_DIRS / "game_modes")
+        app_dirs.append(_YT_USER_DIRS / "images")
+        app_dirs.append(_YT_USER_DIRS / "agents")
+
+        for app_dir in app_dirs:
+            app_dir.mkdir(parents=True, exist_ok=True)
+    except:  # noqa
+        pass
 
 
 def _copy_package_data_notebooks_to_notebooks_dir():
@@ -148,8 +151,8 @@ setup(
     url="https://github.com/dstl/YAWNING-TITAN",
     description="An abstract, flexible and configurable cyber security " "simulation",
     python_requires=">=3.8",
-    version="0.1.0",
-    license="MIT",
+    version="1.0.0",
+    license="MIT License",
     packages=find_packages(),
     install_requires=[
         "gym==0.21.0",
@@ -182,7 +185,7 @@ setup(
             "nbmake==1.3.4",
             "Django==4.1.2",
             "flaskwebgui==1.0.1",
-            "pyinstaller @ git+https://github.com/rumbelows/pyinstaller.git@7d7d298c83aa6882a5234833ee97c882e7a8f452#egg=pyinstaller"
+            "pyinstaller @ git+https://github.com/pyinstaller/pyinstaller.git@develop#egg=pyinstaller",
         ],
         "tensorflow": ["tensorflow"],
         "jupyter": ["jupyter"],
