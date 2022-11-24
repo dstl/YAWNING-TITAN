@@ -6,6 +6,3 @@ extend-ignore =
     D104
     E203
     D401
-exclude =
-    docs/build-sphinx-docs-to-github-pages.sh
-    venv
