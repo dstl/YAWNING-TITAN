@@ -31,4 +31,4 @@ jobs:
       - name: Run build script for Sphinx pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: sudo sh docs/build-sphinx-docs-to-github-pages.sh
+        run: bash docs/build-sphinx-docs-to-github-pages.sh
