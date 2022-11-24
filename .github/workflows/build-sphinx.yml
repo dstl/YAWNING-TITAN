@@ -30,7 +30,8 @@ jobs:
       - name: Show pwd and ls
         run: |
           pwd
-          ls./
+          ls ./
+          ls ./docs
       - name: Run build script for Sphinx pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
