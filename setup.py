@@ -46,7 +46,7 @@ def _create_app_dirs():
 
         for app_dir in app_dirs:
             app_dir.mkdir(parents=True, exist_ok=True)
-    except:  # noqa
+    except ImportError:
         pass
 
 
