@@ -19,18 +19,14 @@ def _create_app_dirs():
     try:
         from platformdirs import PlatformDirs
 
-        _YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(
-            appname="yawning_titan", appauthor="DSTL"
-        )
-        """An instance of `PlatformDirs` set with appname='yawning_titan' and appauthor='DSTL'."""
+        _YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(appname="yawning_titan")
+        """An instance of `PlatformDirs` set with appname='yawning_titan'."""
 
         app_dirs = [_YT_PLATFORM_DIRS.user_data_path]
         if sys.platform == "win32":
             app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "config")
             app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "logs")
-            _YT_USER_DIRS: Final[Union[Path, PosixPath]] = (
-                Path.home() / "DSTL" / "yawning_titan"
-            )
+            _YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "yawning_titan"
         else:
             app_dirs.append(_YT_PLATFORM_DIRS.user_config_path)
             app_dirs.append(_YT_PLATFORM_DIRS.user_log_path)
@@ -172,6 +168,7 @@ setup(
         "torch==1.12.1 ",
         "tensorboard==2.10.1 ",
         "dm-tree==0.1.7",
+        "jupyter",
     ],
     extras_require={
         "dev": [
@@ -188,7 +185,6 @@ setup(
             "pyinstaller @ git+https://github.com/pyinstaller/pyinstaller.git@develop#egg=pyinstaller",
         ],
         "tensorflow": ["tensorflow"],
-        "jupyter": ["jupyter"],
     },
     package_data={
         "yawning_titan": [

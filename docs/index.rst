@@ -37,17 +37,18 @@ Where next?
 The best place to start is diving into the :ref:`getting-started`
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 8
    :caption: Contents:
 
-   /source/getting_started.rst
-   /source/tutorials.rst
-   /source/experiments.rst
-   /source/config_file.rst
-   /source/quick_start_experiment_runner.rst
+   /source/getting_started
+   /source/tutorials
+   /source/experiments
+   /source/config_file
+   /source/quick_start_experiment_runner
    /source/enhancing_yawning_titan
-   /source/modules.rst
-   /source/tests.rst
+   /source/modules
+   Yawning-Titan API <source/_autosummary/yawning_titan>
+   Yawning-Titan Tests <source/_autosummary/tests>
    /source/glossary.rst
 
 
