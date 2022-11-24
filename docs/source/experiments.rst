@@ -65,7 +65,7 @@ Most of the environments in YAWNING TITAN support rendering and have a render me
 method will create a matplotlib graph showing the current state of the environment.
 Here are some images showing how the rendering looks:
 
-.. image:: ../_static/example_render_1.png
+.. image:: ../_static/standard_18_node_network.png
     :width: 800
 
 Creating an ActionLoop with the environment and agent will run the agent through a game rendering each step. A tutorial on how
