@@ -6,5 +6,3 @@ extend-ignore =
     D104 # Req for docstring in public package
     E203 # Whitespace before :
     D401 # First line should be in imperative mood
-exclude =
-    docs/build-sphinx-docs-to-github-pages.sh
