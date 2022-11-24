@@ -24,7 +24,9 @@ git config --global user.name "${GITHUB_ACTOR}"
 git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
 docroot=`mktemp -d`
-rsync -av "./docs/_build/html/" "${docroot}/"
+pwd
+ls ./
+rsync -av "docs/_build/html/" "${docroot}/"
 
 pushd "${docroot}"
 
@@ -48,15 +50,15 @@ implementation from https://github.com/annegentle, see:
  * https://github.com/annegentle/create-demo
 EOF
 
-# Copy the resulting html pages built from Sphinx to the gh-pages branch
+# Copy the resulting html pages built from Sphinx to the sphinx-docs-github-pages branch
 git add .
 
 # Make a commit with changes and any new files
 msg="Updating Docs for commit ${GITHUB_SHA} made on `date -d"@${SOURCE_DATE_EPOCH}" --iso-8601=seconds` from ${GITHUB_REF} by ${GITHUB_ACTOR}"
 git commit -am "${msg}"
 
-# overwrite the contents of the gh-pages branch on our github.com repo
-git push deploy gh-pages --force
+# overwrite the contents of the sphinx-docs-github-pages branch on our github.com repo
+git push deploy sphinx-docs-github-pages --force
 
 popd # return to main repo sandbox root
 
