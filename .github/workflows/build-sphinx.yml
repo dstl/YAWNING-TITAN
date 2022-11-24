@@ -27,7 +27,10 @@ jobs:
           apt-get install -y git
           git clone "https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
         shell: bash
-
+      - name: Show pwd and ls
+        run: |
+          pwd
+          ls./
       - name: Run build script for Sphinx pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
