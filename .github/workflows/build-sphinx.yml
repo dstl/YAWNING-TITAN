@@ -7,7 +7,7 @@ env:
 
 on:
   push:
-    branches: [feature/AIDT-99-update-documentation-readme-md-and-docs]
+    branches: [dev]
 
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
           set -x
           apt-get update
           apt-get install -y git
-          git clone -b "feature/AIDT-99-update-documentation-readme-md-and-docs https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
+          git clone "https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
         shell: bash
 
       - name: Run build script for Sphinx pages
