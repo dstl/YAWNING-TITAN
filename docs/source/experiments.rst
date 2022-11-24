@@ -14,7 +14,7 @@ If you are using experiment_runner.py then this will automatically be turned on.
 
 This verbose tag will create these at set intervals during training
 
-.. image:: mid_experiment_example_1.png
+.. image:: ../_static/mid_experiment_example_1.png
     :width: 400
 
 The update contains information such as:
@@ -27,7 +27,7 @@ The update contains information such as:
 
 The verbose tag will also give you a brief evaluation at the end of training
 
-.. image:: verbose_eval.png
+.. image:: ../_static/verbose_eval.png
     :width: 400
 
 If using the generic network environment there are a couple of toggles that you can use to collect more information about the training process and env: ::
@@ -55,7 +55,7 @@ End of Experiment
 
 If using the experiment_runner.py then after training some summary stats will be printed out as shown below.
 
-.. image:: end_of_eval_example_1.png
+.. image:: ../_static/end_of_eval_example_1.png
     :width: 400
 
 
@@ -65,7 +65,7 @@ Most of the environments in YAWNING TITAN support rendering and have a render me
 method will create a matplotlib graph showing the current state of the environment.
 Here are some images showing how the rendering looks:
 
-.. image:: example_render_1.png
+.. image:: ../_static/example_render_1.png
     :width: 800
 
 Creating an ActionLoop with the environment and agent will run the agent through a game rendering each step. A tutorial on how
