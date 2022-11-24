@@ -15,6 +15,7 @@ def _create_app_dirs():
     import sys
     from pathlib import Path, PosixPath
     from typing import Final, Union
+
     try:
         from platformdirs import PlatformDirs
 
@@ -45,7 +46,7 @@ def _create_app_dirs():
 
         for app_dir in app_dirs:
             app_dir.mkdir(parents=True, exist_ok=True)
-    except:
+    except:  # noqa
         pass
 
 
