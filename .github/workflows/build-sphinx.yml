@@ -25,11 +25,9 @@ jobs:
           set -x
           apt-get update
           apt-get install -y git
+          git clone -b "feature/AIDT-99-update-documentation-readme-md-and-docs https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
         shell: bash
-      - name: Show pwd and ls
-        run: |
-          pwd
-          ls ./docs
+
       - name: Run build script for Sphinx pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
