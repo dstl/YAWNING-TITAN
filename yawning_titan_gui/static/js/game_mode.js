@@ -76,7 +76,8 @@ $(document).ready(function(){
         $(this).closest(".form-container").addClass("hidden");
         $(next_form_el).parent().removeClass("hidden");
         submit_form($(this).closest(".config-form"));
-        $(next_form_el).data()
+        console.log("FN",`#${$(next_form_el).data("form-name")}-icon`);
+        $(`#${$(next_form_el).data("form-name")}-icon`).addClass("selected");
     });
 
     $("#game-config-submit").click(function(){

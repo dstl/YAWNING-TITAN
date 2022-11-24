@@ -9,25 +9,25 @@
 {% block main %}
 <div id="config-forms">
     <div id="config-form-icons">
-        <div class="icon red">
+        <div id="red-icon" class="icon">
             <i class="bi bi-lightning"></i>
         </div>
-        <div class="icon blue">
+        <div id="blue-icon" class="icon">
             <i class="bi bi-shield"></i>
         </div>
-        <div class="icon observaton_space">
+        <div id="observaton_space-icon" class="icon">
             <i class="bi bi-binoculars"></i>
         </div>
-        <div class="icon game_rules">
+        <div id="game_rules-icon" class="icon">
             <i class="bi bi-clipboard"></i>
         </div>
-        <div class="icon reset">
+        <div id="reset-icon" class="icon">
             <i class="bi bi-arrow-clockwise"></i>
         </div>
-        <div class="icon rewards">
+        <div id="rewards-icon" class="icon">
             <i class="bi bi-star"></i>
         </div>
-        <div class="icon miscellanious">
+        <div id="miscellanious-icon" class="icon">
             <i class="bi bi-brush"></i>
         </div>
     </div>
@@ -53,7 +53,7 @@
                 {% endif %}
             </div>
             {% endfor %}
-            <button type="button" class="btn btn-primary next-form" data-next-form-el="#{{forms|next_key:forloop.counter}}-config-form-container">Next</button>
+            <button type="button" class="btn btn-primary next-form" data-next-form-el="#{{forms|next_key:forloop.counter}}-config-form">Next</button>
         </form>
     </div>
     {% endfor %}
@@ -94,6 +94,11 @@
         margin-top: var(--increment);
         margin-bottom:  var(--increment);
         transform: translate(50%,0%);
+    }
+
+    #config-form-icons>.icon.selected{
+        background-color: var(--text-light);
+        color: var(--primary);
     }
 
     .form-container{
