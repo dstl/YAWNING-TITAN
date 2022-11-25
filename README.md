@@ -1,4 +1,3 @@
-![os](https://img.shields.io/badge/os-Windows%20%7C%20Linux%20%7C%20MacOS-orange)
 ![Python](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue)
 ![GitHub](https://img.shields.io/github/license/dstl/YAWNING-TITAN)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/methodsanalytics/YAWNING-TITAN/Python%20package) 
