@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
-from yawning_titan_gui.views import GameModeConfigView, GameModesView, HomeView
+from yawning_titan_gui.views import GameModeConfigView, GameModesView, HomeView, config_file_manager
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
@@ -18,4 +18,5 @@ urlpatterns = [
         name="game mode config",
     ),
     path("game_mode_config/", GameModeConfigView.as_view(), name="game mode config"),
+    path("manage_config/", config_file_manager, name="manage config"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

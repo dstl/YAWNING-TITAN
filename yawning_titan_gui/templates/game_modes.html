@@ -25,12 +25,13 @@
     </div>
 </div>
 <div id="bottom-buttons">
-    <button class="btn btn-primary">Create game mode</button>
+    <button id="create-game-mode" class="btn btn-primary">Create game mode</button>
 </div>
 {% endblock %}
 
 {% block dialogues %}
     {% include 'elements/el_dialogue_center.html' with id='delete-dialogue' message='Are you sure you want to delete this game mode?<br>This action cannot be undone.' action_name='Delete game mode' %}
+    {% include 'elements/el_dialogue_center.html' with id='create-dialogue' message='Enter a name for your new game mode config' action_name='Create game mode' input_prompt='game mode name...' %}
 {% endblock %}
 
 {% block style %}

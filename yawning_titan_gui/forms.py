@@ -17,6 +17,7 @@ from yawning_titan.config.environment.reset_config import ResetConfig
 from yawning_titan.config.environment.rewards_config import RewardsConfig
 from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.config.game_config.miscellaneous_config import MiscellaneousConfig
+from yawning_titan_gui import DEFAULT_GAME_MODE
 
 
 class RangeInput(widgets.NumberInput):
@@ -267,7 +268,7 @@ def game_mode_from_default(gui_options: Dict[str, Dict[str, Any]], section: str)
         gui_options: dictionary with options configured in GUI
         section: config section to update
     """
-    with open(GAME_MODES_DIR / "everything_off_config.yaml") as f:
+    with open(GAME_MODES_DIR / DEFAULT_GAME_MODE) as f:
         new_settings: Dict[str, Dict[str, Any]] = yaml.load(f, Loader=SafeLoader)
 
     # add settings items for selection values
