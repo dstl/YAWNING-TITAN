@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <help_text>Space for diagram notes</help_text>
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>590</x>
+      <y>40</y>
+      <w>290</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;abstract&gt;&gt;
+*ConfigABC*
+yawning_titan.config.game_config.config_abc
+--
+
+
+
+--
+# to_dict(): dict
+_/+ create(Dict[str, Any]): ConfigABC/_
+_/+ validate(Dict[str, Any])/_
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>530</x>
+      <y>290</y>
+      <w>420</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>@dataclass()
+*NetworkConfig*
+yawning_titan.config.network_config.network_config
+--
++ matrix: numpy.array
++ positions: Dict[str, List[str]]
++ entry_nodes: Optional[List[str]]
++ entry_nodes: Optional[List[str]]
++ high_value_nodes: Optional[List[str]]
+--
+_- create(config_dict: Dict[str, Any]): NetworkConfig_
+- create_from_args(
+      matrix: np.array,
+      positions: Dict[str, List[str]],
+      entry_nodes: Optional[List[str]],
+      entry_nodes: Optional[List[str]],
+      high_value_nodes: Optional[List[str]]
+  ): NetworkConfig
+_+ validate(Dict[str, Any])_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>200</y>
+      <w>30</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+</diagram>

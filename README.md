@@ -1,8 +1,19 @@
-# YAWNING TITAN
+![os](https://img.shields.io/badge/os-Windows%20%7C%20Linux%20%7C%20MacOS-orange)
+![Python](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue)
+![GitHub](https://img.shields.io/github/license/dstl/YAWNING-TITAN)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/methodsanalytics/YAWNING-TITAN/Python%20package) 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/methodsanalytics/YAWNING-TITAN/build-sphinx-to-github-pages?label=docs)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/methodsanalytics/YAWNING-TITAN)
+![GitHub commits since latest release (by SemVer)](https://img.shields.io/github/commits-since/dstl/YAWNING-TITAN/latest)
+![GitHub issue custom search](https://img.shields.io/github/issues-search?label=active%20bug%20issues&query=repo%3Adstl%2FYAWNING-TITAN%20is%3Aopen%20label%3Abug)
+![GitHub issue custom search](https://img.shields.io/github/issues-search?label=active%20feature%20requests&query=repo%3Adstl%2FYAWNING-TITAN%20is%3Aopen%20label%3Afeature_request)
+![GitHub Discussions](https://img.shields.io/github/discussions/dstl/YAWNING-TITAN)
+
+# YAWNING-TITAN
 
 ## About The Project
 YAWNING-TITAN (**YT**) is an abstract, graph based cyber-security simulation environment that supports the training of
-intelligent agents for autonomous cyber operations. YAWNING TITAN currently only supports defensive autonomous agents
+intelligent agents for autonomous cyber operations. YAWNING-TITAN currently only supports defensive autonomous agents
 who face off against probabilistic red agents.
 
 **YT** has been designed with the following things in mind:
@@ -20,14 +31,17 @@ Feedback on its operation, and suggestions for enhancements, is gratefully recei
 
 As the **YT** project progresses, updates will be posted on this site.
 
-## What's YAWNING TITAN built with
+## What's YAWNING-TITAN built with
 
 - [OpenAI's Gym](https://gym.openai.com/)
 - [Networkx](https://github.com/networkx/networkx)
 - [Stable Baselines 3](https://github.com/DLR-RM/stable-baselines3)
 - [Rllib (part of Ray)](https://github.com/ray-project/ray)
 
-## Getting Started with YAWNING TITAN
+## Contributing to YAWNING-TITAN
+Found a bug, have an idea/feature you'd like to suggest, or just want to get involved with the YT community, please read our [How to contribute to YAWNING-TITAN?](CONTRIBUTING.md) guidelines.
+
+## Getting Started with YAWNING-TITAN
 
 ### Pre-Requisites
 

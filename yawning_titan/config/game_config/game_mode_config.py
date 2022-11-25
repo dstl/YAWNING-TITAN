@@ -94,7 +94,7 @@ class GameModeConfig:
         )
 
     @classmethod
-    def create_from_yaml(cls, config_path=default_game_mode_path()) -> GameModeConfig:
+    def create_from_yaml(cls, config_path: str) -> GameModeConfig:
         """
         Create and return an instance of `GameModeConfig` from a given config `.yaml` file path.
 
