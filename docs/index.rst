@@ -49,7 +49,7 @@ The best place to start is diving into the :ref:`getting-started`
    /source/modules
    Yawning-Titan API <source/_autosummary/yawning_titan>
    Yawning-Titan Tests <source/_autosummary/tests>
-   /source/glossary.rst
+   /source/glossary
 
 
 Indices and tables

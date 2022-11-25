@@ -6,21 +6,21 @@ tests.unit\_tests
 
 .. automodule:: tests.unit_tests
 
+   
+   
+   
 
+   
+   
+   
 
+   
+   
+   
 
-
-
-
-
-
-
-
-
-
-
-
-
+   
+   
+   
 
 
 
@@ -31,3 +31,4 @@ tests.unit\_tests
 
    tests.unit_tests.config
    tests.unit_tests.test_application_logging
+

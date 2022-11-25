@@ -12,13 +12,13 @@ yawning\_titan.envs.generic.core.blue\_action\_set.BlueActionSet
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-
-
+   
+   
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-
+   
       ~BlueActionSet.add_deceptive_node
       ~BlueActionSet.do_nothing
       ~BlueActionSet.isolate_node
@@ -27,3 +27,9 @@ yawning\_titan.envs.generic.core.blue\_action\_set.BlueActionSet
       ~BlueActionSet.reduce_node_vulnerability
       ~BlueActionSet.restore_node
       ~BlueActionSet.scan_all_nodes
+   
+   
+
+   
+   
+   

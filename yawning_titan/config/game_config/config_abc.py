@@ -8,25 +8,29 @@ from typing import Any, Dict
 @dataclass()
 class ConfigABC(ABC):
     """
-    The `ConfigABC` class is an ABS that config classes inherit from.
+    :class:`ConfigABC <yawning_titan.config.game_config.config_abc.ConfigABC>` class is an :py:class:`ABC <abc.ABC>`.
 
-    `ConfigABC` has two abstract class methods, `.create` and
-    `._validate`. `ConfigABC` also has a `to_dict()` function with
-    predefined logic.
+    The :class:`ConfigABC <yawning_titan.config.game_config.config_abc.ConfigABC>`
+    has two abstract class functions,
+    :func:`create() <yawning_titan.config.game_config.config_abc.ConfigABC.create>` and
+    :func:`validate() <yawning_titan.config.game_config.config_abc.ConfigABC.validate>`.
+
+    The :class:`ConfigABC <yawning_titan.config.game_config.config_abc.ConfigABC>` clas
+    also has a :func:`to_dict() <yawning_titan.config.game_config.config_abc.ConfigABC.to_dict>`
+    method with predefined logic.
     """
 
     def to_dict(self) -> Dict:
         """
-        Serializes a subclass of ConfigABC as a dict.
+        Serializes a :class:`ConfigABC <yawning_titan.config.game_config.config_abc.ConfigABC>` as a :py:class:`dict`.
 
-        As instances of
-        ConfigABC are dataclasses, the default `__dict__` method is
+        As instances of :class:`ConfigABC <yawning_titan.config.game_config.config_abc.ConfigABC>`
+        are dataclasses, the default `__dict__` method is
         used to access the attributes. The private key name of each
         attribute has its underscore prefix removed before the key and value
         is added to a dict and returned.
 
-        Returns:
-            The subclass of ConfigABC as a dict.
+        :returns: The :class:`ConfigABC <yawning_titan.config.game_config.config_abc.ConfigABC>` as a :py:class:`dict`.
         """
         d = {}
         for k, v in self.__dict__.items():
@@ -42,21 +46,23 @@ class ConfigABC(ABC):
         Create abstract class method.
 
         An abstract class method that is to be implemented by subclasses of
-        `ConfigGroupClass`. The `.create` method should take a dict
-        containing the config item keys and values required to instantiate
-        the config class. The implementation of `.create` should pass the
-        `config_dict` to `cls._validate` for the config data to be validated.
+        :class:`ConfigABC <yawning_titan.config.game_config.config_abc.ConfigABC>`. The
+        Implementations of the `.create` method should take a dict containing
+        the config item keys and values required to instantiate the config
+        class. The implementation of `.create` should pass the `config_dict`
+        to `cls.validate` for the config data to be validated.
         """
 
     @classmethod
     @abstractmethod
-    def _validate(cls, config_dict: Dict[str, Any]):
+    def validate(cls, config_dict: Dict[str, Any]):
         """
         Validate abstract class method.
 
         An abstract class method that is to be implemented by subclasses of
-        `ConfigGroupClass`. The `._validate` method should take a dict
-        containing the config item keys and values that are to be validated.
-        The `_validate` function is called from `cls.create`.
+        :class:`ConfigABC <yawning_titan.config.game_config.config_abc.ConfigABC>`.
+        Implementations of `.validate` method should take a dict containing the config item
+        keys and values that are to be validated.
+        The `validate` function is called from `cls.create`.
         """
         pass
