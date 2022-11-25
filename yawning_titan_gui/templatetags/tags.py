@@ -35,6 +35,7 @@ def get_url(url_name: str):
     except Exception:
         return ""
 
+
 @register.simple_tag
 def value_at(_dict: dict, key: Any):
     """Return value of dict at key"""
@@ -55,8 +56,9 @@ def next_key(_dict: dict, key: int):
         return keys[key_index + 1]
     return keys[0]
 
+
 @register.filter
-def url_trim(url:str, n:int):
+def url_trim(url: str, n: int):
     """Trim url to n parameters"""
     url_components = url.split("/")
-    return "/".join(url_components[:n+1]) + "/"
+    return "/".join(url_components[: n + 1]) + "/"

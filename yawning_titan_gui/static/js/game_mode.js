@@ -74,20 +74,20 @@ $(document).ready(function(){
         $($(this).data("form")).parent().removeClass("hidden");
     });
 
-    $(".next-form").click(function(){             
+    $(".next-form").click(function(){
         let el = this,
             next_form_el = $(this).data("next-form-el");
 
-        submit_form($(this).siblings(".config-form")).done(function(response){       
+        submit_form($(this).siblings(".config-form")).done(function(response){
             $("#error-message").addClass("hidden");
-            $(el).closest(".form-container").addClass("hidden"); //hide current form container      
+            $(el).closest(".form-container").addClass("hidden"); //hide current form container
             $(next_form_el).parent().removeClass("hidden");  //show next form container
             $("#config-form-icons>.icon").removeClass("selected"); //deselect current icon
             $(`#${$(next_form_el).data("form-name")}-icon`).addClass("selected"); //select next icon
         }).fail(function(response){
             console.log("ERR",JSON.parse(response.responseText));
             $("#error-message").removeClass("hidden").text("Error: " + JSON.parse(response.responseText)["message"]);
-        })   
+        })
     });
 
     $("#game-config-submit").click(function(){

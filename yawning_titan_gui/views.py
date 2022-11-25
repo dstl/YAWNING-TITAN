@@ -1,9 +1,9 @@
-from collections import defaultdict
 import inspect
+from collections import defaultdict
 from typing import Any, Dict
 
 from django.http import JsonResponse, QueryDict
-from django.shortcuts import render,redirect
+from django.shortcuts import redirect, render
 from django.views import View
 
 from yawning_titan import GAME_MODES_DIR
@@ -40,6 +40,7 @@ def static_url(type, file_path):
 def game_mode_path(game_mode_filename: str):
     """Generate path for game mode file."""
     return (GAME_MODES_DIR / game_mode_filename).as_posix()
+
 
 def next_key(_dict: dict, key: int):
     """
@@ -120,19 +121,18 @@ class GameModesView(View):
         """Handle page post requests."""
         pass
 
+
 forms = {
-    "red": {"form":RedAgentForm,"icon":"bi-lightning"},
-    "blue":{"form":BlueAgentForm,"icon":"bi-shield"},
-    "game_rules":{"form":GameRulesForm,"icon":"bi-clipboard"},
-    "observation_space":{"form":ObservationSpaceForm,"icon":"bi-binoculars"},
-    "rewards":{"form":RewardsForm,"icon":"bi-star"},
-    "reset":{"form":ResetForm,"icon":"bi-arrow-clockwise"},
-    "miscellaneous":{"form":MiscellaneousForm,"icon":"bi-brush"}
+    "red": {"form": RedAgentForm, "icon": "bi-lightning"},
+    "blue": {"form": BlueAgentForm, "icon": "bi-shield"},
+    "game_rules": {"form": GameRulesForm, "icon": "bi-clipboard"},
+    "observation_space": {"form": ObservationSpaceForm, "icon": "bi-binoculars"},
+    "rewards": {"form": RewardsForm, "icon": "bi-star"},
+    "reset": {"form": ResetForm, "icon": "bi-arrow-clockwise"},
+    "miscellaneous": {"form": MiscellaneousForm, "icon": "bi-brush"},
 }
 
-completed_forms = {
-    
-}
+completed_forms = {}
 
 configs: Dict[str, ConfigABC] = {
     "red": RedAgentConfig,
@@ -144,21 +144,28 @@ configs: Dict[str, ConfigABC] = {
     "miscellaneous": MiscellaneousConfig,
 }
 
+
 class GameModeConfigView(View):
     """Django page template for game mode creation and editing."""
+
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         self.forms = {
-            "red": {"form":RedAgentForm,"icon":"bi-lightning"},
-            "blue":{"form":BlueAgentForm,"icon":"bi-shield"},
-            "game_rules":{"form":GameRulesForm,"icon":"bi-clipboard"},
-            "observation_space":{"form":ObservationSpaceForm,"icon":"bi-binoculars"},
-            "rewards":{"form":RewardsForm,"icon":"bi-star"},
-            "reset":{"form":ResetForm,"icon":"bi-arrow-clockwise"},
-            "miscellaneous":{"form":MiscellaneousForm,"icon":"bi-brush"}
+            "red": {"form": RedAgentForm, "icon": "bi-lightning"},
+            "blue": {"form": BlueAgentForm, "icon": "bi-shield"},
+            "game_rules": {"form": GameRulesForm, "icon": "bi-clipboard"},
+            "observation_space": {
+                "form": ObservationSpaceForm,
+                "icon": "bi-binoculars",
+            },
+            "rewards": {"form": RewardsForm, "icon": "bi-star"},
+            "reset": {"form": ResetForm, "icon": "bi-arrow-clockwise"},
+            "miscellaneous": {"form": MiscellaneousForm, "icon": "bi-brush"},
         }
 
-    def get(self, request, *args, game_mode_file: str = None, section: str = None, **kwargs):
+    def get(
+        self, request, *args, game_mode_file: str = None, section: str = None, **kwargs
+    ):
         """Handle page get requests."""
         if game_mode_file is not None:
             game_mode = GameModeConfig.create_from_yaml(game_mode_path(game_mode_file))
@@ -166,15 +173,19 @@ class GameModeConfigView(View):
         else:
             game_mode_config = defaultdict(dict)
 
-        for _section,section_form in self.forms.items():
-            section_form["form"] = completed_forms.get(_section,section_form["form"](initial=game_mode_config[_section]))
+        for _section, section_form in self.forms.items():
+            section_form["form"] = completed_forms.get(
+                _section, section_form["form"](initial=game_mode_config[_section])
+            )
             self.forms[_section] = section_form
         return self.render_page(request, section)
 
-    def post(self, request, *args, game_mode_file: str = None, section: str = None, **kwargs):
+    def post(
+        self, request, *args, game_mode_file: str = None, section: str = None, **kwargs
+    ):
         """Handle page post requests."""
         section = list(forms.keys())[0] if section is None else section
-        #print("T",forms[section]["form"],type(forms[section]["form"]))
+        # print("T",forms[section]["form"],type(forms[section]["form"]))
         form = self.forms[section]["form"](request.POST)
         self.forms[section]["form"] = form
 
@@ -187,20 +198,24 @@ class GameModeConfigView(View):
                     )
                 )
                 completed_forms[section] = form
-                return self.render_page(request, self.forms, next_key(forms,section))
+                return self.render_page(request, self.forms, next_key(forms, section))
             except Exception as e:
-                return self.render_page(request, self.forms, section,e)
+                return self.render_page(request, self.forms, section, e)
 
         return self.render_page(request, self.forms, section)
 
     def render_page(self, request, section, error_message=None):
         """Process pythonic tags in game_mode_config.html and return formatted page."""
-        print("SEC",section)
+        print("SEC", section)
         section = list(forms.keys())[0] if section is None else section
-        print("SEC",section)
-        return render(request, "game_mode_config.html", {
-            "forms": self.forms, 
-            "section": section, 
-            "error_message":error_message,
-            "sidebar": default_sidebar,
-        })
+        print("SEC", section)
+        return render(
+            request,
+            "game_mode_config.html",
+            {
+                "forms": self.forms,
+                "section": section,
+                "error_message": error_message,
+                "sidebar": default_sidebar,
+            },
+        )
