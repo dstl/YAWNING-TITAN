@@ -1,7 +1,7 @@
 import inspect
+import shutil
 from collections import defaultdict
 from pathlib import Path
-import shutil
 from typing import Any, Dict
 
 from django.http import JsonResponse, QueryDict
@@ -58,6 +58,7 @@ def next_key(_dict: dict, key: int):
         return keys[key_index + 1]
     return keys[0]
 
+
 def uniquify(path: Path):
     filename = path.stem
     extension = path.suffix
@@ -67,7 +68,7 @@ def uniquify(path: Path):
 
     while path.exists():
         path = parent / f"{filename}({counter}){extension}"
-        print("PATH",path)
+        print("PATH", path)
         counter += 1
 
     return path
@@ -115,8 +116,8 @@ class GameModesView(View):
                         "filename": path.name,
                         "name": path.stem,
                         "description": f"description {i}",
-                    } for i , path in enumerate(GAME_MODES_DIR.iterdir())
-                    
+                    }
+                    for i, path in enumerate(GAME_MODES_DIR.iterdir())
                     # {
                     #     "filename": "base_config.yaml",
                     #     "name": "test 3",
@@ -185,11 +186,12 @@ class GameModeConfigView(View):
 
         if game_mode_file is not None:
             try:
-                game_mode = GameModeConfig.create_from_yaml(game_mode_path(game_mode_file))
+                game_mode = GameModeConfig.create_from_yaml(
+                    game_mode_path(game_mode_file)
+                )
                 game_mode_config = game_mode.to_dict()
             except Exception:
                 pass
-            
 
         for _section, section_form in self.forms.items():
             section_form["form"] = completed_forms.get(
@@ -236,20 +238,21 @@ class GameModeConfigView(View):
             },
         )
 
+
 def config_file_manager(request):
     """"""
     if request.method == "POST":
         game_mode_name = request.POST.get("game_mode_name")
         operation = request.POST.get("operation")
-        print(request.POST.get("game_mode_name"),request.POST)
+        print(request.POST.get("game_mode_name"), request.POST)
 
         if operation == "create":
             default_game_mode_path = GAME_MODES_DIR / DEFAULT_GAME_MODE
             new_game_mode_path = uniquify(GAME_MODES_DIR / f"{game_mode_name}.yaml")
-            shutil.copy(default_game_mode_path,new_game_mode_path)
-        
+            shutil.copy(default_game_mode_path, new_game_mode_path)
+
         elif operation == "delete":
             (GAME_MODES_DIR / f"{game_mode_name}.yaml").unlink()
 
-        return JsonResponse({"message:":"SUCCESS"})
-    return JsonResponse({"message:":"FAILED"},status=400)
+        return JsonResponse({"message:": "SUCCESS"})
+    return JsonResponse({"message:": "FAILED"}, status=400)
