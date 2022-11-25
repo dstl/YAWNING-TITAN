@@ -42,8 +42,9 @@ The best place to start is diving into the :ref:`getting-started`
 
    /source/getting_started
    /source/tutorials
+   /source/game_mode_config_explained
+   /source/network_config_explained
    /source/experiments
-   /source/config_file
    /source/quick_start_experiment_runner
    /source/enhancing_yawning_titan
    /source/modules
