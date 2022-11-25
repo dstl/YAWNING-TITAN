@@ -51,33 +51,43 @@ $(document).ready(function(){
         }
     });
 
+    // wrapper for async post request for config section form processing
     function submit_form(form_element){
         config = new FormData($(form_element)[0]);
         config.append('form_name',$(form_element).data("form-name"));
-        $.ajax({
+        return $.ajax({
             type: "POST",
             url: window.location.href,
             data: config,
             processData: false,
             contentType: false,
             cache: false,
-            dataType: "json",
-            success: function(response){
-                console.log("RESP",response)
-            },
-            error: function(response){
-                console.log("ERROR",response.error)
-            }
+            dataType: "json"
         });
     }
 
-    $(".next-form").click(function(){
-        let next_form_el = $(this).data("next-form-el");
-        $(this).closest(".form-container").addClass("hidden");
-        $(next_form_el).parent().removeClass("hidden");
-        submit_form($(this).closest(".config-form"));
-        console.log("FN",`#${$(next_form_el).data("form-name")}-icon`);
-        $(`#${$(next_form_el).data("form-name")}-icon`).addClass("selected");
+    $("#config-form-icons>.icon").click(function(){
+        $("#config-form-icons>.icon").removeClass("selected")
+        $(this).addClass("selected");
+        $(".form-container").addClass("hidden");
+        console.log("TT",$(this).data("form"));
+        $($(this).data("form")).parent().removeClass("hidden");
+    });
+
+    $(".next-form").click(function(){             
+        let el = this,
+            next_form_el = $(this).data("next-form-el");
+
+        submit_form($(this).siblings(".config-form")).done(function(response){       
+            $("#error-message").addClass("hidden");
+            $(el).closest(".form-container").addClass("hidden"); //hide current form container      
+            $(next_form_el).parent().removeClass("hidden");  //show next form container
+            $("#config-form-icons>.icon").removeClass("selected"); //deselect current icon
+            $(`#${$(next_form_el).data("form-name")}-icon`).addClass("selected"); //select next icon
+        }).fail(function(response){
+            console.log("ERR",JSON.parse(response.responseText));
+            $("#error-message").removeClass("hidden").text("Error: " + JSON.parse(response.responseText)["message"]);
+        })   
     });
 
     $("#game-config-submit").click(function(){

@@ -19,6 +19,9 @@ $(document).ready(function(){
         toggle_dialogue($(this).closest(".dialogue-center"))
     });
 
+    // create toggle switches from checkboxes
+    $("input[role='switch']").wrap("<div class=form-switch></div>")
+
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {

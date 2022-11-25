@@ -9,33 +9,18 @@
 {% block main %}
 <div id="config-forms">
     <div id="config-form-icons">
-        <div id="red-icon" class="icon">
-            <i class="bi bi-lightning"></i>
-        </div>
-        <div id="blue-icon" class="icon">
-            <i class="bi bi-shield"></i>
-        </div>
-        <div id="observaton_space-icon" class="icon">
-            <i class="bi bi-binoculars"></i>
-        </div>
-        <div id="game_rules-icon" class="icon">
-            <i class="bi bi-clipboard"></i>
-        </div>
-        <div id="reset-icon" class="icon">
-            <i class="bi bi-arrow-clockwise"></i>
-        </div>
-        <div id="rewards-icon" class="icon">
-            <i class="bi bi-star"></i>
-        </div>
-        <div id="miscellanious-icon" class="icon">
-            <i class="bi bi-brush"></i>
-        </div>
+        {% for form_name, config in forms.items %}
+        <a id="{{form_name}}-icon" href="{{request.path|url_trim:2}}{{form_name}}/" class="icon {% if form_name == section %}selected{% endif %}" data-form="#{{form_name}}-config-form">
+            <i class="bi {{config.icon}}"></i>
+        </a>
+        {% endfor %}
     </div>
-    {% for form_name, form in forms.items %}
-    <div id="{{form_name}}-config-form-container" class="form-container {% if not forloop.first %}hidden{% endif %}">
-        <form id="{{form_name}}-config-form" class="config-form" action="" method="post" data-form-name="{{form_name}}">
+    <div id="{{section}}-config-form-container" class="form-container">
+        <h2>{{section}}</h2>
+        <form id="{{section}}-config-form" class="config-form" action="" method="post" data-form-name="{{section}}">
             {% csrf_token %}
-            {% for field in form %}
+            {% value_at forms section as config %}
+            {% for field in config.form %}
             <div class="mb-3">
                 <div class="info">
                     <label for="id_{{field.name}}" class="form-label">{{field.label}}</label>
@@ -52,12 +37,10 @@
                 </ul>
                 {% endif %}
             </div>
-            {% endfor %}
-            <button type="button" class="btn btn-primary next-form" data-next-form-el="#{{forms|next_key:forloop.counter}}-config-form">Next</button>
-        </form>
+            {% endfor %}   
+            <button type="submit" class="btn btn-primary next-form" data-next-form-el="#{{forms|next_key:section}}-config-form">Next</button>         
+        </form>        
     </div>
-    {% endfor %}
-
 </div>
 <button id="game-config-submit" type="submit" class="btn btn-primary">Submit</button>
 {% endblock %}
@@ -74,6 +57,7 @@
     }
 
     #config-forms{
+        height: calc(100% - var(--padding));
         display: flex;
         flex-direction: row;
         margin-bottom: var(--padding);
@@ -102,10 +86,27 @@
     }
 
     .form-container{
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        max-height: 100%;
         flex: 1;
         padding: var(--padding);
-        background-color: var(--dark);
+        background-color: var(--dark);        
     }
+    .config-form{
+        position: relative;
+        min-height: 0;
+        flex: 1;
+        overflow-y: auto;
+    }
+    .next-form{
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
     .mb-3{
         display: flex;
         flex-wrap: wrap;
@@ -113,6 +114,9 @@
     }
     .form-label{
         color: var(--text-superlight);
+    }
+    .form-switch{
+        text-align: center;
     }
     .help-text{
         font-size: .8em;
@@ -132,7 +136,7 @@
         flex: 1;
     }
     .field-container{
-        max-width: 500px;
+        max-width: 400px;
     }
     .field-container>*{
         width:100%;
