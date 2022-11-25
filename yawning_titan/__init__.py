@@ -1,3 +1,43 @@
+"""
+The `yawning_titan` top-level __init__.
+
+`gym.envs` registered:
+    `five-node-def-v0`
+        entry_point: `yawning_titan.envs.specific:FiveNodeDef`
+    `four-node-def-v0`
+        entry_point: `yawning_titan.envs.specific:FourNodeDef`
+    `network-graph-explore-v0`
+        entry_point: `yawning_titan.envs.specific:GraphExplore`
+    `18-node-env-v0`
+        entry_point: `yawning_titan.envs.specific:NodeEnv`
+App directories initialised:
+    `DATA_DIR`:
+        The path to the app data directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `CONFIG_DIR`:
+        The path to the app config directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `LOG_DIR`:
+        The path to the app log directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `DOCS_DIR`:
+        The path to the app docs directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `DB_DIR`:
+        The path to the app db directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `APP_IMAGES_DIR`:
+        The path to the app images directory as an instance of `Path` or `PosixPath`, depending on the OS.
+
+User directories initialised:
+    `NOTEBOOKS_DIR`:
+        The path to the users notebooks directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `GAME_MODES_DIR`:
+        The path to the users game modes directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `IMAGES_DIR`:
+        The path to the users images directory as an instance of `Path` or `PosixPath`, depending on the OS.
+    `AGENTS_DIR`:
+        The path to the users agents directory as an instance of `Path` or `PosixPath`, depending on the OS.
+
+Logging configured from the root:
+    Logging is configured using the `yawning_titan.config._package_data.logging_config.yaml` config file.
+"""
+__version__ = "1.0.0"
 import logging.config
 import os
 import sys
@@ -25,13 +65,11 @@ register(id="18-node-env-v0", entry_point="yawning_titan.envs.specific:NodeEnv")
 
 _YT_ROOT_DIR: Final[Union[Path, PosixPath]] = Path(__file__).parent.resolve()
 
-_YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(
-    appname="yawning_titan", appauthor="DSTL"
-)
-"""An instance of `PlatformDirs` set with appname='yawning_titan' and appauthor='DSTL'."""
+_YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(appname="yawning_titan")
+"""An instance of `PlatformDirs` set with appname='yawning_titan'."""
 
-_YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "DSTL" / "yawning_titan"
-"""The users home space for YT which is located at: ~/DSTL/yawning_titan."""
+_YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "yawning_titan"
+"""The users home space for YT which is located at: ~/yawning_titan."""
 
 
 def _data_dir() -> Union[Path, PosixPath]:
@@ -133,28 +171,28 @@ NOTEBOOKS_DIR: Final[Union[Path, PosixPath]] = _notebooks_dir()
 """
 The path to the users notebooks directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
-Users notebooks are stored at: ~/DSTL/yawning_titan/notebooks.
+Users notebooks are stored at: ~/yawning_titan/notebooks.
 """
 
 GAME_MODES_DIR: Final[Union[Path, PosixPath]] = _game_modes_dir()
 """
 The path to the users game modes directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
-Users game modes are stored at: ~/DSTL/yawning_titan/game_modes.
+Users game modes are stored at: ~/yawning_titan/game_modes.
 """
 
 IMAGES_DIR: Final[Union[Path, PosixPath]] = _images_dir()
 """
 The path to the users images directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
-Users images are stored at: ~/DSTL/yawning_titan/images.
+Users images are stored at: ~/yawning_titan/images.
 """
 
 AGENTS_DIR: Final[Union[Path, PosixPath]] = _agents_dir()
 """
 The path to the users agents directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
-Users images are stored at: ~/DSTL/yawning_titan/agents.
+Users images are stored at: ~/yawning_titan/agents.
 """
 
 # Setup root logger format

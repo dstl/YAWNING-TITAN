@@ -82,12 +82,17 @@ class NetworkConfig(ConfigABC):
     @classmethod
     def create(cls, config_dict: Dict[str, Any]):
         """
-        Create and return an instance of `NetworkConfig`.
+        Create and return an instance of :class:`NetworkConfig`.
 
         Args:
             config_dict: The network config dict.
         Returns:
             An instance of `NetworkConfig`.
+
+        Examples:
+            >>> from yawning_titan.envs.generic.helpers.network_creator import create_18_node_network
+            >>> from yawning_titan.config.network_config.network_config import NetworkConfig
+            >>> network_config = NetworkConfig.create(create_18_node_network())
         """
         cls._validate(config_dict)
 
