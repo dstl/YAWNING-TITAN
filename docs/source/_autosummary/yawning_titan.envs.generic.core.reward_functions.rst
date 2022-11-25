@@ -6,18 +6,18 @@ yawning\_titan.envs.generic.core.reward\_functions
 
 .. automodule:: yawning_titan.envs.generic.core.reward_functions
 
+   
+   
+   
 
-
-
-
-
-
+   
+   
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-
+   
       dcbo_cost_func
       experimental_rewards
       num_nodes_safe
@@ -26,3 +26,16 @@ yawning\_titan.envs.generic.core.reward\_functions
       safe_nodes_give_rewards
       standard_rewards
       zero_reward
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

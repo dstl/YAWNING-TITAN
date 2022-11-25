@@ -12,23 +12,26 @@ yawning\_titan.config.game\_config.miscellaneous\_config.MiscellaneousConfig
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-
-
+   
+   
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-
+   
       ~MiscellaneousConfig.create
       ~MiscellaneousConfig.to_dict
+      ~MiscellaneousConfig.validate
+   
+   
 
-
-
-
-
+   
+   
    .. rubric:: Attributes
 
    .. autosummary::
-
+   
       ~MiscellaneousConfig.output_timestep_data_to_json
       ~MiscellaneousConfig.random_seed
+   
+   

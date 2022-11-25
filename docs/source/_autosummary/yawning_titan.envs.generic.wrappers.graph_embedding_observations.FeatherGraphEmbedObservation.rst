@@ -12,13 +12,13 @@ yawning\_titan.envs.generic.wrappers.graph\_embedding\_observations.FeatherGraph
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-
-
+   
+   
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-
+   
       ~FeatherGraphEmbedObservation.class_name
       ~FeatherGraphEmbedObservation.close
       ~FeatherGraphEmbedObservation.compute_reward
@@ -28,18 +28,20 @@ yawning\_titan.envs.generic.wrappers.graph\_embedding\_observations.FeatherGraph
       ~FeatherGraphEmbedObservation.reset
       ~FeatherGraphEmbedObservation.seed
       ~FeatherGraphEmbedObservation.step
+   
+   
 
-
-
-
-
+   
+   
    .. rubric:: Attributes
 
    .. autosummary::
-
+   
       ~FeatherGraphEmbedObservation.action_space
       ~FeatherGraphEmbedObservation.metadata
       ~FeatherGraphEmbedObservation.observation_space
       ~FeatherGraphEmbedObservation.reward_range
       ~FeatherGraphEmbedObservation.spec
       ~FeatherGraphEmbedObservation.unwrapped
+   
+   

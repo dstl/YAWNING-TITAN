@@ -12,13 +12,13 @@ yawning\_titan.agents.sinewave\_red.SineWaveRedAgent
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-
-
+   
+   
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-
+   
       ~SineWaveRedAgent.basic_attack
       ~SineWaveRedAgent.choose_action
       ~SineWaveRedAgent.choose_target_node
@@ -32,15 +32,17 @@ yawning\_titan.agents.sinewave\_red.SineWaveRedAgent
       ~SineWaveRedAgent.reset
       ~SineWaveRedAgent.spread
       ~SineWaveRedAgent.zero_day_attack
+   
+   
 
-
-
-
-
+   
+   
    .. rubric:: Attributes
 
    .. autosummary::
-
+   
       ~SineWaveRedAgent.action_probabilities
       ~SineWaveRedAgent.action_set
       ~SineWaveRedAgent.node_set
+   
+   

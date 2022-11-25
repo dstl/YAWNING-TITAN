@@ -12,24 +12,25 @@ yawning\_titan.config.environment.observation\_space\_config.ObservationSpaceCon
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-
-
+   
+   
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-
+   
       ~ObservationSpaceConfig.create
       ~ObservationSpaceConfig.to_dict
+      ~ObservationSpaceConfig.validate
+   
+   
 
-
-
-
-
+   
+   
    .. rubric:: Attributes
 
    .. autosummary::
-
+   
       ~ObservationSpaceConfig.attacked_nodes
       ~ObservationSpaceConfig.attacking_nodes
       ~ObservationSpaceConfig.average_vulnerability
@@ -39,3 +40,5 @@ yawning\_titan.config.environment.observation\_space\_config.ObservationSpaceCon
       ~ObservationSpaceConfig.red_agent_skill
       ~ObservationSpaceConfig.special_nodes
       ~ObservationSpaceConfig.vulnerabilities
+   
+   

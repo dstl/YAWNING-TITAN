@@ -6,21 +6,21 @@ tests
 
 .. automodule:: tests
 
+   
+   
+   
 
+   
+   
+   
 
+   
+   
+   
 
-
-
-
-
-
-
-
-
-
-
-
-
+   
+   
+   
 
 
 
@@ -45,3 +45,4 @@ tests
    tests.test_reward_functions
    tests.test_stable_baselines_compliance
    tests.unit_tests
+

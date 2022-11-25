@@ -127,7 +127,7 @@ The classes utilise Python :py:func:`dataclasses.dataclass` for automatic , ``__
 used by Sphinx. An abstract base class, :class:`~yawning_titan.config.game_config.config_abc.ConfigABC`, has been
 defined that has a :func:`~yawning_titan.config.game_config.config_abc.ConfigABC.to_dict` method, and
 :func:`~yawning_titan.config.game_config.config_abc.ConfigABC.create` and
-:func:`~yawning_titan.config.game_config.config_abc.ConfigABC.create` abstract class methods.
+:func:`~yawning_titan.config.game_config.config_abc.ConfigABC.validate` abstract class methods.
 
 Creating a :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

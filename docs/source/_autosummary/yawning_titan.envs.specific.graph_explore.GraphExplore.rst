@@ -12,27 +12,27 @@ yawning\_titan.envs.specific.graph\_explore.GraphExplore
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-
-
+   
+   
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-
+   
       ~GraphExplore.close
       ~GraphExplore.render
       ~GraphExplore.reset
       ~GraphExplore.seed
       ~GraphExplore.step
+   
+   
 
-
-
-
-
+   
+   
    .. rubric:: Attributes
 
    .. autosummary::
-
+   
       ~GraphExplore.GAME_MAX
       ~GraphExplore.NODES
       ~GraphExplore.action_space
@@ -43,3 +43,5 @@ yawning\_titan.envs.specific.graph\_explore.GraphExplore
       ~GraphExplore.spec
       ~GraphExplore.unwrapped
       ~GraphExplore.visualisation
+   
+   
