@@ -1,5 +1,7 @@
 $(document).ready(function(){
-    console.log("TEST");
+    //page variables
+    let selected_game_mode;
+
     $("#filter-game-modes").keyup(function(){
         $(".game-mode").removeClass("hidden");
         $(".game-mode").find(".subhead:not(:contains(" + $(this).val() + "))").closest(".game-mode").addClass("hidden");
@@ -18,11 +20,6 @@ $(document).ready(function(){
         }
     });
 
-    $(".icon.delete").click(function(e){
-        e.stopPropagation();
-        toggle_dialogue("#delete-dialogue");
-        $("#delete-dialogue h3").text("Delete " + $(this).closest(".game-mode").find(".subhead").first().text());
-    });
 
     // update select dependencies
     $(document).on("change","select",function(){
@@ -74,26 +71,62 @@ $(document).ready(function(){
         $($(this).data("form")).parent().removeClass("hidden");
     });
 
-    $(".next-form").click(function(){
-        let el = this,
-            next_form_el = $(this).data("next-form-el");
+    // $(".next-form").click(function(){
+    //     let el = this,
+    //         next_form_el = $(this).data("next-form-el");
 
-        submit_form($(this).siblings(".config-form")).done(function(response){
-            $("#error-message").addClass("hidden");
-            $(el).closest(".form-container").addClass("hidden"); //hide current form container
-            $(next_form_el).parent().removeClass("hidden");  //show next form container
-            $("#config-form-icons>.icon").removeClass("selected"); //deselect current icon
-            $(`#${$(next_form_el).data("form-name")}-icon`).addClass("selected"); //select next icon
-        }).fail(function(response){
-            console.log("ERR",JSON.parse(response.responseText));
-            $("#error-message").removeClass("hidden").text("Error: " + JSON.parse(response.responseText)["message"]);
-        })
-    });
+    //     submit_form($(this).siblings(".config-form")).done(function(response){
+    //         $("#error-message").addClass("hidden");
+    //         $(el).closest(".form-container").addClass("hidden"); //hide current form container
+    //         $(next_form_el).parent().removeClass("hidden");  //show next form container
+    //         $("#config-form-icons>.icon").removeClass("selected"); //deselect current icon
+    //         $(`#${$(next_form_el).data("form-name")}-icon`).addClass("selected"); //select next icon
+    //     }).fail(function(response){
+    //         console.log("ERR",JSON.parse(response.responseText));
+    //         $("#error-message").removeClass("hidden").text("Error: " + JSON.parse(response.responseText)["message"]);
+    //     })
+    // });
 
+    //Button actions
     $("#game-config-submit").click(function(){
         $(".config-form").each(function(){
             submit_form(this);
         });
     });
+
+    $("#create-game-mode").click(function(){
+        toggle_dialogue("#create-dialogue");
+    });
+
+    $("#create-dialogue .submit").click(function(){
+        let game_mode_name = $(this).closest(".dialogue-center").find("input").first().val();
+        if (game_mode_name.length > 0){
+            $.ajax({
+                type: "POST",
+                url: "/manage_config/",
+                data: {"game_mode_name":game_mode_name,"operation":"create"},
+            }).done(function(){
+                location.reload();
+            });
+        }        
+    });
+
+    $("#delete-dialogue .submit").click(function(){
+        $.ajax({
+            type: "POST",
+            url: "/manage_config/",
+            data: {"game_mode_name":selected_game_mode,"operation":"delete"},
+        }).done(function(){
+            location.reload();
+        });        
+    });
+
+    $(".icon.delete").click(function(e){
+        e.stopPropagation();
+        toggle_dialogue("#delete-dialogue");
+        $("#delete-dialogue h3").text("Delete " + $(this).closest(".game-mode").find(".subhead").first().text());
+        selected_game_mode = $(this).closest(".game-mode").data("game-mode-name");
+    });
+
 
 });
