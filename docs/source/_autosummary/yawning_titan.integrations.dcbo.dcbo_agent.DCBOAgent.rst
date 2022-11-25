@@ -12,14 +12,20 @@ yawning\_titan.integrations.dcbo.dcbo\_agent.DCBOAgent
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-
-
+   
+   
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-
+   
       ~DCBOAgent.act
       ~DCBOAgent.predict
       ~DCBOAgent.reset
       ~DCBOAgent.update_probabilities
+   
+   
+
+   
+   
+   

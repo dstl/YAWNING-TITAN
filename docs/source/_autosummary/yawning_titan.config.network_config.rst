@@ -6,21 +6,21 @@ yawning\_titan.config.network\_config
 
 .. automodule:: yawning_titan.config.network_config
 
+   
+   
+   
 
+   
+   
+   
 
+   
+   
+   
 
-
-
-
-
-
-
-
-
-
-
-
-
+   
+   
+   
 
 
 
@@ -30,3 +30,4 @@ yawning\_titan.config.network\_config
    :recursive:
 
    yawning_titan.config.network_config.network_config
+

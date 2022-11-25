@@ -6,21 +6,21 @@ yawning\_titan.config.environment
 
 .. automodule:: yawning_titan.config.environment
 
+   
+   
+   
 
+   
+   
+   
 
+   
+   
+   
 
-
-
-
-
-
-
-
-
-
-
-
-
+   
+   
+   
 
 
 
@@ -33,3 +33,4 @@ yawning\_titan.config.environment
    yawning_titan.config.environment.observation_space_config
    yawning_titan.config.environment.reset_config
    yawning_titan.config.environment.rewards_config
+

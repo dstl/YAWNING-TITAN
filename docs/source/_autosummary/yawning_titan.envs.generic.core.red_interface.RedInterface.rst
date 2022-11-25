@@ -12,13 +12,13 @@ yawning\_titan.envs.generic.core.red\_interface.RedInterface
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-
-
+   
+   
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-
+   
       ~RedInterface.basic_attack
       ~RedInterface.choose_action
       ~RedInterface.choose_target_node
@@ -32,15 +32,17 @@ yawning\_titan.envs.generic.core.red\_interface.RedInterface
       ~RedInterface.reset
       ~RedInterface.spread
       ~RedInterface.zero_day_attack
+   
+   
 
-
-
-
-
+   
+   
    .. rubric:: Attributes
 
    .. autosummary::
-
+   
       ~RedInterface.action_probabilities
       ~RedInterface.action_set
       ~RedInterface.node_set
+   
+   

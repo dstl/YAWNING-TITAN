@@ -12,12 +12,18 @@ yawning\_titan.agents.random.RandomAgent
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-
-
+   
+   
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-
+   
       ~RandomAgent.act
       ~RandomAgent.predict
+   
+   
+
+   
+   
+   

@@ -1,7 +1,7 @@
 # YAWNING TITAN
 
 ## About The Project
-YAWNING-TITAN (****YT****) is an abstract, graph based cyber-security simulation environment that supports the training of
+YAWNING-TITAN (**YT**) is an abstract, graph based cyber-security simulation environment that supports the training of
 intelligent agents for autonomous cyber operations. YAWNING TITAN currently only supports defensive autonomous agents
 who face off against probabilistic red agents.
 
@@ -41,16 +41,9 @@ In order to get **YT** installed, you will need to have the following installed:
 ### Installation from source
 #### 1. Navigate to the YAWNING-TITAN folder and create a new python virtual environment (venv)
 
-##### Unix
 ```unix
 python3 -m venv <name_of_venv>
 ```
-
-##### Windows
-```powershell
-python3 -m venv <name_of_venv>
-```
-
 
 #### 2. Activate the venv
 
@@ -66,17 +59,12 @@ source <name_of_venv>/bin/activate
 
 #### 3. Install `yawning-titan` into the venv along with all of it's dependencies
 
-##### Unix
 ```bash
 python3 -m pip install -e .
 ```
 
-##### Windows
-```bash
-python3 -m pip install -e .
-```
 
-This will install all of the dependencies including algorithm libraries. These libraries
+This will install all the dependencies including algorithm libraries. These libraries
 all use `torch`. If you'd like to install `tensorflow` for use with Rllib, you can do this manually
 or install `tensorflow` as an optional dependency by postfixing the command in step 3 above with the `[tensorflow]` extra. Example:
 
@@ -86,12 +74,7 @@ python3 -m pip install -e .[tensorflow]
 
 ### Development Installation
 To install the development dependencies, postfix the command in step 3 above with the `[dev]` extra. Example:
-##### Unix
-```bash
-python3 -m pip install -e .[dev]
-```
 
-##### Windows
 ```bash
 python3 -m pip install -e .[dev]
 ```
@@ -162,7 +145,10 @@ Upon install, **YT** creates a set of application directories, both hidden for *
 
 ## Documentation
 
-**YT** comes with a full set of documentation created using the Sphinx documentation library and these can be built by using the following commands:
+**YT** comes with a full set of documentation created using the Sphinx documentation library and are hosted on GitHub
+pages at [https://methodsanalytics.github.io/YAWNING-TITAN](https://methodsanalytics.github.io/YAWNING-TITAN/index.html).
+
+These docs can also be built manually from the cloned repo by using the following commands:
 > This will require the development dependencies to be installed, see [Development Installation](#development-installation)
 
 ##### Unix
