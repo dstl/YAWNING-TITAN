@@ -12,12 +12,19 @@ yawning\_titan.config.game\_config.config\_abc.ConfigABC
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-
-
+   
+   
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-
+   
       ~ConfigABC.create
       ~ConfigABC.to_dict
+      ~ConfigABC.validate
+   
+   
+
+   
+   
+   

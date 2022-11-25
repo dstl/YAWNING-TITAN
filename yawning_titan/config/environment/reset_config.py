@@ -55,7 +55,7 @@ class ResetConfig(ConfigABC):
         Args:
             config_dict: A config dict with the required key/values pairs.
         """
-        cls._validate(config_dict)
+        cls.validate(config_dict)
 
         reset_config = ResetConfig(
             _randomise_vulnerabilities_on_reset=config_dict[
@@ -72,7 +72,12 @@ class ResetConfig(ConfigABC):
         return reset_config
 
     @classmethod
-    def _validate(cls, config_dict: dict):
+    def validate(cls, config_dict: dict):
+        """
+        Validates the reset config dict.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+        """
         for name in [
             "randomise_vulnerabilities_on_reset",
             "choose_new_high_value_nodes_on_reset",

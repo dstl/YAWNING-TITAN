@@ -6,21 +6,21 @@ yawning\_titan.integrations.dcbo
 
 .. automodule:: yawning_titan.integrations.dcbo
 
+   
+   
+   
 
+   
+   
+   
 
+   
+   
+   
 
-
-
-
-
-
-
-
-
-
-
-
-
+   
+   
+   
 
 
 
@@ -34,3 +34,4 @@ yawning\_titan.integrations.dcbo
    yawning_titan.integrations.dcbo.fig_plotting
    yawning_titan.integrations.dcbo.rl_baseline
    yawning_titan.integrations.dcbo.utils
+

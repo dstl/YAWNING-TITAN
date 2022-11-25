@@ -12,24 +12,25 @@ yawning\_titan.config.agents.red\_agent\_config.RedAgentConfig
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-
-
+   
+   
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-
+   
       ~RedAgentConfig.create
       ~RedAgentConfig.to_dict
+      ~RedAgentConfig.validate
+   
+   
 
-
-
-
-
+   
+   
    .. rubric:: Attributes
 
    .. autosummary::
-
+   
       ~RedAgentConfig.basic_attack_action_likelihood
       ~RedAgentConfig.chance_for_red_to_random_compromise
       ~RedAgentConfig.chance_for_red_to_spread
@@ -61,3 +62,5 @@ yawning\_titan.config.agents.red\_agent\_config.RedAgentConfig
       ~RedAgentConfig.red_uses_zero_day_action
       ~RedAgentConfig.spread_action_likelihood
       ~RedAgentConfig.zero_day_start_amount
+   
+   

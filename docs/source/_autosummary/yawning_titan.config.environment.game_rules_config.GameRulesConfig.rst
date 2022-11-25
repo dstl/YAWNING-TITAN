@@ -12,24 +12,25 @@ yawning\_titan.config.environment.game\_rules\_config.GameRulesConfig
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-
-
+   
+   
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-
+   
       ~GameRulesConfig.create
       ~GameRulesConfig.to_dict
+      ~GameRulesConfig.validate
+   
+   
 
-
-
-
-
+   
+   
    .. rubric:: Attributes
 
    .. autosummary::
-
+   
       ~GameRulesConfig.choose_entry_nodes_randomly
       ~GameRulesConfig.choose_high_value_nodes_furthest_away_from_entry
       ~GameRulesConfig.choose_high_value_nodes_placement_at_random
@@ -47,3 +48,5 @@ yawning\_titan.config.environment.game\_rules\_config.GameRulesConfig
       ~GameRulesConfig.percentage_of_nodes_compromised_equals_loss
       ~GameRulesConfig.prefer_central_nodes_for_entry_nodes
       ~GameRulesConfig.prefer_edge_nodes_for_entry_nodes
+   
+   

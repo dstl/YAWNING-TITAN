@@ -6,21 +6,21 @@ tests.e2e\_integration\_tests
 
 .. automodule:: tests.e2e_integration_tests
 
+   
+   
+   
 
+   
+   
+   
 
+   
+   
+   
 
-
-
-
-
-
-
-
-
-
-
-
-
+   
+   
+   
 
 
 
@@ -30,3 +30,4 @@ tests.e2e\_integration\_tests
    :recursive:
 
    tests.e2e_integration_tests.test_default_game_mode_e2e
+

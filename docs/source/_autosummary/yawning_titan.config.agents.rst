@@ -6,21 +6,21 @@ yawning\_titan.config.agents
 
 .. automodule:: yawning_titan.config.agents
 
+   
+   
+   
 
+   
+   
+   
 
+   
+   
+   
 
-
-
-
-
-
-
-
-
-
-
-
-
+   
+   
+   
 
 
 
@@ -31,3 +31,4 @@ yawning\_titan.config.agents
 
    yawning_titan.config.agents.blue_agent_config
    yawning_titan.config.agents.red_agent_config
+

@@ -12,30 +12,32 @@ yawning\_titan.envs.specific.five\_node\_def.FiveNodeDef
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-
-
+   
+   
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-
+   
       ~FiveNodeDef.close
       ~FiveNodeDef.render
       ~FiveNodeDef.reset
       ~FiveNodeDef.seed
       ~FiveNodeDef.step
+   
+   
 
-
-
-
-
+   
+   
    .. rubric:: Attributes
 
    .. autosummary::
-
+   
       ~FiveNodeDef.action_space
       ~FiveNodeDef.metadata
       ~FiveNodeDef.observation_space
       ~FiveNodeDef.reward_range
       ~FiveNodeDef.spec
       ~FiveNodeDef.unwrapped
+   
+   

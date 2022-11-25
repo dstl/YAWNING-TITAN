@@ -6,21 +6,21 @@ tests.unit\_tests.config.game\_config
 
 .. automodule:: tests.unit_tests.config.game_config
 
+   
+   
+   
 
+   
+   
+   
 
+   
+   
+   
 
-
-
-
-
-
-
-
-
-
-
-
-
+   
+   
+   
 
 
 
@@ -30,3 +30,4 @@ tests.unit\_tests.config.game\_config
    :recursive:
 
    tests.unit_tests.config.game_config.test_game_mode_config
+
