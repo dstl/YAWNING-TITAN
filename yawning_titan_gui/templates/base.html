@@ -35,6 +35,8 @@
         {% else %}
             <a href="{% url 'home' %}" class="head">Yawning Titan</a>
         {% endif %}
+        <div class="flex-break"></div>
+        <div id="error-message" class="{% if error_message is None %}hidden{% endif %}">{{error_message}}</div>
     </nav>
     <div id="window-container">
         <div id="toolbar">
@@ -108,6 +110,25 @@
         --increment: 5px;
         --padding: 50px;
     }
+
+    /* scrollbar styling */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background-color: var(--mid);
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background: var(--text-light); 
+    }
+
+
     body{
         width: 100vw;
         height: 100vh;
@@ -145,6 +166,14 @@
     }
 
     /* base elements */
+    #error-message{
+        background-color: var(--bs-danger);
+        padding: var(--increment);
+        border-radius: var(--increment);
+        color: var(--text-superlight);
+        margin-right: var(--increment);
+    }
+
     #view-selector{
         width: 100%;
         height: var(--padding);
@@ -180,6 +209,8 @@
         display: flex;
         flex-direction: row;
         width: 100%;
+        min-height: 0;
+        max-height: calc(100vh - var(--padding));
         overflow: hidden;
     }
     #sidebar-left{
@@ -200,7 +231,6 @@
         flex: 1;
         height: 100%;
         padding: var(--padding);
-        overflow-y: auto;
     }
 
     #center-container{
@@ -231,6 +261,7 @@
         background-color: var(--light);
         margin-left: var(--increment);
         padding: .5rem;
+        cursor: pointer;
     }
 
     /* dialogue boxes */
@@ -352,6 +383,10 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+    }
+
+    .flex-break{
+        flex:1;
     }
 
     /* animated sandwich */

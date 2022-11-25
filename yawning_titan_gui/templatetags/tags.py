@@ -35,10 +35,28 @@ def get_url(url_name: str):
     except Exception:
         return ""
 
+@register.simple_tag
+def value_at(_dict: dict, key: Any):
+    """Return value of dict at key"""
+    return _dict.get(key)
+
 
 @register.filter
-def next_key(_dict: dict, key_index: int):
-    """"""
-    if key_index < (len(_dict.keys()) - 2):
-        return list(_dict.keys())[key_index + 1]
-    return 0
+def next_key(_dict: dict, key: int):
+    """
+    Get the next key in a dictionary.
+
+    Use key_index + 1 if there is a subsequent key
+    otherwise return first key.
+    """
+    keys = list(_dict.keys())
+    key_index = keys.index(key)
+    if key_index < (len(keys) - 1):
+        return keys[key_index + 1]
+    return keys[0]
+
+@register.filter
+def url_trim(url:str, n:int):
+    """Trim url to n parameters"""
+    url_components = url.split("/")
+    return "/".join(url_components[:n+1]) + "/"

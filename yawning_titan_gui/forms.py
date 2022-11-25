@@ -166,7 +166,7 @@ class ConfigForm(forms.Form):
             if _type == "bool":
                 bool_elements[name] = forms.BooleanField(
                     widget=widgets.CheckboxInput(
-                        attrs={"class": "form-check-input" + _class}
+                        attrs={"role":"switch","class": "form-check-input" + _class}
                     ),
                     required=False,
                     help_text=getattr(ConfigClass, name).__doc__,
