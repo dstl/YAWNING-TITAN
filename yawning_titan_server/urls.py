@@ -2,7 +2,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
-from yawning_titan_gui.views import GameModeConfigView, GameModesView, HomeView, config_file_manager
+from yawning_titan_gui.views import (
+    GameModeConfigView,
+    GameModesView,
+    HomeView,
+    config_file_manager,
+)
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),

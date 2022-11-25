@@ -108,7 +108,7 @@ $(document).ready(function(){
             }).done(function(){
                 location.reload();
             });
-        }        
+        }
     });
 
     $("#delete-dialogue .submit").click(function(){
@@ -118,7 +118,7 @@ $(document).ready(function(){
             data: {"game_mode_name":selected_game_mode,"operation":"delete"},
         }).done(function(){
             location.reload();
-        });        
+        });
     });
 
     $(".icon.delete").click(function(e){
