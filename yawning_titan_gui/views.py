@@ -208,7 +208,9 @@ class GameModeConfigView(View):
                     )
                 )
                 completed_forms[section] = form
-                return redirect("game mode config",game_mode_file,next_key(forms, section))
+                return redirect(
+                    "game mode config", game_mode_file, next_key(forms, section)
+                )
             except Exception as e:
                 return self.render_page(request, section, game_mode_file, e)
 
@@ -225,7 +227,7 @@ class GameModeConfigView(View):
                 "section": section,
                 "error_message": error_message,
                 "sidebar": default_sidebar,
-                "game_mode_file": game_mode_file
+                "game_mode_file": game_mode_file,
             },
         )
 
