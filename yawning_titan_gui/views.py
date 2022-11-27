@@ -118,15 +118,6 @@ class GameModesView(View):
                         "description": f"description {i}",
                     }
                     for i, path in enumerate(GAME_MODES_DIR.iterdir())
-                    # {
-                    #     "filename": "base_config.yaml",
-                    #     "name": "test 3",
-                    #     "description": """
-                    #         description 3 is really really really really really really really
-                    #         really really really really really really really really really really
-                    #         really really really long
-                    #     """,
-                    # },
                 ],
             },
         )
@@ -198,14 +189,13 @@ class GameModeConfigView(View):
                 _section, section_form["form"](initial=game_mode_config[_section])
             )
             self.forms[_section] = section_form
-        return self.render_page(request, section)
+        return self.render_page(request, section, game_mode_file)
 
     def post(
         self, request, *args, game_mode_file: str = None, section: str = None, **kwargs
     ):
         """Handle page post requests."""
         section = list(forms.keys())[0] if section is None else section
-        # print("T",forms[section]["form"],type(forms[section]["form"]))
         form = self.forms[section]["form"](request.POST)
         self.forms[section]["form"] = form
 
@@ -218,13 +208,13 @@ class GameModeConfigView(View):
                     )
                 )
                 completed_forms[section] = form
-                return self.render_page(request, self.forms, next_key(forms, section))
+                return redirect("game mode config",game_mode_file,next_key(forms, section))
             except Exception as e:
-                return self.render_page(request, self.forms, section, e)
+                return self.render_page(request, section, game_mode_file, e)
 
-        return self.render_page(request, self.forms, section)
+        return self.render_page(request, section, game_mode_file)
 
-    def render_page(self, request, section, error_message=None):
+    def render_page(self, request, section, game_mode_file, error_message=None):
         """Process pythonic tags in game_mode_config.html and return formatted page."""
         section = list(forms.keys())[0] if section is None else section
         return render(
@@ -235,6 +225,7 @@ class GameModeConfigView(View):
                 "section": section,
                 "error_message": error_message,
                 "sidebar": default_sidebar,
+                "game_mode_file": game_mode_file
             },
         )
 

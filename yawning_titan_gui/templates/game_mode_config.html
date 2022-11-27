@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block main %}
+<h2>{{game_mode_file}}</h2>
 <div id="config-forms">
     <div id="config-form-icons">
         {% for form_name, config in forms.items %}
@@ -16,7 +17,7 @@
         {% endfor %}
     </div>
     <div id="{{section}}-config-form-container" class="form-container">
-        <h2>{{section}}</h2>
+        <h3>{{section}}</h3>
         <form id="{{section}}-config-form" class="config-form" action="" method="post" data-form-name="{{section}}">
             {% csrf_token %}
             {% value_at forms section as config %}
@@ -28,17 +29,19 @@
                 </div>
                 <div class="field-container">
                     {{ field }}
+                    {% if field.errors %}
+                    <ul style="color:var(--bs-danger)">
+                        {% for error in field.errors %}
+                        <li><strong>{{ error|escapejs }}</strong></li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
                 </div>
-                {% if field.errors %}
-                <ul style="color:var(--bs-danger)">
-                    {% for error in field.errors %}
-                    <li><strong>{{ error|escapejs }}</strong></li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
+                
             </div>
             {% endfor %}
-            <button type="submit" class="btn btn-primary next-form" data-next-form-el="#{{forms|next_key:section}}-config-form">Next</button>
+            <div class="flex-break"></div>
+            <button type="submit" class="btn btn-primary next-form">Next</button>
         </form>
     </div>
 </div>
@@ -56,7 +59,7 @@
     }
 
     #config-forms{
-        height: 100%;
+        height: calc(100% - var(--padding));
         display: flex;
         flex-direction: row;
     }
@@ -93,16 +96,13 @@
         background-color: var(--dark);
     }
     .config-form{
-        position: relative;
-        min-height: 0;
+        display: flex;
+        flex-direction: column;
         flex: 1;
         overflow-y: auto;
     }
     .next-form{
-        width: 100%;
-        position: absolute;
-        bottom: 0;
-        left: 0;
+        width: 100%;        
     }
 
     .mb-3{
@@ -135,9 +135,11 @@
     }
     .field-container{
         max-width: 400px;
+        height: 60px;
     }
     .field-container>*{
         width:100%;
+        margin: 0;
     }
     .selector{
         width: 100%;
