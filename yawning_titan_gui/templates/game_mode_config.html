@@ -15,9 +15,12 @@
 <div id="config-forms">
     <div id="config-form-icons">
         {% for form_name, config in forms.items %}
-        <a id="{{form_name}}-icon" href="{{request.path|url_trim:2}}{{form_name}}/" class="icon{% if form_name == section %} selected{% endif %}{% if form_name in completed_forms %} complete{% endif %}" data-form="#{{form_name}}-config-form">
-            <i class="bi {{config.icon}}"></i>
-        </a>
+        <div class="icon-container">
+            <a id="{{form_name}}-icon" href="{{request.path|url_trim:2}}{{form_name}}/" class="icon{% if form_name == section %} selected{% endif %}{% if form_name in completed_forms %} complete{% endif %}" data-form="#{{form_name}}-config-form">
+                <i class="bi {{config.icon}}"></i>
+            </a>
+            <p>{{form_name}}</p>
+        </div>        
         {% endfor %}
     </div>
     <div id="{{section}}-config-form-container" class="form-container">
@@ -25,29 +28,31 @@
         <form id="{{section}}-config-form" class="config-form" action="" method="post" data-form-name="{{section}}">
             {% csrf_token %}
             {% value_at forms section as config %}
-            {% for field in config.form %}
-                {% label_subsection field subsection_labels as subsection_label %}
-                {% if subsection_label is not None %}
-                    <p class="subsection-label">{{subsection_label}}</p>
-                {% endif %}
-                <div class="mb-3">
-                    <div class="info">
-                        <label for="id_{{field.name}}" class="form-label">{{field.label}}</label>
-                        <p class="help-text">{{field.help_text}}</p>
-                    </div>
-                    <div class="field-container {% if protected %}disabled{% endif %}">
-                        {{ field }}
-                        {% if field.errors %}
-                        <ul style="color:var(--bs-danger)">
-                            {% for error in field.errors %}
-                            <li><strong>{{ error|escapejs }}</strong></li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                    </div>
+            <div class="fields">
+                {% for field in config.form %}
+                    {% label_subsection field subsection_labels as subsection_label %}
+                    {% if subsection_label is not None %}
+                        <p class="subsection-label">{{subsection_label}}</p>
+                    {% endif %}
+                    <div class="mb-3">
+                        <div class="info">
+                            <label for="id_{{field.name}}" class="form-label">{{field.label}}</label>
+                            <p class="help-text">{{field.help_text}}</p>
+                        </div>
+                        <div class="field-container {% if protected %}disabled{% endif %}">
+                            {{ field }}
+                            {% if field.errors %}
+                            <ul style="color:var(--bs-danger)">
+                                {% for error in field.errors %}
+                                <li><strong>{{ error|escapejs }}</strong></li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
 
-                </div>
-            {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>            
             <div class="flex-break"></div>
             <button type="submit" class="btn btn-primary next-form">{% if section == forms|keys|last %}Finish{% else %}Next{% endif %}</button>
         </form>
@@ -78,37 +83,58 @@
 
     #config-form-icons{
         display: flex;
+        height: 350px;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         font-size: 30px;
         color: var(--text-light);
-        background-color: var(--dark);
-        border-right: 2px solid var(--text-light);
+        /* background-color: var(--dark); */
+        border-left: 2px solid var(--text-light);
+        margin-right: var(--padding);
+        margin-top: var(--padding);
     }
-    #config-form-icons>.icon{
+    #config-form-icons .icon{
         margin-left: 0;
-        margin-top: var(--increment);
-        margin-bottom:  var(--increment);
-        transform: translate(50%,0%);
+        box-shadow: 0 0 0 var(--increment) var(--mid);
+        transform: translate(-50%,0%);
     }
-    #config-form-icons>.icon.complete{
+    #config-form-icons .icon.complete{
         border: 2px solid var(--primary-light);
     }
+    #config-form-icons>.icon-container{
+        width: 280px;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        margin-top: calc(var(--increment)*2);
+        margin-bottom: calc(var(--increment)*2);
+    }
+    #config-form-icons>.icon-container>p{
+        font-size: 1.25rem;
+        margin: 0;       
+    }
+ 
     .form-container{
         display: flex;
         flex-direction: column;
+        flex: 1;
         min-height: 0;
         max-height: 100%;
-        flex: 1;
-        padding: var(--padding);
-        background-color: var(--dark);
+    }
+    .form-container *{
+        min-height: 0;
+        max-height: 100%;
     }
     .config-form{
         display: flex;
         flex-direction: column;
-        flex: 1;
+        flex: 1;      
+        
+    }
+    form>.fields{
         overflow-y: auto;
+        padding-right: var(--increment);
     }
     .next-form{
         width: 100%;
@@ -119,12 +145,7 @@
         flex-wrap: wrap;
         margin: 3px;
     }
-    .form-label{
-        color: var(--text-superlight);
-    }
-    .form-switch{
-        text-align: center;
-    }
+
     .help-text{
         font-size: .8em;
         color: #888;

@@ -36,7 +36,23 @@ $(document).ready(function(){
     });
 
     // create toggle switches from checkboxes
-    $("input[role='switch']").wrap("<div class=form-switch></div>")
+    $("input[role='switch']").wrap("<div class=form-switch></div>");
+
+    // add range setter input field
+    $("input[type='range']").wrap("<div class=form-range></div>");
+    $(".form-range").append("<input type='number' class='form-control range-setter'>");
+
+    // constrain range setter input field
+    $(".range-setter").each(function(){
+        let slider_el = $(this).closest(".form-range").children("input[type='range']").first();
+        $(this).prop("min",slider_el.prop("min"));
+        $(this).prop("max",slider_el.prop("max"));
+        $(this).val(slider_el.val());
+    })
+
+    $(document).on("keyup",".range-setter",function(){
+        $(this).closest(".form-range").children("input[type='range']").first().val($(this).val());
+    })
 
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
