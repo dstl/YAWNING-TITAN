@@ -67,7 +67,7 @@ class BlueAgentConfig(ConfigABC):
     _chance_to_discover_failed_attack_deceptive_node: float
     _chance_to_discover_succeeded_attack_deceptive_node: float
     _making_node_safe_modifies_vulnerability: bool
-    _vulnerability_change_during_node_patch: int
+    _vulnerability_change_during_node_patch: float
     _making_node_safe_gives_random_vulnerability: bool
     _blue_uses_reduce_vulnerability: bool
     _blue_uses_restore_node: bool
@@ -151,7 +151,7 @@ class BlueAgentConfig(ConfigABC):
         return self._making_node_safe_modifies_vulnerability
 
     @property
-    def vulnerability_change_during_node_patch(self) -> int:
+    def vulnerability_change_during_node_patch(self) -> float:
         """The amount that the vulnerability of a node changes when it is made safe."""
         return self._vulnerability_change_during_node_patch
 

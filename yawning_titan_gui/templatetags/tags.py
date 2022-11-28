@@ -2,14 +2,13 @@ import json
 from typing import Any
 
 from django import template
+from django.forms import Field
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 register = template.Library()
 
-# basic helper tags
-
-
+# Filter tags
 @register.filter(is_safe=True)
 def js(obj):
     """Return argument in javascript markup."""
@@ -20,6 +19,18 @@ def js(obj):
 def to_id(value: str):
     """Replaces spaces with dashes in string argument to form html formatted id."""
     return value.replace(" ", "-")
+
+
+@register.filter
+def length(obj: Any):
+    "Return the length of an object."
+    return len(obj)
+
+
+@register.filter
+def keys(_dict: dict):
+    """Return the keys of dictionary as a list"""
+    return list(_dict.keys())
 
 
 @register.filter
@@ -36,29 +47,23 @@ def get_url(url_name: str):
         return ""
 
 
+@register.filter
+def url_trim(url: str, n: int):
+    """Trim url to n parameters."""
+    url_components = url.split("/")
+    return "/".join(url_components[: n + 1]) + "/"
+
+
+# Simple tags
 @register.simple_tag
 def value_at(_dict: dict, key: Any):
-    """Return value of dict at key"""
+    """Return value of dict at key."""
     return _dict.get(key)
 
 
-@register.filter
-def next_key(_dict: dict, key: int):
+@register.simple_tag
+def label_subsection(field: Field, subsection_labels: dict):
     """
-    Get the next key in a dictionary.
-
-    Use key_index + 1 if there is a subsequent key
-    otherwise return first key.
+    Return the subsection label that precedes the given field name.
     """
-    keys = list(_dict.keys())
-    key_index = keys.index(key)
-    if key_index < (len(keys) - 1):
-        return keys[key_index + 1]
-    return keys[0]
-
-
-@register.filter
-def url_trim(url: str, n: int):
-    """Trim url to n parameters"""
-    url_components = url.split("/")
-    return "/".join(url_components[: n + 1]) + "/"
+    return subsection_labels.get(field.name)

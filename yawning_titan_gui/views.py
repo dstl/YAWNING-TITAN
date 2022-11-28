@@ -4,6 +4,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict
 
+from django import forms as django_forms
 from django.http import JsonResponse, QueryDict
 from django.shortcuts import redirect, render
 from django.views import View
@@ -30,7 +31,9 @@ from yawning_titan_gui.forms import (
     RedAgentForm,
     ResetForm,
     RewardsForm,
-    game_mode_from_default,
+    game_mode_from_form_sections,
+    game_mode_section_form_from_default,
+    subsection_labels,
 )
 from yawning_titan_server.settings import STATIC_URL
 
@@ -43,6 +46,27 @@ def static_url(type, file_path):
 def game_mode_path(game_mode_filename: str):
     """Generate path for game mode file."""
     return (GAME_MODES_DIR / game_mode_filename).as_posix()
+
+
+def check_game_mode(game_mode_path: Path):
+    """Check that a game mode path can construct a valid GameModeConfig object."""
+    try:
+        GameModeConfig.create_from_yaml(game_mode_path)
+        return True
+    except Exception as e:
+        return False
+
+
+def get_game_mode_file_paths(valid_only=False):
+    """
+    Return a list of file Path objects representing game modes.
+    """
+    game_modes = [
+        g for g in GAME_MODES_DIR.iterdir() if g.stem != "everything_off_config"
+    ]
+    if not valid_only:
+        return game_modes
+    return [g for g in game_modes if check_game_mode(g)]
 
 
 def next_key(_dict: dict, key: int):
@@ -62,15 +86,12 @@ def next_key(_dict: dict, key: int):
 def uniquify(path: Path):
     filename = path.stem
     extension = path.suffix
-
     parent = path.parent
     counter = 1
 
     while path.exists():
         path = parent / f"{filename}({counter}){extension}"
-        print("PATH", path)
         counter += 1
-
     return path
 
 
@@ -83,6 +104,20 @@ default_sidebar = {
     "Training runs": ["Setup a training run", "View completed runs"],
     "About": ["Contributors", "Report bug", "FAQ"],
 }
+
+forms = {
+    "red": {"form": RedAgentForm, "icon": "bi-lightning"},
+    "blue": {"form": BlueAgentForm, "icon": "bi-shield"},
+    "game_rules": {"form": GameRulesForm, "icon": "bi-clipboard"},
+    "observation_space": {"form": ObservationSpaceForm, "icon": "bi-binoculars"},
+    "rewards": {"form": RewardsForm, "icon": "bi-star"},
+    "reset": {"form": ResetForm, "icon": "bi-arrow-clockwise"},
+    "miscellaneous": {"form": MiscellaneousForm, "icon": "bi-brush"},
+}
+
+completed_game_modes = defaultdict(dict)
+
+protected_game_modes = ["base_config"]
 
 
 class HomeView(View):
@@ -116,8 +151,10 @@ class GameModesView(View):
                         "filename": path.name,
                         "name": path.stem,
                         "description": f"description {i}",
+                        "protected": path.stem in protected_game_modes,
+                        "complete": check_game_mode(path),
                     }
-                    for i, path in enumerate(GAME_MODES_DIR.iterdir())
+                    for i, path in enumerate(get_game_mode_file_paths(valid_only=False))
                 ],
             },
         )
@@ -125,29 +162,6 @@ class GameModesView(View):
     def post(self, request, *args, **kwargs):
         """Handle page post requests."""
         pass
-
-
-forms = {
-    "red": {"form": RedAgentForm, "icon": "bi-lightning"},
-    "blue": {"form": BlueAgentForm, "icon": "bi-shield"},
-    "game_rules": {"form": GameRulesForm, "icon": "bi-clipboard"},
-    "observation_space": {"form": ObservationSpaceForm, "icon": "bi-binoculars"},
-    "rewards": {"form": RewardsForm, "icon": "bi-star"},
-    "reset": {"form": ResetForm, "icon": "bi-arrow-clockwise"},
-    "miscellaneous": {"form": MiscellaneousForm, "icon": "bi-brush"},
-}
-
-completed_forms = {}
-
-configs: Dict[str, ConfigABC] = {
-    "red": RedAgentConfig,
-    "blue": BlueAgentConfig,
-    "observation_space": ObservationSpaceConfig,
-    "game_rules": GameRulesConfig,
-    "rewards": RewardsConfig,
-    "reset": ResetConfig,
-    "miscellaneous": MiscellaneousConfig,
-}
 
 
 class GameModeConfigView(View):
@@ -168,6 +182,16 @@ class GameModeConfigView(View):
             "miscellaneous": {"form": MiscellaneousForm, "icon": "bi-brush"},
         }
 
+        self.configs: Dict[str, ConfigABC] = {
+            "red": RedAgentConfig,
+            "blue": BlueAgentConfig,
+            "observation_space": ObservationSpaceConfig,
+            "game_rules": GameRulesConfig,
+            "rewards": RewardsConfig,
+            "reset": ResetConfig,
+            "miscellaneous": MiscellaneousConfig,
+        }
+
     def get(
         self, request, *args, game_mode_file: str = None, section: str = None, **kwargs
     ):
@@ -185,7 +209,7 @@ class GameModeConfigView(View):
                 pass
 
         for _section, section_form in self.forms.items():
-            section_form["form"] = completed_forms.get(
+            section_form["form"] = completed_game_modes.get(
                 _section, section_form["form"](initial=game_mode_config[_section])
             )
             self.forms[_section] = section_form
@@ -201,13 +225,19 @@ class GameModeConfigView(View):
 
         if form.is_valid():
             try:
-                configs[section] = configs[section].create(
-                    game_mode_from_default(
+                self.configs[section] = self.configs[section].create(
+                    game_mode_section_form_from_default(
                         form.cleaned_data,
                         section,
                     )
                 )
-                completed_forms[section] = form
+                completed_game_modes[game_mode_file][section] = form
+                if len(completed_game_modes[game_mode_file].keys()) == len(forms):
+                    game_mode_from_form_sections(
+                        completed_game_modes[game_mode_file], game_mode_file
+                    )
+                    completed_game_modes[game_mode_file] = {}
+                    return redirect("Manage game modes")
                 return redirect(
                     "game mode config", game_mode_file, next_key(forms, section)
                 )
@@ -228,12 +258,15 @@ class GameModeConfigView(View):
                 "error_message": error_message,
                 "sidebar": default_sidebar,
                 "game_mode_file": game_mode_file,
+                "protected": Path(game_mode_file).stem in protected_game_modes,
+                "completed_game_modes": completed_game_modes[game_mode_file].keys(),
+                "subsection_labels": subsection_labels.get(section, {}),
             },
         )
 
 
 def config_file_manager(request):
-    """"""
+    """Create, edit, delete config yaml files."""
     if request.method == "POST":
         game_mode_name = request.POST.get("game_mode_name")
         operation = request.POST.get("operation")
@@ -246,6 +279,13 @@ def config_file_manager(request):
 
         elif operation == "delete":
             (GAME_MODES_DIR / f"{game_mode_name}.yaml").unlink()
+
+        elif operation == "create from":
+            source_game_mode_path = (
+                GAME_MODES_DIR / f"{request.POST.get('source_game_mode')}.yaml"
+            )
+            new_game_mode_path = uniquify(GAME_MODES_DIR / f"{game_mode_name}.yaml")
+            shutil.copy(source_game_mode_path, new_game_mode_path)
 
         return JsonResponse({"message:": "SUCCESS"})
     return JsonResponse({"message:": "FAILED"}, status=400)

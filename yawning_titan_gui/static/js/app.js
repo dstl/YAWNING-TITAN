@@ -7,6 +7,22 @@ function update_tooltip(selector,replace,replace_with){
     $(selector).attr('data-bs-original-title',$(selector).data("bs-original-title").replace(replace,replace_with));
 }
 
+function toggle_dialogue(dialogue_selector){
+    if($("#mask").hasClass("hidden")){
+        $("#mask").removeClass("hidden");
+        $(dialogue_selector).removeClass("hidden");
+        $("#window").addClass("blur");
+    }else{
+        $("#mask").addClass("hidden");
+        $("#mask>*").addClass("hidden");
+        $("#window").removeClass("blur");
+    }
+}
+
+$(window).on('load', function(){
+    $("body").removeClass("preload");
+});
+
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
 
@@ -30,15 +46,3 @@ $(document).ready(function(){
         }
     });
 });
-
-function toggle_dialogue(dialogue_selector){
-    if($("#mask").hasClass("hidden")){
-        $("#mask").removeClass("hidden");
-        $(dialogue_selector).removeClass("hidden");
-        $("#window").addClass("blur");
-    }else{
-        $("#mask").addClass("hidden");
-        $("#mask>*").addClass("hidden");
-        $("#window").removeClass("blur");
-    }
-}

@@ -7,41 +7,49 @@
 {% endblock %}
 
 {% block main %}
-<h2>{{game_mode_file}}</h2>
+<div class="el-row">
+    <h2>{{game_mode_file}}</h2>
+    <a id="game-modes-return" href="{% url 'Manage game modes' %}"><i class="bi bi-arrow-90deg-left"></i></a>
+</div>
+
 <div id="config-forms">
     <div id="config-form-icons">
         {% for form_name, config in forms.items %}
-        <a id="{{form_name}}-icon" href="{{request.path|url_trim:2}}{{form_name}}/" class="icon {% if form_name == section %}selected{% endif %}" data-form="#{{form_name}}-config-form">
+        <a id="{{form_name}}-icon" href="{{request.path|url_trim:2}}{{form_name}}/" class="icon{% if form_name == section %} selected{% endif %}{% if form_name in completed_forms %} complete{% endif %}" data-form="#{{form_name}}-config-form">
             <i class="bi {{config.icon}}"></i>
         </a>
         {% endfor %}
     </div>
     <div id="{{section}}-config-form-container" class="form-container">
-        <h3>{{section}}</h3>
+        <h3 class="header">{{section}}</h3>
         <form id="{{section}}-config-form" class="config-form" action="" method="post" data-form-name="{{section}}">
             {% csrf_token %}
             {% value_at forms section as config %}
             {% for field in config.form %}
-            <div class="mb-3">
-                <div class="info">
-                    <label for="id_{{field.name}}" class="form-label">{{field.label}}</label>
-                    <p class="help-text">{{field.help_text}}</p>
-                </div>
-                <div class="field-container">
-                    {{ field }}
-                    {% if field.errors %}
-                    <ul style="color:var(--bs-danger)">
-                        {% for error in field.errors %}
-                        <li><strong>{{ error|escapejs }}</strong></li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-                </div>
+                {% label_subsection field subsection_labels as subsection_label %}
+                {% if subsection_label is not None %}
+                    <p class="subsection-label">{{subsection_label}}</p>
+                {% endif %}
+                <div class="mb-3">
+                    <div class="info">
+                        <label for="id_{{field.name}}" class="form-label">{{field.label}}</label>
+                        <p class="help-text">{{field.help_text}}</p>
+                    </div>
+                    <div class="field-container {% if protected %}disabled{% endif %}">
+                        {{ field }}
+                        {% if field.errors %}
+                        <ul style="color:var(--bs-danger)">
+                            {% for error in field.errors %}
+                            <li><strong>{{ error|escapejs }}</strong></li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
 
-            </div>
+                </div>
             {% endfor %}
             <div class="flex-break"></div>
-            <button type="submit" class="btn btn-primary next-form">Next</button>
+            <button type="submit" class="btn btn-primary next-form">{% if section == forms|keys|last %}Finish{% else %}Next{% endif %}</button>
         </form>
     </div>
 </div>
@@ -56,6 +64,10 @@
         background-color: var(--light) !important;
         color: var(--text-light) !important;
         border: none !important;
+    }
+
+    #game-modes-return{
+        font-size: 1.5rem;
     }
 
     #config-forms{
@@ -80,12 +92,9 @@
         margin-bottom:  var(--increment);
         transform: translate(50%,0%);
     }
-
-    #config-form-icons>.icon.selected{
-        background-color: var(--text-light);
-        color: var(--primary);
+    #config-form-icons>.icon.complete{
+        border: 2px solid var(--primary-light);
     }
-
     .form-container{
         display: flex;
         flex-direction: column;
@@ -153,6 +162,11 @@
     }
     .selector:hover{
         background-color: aliceblue;
+    }
+    .subsection-label{
+        color: var(--text-light);
+        border-top: 1px solid var(--text-mid);
+        border-bottom: 1px solid var(--text-mid);
     }
 
     div.mb-3:has(.hidden){

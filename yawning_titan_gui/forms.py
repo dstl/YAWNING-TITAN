@@ -2,7 +2,7 @@ from dataclasses import fields
 from typing import Any, Dict
 
 import yaml
-from django import forms
+from django import forms as django_forms
 from django.forms import widgets
 from yaml import SafeLoader
 
@@ -16,6 +16,7 @@ from yawning_titan.config.environment.observation_space_config import (
 from yawning_titan.config.environment.reset_config import ResetConfig
 from yawning_titan.config.environment.rewards_config import RewardsConfig
 from yawning_titan.config.game_config.config_abc import ConfigABC
+from yawning_titan.config.game_config.game_mode_config import GameModeConfig
 from yawning_titan.config.game_config.miscellaneous_config import MiscellaneousConfig
 from yawning_titan_gui import DEFAULT_GAME_MODE
 
@@ -100,11 +101,11 @@ game_rules_config_form_map = {
     "dependencies": {},
 }
 
-reset_config_form_map = {"groups": {}, "dependencies": {}}
+reset_config_form_map = {}
 
-rewards_config_form_map = {"groups": {}, "dependencies": {}}
+rewards_config_form_map = {}
 
-miscellaneous_config_form_map = {"groups": {}, "dependencies": {}}
+miscellaneous_config_form_map = {}
 
 config_form_maps = {
     "red": red_config_form_map,
@@ -116,8 +117,18 @@ config_form_maps = {
     "miscellaneous": miscellaneous_config_form_map,
 }
 
+subsection_labels = {
+    "red": {
+        "red_uses_skill": "Choose at least 1 of the following 3 items (red_ignores_defences: False counts as choosing an item)",
+        "red_uses_spread_action": "Choose at least one of the following 6 items (each item has associated weighting)",
+    },
+    "blue": {
+        "blue_uses_reduce_vulnerability": "Choose at least one of the following 8 items"
+    },
+}
 
-class ConfigForm(forms.Form):
+
+class ConfigForm(django_forms.Form):
     """
     Base class for represent yawning_titan config classes as html forms.
 
@@ -132,20 +143,17 @@ class ConfigForm(forms.Form):
         self, config_form_map: Dict[str, dict], ConfigClass: ConfigABC, *args, **kwargs
     ):
         super(ConfigForm, self).__init__(*args, **kwargs)
-        bool_elements = {}
-        freetext_elements = {}
-        integer_elements = {}
-        dropdown_elements = {}
+        field_elements = {}
 
         attrs = {}
 
         grouped_elements = []
 
         # created dropdowns from grouped elements
-        for name, group in config_form_map["groups"].items():
-            dropdown_elements[name] = forms.ChoiceField(
+        for name, group in config_form_map.get("groups", {}).items():
+            field_elements[name] = django_forms.ChoiceField(
                 choices=((val, val.replace("_", " ")) for i, val in enumerate(group)),
-                widget=forms.Select(
+                widget=django_forms.Select(
                     attrs={"class": "form-control"},
                 ),
                 required=True,
@@ -153,7 +161,7 @@ class ConfigForm(forms.Form):
             )
             grouped_elements.extend(group)
 
-        for parent, dependents in config_form_map["dependencies"].items():
+        for parent, dependents in config_form_map.get("dependencies", {}).items():
             attrs[parent] = f" {parent} grouped parent"
             for field in dependents:
                 attrs[field] = f" {parent} grouped hidden"
@@ -164,8 +172,9 @@ class ConfigForm(forms.Form):
             _class = attrs.get(name, "")
             if name in grouped_elements:
                 continue
+
             if _type == "bool":
-                bool_elements[name] = forms.BooleanField(
+                field_elements[name] = django_forms.BooleanField(
                     widget=widgets.CheckboxInput(
                         attrs={"role": "switch", "class": "form-check-input" + _class}
                     ),
@@ -173,7 +182,7 @@ class ConfigForm(forms.Form):
                     help_text=getattr(ConfigClass, name).__doc__,
                 )
             elif _type == "float":
-                integer_elements[name] = forms.FloatField(
+                field_elements[name] = django_forms.FloatField(
                     widget=RangeInput(
                         attrs={"class": "form-control" + _class, "step": "0.01"}
                     ),
@@ -183,7 +192,7 @@ class ConfigForm(forms.Form):
                     max_value=1,
                 )
             elif _type == "int":
-                integer_elements[name] = forms.IntegerField(
+                field_elements[name] = django_forms.IntegerField(
                     widget=widgets.NumberInput(
                         attrs={"class": "form-control" + _class}
                     ),
@@ -191,17 +200,13 @@ class ConfigForm(forms.Form):
                     help_text=getattr(ConfigClass, name).__doc__,
                 )
             else:
-                freetext_elements[name] = forms.CharField(
+                field_elements[name] = django_forms.CharField(
                     widget=widgets.TextInput(attrs={"class": "form-control" + _class}),
                     required=False,
                     help_text=getattr(ConfigClass, name).__doc__,
                 )
-        self.fields = {
-            **dropdown_elements,
-            **bool_elements,
-            **freetext_elements,
-            **integer_elements,
-        }
+
+        self.fields = field_elements
 
 
 class RedAgentForm(ConfigForm):
@@ -245,7 +250,7 @@ class GameRulesForm(ConfigForm):
     """Representation of GameRulesConfig as html form."""
 
     def __init__(self, *args, **kwargs):
-        super().__init__(rewards_config_form_map, GameRulesConfig, *args, **kwargs)
+        super().__init__(game_rules_config_form_map, GameRulesConfig, *args, **kwargs)
 
 
 class MiscellaneousForm(ConfigForm):
@@ -257,7 +262,9 @@ class MiscellaneousForm(ConfigForm):
         )
 
 
-def game_mode_from_default(gui_options: Dict[str, Dict[str, Any]], section: str):
+def game_mode_section_form_from_default(
+    gui_section_options: Dict[str, Any], section: str
+):
     """
     Update default game mode options with GUI inputted options.
 
@@ -265,7 +272,7 @@ def game_mode_from_default(gui_options: Dict[str, Dict[str, Any]], section: str)
     with settings inputted in the GUI.
 
     Args:
-        gui_options: dictionary with options configured in GUI
+        gui_section_options: dictionary with options configured in GUI
         section: config section to update
     """
     with open(GAME_MODES_DIR / DEFAULT_GAME_MODE) as f:
@@ -273,9 +280,27 @@ def game_mode_from_default(gui_options: Dict[str, Dict[str, Any]], section: str)
 
     # add settings items for selection values
     for name in config_form_maps[section]["groups"].keys():
-        print("NN", section, name, new_settings[section.upper()])
-        new_settings[section.upper()][gui_options[name]] = True
-        del gui_options[name]
+        new_settings[section.upper()][gui_section_options[name]] = True
+        del gui_section_options[name]
 
-    new_settings[section.upper()].update(gui_options)
+    new_settings[section.upper()].update(gui_section_options)
     return new_settings[section.upper()]
+
+
+def game_mode_from_form_sections(
+    game_mode_forms: Dict[str, django_forms.Form], game_mode_file: str
+):
+    """
+    Create a complete config yaml file from a dictionary of form sections.
+
+    Args:
+        game_mode_forms: dictionary containing django form objects representing
+        sections the config.
+    """
+    section_configs = {
+        section_name.upper(): form.cleaned_data
+        for section_name, form in game_mode_forms.items()
+    }
+    game_mode = GameModeConfig.create(section_configs)
+    game_mode.to_yaml(GAME_MODES_DIR / game_mode_file)
+    return game_mode
