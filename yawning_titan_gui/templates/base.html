@@ -142,10 +142,10 @@
     h2{
         color: var(--text-light);
     }
-    a,button,div { /* linkable elements */
+    a,button,div,form { /* linkable elements */
         color: var(--text-mid);
+        
     }
-
 
     input:checked{
         background-color: var(--primary) !important;
@@ -221,6 +221,13 @@
         max-height: calc(100vh - var(--padding));
         overflow: hidden;
     }
+    #main{
+        position: relative;
+        flex: 1;
+        height: 100%;
+        padding: var(--padding);
+        background-color: var(--mid);
+    }
     #sidebar-left{
         width: 700px;
         height: 100%;
@@ -233,12 +240,7 @@
     #sidebar-left.open{
         margin-left: 0px;
     }
-    #main{
-        position: relative;
-        flex: 1;
-        height: 100%;
-        padding: var(--padding);
-    }
+
 
     #center-container{
         position: absolute;
@@ -273,6 +275,26 @@
     .icon:hover,.icon.selected{
         background-color: var(--text-mid);
         color: var(--primary-light);
+    }
+
+    .form-label{
+        color: var(--text-superlight);
+    }
+    .form-switch{
+        text-align: center;
+    }
+    .form-range{
+        display: flex;
+        flex-direction: row;
+    }
+    .form-range>.range-setter{
+        width: 50px;
+        margin-left: var(--increment);
+        -moz-appearance: textfield;
+    }
+    .form-range>.range-setter::-webkit-inner-spin-button,.form-range>.range-setter::-webkit-outer-spin-button{
+        -webkit-appearance: none;
+        margin: 0;
     }
 
     /* dialogue boxes */
