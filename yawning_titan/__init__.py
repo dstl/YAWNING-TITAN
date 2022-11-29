@@ -65,13 +65,11 @@ register(id="18-node-env-v0", entry_point="yawning_titan.envs.specific:NodeEnv")
 
 _YT_ROOT_DIR: Final[Union[Path, PosixPath]] = Path(__file__).parent.resolve()
 
-_YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(
-    appname="yawning_titan", appauthor="DSTL"
-)
-"""An instance of `PlatformDirs` set with appname='yawning_titan' and appauthor='DSTL'."""
+_YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(appname="yawning_titan")
+"""An instance of `PlatformDirs` set with appname='yawning_titan'."""
 
-_YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "DSTL" / "yawning_titan"
-"""The users home space for YT which is located at: ~/DSTL/yawning_titan."""
+_YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "yawning_titan"
+"""The users home space for YT which is located at: ~/yawning_titan."""
 
 
 def _data_dir() -> Union[Path, PosixPath]:
@@ -173,28 +171,28 @@ NOTEBOOKS_DIR: Final[Union[Path, PosixPath]] = _notebooks_dir()
 """
 The path to the users notebooks directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
-Users notebooks are stored at: ~/DSTL/yawning_titan/notebooks.
+Users notebooks are stored at: ~/yawning_titan/notebooks.
 """
 
 GAME_MODES_DIR: Final[Union[Path, PosixPath]] = _game_modes_dir()
 """
 The path to the users game modes directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
-Users game modes are stored at: ~/DSTL/yawning_titan/game_modes.
+Users game modes are stored at: ~/yawning_titan/game_modes.
 """
 
 IMAGES_DIR: Final[Union[Path, PosixPath]] = _images_dir()
 """
 The path to the users images directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
-Users images are stored at: ~/DSTL/yawning_titan/images.
+Users images are stored at: ~/yawning_titan/images.
 """
 
 AGENTS_DIR: Final[Union[Path, PosixPath]] = _agents_dir()
 """
 The path to the users agents directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
-Users images are stored at: ~/DSTL/yawning_titan/agents.
+Users images are stored at: ~/yawning_titan/agents.
 """
 
 # Setup root logger format
