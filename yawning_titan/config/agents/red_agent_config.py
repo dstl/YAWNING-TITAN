@@ -13,9 +13,9 @@ from yawning_titan.envs.generic.helpers.environment_input_validation import (
 @dataclass()
 class RedAgentConfig(ConfigABC):
     """Class that validates and stores the Red Agent Configuration."""
-
-    _red_skill: float
+    
     _red_uses_skill: bool
+    _red_skill: float    
     _red_ignores_defences: bool
     _red_always_succeeds: bool
     _red_can_only_attack_from_red_agent_node: bool
