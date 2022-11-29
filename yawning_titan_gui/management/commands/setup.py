@@ -7,24 +7,19 @@ class Command(BaseCommand):
     """
     Command for setting up directories necessary for yawning titan operation with front end.
 
-    Usage:
-    python manage.py setup
+    Examples:
+        >>> python manage.py setup
     """
 
-    help = "sets up yawning titan dependencies"
+    help = "Copy yawning_titan gui dependencies to `DATA_DIR`"
 
     def handle(self, *args, **kwargs):
         """Method that is fired on execution of the command in the terminal."""
         print("Running setup...")
-        from setup import (
-            _copy_package_data_notebooks_to_notebooks_dir,
-            _create_app_dirs,
-        )
+
         from yawning_titan import DATA_DIR
         from yawning_titan_gui import _YT_GUI_ROOT_DIR
 
-        _create_app_dirs()
-        _copy_package_data_notebooks_to_notebooks_dir()
         # Creates the static ui files copy in the data directory
         shutil.copytree(
             (_YT_GUI_ROOT_DIR / "static").as_posix(),

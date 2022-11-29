@@ -7,11 +7,11 @@ class Command(BaseCommand):
     """
     Command to run the yawning titan gui in a window.
 
-    Usage:
-    python manage.py run_gui
+    Examples:
+        >>> python manage.py run_gui
     """
 
-    help = "sets up yawning titan dependencies"
+    help = "Run yawning titan gui in window."
 
     def handle(self, *args, **kwargs):
         """Method that is fired on execution of the command in the terminal."""
