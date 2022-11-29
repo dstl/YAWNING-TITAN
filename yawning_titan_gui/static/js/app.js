@@ -47,6 +47,7 @@ $(document).ready(function(){
         let slider_el = $(this).closest(".form-range").children("input[type='range']").first();
         $(this).prop("min",slider_el.prop("min"));
         $(this).prop("max",slider_el.prop("max"));
+        $(this).prop("step",slider_el.prop("step"));
         $(this).val(slider_el.val());
     })
 

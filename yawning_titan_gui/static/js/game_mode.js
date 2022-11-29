@@ -32,7 +32,8 @@ $(document).ready(function(){
     });
 
     $(".grouped.parent").each(function(){
-        if($(this).val().length > 0){
+        console.log("$$",$(this).val());
+        if($(this).val().length > 0 & $(this).val() != "on"){
             $(`.${$(this).get(0).classList[1]}:not(.parent)`).removeClass("hidden")
         }
     });
