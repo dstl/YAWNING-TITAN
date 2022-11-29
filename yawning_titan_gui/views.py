@@ -1,40 +1,14 @@
 import inspect
 import shutil
-from collections import defaultdict
 from pathlib import Path
-from typing import Any, Dict
 
-from django import forms as django_forms
-from django.http import JsonResponse, QueryDict
 from django.shortcuts import redirect, render
 from django.views import View
+from django.http import JsonResponse
 
 from yawning_titan import GAME_MODES_DIR
-from yawning_titan.config.agents.blue_agent_config import BlueAgentConfig
-from yawning_titan.config.agents.red_agent_config import RedAgentConfig
-from yawning_titan.config.environment.game_rules_config import GameRulesConfig
-from yawning_titan.config.environment.observation_space_config import (
-    ObservationSpaceConfig,
-)
-from yawning_titan.config.environment.reset_config import ResetConfig
-from yawning_titan.config.environment.rewards_config import RewardsConfig
-from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
-from yawning_titan.config.game_config.miscellaneous_config import MiscellaneousConfig
 from yawning_titan_gui import DEFAULT_GAME_MODE
-from yawning_titan_gui.forms import (
-    BlueAgentForm,
-    ConfigForm,
-    GameRulesForm,
-    MiscellaneousForm,
-    ObservationSpaceForm,
-    RedAgentForm,
-    ResetForm,
-    RewardsForm,
-    game_mode_from_form_sections,
-    game_mode_section_form_from_default,
-    subsection_labels,
-)
 from yawning_titan_server.settings import STATIC_URL
 
 
@@ -105,18 +79,6 @@ default_sidebar = {
     "About": ["Contributors", "Report bug", "FAQ"],
 }
 
-forms = {
-    "red": {"form": RedAgentForm, "icon": "bi-lightning"},
-    "blue": {"form": BlueAgentForm, "icon": "bi-shield"},
-    "game_rules": {"form": GameRulesForm, "icon": "bi-clipboard"},
-    "observation_space": {"form": ObservationSpaceForm, "icon": "bi-binoculars"},
-    "rewards": {"form": RewardsForm, "icon": "bi-star"},
-    "reset": {"form": ResetForm, "icon": "bi-arrow-clockwise"},
-    "miscellaneous": {"form": MiscellaneousForm, "icon": "bi-brush"},
-}
-
-completed_game_modes = defaultdict(dict)
-
 protected_game_modes = ["base_config"]
 
 
@@ -162,107 +124,6 @@ class GameModesView(View):
     def post(self, request, *args, **kwargs):
         """Handle page post requests."""
         pass
-
-
-class GameModeConfigView(View):
-    """Django page template for game mode creation and editing."""
-
-    def __init__(self, **kwargs: Any) -> None:
-        super().__init__(**kwargs)
-        self.forms = {
-            "red": {"form": RedAgentForm, "icon": "bi-lightning"},
-            "blue": {"form": BlueAgentForm, "icon": "bi-shield"},
-            "game_rules": {"form": GameRulesForm, "icon": "bi-clipboard"},
-            "observation_space": {
-                "form": ObservationSpaceForm,
-                "icon": "bi-binoculars",
-            },
-            "rewards": {"form": RewardsForm, "icon": "bi-star"},
-            "reset": {"form": ResetForm, "icon": "bi-arrow-clockwise"},
-            "miscellaneous": {"form": MiscellaneousForm, "icon": "bi-brush"},
-        }
-
-        self.configs: Dict[str, ConfigABC] = {
-            "red": RedAgentConfig,
-            "blue": BlueAgentConfig,
-            "observation_space": ObservationSpaceConfig,
-            "game_rules": GameRulesConfig,
-            "rewards": RewardsConfig,
-            "reset": ResetConfig,
-            "miscellaneous": MiscellaneousConfig,
-        }
-
-    def get(
-        self, request, *args, game_mode_file: str = None, section: str = None, **kwargs
-    ):
-        """Handle page get requests."""
-
-        game_mode_config = defaultdict(dict)
-
-        if game_mode_file is not None:
-            try:
-                game_mode = GameModeConfig.create_from_yaml(
-                    game_mode_path(game_mode_file)
-                )
-                game_mode_config = game_mode.to_dict()
-            except Exception:
-                pass
-
-        for _section, section_form in self.forms.items():
-            section_form["form"] = completed_game_modes.get(
-                _section, section_form["form"](initial=game_mode_config[_section])
-            )
-            self.forms[_section] = section_form
-        return self.render_page(request, section, game_mode_file)
-
-    def post(
-        self, request, *args, game_mode_file: str = None, section: str = None, **kwargs
-    ):
-        """Handle page post requests."""
-        section = list(forms.keys())[0] if section is None else section
-        form = self.forms[section]["form"](request.POST)
-        self.forms[section]["form"] = form
-
-        if form.is_valid():
-            try:
-                self.configs[section] = self.configs[section].create(
-                    game_mode_section_form_from_default(
-                        form.cleaned_data,
-                        section,
-                    )
-                )
-                completed_game_modes[game_mode_file][section] = form
-                if len(completed_game_modes[game_mode_file].keys()) == len(forms):
-                    game_mode_from_form_sections(
-                        completed_game_modes[game_mode_file], game_mode_file
-                    )
-                    completed_game_modes[game_mode_file] = {}
-                    return redirect("Manage game modes")
-                return redirect(
-                    "game mode config", game_mode_file, next_key(forms, section)
-                )
-            except Exception as e:
-                return self.render_page(request, section, game_mode_file, e)
-
-        return self.render_page(request, section, game_mode_file)
-
-    def render_page(self, request, section, game_mode_file, error_message=None):
-        """Process pythonic tags in game_mode_config.html and return formatted page."""
-        section = list(forms.keys())[0] if section is None else section
-        return render(
-            request,
-            "game_mode_config.html",
-            {
-                "forms": self.forms,
-                "section": section,
-                "error_message": error_message,
-                "sidebar": default_sidebar,
-                "game_mode_file": game_mode_file,
-                "protected": Path(game_mode_file).stem in protected_game_modes,
-                "completed_game_modes": completed_game_modes[game_mode_file].keys(),
-                "subsection_labels": subsection_labels.get(section, {}),
-            },
-        )
 
 
 def config_file_manager(request):
