@@ -15,7 +15,8 @@ class home(View):
 
         Args:
             request: A Django `request` object that contains the data passed from
-            the html page.
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
         """
         return self.render_page(request)
 
@@ -24,7 +25,8 @@ class home(View):
 
         Args:
             request: A Django `request` object that contains the data passed from
-            the html page.
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
         """
         return self.render_page(request)
 
@@ -33,7 +35,8 @@ class home(View):
 
         Args:
             request: A Django `request` object that contains the data passed from
-            the html page.
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
         """
         return render(
             request,
