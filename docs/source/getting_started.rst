@@ -244,11 +244,12 @@ you will need a :term:`Red Agent` as an instance of :class:`~yawning_titan.envs.
 :term:`Blue Agent` as an instance of :class:`~yawning_titan.envs.generic.core.blue_interface.BlueInterface`. **YT**
 comes supplied with a :term:`probabilistic` customisable :term:`Red Agent` and a customisable :term:`RL<Reinforcement Learning>` :term:`Blue Agent`.
 
-Both the :class:`~yawning_titan.envs.generic.core.red_interface.RedInterface` and :class:`~yawning_titan.envs.generic.core.blue_interface.BlueInterface`
-can be modified by changing the :class:`~yawning_titan.config.agents.red_agent_config.RedAgentConfig` at
-:attr:`GameModeConfig.red <yawning_titan.config.game_config.game_mode_config.GameModeConfig.red>`, and the
+The :class:`~yawning_titan.envs.generic.core.red_interface.RedInterface` can be modified by changing the
+:class:`~yawning_titan.config.agents.red_agent_config.RedAgentConfig` at
+:attr:`GameModeConfig.red <yawning_titan.config.game_config.game_mode_config.GameModeConfig.red>` and the
+:class:`~yawning_titan.envs.generic.core.blue_interface.BlueInterface` can be modified by changing the
 :class:`~yawning_titan.config.agents.blue_agent_config.BlueAgentConfig` at
-:attr:`GameModeConfig.red <yawning_titan.config.game_config.game_mode_config.GameModeConfig.blue>`.
+:attr:`GameModeConfig.red <yawning_titan.config.game_config.game_mode_config.GameModeConfig.blue.>`.
 
 The following code block demonstrates how to instantiate a :class:`~yawning_titan.envs.generic.core.red_interface.RedInterface`
 and :class:`~yawning_titan.envs.generic.core.blue_interface.BlueInterface` using the
@@ -300,7 +301,7 @@ Train the Agent
 
 With the :class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv` setup, the next step is to train the
 :term:`Blue Agent` using a :mod:`stable_baselines3` :term:`algorithm<Algorithm>` with an instance of
-:class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv` and a :class:`stable_baselines3.common.polocies.BasePolicy`.
+:class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv` and a :class:`stable_baselines3.common.policies.BasePolicy`.
 
 The following code block demonstrates how to setup a :class:`stable_baselines3.PPO` :term:`PPO<Proximal Policy Optimization>`
 :term:`algorithm<Algorithm>` using our instance of :class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv`
