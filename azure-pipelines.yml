@@ -3,7 +3,9 @@ trigger:
 - main
 - dev
 - dev-gui
-- 'release/*'
+- feature/*
+- hotfix/*
+- release/*
 
 pool:
   vmImage: ubuntu-latest
@@ -11,8 +13,6 @@ strategy:
   matrix:
     Python38:
       python.version: '3.8'
-    Python39:
-      python.version: '3.9'
     Python310:
       python.version: '3.10'
 
