@@ -39,6 +39,3 @@ jobs:
       output_location: "" # Built app content directory - optional
 ###### End of Repository/Build Configurations ######
 
-  - script: |
-      rm -r /docs/_build
-    displayName: 'Delete built docs from repo'
