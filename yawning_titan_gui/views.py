@@ -1,20 +1,14 @@
-import inspect
 import shutil
 from pathlib import Path
+from typing import Any, List
 
-from django.shortcuts import redirect, render
-from django.views import View
 from django.http import JsonResponse
+from django.shortcuts import render
+from django.views import View
 
 from yawning_titan import GAME_MODES_DIR
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
 from yawning_titan_gui import DEFAULT_GAME_MODE
-from yawning_titan_server.settings import STATIC_URL
-
-
-def static_url(type, file_path):
-    """Generate URL for file_path in static folder."""
-    return f"{STATIC_URL}/{type}/{file_path.name}"
 
 
 def game_mode_path(game_mode_filename: str):
@@ -22,18 +16,24 @@ def game_mode_path(game_mode_filename: str):
     return (GAME_MODES_DIR / game_mode_filename).as_posix()
 
 
-def check_game_mode(game_mode_path: Path):
+def check_game_mode(game_mode_path: Path) -> bool:
     """Check that a game mode path can construct a valid GameModeConfig object."""
     try:
         GameModeConfig.create_from_yaml(game_mode_path)
         return True
-    except Exception as e:
+    except Exception:
         return False
 
 
-def get_game_mode_file_paths(valid_only=False):
+def get_game_mode_file_paths(valid_only=False) -> List[Path]:
     """
-    Return a list of file Path objects representing game modes.
+    Select all game modes in the `GAME_MODES_DIR` matching criteria.
+
+    Args:
+        valid_only: whether to return only those game modes that pass the `GameModeConfig` validation check
+
+    Returns:
+        a list of file Path objects representing game modes.
     """
     game_modes = [
         g for g in GAME_MODES_DIR.iterdir() if g.stem != "everything_off_config"
@@ -43,12 +43,19 @@ def get_game_mode_file_paths(valid_only=False):
     return [g for g in game_modes if check_game_mode(g)]
 
 
-def next_key(_dict: dict, key: int):
+def next_key(_dict: dict, key: int) -> Any:
     """
     Get the next key in a dictionary.
 
     Use key_index + 1 if there is a subsequent key
     otherwise return first key.
+
+    Args:
+        _dict: a dictionary object
+        key: the current key
+
+    Returns:
+        the subsequent key in the dictionary after `key`
     """
     keys = list(_dict.keys())
     key_index = keys.index(key)
@@ -57,7 +64,21 @@ def next_key(_dict: dict, key: int):
     return keys[0]
 
 
-def uniquify(path: Path):
+def uniquify(path: Path) -> Path:
+    """
+    Create a unique file path from a proposed path by adding a numeral to the filename.
+
+    Transforms the input `Path` object by iteratively adding numerals to the end
+    of the filename until the proposed path does not exist.
+
+    Returns:
+        The transformed path object.
+
+    Examples:
+        >>>test.txt -> exists
+        >>>test(1).txt -> exists
+        >>>test(2).txt -> new path
+    """
     filename = path.stem
     extension = path.suffix
     parent = path.parent
