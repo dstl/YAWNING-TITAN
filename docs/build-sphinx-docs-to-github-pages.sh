@@ -24,13 +24,13 @@ git config --global user.name "${GITHUB_ACTOR}"
 git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
 docroot=`mktemp -d`
-rsync -av "docs/_build/html/" "${docroot}/"
+rsync -av "./docs/_build/html/" "${docroot}/"
 
 pushd "${docroot}"
 
 git init
 git remote add deploy "https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-git checkout -b -sphinx-docs-github-pages
+git checkout -b sphinx-docs-github-pages
 
 # Adds .nojekyll file to the root to signal to GitHub that
 # directories that start with an underscore (_) can remain
