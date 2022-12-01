@@ -39,6 +39,24 @@ Where next?
 
 The best place to start is diving into the :ref:`getting-started`
 
+Cite This Work
+--------------
+
+
+If you would like to include a citation for **YT** in your work, please cite the paper published at the ICML 2022 ML4Cyber Workshop.
+
+.. code:: bibtex
+
+    @inproceedings{inproceedings,
+     author = {Andrew, Alex and Spillard, Sam and Collyer, Joshua and Dhir, Neil},
+     year = {2022},
+     month = {07},
+     title = {Developing Optimal Causal Cyber-Defence Agents via Cyber Security Simulation},
+     maintitle = {International Confernece on Machine Learning (ICML)},
+     booktitle = {Workshop on Machine Learning for Cybersecurity (ML4Cyber)}
+    }
+
+
 .. toctree::
    :maxdepth: 8
    :caption: Contents:
@@ -48,13 +66,13 @@ The best place to start is diving into the :ref:`getting-started`
    source/game_mode_config_explained
    source/network_config_explained
    source/experiments
-   source/quick_start_experiment_runner
-   source/enhancing_yawning_titan
-   source/modules
+   #source/quick_start_experiment_runner
+   #source/enhancing_yawning_titan
    Yawning-Titan API <source/_autosummary/yawning_titan>
    Yawning-Titan Tests <source/_autosummary/tests>
    Contribute to YT <source/contributing>
    source/glossary
+   source/license
 
 
 Indices and tables

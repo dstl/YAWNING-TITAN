@@ -1,4 +1,4 @@
-The Network Config Explained
+The Network Config UML Diagram
 ============================
 
 

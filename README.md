@@ -1,9 +1,9 @@
 ![Python](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue)
-![GitHub](https://img.shields.io/github/license/methodsanalytics/YAWNING-TITAN)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/methodsanalytics/YAWNING-TITAN/Python%20package) 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/methodsanalytics/YAWNING-TITAN/build-sphinx-to-github-pages?label=docs)
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/methodsanalytics/YAWNING-TITAN)
-![GitHub commits since latest release (by SemVer)](https://img.shields.io/github/commits-since/methodsanalytics/YAWNING-TITAN/latest)
+![GitHub](https://img.shields.io/github/license/dstl/YAWNING-TITAN)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dstl/YAWNING-TITAN/Python%20package) 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dstl/YAWNING-TITAN/build-sphinx-to-github-pages?label=docs)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/dstl/YAWNING-TITAN)
+![GitHub commits since latest release (by SemVer)](https://img.shields.io/github/commits-since/dstl/YAWNING-TITAN/latest)
 ![GitHub issue custom search](https://img.shields.io/github/issues-search?label=active%20bug%20issues&query=repo%3Adstl%2FYAWNING-TITAN%20is%3Aopen%20label%3Abug)
 ![GitHub issue custom search](https://img.shields.io/github/issues-search?label=active%20feature%20requests&query=repo%3Adstl%2FYAWNING-TITAN%20is%3Aopen%20label%3Afeature_request)
 ![GitHub Discussions](https://img.shields.io/github/discussions/dstl/YAWNING-TITAN)
@@ -161,7 +161,7 @@ created directory trees for Linux, Windows, and MacOS operating systems are deta
 ## Documentation
 
 **YT** comes with a full set of documentation created using the Sphinx documentation library and are hosted on GitHub
-pages at [https://methodsanalytics.github.io/YAWNING-TITAN](https://methodsanalytics.github.io/YAWNING-TITAN/index.html).
+pages at [https://dstl.github.io/YAWNING-TITAN](https://dstl.github.io/YAWNING-TITAN/index.html).
 
 These docs can also be built manually from the cloned repo by using the following commands:
 > This will require the development dependencies to be installed, see [Development Installation](#development-installation)

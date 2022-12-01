@@ -1,9 +1,6 @@
-The Game Mode Config Explained
+The Game Mode Config UML Diagram
 ==============================
 
 
 .. image:: ../_static/game_mode_config_class_diagram.svg
-   :width: 800
-
-.. image:: ../_static/game_mode_config_class_diagram.png
    :width: 800
