@@ -3,7 +3,9 @@ Monitoring Experiments
 
 Mid Experiment
 ****************
-When you create an agent you can include the verbose tag to give you updates on the training: ::
+When you create an agent you can include the verbose tag to give you updates on the training:
+
+.. code:: python
 
     from stable_baselines3 import PPO
     from stable_baselines3.ppo import MlpPolicy as PPOMlp
@@ -30,7 +32,9 @@ The verbose tag will also give you a brief evaluation at the end of training
 .. image:: ../_static/verbose_eval.png
     :width: 400
 
-If using the generic network environment there are a couple of toggles that you can use to collect more information about the training process and env: ::
+If using the generic network environment there are a couple of toggles that you can use to collect more information about the training process and env:
+
+.. code:: python
 
     env = GenericNetworkEnv(
         red,
@@ -71,11 +75,9 @@ Here are some images showing how the rendering looks:
 Creating an ActionLoop with the environment and agent will run the agent through a game rendering each step. A tutorial on how
 to do this can be found at:
 
-    ``yawning-titan/notebooks/Creating a custom envrionment & training an agent & rendering the agents performance.ipynb``
+    ``~/yawning_titan/notebooks/sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb``
 
 Once the rendering is complete the entire episode will be saved as a gif so that you can watch it again at any time.
 
-When rendering an environment it is automatically set up to show you the true state of the environment. You can however set it to only show the blue agent's
-view of the environment. This can be toggled by passing in:
-
-    show_only_blue_view=True
+When rendering an environment it is automatically set up to show you the true state of the environment. You can, however,
+set it to only show the blue agent's view of the environment. This can be toggled by passing in: ``show_only_blue_view=True``.
