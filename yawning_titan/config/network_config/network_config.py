@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
 import numpy as np
+from numpy import ndarray
 
 from yawning_titan.config.game_config.config_abc import ConfigABC
 
@@ -13,7 +14,7 @@ from yawning_titan.config.game_config.config_abc import ConfigABC
 class NetworkConfig(ConfigABC):
     """Class that validates and stores Network Configuration."""
 
-    _matrix: np.array
+    _matrix: ndarray
     """The matrix as a 2D Numpy Array dictating how each node is connected to each other."""
 
     _positions: Dict[str, List[str]]
@@ -28,9 +29,10 @@ class NetworkConfig(ConfigABC):
     _high_value_nodes: Optional[List[str]] = None
     """List of high value nodes. Has a default value on `None`."""
 
+
     # region Getters
     @property
-    def matrix(self) -> np.array:
+    def matrix(self) -> ndarray:
         """The matrix as a 2D Numpy Array dictating how each node is connected to each other."""
         return self._matrix
 
@@ -79,6 +81,12 @@ class NetworkConfig(ConfigABC):
 
     # endregion
 
+    def to_dict(self, json_serializable: bool = False) -> Dict:
+        config_dict = super().to_dict()
+        if json_serializable:
+            config_dict["matrix"] = config_dict["matrix"].tolist()
+        return config_dict
+
     @classmethod
     def create(cls, config_dict: Dict[str, Any]):
         """
@@ -115,7 +123,7 @@ class NetworkConfig(ConfigABC):
     @classmethod
     def create_from_args(
         cls,
-        matrix: np.array,
+        matrix: ndarray,
         positions: Dict[str, List[str]],
         entry_nodes: Optional[List[str]] = None,
         vulnerabilities: Optional[Dict] = None,
