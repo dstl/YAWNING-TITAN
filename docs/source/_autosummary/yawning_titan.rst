@@ -47,6 +47,7 @@ yawning\_titan
 
    yawning_titan.agents
    yawning_titan.config
+   yawning_titan.db
    yawning_titan.envs
    yawning_titan.experiment_helpers
    yawning_titan.integrations
