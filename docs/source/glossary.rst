@@ -53,7 +53,11 @@ B
 ===============
 .. glossary::
     Blue Agent
-        TODO.
+        Within :term:`YT<YAWNING-TITAN>`, a |Blue Agent| blue agent represents a friendly :term:`AI<Artificial Intelligence>`
+        force that is able to interface with the environment in order to defend against or repel an adversary
+        (:term:`Red Agent`). The |Blue Agent| utilises an :term:`algorithm<Algorithm>`
+        (e.g. :term:`Proximal Policy Optimization`) to determine the optimum decision for which action(s) to take on the
+        environment, given its current state.
 
 
 C
@@ -152,7 +156,9 @@ R
 ===============
 .. glossary::
     Red Agent
-        TODO.
+        Within :term:`YT<YAWNING-TITAN>`, a |Red Agent| represents an adversary that is designed to attack and infect one
+        or more nodes within the environment. The |Red Agent| employs a probabilistic approach to implement the spread of
+        an attack throughout the environment, but its advance can be countered by actions taken by the :term:`Blue Agent`.
 
     Reinforcement Learning
         Reinforcement learning (RL) is an area of machine learning concerned with how intelligent agents ought to take
@@ -210,14 +216,3 @@ Y
 Z
 ===============
 .. glossary::
-
-
-
-***************
-Footnotes
-***************
-
-
-***************
-References
-***************
