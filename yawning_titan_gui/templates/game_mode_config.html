@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tags %}
+
+{% block scripts %}
+<script src="{% static 'js/game_mode_config.js' %}"></script>
+{% endblock %}
+
+{% block main %}
+<div class="el-row">
+    <h2>{{game_mode_file}}</h2>
+    <a id="game-modes-return" href="{% url 'Manage game modes' %}"><i class="bi bi-arrow-90deg-left"></i></a>
+</div>
+
+<div id="config-forms">
+    <div id="config-form-icons">
+        {% for form_name, config in forms.items %}
+        <a href="{{request.path|url_trim:2}}{{form_name}}/" class="icon-container{% if form_name == section %} selected{% endif %}{% if form_name in completed_sections %} complete{% endif %}">
+            <div id="{{form_name}}-icon" class="icon" data-form="#{{form_name}}-config-form">
+                <i class="bi {{config.icon}}"></i>
+            </div>
+            <p>{{form_name}}</p>
+        </a>
+        {% endfor %}
+    </div>
+    <div id="{{section}}-config-form-container" class="form-container">
+        <h3 class="header">{{section}}</h3>
+        <form id="{{section}}-config-form" class="config-form" action="" method="post" data-form-name="{{section}}">
+            {% csrf_token %}
+            <div class="fields">
+                {% for field in form %}
+                    {% label_subsection field subsection_labels as subsection_label %}
+                    {% if subsection_label is not None %}
+                        <p class="subsection-label">{{subsection_label}}</p>
+                    {% endif %}
+                    <div class="mb-3">
+                        <div class="info">
+                            <label for="id_{{field.name}}" class="form-label">{{field.label}}</label>
+                            <p class="help-text">{{field.help_text}}</p>
+                        </div>
+                        <div class="field-container {% if protected %}disabled{% endif %}">
+                            {{ field }}
+                            {% if field.errors %}
+                            <ul style="color:var(--bs-danger)">
+                                {% for error in field.errors %}
+                                <li><strong>{{ error|escapejs }}</strong></li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="flex-break"></div>
+            <button type="submit" class="btn btn-primary next-form">{% if section == forms|keys|last %}Finish{% else %}Next{% endif %}</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<style>
+    /* base elements */
+    input{
+        border: none !important;
+    }
+    input,select{
+        background-color: var(--light) !important;
+        color: var(--text-light) !important;
+        border: none !important;
+    }
+
+    /* specific elements */
+    #game-modes-return{
+        font-size: 1.5rem;
+    }
+    #config-forms{
+        height: calc(100% - var(--padding));
+        display: flex;
+        flex-direction: row;
+    }
+    #config-form-icons{
+        display: flex;
+        height: 350px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 30px;
+        color: var(--text-light);
+        border-left: 2px solid var(--text-light);
+        margin-right: var(--padding);
+        margin-top: var(--padding);
+    }
+
+    /* config icons */
+    #config-form-icons .icon{
+        margin-left: 0;
+        box-shadow: 0 0 0 var(--increment) var(--mid);
+        transform: translate(-50%,0%);
+    }
+    #config-form-icons .icon-container.complete>.icon{
+        border: 2px solid var(--primary);
+    }
+    #config-form-icons>.icon-container{
+        width: 280px;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        margin-top: calc(var(--increment)*2);
+        margin-bottom: calc(var(--increment)*2);
+        text-decoration: none;
+    }
+    #config-form-icons>.icon-container:hover{
+        color: var(--text-mid);
+    }
+    #config-form-icons>.icon-container:hover .icon,#config-form-icons>.icon-container:hover p,.icon-container.selected .icon, .icon-container.selected p{
+        color: var(--primary-light);
+    }
+    #config-form-icons>.icon-container p{
+        font-size: 1.25rem;
+        margin: 0;
+    }
+
+    /* config form elements */
+    .form-container{
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+        max-height: 100%;
+    }
+    .form-container div, .form-container form{
+        min-height: 0;
+        max-height: 100%;
+    }
+    .config-form{
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+    }
+    .config-form>.fields{
+        overflow-y: auto;
+        padding-right: var(--increment);
+    }
+    .next-form{
+        width: 100%;
+    }
+
+    /* form layouts */
+    .mb-3{
+        display: flex;
+        flex-wrap: wrap;
+        margin: 3px;
+    }
+    .mb-3 label{
+        display: flex;
+        align-items: center;
+        margin: 0;
+    }
+    .mb-3 input{
+        height: 25px;
+    }
+    .mb-3>div{
+        flex: 1;
+    }
+
+    .help-text{
+        font-size: .8rem;
+        color: #888;
+        flex-basis: 100%;
+        margin: 0;
+    }
+    .field-container{
+        max-width: 400px;
+        height: 60px;
+    }
+    .field-container>*{
+        width:100%;
+        margin: 0;
+    }
+    .selector{
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #888;
+        background: transparent;
+        text-align: left;
+        margin-bottom: 5px;
+    }
+    .selector:hover{
+        background-color: aliceblue;
+    }
+    .subsection-label{
+        color: var(--text-light);
+        border-top: 1px solid var(--text-mid);
+        border-bottom: 1px solid var(--text-mid);
+    }
+    div.mb-3:has(.hidden){
+        display: none;
+    }
+</style>
+{% endblock %}

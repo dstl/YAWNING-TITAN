@@ -30,7 +30,7 @@ $(document).ready(function(){
 		$(this).toggleClass('open');
         $($(this).data("sidebar")).toggleClass('open');
 	});
-
+    //close center dialogue
     $(".dialogue-center .cancel").click(function(){
         toggle_dialogue($(this).closest(".dialogue-center"))
     });
@@ -40,7 +40,7 @@ $(document).ready(function(){
 
     // add range setter input field
     $("input[type='range']").wrap("<div class=form-range></div>");
-    $(".form-range").append("<input type='number' class='form-control range-setter'>");
+    $(".form-range").append("<input type='number' class='range-setter'>");
 
     // constrain range setter input field
     $(".range-setter").each(function(){
@@ -51,9 +51,14 @@ $(document).ready(function(){
         $(this).val(slider_el.val());
     })
 
+    // implement cross updates between range-setter and range sliders
     $(document).on("keyup",".range-setter",function(){
-        $(this).closest(".form-range").children("input[type='range']").first().val($(this).val());
-    })
+        $(this).siblings("input[type='range']").first().val($(this).val());
+    });
+    $(document).on("mousemove","input[type='range']",function(){
+        console.log("TESTING 123...");
+        $(this).siblings(".range-setter").first().val($(this).val());
+    });
 
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
