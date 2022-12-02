@@ -1,8 +1,8 @@
 name: build-sphinx-to-github-pages
 
 env:
-  GITHUB_ACTOR: methodsanalytics
-  GITHUB_REPOSITORY: methodsanalytics/YAWNING-TITAN
+  GITHUB_ACTOR: dstl
+  GITHUB_REPOSITORY: dstl/YAWNING-TITAN
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
 
 on:
