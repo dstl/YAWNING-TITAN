@@ -42,6 +42,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
         run: |
-          pwd
-          ls
-          bash docs/build-sphinx-docs-to-github-pages.sh
+          bash $PWD/docs/build-sphinx-docs-to-github-pages.sh
