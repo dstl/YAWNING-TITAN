@@ -28,6 +28,7 @@ jobs:
           sudo apt install python3.10-dev -y
           python -m pip install --upgrade pip
           git clone "https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
+          git checkout origin/dev
         shell: bash
 
       - name: Install Yawning-Titan for docs autosummary
