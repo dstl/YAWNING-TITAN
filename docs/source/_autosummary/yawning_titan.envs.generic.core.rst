@@ -6,21 +6,21 @@ yawning\_titan.envs.generic.core
 
 .. automodule:: yawning_titan.envs.generic.core
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -36,4 +36,3 @@ yawning\_titan.envs.generic.core
    yawning_titan.envs.generic.core.red_action_set
    yawning_titan.envs.generic.core.red_interface
    yawning_titan.envs.generic.core.reward_functions
-

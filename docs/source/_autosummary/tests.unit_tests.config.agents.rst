@@ -6,21 +6,21 @@ tests.unit\_tests.config.agents
 
 .. automodule:: tests.unit_tests.config.agents
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -31,4 +31,3 @@ tests.unit\_tests.config.agents
 
    tests.unit_tests.config.agents.test_blue_agent_config
    tests.unit_tests.config.agents.test_red_agent_config
-

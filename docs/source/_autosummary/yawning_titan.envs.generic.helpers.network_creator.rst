@@ -6,18 +6,18 @@ yawning\_titan.envs.generic.helpers.network\_creator
 
 .. automodule:: yawning_titan.envs.generic.helpers.network_creator
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       check_if_nearby
       create_18_node_network
       create_mesh
@@ -29,16 +29,3 @@ yawning\_titan.envs.generic.helpers.network\_creator
       gnp_random_connected_graph
       load_network
       save_network
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

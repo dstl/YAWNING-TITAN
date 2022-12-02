@@ -1,6 +1,6 @@
 ![Python](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue)
 ![GitHub](https://img.shields.io/github/license/dstl/YAWNING-TITAN)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dstl/YAWNING-TITAN/Python%20package) 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dstl/YAWNING-TITAN/Python%20package)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dstl/YAWNING-TITAN/build-sphinx-to-github-pages?label=docs)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/dstl/YAWNING-TITAN)
 ![GitHub commits since latest release (by SemVer)](https://img.shields.io/github/commits-since/dstl/YAWNING-TITAN/latest)
@@ -24,11 +24,11 @@ who face off against probabilistic red agents.
 - Flexible environment and game rule configuration
 - Generation of evaluation episode visualisations (gifs)
 
-**YT** was publicly released on 20th July 2022 under MIT licence. It will continue to be developed through the Autonomous 
+**YT** was publicly released on 20th July 2022 under MIT licence. It will continue to be developed through the Autonomous
 Resilient Cyber Defence (ARCD) project, overseen by Dstl.
 
 ## Contributing to YAWNING-TITAN
-Found a bug, have an idea/feature you'd like to suggest, or just want to get involved with the YT community, please read 
+Found a bug, have an idea/feature you'd like to suggest, or just want to get involved with the YT community, please read
 our [How to contribute to YAWNING-TITAN?](CONTRIBUTING.md) guidelines.
 
 
@@ -95,7 +95,7 @@ python3 -m pip install -e .[dev]
 
 ## Application Directories
 
-Upon install, **YT** creates a set of application directories, both hidden for **YT** use, and visible for user use. The 
+Upon install, **YT** creates a set of application directories, both hidden for **YT** use, and visible for user use. The
 created directory trees for Linux, Windows, and MacOS operating systems are detailed below:
 
 ##### Linux
@@ -179,17 +179,17 @@ cd docs
 ```
 
 
-This will build the documentation as a collection of HTML files which uses the Read The Docs sphinx theme. Other build 
-options are available but may require additional dependencies such as LaTeX and PDF. Please refer to the Sphinx documentation 
+This will build the documentation as a collection of HTML files which uses the Read The Docs sphinx theme. Other build
+options are available but may require additional dependencies such as LaTeX and PDF. Please refer to the Sphinx documentation
 for your specific output requirements.
 
 ## Example Notebooks
 
-A collection of example notebooks have been provided. The original versions of these notebooks stored in 
-[`yawning_titan/notebooks/_package_data`](yawning_titan/notebooks/_package_data) and are copied over to the newly created 
-users notebooks application directory (`~/yawning_titan/notebooks`) at install. These are the best place to start if you 
-want to get a feel for **YT** before builidng the docs and exploring further. If the notebooks become corrupted in the 
-users notebooks application directory, they can be reset running the following commands from an interactive Python 
+A collection of example notebooks have been provided. The original versions of these notebooks stored in
+[`yawning_titan/notebooks/_package_data`](yawning_titan/notebooks/_package_data) and are copied over to the newly created
+users notebooks application directory (`~/yawning_titan/notebooks`) at install. These are the best place to start if you
+want to get a feel for **YT** before builidng the docs and exploring further. If the notebooks become corrupted in the
+users notebooks application directory, they can be reset running the following commands from an interactive Python
 session on your venv:
 
 ```python

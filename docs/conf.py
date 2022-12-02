@@ -25,9 +25,9 @@ copyright = "Crown Copyright (C) Dstl 2022"
 author = "Defence Science and Technology Laboratory UK"
 
 # The short Major.Minor.Build version
-version = "0.1.0"
+version = "1.0.0"
 # The full version, including alpha/beta/rc tags
-release = "0.1.0"
+release = "1.0.0"
 
 
 # -- General configuration ---------------------------------------------------
