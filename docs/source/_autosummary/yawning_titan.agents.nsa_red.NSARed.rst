@@ -12,13 +12,13 @@ yawning\_titan.agents.nsa\_red.NSARed
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~NSARed.basic_attack
       ~NSARed.check_zd_available
       ~NSARed.choose_action
@@ -32,9 +32,3 @@ yawning\_titan.agents.nsa\_red.NSARed
       ~NSARed.update_location
       ~NSARed.update_node_set
       ~NSARed.zd_attack
-   
-   
-
-   
-   
-   

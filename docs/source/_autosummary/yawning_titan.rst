@@ -6,13 +6,13 @@ yawning\_titan
 
 .. automodule:: yawning_titan
 
-   
-   
+
+
    .. rubric:: Module attributes
 
    .. autosummary::
       :toctree:
-   
+
       DATA_DIR
       CONFIG_DIR
       LOG_DIR
@@ -23,20 +23,20 @@ yawning\_titan
       GAME_MODES_DIR
       IMAGES_DIR
       AGENTS_DIR
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -51,4 +51,3 @@ yawning\_titan
    yawning_titan.experiment_helpers
    yawning_titan.integrations
    yawning_titan.notebooks
-

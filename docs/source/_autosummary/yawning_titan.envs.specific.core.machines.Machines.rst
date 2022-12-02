@@ -12,18 +12,12 @@ yawning\_titan.envs.specific.core.machines.Machines
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~Machines.get_initial_state
       ~Machines.init_machines
-   
-   
-
-   
-   
-   

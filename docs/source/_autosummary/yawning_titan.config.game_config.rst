@@ -6,21 +6,21 @@ yawning\_titan.config.game\_config
 
 .. automodule:: yawning_titan.config.game_config
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -32,4 +32,3 @@ yawning\_titan.config.game\_config
    yawning_titan.config.game_config.config_abc
    yawning_titan.config.game_config.game_mode_config
    yawning_titan.config.game_config.miscellaneous_config
-

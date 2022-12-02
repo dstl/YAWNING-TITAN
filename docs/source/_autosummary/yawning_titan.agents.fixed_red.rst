@@ -6,30 +6,21 @@ yawning\_titan.agents.fixed\_red
 
 .. automodule:: yawning_titan.agents.fixed_red
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       FixedRedAgent
-   
-   
-
-   
-   
-   
-
-
-
