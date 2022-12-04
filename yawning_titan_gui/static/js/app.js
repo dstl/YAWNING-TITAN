@@ -56,7 +56,6 @@ $(document).ready(function(){
         $(this).siblings("input[type='range']").first().val($(this).val());
     });
     $(document).on("mousemove","input[type='range']",function(){
-        console.log("TESTING 123...");
         $(this).siblings(".range-setter").first().val($(this).val());
     });
 

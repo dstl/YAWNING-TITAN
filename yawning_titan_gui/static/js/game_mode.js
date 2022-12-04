@@ -1,7 +1,7 @@
-$(document).ready(function(){
-    //page variables
-    let selected_game_mode;
+//page variables
+let selected_game_mode;
 
+$(document).ready(function(){
     $("#filter-game-modes").keyup(function(){
         $(".game-mode").removeClass("hidden");
         $(".game-mode").find(".subhead:not(:contains(" + $(this).val() + "))").closest(".game-mode").addClass("hidden");
@@ -29,18 +29,29 @@ $(document).ready(function(){
     });
 
     // dialogue submit functions
-
     $("#create-dialogue .submit").click(function(){
         let game_mode_name = $(this).closest(".dialogue-center").find("input").first().val();
-        submit_game_mode(game_mode_name, "create");
+        manage_files(game_mode_name, "create");
     });
 
     $("#create-from-dialogue .submit").click(function(){
         let game_mode_name = $(this).closest(".dialogue-center").find("input").first().val();
-        submit_game_mode(game_mode_name, "create from",{"source_game_mode":selected_game_mode});
+        manage_files(game_mode_name, "create from",{"source_game_mode":selected_game_mode});
     });
 
     $("#delete-dialogue .submit").click(function(){
-        submit_game_mode(selected_game_mode, "delete");
+        manage_files(selected_game_mode, "delete");
     });
 });
+
+// wrapper for async post request for managing config files
+function manage_files(game_mode_name,operation){
+    $.ajax({
+        type: "POST",
+        url: FILE_MANAGER_URL,
+        data: {"game_mode_name":game_mode_name,"operation":operation},
+        success: function(){
+            location.reload()
+        }
+    });
+}

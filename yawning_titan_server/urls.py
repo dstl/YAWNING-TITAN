@@ -23,5 +23,5 @@ urlpatterns = [
         name="game mode config",
     ),
     path("game_mode_config/", GameModeConfigView.as_view(), name="game mode config"),
-    path("manage_config/", config_file_manager, name="manage config"),
+    path("manage_files/", config_file_manager, name="file manager"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_type
