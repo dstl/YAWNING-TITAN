@@ -173,7 +173,7 @@ class ConfigForm(django_forms.Form):
         for parent, dependents in config_form_map.get("dependencies", {}).items():
             attrs[parent] = f" {parent} grouped parent"
             for field in dependents:
-                attrs[field] = f" {parent} grouped hidden"
+                attrs[field] = f" {parent} grouped child hidden"
 
         for name, _type in {
             field.name.lstrip("_"): field.type for field in fields(ConfigClass)
@@ -224,7 +224,7 @@ class ConfigForm(django_forms.Form):
         Overrides the `django_forms` `is_valid` method to add checks for field values dependent
         on other fields.
         """
-        field_errors = super().is_valid()
+        fields_valid = super().is_valid()
         try:
             self.config_class = self.config_class.create(
                 game_mode_section_form_from_default(
@@ -234,7 +234,8 @@ class ConfigForm(django_forms.Form):
             )
         except Exception as e:
             self.group_errors = e
-        return field_errors or self.group_errors
+        groups_valid = True if self.group_errors is None else False
+        return groups_valid and fields_valid
 
 
 class RedAgentForm(ConfigForm):

@@ -24,7 +24,6 @@
         {% endfor %}
     </div>
     <div id="{{section}}-config-form-container" class="form-container">
-        <h3 class="header">{{section}}</h3>
         <form id="{{section}}-config-form" class="config-form" action="" method="post" data-form-name="{{section}}">
             {% csrf_token %}
             <div class="fields">
@@ -164,6 +163,10 @@
     }
     .mb-3>div{
         flex: 1;
+    }
+
+    .mb-3:has(.grouped.child) .info{
+        margin-left: var(--padding); /*calc(var(--increment)*3);*/
     }
 
     .help-text{

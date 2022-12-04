@@ -8,6 +8,7 @@ from django.utils.safestring import mark_safe
 
 register = template.Library()
 
+
 # Filter tags
 @register.filter(is_safe=True)
 def js(obj):
@@ -41,13 +42,13 @@ def to_id(value: str):
 
 @register.filter
 def length(obj: Any):
-    "Return the length of an object."
+    """Return the length of an object."""
     return len(obj)
 
 
 @register.filter
 def keys(_dict: dict):
-    """Return the keys of dictionary as a list"""
+    """Return the keys of dictionary as a list."""
     return list(_dict.keys())
 
 
@@ -88,7 +89,5 @@ def value_at(_dict: dict, key: Any):
 
 @register.simple_tag
 def label_subsection(field: Field, subsection_labels: dict):
-    """
-    Return the subsection label that precedes the given field name.
-    """
+    """Return the subsection label that precedes the given field name."""
     return subsection_labels.get(field.name)

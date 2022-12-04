@@ -5,6 +5,9 @@
 
 {% block scripts %}
 <script src="{% static 'js/game_mode.js' %}"></script>
+<script type="text/javascript">
+    const FILE_MANAGER_URL = "{% url 'file manager' %}"
+</script>
 {% endblock %}
 
 {% block main %}
