@@ -4,22 +4,40 @@
 
 {% block main %}
 <div id="center-container" class="small">
-    <button>Load project</button>
-    <a>Something about loading</a>
+    <button><i class="bi bi-fast-forward"></i>Load project</button>
+    <a href="{% url 'docs' %}"><i class="bi bi-file-earmark"></i></i>Documentation</a>
+    <a><i class="bi bi-gear"></i>Manage game modes</a>
+    <a><i class="bi bi-diagram-2"></i>Manage networks</a>
+    <a><i class="bi bi-play"></i>Train agents</a>
 </div>
 {% endblock %}
 
 {% block style %}
 <style>
-    #center-container>*{
+    #center-container>a,#center-container>button{
+        position: relative;
         margin: var(--increment);
+        margin-top: calc((var(--increment)*3));
         padding: 2px;
-        background-color: var(--primary-light);
-        color: var(--text-light);
+        background-color: transparent;
+        color: var(--primary-light);
         font-size: 1.5rem;
+        border: 3px solid var(--text-light);
         border-radius: .25rem;
         text-align: center;
+        text-decoration: none;
         cursor: pointer;
+    }
+    #center-container i{
+        display: block;
+        top: -1rem;
+        left: -1rem;
+        position: absolute;
+        background-color: var(--mid);
+        border-radius: 50%;
+        border: 3px solid var(--primary);
+        padding: var(--increment);
+        box-shadow: 0 0 0 var(--increment) var(--mid);
     }
 </style>
 {% endblock %}
