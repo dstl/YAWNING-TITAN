@@ -1,7 +1,10 @@
 [flake8]
 max-line-length=200
 extend-ignore =
-    D107 # Missing docstring in __init__
-    D100 # Req for docstring at the top of each module
-    D104 # Req for docstring in public package
-    E203 # Whitespace before :
+    D107
+    D100
+    D104
+    E203
+    D401
+exclude =
+    docs/source/_autosummary

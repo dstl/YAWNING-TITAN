@@ -28,9 +28,7 @@ class DCBOAgent(object):
         return self.action_space.sample()
 
     def reset(self):
-        """
-        Reset the Agent back to initial config by resetting the `isolated_nodes`
-        """
+        """Reset the Agent back to initial config by resetting the `isolated_nodes`."""
         self.isolated_nodes = {}
 
     def predict(self, observation, reward, done, env):

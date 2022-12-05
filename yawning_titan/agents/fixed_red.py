@@ -1,7 +1,7 @@
 import logging
 import random
 
-logger = logging.getLogger("yawning_titan")
+logger = logging.getLogger(__name__)
 
 
 class FixedRedAgent:

@@ -2,14 +2,15 @@ import logging
 import random
 from typing import List, Tuple, Union
 
-logger = logging.getLogger("yawning_titan")
+logger = logging.getLogger(__name__)
 
 
 class NSARed:
     """
-    Provides the red agent behaviour within the `18-node-def` environment.
+        Provides the red agent behaviour within the `18-node-def` environment.
 
-    The agent is a loose replication of `Ridley 2017 <https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9>`_.
+        The agent is a loose replication of:
+    https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9
     """
 
     def __init__(
