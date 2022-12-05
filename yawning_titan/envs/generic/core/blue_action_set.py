@@ -44,8 +44,13 @@ class BlueActionSet:
         )
         # updates the vulnerability of the node
         new = current_vulnerability - 0.2
-        if new < self.network_interface.gr_node_vuln_lower:
-            new = self.network_interface.gr_node_vuln_lower
+        if (
+            new
+            < self.network_interface.game_mode.game_rules.node_vulnerability_lower_bound
+        ):
+            new = (
+                self.network_interface.game_mode.game_rules.node_vulnerability_lower_bound
+            )
         self.network_interface.update_single_node_vulnerability(node, new)
         return "reduce_vulnerability", node
 
@@ -84,24 +89,44 @@ class BlueActionSet:
         self.network_interface.make_node_safe(node)
 
         # Settings change the effects of making a node safe
-        if self.network_interface.blue_make_node_safe_modifies_vuln:
+        if (
+            self.network_interface.game_mode.blue.making_node_safe_modifies_vulnerability
+        ):
             # Modifies the vulnerability by a set amount (cannot increase it past the limit in the config file)
-            change_amount = self.network_interface.blue_vuln_change_amount_make_safe
+            change_amount = (
+                self.network_interface.game_mode.blue.vulnerability_change_during_node_patch
+            )
             current_vulnerability = (
                 self.network_interface.get_single_node_vulnerability(node)
             )
             new = change_amount + current_vulnerability
             # checks to make sure that the new value does not go out of the range for vulnerability
-            if new > self.network_interface.gr_node_vuln_upper:
-                new = self.network_interface.gr_node_vuln_upper
-            elif new > self.network_interface.gr_node_vuln_lower:
-                new = self.network_interface.gr_node_vuln_lower
+            if (
+                new
+                > self.network_interface.game_mode.game_rules.node_vulnerability_upper_bound
+            ):
+                new = (
+                    self.network_interface.game_mode.game_rules.node_vulnerability_upper_bound
+                )
+            elif (
+                new
+                > self.network_interface.game_mode.game_rules.node_vulnerability_lower_bound
+            ):
+                new = (
+                    self.network_interface.game_mode.game_rules.node_vulnerability_lower_bound
+                )
             self.network_interface.update_single_node_vulnerability(node, new)
 
-        elif self.network_interface.blue_make_safe_random_vuln:
+        elif (
+            self.network_interface.game_mode.blue.making_node_safe_gives_random_vulnerability
+        ):
             # Gives the node a new random vulnerability
-            upper = self.network_interface.gr_node_vuln_upper
-            lower = self.network_interface.gr_node_vuln_lower
+            upper = (
+                self.network_interface.game_mode.game_rules.node_vulnerability_upper_bound
+            )
+            lower = (
+                self.network_interface.game_mode.game_rules.node_vulnerability_lower_bound
+            )
             new = round(random.uniform(lower, upper), 2)
             self.network_interface.update_single_node_vulnerability(node, new)
 

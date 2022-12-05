@@ -48,13 +48,13 @@ class FeatherGraphEmbedObservation(ObservationWrapper):
 
     def observation(self, observation: np.ndarray) -> np.ndarray:
         """
-        Observation Tranformation Function.
+        Observation Transformation Function.
 
-        1. Generates a networkx graph object from the current adjency matrix
+        1. Generates a networkx graph object from the current adjacency matrix
         2. Collects the current vulnerability scores and node status's
-        3. Pads the returned arrays to ensure length is 100 (currently arbitaryily set)
-        4. Embeds the networkx graph using the Feather Graph alogirhtm from Karateclub
-        5. Concats the graph embedding, padded vulnerability scores and padded node status's together
+        3. Pads the returned arrays to ensure length is 100 (currently arbitrarily set)
+        4. Embeds the networkx graph using the Feather Graph algorithm from Karateclub
+        5. Concatenates the graph embedding, padded vulnerability scores and padded node status's together
         6. Returns new observation
 
         Args:
@@ -77,7 +77,7 @@ class FeatherGraphEmbedObservation(ObservationWrapper):
             self.latest_graph_embedding = self.make_embedding()
 
         standard_obs = self.env.network_interface.get_current_observation()
-        if self.network_interface.obs_node_connections:
+        if self.network_interface.game_mode.observation_space.node_connections:
             size_standard_adj = self.network_interface.get_total_num_nodes() ** 2
 
             extra_obs = standard_obs[size_standard_adj:]
