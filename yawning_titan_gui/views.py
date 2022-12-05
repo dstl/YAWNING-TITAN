@@ -153,6 +153,34 @@ class HomeView(View):
         """Process pythonic tags in home.html and return formatted page."""
         return render(request, "home.html", {"sidebar": default_sidebar})
 
+class DocsView(View):
+    """
+    Django representation of home.html.
+
+    implements 'get' and 'post' methods to handle page requests.
+    """
+
+    def get(self, request, *args, **kwargs):
+        """
+        Handle page get requests.
+
+        Args:
+            request: A Django `request` object that contains the data passed from
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
+        """
+        return render(request, "docs.html", {"sidebar": default_sidebar})
+
+    def post(self, request, *args, **kwargs):
+        """Handle page post requests.
+
+        Args:
+            request: A Django `request` object that contains the data passed from
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
+        """
+        return render(request, "docs.html", {"sidebar": default_sidebar}
+        )
 
 class GameModesView(View):
     """Django page template for game mode management."""
@@ -192,7 +220,6 @@ class GameModesView(View):
             request: the Django page `request` object containing the html data for `game_modes.html` and the server GET / POST request bodies.
         """
         pass
-
 
 class GameModeConfigView(View):
     """Django page template for game mode creation and editing."""
