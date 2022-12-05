@@ -16,7 +16,7 @@ import pandas as pd
 from numpy.random import choice
 
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
-from yawning_titan.config.network_config.network_config import NetworkConfig
+from yawning_titan.config.network_config import NetworkConfig
 
 _LOGGER = getLogger(__name__)
 

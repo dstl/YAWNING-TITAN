@@ -14,7 +14,7 @@ from yaml import SafeLoader
 
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
 from yawning_titan.config.game_modes import default_game_mode_path
-from yawning_titan.config.network_config.network_config import NetworkConfig
+from yawning_titan.config.network_config import NetworkConfig
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
