@@ -1,9 +1,30 @@
 import math
 import statistics
+from typing import Dict, List
 
 import matplotlib.pyplot as plt
 import networkx
 from matplotlib.lines import Line2D
+
+
+def repeat_check(node: Dict, legend_list: List[Line2D]):
+    """
+    Checks if a node already exists by comparing the nodes colour and description with nodes already in the legend.
+
+    Args:
+        node: A node dict.
+        legend_list: The legend list.
+
+    Returns:
+        `True` if is already exists, otherwise `False`.
+    """
+    for legend in legend_list:
+        if (
+            legend.get_markerfacecolor() == node["colour"]
+            and legend.get_label() == node["description"]
+        ):
+            return True
+    return False
 
 
 class CustomEnvGraph:
@@ -49,6 +70,7 @@ class CustomEnvGraph:
         special_nodes: dict = None,
         entrance_nodes: list = None,
         show_only_blue_view: bool = False,
+        target_node: str = None,
         show_node_names: bool = False,
     ):
         """
@@ -132,27 +154,54 @@ class CustomEnvGraph:
                 label="Blue Patch",
                 markersize=15,
             ),
-            # An edge that red has attacked along this turn
-            Line2D(
-                [0],
-                [0],
-                color="red",
-                marker="_",
-                markerfacecolor="red",
-                label="Attack Path",
-                markersize=15,
-            ),
-            # An edge
-            Line2D(
-                [0],
-                [0],
-                color="gray",
-                marker="_",
-                markerfacecolor="gray",
-                label="Connection",
-                markersize=15,
-            ),
         ]
+        # If a target node is specified add to the legend
+        if target_node is not None:
+            legend_objects.append(
+                Line2D(
+                    [0],
+                    [0],
+                    color="white",
+                    marker="o",
+                    markerfacecolor="#2c195e",
+                    label="Target Node",
+                    markersize=15,
+                )
+            )
+            # plots the target node
+            plt.scatter(
+                [pos[str(target_node)][0]],
+                [pos[str(target_node)][1]],
+                color="#2c195e",
+                s=324,
+                zorder=8,
+            )
+
+        legend_objects.extend(
+            [
+                # An edge that red has attacked along this turn
+                Line2D(
+                    [0],
+                    [0],
+                    color="red",
+                    marker="_",
+                    markerfacecolor="red",
+                    label="Attack Path",
+                    markersize=15,
+                ),
+                # An edge
+                Line2D(
+                    [0],
+                    [0],
+                    color="gray",
+                    marker="_",
+                    markerfacecolor="gray",
+                    label="Connection",
+                    markersize=15,
+                ),
+            ]
+        )
+
         # If only showing the blue view then only render red nodes that blue can see
         if not show_only_blue_view:
             legend_objects.append(
@@ -180,20 +229,23 @@ class CustomEnvGraph:
         # Some environments may have special custom nodes that they want to add
         if len(special_nodes) > 0:
             for _, node_info in special_nodes.items():
-                # Inserts the object into the legends at position 3. This is because it looks better if there are any
-                # special nodes added that they are added at the some point as the other nodes in the legend
-                legend_objects.insert(
-                    3,
-                    Line2D(
-                        [0],
-                        [0],
-                        color="white",
-                        marker="o",
-                        markerfacecolor=node_info["colour"],
-                        label=node_info["description"],
-                        markersize=15,
-                    ),
-                )
+
+                # only insert if the legend is not in the list yet
+                if not repeat_check(node_info, legend_objects):
+                    # Inserts the object into the legends at position 3. This is because it looks better if there are any
+                    # special nodes added that they are added at the some point as the other nodes in the legend
+                    legend_objects.insert(
+                        3,
+                        Line2D(
+                            [0],
+                            [0],
+                            color="white",
+                            marker="o",
+                            markerfacecolor=node_info["colour"],
+                            label=node_info["description"],
+                            markersize=15,
+                        ),
+                    )
 
         # If entrance nodes are used then they are added to the legend
         if entrance_nodes is not None:

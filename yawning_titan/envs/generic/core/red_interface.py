@@ -1,5 +1,6 @@
 from typing import Dict, List, Union
 
+from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_action_set import RedActionSet
 
 """
@@ -11,7 +12,7 @@ dictionary to call these actions.
 class RedInterface(RedActionSet):
     """The interface used by the Red Agents to act within the environment."""
 
-    def __init__(self, network_interface):
+    def __init__(self, network_interface: NetworkInterface):
         """
         Initialise the red interface.
 
@@ -26,36 +27,42 @@ class RedInterface(RedActionSet):
         probabilities_set = []
         action_number = 0
         # Goes through the actions that the red agent can perform
-        if self.network_interface.red_spread_action:
+        if self.network_interface.game_mode.red.red_uses_spread_action:
             # If the action is enabled in the settings files then add to list of possible actions
             self.action_dict[action_number] = self.spread
             action_set.append(action_number)
             # also gets the weight for the action (likelihood action is performed) from the settings file
             probabilities_set.append(
-                self.network_interface.red_spread_action_likelihood
+                self.network_interface.game_mode.red.spread_action_likelihood
             )
             action_number += 1
-        if self.network_interface.red_random_infection_action:
+        if self.network_interface.game_mode.red.red_uses_random_infect_action:
             self.action_dict[action_number] = self.intrude
             action_set.append(action_number)
             probabilities_set.append(
-                self.network_interface.red_random_infection_likelihood
+                self.network_interface.game_mode.red.random_infect_action_likelihood
             )
             action_number += 1
-        if self.network_interface.red_basic_attack_action:
+        if self.network_interface.game_mode.red.red_uses_basic_attack_action:
             self.action_dict[action_number] = self.basic_attack
             action_set.append(action_number)
-            probabilities_set.append(self.network_interface.red_basic_attack_likelihood)
+            probabilities_set.append(
+                self.network_interface.game_mode.red.basic_attack_action_likelihood
+            )
             action_number += 1
-        if self.network_interface.red_do_nothing_action:
+        if self.network_interface.game_mode.red.red_uses_do_nothing_action:
             self.action_dict[action_number] = self.do_nothing
             action_set.append(action_number)
-            probabilities_set.append(self.network_interface.red_do_nothing_likelihood)
+            probabilities_set.append(
+                self.network_interface.game_mode.red.do_nothing_action_likelihood
+            )
             action_number += 1
-        if self.network_interface.red_move_action:
+        if self.network_interface.game_mode.red.red_uses_move_action:
             self.action_dict[action_number] = self.random_move
             action_set.append(action_number)
-            probabilities_set.append(self.network_interface.red_move_action_likelihood)
+            probabilities_set.append(
+                self.network_interface.game_mode.red.move_action_likelihood
+            )
             action_number += 1
 
         # normalises the weights so they work with numpy choices
@@ -77,13 +84,13 @@ class RedInterface(RedActionSet):
         current_turn_attack_info = {}
         action_count = 0
 
-        if self.network_interface.red_naturally_spread:
+        if self.network_interface.game_mode.red.red_can_naturally_spread:
             current_turn_attack_info[action_count] = self.natural_spread()
             action_count += 1
 
         zd = False
         # tries to use a zero day attack if it is enabled (not in the main dictionary as it tries it every turn)
-        if self.network_interface.red_zero_day_action:
+        if self.network_interface.game_mode.red.red_uses_zero_day_action:
             inter = self.zero_day_attack()
             if True in inter["Successes"]:
                 current_turn_attack_info[action_count] = inter
@@ -105,7 +112,7 @@ class RedInterface(RedActionSet):
                 current_turn_attack_info[action_count] = self.random_move()
                 action_count += 1
         # increments the day for the zero day
-        if self.network_interface.red_zero_day_action:
+        if self.network_interface.game_mode.red.red_uses_zero_day_action:
             self.increment_day()
 
         all_attacking = [
