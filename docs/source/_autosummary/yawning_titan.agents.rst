@@ -6,21 +6,21 @@ yawning\_titan.agents
 
 .. automodule:: yawning_titan.agents
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -35,4 +35,3 @@ yawning\_titan.agents
    yawning_titan.agents.random
    yawning_titan.agents.simple_blue
    yawning_titan.agents.sinewave_red
-

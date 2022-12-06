@@ -325,38 +325,40 @@ def create_ring(
     return adj_matrix, positions
 
 
-def custom_network() -> Union[Tuple[np.array, dict], None]:
+def custom_network() -> Union[Tuple[np.array, dict], Tuple[None, None]]:
     """
     Create custom network through user interaction.
 
     Returns:
-        The adjacency matrix that represents the network
-        A dictionary of positions of the nodes
+        The adjacency matrix that represents the network and A dictionary of
+        positions of the nodes. If the size input is not a valid int,
+        `None`, `None` is returned.
     """
     # nodes start at 0
     size = input("How many nodes in the network? ")
-    if type(size) != int:
-        print("Error in input - NOT INT")
-        return None
-    else:
+    try:
         size = int(size)
-        adj_matrix = np.zeros((size, size))
-        for i in range(0, size):
-            connected_nodes = input(
-                "Node: " + str(i) + " is connected to: (separate with comma)"
-            )
-            try:
-                connected_nodes_list = map(int, connected_nodes.split(","))
-            except TypeError:
-                print("error in node input")
-                return
-            for j in connected_nodes_list:
-                adj_matrix[i][j] = 1
-                adj_matrix[j][i] = 1
+    except ValueError:
+        print(f"Error in input - '{size}' is not an int")
+        return None, None
 
-        positions = generate_node_positions(adj_matrix)
+    adj_matrix = np.zeros((size, size))
+    for i in range(0, size):
+        connected_nodes = input(
+            "Node: " + str(i) + " is connected to: (separate with comma)"
+        )
+        try:
+            connected_nodes_list = map(int, connected_nodes.split(","))
+        except TypeError:
+            print("error in node input")
+            return None, None
+        for j in connected_nodes_list:
+            adj_matrix[i][j] = 1
+            adj_matrix[j][i] = 1
 
-        return adj_matrix, positions
+    positions = generate_node_positions(adj_matrix)
+
+    return adj_matrix, positions
 
 
 def gnp_random_connected_graph(

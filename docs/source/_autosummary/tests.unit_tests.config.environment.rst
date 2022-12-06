@@ -6,21 +6,21 @@ tests.unit\_tests.config.environment
 
 .. automodule:: tests.unit_tests.config.environment
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -33,4 +33,3 @@ tests.unit\_tests.config.environment
    tests.unit_tests.config.environment.test_observation_space_config
    tests.unit_tests.config.environment.test_reset_config
    tests.unit_tests.config.environment.test_rewards_config
-

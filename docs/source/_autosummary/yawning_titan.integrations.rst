@@ -6,21 +6,21 @@ yawning\_titan.integrations
 
 .. automodule:: yawning_titan.integrations
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -30,4 +30,3 @@ yawning\_titan.integrations
    :recursive:
 
    yawning_titan.integrations.dcbo
-

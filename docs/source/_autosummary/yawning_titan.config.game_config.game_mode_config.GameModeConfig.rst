@@ -12,26 +12,26 @@ yawning\_titan.config.game\_config.game\_mode\_config.GameModeConfig
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~GameModeConfig.create
       ~GameModeConfig.create_from_yaml
       ~GameModeConfig.to_dict
       ~GameModeConfig.to_yaml
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~GameModeConfig.blue
       ~GameModeConfig.game_rules
       ~GameModeConfig.miscellaneous
@@ -39,5 +39,3 @@ yawning\_titan.config.game\_config.game\_mode\_config.GameModeConfig
       ~GameModeConfig.red
       ~GameModeConfig.reset
       ~GameModeConfig.rewards
-   
-   

@@ -12,19 +12,13 @@ yawning\_titan.envs.specific.core.nsa\_node.Node
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~Node.change_compromised
       ~Node.change_isolated
       ~Node.get_condition
-   
-   
-
-   
-   
-   

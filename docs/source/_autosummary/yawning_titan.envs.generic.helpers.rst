@@ -6,21 +6,21 @@ yawning\_titan.envs.generic.helpers
 
 .. automodule:: yawning_titan.envs.generic.helpers
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -33,4 +33,3 @@ yawning\_titan.envs.generic.helpers
    yawning_titan.envs.generic.helpers.eval_printout
    yawning_titan.envs.generic.helpers.graph2plot
    yawning_titan.envs.generic.helpers.network_creator
-

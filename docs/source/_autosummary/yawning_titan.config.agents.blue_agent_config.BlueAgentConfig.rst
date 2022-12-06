@@ -12,25 +12,25 @@ yawning\_titan.config.agents.blue\_agent\_config.BlueAgentConfig
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~BlueAgentConfig.create
       ~BlueAgentConfig.to_dict
       ~BlueAgentConfig.validate
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~BlueAgentConfig.blue_uses_deceptive_nodes
       ~BlueAgentConfig.blue_uses_do_nothing
       ~BlueAgentConfig.blue_uses_isolate_node
@@ -56,5 +56,3 @@ yawning\_titan.config.agents.blue\_agent\_config.BlueAgentConfig
       ~BlueAgentConfig.max_number_deceptive_nodes
       ~BlueAgentConfig.relocating_deceptive_nodes_generates_a_new_node
       ~BlueAgentConfig.vulnerability_change_during_node_patch
-   
-   

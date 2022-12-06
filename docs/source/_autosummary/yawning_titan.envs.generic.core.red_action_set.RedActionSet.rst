@@ -12,13 +12,13 @@ yawning\_titan.envs.generic.core.red\_action\_set.RedActionSet
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~RedActionSet.basic_attack
       ~RedActionSet.choose_action
       ~RedActionSet.choose_target_node
@@ -31,17 +31,15 @@ yawning\_titan.envs.generic.core.red\_action\_set.RedActionSet
       ~RedActionSet.reset
       ~RedActionSet.spread
       ~RedActionSet.zero_day_attack
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~RedActionSet.action_probabilities
       ~RedActionSet.action_set
       ~RedActionSet.node_set
-   
-   

@@ -5,22 +5,3 @@ tests.fixtures
 ==============
 
 .. automodule:: tests.fixtures
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-
