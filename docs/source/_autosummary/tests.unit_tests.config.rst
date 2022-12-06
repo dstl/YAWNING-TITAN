@@ -34,3 +34,4 @@ tests.unit\_tests.config
    tests.unit_tests.config.game_config
    tests.unit_tests.config.network_config
    tests.unit_tests.config.test_game_modes
+   tests.unit_tests.config.test_network_config

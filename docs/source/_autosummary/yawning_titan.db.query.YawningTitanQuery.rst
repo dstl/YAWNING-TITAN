@@ -12,13 +12,13 @@ yawning\_titan.db.query.YawningTitanQuery
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~YawningTitanQuery.all
       ~YawningTitanQuery.any
       ~YawningTitanQuery.exists
@@ -35,9 +35,3 @@ yawning\_titan.db.query.YawningTitanQuery
       ~YawningTitanQuery.one_of
       ~YawningTitanQuery.search
       ~YawningTitanQuery.test
-   
-   
-
-   
-   
-   

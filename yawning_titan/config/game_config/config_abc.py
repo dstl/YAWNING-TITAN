@@ -34,7 +34,7 @@ class ConfigABC(ABC):
         """
         d = {}
         for k, v in self.__dict__.items():
-            if k.startswith("_"):
+            if k.startswith("_") and k != "_doc_metadata":
                 k = k[1:]
             d[k] = v
         return d
@@ -52,6 +52,7 @@ class ConfigABC(ABC):
         class. The implementation of `.create` should pass the `config_dict`
         to `cls.validate` for the config data to be validated.
         """
+        pass
 
     @classmethod
     @abstractmethod

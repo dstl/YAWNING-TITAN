@@ -2,11 +2,15 @@ from __future__ import annotations
 
 import warnings
 from dataclasses import dataclass
+from logging import getLogger
 from typing import Any, Dict, List, Optional
 
 from numpy import ndarray
 
 from yawning_titan.config.game_config.config_abc import ConfigABC
+from yawning_titan.db.doc_metadata import DocMetadata
+
+_LOGGER = getLogger(__name__)
 
 
 @dataclass()
@@ -28,17 +32,39 @@ class NetworkConfig(ConfigABC):
     high_value_nodes: Optional[List[str]] = None
     """List of high value nodes. Has a default value on `None`."""
 
+    _doc_metadata: Optional[DocMetadata] = None
+    """The associated instance of :class:`~yawning_titan.db.doc_metadata.DocMetadata`."""
+
+    def __post_init__(self):
+        if self._doc_metadata is None:
+            self._doc_metadata = DocMetadata()
+
+    @property
+    def doc_metadata(self) -> DocMetadata:
+        """The configs document metadata."""
+        return self._doc_metadata
+
+    @doc_metadata.setter
+    def doc_metadata(self, doc_metadata: DocMetadata):
+        if self._doc_metadata is None:
+            self._doc_metadata = doc_metadata
+        else:
+            msg = "Cannot set doc_metadata as it has already been set."
+            _LOGGER.error(msg)
+
     def to_dict(self, json_serializable: bool = False) -> Dict:
         """
         Serialize the :class:`~yawning_titan.config.network_config.NetworkConfig` as a :py:class:`dict`.
 
-        :param json_serializable: If :py:class:`True`, the :attr:`~yawning_titan.config.network_config.NetworkConfig`
+        :param json_serializable: If ``True``, the :attr:`~yawning_titan.config.network_config.NetworkConfig`
             "d numpy array is converted to a list."
         :return: The :class:`~yawning_titan.config.network_config.NetworkConfig` as a :py:class:`dict`.
         """
         config_dict = super().to_dict()
         if json_serializable:
             config_dict["matrix"] = config_dict["matrix"].tolist()
+        if self.doc_metadata is not None:
+            config_dict["_doc_metadata"] = self.doc_metadata.to_dict()
         return config_dict
 
     @classmethod
@@ -48,11 +74,6 @@ class NetworkConfig(ConfigABC):
 
         :param config_dict: The network config dict.
         :returns: An instance of :class:`~yawning_titan.config.network_config.NetworkConfig`.
-
-        Examples:
-            >>> from yawning_titan.envs.generic.helpers.network_creator import create_18_node_network
-            >>> from yawning_titan.config.network_config import NetworkConfig
-            >>> network_config = NetworkConfig.create(create_18_node_network())
         """
         cls.validate(config_dict)
 
@@ -68,6 +89,7 @@ class NetworkConfig(ConfigABC):
         entry_nodes: Optional[List[str]] = None,
         vulnerabilities: Optional[Dict] = None,
         high_value_nodes: Optional[List[str]] = None,
+        _doc_metadata: Optional[DocMetadata] = None,
     ):
         """
         Create and return an instance of :class:`~yawning_titan.config.network_config.NetworkConfig`.
@@ -77,18 +99,20 @@ class NetworkConfig(ConfigABC):
         :param entry_nodes: List of entry nodes. Has a default value on `None`.
         :param vulnerabilities: Dictionary containing the vulnerabilities of the nodes. Has a default value on `None`.
         :param high_value_nodes: List of high value nodes. Has a default value on `None`.
+        :param _doc_metadata: The associated instance of :class:`~yawning_titan.db.doc_metadata.DocMetadata`.
 
         :returns: An instance of :class:`~yawning_titan.config.network_config.NetworkConfig`.
         """
-        network_config_dict = {
+        args = {
             "matrix": matrix,
             "positions": positions,
             "entry_nodes": entry_nodes,
             "vulnerabilities": vulnerabilities,
             "high_value_nodes": high_value_nodes,
+            "_doc_metadata": _doc_metadata,
         }
 
-        return NetworkConfig.create(network_config_dict)
+        return NetworkConfig(**args)
 
     @classmethod
     def validate(cls, config_dict: Dict[str, Any]):

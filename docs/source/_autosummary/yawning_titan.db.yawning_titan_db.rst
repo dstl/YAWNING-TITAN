@@ -1,35 +1,26 @@
 ..
     Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
 ..
-yawning\_titan.sphinc\_doc\_example
-===================================
+yawning\_titan.db.yawning\_titan\_db
+====================================
 
-.. automodule:: yawning_titan.sphinc_doc_example
+.. automodule:: yawning_titan.db.yawning_titan_db
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
-      MainClass1
-   
-   
 
-   
-   
-   
-
-
-
+      YawningTitanDB

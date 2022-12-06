@@ -1,10 +1,10 @@
 ..
     Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
 ..
-yawning\_titan.config.network\_config.network\_config.NetworkConfig
-===================================================================
+yawning\_titan.config.network\_config.NetworkConfig
+===================================================
 
-.. currentmodule:: yawning_titan.config.network_config.network_config
+.. currentmodule:: yawning_titan.config.network_config
 
 .. autoclass:: NetworkConfig
    :members:
@@ -32,8 +32,9 @@ yawning\_titan.config.network\_config.network\_config.NetworkConfig
 
    .. autosummary::
 
+      ~NetworkConfig.doc_metadata
       ~NetworkConfig.entry_nodes
       ~NetworkConfig.high_value_nodes
+      ~NetworkConfig.vulnerabilities
       ~NetworkConfig.matrix
       ~NetworkConfig.positions
-      ~NetworkConfig.vulnerabilities
