@@ -16,17 +16,11 @@ yawning\_titan.config.network\_config
 
 
 
+   .. rubric:: Classes
 
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
 
-
-
-
-
-
-
-.. autosummary::
-   :toctree:
-   :template: custom-module-template.rst
-   :recursive:
-
-   yawning_titan.config.network_config.network_config
+      NetworkConfig

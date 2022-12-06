@@ -1,19 +1,15 @@
-"""
-The :mod:`yawning_titan.db.network` module.
-
-Provides an API for the ``network.json`` :class:`~tinydb.database.TinyDB` file,
-and a Schema-like class that defines the network DB fields.
-"""
+"""Provides an API for the ``network.json`` TinyDB file, and a Schema class that defines the network DB fields."""
 from __future__ import annotations
 
-from typing import Final, List, Union
+from typing import Final, List, Mapping, Optional, Union
 
 import numpy as np
 from tinydb.queries import QueryInstance
 from tinydb.table import Document
 
 from yawning_titan.config.network_config import NetworkConfig
-from yawning_titan.db import YawningTitanDB
+from yawning_titan.db.doc_metadata import DocMetadata
+from yawning_titan.db.yawning_titan_db import YawningTitanDB
 
 __all__ = ["NetworkDB", "NetworkSchema"]
 
@@ -74,7 +70,7 @@ class NetworkDB(YawningTitanDB):
             >>> query = (NetworkSchema.ENTRY_NODES.all(["1"])) and (NetworkSchema.HIGH_VALUE_NODES.all(["1"]))
             >>> db.search(query)
 
-    - Search for all network configs that have at-least 3 high value nodes
+    - Search for all network configs that have at least 3 high value nodes
 
             .. code:: python
 
@@ -96,13 +92,23 @@ class NetworkDB(YawningTitanDB):
         :return: The doc as a :class:`~yawning_titan.config.network_config.NetworkConfig`.
         """
         doc["matrix"] = np.array(doc["matrix"])
-        return NetworkConfig.create(doc)
+        doc["_doc_metadata"] = DocMetadata(**doc["_doc_metadata"])
+        return NetworkConfig.create_from_args(**doc)
 
-    def insert(self, item: NetworkConfig) -> int:
+    def insert(
+        self,
+        item: NetworkConfig,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+        author: Optional[str] = None,
+    ) -> int:
         """
         Insert a :class:`~yawning_titan.config.network_config.NetworkConfig` into the DB as ``.json``.
 
         :param item: An instance of :class:`~yawning_titan.config.network_config.NetworkConfig`
+        :param name:
+        :param description:
+        :param author:
         :return: The inserted document ID.
         """
         return super().insert(item.to_dict(json_serializable=True))
@@ -131,6 +137,10 @@ class NetworkDB(YawningTitanDB):
         if doc:
             return self._doc_to_network_config(super().get(doc_id))
 
+    def get_with_uuid(self, uuid: int) -> Union[Document, None]:
+        """Stub."""
+        pass
+
     def search(self, query: QueryInstance) -> List[NetworkConfig]:
         """
         Searches the network db with a given :class:`NetworkSchema` query.
@@ -142,3 +152,15 @@ class NetworkDB(YawningTitanDB):
         for doc in super(NetworkDB, self).search(query):
             network_configs.append(self._doc_to_network_config(doc))
         return network_configs
+
+    def update(self, doc):
+        """Stub."""
+        pass
+
+    def upsert(self, doc: Mapping, uuid: str) -> List[int]:
+        """Stub."""
+        pass
+
+    def remove(self, cond: QueryInstance) -> List[int]:
+        """Stub."""
+        pass

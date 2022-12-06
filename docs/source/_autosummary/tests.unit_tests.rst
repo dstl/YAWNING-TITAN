@@ -30,4 +30,5 @@ tests.unit\_tests
    :recursive:
 
    tests.unit_tests.config
+   tests.unit_tests.db
    tests.unit_tests.test_application_logging

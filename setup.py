@@ -169,7 +169,7 @@ setup(
         "tensorboard==2.10.1 ",
         "dm-tree==0.1.7",
         "jupyter",
-        "tinydb==4.7.0"
+        "tinydb==4.7.0",
     ],
     extras_require={
         "dev": [

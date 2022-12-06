@@ -1,4 +1,4 @@
-"""The :mod:`yawning_titan.db.query` module provides a Yawning-Titan extension to :class:`tinydb.queries.Query`."""
+"""The :mod:`~yawning_titan.db.query` module provides a Yawning-Titan extension to :class:`tinydb.queries.Query`."""
 from tinydb import Query
 from tinydb.queries import QueryInstance
 
@@ -27,7 +27,7 @@ class YawningTitanQuery(Query):
         >>> db.search(YawningTitanQuery.matrix.len_eq(18)))
 
         :param i: The target length of a field as an int.
-        :return: :py:attr:`True` if the field length matches ``i``, otherwise :py:attr:`False`.
+        :return: ``True`` if the field length matches ``i``, otherwise ``False``.
         :raises TypeError: When the field :func:`~yawning_titan.db.query.YawningTitanQuery.len_eq` is called on
             does not have a :func:`len` function.
         """
@@ -53,7 +53,7 @@ class YawningTitanQuery(Query):
         >>> db.search(YawningTitanQuery.matrix.len_lt(18)))
 
         :param i: The target length of a field as an int.
-        :return: :py:attr:`True` if the field length is less than ``i``, otherwise :py:attr:`False`.
+        :return: ``True`` if the field length is less than ``i``, otherwise ``False``.
         :raises TypeError: When the field :func:`~yawning_titan.db.query.YawningTitanQuery.len_lt` is called on
             does not have a :func:`len` function.
         """
@@ -79,7 +79,7 @@ class YawningTitanQuery(Query):
         >>> db.search(YawningTitanQuery.matrix.len_le(18)))
 
         :param i: The target length of a field as an int.
-        :return: :py:attr:`True` if the field length is less than or equal to ``i``, otherwise :py:attr:`False`.
+        :return: ``True`` if the field length is less than or equal to ``i``, otherwise ``False``.
         :raises TypeError: When the field :func:`~yawning_titan.db.query.YawningTitanQuery.len_lt` is called on
             does not have a :func:`len` function.
         """
@@ -105,7 +105,7 @@ class YawningTitanQuery(Query):
         >>> db.search(YawningTitanQuery.matrix.len_gt(18)))
 
         :param i: The target length of a field as an int.
-        :return: :py:attr:`True` if the field length is greater than ``i``, otherwise :py:attr:`False`.
+        :return: ``True`` if the field length is greater than ``i``, otherwise ``False``.
         :raises TypeError: When the field :func:`~yawning_titan.db.query.YawningTitanQuery.len_lt` is called on
             does not have a :func:`len` function.
         """
@@ -131,7 +131,7 @@ class YawningTitanQuery(Query):
         >>> db.search(YawningTitanQuery.matrix.len_ge(18)))
 
         :param i: The target length of a field as an int.
-        :return: :py:attr:`True` if the field length is greater than or equal to ``i``, otherwise :py:attr:`False`.
+        :return: ``True`` if it does exist, otherwise ``False``. if the field length is greater than or equal to ``i``, otherwise ``False``.
         :raises TypeError: When the field :func:`~yawning_titan.db.query.YawningTitanQuery.len_lt` is called on
             does not have a :func:`len` function.
         """
