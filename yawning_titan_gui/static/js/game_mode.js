@@ -24,7 +24,6 @@ $(document).ready(function(){
         e.stopPropagation();
         toggle_dialogue("#create-from-dialogue");
         selected_game_mode = $(this).closest(".game-mode").data("game-mode-name");
-        console.log("TXT",$("#create-from-dialogue .header").text());
         $("#create-from-dialogue .header").text($("#create-from-dialogue .header").text() + " " + selected_game_mode);
     });
 
@@ -45,11 +44,11 @@ $(document).ready(function(){
 });
 
 // wrapper for async post request for managing config files
-function manage_files(game_mode_name,operation){
+function manage_files(game_mode_name,operation,additional_data){
     $.ajax({
         type: "POST",
         url: FILE_MANAGER_URL,
-        data: {"game_mode_name":game_mode_name,"operation":operation},
+        data: Object.assign({},{"game_mode_name":game_mode_name,"operation":operation},additional_data),
         success: function(){
             location.reload()
         }
