@@ -1,6 +1,5 @@
-from django.conf import settings
-from django.conf.urls.static import static
 from django.urls import path
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from yawning_titan_gui.views import (
     GameModeConfigView,
@@ -27,3 +26,5 @@ urlpatterns = [
     path("game_mode_config/", GameModeConfigView.as_view(), name="game mode config"),
     path("manage_files/", config_file_manager, name="file manager"),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
