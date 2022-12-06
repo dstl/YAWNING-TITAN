@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 
 from yawning_titan import DATA_DIR
+from yawning_titan_gui import STATIC_DIR
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -108,8 +109,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "/static/"
-STATIC_ROOT = DATA_DIR
+STATIC_URL = "static/"
+STATIC_ROOT = STATIC_DIR
 STATICFILES_DIRS = [BASE_DIR / "yawning_titan_gui/static"]
 
 # Default primary key field type
