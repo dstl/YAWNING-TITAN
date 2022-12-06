@@ -6,21 +6,21 @@ yawning\_titan.envs.generic
 
 .. automodule:: yawning_titan.envs.generic
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -33,4 +33,3 @@ yawning\_titan.envs.generic
    yawning_titan.envs.generic.generic_env
    yawning_titan.envs.generic.helpers
    yawning_titan.envs.generic.wrappers
-

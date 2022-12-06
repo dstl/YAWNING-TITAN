@@ -6,21 +6,21 @@ yawning\_titan.envs.specific.core
 
 .. automodule:: yawning_titan.envs.specific.core
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -33,4 +33,3 @@ yawning\_titan.envs.specific.core
    yawning_titan.envs.specific.core.node_states
    yawning_titan.envs.specific.core.nsa_node
    yawning_titan.envs.specific.core.nsa_node_collection
-

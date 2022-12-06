@@ -12,17 +12,11 @@ tests.test\_generic\_environment.RandomGen
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-      ~RandomGen.get_action
-   
-   
 
-   
-   
-   
+      ~RandomGen.get_action
