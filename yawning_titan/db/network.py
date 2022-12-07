@@ -97,21 +97,27 @@ class NetworkDB(YawningTitanDB):
 
     def insert(
         self,
-        item: NetworkConfig,
+        network_config: NetworkConfig,
         name: Optional[str] = None,
         description: Optional[str] = None,
         author: Optional[str] = None,
-    ) -> int:
+    ) -> NetworkConfig:
         """
         Insert a :class:`~yawning_titan.config.network_config.NetworkConfig` into the DB as ``.json``.
 
-        :param item: An instance of :class:`~yawning_titan.config.network_config.NetworkConfig`
-        :param name:
-        :param description:
-        :param author:
-        :return: The inserted document ID.
+        :param network_config: An instance of :class:`~yawning_titan.config.network_config.NetworkConfig`
+            :class:`~yawning_titan.db.doc_metadata.DocMetadata`.
+            :class:`~yawning_titan.db.doc_metadata.DocMetadata`.
+            :class:`~yawning_titan.db.doc_metadata.DocMetadata`.
+        :param name: The config name.
+        :param description: The config description.
+        :param author: The config author.
+        :return: The inserted :class:`~yawning_titan.config.network_config.NetworkConfig`.
         """
-        return super().insert(item.to_dict(json_serializable=True))
+        network_config.doc_metadata.update(name, description, author)
+        super().insert(network_config.to_dict(json_serializable=True))
+
+        return network_config
 
     def all(self) -> List[NetworkConfig]:
         """
@@ -119,27 +125,22 @@ class NetworkDB(YawningTitanDB):
 
         :return: A :py:classs:`list` of :class:`~yawning_titan.config.network_config.NetworkConfig`.
         """
-        network_configs = []
-        for doc in super(NetworkDB, self).all():
-            network_configs.append(self._doc_to_network_config(doc))
-        return network_configs
+        return [
+            self._doc_to_network_config(doc) for doc in super().all()
+        ]
 
-    def get(self, doc_id: int) -> Union[NetworkConfig, None]:
+    def get(self, uuid: str) -> Union[NetworkConfig, None]:
         """
-        Get a network config document from its document ID.
+        Get a network config document from its uuid.
 
-        :param doc_id: A target document ID.
+        :param uuid: A target document uuid.
         :return: The network config document as an instance of
-            :class:`~yawning_titan.config.network_config.NetworkConfig` if the document id exists,
+            :class:`~yawning_titan.config.network_config.NetworkConfig` if the uuid exists,
             otherwise :py:class:`None`.
         """
-        doc = super().get(doc_id)
+        doc = super().get_uuid(uuid)
         if doc:
-            return self._doc_to_network_config(super().get(doc_id))
-
-    def get_with_uuid(self, uuid: int) -> Union[Document, None]:
-        """Stub."""
-        pass
+            return self._doc_to_network_config(doc)
 
     def search(self, query: QueryInstance) -> List[NetworkConfig]:
         """
@@ -153,14 +154,53 @@ class NetworkDB(YawningTitanDB):
             network_configs.append(self._doc_to_network_config(doc))
         return network_configs
 
-    def update(self, doc):
+    def update(
+        self,
+        network_config: NetworkConfig,
+        uuid: str,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+        author: Optional[str] = None,
+    ) -> NetworkConfig:
         """Stub."""
-        pass
+        # Update the configs metadata
+        network_config.doc_metadata.update(name, description, author)
+        # Perform the update and retrieve the returned doc
+        doc = super().update(
+            network_config.to_dict(json_serializable=True),
+            network_config.doc_metadata.uuid,
+            name,
+            description,
+            author,
+        )
 
-    def upsert(self, doc: Mapping, uuid: str) -> List[int]:
+        # Update the configs metadata created at
+        network_config.doc_metadata.updated_at = doc["_doc_metadata"]["updated_at"]
+
+        return network_config
+
+    def upsert(
+        self,
+        network_config: NetworkConfig,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+        author: Optional[str] = None,
+    ) -> NetworkConfig:
         """Stub."""
-        pass
+        network_config.doc_metadata.update(name, description, author)
+        super().upsert(
+            network_config.to_dict(json_serializable=True),
+            network_config.doc_metadata.uuid,
+            name,
+            description,
+            author,
+        )
 
-    def remove(self, cond: QueryInstance) -> List[int]:
+        # Update the configs metadata created at
+        network_config.doc_metadata.updated_at = doc["_doc_metadata"]["updated_at"]
+
+        return network_config
+
+    def remove_by_cond(self, cond: QueryInstance) -> List[str]:
         """Stub."""
         pass
