@@ -25,6 +25,7 @@ class DocMetadata:
         name: Optional[str] = None,
         description: Optional[str] = None,
         author: Optional[str] = None,
+        locked: Optional[bool] = False,
     ):
         """
         The :class:`~yawning_titan.db.yawning_titan_db.DocMetadata` constructor.
@@ -35,6 +36,7 @@ class DocMetadata:
         :param name: The name given to the document by the author.
         :param description: The description given to the document by the author.
         :param author: The original author of the document.
+        :param locked: Whether the doc is locked for editing or not.
         """
         self._uuid: Final[str] = uuid if uuid is not None else str(uuid4())
         self._created_at: Final[str] = (
@@ -44,6 +46,7 @@ class DocMetadata:
         self._name: Optional[str] = name
         self._description: Optional[str] = description
         self._author: Optional[str] = author
+        self._locked: bool = locked
 
     # region Getters
     @property
@@ -76,6 +79,11 @@ class DocMetadata:
         """The original author of the document."""
         return self._author
 
+    @property
+    def locked(self) -> bool:
+        """Whether the doc is locked for editing or not."""
+        return self._locked
+
     # endregion
 
     # region Setters
@@ -97,6 +105,26 @@ class DocMetadata:
 
     # endregion
 
+    def update(
+        self,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+        author: Optional[str] = None,
+    ):
+        """
+        Updated the name, description, and author.
+
+        :param name: The name given to the document by the author.
+        :param description: The description given to the document by the author.
+        :param author: The original author of the document.
+        """
+        if name:
+            self.name = name
+        if description:
+            self.description = description
+        if author:
+            self.author = author
+
     def to_dict(self, include_none: bool = False) -> Dict[str, str]:
         """
         Serialize the :class:`~yawning_titan.db.yawning_titan_db.DocMetadata` as a :py:class:`dict`.
@@ -111,6 +139,7 @@ class DocMetadata:
             "name": self._name,
             "description": self._description,
             "author": self._author,
+            "locked": self._locked,
         }
         if not include_none:
             return {k: v for k, v in doc_dict.items() if v is not None}
@@ -138,6 +167,7 @@ class DocMetadata:
                 self._name,
                 self._description,
                 self._author,
+                self._locked,
             )
         )
 
@@ -171,3 +201,5 @@ class DocMetadataSchema:
     """Mapped to :attr:`yawning_titan.db.yawning_titan_db.DocMetadata.description`."""
     AUTHOR: Final[YawningTitanQuery] = YawningTitanQuery()._doc_metadata.author
     """Mapped to :attr:`yawning_titan.db.yawning_titan_db.DocMetadata.author`."""
+    LOCKED: Final[YawningTitanQuery] = YawningTitanQuery()._doc_metadata.locked
+    """Mapped to :attr:`yawning_titan.db.yawning_titan_db.DocMetadata.locked`."""

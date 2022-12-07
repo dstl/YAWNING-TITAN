@@ -25,4 +25,5 @@ yawning\_titan.exceptions
    .. autosummary::
       :toctree:
 
+      YawningTitanDBCriticalError
       YawningTitanDBError

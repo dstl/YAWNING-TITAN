@@ -1,5 +1,5 @@
 """Fixtures and classes for testing the YawningTitanDB and YawningTitanQuery classes."""
-from typing import Dict, Final, List, Mapping, Union
+from typing import Dict, Final, List, Mapping, Optional, Union
 
 import pytest
 from tinydb.queries import QueryInstance
@@ -35,6 +35,13 @@ def demo_db_docs() -> List[Dict[str, Union[str, int, List[str]]]]:
             "hobbies": ["Cats", "Books", "Food", "Walks"],
             "_doc_metadata": DocMetadata().to_dict(),
         },
+        {
+            "forename": "John",
+            "surname": "Smith",
+            "age": 264,
+            "hobbies": ["Barley", "Hops", "Water"],
+            "_doc_metadata": DocMetadata(locked=True).to_dict(),
+        },
     ]
 
 
@@ -57,38 +64,54 @@ class DemoDB(YawningTitanDB):
     def __init__(self, name: str):
         super().__init__(name)
 
-    def insert(self, item: Mapping) -> int:
-        """Insert a doc and return the inserted doc_id."""
-        return super().insert(item)
+    def insert(
+        self,
+        doc: Mapping,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+        author: Optional[str] = None,
+    ) -> Document:
+        """Insert a doc and return the inserted doc."""
+        return super().insert(doc, name, description, author)
 
     def all(self) -> List[Document]:
         """Get all docs."""
         return super().all()
 
-    def get(self, doc_id: int) -> Union[Document, None]:
-        """Get a dog from its doc_id."""
-        return super().get(doc_id)
-
-    def get_with_uuid(self, uuid: int) -> Union[Document, None]:
+    def get_uuid(self, uuid: str) -> Union[Document, None]:
         """Get a dog from its uuid."""
-        return super().get_with_uuid(uuid)
+        return super().get_uuid(uuid)
 
     def search(self, query: QueryInstance) -> List[Document]:
         """Search for docs using Query."""
         return super().search(query)
 
-    def update(self, doc: Mapping, uuid: str) -> List[int]:
+    def update(
+        self,
+        doc: Mapping,
+        uuid: str,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+        author: Optional[str] = None,
+    ) -> Document:
         """Update a doc by uuid."""
-        return super().update(doc, uuid)
+        return super().update(doc, uuid, name, description, author)
 
-    def upsert(self, doc: Mapping, uuid: str) -> List[int]:
+    def upsert(
+        self,
+        doc: Mapping,
+        uuid: str,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+        author: Optional[str] = None,
+    ) -> Document:
         """Upsert a doc by uuid."""
-        return super().upsert(doc, uuid)
+        return super().upsert(doc, uuid, name, description, author)
 
-    def remove(self, cond: QueryInstance) -> List[int]:
+    def remove_by_cond(self, cond: QueryInstance) -> List[str]:
         """Remove documents matching a query."""
-        return super().remove(cond)
+        return super().remove_by_cond(cond)
 
-    def remove_with_uuid(self, uuid: str) -> List[int]:
+    def remove(self, uuid: str) -> str:
         """Remove a document with a given uuid."""
-        return super().remove_with_uuid(uuid)
+        return super().remove(uuid)

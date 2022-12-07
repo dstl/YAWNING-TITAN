@@ -31,6 +31,7 @@ yawning\_titan.db.doc\_metadata.DocMetadataSchema
       ~DocMetadataSchema.AUTHOR
       ~DocMetadataSchema.CREATED_AT
       ~DocMetadataSchema.DESCRIPTION
+      ~DocMetadataSchema.LOCKED
       ~DocMetadataSchema.NAME
       ~DocMetadataSchema.UPDATED_AT
       ~DocMetadataSchema.UUID

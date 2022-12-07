@@ -198,7 +198,7 @@ entry nodes, and nodes 5, 10, and 15 as high-value nodes.
 .. code:: python
 
     from yawning_titan.envs.generic.helpers import network_creator
-    from yawning_titan.config.network_config.network_config import NetworkConfig
+    from yawning_titan.config.network_config import NetworkConfig
 
     matrix, node_positions = network_creator.create_18_node_network()
 

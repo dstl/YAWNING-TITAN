@@ -1,4 +1,4 @@
-..
+﻿..
     Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
 ..
 yawning\_titan.db.network.NetworkDB
@@ -21,10 +21,10 @@ yawning\_titan.db.network.NetworkDB
 
       ~NetworkDB.all
       ~NetworkDB.get
-      ~NetworkDB.get_with_uuid
       ~NetworkDB.insert
+      ~NetworkDB.is_locked
       ~NetworkDB.remove
-      ~NetworkDB.remove_with_uuid
+      ~NetworkDB.remove_by_cond
       ~NetworkDB.search
       ~NetworkDB.update
       ~NetworkDB.upsert
