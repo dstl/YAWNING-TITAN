@@ -1,9 +1,16 @@
 """
 Generates a Reinforcement Learning (RL) baseline agent.
 
-Uses the same network and scenario config as used to generated DCBO data and saves training metrics to tensorboard.
+Uses the same network and scenario config as used to generated DCBO data and
+saves training metrics to tensorboard.
+
+.. warning::
+
+    This module is being deprecated in a future release. This release will see
+    the introduction of a Yawning-Titan runner module. This specific
+    'Reinforcement Learning (RL) baseline agent' example will be available as a
+    pre-defined configurable run.
 """
-from pathlib import Path
 
 from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import EvalCallback
@@ -12,31 +19,27 @@ from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.ppo import MlpPolicy as PPOMlp
 
 from yawning_titan.agents.sinewave_red import SineWaveRedAgent
+from yawning_titan.config.game_config.game_mode_config import GameModeConfig
+from yawning_titan.config.game_modes import dcbo_game_mode_path
+from yawning_titan.config.network_config.network_config import NetworkConfig
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.envs.generic.helpers import network_creator
 
-BASE_DIR = Path(__file__).resolve().parent
-SETTINGS_PATH = f"{BASE_DIR}/dcbo_config.yaml"
+game_mode = GameModeConfig.create_from_yaml(dcbo_game_mode_path())
 
-matrix, node_positions = network_creator.load_network(f"{BASE_DIR}/base_net.txt")
+matrix, positions = network_creator.dcbo_base_network()
+network = NetworkConfig.create_from_args(matrix=matrix, positions=positions)
 
-network_interface = NetworkInterface(
-    matrix, node_positions, settings_path=SETTINGS_PATH
-)
+network_interface = NetworkInterface(game_mode, network)
 
 red = SineWaveRedAgent(network_interface)
 blue = BlueInterface(network_interface)
-
-number_of_actions = blue.get_number_of_actions()
-number_of_actions = 2
-
 env = GenericNetworkEnv(
-    red,
-    blue,
-    network_interface,
-    number_of_actions,
+    red_agent=red,
+    blue_agent=blue,
+    network_interface=network_interface,
     print_metrics=True,
     show_metrics_every=10,
     collect_additional_per_ts_data=False,
