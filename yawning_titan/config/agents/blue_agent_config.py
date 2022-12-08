@@ -327,10 +327,13 @@ class BlueAgentConfig(ConfigABC):
     @classmethod
     def create(cls, config_dict: Dict[str, Any]) -> BlueAgentConfig:
         """
-        Creates an instance of `BlueAgentConfig` after calling `.validate`.
+        Creates an instance of :class:`yawning_titan.config.agents.red_agent_config.BlueAgentConfig`
 
-        Args:
-            config_dict: A config dict with the required key/values pairs.
+        This calls :func:`validate() <yawning_titan.config.agents.red_agent_config.BlueAgentConfig.validate>.
+
+        :param config_dict: A config dict with the required key/values pairs.
+
+        :return: An instance of :class: `BlueAgentConfig <yawning_titan.config.agents.red_agent_config.BlueAgentConfig>.
         """
         cls._validate(config_dict)
         blue_agent_config = BlueAgentConfig(

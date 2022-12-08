@@ -20,8 +20,6 @@ This verbose tag will create these at set intervals during training
 The update contains information such as:
  * ep_len_mean
     The average length of each game over this episode
- * ep_rew_mean
-    The average reward the blue agent received over this episode
  * loss
     Indicates how bad a prediction is that a model took. A perfect prediction is zero and the bigger the loss, the bigger the negative reward incurred from the prediction
 
