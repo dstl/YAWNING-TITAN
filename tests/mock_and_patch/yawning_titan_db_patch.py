@@ -18,7 +18,7 @@ def yawning_titan_db_init_patch(self, name: str):
     the patched class.
     """
     self._name: Final[str] = name
-    self._temp_file = tempfile.TemporaryFile(suffix=".json", mode="w", delete=True).name
+    self._temp_file = tempfile.TemporaryFile(suffix=".json", mode="w").name
     self._path = str(self._temp_file)
 
     self._db = TinyDB(self._path)
