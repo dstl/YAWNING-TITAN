@@ -1,4 +1,4 @@
-﻿..
+..
     Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
 ..
 tests.fixtures.yawning\_titan\_demo\_db\_fixtures.DemoDB
@@ -20,6 +20,7 @@ tests.fixtures.yawning\_titan\_demo\_db\_fixtures.DemoDB
       :nosignatures:
 
       ~DemoDB.all
+      ~DemoDB.count
       ~DemoDB.get
       ~DemoDB.insert
       ~DemoDB.is_locked

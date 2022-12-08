@@ -31,4 +31,5 @@ tests.unit\_tests
 
    tests.unit_tests.config
    tests.unit_tests.db
+   tests.unit_tests.network
    tests.unit_tests.test_application_logging

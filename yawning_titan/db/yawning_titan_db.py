@@ -11,7 +11,6 @@ locked files (system defaults) cannot be updated or removed.
 from __future__ import annotations
 
 import os.path
-from abc import ABC, abstractmethod
 from datetime import datetime
 from logging import getLogger
 from typing import Final, List, Mapping, Optional, Union
@@ -27,10 +26,9 @@ from yawning_titan.exceptions import YawningTitanDBCriticalError, YawningTitanDB
 _LOGGER = getLogger(__name__)
 
 
-class YawningTitanDB(ABC):
+class YawningTitanDB:
     """An :py:class:`~abc.ABC` that implements and extends the :class:`~tinydb.database.TinyDB` query functions."""
 
-    @abstractmethod
     def __init__(self, name: str):
         self._name: Final[str] = name
         self._path = DB_DIR / f"{self._name}.json"
@@ -106,7 +104,53 @@ class YawningTitanDB(ABC):
         """The instance of :class:`~tinydb.database.TinyDB`."""
         return self._db
 
-    @abstractmethod
+    def count(self, cond: Optional[QueryInstance] = None) -> int:
+        """
+        Count how many docs are in the db. Extends :class:`tinydb.table.Table.count`.
+
+        A :class:`~yawning_titan.db.query.YawningTitanQuery` can be used to
+        filter the count.
+
+        :param cond: An optional :class:`~yawning_titan.db.query.YawningTitanQuery`.
+            Has a default value of ``None``.
+        :return: The number of docs counted.
+        """
+        if cond:
+            return self.db.count(cond)
+        return len(self.db.all())
+
+    def all(self) -> List[Document]:
+        """A wrapper for :func:`tinydb.table.Table.all`."""
+        return self.db.all()
+
+    def get(self, uuid: str) -> Union[Document, None]:
+        """
+        Get a doc from its uuid.
+
+        :param uuid: A uuid.
+        :return: The matching doc if it exists, otherwise ``None``.
+        :raise: :class:`~yawning_titan.exceptions.YawningTitanDBCriticalError`
+            when the search returns multiple docs with the same uuid.
+        """
+        results = self.db.search(DocMetadataSchema.UUID == uuid)
+        if results:
+            if len(results) == 1:
+                return results[0]
+            else:
+                msg = (
+                    f"Get from the {self._name} db with uuid='{uuid}' aborted as multiple docs with the uuid "
+                    f"exist. The '{self._path}' db file is corrupted."
+                )
+                try:
+                    raise YawningTitanDBCriticalError(msg)
+                except YawningTitanDBCriticalError as e:
+                    _LOGGER.critical(msg, exc_info=True)
+                    raise e
+
+    def search(self, cond: QueryInstance) -> List[Document]:
+        """A wrapper for :func:`tinydb.table.Table.search`."""
+        return self.db.search(cond)
+
     def insert(
         self,
         doc: Mapping,
@@ -137,7 +181,7 @@ class YawningTitanDB(ABC):
         else:
             # Check for existing uuid entry
             uuid = doc["_doc_metadata"]["uuid"]
-            if self.get_uuid(uuid):
+            if self.get(uuid):
                 msg = (
                     f"Failed to insert doc into the {self._name} db with uuid='{uuid}' as one already exists. "
                     f"The '{self._path}' db file is corrupted."
@@ -154,44 +198,8 @@ class YawningTitanDB(ABC):
                 f"Doc inserted into the {self._name} db with uuid='{uuid}' was inserted as locked."
             )
         self.db.insert(doc)
-        return self.get_uuid(doc["_doc_metadata"]["uuid"])
+        return self.get(doc["_doc_metadata"]["uuid"])
 
-    @abstractmethod
-    def all(self) -> List[Document]:
-        """A wrapper for :func:`tinydb.table.Table.all`."""
-        return self.db.all()
-
-
-    def get_uuid(self, uuid: str) -> Union[Document, None]:
-        """
-        Get a doc from its uuid.
-
-        :param uuid: A uuid.
-        :return: The matching doc if it exists, otherwise ``None``.
-        :raise: :class:`~yawning_titan.exceptions.YawningTitanDBCriticalError`
-            when the search returns multiple docs with the same uuid.
-        """
-        results = self.db.search(DocMetadataSchema.UUID == uuid)
-        if results:
-            if len(results) == 1:
-                return results[0]
-            else:
-                msg = (
-                    f"Get from the {self._name} db with uuid='{uuid}' aborted as multiple docs with the uuid "
-                    f"exist. The '{self._path}' db file is corrupted."
-                )
-                try:
-                    raise YawningTitanDBCriticalError(msg)
-                except YawningTitanDBCriticalError as e:
-                    _LOGGER.critical(msg, exc_info=True)
-                    raise e
-
-    @abstractmethod
-    def search(self, cond: QueryInstance) -> List[Document]:
-        """A wrapper for :func:`tinydb.table.Table.search`."""
-        return self.db.search(cond)
-
-    @abstractmethod
     def update(
         self,
         doc: Mapping,
@@ -216,20 +224,19 @@ class YawningTitanDB(ABC):
         :raise: :class:`~yawning_titan.exceptions.YawningTitanDBError` if
             the doc is locked.
         """
-        existing_doc = self.get_uuid(uuid)
+        existing_doc = self.get(uuid)
         if existing_doc and self.is_locked(existing_doc):
             msg = f"Cannot update doc with uuid='{uuid}' in the {self._name} db as it is locked for editing."
+            _LOGGER.error(msg)
             try:
                 raise YawningTitanDBError(msg)
             except YawningTitanDBError as e:
-                _LOGGER.info(msg, exc_info=True)
                 raise e
         self._update_doc_metadata(doc, name, description, author)
         self._update_doc_updated_at_datetime(doc)
         self.db.update(doc, cond=DocMetadataSchema.UUID == uuid)
-        return self.get_uuid(uuid)
+        return self.get(uuid)
 
-    @abstractmethod
     def upsert(
         self,
         doc: Mapping,
@@ -255,7 +262,7 @@ class YawningTitanDB(ABC):
         :param author: The docs author.
         :return: The updated doc.
         """
-        existing_doc = self.get_uuid(uuid)
+        existing_doc = self.get(uuid)
         if existing_doc:
             # Attempt to update
             return self.update(doc, uuid, name, description, author)
@@ -263,19 +270,20 @@ class YawningTitanDB(ABC):
             # Insert
             return self.insert(doc, name, description, author)
 
-    @abstractmethod
     def remove_by_cond(self, cond: QueryInstance) -> List[str]:
-        """An abstract :func:`tinydb.table.Table.remove` method."""
+        """
+        Remove documents that match a query.
+
+        :param cond: A:class:`~yawning_titan.db.query.YawningTitanQuery`.
+        :return: The list of uuids from documents removed.
+        """
         results = self.search(cond)
         removed_uuids = []
         for doc in results:
-            try:
-                uuid = doc["_doc_metadata"]["uuid"]
-                removed_uuid = self.remove(uuid)
-                if removed_uuid:
-                    removed_uuids.append(removed_uuid)
-            except YawningTitanDBError:
-                pass
+            uuid = doc["_doc_metadata"]["uuid"]
+            removed_uuid = self.remove(uuid)
+            if removed_uuid:
+                removed_uuids.append(removed_uuid)
         return removed_uuids
 
     def remove(self, uuid: str) -> Union[str, None]:
@@ -310,10 +318,10 @@ class YawningTitanDB(ABC):
                             f"Aborted removal of doc with uuid='{uuid}' from the {self._name} db as it is locked "
                             f"for removal."
                         )
+                        _LOGGER.error(msg)
                         try:
                             raise YawningTitanDBError(msg)
                         except YawningTitanDBError as e:
-                            _LOGGER.info(msg, exc_info=True)
                             raise e
                 self.db.remove(cond=DocMetadataSchema.UUID == uuid)
                 return uuid

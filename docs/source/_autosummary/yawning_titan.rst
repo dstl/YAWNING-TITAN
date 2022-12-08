@@ -52,4 +52,5 @@ yawning\_titan
    yawning_titan.exceptions
    yawning_titan.experiment_helpers
    yawning_titan.integrations
+   yawning_titan.network
    yawning_titan.notebooks

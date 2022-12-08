@@ -20,7 +20,7 @@ class ConfigABC(ABC):
     method with predefined logic.
     """
 
-    def to_dict(self) -> Dict:
+    def to_dict(self, include_none: bool = True) -> Dict:
         """
         Serializes a :class:`ConfigABC <yawning_titan.config.game_config.config_abc.ConfigABC>` as a :py:class:`dict`.
 
@@ -30,13 +30,19 @@ class ConfigABC(ABC):
         attribute has its underscore prefix removed before the key and value
         is added to a dict and returned.
 
+        :param include_none: Determines whether to include empty fields in the dict. Has a default
+            value of ``True``.
         :returns: The :class:`ConfigABC <yawning_titan.config.game_config.config_abc.ConfigABC>` as a :py:class:`dict`.
         """
         d = {}
         for k, v in self.__dict__.items():
             if k.startswith("_") and k != "_doc_metadata":
                 k = k[1:]
-            d[k] = v
+            if not include_none:
+                if v is not None:
+                    d[k] = v
+            else:
+                d[k] = v
         return d
 
     @classmethod

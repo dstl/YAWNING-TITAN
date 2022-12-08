@@ -56,8 +56,8 @@ from gym import spaces
 
 from yawning_titan.agents.nsa_red import NSARed
 from yawning_titan.envs.generic.helpers.graph2plot import CustomEnvGraph
-from yawning_titan.envs.generic.helpers.network_creator import create_18_node_network
 from yawning_titan.envs.specific.core.nsa_node_collection import NodeCollection
+from yawning_titan.network.network_creator import create_18_node_network
 
 logger = logging.getLogger(__name__)
 

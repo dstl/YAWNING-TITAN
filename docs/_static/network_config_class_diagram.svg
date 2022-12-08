@@ -28,7 +28,7 @@
       ><text x="160" font-size="14px" y="33.9375" clip-path="url(#clipPath2)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
       >NetworkConfig</text
       ><text x="48" font-size="14px" y="49.9062" clip-path="url(#clipPath2)" font-family="sans-serif" stroke="none" xml:space="preserve"
-      >yawning_titan.config.network_config.network_config</text
+      >yawning_titan.network.network_config</text
       ><path fill="none" d="M1 55.9062 L419 55.9062" clip-path="url(#clipPath2)"
       /><text x="5" font-size="14px" y="70.875" clip-path="url(#clipPath2)" font-family="sans-serif" stroke="none" xml:space="preserve"
       >+ matrix: numpy.array</text

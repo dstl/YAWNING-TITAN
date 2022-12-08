@@ -1,4 +1,4 @@
-﻿..
+..
     Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
 ..
 tests.unit\_tests.db.test\_yawning\_titan\_db
@@ -19,6 +19,7 @@ tests.unit\_tests.db.test\_yawning\_titan\_db
       :nosignatures:
 
       test_all
+      test_count
       test_get
       test_get_with_uuid_multiple_fails
       test_insert_existing_uuid_fails

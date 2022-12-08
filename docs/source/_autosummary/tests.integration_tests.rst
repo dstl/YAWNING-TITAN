@@ -29,5 +29,5 @@ tests.integration\_tests
    :template: custom-module-template.rst
    :recursive:
 
-   tests.integration_tests.test_network_db
-   tests.integration_tests.test_yawning_titan_db_yawning_titan_query
+   tests.integration_tests.db
+   tests.integration_tests.network

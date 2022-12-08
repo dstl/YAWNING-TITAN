@@ -6,6 +6,7 @@ extend-ignore =
     D100
     D104
     E203
+    E712
     D401
 exclude =
     docs/source/_autosummary

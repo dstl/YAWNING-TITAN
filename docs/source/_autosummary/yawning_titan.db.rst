@@ -30,6 +30,5 @@ yawning\_titan.db
    :recursive:
 
    yawning_titan.db.doc_metadata
-   yawning_titan.db.network
    yawning_titan.db.query
    yawning_titan.db.yawning_titan_db

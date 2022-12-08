@@ -34,7 +34,7 @@ _/+ validate(Dict[str, Any])/_
     </coordinates>
     <panel_attributes>@dataclass()
 *NetworkConfig*
-yawning_titan.config.network_config.network_config
+yawning_titan.network.network_config
 --
 + matrix: numpy.array
 + positions: Dict[str, List[str]]
