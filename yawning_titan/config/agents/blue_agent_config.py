@@ -91,27 +91,27 @@ class BlueAgentConfig(ConfigABC):
         return self._can_discover_failed_attacks
 
     @property
-    def chance_to_immediately_discover_intrusion(self) -> int:
+    def chance_to_immediately_discover_intrusion(self) -> float:
         """Chance for blue to discover a node that red has compromised the instant red compromises the node."""
         return self._chance_to_immediately_discover_intrusion
 
     @property
-    def chance_to_discover_intrusion_on_scan(self) -> int:
+    def chance_to_discover_intrusion_on_scan(self) -> float:
         """When blue performs the scan action this is the chance that a red intrusion is discovered."""
         return self._chance_to_discover_intrusion_on_scan
 
     @property
-    def chance_to_immediately_discover_intrusion_deceptive_node(self) -> int:
+    def chance_to_immediately_discover_intrusion_deceptive_node(self) -> float:
         """Chance for blue to discover a deceptive node that red has compromised the instant it is compromised."""
         return self._chance_to_immediately_discover_intrusion_deceptive_node
 
     @property
-    def chance_to_discover_intrusion_on_scan_deceptive_node(self) -> int:
+    def chance_to_discover_intrusion_on_scan_deceptive_node(self) -> float:
         """When blue uses the scan action what is the chance that blue will detect an intrusion in a deceptive node."""
         return self._chance_to_discover_intrusion_on_scan_deceptive_node
 
     @property
-    def chance_to_discover_failed_attack(self) -> int:
+    def chance_to_discover_failed_attack(self) -> float:
         """Chance for blue to discover information about a failed attack."""
         return self._chance_to_discover_failed_attack
 
@@ -126,22 +126,22 @@ class BlueAgentConfig(ConfigABC):
         return self._can_discover_succeeded_attacks_if_compromise_is_not_discovered
 
     @property
-    def chance_to_discover_succeeded_attack_compromise_known(self) -> int:
+    def chance_to_discover_succeeded_attack_compromise_known(self) -> float:
         """Chance for blue to discover information about an attack that succeeded and the compromise was known."""
         return self._chance_to_discover_succeeded_attack_compromise_known
 
     @property
-    def chance_to_discover_succeeded_attack_compromise_not_known(self) -> int:
+    def chance_to_discover_succeeded_attack_compromise_not_known(self) -> float:
         """Chance for blue to discover information about an attack that succeeded and the compromise was NOT known."""
         return self._chance_to_discover_succeeded_attack_compromise_not_known
 
     @property
-    def chance_to_discover_failed_attack_deceptive_node(self) -> int:
+    def chance_to_discover_failed_attack_deceptive_node(self) -> float:
         """Chance to discover the location of a failed attack on a deceptive node."""
         return self._chance_to_discover_failed_attack_deceptive_node
 
     @property
-    def chance_to_discover_succeeded_attack_deceptive_node(self) -> int:
+    def chance_to_discover_succeeded_attack_deceptive_node(self) -> float:
         """Chance to discover the location of a succeeded attack against a deceptive node."""
         return self._chance_to_discover_succeeded_attack_deceptive_node
 
@@ -166,37 +166,37 @@ class BlueAgentConfig(ConfigABC):
         return self._blue_uses_reduce_vulnerability
 
     @property
-    def blue_uses_restore_node(self):
+    def blue_uses_restore_node(self) -> bool:
         """Blue picks a node and restores everything about the node to its starting state."""
         return self._blue_uses_restore_node
 
     @property
-    def blue_uses_make_node_safe(self):
+    def blue_uses_make_node_safe(self) -> bool:
         """Blue fixes a node but does not restore it to its initial state."""
         return self._blue_uses_make_node_safe
 
     @property
-    def blue_uses_scan(self):
+    def blue_uses_scan(self) -> bool:
         """Blue scans all the nodes to try and detect any red intrusions."""
         return self._blue_uses_scan
 
     @property
-    def blue_uses_isolate_node(self):
+    def blue_uses_isolate_node(self) -> bool:
         """Blue disables all the connections to and from a node."""
         return self._blue_uses_isolate_node
 
     @property
-    def blue_uses_reconnect_node(self):
+    def blue_uses_reconnect_node(self) -> bool:
         """Blue re-connects all the connections to and from a node."""
         return self._blue_uses_reconnect_node
 
     @property
-    def blue_uses_do_nothing(self):
+    def blue_uses_do_nothing(self) -> bool:
         """Blue agent does nothing."""
         return self._blue_uses_do_nothing
 
     @property
-    def blue_uses_deceptive_nodes(self):
+    def blue_uses_deceptive_nodes(self) -> bool:
         """
         Blue agent can place down deceptive nodes.
 
