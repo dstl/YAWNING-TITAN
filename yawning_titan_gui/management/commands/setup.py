@@ -7,8 +7,9 @@ class Command(BaseCommand):
     """
     Command for setting up directories necessary for yawning titan operation with front end.
 
-    Examples:
-        >>> python manage.py setup
+    :Example:
+
+    >>> python manage.py setup
     """
 
     help = "Copy yawning_titan gui dependencies to `DATA_DIR`"

@@ -27,12 +27,10 @@ from yawning_titan_gui.forms import (
 def game_mode_path(game_mode_filename: str) -> str:
     """
     Generate path for game mode file.
-    
-    Args:
-        game_mode_filename: A string filename (including extension) of a game mode file in the `GAME_MODES_DIR`
 
-    Returns:
-        a string representation of the full path to the `game_mode_filename`
+    :param game_mode_filename: A string filename (including extension) of a game mode file in the `GAME_MODES_DIR`
+
+    :return: a string representation of the full path to the `game_mode_filename`
     """
     return (GAME_MODES_DIR / game_mode_filename).as_posix()
 
@@ -41,11 +39,9 @@ def check_game_mode(game_mode_path: Path) -> bool:
     """
     Check that a game mode path can construct a valid GameModeConfig object.
     
-    Args: 
-        game_mode_path: A pathlib `Path` object representing a Yawning Titan game mode
+    :param: game_mode_path: A pathlib `Path` object representing a Yawning Titan game mode
     
-    Returns:
-        a boolean True/False value indicating whether the game mode passes the validation checks in `GameModeConfig`
+    :return: a boolean True/False value indicating whether the game mode passes the validation checks in `GameModeConfig`
     """
     try:
         GameModeConfig.create_from_yaml(game_mode_path)
@@ -58,11 +54,9 @@ def get_game_mode_file_paths(valid_only=False) -> List[Path]:
     """
     Select all game modes in the `GAME_MODES_DIR` matching criteria.
 
-    Args:
-        valid_only: whether to return only those game modes that pass the `GameModeConfig` validation check
+    :param: valid_only: whether to return only those game modes that pass the `GameModeConfig` validation check
 
-    Returns:
-        a list of file Path objects representing game modes.
+    :return: a list of file Path objects representing game modes.
     """
     game_modes = [
         g for g in GAME_MODES_DIR.iterdir() if g.stem != "everything_off_config"
@@ -79,12 +73,10 @@ def next_key(_dict: dict, key: int) -> Any:
     Use key_index + 1 if there is a subsequent key
     otherwise return first key.
 
-    Args:
-        _dict: a dictionary object
-        key: the current key
+    :param: _dict: a dictionary object
+    :param: key: the current key
 
-    Returns:
-        the subsequent key in the dictionary after `key`
+    :return: the subsequent key in the dictionary after `key`
     """
     keys = list(_dict.keys())
     key_index = keys.index(key)
@@ -100,13 +92,13 @@ def uniquify(path: Path) -> Path:
     Transforms the input `Path` object by iteratively adding numerals to the end
     of the filename until the proposed path does not exist.
 
-    Returns:
-        The transformed path object.
+    :return: The transformed path object.
 
-    Examples:
-        >>>test.txt -> exists
-        >>>test(1).txt -> exists
-        >>>test(2).txt -> new path
+    :Example:
+
+    >>>test.txt -> exists
+    >>>test(1).txt -> exists
+    >>>test(2).txt -> new path
     """
     filename = path.stem
     extension = path.suffix
@@ -151,8 +143,7 @@ class HomeView(View):
         """
         Handle page get requests.
 
-        Args:
-            request: the Django page `request` object containing the html data for `home.html` and the server GET / POST request bodies.
+        :param request: the Django page `request` object containing the html data for `home.html` and the server GET / POST request bodies.
         """
         return self.render_page(request)
 
@@ -160,8 +151,7 @@ class HomeView(View):
         """
         Handle page post requests.
 
-        Args:
-            request: the Django page `request` object containing the html data for `home.html` and the server GET / POST request bodies.
+        :param request: the Django page `request` object containing the html data for `home.html` and the server GET / POST request bodies.
         """
         return self.render_page(request)
 
@@ -180,20 +170,18 @@ class DocsView(View):
         """
         Handle page get requests.
 
-        Args:
-            request: A Django `request` object that contains the data passed from
-            the html page. A `request` object will always be delivered when a page
-            object is accessed.
+        :param request: A Django `request` object that contains the data passed from
+        the html page. A `request` object will always be delivered when a page
+        object is accessed.
         """
         return render(request, "docs.html", {"sidebar": default_sidebar})
 
     def post(self, request, *args, **kwargs):
         """Handle page post requests.
 
-        Args:
-            request: A Django `request` object that contains the data passed from
-            the html page. A `request` object will always be delivered when a page
-            object is accessed.
+        :param request: A Django `request` object that contains the data passed from
+        the html page. A `request` object will always be delivered when a page
+        object is accessed.
         """
         return render(request, "docs.html", {"sidebar": default_sidebar}
         )
@@ -205,8 +193,7 @@ class GameModesView(View):
         """
         Handle page get requests.
 
-        Args:
-            request: the Django page `request` object containing the html data for `game_modes.html` and the server GET / POST request bodies.
+        :param: request: the Django page `request` object containing the html data for `game_modes.html` and the server GET / POST request bodies.
         """
         return render(
             request,
@@ -232,8 +219,7 @@ class GameModesView(View):
 
         Currently there are no POST request on the `game_modes.html` page.
 
-        Args:
-            request: the Django page `request` object containing the html data for `game_modes.html` and the server GET / POST request bodies.
+        :param request: the Django page `request` object containing the html data for `game_modes.html` and the server GET / POST request bodies.
         """
         pass
 
@@ -246,10 +232,11 @@ class GameModeConfigView(View):
         """
         Handle page get requests.
 
-        Args:
-            request: the Django page `request` object containing the html data for `game_mode_config.html` and the server GET / POST request bodies.
-            game_mode_file: a game mode filename passed within the page url parameters
-            section: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
+        :param request: the Django page `request` object containing the html data for `game_mode_config.html` and the server GET / POST request bodies.
+        :param game_mode_file: a game mode filename passed within the page url parameters
+        :param section: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
+
+        :return: Html string representing an instance of the`GameModeConfigView`
         """
         game_mode_config = defaultdict(dict)
         section = list(forms.keys())[0] if section is None else section
@@ -274,10 +261,11 @@ class GameModeConfigView(View):
         """
         Handle page post requests.
 
-        Args:
-            request: the Django page `request` object containing the html data for `game_mode_config.html` and the server GET / POST request bodies.
-            game_mode_file: a game mode filename passed within the page url parameters
-            section: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
+        :param request: the Django page `request` object containing the html data for `game_mode_config.html` and the server GET / POST request bodies.
+        :param game_mode_file: a game mode filename passed within the page url parameters
+        :param section: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
+
+        :return: Html string representing an instance of the`GameModeConfigView`
         """
         section = list(forms.keys())[0] if section is None else section
         form = forms[section]["form"](request.POST)
@@ -309,16 +297,17 @@ class GameModeConfigView(View):
         """
         Process pythonic tags in game_mode_config.html and return formatted page.
 
-        Args:
-            request: the Django page `request` object containing the html data and the server GET / POST request bodies.
-            game_mode_file: a game mode filename passed within the page url parameters
-            section: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
-            error_message: an optional error message string to be displayed in the `#error-message` html element
+        :param request: the Django page `request` object containing the html data and the server GET / POST request bodies.
+        :param game_mode_file: a game mode filename passed within the page url parameters
+        :param section: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
+        :param error_message: an optional error message string to be displayed in the `#error-message` html element
+
+        :return: Html string representing an instance of the`GameModeConfigView`
         """
         section = list(forms.keys())[0] if section is None else section
         return render(
             request,
-            "game_mode_config.html",
+            ":param:",
             {
                 "forms": forms,
                 "form": form,
@@ -341,13 +330,11 @@ def config_file_manager(request) -> JsonResponse:
     use the information to perform the appropriate alteration to the
     game mode files contained in the `GAME_MODES_DIR`.
 
-    Args:
-        request: here the django_request object will be specifically loaded with
+    :param request: here the django_request object will be specifically loaded with
         `operation`,`game_mode_name` and optional `source_game_mode` parameters.
 
-    Returns:
-        `JsonResponse` object with either success code 500 (generic success) or
-        error code 400 (generic error) containing a message.
+    :return: `JsonResponse` object with either success code 500 (generic success) or
+    error code 400 (generic error) containing a message.
     """
     if request.method == "POST":
         game_mode_name = request.POST.get("game_mode_name")
