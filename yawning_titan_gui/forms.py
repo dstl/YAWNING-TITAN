@@ -239,21 +239,21 @@ class ConfigForm(django_forms.Form):
 
 
 class RedAgentForm(ConfigForm):
-    """Representation of RedAgentConfig as html form."""
+    """Representation of :class:`~yawning_titan.config.agents.red_agent_config.RedAgentConfig` as html form."""
 
     def __init__(self, *args, **kwargs):
         super().__init__("red", red_config_form_map, RedAgentConfig, *args, **kwargs)
 
 
 class BlueAgentForm(ConfigForm):
-    """Representation of BlueAgentConfig as html form."""
+    """Representation of :class:`~yawning_titan.config.agents.blue_agent_config.BlueAgentConfig` as html form."""
 
     def __init__(self, *args, **kwargs):
         super().__init__("blue", blue_config_form_map, BlueAgentConfig, *args, **kwargs)
 
 
 class ObservationSpaceForm(ConfigForm):
-    """Representation of ObservationSpaceConfig as html form."""
+    """Representation of :class:`~yawning_titan.config.environment.observation_space_config.ObservationSpaceConfig` as html form."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(
@@ -266,14 +266,14 @@ class ObservationSpaceForm(ConfigForm):
 
 
 class ResetForm(ConfigForm):
-    """Representation of ResetConfig as html form."""
+    """Representation of :class:`~yawning_titan.config.environment.reset_config.ResetConfig` as html form."""
 
     def __init__(self, *args, **kwargs):
         super().__init__("reset", reset_config_form_map, ResetConfig, *args, **kwargs)
 
 
 class RewardsForm(ConfigForm):
-    """Representation of RewardConfig as html form."""
+    """Representation of :class:`~yawning_titan.config.environment.rewards_config.RewardsConfig` as html form."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(
@@ -282,7 +282,7 @@ class RewardsForm(ConfigForm):
 
 
 class GameRulesForm(ConfigForm):
-    """Representation of GameRulesConfig as html form."""
+    """Representation of :class:`~yawning_titan.config.environment.game_rules_config.GameRulesConfig` as html form."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(
@@ -291,7 +291,7 @@ class GameRulesForm(ConfigForm):
 
 
 class MiscellaneousForm(ConfigForm):
-    """Representation of MiscellaneousConfig as html form."""
+    """Representation of :class:`~yawning_titan.config.game_config.miscellaneous_config.MiscellaneousConfig` as html form."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(
@@ -305,16 +305,17 @@ class MiscellaneousForm(ConfigForm):
 
 def game_mode_section_form_from_default(
     gui_section_options: Dict[str, Any], section: str
-):
+)->Dict[str,Any]:
     """
     Update default game mode options with GUI inputted options.
 
     Create game mode section dictionary by updating default .yaml config file
     with settings inputted in the GUI.
 
-    Args:
-        gui_section_options: dictionary with options configured in GUI
-        section: config section to update
+    :param gui_section_options: dictionary with options configured in GUI
+    :param section: config section to update
+
+    :return: The modified section of the config as a dictionary
     """
     with open(GAME_MODES_DIR / DEFAULT_GAME_MODE) as f:
         new_settings: Dict[str, Dict[str, Any]] = yaml.load(f, Loader=SafeLoader)
@@ -334,9 +335,7 @@ def game_mode_from_form_sections(
     """
     Create a complete config yaml file from a dictionary of form sections.
 
-    Args:
-        game_mode_forms: dictionary containing django form objects representing
-        sections the config.
+    :param game_mode_forms: dictionary containing django form objects representing sections of the config.
     """
     section_configs = {
         section_name.upper(): form.cleaned_data
