@@ -17,5 +17,3 @@ DEFAULT_GAME_MODE: Final[Path] = "everything_off_config.yaml"
 
 STATIC_DIR: Final[Union[Path, PosixPath]] = _static_dir()
 """The path to the app static directory as an instance of `Path` or `PosixPath`, depending on the OS."""
-
-print("S",STATIC_DIR)
