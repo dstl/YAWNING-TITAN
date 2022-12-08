@@ -1,4 +1,4 @@
-﻿..
+..
     Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
 ..
 yawning\_titan.db.yawning\_titan\_db.YawningTitanDB
@@ -20,6 +20,7 @@ yawning\_titan.db.yawning\_titan\_db.YawningTitanDB
       :nosignatures:
 
       ~YawningTitanDB.all
+      ~YawningTitanDB.count
       ~YawningTitanDB.get
       ~YawningTitanDB.insert
       ~YawningTitanDB.is_locked

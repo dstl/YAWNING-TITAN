@@ -33,6 +33,5 @@ yawning\_titan.db.query.YawningTitanQuery
       ~YawningTitanQuery.matches
       ~YawningTitanQuery.noop
       ~YawningTitanQuery.one_of
-      ~YawningTitanQuery.out
       ~YawningTitanQuery.search
       ~YawningTitanQuery.test

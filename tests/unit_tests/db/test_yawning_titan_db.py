@@ -33,12 +33,12 @@ def test_all(demo_db_docs):
 
 @pytest.mark.unit_test
 def test_get(demo_db_docs):
-    """Test the YawningTitanDB.insert and YawningTitanDB.get functions."""
+    """Test the awningTitanDB.get function."""
     with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
         db = DemoDB("test")
         item = demo_db_docs[0]
         doc = db.insert(item)
-        results = db.get_uuid(doc["_doc_metadata"]["uuid"])
+        results = db.get(doc["_doc_metadata"]["uuid"])
 
         db.close_and_delete_temp_db()
 
@@ -47,7 +47,7 @@ def test_get(demo_db_docs):
 
 @pytest.mark.unit_test
 def test_search(demo_db_docs):
-    """Test the YawningTitanDB.insert and YawningTitanDB.get functions."""
+    """Test the YawningTitanDB.search function."""
     with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
         db = DemoDB("test")
         item = demo_db_docs[0]
@@ -58,6 +58,20 @@ def test_search(demo_db_docs):
         db.close_and_delete_temp_db()
 
         assert results == [item]
+
+
+@pytest.mark.unit_test
+def test_count(demo_db_docs):
+    """Test the YawningTitanDB.count function."""
+    with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
+        db = DemoDB("test")
+        for item in demo_db_docs:
+            db.insert(item)
+        count = db.count()
+
+        db.close_and_delete_temp_db()
+
+        assert count == len(demo_db_docs)
 
 
 @pytest.mark.unit_test
@@ -93,7 +107,7 @@ def test_get_with_uuid_multiple_fails(demo_db_docs):
         item_2["_doc_metadata"]["uuid"] = uuid
         db.update(item_2, item_2_original_uuid)
         with pytest.raises(YawningTitanDBCriticalError):
-            db.get_uuid(uuid)
+            db.get(uuid)
 
     db.close_and_delete_temp_db()
 
@@ -108,7 +122,7 @@ def test_update(demo_db_docs):
         updated_item = deepcopy(item)
         updated_item["age"] = 30
         db.update(doc=updated_item, uuid=updated_item["_doc_metadata"]["uuid"])
-        result = db.get_uuid(updated_item["_doc_metadata"]["uuid"])
+        result = db.get(updated_item["_doc_metadata"]["uuid"])
         db.close_and_delete_temp_db()
 
         assert result["_doc_metadata"]["uuid"] == item["_doc_metadata"]["uuid"]
@@ -133,7 +147,7 @@ def test_update_metadata(demo_db_docs):
             description="A description of Johns file",
             author="Jane Doe",
         )
-        result = db.get_uuid(item["_doc_metadata"]["uuid"])
+        result = db.get(item["_doc_metadata"]["uuid"])
 
         db.close_and_delete_temp_db()
 
@@ -192,7 +206,7 @@ def test_upsert_update(demo_db_docs):
         updated_item = deepcopy(item)
         updated_item["age"] = 30
         db.upsert(doc=updated_item, uuid=updated_item["_doc_metadata"]["uuid"])
-        result = db.get_uuid(updated_item["_doc_metadata"]["uuid"])
+        result = db.get(updated_item["_doc_metadata"]["uuid"])
 
         db.close_and_delete_temp_db()
 

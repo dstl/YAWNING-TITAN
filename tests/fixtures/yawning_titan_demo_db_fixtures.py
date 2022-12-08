@@ -39,7 +39,15 @@ def demo_db_docs() -> List[Dict[str, Union[str, int, List[str]]]]:
             "forename": "John",
             "surname": "Smith",
             "age": 264,
-            "hobbies": ["Barley", "Hops", "Water"],
+            "hobbies": [
+                "Water",
+                "Malted Barley",
+                "Glucose Syrup",
+                "Barley",
+                "Hops",
+                "Hop Extract",
+                "Nitrogen",
+            ],
             "_doc_metadata": DocMetadata(locked=True).to_dict(),
         },
     ]
@@ -78,9 +86,9 @@ class DemoDB(YawningTitanDB):
         """Get all docs."""
         return super().all()
 
-    def get_uuid(self, uuid: str) -> Union[Document, None]:
+    def get(self, uuid: str) -> Union[Document, None]:
         """Get a dog from its uuid."""
-        return super().get_uuid(uuid)
+        return super().get(uuid)
 
     def search(self, query: QueryInstance) -> List[Document]:
         """Search for docs using Query."""

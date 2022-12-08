@@ -38,14 +38,14 @@ The NetworkDB and NetworkSchema classes
 ***************************************
 
 The :class:`~yawning_titan.db.network.NetworkDB` class, used for inserting, querying, updating, and deleting
-instances of :class:`~yawning_titan.config.network_config.NetworkConfig`, extends
+instances of :class:`~yawning_titan.network.network_config.NetworkConfig`, extends
 :class:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB`. It implements the required
 :func:`~yawning_titan.db.network.NetworkDB.__init__`,
 :func:`~yawning_titan.db.network.NetworkDB.insert`,
 :func:`~yawning_titan.db.network.NetworkDB.all`,
 :func:`~yawning_titan.db.network.NetworkDB.get`, and
 :func:`~yawning_titan.db.network.NetworkDB.search` methods, with the return types overridden to return
-:class:`~yawning_titan.config.network_config.network_config.NetworkConfig`.
+:class:`~yawning_titan.network.network_config.NetworkConfig`.
 The :class:`~yawning_titan.db.network.NetworkDB` class is writes to a `network.json` file at:
 
 - **Linux** - `~/.local/share/yawning_titan/db/network.json`
@@ -57,14 +57,14 @@ First, we must instantiate the :class:`~yawning_titan.db.network.NetworkDB` with
 
 .. code:: python
 
-    from yawning_titan.db.network import NetworkDB
+    from yawning_titan.network.network_db import NetworkDB
     db = NetworkDB()
 
 Next, we have the option to query the db with either the standard :class:`tinydb.queries.Query` class, the extended
 :class:`~yawning_titan.db.query.YawningTitanQuery` class, or by using the network config specific
 :class:`~yawning_titan.db.network.NetworkSchema` class. Here we will use :class:`~yawning_titan.db.network.NetworkSchema`.
 The :class:`~yawning_titan.db.network.NetworkSchema` class has an attribute mapped to each attribute of
-:class:`~yawning_titan.config.network_config.NetworkConfig` as an instance of :class:`~yawning_titan.db.query.YawningTitanQuery`.
+:class:`~yawning_titan.network.network_config.NetworkConfig` as an instance of :class:`~yawning_titan.db.query.YawningTitanQuery`.
 This gives direct access to the specific field within the :class:`~tinydb.database.TinyDB` db file.
 
 The following code blocks demonstrate how to use combinations of the :class:`~yawning_titan.db.network.NetworkSchema`

@@ -11,7 +11,7 @@ from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
-from yawning_titan.envs.generic.helpers import network_creator
+from yawning_titan.network import network_creator
 
 settings_path = "game_modes/default_game_mode.yaml"
 

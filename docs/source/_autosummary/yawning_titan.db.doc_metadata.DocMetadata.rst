@@ -20,6 +20,7 @@ yawning\_titan.db.doc\_metadata.DocMetadata
       :nosignatures:
 
       ~DocMetadata.to_dict
+      ~DocMetadata.update
 
 
 
