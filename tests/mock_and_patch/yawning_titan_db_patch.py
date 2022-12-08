@@ -1,5 +1,4 @@
 """Provides a patch to the YawningTitanDB."""
-import os
 import tempfile
 from typing import Final
 
@@ -18,13 +17,11 @@ def yawning_titan_db_init_patch(self, name: str):
     the patched class.
     """
     self._name: Final[str] = name
-    self._temp_file = tempfile.TemporaryFile(suffix=".json", mode="w").name
-    self._path = str(self._temp_file)
+    self._path = tempfile.NamedTemporaryFile(suffix=".json", mode="w", delete=True).name
 
     self._db = TinyDB(self._path)
 
     def _close_and_delete_temp_db():
         self._db.close()
-        os.unlink(self._temp_file)
 
     self.close_and_delete_temp_db = _close_and_delete_temp_db
