@@ -24,13 +24,29 @@ from yawning_titan_gui.forms import (
 )
 
 
-def game_mode_path(game_mode_filename: str):
-    """Generate path for game mode file."""
+def game_mode_path(game_mode_filename: str) -> str:
+    """
+    Generate path for game mode file.
+    
+    Args:
+        game_mode_filename: A string filename (including extension) of a game mode file in the `GAME_MODES_DIR`
+
+    Returns:
+        a string representation of the full path to the `game_mode_filename`
+    """
     return (GAME_MODES_DIR / game_mode_filename).as_posix()
 
 
 def check_game_mode(game_mode_path: Path) -> bool:
-    """Check that a game mode path can construct a valid GameModeConfig object."""
+    """
+    Check that a game mode path can construct a valid GameModeConfig object.
+    
+    Args: 
+        game_mode_path: A pathlib `Path` object representing a Yawning Titan game mode
+    
+    Returns:
+        a boolean True/False value indicating whether the game mode passes the validation checks in `GameModeConfig`
+    """
     try:
         GameModeConfig.create_from_yaml(game_mode_path)
         return True
