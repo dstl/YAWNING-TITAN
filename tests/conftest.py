@@ -19,8 +19,8 @@ from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
-from yawning_titan.network import network_creator
-from yawning_titan.network.network_config import NetworkConfig
+from yawning_titan.networks import network_creator
+from yawning_titan.networks.network import Network
 
 
 @pytest.fixture
@@ -82,7 +82,7 @@ def init_test_env():
         Returns:
             env: An OpenAI gym environment
         """
-        network = NetworkConfig(
+        network = Network(
             matrix=adj_matrix,
             positions=positions,
             entry_nodes=entry_nodes,
@@ -141,10 +141,10 @@ def generate_generic_env_test_reqs(init_test_env):
 
         if net_creator_type == "18node":
             adj_matrix, node_positions = network_creator.create_18_node_network()
-        if net_creator_type == "mesh":
-            adj_matrix, node_positions = network_creator.create_mesh(
-                size=n_nodes, connectivity=connectivity
-            )
+        # if net_creator_type == "mesh":
+        #     adj_matrix, node_positions = network_creator.create_mesh(
+        #         size=n_nodes, connectivity=connectivity
+        #     )
 
         env = init_test_env(
             settings_path, adj_matrix, node_positions, entry_nodes, high_value_nodes

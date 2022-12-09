@@ -14,7 +14,7 @@ _LOGGER = getLogger(__name__)
 
 
 @dataclass()
-class NetworkConfig(ConfigABC):
+class Network(ConfigABC):
     """Class that validates and stores Network Configuration."""
 
     matrix: ndarray
@@ -56,13 +56,13 @@ class NetworkConfig(ConfigABC):
         self, json_serializable: bool = False, include_none: bool = True
     ) -> Dict:
         """
-        Serialize the :class:`~yawning_titan.network.network_config.NetworkConfig` as a :py:class:`dict`.
+        Serialize the :class:`~yawning_titan.networks.network.Network` as a :py:class:`dict`.
 
-        :param json_serializable: If ``True``, the :attr:`~yawning_titan.network.network_config.NetworkConfig`
+        :param json_serializable: If ``True``, the :attr:`~yawning_titan.networks.network.Network`
             "d numpy array is converted to a list."
         :param include_none: Determines whether to include empty fields in the dict. Has a default
             value of ``True``.
-        :return: The :class:`~yawning_titan.network.network_config.NetworkConfig` as a :py:class:`dict`.
+        :return: The :class:`~yawning_titan.networks.network.Network` as a :py:class:`dict`.
         """
         config_dict = super().to_dict(include_none=include_none)
         if json_serializable:
@@ -72,18 +72,18 @@ class NetworkConfig(ConfigABC):
         return config_dict
 
     @classmethod
-    def create(cls, config_dict: Dict[str, Any]) -> NetworkConfig:
+    def create(cls, config_dict: Dict[str, Any]) -> Network:
         """
-        Create and return an instance of :class:`~yawning_titan.network.network_config.NetworkConfig`.
+        Create and return an instance of :class:`~yawning_titan.networks.network.Network`.
 
         :param config_dict: The network config dict.
-        :returns: An instance of :class:`~yawning_titan.network.network_config.NetworkConfig`.
+        :returns: An instance of :class:`~yawning_titan.networks.network.Network`.
         """
         cls.validate(config_dict)
 
-        network_config = NetworkConfig(**config_dict)
+        network = Network(**config_dict)
 
-        return network_config
+        return network
 
     @classmethod
     def validate(cls, config_dict: Dict[str, Any]):

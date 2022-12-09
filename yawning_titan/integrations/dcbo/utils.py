@@ -9,7 +9,7 @@ from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.integrations.dcbo.dcbo_agent import DCBOAgent
-from yawning_titan.network import network_creator
+from yawning_titan.networks import network_creator
 
 BASE_DIR = Path(__file__).resolve().parent
 

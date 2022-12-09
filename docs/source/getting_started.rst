@@ -83,7 +83,7 @@ to create generic OpenAI ``Gym`` based network environments and requires the fol
   between both red and blue agents and the underlying environment.
   :class:`~yawning_titan.envs.generic.core.network_interface.NetworkInterface` takes an instance of both
   :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig` and
-  :class:`~yawning_titan.network.network_config.NetworkConfig`.
+  :class:`~yawning_titan.networks.network.Network`.
 * A Red agent as an instance of :class:`~yawning_titan.envs.generic.core.red_interface.RedInterface`. Within **YT**,
   these are represented as :term:probabilistic and can be configured using :class:`~yawning_titan.config.agents.red_agent_config.RedAgentConfig`
   which is a part of the :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig`.
@@ -93,7 +93,7 @@ to create generic OpenAI ``Gym`` based network environments and requires the fol
 
 
 .. note::
-    **YT** contains a network creator helper module (:mod:`~from yawning_titan.network.network_creator`) which
+    **YT** contains a network creator helper module (:mod:`~from yawning_titan.networks.network_creator`) which
     generates both the adjacency matrix and the dictionary of points. It wraps ``Networkx``'s standard functions such as star and mesh.
     We will demonstrate the use of this later in this Getting Started guide.
 
@@ -120,7 +120,7 @@ looks likes this.
 
 **YT**'s :class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv` is highly configurable. The main way that
 you can affect and change the environment is through changes to the config classes,
-:class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig` and :class:`~yawning_titan.network.network_config.NetworkConfig`.
+:class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig` and :class:`~yawning_titan.networks.network.Network`.
 
 The classes utilise Python :py:func:`dataclasses.dataclass` for automatic ``__hash__``, ``__eq__``,
 ``__repr__``, and ``__dict__`` methods, but still use traditional OOP getters and setters to enable docstrings to be
@@ -163,46 +163,46 @@ using the :func:`~yawning_titan.config.game_modes.default_game_mode_path`:
     be able to save their own :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig`, and query
     then load them from the db.
 
-Creating a :class:`~yawning_titan.network.network_config.NetworkConfig`
+Creating a :class:`~yawning_titan.networks.network.Network`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The :class:`~yawning_titan.network.network_config.NetworkConfig` class serves as the main config class for
-the network. As a minimum, the :class:`~yawning_titan.network.network_config.NetworkConfig` takes a 2D
+The :class:`~yawning_titan.networks.network.Network` class serves as the main config class for
+the network. As a minimum, the :class:`~yawning_titan.networks.network.Network` takes a 2D
 adjacency matrix as an instance of :external:py:class:`numpy.array <numpy.core._multiarray_umath.ndarray>`, and a
 :py:class:`dict` of point locations (used to render the network). An optional :py:class:`list` of entry nodes,
 :py:class:`dict` of vulnerabilities, and :py:class:`list` of high_value_nodes can also be supplied.
 
-**YT** provides several built-in functions to create networks based of standard topologies. These include:
+**YT** provides several built-in functions to create network based of standard topologies. These include:
 
-* :func:`~from yawning_titan.network.network_creator.create_18_node_network`
+* :func:`~from yawning_titan.networks.network_creator.create_18_node_network`
     Creates the 18-node network for the research paper: `Ridley, A. (2017) <https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9>`_.
-* :func:`~from yawning_titan.network.network_creator.create_mesh`
+* :func:`~from yawning_titan.networks.network_creator.create_mesh`
     Creates a mesh network with variable connectivity.
-* :func:`~from yawning_titan.network.network_creator.create_star`
+* :func:`~from yawning_titan.networks.network_creator.create_star`
     Creates a network based on the star topology.
-* :func:`~from yawning_titan.network.network_creator.create_p2p`
+* :func:`~from yawning_titan.networks.network_creator.create_p2p`
     Creates a network based on two "peers" connecting.
-* :func:`~from yawning_titan.network.network_creator.create ring`
+* :func:`~from yawning_titan.networks.network_creator.create ring`
     Creates a network based on the ring topology.
-* :func:`~from yawning_titan.network.network_creator.custom_network`
+* :func:`~from yawning_titan.networks.network_creator.custom_network`
     Creates a network using console input from the user.
-* :func:`~from yawning_titan.network.network_creator.procedural_network`
+* :func:`~from yawning_titan.networks.network_creator.procedural_network`
     Creates a network with defined amounts of nodes with certain connectivity.
-* :func:`~from yawning_titan.network.network_creator.gnp_random_connected_graph`
+* :func:`~from yawning_titan.networks.network_creator.gnp_random_connected_graph`
     Creates a mesh that is guaranteed for each node to have at least one connection.
 
-The following code block demonstrates how to instantiate a :class:`~yawning_titan.network.network_config.NetworkConfig`
-using the :func:`~from yawning_titan.network.network_creator.create_18_node_network`, with nodes 1, 2, and 3 as
+The following code block demonstrates how to instantiate a :class:`~yawning_titan.networks.network.Network`
+using the :func:`~from yawning_titan.networks.network_creator.create_18_node_network`, with nodes 1, 2, and 3 as
 entry nodes, and nodes 5, 10, and 15 as high-value nodes.
 
 .. code:: python
 
-    from yawning_titan.network import network_creator
-    from yawning_titan.network.network_config import NetworkConfig
+    from yawning_titan.networks import network_creator
+    from yawning_titan.networks.network import Network
 
     matrix, node_positions = network_creator.create_18_node_network()
 
-    network_config = NetworkConfig.create_from_args(
+    network = Network.create_from_args(
         matrix=matrix,
         positions=node_positions,
         entry_nodes=["0", "1", "2"],
@@ -211,7 +211,7 @@ entry nodes, and nodes 5, 10, and 15 as high-value nodes.
 
 .. note::
 
-    In the next release of **YT**, users will be able to save their custom instances of :class:`~yawning_titan.network.network_config.NetworkConfig`
+    In the next release of **YT**, users will be able to save their custom instances of :class:`~yawning_titan.networks.network.Network`
     in the lightweight document database `TinyDB <https://tinydb.readthedocs.io/en/latest/>`_, and query and then load them
     from the db.
 
@@ -223,17 +223,17 @@ Creating the :class:`~yawning_titan.envs.generic.core.network_interface.NetworkI
 The :class:`~yawning_titan.envs.generic.core.network_interface.NetworkInterface` is the primary interface between both
 the :class:`~yawning_titan.envs.generic.core.red_interface.RedInterface` and
 :class:`~yawning_titan.envs.generic.core.blue_interface.BlueInterface`, and the
-:class:`~yawning_titan.network.network_config.NetworkConfig`.
+:class:`~yawning_titan.networks.network.Network`.
 
 The following code block demonstrates how to instantiate a :class:`~yawning_titan.envs.generic.core.network_interface.NetworkInterface`
 using the :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig` and
-:class:`~yawning_titan.network.network_config.NetworkConfig` we created in the previous steps:
+:class:`~yawning_titan.networks.network.Network` we created in the previous steps:
 
 .. code:: python
 
     from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 
-    network_interface = NetworkInterface(game_mode=game_mode_config, network=network_config)
+    network_interface = NetworkInterface(game_mode=game_mode_config, network=network)
 
 
 Settings up the :class:`~yawning_titan.envs.generic.core.red_interface.RedInterface` and :class:`~yawning_titan.envs.generic.core.blue_interface.BlueInterface`
