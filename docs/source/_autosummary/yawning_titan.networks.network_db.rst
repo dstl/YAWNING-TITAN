@@ -1,16 +1,24 @@
 ..
     Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
 ..
-yawning\_titan.network.network\_db
-==================================
+yawning\_titan.networks.network\_db
+===================================
 
-.. automodule:: yawning_titan.network.network_db
-
-
+.. automodule:: yawning_titan.networks.network_db
 
 
 
 
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+
+      default_18_node_network
 
 
 

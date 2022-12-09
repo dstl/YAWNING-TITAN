@@ -3,24 +3,24 @@ import warnings
 import numpy as np
 import pytest
 
-from yawning_titan.network import network_creator
-from yawning_titan.network.network_config import NetworkConfig
+from yawning_titan.networks import network_creator
+from yawning_titan.networks.network import Network
 
 
 def test_config_properties():
-    """Tests creation of `NetworkConfig`."""
+    """Tests creation of `Network`."""
     matrix, node_positions = network_creator.create_18_node_network()
-    network_config = NetworkConfig(
+    network = Network(
         matrix=matrix,
         positions=node_positions,
         entry_nodes=["0"],
         high_value_nodes=["1"],
     )
 
-    assert np.array_equal(network_config.matrix, matrix) is True
-    assert network_config.positions == node_positions
-    assert network_config.entry_nodes[0] == "0"
-    assert network_config.high_value_nodes[0] == "1"
+    assert np.array_equal(network.matrix, matrix) is True
+    assert network.positions == node_positions
+    assert network.entry_nodes[0] == "0"
+    assert network.high_value_nodes[0] == "1"
 
 
 @pytest.mark.skip(
@@ -32,7 +32,7 @@ def test_hvn_entry_node_matching():
     """Tests when high value node is also an entry node."""
     with warnings.catch_warnings(record=True) as w:
         matrix, node_positions = network_creator.create_18_node_network()
-        NetworkConfig(
+        Network(
             matrix=matrix,
             positions=node_positions,
             entry_nodes=["0"],

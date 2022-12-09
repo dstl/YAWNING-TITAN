@@ -37,6 +37,16 @@ class YawningTitanDB:
             _LOGGER.info(f"New TinyDB .json file created: {self._path}")
         self._db = TinyDB(self._path)
 
+    def __enter__(self, name: str):
+        return YawningTitanDB(name)
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
+    def close(self):
+        """Close the db."""
+        self.db.close()
+
     def _db_file_exist(self) -> bool:
         """
         Check whether the :class:`~tinydb.database.TinyDB` .json file exists.
@@ -133,6 +143,7 @@ class YawningTitanDB:
             when the search returns multiple docs with the same uuid.
         """
         results = self.db.search(DocMetadataSchema.UUID == uuid)
+        self.db.clear_cache()
         if results:
             if len(results) == 1:
                 return results[0]
@@ -149,7 +160,9 @@ class YawningTitanDB:
 
     def search(self, cond: QueryInstance) -> List[Document]:
         """A wrapper for :func:`tinydb.table.Table.search`."""
-        return self.db.search(cond)
+        results = self.db.search(cond)
+        self.db.clear_cache()
+        return results
 
     def insert(
         self,

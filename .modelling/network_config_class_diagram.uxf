@@ -33,8 +33,8 @@ _/+ validate(Dict[str, Any])/_
       <h>290</h>
     </coordinates>
     <panel_attributes>@dataclass()
-*NetworkConfig*
-yawning_titan.network.network_config
+*Network*
+yawning_titan.networks.network
 --
 + matrix: numpy.array
 + positions: Dict[str, List[str]]
@@ -49,7 +49,7 @@ _- create(config_dict: Dict[str, Any]): NetworkConfig_
       entry_nodes: Optional[List[str]],
       entry_nodes: Optional[List[str]],
       high_value_nodes: Optional[List[str]]
-  ): NetworkConfig
+  ): Network
 _+ validate(Dict[str, Any])_</panel_attributes>
     <additional_attributes/>
   </element>

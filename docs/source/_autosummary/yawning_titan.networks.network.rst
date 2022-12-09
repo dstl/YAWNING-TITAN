@@ -1,10 +1,10 @@
 ..
     Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
 ..
-yawning\_titan.network.network\_config
-======================================
+yawning\_titan.networks.network
+===============================
 
-.. automodule:: yawning_titan.network.network_config
+.. automodule:: yawning_titan.networks.network
 
 
 
@@ -23,4 +23,4 @@ yawning\_titan.network.network\_config
       :template: custom-class-template.rst
       :nosignatures:
 
-      NetworkConfig
+      Network

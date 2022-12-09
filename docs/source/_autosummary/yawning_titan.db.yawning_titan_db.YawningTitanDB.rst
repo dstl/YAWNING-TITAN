@@ -20,6 +20,7 @@ yawning\_titan.db.yawning\_titan\_db.YawningTitanDB
       :nosignatures:
 
       ~YawningTitanDB.all
+      ~YawningTitanDB.close
       ~YawningTitanDB.count
       ~YawningTitanDB.get
       ~YawningTitanDB.insert

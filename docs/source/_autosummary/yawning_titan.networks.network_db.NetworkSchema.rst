@@ -1,10 +1,10 @@
 ..
     Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
 ..
-yawning\_titan.network.network\_db.NetworkSchema
-================================================
+yawning\_titan.networks.network\_db.NetworkSchema
+=================================================
 
-.. currentmodule:: yawning_titan.network.network_db
+.. currentmodule:: yawning_titan.networks.network_db
 
 .. autoclass:: NetworkSchema
    :members:

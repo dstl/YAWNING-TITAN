@@ -21,7 +21,7 @@ class YawningTitanQuery(Query):
 
         :Example:
 
-        >>> from yawning_titan.network.network_db import NetworkDB
+        >>> from yawning_titan.networks.network_db import NetworkDB
         >>> from yawning_titan.db.query import YawningTitanQuery
         >>> db = NetworkDB()
         >>> db.search(YawningTitanQuery.matrix.len_eq(18)))
@@ -47,7 +47,7 @@ class YawningTitanQuery(Query):
 
         :Example:
 
-        >>> from yawning_titan.network.network_db import NetworkDB
+        >>> from yawning_titan.networks.network_db import NetworkDB
         >>> from yawning_titan.db.query import YawningTitanQuery
         >>> db = NetworkDB()
         >>> db.search(YawningTitanQuery.matrix.len_lt(18)))
@@ -73,7 +73,7 @@ class YawningTitanQuery(Query):
 
         :Example:
 
-        >>> from yawning_titan.network.network_db import NetworkDB
+        >>> from yawning_titan.networks.network_db import NetworkDB
         >>> from yawning_titan.db.query import YawningTitanQuery
         >>> db = NetworkDB()
         >>> db.search(YawningTitanQuery.matrix.len_le(18)))
@@ -99,7 +99,7 @@ class YawningTitanQuery(Query):
 
         :Example:
 
-        >>> from yawning_titan.network.network_db import NetworkDB
+        >>> from yawning_titan.networks.network_db import NetworkDB
         >>> from yawning_titan.db.query import YawningTitanQuery
         >>> db = NetworkDB()
         >>> db.search(YawningTitanQuery.matrix.len_gt(18)))
@@ -125,7 +125,7 @@ class YawningTitanQuery(Query):
 
         :Example:
 
-        >>> from yawning_titan.network.network_db import NetworkDB
+        >>> from yawning_titan.networks.network_db import NetworkDB
         >>> from yawning_titan.db.query import YawningTitanQuery
         >>> db = NetworkDB()
         >>> db.search(YawningTitanQuery.matrix.len_ge(18)))

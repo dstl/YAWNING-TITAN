@@ -8,7 +8,7 @@ from tests.mock_and_patch.yawning_titan_db_patch import yawning_titan_db_init_pa
 from yawning_titan.db.doc_metadata import DocMetadataSchema
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
 from yawning_titan.exceptions import YawningTitanDBError
-from yawning_titan.network.network_db import NetworkDB
+from yawning_titan.networks.network_db import NetworkDB
 
 
 @pytest.mark.integration_test
@@ -51,7 +51,7 @@ def test_reset_default_networks():
             DocMetadataSchema.UUID == config.doc_metadata.uuid,
         )
 
-        # Perform the default networks reset
+        # Perform the default network reset
         db.reset_default_networks_in_db()
 
         expected = [config.to_dict(json_serializable=True) for config in configs]

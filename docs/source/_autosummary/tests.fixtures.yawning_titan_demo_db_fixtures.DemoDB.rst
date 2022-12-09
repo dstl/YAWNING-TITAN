@@ -20,6 +20,7 @@ tests.fixtures.yawning\_titan\_demo\_db\_fixtures.DemoDB
       :nosignatures:
 
       ~DemoDB.all
+      ~DemoDB.close
       ~DemoDB.count
       ~DemoDB.get
       ~DemoDB.insert
