@@ -92,6 +92,8 @@ def uniquify(path: Path) -> Path:
     Transforms the input `Path` object by iteratively adding numerals to the end
     of the filename until the proposed path does not exist.
 
+    :param path: a `pathlib.Path` object to convert to a unique path
+
     :return: The transformed path object.
 
     :Example:
