@@ -327,7 +327,7 @@ class BlueAgentConfig(ConfigABC):
     @classmethod
     def create(cls, config_dict: Dict[str, Any]) -> BlueAgentConfig:
         """
-        Creates an instance of :class: `~yawning_titan.config.agents.red_agent_config.BlueAgentConfig`
+        Creates an instance of :class: `~yawning_titan.config.agents.red_agent_config.BlueAgentConfig`.
 
         This calls :func: `~yawning_titan.config.agents.red_agent_config.BlueAgentConfig.validate`.
 

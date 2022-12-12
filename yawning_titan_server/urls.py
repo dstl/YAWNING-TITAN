@@ -1,17 +1,17 @@
-from django.urls import path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.urls import path
 
 from yawning_titan_gui.views import (
+    DocsView,
     GameModeConfigView,
     GameModesView,
     HomeView,
-    DocsView,
     config_file_manager,
 )
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
-    path("docs/",DocsView.as_view(),name="docs"),
+    path("docs/", DocsView.as_view(), name="docs"),
     path("game_modes/", GameModesView.as_view(), name="Manage game modes"),
     path(
         "game_mode_config/<str:game_mode_file>/",

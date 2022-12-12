@@ -76,10 +76,13 @@ class GameModeConfig:
     @classmethod
     def create(cls, config_dict: Dict[str, Dict[str, Any]]) -> GameModeConfig:
         """
-        Creates an instance of `GameModeConfig` after calling.
+        Creates an instance of :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>.
 
-        Args:
-            config_dict: A config dict with the required key/values pairs.
+        This calls :func:`validate() <yawning_titan.config.game_config.game_mode_config.GameModeConfig.validate>.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+
+        :return: An instance of :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>.
         """
         return GameModeConfig(
             _red=RedAgentConfig.create(config_dict["RED"]),

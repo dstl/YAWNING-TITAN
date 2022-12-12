@@ -46,10 +46,13 @@ class MiscellaneousConfig(ConfigABC):
     @classmethod
     def create(cls, config_dict: Dict[str, Any]) -> MiscellaneousConfig:
         """
-        Creates an instance of `MiscellaneousConfig` after calling `.validate`.
+        Creates an instance of :class:`MiscellaneousConfig <yawning_titan.config.game_config.miscellaneous_config.MiscellaneousConfig>.
 
-        Args:
-            config_dict: A config dict with the required key/values pairs.
+        This calls :func:`validate() <yawning_titan.config.game_config.miscellaneous_config.MiscellaneousConfig.validate>.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+
+        :return: An instance of :class:`MiscellaneousConfig <yawning_titan.config.game_config.miscellaneous_config.MiscellaneousConfig>.
         """
         cls._validate(config_dict)
 

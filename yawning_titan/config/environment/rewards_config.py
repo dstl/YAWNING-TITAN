@@ -95,10 +95,13 @@ class RewardsConfig(ConfigABC):
     @classmethod
     def create(cls, config_dict: Dict[str, Any]) -> RewardsConfig:
         """
-        Creates an instance of `RewardsConfig` after calling `.validate`.
+        Creates an instance of :class:`RewardsConfig <yawning_titan.config.environment.rewards_config.RewardsConfig>.
 
-        Args:
-            config_dict: A config dict with the required key/values pairs.
+        This calls :func:`validate() <yawning_titan.config.environment.rewards_config.RewardsConfig.validate>.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+
+        :return: An instance of :class:`RewardsConfig <yawning_titan.config.environment.rewards_config.RewardsConfig>.
         """
         cls._validate(config_dict)
 

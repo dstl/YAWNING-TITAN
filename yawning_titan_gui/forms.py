@@ -229,7 +229,7 @@ class ConfigForm(django_forms.Form):
         Overrides the `django_forms` `is_valid` method to add checks for field values dependent
         on other fields.
 
-        :return: A bool value True if the form meets the validation criteria and produces a valid 
+        :return: A bool value True if the form meets the validation criteria and produces a valid
             :class: `~yawning_titan.config.game_config.config_abc.ConfigABC`
         """
         fields_valid = super().is_valid()
@@ -313,7 +313,7 @@ class MiscellaneousForm(ConfigForm):
 
 def game_mode_section_form_from_default(
     gui_section_options: Dict[str, Any], section: str
-)->Dict[str,Any]:
+) -> Dict[str, Any]:
     """
     Update default game mode options with GUI inputted options.
 

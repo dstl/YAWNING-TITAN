@@ -199,10 +199,13 @@ class GameRulesConfig(ConfigABC):
     @classmethod
     def create(cls, config_dict: Dict[str, Any]) -> GameRulesConfig:
         """
-        Creates an instance of `GameRulesConfig` after calling `.validate`.
+        Creates an instance of :class:`GameRulesConfig <yawning_titan.config.environment.game_rules_config.GameRulesConfig>.
 
-        Args:
-            config_dict: A config dict with the required key/values pairs.
+        This calls :func:`validate() <yawning_titan.config.environment.game_rules_config.GameRulesConfig.validate>.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+
+        :return: An instance of :class:`GameRulesConfig <yawning_titan.config.environment.game_rules_config.GameRulesConfig>.
         """
         cls._validate(config_dict)
 

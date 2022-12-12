@@ -50,10 +50,13 @@ class ResetConfig(ConfigABC):
     @classmethod
     def create(cls, config_dict: Dict[str, Any]) -> ResetConfig:
         """
-        Creates an instance of `ResetConfig` after calling `.validate`.
+        Creates an instance of :class:`ResetConfig <yawning_titan.config.environment.reset_config.ResetConfig>.
 
-        Args:
-            config_dict: A config dict with the required key/values pairs.
+        This calls :func:`validate() <yawning_titan.config.environment.reset_config.ResetConfig.validate>.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+
+        :return: An instance of :class:`ResetConfig <yawning_titan.config.environment.reset_config.ResetConfig>.
         """
         cls._validate(config_dict)
 
