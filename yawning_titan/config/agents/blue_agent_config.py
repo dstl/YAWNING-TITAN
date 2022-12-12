@@ -329,7 +329,7 @@ class BlueAgentConfig(ConfigABC):
         Args:
             config_dict: A config dict with the required key/values pairs.
         """
-        cls._validate(config_dict)
+        cls.validate(config_dict)
         blue_agent_config = BlueAgentConfig(
             _max_number_deceptive_nodes=config_dict["max_number_deceptive_nodes"],
             _can_discover_failed_attacks=config_dict["can_discover_failed_attacks"],
