@@ -7,13 +7,18 @@ YAWNING-TITAN (**YT**) comes packages with a lightweight document database (See:
 The YawningTitanDB class
 ************************
 
-An abstract base class, :class:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB`, exists that
-provides abstract :func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.__init__`,
+An base class, :class:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB`, exists that
+provides extended TinyDB functions :func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.__init__`,
 :func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.insert`,
+:func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.update`,
+:func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.upsert`,
 :func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.all`,
-:func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.get`, and
-:func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.search` methods. All abstract methods provides have
-some default logic that calls their :class:`~tinydb.database.TinyDB` counterpart. Methods have been defined as
+:func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.get`,
+:func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.search`,
+:func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.count`,
+:func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.remove`, and
+:func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.close`, methods. All methods provided have either direct
+calls to their their :class:`~tinydb.database.TinyDB` counterpart, or some custom **YT** login before the call. Methods have been defined as
 abstract methods to force sub-classes of :class:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB` to
 implement them. If functionality does not change, the implementations of the abstract methods can simple
 call ``super()`` to trigger the default logic.
@@ -34,17 +39,24 @@ The :class:`~yawning_titan.db.query.YawningTitanQuery` extends :class:`tinydb.qu
 :func:`~yawning_titan.db.query.YawningTitanQuery.len_ge`, :func:`~yawning_titan.db.query.YawningTitanQuery.len_lt`,
 and :func:`~yawning_titan.db.query.YawningTitanQuery.len_le` functions to test the length of a field.
 
+.. _network-db-network-schema-classes:
+
 The NetworkDB and NetworkSchema classes
 ***************************************
 
 The :class:`~yawning_titan.db.network.NetworkDB` class, used for inserting, querying, updating, and deleting
-instances of :class:`~yawning_titan.networks.network.Network`, extends
-:class:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB`. It implements the required
-:func:`~yawning_titan.db.network.NetworkDB.__init__`,
+instances of :class:`~yawning_titan.networks.network.Network`, relies upon
+:class:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB` at
+:attr:`NetworkDB._db<yawning_titan.networks.network_db.NetworkDB._db>`. It wraps the
+:class:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB` functions,
 :func:`~yawning_titan.db.network.NetworkDB.insert`,
+:func:`~yawning_titan.db.network.NetworkDB.update`,
+:func:`~yawning_titan.db.network.NetworkDB.upsert`,
 :func:`~yawning_titan.db.network.NetworkDB.all`,
-:func:`~yawning_titan.db.network.NetworkDB.get`, and
-:func:`~yawning_titan.db.network.NetworkDB.search` methods, with the return types overridden to return
+:func:`~yawning_titan.db.network.NetworkDB.get`,
+:func:`~yawning_titan.db.network.NetworkDB.search`,
+:func:`~yawning_titan.db.network.NetworkDB.count`,
+:func:`~yawning_titan.db.network.NetworkDB.remove`, with the return types overridden to return
 :class:`~yawning_titan.networks.network.Network`.
 The :class:`~yawning_titan.db.network.NetworkDB` class is writes to a `network.json` file at:
 
@@ -90,3 +102,18 @@ class to build a :class:`~tinydb.queries.Query` chain to query the :class:`~yawn
 .. code:: python
 
     results = db.search(NetworkSchema.ENTRY_NODES.len_ge(3))
+
+The :class:`~yawning_titan.db.network.NetworkDB` comes pre-packaged with default network functions:
+- :func:`~yawning_titan.networks.network_db.default_18_node_network`
+
+There networks are stored in a 'backup' `yawning_titan/networks/_package_data/network.json` db file.
+If the default networks become corrupted, they can be reset using the
+:func:`~yawning_titan.networks.network_db.NetworkDB.reset_default_networks_in_db` function.
+
+As a last resort, the entire db can be rebuilt using the :func:`~yawning_titan.networks.network_db.NetworkDB.rebuild_db`
+function.
+
+.. warning::
+
+        This function completely rebuilds the database. Any custom networks
+        saved in the db will be lost.

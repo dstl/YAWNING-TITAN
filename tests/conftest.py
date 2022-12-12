@@ -141,10 +141,10 @@ def generate_generic_env_test_reqs(init_test_env):
 
         if net_creator_type == "18node":
             adj_matrix, node_positions = network_creator.create_18_node_network()
-        # if net_creator_type == "mesh":
-        #     adj_matrix, node_positions = network_creator.create_mesh(
-        #         size=n_nodes, connectivity=connectivity
-        #     )
+        if net_creator_type == "mesh":
+            adj_matrix, node_positions = network_creator.create_mesh(
+                size=n_nodes, connectivity=connectivity
+            )
 
         env = init_test_env(
             settings_path, adj_matrix, node_positions, entry_nodes, high_value_nodes

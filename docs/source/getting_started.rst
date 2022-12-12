@@ -156,6 +156,12 @@ using the :func:`~yawning_titan.config.game_modes.default_game_mode_path`:
 
     game_mode_config = GameModeConfig.create_from_yaml(default_game_mode_path())
 
+.. note::
+
+    In the next release of **YT**, users will be able to save their custom instances of
+    :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig` similar to :class:`~yawning_titan.networks.network_db.NetworkDB`.
+
+
 .. warning::
     :func:`~yawning_titan.config.game_modes.default_game_mode_path` is being deprecated in the next release of **YT**.
     Rather than being stored in yaml format, instances of :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig`
@@ -191,30 +197,22 @@ adjacency matrix as an instance of :external:py:class:`numpy.array <numpy.core._
 * :func:`~from yawning_titan.networks.network_creator.gnp_random_connected_graph`
     Creates a mesh that is guaranteed for each node to have at least one connection.
 
+In addition to this, **YT** provides a database, :class:`~yawning_titan.networks.network_db.NetworkDB`, that can be
+used to query, insert, update, and delete custom networks so they can be re-used at a later date. See
+:ref:`The NetworkDB and NetworkSchema classes<_network-db-network-schema-classes>` for full details of the db.
+
 The following code block demonstrates how to instantiate a :class:`~yawning_titan.networks.network.Network`
-using the :func:`~from yawning_titan.networks.network_creator.create_18_node_network`, with nodes 1, 2, and 3 as
+using the :func:`~yawning_titan.networks.network_db.default_18_node_network`, with nodes 1, 2, and 3 as
 entry nodes, and nodes 5, 10, and 15 as high-value nodes.
 
 .. code:: python
 
-    from yawning_titan.networks import network_creator
     from yawning_titan.networks.network import Network
+    from yawning_titan.networks.network_db import default_18_node_network
 
-    matrix, node_positions = network_creator.create_18_node_network()
-
-    network = Network.create_from_args(
-        matrix=matrix,
-        positions=node_positions,
-        entry_nodes=["0", "1", "2"],
-        high_value_nodes=["5", "10", "15"]
-    )
-
-.. note::
-
-    In the next release of **YT**, users will be able to save their custom instances of :class:`~yawning_titan.networks.network.Network`
-    in the lightweight document database `TinyDB <https://tinydb.readthedocs.io/en/latest/>`_, and query and then load them
-    from the db.
-
+    network = default_18_node_network()
+    network.entry_nodes = ["0", "1", "2"]
+    network.high_value_nodes = ["5", "10", "15"]
 
 
 Creating the :class:`~yawning_titan.envs.generic.core.network_interface.NetworkInterface`
