@@ -279,4 +279,3 @@ def config_file_manager(request) -> JsonResponse:
 
         return JsonResponse({"message:": "SUCCESS"})
     return JsonResponse({"message:": "FAILED"}, status=400)
-#
