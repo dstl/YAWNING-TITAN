@@ -318,6 +318,13 @@ class NetworkDB:
             - clear the query cache
             - truncate the db
             - call :func:`~yawning_titan.networks.network_db.NetworkDB.reset_default_networks_in_db`
+
+        .. warning::
+
+                This function completely rebuilds the database. Any custom networks
+                saved in the db will be lost. The default networks can be reset
+                using the :func:`~yawning_titan.networks.network_db.NetworkDB.reset_default_networks_in_db`
+                function.
         """
         _LOGGER.info(f"Rebuilding the {self._db.name} db.")
         self._db.db.clear_cache()
