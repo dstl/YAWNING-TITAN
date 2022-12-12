@@ -138,6 +138,11 @@ class ConfigForm(django_forms.Form):
     - Represent integer inputs as number input fields
     - Represent boolean inputs as styled checkboxes
     - Represent elements that are mutually exclusive as dropdowns
+
+    :param section: The string name of a config section in the Yawning Titan config
+    :param config_form_map: A dictionary representing the structure of the config form
+    :param ConfigClass: An instance of :class: `~yawning_titan.config.game_config.config_abc.ConfigABC` representing a
+        section of the Yawning Titan config
     """
 
     def __init__(
@@ -223,6 +228,9 @@ class ConfigForm(django_forms.Form):
 
         Overrides the `django_forms` `is_valid` method to add checks for field values dependent
         on other fields.
+
+        :return: A bool value True if the form meets the validation criteria and produces a valid 
+            :class: `~yawning_titan.config.game_config.config_abc.ConfigABC`
         """
         fields_valid = super().is_valid()
         try:
@@ -336,6 +344,8 @@ def game_mode_from_form_sections(
     Create a complete config yaml file from a dictionary of form sections.
 
     :param game_mode_forms: dictionary containing django form objects representing sections of the config.
+
+    :return: a valid instance of :class: `~yawning_titan.config.game_config.game_mode_config.GameModeConfig`
     """
     section_configs = {
         section_name.upper(): form.cleaned_data

@@ -11,14 +11,12 @@ register = template.Library()
 
 # Filter tags
 @register.filter(is_safe=True)
-def js(obj):
+def js(obj:Any):
     """Return argument in javascript markup.
 
-    Args:
-        obj: An object to be converted to json format.
+    :param obj: An object to be converted to json format.
 
-    Returns:
-        Json formatted representation of `obj`
+    :return: Json formatted representation of `obj`
     """
     return mark_safe(json.dumps(obj))
 
@@ -27,22 +25,27 @@ def js(obj):
 def to_id(value: str):
     """Replaces spaces with dashes in string argument to form html formatted id.
 
-    Args:
-        value: A string value to be converted to an standard format html id.
+    :param value: A string value to be converted to an standard format html id.
 
-    Returns:
-        The original string with spaces replaced with '-'.
+    :return: The original string with spaces replaced with '-'.
 
-    Examples:
-        >>{{'my object a'|to_id}}
-        >>my-object-a
+    :Example::
+
+    >>>{{'my object a'|to_id}}
+    >>>my-object-a
     """
     return value.replace(" ", "-")
 
 
 @register.filter
-def length(obj: Any):
-    """Return the length of an object."""
+def length(obj: Any)->int:
+    """
+    Return the length of an object.
+
+    :param obj: An object of unknown length
+
+    :return: The length of `obj`
+    """
     return len(obj)
 
 

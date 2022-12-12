@@ -171,8 +171,8 @@ class DocsView(View):
         Handle page get requests.
 
         :param request: A Django `request` object that contains the data passed from
-        the html page. A `request` object will always be delivered when a page
-        object is accessed.
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
         """
         return render(request, "docs.html", {"sidebar": default_sidebar})
 
@@ -180,8 +180,8 @@ class DocsView(View):
         """Handle page post requests.
 
         :param request: A Django `request` object that contains the data passed from
-        the html page. A `request` object will always be delivered when a page
-        object is accessed.
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
         """
         return render(request, "docs.html", {"sidebar": default_sidebar}
         )
@@ -334,7 +334,7 @@ def config_file_manager(request) -> JsonResponse:
         `operation`,`game_mode_name` and optional `source_game_mode` parameters.
 
     :return: `JsonResponse` object with either success code 500 (generic success) or
-    error code 400 (generic error) containing a message.
+        error code 400 (generic error) containing a message.
     """
     if request.method == "POST":
         game_mode_name = request.POST.get("game_mode_name")
