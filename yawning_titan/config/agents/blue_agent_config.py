@@ -392,7 +392,7 @@ class BlueAgentConfig(ConfigABC):
         return blue_agent_config
 
     @classmethod
-    def _validate(cls, config_dict: dict):
+    def validate(cls, config_dict: dict):
         # data is int or float
         for name in [
             "chance_to_immediately_discover_intrusion",
