@@ -393,6 +393,11 @@ class BlueAgentConfig(ConfigABC):
 
     @classmethod
     def validate(cls, config_dict: dict):
+        """
+        Validates the blue agent config dict.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+        """
         # data is int or float
         for name in [
             "chance_to_immediately_discover_intrusion",
