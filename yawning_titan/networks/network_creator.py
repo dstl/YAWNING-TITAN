@@ -55,10 +55,12 @@ def save_network(network_name: str, adj_matrix: np.array, positions: dict):
     """
     Save a network in a text file so that it can be used multiple times.
 
-    Args:
-        network_name: The name of the network
-        adj_matrix: The adjacency matrix for the network
-        positions: A dictionary of node positions
+    :param network_name: The name of the network.
+    :param adj_matrix: The adjacency matrix for the network.
+    :param positions: A dictionary of node positions.
+
+    .. warning::
+        Deprecated and will be removed in a future version.
 
     """
     # generates a save string
@@ -87,12 +89,13 @@ def load_network(network_name: str) -> Tuple[np.array, dict]:
     """
     Load a saved network so that it can be used by the generic network environment.
 
-    Args:
-        network_name: The name of the network
+    :param network_name: The name of the network.
 
-    Returns:
-        The adjacency matrix
-        A position dictionary for all the nodes
+    :returns: The adjacency matrix. A position dictionary for all the nodes.
+
+    .. warning::
+        Deprecated and will be removed in a future version.
+
     """
     # loads the file where the data is saved
     with open(network_name, "r") as file:
