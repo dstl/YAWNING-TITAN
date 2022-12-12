@@ -19,9 +19,9 @@ def game_mode_path(game_mode_filename: str) -> str:
 def check_game_mode(game_mode_path: Path) -> bool:
     """
     Check that a game mode path can construct a valid GameModeConfig object.
-    
+
     :param: game_mode_path: A pathlib `Path` object representing a Yawning Titan game mode
-    
+
     :return: a boolean True/False value indicating whether the game mode passes the validation checks in `GameModeConfig`
     """
     try:

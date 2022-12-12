@@ -111,10 +111,13 @@ class ObservationSpaceConfig(ConfigABC):
     @classmethod
     def create(cls, config_dict: Dict[str, Any]) -> ObservationSpaceConfig:
         """
-        Creates an instance of `ObservationSpaceConfig` after calling `.validate`.
+        Creates an instance of :class:`ObservationSpaceConfig <yawning_titan.config.environment.observation_space_config.ObservationSpaceConfig>.
 
-        Args:
-            config_dict: A config dict with the required key/values pairs.
+        This calls :func:`validate() <yawning_titan.config.environment.observation_space_config.ObservationSpaceConfig.validate>.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+
+        :return: An instance of :class:`ObservationSpaceConfig <yawning_titan.config.environment.observation_space_config.ObservationSpaceConfig>.
         """
         cls._validate(config_dict)
 

@@ -11,7 +11,7 @@ register = template.Library()
 
 # Filter tags
 @register.filter(is_safe=True)
-def js(obj:Any):
+def js(obj: Any):
     """Return argument in javascript markup.
 
     :param obj: An object to be converted to json format.
@@ -38,7 +38,7 @@ def to_id(value: str):
 
 
 @register.filter
-def length(obj: Any)->int:
+def length(obj: Any) -> int:
     """
     Return the length of an object.
 

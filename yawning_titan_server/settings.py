@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
-from yawning_titan import DATA_DIR
 from yawning_titan_gui import STATIC_DIR
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

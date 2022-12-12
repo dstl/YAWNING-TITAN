@@ -1,7 +1,7 @@
 import shutil
 from collections import defaultdict
 from pathlib import Path
-from typing import Any, List, Optional
+from typing import Optional
 
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
@@ -22,9 +22,13 @@ from yawning_titan_gui.forms import (
     game_mode_from_form_sections,
     subsection_labels,
 )
-from yawning_titan_gui.helpers import check_game_mode, game_mode_path, get_game_mode_file_paths, next_key, uniquify
-
-
+from yawning_titan_gui.helpers import (
+    check_game_mode,
+    game_mode_path,
+    get_game_mode_file_paths,
+    next_key,
+    uniquify,
+)
 
 default_sidebar = {
     "Documentation": ["Getting started", "Tutorials", "How to configure", "Code"],
@@ -74,6 +78,7 @@ class HomeView(View):
         """Process pythonic tags in home.html and return formatted page."""
         return render(request, "home.html", {"sidebar": default_sidebar})
 
+
 class DocsView(View):
     """
     Django representation of home.html.
@@ -98,8 +103,8 @@ class DocsView(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        return render(request, "docs.html", {"sidebar": default_sidebar}
-        )
+        return render(request, "docs.html", {"sidebar": default_sidebar})
+
 
 class GameModesView(View):
     """Django page template for game mode management."""
@@ -137,6 +142,7 @@ class GameModesView(View):
         :param request: the Django page `request` object containing the html data for `game_modes.html` and the server GET / POST request bodies.
         """
         pass
+
 
 class GameModeConfigView(View):
     """Django page template for game mode creation and editing."""
@@ -273,3 +279,4 @@ def config_file_manager(request) -> JsonResponse:
 
         return JsonResponse({"message:": "SUCCESS"})
     return JsonResponse({"message:": "FAILED"}, status=400)
+#

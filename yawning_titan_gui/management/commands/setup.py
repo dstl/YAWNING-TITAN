@@ -18,7 +18,7 @@ class Command(BaseCommand):
         """Method that is fired on execution of the command in the terminal."""
         print("Running setup...")
 
-        from yawning_titan_gui import STATIC_DIR, _YT_GUI_ROOT_DIR
+        from yawning_titan_gui import _YT_GUI_ROOT_DIR, STATIC_DIR
 
         # Creates the static ui files copy in the data directory
         shutil.copytree(
