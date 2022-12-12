@@ -56,7 +56,9 @@ RED:
   # The amount of 'progress' that need to have passed before the red agent gains a zero day attack
   days_required_for_zero_day: 4
 
-  # CHOOSE ONE OF THE FOLLOWING 5 ITEMS
+  # CHOOSE ONE OF THE FOLLOWING 6 ITEMS
+  # Red targets a specific node
+  red_target_node:
   # Red picks nodes to attack at random
   red_chooses_target_at_random: True
   # Red targets a specific node
@@ -185,6 +187,8 @@ BLUE:
   relocating_deceptive_nodes_generates_a_new_node: True
 
 GAME_RULES:
+  # Minimum number of nodes the network this game mode is allowed to run on
+  min_number_of_network_nodes: 6
   # A lower vulnerability means that a node is less likely to be compromised
   node_vulnerability_lower_bound: 0.2
   # A higher vulnerability means that a node is more vulnerable
@@ -199,6 +203,8 @@ GAME_RULES:
   percentage_of_nodes_compromised_equals_loss: 0.8
   # Blue loses if a special 'high value' node it lost (a node picked in the environment)
   lose_when_high_value_node_lost: True
+  # Blue loses if a target node it lost
+  lose_when_target_node_lost: False
   # If no high value nodes are supplied, how many should be chosen
   number_of_high_value_nodes: 1
   # The high value node is picked at random
@@ -214,8 +220,7 @@ GAME_RULES:
   prefer_edge_nodes_for_entry_nodes: False
   # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
   grace_period_length: 0
-  # Blue loses if a target node it lost
-  lose_when_target_node_lost: False
+  
 
 RESET:
   randomise_vulnerabilities_on_reset: False
