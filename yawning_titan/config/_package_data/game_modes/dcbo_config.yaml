@@ -57,8 +57,6 @@ RED:
   days_required_for_zero_day: 4
 
   # CHOOSE ONE OF THE FOLLOWING 6 ITEMS
-  # Red targets a specific node
-  red_target_node:
   # Red picks nodes to attack at random
   red_chooses_target_at_random: True
   # Red targets a specific node
@@ -220,7 +218,7 @@ GAME_RULES:
   prefer_edge_nodes_for_entry_nodes: False
   # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
   grace_period_length: 0
-  
+
 
 RESET:
   randomise_vulnerabilities_on_reset: False
