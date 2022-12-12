@@ -53,7 +53,7 @@ RED:
   days_required_for_zero_day: 10
 
 
-  # CHOOSE ONE OF THE FOLLOWING 5 ITEMS
+  # CHOOSE ONE OF THE FOLLOWING 6 ITEMS
   # Red picks nodes to attack at random
   red_chooses_target_at_random: False
   # Red targets a specific node
