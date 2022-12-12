@@ -189,7 +189,7 @@ class GameModeConfigView(View):
         :return: Html string representing an instance of the`GameModeConfigView`
         """
         section = list(forms.keys())[0] if section is None else section
-        form = forms[section]["form"](request.POST)
+        form: ConfigForm = forms[section]["form"](request.POST)
 
         if form.is_valid():
             completed_game_modes[game_mode_file][section] = form
