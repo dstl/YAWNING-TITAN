@@ -39,6 +39,7 @@ def _create_app_dirs():
         app_dirs.append(_YT_USER_DIRS / "game_modes")
         app_dirs.append(_YT_USER_DIRS / "images")
         app_dirs.append(_YT_USER_DIRS / "agents")
+        app_dirs.append(_YT_USER_DIRS / "agents" / "logs" / "tensorboard")
 
         for app_dir in app_dirs:
             app_dir.mkdir(parents=True, exist_ok=True)
@@ -146,8 +147,8 @@ setup(
     maintainer_email="oss@dstl.gov.uk",
     url="https://github.com/dstl/YAWNING-TITAN",
     description="An abstract, flexible and configurable cyber security " "simulation",
-    python_requires=">=3.8",
-    version="1.0.0",
+    python_requires=">=3.8, <3.11",
+    version="1.0.1",
     license="MIT License",
     packages=find_packages(),
     install_requires=[
