@@ -13,7 +13,7 @@ def test_init_dcbo_agent_assertion_error(probabs: List[float]):
     Args:
         probabs: A pair of probability values
     """
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         init_dcbo_agent(probabs)
 
 

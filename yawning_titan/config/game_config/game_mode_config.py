@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from logging import getLogger
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Union
 
 import yaml
 from yaml import SafeLoader
@@ -95,7 +95,7 @@ class GameModeConfig:
 
     @classmethod
     def create_from_yaml(
-        cls, config_path: str = default_game_mode_path()
+        cls, config_path: Union[str, Path] = default_game_mode_path()
     ) -> GameModeConfig:
         """
         Create and return an instance of `GameModeConfig` from a given config `.yaml` file path.
