@@ -15,7 +15,9 @@ def _static_dir() -> Union[Path, PosixPath]:
 
 
 _YT_GUI_ROOT_DIR: Final[Path] = Path(__file__).parent.resolve()
-DEFAULT_GAME_MODE: Final[Path] = "everything_off_config.yaml"
+
+DEFAULT_GAME_MODE: Final[str] = "everything_off_config.yaml"
+"""The filename of the game mode file to act as the base for all game modes """
 
 STATIC_DIR: Final[Union[Path, PosixPath]] = _static_dir()
 """The path to the app static directory as an instance of `Path` or `PosixPath`, depending on the OS."""

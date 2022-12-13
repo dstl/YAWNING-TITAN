@@ -1,6 +1,6 @@
-import shutil
 import sys
 
+from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
 
@@ -19,15 +19,10 @@ class Command(BaseCommand):
         """Method that is fired on execution of the command in the terminal."""
         from flaskwebgui import FlaskUI
 
-        from yawning_titan_gui import _YT_GUI_ROOT_DIR, STATIC_DIR
         from yawning_titan_server.wsgi import application as app
 
         # Creates the static ui files copy in the data directory
-        shutil.copytree(
-            (_YT_GUI_ROOT_DIR / "static").as_posix(),
-            STATIC_DIR.as_posix(),
-            dirs_exist_ok=True,
-        )
+        call_command("setup")
 
         print(f"running app with {sys.executable}")
         FlaskUI(app=app, server="django").run()

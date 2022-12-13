@@ -49,8 +49,13 @@ function manage_files(game_mode_name,operation,additional_data){
         type: "POST",
         url: FILE_MANAGER_URL,
         data: Object.assign({},{"game_mode_name":game_mode_name,"operation":operation},additional_data),
-        success: function(){
-            location.reload()
+        success: function(response){
+            if (response.load == "reload"){
+                location.reload()
+            }else{
+                location.href = response.load
+            }
+
         }
     });
 }
