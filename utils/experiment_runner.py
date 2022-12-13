@@ -36,7 +36,7 @@ if __name__ == "__main__":
         choices=[
             "five-node-def-v0",
             "four-node-def-v0",
-            "network-graph-explore-v0",
+            "networks-graph-explore-v0",
             "18-node-env-v0",
         ],
         required=True,
