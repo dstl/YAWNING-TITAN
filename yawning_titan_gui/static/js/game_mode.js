@@ -50,8 +50,13 @@ function manage_files(game_mode_name,operation){
         type: "POST",
         url: FILE_MANAGER_URL,
         data: {"game_mode_name":game_mode_name,"operation":operation},
-        success: function(){
-            location.reload()
+        success: function(response){
+            if (response.load == "reload"){
+                location.reload()
+            }else{
+                location.href = response.load
+            }
+
         }
     });
 }

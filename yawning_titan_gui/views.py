@@ -5,11 +5,11 @@ from typing import Any, List, Optional
 
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.views import View
 
 from yawning_titan import GAME_MODES_DIR
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
-from yawning_titan_gui import DEFAULT_GAME_MODE
 from yawning_titan_gui.forms import (
     BlueAgentForm,
     ConfigForm,
@@ -19,7 +19,7 @@ from yawning_titan_gui.forms import (
     RedAgentForm,
     ResetForm,
     RewardsForm,
-    game_mode_from_form_sections,
+    create_game_mode_from_form_sections,
     subsection_labels,
 )
 
@@ -127,8 +127,20 @@ completed_game_modes = defaultdict(dict)
 
 protected_game_modes = ["base_config"]
 
+unfinished_game_modes = []
 
-class HomeView(View):
+
+class OnLoadView(View):
+    """Inherit from this `django.views.View` to run additional code when a view is requested."""
+
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(**kwargs)
+        global unfinished_game_modes
+        unfinished_game_modes = []
+        print("U", unfinished_game_modes)
+
+
+class HomeView(OnLoadView):
     """Django page template for landing page."""
 
     def get(self, request, *args, **kwargs):
@@ -153,7 +165,8 @@ class HomeView(View):
         """Process pythonic tags in home.html and return formatted page."""
         return render(request, "home.html", {"sidebar": default_sidebar})
 
-class DocsView(View):
+
+class DocsView(OnLoadView):
     """
     Django representation of home.html.
 
@@ -179,8 +192,8 @@ class DocsView(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        return render(request, "docs.html", {"sidebar": default_sidebar}
-        )
+        return render(request, "docs.html", {"sidebar": default_sidebar})
+
 
 class GameModesView(View):
     """Django page template for game mode management."""
@@ -198,14 +211,19 @@ class GameModesView(View):
             {
                 "sidebar": default_sidebar,
                 "game_modes": [
-                    {
-                        "filename": path.name,
-                        "name": path.stem,
-                        "description": f"description {i}",
-                        "protected": path.stem in protected_game_modes,
-                        "complete": check_game_mode(path),
-                    }
-                    for i, path in enumerate(get_game_mode_file_paths(valid_only=False))
+                    *unfinished_game_modes,
+                    *[
+                        {
+                            "filename": path.name,
+                            "name": path.stem,
+                            "description": f"description {i}",
+                            "protected": path.stem in protected_game_modes,
+                            "complete": check_game_mode(path),
+                        }
+                        for i, path in enumerate(
+                            get_game_mode_file_paths(valid_only=False)
+                        )
+                    ],
                 ],
             },
         )
@@ -221,7 +239,8 @@ class GameModesView(View):
         """
         pass
 
-class GameModeConfigView(View):
+
+class GameModeConfigView(OnLoadView):
     """Django page template for game mode creation and editing."""
 
     def get(
@@ -238,13 +257,16 @@ class GameModeConfigView(View):
         game_mode_config = defaultdict(dict)
         section = list(forms.keys())[0] if section is None else section
 
-        if game_mode_file is not None:
+        if game_mode_file is not None and not any(
+            g["filename"] == game_mode_file for g in unfinished_game_modes
+        ):
             try:
                 game_mode = GameModeConfig.create_from_yaml(
                     game_mode_path(game_mode_file)
                 )
                 game_mode_config = game_mode.to_dict()
-            except Exception:
+            except Exception as e:
+                print("BUGGER", e)
                 pass
 
         form = completed_game_modes[game_mode_file].get(
@@ -264,12 +286,12 @@ class GameModeConfigView(View):
             section: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
         """
         section = list(forms.keys())[0] if section is None else section
-        form = forms[section]["form"](request.POST)
+        form: ConfigForm = forms[section]["form"](request.POST)
 
         if form.is_valid():
             completed_game_modes[game_mode_file][section] = form
             if len(completed_game_modes[game_mode_file].keys()) == len(forms):
-                game_mode_from_form_sections(
+                create_game_mode_from_form_sections(
                     completed_game_modes[game_mode_file], game_mode_file
                 )
                 completed_game_modes[game_mode_file] = {}
@@ -333,18 +355,31 @@ def config_file_manager(request) -> JsonResponse:
         `JsonResponse` object with either success code 500 (generic success) or
         error code 400 (generic error) containing a message.
     """
+    global unfinished_game_modes
     if request.method == "POST":
         game_mode_name = request.POST.get("game_mode_name")
         operation = request.POST.get("operation")
-        print(request.POST.get("game_mode_name"), request.POST)
 
         if operation == "create":
-            default_game_mode_path = GAME_MODES_DIR / DEFAULT_GAME_MODE
             new_game_mode_path = uniquify(GAME_MODES_DIR / f"{game_mode_name}.yaml")
-            shutil.copy(default_game_mode_path, new_game_mode_path)
+            unfinished_game_modes.append(
+                {
+                    "filename": new_game_mode_path.name,
+                    "name": new_game_mode_path.stem,
+                    "description": "latest game mode",
+                    "protected": new_game_mode_path.stem in protected_game_modes,
+                    "complete": False,
+                }
+            )
+            load = reverse(
+                "game mode config", kwargs={"game_mode_file": new_game_mode_path.name}
+            )
 
         elif operation == "delete":
-            (GAME_MODES_DIR / f"{game_mode_name}.yaml").unlink()
+            path = GAME_MODES_DIR / f"{game_mode_name}.yaml"
+            if path.exists():
+                path.unlink()
+            load = "reload"
 
         elif operation == "create from":
             source_game_mode_path = (
@@ -352,6 +387,9 @@ def config_file_manager(request) -> JsonResponse:
             )
             new_game_mode_path = uniquify(GAME_MODES_DIR / f"{game_mode_name}.yaml")
             shutil.copy(source_game_mode_path, new_game_mode_path)
-
-        return JsonResponse({"message:": "SUCCESS"})
+            load = reverse(
+                "game mode config", kwargs={"game_mode_file": new_game_mode_path.name}
+            )
+        print("LOAD", load)
+        return JsonResponse({"load": load})
     return JsonResponse({"message:": "FAILED"}, status=400)
