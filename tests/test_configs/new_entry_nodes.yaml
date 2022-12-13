@@ -57,7 +57,7 @@ RED:
   # Whether red will always pick the shortest path to target
   red_always_chooses_shortest_distance_to_target: True
 
-  # CHOOSE ONE OF THE FOLLOWING 5 ITEMS
+  # CHOOSE ONE OF THE FOLLOWING 6 ITEMS
   # Red picks nodes to attack at random
   red_chooses_target_at_random: False
   # Red targets a specific node
