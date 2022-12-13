@@ -18,5 +18,7 @@ yawning\_titan.config.game\_modes
       :toctree:
       :nosignatures:
 
+      dcbo_game_mode_path
       default_game_mode_path
       low_skill_red_with_random_infection_perfect_detection_path
+      multiple_high_value_targets_game_mode_path
