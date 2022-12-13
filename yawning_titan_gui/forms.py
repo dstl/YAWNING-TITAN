@@ -328,8 +328,8 @@ def game_mode_section_form_from_default(
     return new_settings[section.upper()]
 
 
-def game_mode_from_form_sections(
-    game_mode_forms: Dict[str, django_forms.Form], game_mode_file: str
+def create_game_mode_from_form_sections(
+    game_mode_forms: Dict[str, django_forms.Form], game_mode_filename: str
 ):
     """
     Create a complete config yaml file from a dictionary of form sections.
@@ -343,5 +343,5 @@ def game_mode_from_form_sections(
         for section_name, form in game_mode_forms.items()
     }
     game_mode = GameModeConfig.create(section_configs)
-    game_mode.to_yaml(GAME_MODES_DIR / game_mode_file)
+    game_mode.to_yaml(GAME_MODES_DIR / game_mode_filename)
     return game_mode
