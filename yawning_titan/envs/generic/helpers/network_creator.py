@@ -172,6 +172,47 @@ def create_18_node_network() -> Tuple[np.array, dict]:
     return adj_matrix, positions
 
 
+def dcbo_base_network() -> Tuple[np.array, dict]:
+    """
+    Creates the same network used to generated DCBO data.
+
+    :returns: The adjacency matrix that represents the network and a dictionary
+        of positions of the nodes.
+
+    .. node::
+        This function replaces the network that was defined in
+        `yawning_titan/integrations/dcbo/base_net.txt`.
+
+    .. versionadded:: 1.0.1
+
+    """
+    matrix = [
+        [0, 1, 1, 0, 1, 0, 1, 1, 1, 1],
+        [1, 0, 0, 1, 1, 0, 0, 0, 1, 1],
+        [1, 0, 0, 1, 0, 1, 1, 0, 1, 1],
+        [0, 1, 1, 0, 0, 0, 1, 1, 0, 1],
+        [1, 1, 0, 0, 0, 1, 1, 0, 0, 1],
+        [0, 0, 1, 0, 1, 0, 0, 0, 0, 0],
+        [1, 0, 1, 1, 1, 0, 0, 0, 1, 0],
+        [1, 0, 0, 1, 0, 0, 0, 0, 1, 1],
+        [1, 1, 1, 0, 0, 0, 1, 1, 0, 1],
+        [1, 1, 1, 1, 1, 0, 0, 1, 1, 0],
+    ]
+    positions = {
+        "0": [3.0, 8.0],
+        "1": [2.0, 9.0],
+        "2": [9.0, 2.0],
+        "3": [7.0, 4.0],
+        "4": [0.0, 3.0],
+        "5": [10.0, 6.0],
+        "6": [6.0, 1.0],
+        "7": [9.0, 4.0],
+        "8": [7.0, 2.0],
+        "9": [3.0, 6.0],
+    }
+    return matrix, positions
+
+
 def create_mesh(size: int = 100, connectivity: float = 0.7) -> Tuple[np.array, dict]:
     """
     Create a mesh node environment.
