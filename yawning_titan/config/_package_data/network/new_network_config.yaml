@@ -1,0 +1,13 @@
+node_vulnerabilities:
+  lower_bound:
+  upper_bound:
+high_value_node_placement:
+  count:
+  random:
+  place_far_away_from_entry:
+  place_close_to_center:
+entry_node_placement:
+  count:
+  random:
+  place_far_away_from_entry:
+  place_close_to_center:
