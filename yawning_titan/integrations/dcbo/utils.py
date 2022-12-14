@@ -7,12 +7,12 @@ from stable_baselines3.common.env_checker import check_env
 from yawning_titan.agents.sinewave_red import SineWaveRedAgent
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
 from yawning_titan.config.game_modes import dcbo_game_mode_path
-from yawning_titan.config.network_config.network_config import NetworkConfig
+from yawning_titan.networks.network import Network
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
-from yawning_titan.envs.generic.helpers import network_creator
 from yawning_titan.integrations.dcbo.dcbo_agent import DCBOAgent
+from yawning_titan.networks import network_creator
 
 _LOGGER = getLogger(__name__)
 

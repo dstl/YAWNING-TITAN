@@ -14,13 +14,13 @@ from yaml import SafeLoader
 
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
 from yawning_titan.config.game_modes import default_game_mode_path
-from yawning_titan.config.network_config.network_config import NetworkConfig
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
-from yawning_titan.envs.generic.helpers import network_creator
+from yawning_titan.networks import network_creator
+from yawning_titan.networks.network import Network
 
 
 @pytest.fixture
@@ -82,7 +82,7 @@ def init_test_env():
         Returns:
             env: An OpenAI gym environment
         """
-        network = NetworkConfig.create_from_args(
+        network = Network(
             matrix=adj_matrix,
             positions=positions,
             entry_nodes=entry_nodes,

@@ -5,3 +5,28 @@ tests.fixtures
 ==============
 
 .. automodule:: tests.fixtures
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   tests.fixtures.yawning_titan_demo_db_fixtures
