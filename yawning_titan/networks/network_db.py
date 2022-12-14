@@ -118,9 +118,9 @@ class NetworkDB:
         Insert a :class:`~yawning_titan.networks.network.Network` into the DB as ``.json``.
 
         :param network: An instance of :class:`~yawning_titan.networks.network.Network`
-            :class:`~yawning_titan.db.doc_metadata.DocMetadata`.
-            :class:`~yawning_titan.db.doc_metadata.DocMetadata`.
-            :class:`~yawning_titan.db.doc_metadata.DocMetadata`.
+            :class:`~yawning_titan.db._doc_metadata.DocMetadata`.
+            :class:`~yawning_titan.db._doc_metadata.DocMetadata`.
+            :class:`~yawning_titan.db._doc_metadata.DocMetadata`.
         :param name: The config name.
         :param description: The config description.
         :param author: The config author.
