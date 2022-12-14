@@ -23,6 +23,8 @@ yawning\_titan
       GAME_MODES_DIR
       IMAGES_DIR
       AGENTS_DIR
+      AGENTS_LOGS_DIR
+      PPO_TENSORBOARD_LOGS_DIR
 
 
 

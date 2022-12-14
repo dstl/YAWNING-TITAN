@@ -25,6 +25,7 @@ yawning\_titan.networks.network\_creator
       create_ring
       create_star
       custom_network
+      dcbo_base_network
       generate_node_positions
       gnp_random_connected_graph
       load_network
