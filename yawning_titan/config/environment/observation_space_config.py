@@ -119,7 +119,7 @@ class ObservationSpaceConfig(ConfigABC):
 
         :return: An instance of :class:`ObservationSpaceConfig <yawning_titan.config.environment.observation_space_config.ObservationSpaceConfig>.
         """
-        cls._validate(config_dict)
+        cls.validate(config_dict)
 
         observation_space_config = ObservationSpaceConfig(
             _compromised_status=config_dict["compromised_status"],
@@ -136,7 +136,13 @@ class ObservationSpaceConfig(ConfigABC):
         return observation_space_config
 
     @classmethod
-    def _validate(cls, config_dict: dict):
+    def validate(cls, config_dict: dict):
+        """
+        Check that the settings contained within the section of the config file are valid.
+
+        :param config_dict: The dictionary representation of the OBSERVATION_SPACE section of the config yaml file
+        :raises ValueError: Error if the config file is improperly set
+        """
         all_obs = [
             "compromised_status",
             "vulnerabilities",

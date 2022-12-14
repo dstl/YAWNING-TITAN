@@ -94,7 +94,7 @@ class NetworkConfig(ConfigABC):
             >>> from yawning_titan.config.network_config.network_config import NetworkConfig
             >>> network_config = NetworkConfig.create(create_18_node_network())
         """
-        cls._validate(config_dict)
+        cls.validate(config_dict)
 
         matrix = config_dict["matrix"]
         positions = config_dict["positions"]
@@ -145,7 +145,7 @@ class NetworkConfig(ConfigABC):
         return NetworkConfig.create(network_config_dict)
 
     @classmethod
-    def _validate(cls, config_dict: Dict[str, Any]):
+    def validate(cls, config_dict: Dict[str, Any]):
         """Validates the network config dict."""
         entry_nodes = config_dict["entry_nodes"]
         high_value_nodes = config_dict["high_value_nodes"]

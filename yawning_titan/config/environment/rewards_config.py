@@ -103,7 +103,7 @@ class RewardsConfig(ConfigABC):
 
         :return: An instance of :class:`RewardsConfig <yawning_titan.config.environment.rewards_config.RewardsConfig>.
         """
-        cls._validate(config_dict)
+        cls.validate(config_dict)
 
         rewards = RewardsConfig(
             _rewards_for_loss=config_dict["rewards_for_loss"],
@@ -122,7 +122,13 @@ class RewardsConfig(ConfigABC):
         return rewards
 
     @classmethod
-    def _validate(cls, config_dict: dict):
+    def validate(cls, config_dict: dict):
+        """
+        Check that the settings contained within the section of the config file are valid.
+
+        :param config_dict: _description_
+        :raises ValueError: raise an error if the settings in the config file are invalid
+        """
         # validate types
         check_type(config_dict, "rewards_for_loss", [int, float])
         check_type(config_dict, "rewards_for_reaching_max_steps", [int, float])
