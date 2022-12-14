@@ -1,0 +1,132 @@
+red:
+  action_set:
+    spread:
+      use:
+      likelihood:
+      chance:
+    random_infect:
+      use:
+      likelihood:
+      chance:
+    basic_attack:
+      use:
+      likelihood:
+      chance:
+    do_nothing:
+      use:
+      likelihood:
+      chance:
+    move:
+      use:
+      likelihood:
+      chance:
+    zero_day:
+      start_amount:
+      days_required:
+  agent_attacks:
+    ignores_defences:
+    always_succeeds:
+    skill:
+      use:
+      value:
+    attack_from:
+      only_red_agent_node:
+      any_red_node:
+    natural_spreading:
+      capable:
+      chance_to_connected_node:
+      chance_to_unconnected_node:
+    target_mechanism:
+      random:
+      prioritise_connected_nodes:
+      prioritise_un_connected_nodes:
+      prioritise_vulnerable_nodes:
+      prioritise_resilient_nodes:
+      specific_node:
+        use:
+        target_node:
+        always_choose_shortest_distance:
+
+blue:
+  action_set:
+    reduce_vulnerability:
+    restore_node:
+    scan:
+    isolate_node:
+    reconnect_node:
+    do_nothing:
+    make_node_safe:
+      use:
+      modifies_vulnerability:
+      gives_random_vulnerability:
+      vulnerability_change_during_node_patch:
+    deceptive_nodes:
+      use:
+      max_number:
+      new_node_on_relocate:
+    intrusion_discovery_chance:
+      immediate:
+      immediate_deceptive_node:
+      on_scan:
+      on_scan_deceptive_node:
+    attack_discovery:
+      failed_attacks:
+        use:
+        chance:
+        chance_deceptive_node:
+    succeeded_attacks_unknown_compromise:
+      use:
+      chance:
+    succeeded_attacks:
+      use:
+      chance:
+      chance_deceptive_node:
+
+game_rules:
+  network_compatibility:
+    min_number_of_network_nodes:
+  blue_loss_condition:
+    lose_when_all_nodes_lost:
+    lose_when_n_percent_of_nodes_lost:
+    lose_when_high_value_node_lost:
+    lose_when_target_node_lost:
+
+  # node_vulnerability_lower_bound:
+  # node_vulnerability_upper_bound:
+  # max_steps:
+  # percentage_of_nodes_compromised_equals_loss:
+  # number_of_high_value_nodes: 1
+  # choose_high_value_nodes_placement_at_random:
+  # choose_high_value_nodes_furthest_away_from_entry:
+  # choose_entry_nodes_randomly:
+  # number_of_entry_nodes:
+  # prefer_central_nodes_for_entry_nodes:
+  # prefer_edge_nodes_for_entry_nodes:
+  # grace_period_length:
+
+blue_can_observe:
+  compromised_status:
+  vulnerabilities:
+  node_connections:
+  average_vulnerability:
+  graph_connectivity:
+  attacking_nodes:
+  attacked_nodes:
+  special_nodes:
+  red_agent_skill:
+
+reset:
+  randomise_vulnerabilities:
+  choose_new_high_value_nodes: False
+  choose_new_entry_nodes: False
+
+rewards:
+  for_loss:
+  for_reaching_max_steps:
+  end_rewards_are_multiplied_by_end_state:
+  reduce_negative_rewards_for_closer_fails:
+  reward_function:
+
+miscellaneous:
+  output_timestep_data_to_json:
+  random_seed:
