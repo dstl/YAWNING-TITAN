@@ -169,6 +169,7 @@ setup(
         "stable_baselines3==1.6.2",
         "tabulate==0.8.9",
         "tensorboard==2.11.0",
+        "tinydb==4.7.0",
         "torch==1.12.1",
         "typing-extensions==4.4.0",
     ],
