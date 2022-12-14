@@ -1,6 +1,5 @@
 import shutil
 from collections import defaultdict
-from pathlib import Path
 from typing import Any, Optional
 
 from django.http import JsonResponse
@@ -52,7 +51,7 @@ forms = {
 
 completed_game_modes = defaultdict(dict)
 
-protected_game_modes = ["base_config"]
+protected_game_modes = ["base_config.yaml"]
 
 unfinished_game_modes = []
 
@@ -64,7 +63,6 @@ class OnLoadView(View):
         super().__init__(**kwargs)
         global unfinished_game_modes
         unfinished_game_modes = []
-        print("U", unfinished_game_modes)
 
 
 class HomeView(OnLoadView):
@@ -178,17 +176,12 @@ class GameModeConfigView(OnLoadView):
         """
         game_mode_config = defaultdict(dict)
         section = list(forms.keys())[0] if section is None else section
-
-        if game_mode_file is not None and not any(
-            g["filename"] == game_mode_file for g in unfinished_game_modes
-        ):
+        game_mode_file_path = game_mode_path(game_mode_file)
+        if game_mode_file_path.exists():
             try:
-                game_mode = GameModeConfig.create_from_yaml(
-                    game_mode_path(game_mode_file)
-                )
+                game_mode = GameModeConfig.create_from_yaml(game_mode_file_path)
                 game_mode_config = game_mode.to_dict()
-            except Exception as e:
-                print("BUGGER", e)
+            except Exception:
                 pass
 
         form = completed_game_modes[game_mode_file].get(
@@ -248,7 +241,7 @@ class GameModeConfigView(OnLoadView):
         section = list(forms.keys())[0] if section is None else section
         return render(
             request,
-            ":param:",
+            "game_mode_config.html",
             {
                 "forms": forms,
                 "form": form,
@@ -256,7 +249,7 @@ class GameModeConfigView(OnLoadView):
                 "error_message": error_message,
                 "sidebar": default_sidebar,
                 "game_mode_file": game_mode_file,
-                "protected": Path(game_mode_file).stem in protected_game_modes,
+                "protected": game_mode_file in protected_game_modes,
                 "completed_sections": completed_game_modes[game_mode_file].keys(),
                 "subsection_labels": subsection_labels.get(section, {}),
             },
@@ -312,6 +305,5 @@ def config_file_manager(request) -> JsonResponse:
             load = reverse(
                 "game mode config", kwargs={"game_mode_file": new_game_mode_path.name}
             )
-        print("LOAD", load)
         return JsonResponse({"load": load})
     return JsonResponse({"message:": "FAILED"}, status=400)

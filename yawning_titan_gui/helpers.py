@@ -5,7 +5,7 @@ from yawning_titan import GAME_MODES_DIR
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
 
 
-def game_mode_path(game_mode_filename: str) -> str:
+def game_mode_path(game_mode_filename: str) -> Path:
     """
     Generate path for game mode file.
 
@@ -13,7 +13,7 @@ def game_mode_path(game_mode_filename: str) -> str:
 
     :return: a string representation of the full path to the `game_mode_filename`
     """
-    return (GAME_MODES_DIR / game_mode_filename).as_posix()
+    return GAME_MODES_DIR / game_mode_filename
 
 
 def check_game_mode(game_mode_path: Path) -> bool:
