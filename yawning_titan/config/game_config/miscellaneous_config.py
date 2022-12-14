@@ -54,7 +54,7 @@ class MiscellaneousConfig(ConfigABC):
 
         :return: An instance of :class:`MiscellaneousConfig <yawning_titan.config.game_config.miscellaneous_config.MiscellaneousConfig>.
         """
-        cls._validate(config_dict)
+        cls.validate(config_dict)
 
         misc_config = MiscellaneousConfig(
             _output_timestep_data_to_json=config_dict["output_timestep_data_to_json"],
@@ -64,5 +64,10 @@ class MiscellaneousConfig(ConfigABC):
         return misc_config
 
     @classmethod
-    def _validate(cls, config_dict: Dict[str, Any]):
+    def validate(cls, config_dict: Dict[str, Any]):
+        """
+        Check that the settings contained within the section of the config file are valid.
+
+        :param config_dict: dictionary representation of the MISCELLANEOUS section of the config yaml file
+        """
         check_type(config_dict, "random_seed", [int, None])

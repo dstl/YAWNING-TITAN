@@ -11,7 +11,7 @@ class ConfigABC(ABC):
     The `ConfigABC` class is an ABS that config classes inherit from.
 
     `ConfigABC` has two abstract class methods, `.create` and
-    `._validate`. `ConfigABC` also has a `to_dict()` function with
+    `.validate`. `ConfigABC` also has a `to_dict()` function with
     predefined logic.
     """
 
@@ -45,18 +45,18 @@ class ConfigABC(ABC):
         `ConfigGroupClass`. The `.create` method should take a dict
         containing the config item keys and values required to instantiate
         the config class. The implementation of `.create` should pass the
-        `config_dict` to `cls._validate` for the config data to be validated.
+        `config_dict` to `cls.validate` for the config data to be validated.
         """
 
     @classmethod
     @abstractmethod
-    def _validate(cls, config_dict: Dict[str, Any]):
+    def validate(cls, config_dict: Dict[str, Any]):
         """
         Validate abstract class method.
 
         An abstract class method that is to be implemented by subclasses of
-        `ConfigGroupClass`. The `._validate` method should take a dict
+        `ConfigGroupClass`. The `.validate` method should take a dict
         containing the config item keys and values that are to be validated.
-        The `_validate` function is called from `cls.create`.
+        The `validate` function is called from `cls.create`.
         """
         pass

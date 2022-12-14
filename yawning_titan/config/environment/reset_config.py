@@ -58,7 +58,7 @@ class ResetConfig(ConfigABC):
 
         :return: An instance of :class:`ResetConfig <yawning_titan.config.environment.reset_config.ResetConfig>.
         """
-        cls._validate(config_dict)
+        cls.validate(config_dict)
 
         reset_config = ResetConfig(
             _randomise_vulnerabilities_on_reset=config_dict[
@@ -75,7 +75,12 @@ class ResetConfig(ConfigABC):
         return reset_config
 
     @classmethod
-    def _validate(cls, config_dict: dict):
+    def validate(cls, config_dict: dict):
+        """
+        Check that the settings contained within the section of the config file are valid.
+
+        :param config_dict: dictionary representation of the RESET section of the yaml config file.
+        """
         for name in [
             "randomise_vulnerabilities_on_reset",
             "choose_new_high_value_nodes_on_reset",

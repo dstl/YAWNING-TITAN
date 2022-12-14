@@ -335,7 +335,7 @@ class BlueAgentConfig(ConfigABC):
 
         :return: An instance of :class: `~yawning_titan.config.agents.red_agent_config.BlueAgentConfig`.
         """
-        cls._validate(config_dict)
+        cls.validate(config_dict)
         blue_agent_config = BlueAgentConfig(
             _max_number_deceptive_nodes=config_dict["max_number_deceptive_nodes"],
             _can_discover_failed_attacks=config_dict["can_discover_failed_attacks"],
@@ -398,7 +398,12 @@ class BlueAgentConfig(ConfigABC):
         return blue_agent_config
 
     @classmethod
-    def _validate(cls, config_dict: dict):
+    def validate(cls, config_dict: dict):
+        """
+        Check that the settings contained within the section of the config file are valid.
+
+        :param config_dict: dictionary representation of the BLUE section of the config yaml file
+        """
         # data is int or float
         for name in [
             "chance_to_immediately_discover_intrusion",
