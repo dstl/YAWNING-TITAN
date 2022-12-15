@@ -1,29 +1,40 @@
 from __future__ import annotations
 
 import warnings
+from enum import Enum
 from logging import getLogger
-from typing import Final, List, Optional
+from typing import Dict, Final, List, Optional, Union
 from uuid import uuid4
 
 import networkx
-import networkx as nx
-from networkx import Graph
-from networkx.classes.reportviews import EdgeView, NodeView
 
 from yawning_titan.db.doc_metadata import DocMetadata
 
 _LOGGER = getLogger(__name__)
 
 
+class RandomHighValueNodePlacement(Enum):
+    """How the random high value nodes are placed."""
+    FURTHEST_AWAY_FROM_ENTRY = "furthest_away_from_entry"
+    RANDOM = "random"
+
+
+class RandomEntryNodePlacement(Enum):
+    """How the random entry nodes are placed."""
+    CENTRAL = "central"
+    EDGE = "edge"
+
+
 class Node:
     def __init__(
-        self,
-        uuid: Optional[str] = None,
-        name: Optional[str] = None,
-        high_value_node: bool = False,
-        entry_node: bool = False,
-        x_pos: float = 0.0,
-        y_pos: float = 0.0,
+            self,
+            uuid: Optional[str] = None,
+            name: Optional[str] = None,
+            high_value_node: bool = False,
+            entry_node: bool = False,
+            x_pos: float = 0.0,
+            y_pos: float = 0.0,
+            classes: Optional[str] = None
     ):
         if uuid is None:
             uuid = str(uuid4())
@@ -33,6 +44,7 @@ class Node:
         self._entry_node: bool = entry_node
         self._x_pos: float = x_pos
         self._y_pos: float = y_pos
+        self._classes = classes
         self._set_classes()
 
     def _set_classes(self):
@@ -88,7 +100,7 @@ class Node:
     def y_pos(self) -> float:
         return self._y_pos
 
-    @x_pos.setter
+    @y_pos.setter
     def y_pos(self, y_pos: float):
         self._y_pos = y_pos
 
@@ -130,62 +142,101 @@ class Node:
 
 
 class Network(networkx.Graph):
-    def __init__(self, doc_metadata: Optional[DocMetadata] = None, **attr):
-        super().__init__(**attr)
-        self._uuid_node_map: Dict[str, None] = {}
+
+    def __init__(
+            self,
+            set_random_entry_nodes: bool = False,
+            random_entry_node_placement: RandomEntryNodePlacement = None,
+            set_random_high_value_nodes: bool = False,
+            random_high_value_node_placement: RandomHighValueNodePlacement = None,
+            node_vulnerability_lower_bound: int = 0,
+            node_vulnerability_upper_bound: int = 1,
+            doc_metadata: Optional[DocMetadata] = None,
+    ):
+        super().__init__()
+        self.set_random_entry_nodes = set_random_entry_nodes
+        """If no entry nodes are added, set them at random. Default is ``False``."""
+        self.random_entry_node_placement = random_entry_node_placement
+        """The type of random entry node placement."""
+        self.set_random_high_value_nodes = set_random_high_value_nodes
+        """If no high value nodes are added, set them at random. Default is ``False``."""
+        self.random_high_value_node_placement = random_high_value_node_placement
+        """The type of random high value node placement."""
+        self.node_vulnerability_lower_bound = node_vulnerability_lower_bound
+        """A lower vulnerability means that a node is less likely to be compromised. Default value is 0."""
+        self.node_vulnerability_upper_bound = node_vulnerability_upper_bound
+        """A higher vulnerability means that a node is more vulnerable. Default value is 1."""
+        self._uuid_node_map: Dict[str, Node] = {}
         self._doc_metadata = doc_metadata
         if self._doc_metadata is None:
             self._doc_metadata = DocMetadata()
 
-    def add_node(self, node: Node):
-        super().add_node(node.uuid, **node.to_dict())
-        self._uuid_node_map[node.uuid] = node
-        self._validate(node)
+    def add_node(self, node_for_adding: Node, **attr):
+        super().add_node(node_for_adding.uuid, **node_for_adding.to_dict())
+        self._uuid_node_map[node_for_adding.uuid] = node_for_adding
+        self._check_intersect(node_for_adding)
 
-    def remove_node(self, node: Node):
-        super().remove_node(node.uuid)
-        self._uuid_node_map.pop(node.uuid)
+    def remove_node(self, n: Node):
+        super().remove_node(n.uuid)
+        self._uuid_node_map.pop(n.uuid)
+        self._uuid_node_map.pop(n.uuid)
 
-    def add_edge(self, node_a: Node, node_b: Node):
-        super().add_edge(node_a.uuid, node_b.uuid)
+    def get_node_from_uuid(self, uuid: str) -> Union[Node, None]:
+        return self._uuid_node_map.get(uuid)
 
-    def remove_edge(self, node_a: Node, node_b: Node):
-        super().remove_edge(node_a.uuid, node_b.uuid)
+    def add_edge(self, u_of_edge: Node, v_of_edge: Node, **kwargs):
+        super().add_edge(u_of_edge.uuid, v_of_edge.uuid)
 
-    def _validate(self, node: Node):
+    def remove_edge(self, u: Node, v: Node):
+        super().remove_edge(u.uuid, v.uuid)
 
-        # check that no entry nodes and high value nodes intersect
+    def _check_intersect(self, node: Node):
         if self.entry_nodes and self.high_value_nodes:
             uuids_intersect = set(self.entry_nodes) & set(self.high_value_nodes)
             if uuids_intersect:
                 if node.uuid in uuids_intersect:
                     node_str = str(self._uuid_node_map[node.uuid])
                     warnings.warn(
-                        f"Entry nodes and high value nodes intersect at node {node_str} and may cause the training to prematurely end."
+                        f"Entry nodes and high value nodes intersect at node "
+                        f"'{node_str}', and may cause the training to end "
+                        f"prematurely."
                     )
 
     @property
     def high_value_nodes(self) -> List[str]:
         uuids = []
-        for uuid, node in super().__dict__["_node"].items():
-            if node["high_value_node"]:
+        for uuid, node in self._uuid_node_map.items():
+            if node.high_value_node:
                 uuids.append(uuid)
         return uuids
 
     @property
     def entry_nodes(self) -> List[str]:
         uuids = []
-        for uuid, node in super().__dict__["_node"].items():
-            if node["entry_node"]:
+        for uuid, node in self._uuid_node_map.items():
+            if node.entry_node:
                 uuids.append(uuid)
         return uuids
 
     def to_dict(self):
-        d = {}
-        d["nodes"] = super().__dict__["_node"]
-        d["edges"] = super().__dict__["_adj"]
-        d["_doc_metadata"] = self._doc_metadata.to_dict(True)
-        return d
+        random_entry_node_placement = None
+        if self.random_entry_node_placement:
+            random_entry_node_placement = self.random_entry_node_placement.value
+
+        random_high_value_node_placement = None
+        if self.random_high_value_node_placement:
+            random_high_value_node_placement = self.random_high_value_node_placement.value
+        return {
+            "set_random_entry_nodes": self.set_random_entry_nodes,
+            "random_entry_node_placement": random_entry_node_placement,
+            "set_random_high_value_nodes": self.set_random_high_value_nodes,
+            "random_high_value_node_placement": random_high_value_node_placement,
+            "node_vulnerability_lower_bound": self.node_vulnerability_lower_bound,
+            "node_vulnerability_upper_bound": self.node_vulnerability_upper_bound,
+            "nodes": super().__dict__["_node"],
+            "edges": super().__dict__["_adj"],
+            "_doc_metadata": self._doc_metadata.to_dict(include_none=False)
+        }
 
     @property
     def doc_metadata(self) -> DocMetadata:
@@ -200,48 +251,29 @@ class Network(networkx.Graph):
             msg = "Cannot set _doc_metadata as it has already been set."
             _LOGGER.error(msg)
 
+    @classmethod
+    def create(cls, network_dict) -> Network:
+        doc_metadata = DocMetadata(**network_dict["_doc_metadata"])
+        network = Network(
+            network_dict["set_random_entry_nodes"],
+            network_dict["random_entry_node_placement"],
+            network_dict["set_random_high_value_nodes"],
+            network_dict["random_high_value_node_placement"],
+            network_dict["node_vulnerability_lower_bound"],
+            network_dict["node_vulnerability_upper_bound"],
+            doc_metadata
+        )
+        for uuid, attrs in network_dict["nodes"].items():
+            network.add_node(Node(**attrs))
 
-router_1 = Node(name="Router 1", high_value_node=False, entry_node=True)
+        edge_tuples = []
+        for uuid_u, edges in network_dict["edges"].items():
+            for uuid_v in edges.keys():
+                edge_tuple = tuple(sorted([uuid_u, uuid_v]))
+                if edge_tuple not in edge_tuples:
+                    edge_tuples.append(edge_tuple)
+                    node_u = network.get_node_from_uuid(edge_tuple[0])
+                    node_v = network.get_node_from_uuid(edge_tuple[1])
+                    network.add_edge(node_u, node_v)
 
-switch_1 = Node(name="Switch 1", high_value_node=False, entry_node=False)
-switch_2 = Node(name="Switch 2", high_value_node=True, entry_node=False)
-
-pc_1 = Node(name="PC 1", high_value_node=False, entry_node=False)
-pc_2 = Node(name="PC 2", high_value_node=True, entry_node=False)
-pc_3 = Node(name="PC 3", high_value_node=True, entry_node=True)
-pc_4 = Node(name="PC 4", high_value_node=True, entry_node=False)
-pc_5 = Node(name="PC 5", high_value_node=True, entry_node=False)
-pc_6 = Node(name="PC 6", high_value_node=True, entry_node=False)
-
-server_1 = Node(name="Server 1", high_value_node=False, entry_node=False)
-server_2 = Node(name="Server 2", high_value_node=True, entry_node=False)
-
-graph = Network()
-
-graph.add_node(router_1)
-graph.add_node(switch_1)
-graph.add_node(switch_2)
-
-graph.add_node(pc_1)
-graph.add_node(pc_2)
-graph.add_node(pc_3)
-graph.add_node(pc_4)
-graph.add_node(pc_5)
-graph.add_node(pc_6)
-graph.add_node(server_1)
-graph.add_node(server_2)
-
-graph.add_edge(router_1, switch_1)
-graph.add_edge(switch_1, server_1)
-graph.add_edge(switch_1, pc_1)
-graph.add_edge(switch_1, pc_2)
-graph.add_edge(switch_1, pc_3)
-graph.add_edge(router_1, switch_2)
-graph.add_edge(switch_2, server_2)
-graph.add_edge(switch_2, pc_4)
-graph.add_edge(switch_2, pc_5)
-graph.add_edge(switch_2, pc_6)
-
-print(graph.nodes)
-print(graph.edges)
-print(graph.to_dict())
+        return network
