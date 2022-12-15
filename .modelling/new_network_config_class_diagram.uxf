@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <help_text>Space for diagram notes</help_text>
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>776</x>
+      <y>104</y>
+      <w>232</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;abstract&gt;&gt;
+*ConfigABC*
+yawning_titan.config.game_config.config_abc
+--
+
+
+
+--
+# to_dict(): dict
+_/+ create(Dict[str, Any]): ConfigABC/_
+_/+ validate(Dict[str, Any])/_
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>728</x>
+      <y>320</y>
+      <w>336</w>
+      <h>232</h>
+    </coordinates>
+    <panel_attributes>@dataclass()
+*NetworkConfig*
+yawning_titan.config.network_config.network_config
+--
++ matrix: numpy.array
++ positions: Dict[str, List[str]]
++ entry_node_layout: EntryNodeGroup
++ high_value_node_layout: HighValueNodeGroup
++ node_vulnerabilities: NodeVulnerabilityGroup
+--
+_- create(config_dict: Dict[str, Any]): NetworkConfig_
+- create_from_args(
+      matrix: np.array,
+      positions: Dict[str, List[str]],
+      entry_nodes: Optional[List[str]],
+      high_value_nodes: Optional[List[str]]
+  ): NetworkConfig
+_+ validate(Dict[str, Any])_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>880</x>
+      <y>232</y>
+      <w>24</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>528</x>
+      <y>672</y>
+      <w>336</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>@dataclass
+*EntryNodeGroup*
+--
++ entry_nodes:Optional[list[Any]]
++ random_entry_node_placement: RandomEntryNodeGroup</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>688</x>
+      <y>544</y>
+      <w>216</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;160.0;10.0;80.0;250.0;80.0;250.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>568</x>
+      <y>936</y>
+      <w>224</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>@dataclass
+*RandomEntryNodeGroup*
+--
++ use: BoolConfigItem
++ count: IntConfigItem
++ place_close_to_center: BoolConfigItem
++ place_far_from_entry: BoolConfigItem</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>680</x>
+      <y>808</y>
+      <w>24</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;160.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>968</x>
+      <y>936</y>
+      <w>224</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>@dataclass
+*RandomHighValueNodeGroup*
+--
++ use: BoolConfigItem
++ count: IntConfigItem
++ place_close_to_center: BoolConfigItem
++ place_far_from_entry: BoolConfigItem</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>920</x>
+      <y>672</y>
+      <w>368</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>@dataclass
+*HighValueNodeGroup*
+--
++ high_value_nodes:Optional[list[Any]]
++ random_high_value_node_placement: RandomHighValueNodeGroup</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1072</x>
+      <y>808</y>
+      <w>24</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;160.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>880</x>
+      <y>544</y>
+      <w>224</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>260.0;160.0;260.0;80.0;10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1072</x>
+      <y>232</y>
+      <w>408</w>
+      <h>920</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>490.0;10.0;490.0;1130.0;10.0;1130.0;10.0;1060.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>680</x>
+      <y>232</y>
+      <w>800</w>
+      <h>920</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>980.0;10.0;980.0;1130.0;10.0;1130.0;10.0;1060.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1344</x>
+      <y>104</y>
+      <w>232</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>@dataclass
+*RandomNodeGroup*
+--
++ use: BoolConfigItem
++ count: IntConfigItem
++ place_close_to_center: BoolConfigItem
++ place_far_from_entry: BoolConfigItem</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>144</x>
+      <y>672</y>
+      <w>336</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>@dataclass
+*NodeVulnerabilityGroup*
+--
++ lower_bound: FloatConfigItem
++ upper_bound: FloatConfigItem</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>296</x>
+      <y>544</y>
+      <w>608</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;160.0;10.0;80.0;740.0;80.0;740.0;10.0</additional_attributes>
+  </element>
+</diagram>

@@ -1,0 +1,1178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>6</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2106</x>
+      <y>0</y>
+      <w>162</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>GameMode
+--
++ red: Red
++ blue: Blue
++ game_rules: GameRules
++ blue_can_observer: ObservationSpace
++ reset: Reset
++ rewards: Rewards
++ miscellaneous: Miscellaneous
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1128</x>
+      <y>366</y>
+      <w>204</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>Red
+--
++ agent_attacks: RedAttackGroup
++ action_set: RedActionSetGroup
++ natural_spread: RedNaturalSpreadGroup
++ target_mechanism: RedTargetMechanismGroup
+bg=PINK</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1128</x>
+      <y>1014</y>
+      <w>204</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>Blue
+--
++ action_set: BlueActionSetGroup
++ attack_discovery: BlueAttackDiscoveryGroup
++ intrusion_discovery_chance: BlueIntrusionDiscoveryGroup
+bg=PINK</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1734</x>
+      <y>792</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>AttackSourceGroup
+--
++ only_red_agent_node: ConfigItem
++ any_red_node: ConfigItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1644</x>
+      <y>624</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>RedAttackGroup
+--
++ ignores_defences: ConfigItem
++ always_suceeds: ConfigItem
++ attack_from: AttackSourceGroup
++ skill: SkillGroup
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1560</x>
+      <y>792</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>SkillGroup
+--
++ use: ConfigItem
++ value: ConfigItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2706</x>
+      <y>636</y>
+      <w>150</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>XorGroup
+--
+
+bg=CYAN</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1062</x>
+      <y>624</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>RedActionSetGroup
+--
++ spread: RedSpreadGroup
++ random_infect: RedRanomInfectGroup
++ move: RedMoveGroup
++ basic_attack: RedBasicAttackGroup
++ do_nothing: RedDoNothingGroup
++ zero_day: RedZeroDayGroup
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1386</x>
+      <y>792</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>RedSpreadGroup
+--
++ use: ConfigItem
++ likelhood: ConfigItem
++ chance: ConfgItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1224</x>
+      <y>792</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>RedRandomInfectGroup
+--
++ use: ConfigItem
++ likelhood: ConfigItem
++ chance: ConfgItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1038</x>
+      <y>792</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>RedMoveGroup
+--
++ use: ConfigItem
++ likelhood: ConfigItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>876</x>
+      <y>792</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>RedBasicAttackGroup
+--
++ use: ConfigItem
++ likelhood: ConfigItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>714</x>
+      <y>792</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>RedDoNothingGroup
+--
++ use: ConfigItem
++ likelhood: ConfigItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>552</x>
+      <y>792</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>RedZeroDayGroup
+--
++ use: ConfigItem
++ start_amount: ConfigItem
++ days_required: ConfigItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>1218</x>
+      <y>786</y>
+      <w>325</w>
+      <h>121</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+fg=ORANGE</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//Modify the code below to define the element's behavior.
+//
+//Example:  Change the line
+//  y += printCenter(textline,y);
+//to
+//  y += 2*printCenter(textline,y);
+//and observe the element preview.
+
+int y=textHeight();
+
+drawRectangle(0,0,width,height);
+
+for(String textline : textlines) {
+	y += printCenter(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2532</x>
+      <y>636</y>
+      <w>150</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>ActionLikelihoodChanceGroup
+--
+
+bg=CYAN</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2358</x>
+      <y>636</y>
+      <w>150</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>ActionLikelihoodGroup
+--
+
+bg=CYAN</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>546</x>
+      <y>786</y>
+      <w>649</w>
+      <h>121</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+fg=ORANGE</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//Modify the code below to define the element's behavior.
+//
+//Example:  Change the line
+//  y += printCenter(textline,y);
+//to
+//  y += 2*printCenter(textline,y);
+//and observe the element preview.
+
+int y=textHeight();
+
+drawRectangle(0,0,width,height);
+
+for(String textline : textlines) {
+	y += printCenter(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>474</x>
+      <y>624</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>RedNaturalSpreadGroup
+--
++ capable: ConfigItem
++ chance_to_connected_node
++ chance_to_unconnected_node</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>270</x>
+      <y>624</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>RedTargetMechanismGroup
+--
++ random: ConfigItem
++ prioritise_connected_nodes: ConfigItem
++ prioritise_unconnected_nodes: ConfigItem
++ prioritise_vulnerable_nodes: ConfigItem
++ prioritise_resilient_nodes: ConfigItem
++ target_node: RedTargetNodeGroup</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>258</x>
+      <y>792</y>
+      <w>198</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>RedTargetNodeGroup
+--
++ use: ConfigItem
++ target: ConfigItem
++ always_choose_shortest_distance_to: ConfigItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1050</x>
+      <y>1254</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>BlueActionSetGroup
+--
++ reduce_vulnerability: ConfigItem
++ restore_node: ConfigItem
++ isolate_node: ConfigItem
++ reconnect_node: ConfigItem
++ do_nothing: ConfigItem
++ make_node_sage: BlueMakeNodeSafeGroup
++ deceptive_nodes: BlueDeceptiveNodeGroup
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1254</x>
+      <y>1254</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>BlueIntrusionDiscoveryGroup
+--
++ immediate: ConfigItem
++ immediate_deceptive_node: ConfigItem
++ on_scan: ConfigItem
++ on_scan_deceptive_node: ConfigItem
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>966</x>
+      <y>1416</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>BlueDeceptiveNodeGroup
+--
++ use: ConfigItem
++ max_number: ConfigItem
++ new_node_on_relocate: ConfigItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1164</x>
+      <y>1416</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>BlueMakeNodeSafeGroup
+--
++ use: ConfigItem
++ modifies_vulnerability: ConfigItem
++ gives_random_vulnerability: ConfigItem
++ vulnerability_change: ConfigItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>732</x>
+      <y>1254</y>
+      <w>306</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>BlueAttackDiscoveryGroup
+--
++ failed_attacks: FailedAttacksGroup
++ succeeded_attacks_unknown_comprimise: SucceededAttacksUnkownGroup
++ succeeded_attackscan: SucceededAttacksGroup
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>468</x>
+      <y>1416</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>BlueDeceptiveNodeGroup
+--
++ use: ConfigItem
++ chance: ConfigItem
++ chance_deceptive_node: ConfigItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>636</x>
+      <y>1416</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>SucceededAttacksUnkownGroup
+--
++ use: ConfigItem
++ chance: ConfigItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>798</x>
+      <y>1416</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>SucceededAttacksGroup
+--
++ use: ConfigItem
++ chance: ConfigItem
++ chance_deceptive_node: ConfigItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>462</x>
+      <y>1410</y>
+      <w>493</w>
+      <h>121</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+fg=ORANGE</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//Modify the code below to define the element's behavior.
+//
+//Example:  Change the line
+//  y += printCenter(textline,y);
+//to
+//  y += 2*printCenter(textline,y);
+//and observe the element preview.
+
+int y=textHeight();
+
+drawRectangle(0,0,width,height);
+
+for(String textline : textlines) {
+	y += printCenter(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1128</x>
+      <y>1662</y>
+      <w>204</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>GameRules
+--
++ network_compatibility: NetworkCompatibilityGroup
++ blue_loss_condition: BlueLossConditionGroup
+bg=PINK</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1248</x>
+      <y>1860</y>
+      <w>168</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>NetworkCompatibilityGroup
+--
++ min_number_network_nodes: ConfigItem</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1056</x>
+      <y>1860</y>
+      <w>180</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>BlueLossConditionGroup
+--
++ all_nodes_lost: ConfigItem
++ high_value_node_lost: ConfigItem
++ target_node_lost: ConfigItem
++ percent_of_nodes_lost: ActionPercentGroup
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1074</x>
+      <y>2016</y>
+      <w>150</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>BlueDeceptiveNodeGroup
+--
++ use: ConfigItem
++ percent: ConfigItem
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1122</x>
+      <y>2232</y>
+      <w>204</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>ObservationSpace
+--
++ comprised_status: ConfigItem
++ vulnerabilities: ConfigItem
++ node_connections: ConfigItem
++ average_vulnerability: ConfigItem
++ graph_connectivity: ConfigItem
++ attacking_nodes: ConfigItem
++ attacked_nodes: ConfigItem
++ special_nodes: ConfigItem
++ red_agent_skill: ConfigItem
+bg=PINK</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1122</x>
+      <y>2478</y>
+      <w>204</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>Reset
+--
++ randomise_vulnerabilities: ConfigItem
++ choose_new_high_value_nodes: ConfigItem
++ choose_new_entry_nodes: ConfigItem
+bg=PINK</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1122</x>
+      <y>2712</y>
+      <w>216</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>Rewards
+--
++ for_loss: ConfigItem
++ for_reaching_max_steps: ConfigItem
++ end_rewards_are_multiplied_by_end_state: ConfigItem
++ reduce_negative_rewards_for_closer_fails: ConfigItem
++ reward_function: ConfigItem
+bg=PINK</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1122</x>
+      <y>2946</y>
+      <w>216</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>Miscellaneous
+--
++ random_seed: ConfigItem
++ output_timestep_data_to_json: ConfigItem
+
+
+bg=PINK</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>CustomElementImpl</type>
+    <coordinates>
+      <x>186</x>
+      <y>324</y>
+      <w>1759</w>
+      <h>2809</h>
+    </coordinates>
+    <panel_attributes>// Modify the text below and
+// observe the element preview.
+
+fg=ORANGE</panel_attributes>
+    <additional_attributes/>
+    <custom_code>//Modify the code below to define the element's behavior.
+//
+//Example:  Change the line
+//  y += printCenter(textline,y);
+//to
+//  y += 2*printCenter(textline,y);
+//and observe the element preview.
+
+int y=textHeight();
+
+drawRectangle(0,0,width,height);
+
+for(String textline : textlines) {
+	y += printCenter(textline,y);
+}</custom_code>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2226</x>
+      <y>300</y>
+      <w>150</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>ConfigGroup
+--
+
+bg=CYAN</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1218</x>
+      <y>138</y>
+      <w>978</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;380.0;10.0;230.0;1610.0;220.0;1610.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1224</x>
+      <y>138</y>
+      <w>972</w>
+      <h>888</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;1460.0;10.0;1310.0;1600.0;1310.0;1600.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1218</x>
+      <y>138</y>
+      <w>978</w>
+      <h>1536</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;2540.0;10.0;2460.0;1610.0;2460.0;1610.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1218</x>
+      <y>132</y>
+      <w>978</w>
+      <h>2112</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;3500.0;10.0;3420.0;1610.0;3420.0;1610.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1218</x>
+      <y>138</y>
+      <w>978</w>
+      <h>2358</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;3910.0;10.0;3830.0;1610.0;3830.0;1610.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1218</x>
+      <y>138</y>
+      <w>978</w>
+      <h>2586</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;4290.0;10.0;4210.0;1610.0;4210.0;1610.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1218</x>
+      <y>132</y>
+      <w>978</w>
+      <h>2826</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;4690.0;10.0;4610.0;1610.0;4610.0;1610.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1224</x>
+      <y>1140</y>
+      <w>120</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>180.0;190.0;180.0;100.0;10.0;100.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1116</x>
+      <y>1140</y>
+      <w>126</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;190.0;10.0;100.0;190.0;100.0;190.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>846</x>
+      <y>1140</y>
+      <w>396</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;190.0;10.0;100.0;640.0;100.0;640.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1032</x>
+      <y>1356</y>
+      <w>102</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;50.0;150.0;50.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1230</x>
+      <y>1356</y>
+      <w>114</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;50.0;170.0;50.0;170.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>708</x>
+      <y>1356</y>
+      <w>162</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;40.0;250.0;40.0;250.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>852</x>
+      <y>1356</y>
+      <w>30</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>30.0;100.0;30.0;40.0;10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>534</x>
+      <y>1356</y>
+      <w>336</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;100.0;10.0;40.0;540.0;40.0;540.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1140</x>
+      <y>1788</y>
+      <w>102</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;120.0;10.0;70.0;150.0;70.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1224</x>
+      <y>1788</y>
+      <w>120</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>180.0;120.0;180.0;70.0;10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1134</x>
+      <y>1962</y>
+      <w>18</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>618</x>
+      <y>726</y>
+      <w>528</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;60.0;860.0;60.0;860.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>780</x>
+      <y>726</y>
+      <w>366</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;60.0;590.0;60.0;590.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>942</x>
+      <y>726</y>
+      <w>204</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;60.0;320.0;60.0;320.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1092</x>
+      <y>726</y>
+      <w>54</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;60.0;70.0;60.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1128</x>
+      <y>726</y>
+      <w>174</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>270.0;110.0;270.0;60.0;10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1128</x>
+      <y>726</y>
+      <w>348</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>560.0;110.0;560.0;60.0;10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>726</y>
+      <w>18</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1620</x>
+      <y>726</y>
+      <w>114</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;60.0;170.0;60.0;170.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1716</x>
+      <y>726</y>
+      <w>102</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>150.0;110.0;150.0;60.0;10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>546</x>
+      <y>492</y>
+      <w>702</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;220.0;10.0;170.0;1150.0;170.0;1150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>330</x>
+      <y>492</y>
+      <w>918</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;220.0;10.0;170.0;1510.0;170.0;1510.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1134</x>
+      <y>492</y>
+      <w>114</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>10.0;220.0;10.0;170.0;170.0;170.0;170.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1230</x>
+      <y>492</y>
+      <w>498</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+bg=BLACK</panel_attributes>
+    <additional_attributes>810.0;220.0;810.0;170.0;10.0;170.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>948</x>
+      <y>762</y>
+      <w>1500</w>
+      <h>822</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>2480.0;10.0;2480.0;1350.0;10.0;1350.0;10.0;1280.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1188</x>
+      <y>762</y>
+      <w>1260</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>2080.0;10.0;2080.0;310.0;10.0;310.0;10.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1536</x>
+      <y>762</y>
+      <w>1086</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1790.0;10.0;1790.0;310.0;10.0;310.0;10.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1878</x>
+      <y>762</y>
+      <w>918</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1510.0;10.0;1510.0;310.0;10.0;310.0;10.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1938</x>
+      <y>426</y>
+      <w>372</w>
+      <h>2760</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>600.0;10.0;600.0;4580.0;10.0;4580.0;10.0;4510.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2292</x>
+      <y>426</y>
+      <w>150</w>
+      <h>222</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;280.0;230.0;280.0;230.0;350.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2292</x>
+      <y>426</y>
+      <w>330</w>
+      <h>222</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;280.0;530.0;280.0;530.0;350.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2292</x>
+      <y>426</y>
+      <w>504</w>
+      <h>222</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;280.0;820.0;280.0;820.0;350.0</additional_attributes>
+  </element>
+</diagram>
