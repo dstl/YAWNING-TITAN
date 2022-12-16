@@ -19,3 +19,10 @@ class YawningTitanDBCriticalError(ValueError):
     """
 
     pass
+
+
+class ConfigValidationError(ValueError):
+    """
+    A config value has failed validation against a given ``ItemTypeProperties``.
+    """
+    pass
