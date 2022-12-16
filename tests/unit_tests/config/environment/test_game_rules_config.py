@@ -24,15 +24,15 @@ def test_read_valid_config():
     [
         # INT/FLOAT
         (
-            "node_vulnerability_lower_bound",
+            "node_vulnerability_min",
             True,
-            "'node_vulnerability_lower_bound' needs to be of type: <class 'float'> or "
+            "'node_vulnerability_min' needs to be of type: <class 'float'> or "
             "<class 'int'>",
         ),
         (
-            "node_vulnerability_upper_bound",
+            "node_vulnerability_max",
             True,
-            "'node_vulnerability_upper_bound' needs to be of type: <class 'float'> or "
+            "'node_vulnerability_max' needs to be of type: <class 'float'> or "
             "<class 'int'>",
         ),
         (
@@ -132,14 +132,14 @@ def test_invalid_config_type(
     [
         # BETWEEN 0 AND 1
         (
-            "node_vulnerability_lower_bound",
+            "node_vulnerability_min",
             -0.5,
-            "'node_vulnerability_lower_bound' Needs to have a value greater than: 0 (inclusive)",
+            "'node_vulnerability_min' Needs to have a value greater than: 0 (inclusive)",
         ),
         (
-            "node_vulnerability_lower_bound",
+            "node_vulnerability_min",
             1.1,
-            "'node_vulnerability_lower_bound' Needs to have a value less than: 1 (inclusive)",
+            "'node_vulnerability_min' Needs to have a value less than: 1 (inclusive)",
         ),
         # MORE THAN OR EQUAL TO 0 BUT LESS THAN MIN NUM OF NODES
         (

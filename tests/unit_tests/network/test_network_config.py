@@ -10,12 +10,7 @@ from yawning_titan.networks.network import Network
 def test_config_properties():
     """Tests creation of `Network`."""
     matrix, node_positions = network_creator.create_18_node_network()
-    network = Network(
-        matrix=matrix,
-        positions=node_positions,
-        entry_nodes=["0"],
-        high_value_nodes=["1"],
-    )
+    network = Network()
 
     assert np.array_equal(network.matrix, matrix) is True
     assert network.positions == node_positions
@@ -32,12 +27,7 @@ def test_hvn_entry_node_matching():
     """Tests when high value node is also an entry node."""
     with warnings.catch_warnings(record=True) as w:
         matrix, node_positions = network_creator.create_18_node_network()
-        Network(
-            matrix=matrix,
-            positions=node_positions,
-            entry_nodes=["0"],
-            high_value_nodes=["0"],
-        )
+        Network()
 
         # check that a warning was raised that the entry nodes and high value nodes intersect
         assert (

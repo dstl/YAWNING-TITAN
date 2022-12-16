@@ -5,14 +5,15 @@
       "random_entry_node_placement": null,
       "set_random_high_value_nodes": false,
       "random_high_value_node_placement": null,
-      "node_vulnerability_lower_bound": 0,
-      "node_vulnerability_upper_bound": 1,
+      "node_vulnerability_min": 0,
+      "node_vulnerability_max": 1,
       "nodes": {
         "00c9f604-83c4-4da9-a71d-9d8376d95253": {
           "uuid": "00c9f604-83c4-4da9-a71d-9d8376d95253",
           "name": "0",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -22,6 +23,7 @@
           "name": "5",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -31,6 +33,7 @@
           "name": "1",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -40,6 +43,7 @@
           "name": "2",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -49,6 +53,7 @@
           "name": "3",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -58,6 +63,7 @@
           "name": "4",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -67,6 +73,7 @@
           "name": "7",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -76,6 +83,7 @@
           "name": "6",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -85,6 +93,7 @@
           "name": "8",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -94,6 +103,7 @@
           "name": "12",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -103,6 +113,7 @@
           "name": "9",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -112,6 +123,7 @@
           "name": "10",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -121,6 +133,7 @@
           "name": "11",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -130,6 +143,7 @@
           "name": "13",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -139,6 +153,7 @@
           "name": "14",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -148,6 +163,7 @@
           "name": "15",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -157,6 +173,7 @@
           "name": "16",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
@@ -166,6 +183,7 @@
           "name": "17",
           "high_value_node": false,
           "entry_node": false,
+          "vulnerability": 0,
           "classes": "standard_node",
           "x_pos": 0.0,
           "y_pos": 0.0
