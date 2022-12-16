@@ -83,7 +83,6 @@ class NetworkDB:
 
     def __init__(self):
         self._db = YawningTitanDB("networks")
-        self.reset_default_networks_in_db()
 
     def __enter__(self) -> NetworkDB:
         return NetworkDB()
@@ -287,7 +286,7 @@ class NetworkDB:
             # Get the matching network from the networks db
             try:
                 db_network = self.get(uuid)
-            except ValueError:
+            except KeyError:
                 db_network = None
 
             # If the network doesn't match the default, or it doesn't exist,

@@ -145,6 +145,11 @@ class DocMetadata:
             return {k: v for k, v in doc_dict.items() if v is not None}
         return doc_dict
 
+    def __str__(self):
+        if self.name:
+            return self.name
+        return self.uuid
+
     def __repr__(self):
         repr_str = f"{self.__class__.__name__}("
         k_v_strs = []

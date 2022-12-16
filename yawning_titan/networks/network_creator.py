@@ -1,10 +1,13 @@
 import math
 import random
 from itertools import combinations, groupby
-from typing import List, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union
 
 import networkx as nx
 import numpy as np
+
+from yawning_titan.networks.network import Network
+from yawning_titan.networks.node import Node
 
 
 def check_if_nearby(pos: List[float], full_list: dict, value: int) -> bool:
@@ -51,78 +54,34 @@ def generate_node_positions(adj_matrix: np.array) -> dict:
     return positions
 
 
-def save_network(network_name: str, adj_matrix: np.array, positions: dict):
-    """
-    Save a network in a text file so that it can be used multiple times.
+def get_network_from_matrix_and_positions(
+        adj_matrix: np.ndarray,
+        positions: Dict[str, List[int]]
+):
+    network = Network()
+    edges = []
+    # Create all Nodes
+    nodes: Dict[Any, Node] = {i: Node(name=str(i)) for i in range(len(adj_matrix))}
+    for y_i, y_node in enumerate(adj_matrix):
+        # Retrieve the Node and add to the Network
+        network.add_node(nodes[y_i])
 
-    :param network_name: The name of the network.
-    :param adj_matrix: The adjacency matrix for the network.
-    :param positions: A dictionary of node positions.
+        # Retrieve the positions and set on the Node
+        if str(y_i) in positions.keys():
+            x, y = positions[str(y_i)]
+            nodes[y_i].x_pos = x
+            nodes[y_i].y_pos = y
+        # If the edge hasn't already been added, add it
+        for x_i, x_node in enumerate(y_node):
+            if x_node == 1:
+                edge = tuple(sorted([y_i, x_i]))
+                if edge not in edges:
+                    network.add_edge(nodes[edge[0]], nodes[edge[0]])
 
-    .. warning::
-        Deprecated and will be removed in a future version.
-
-    """
-    # generates a save string
-    string_encoded_network = ""
-    size = len(adj_matrix)
-    string_encoded_network += str(size) + ","
-    for i in adj_matrix:
-        for j in i:
-            string_encoded_network += str(j) + ","
-
-    string_encoded_network = string_encoded_network[:-1]
-    string_encoded_network += "/"
-
-    for node, pos in positions.items():
-        [x, y] = pos
-        string_encoded_network += str(node) + ":" + str(x) + "," + str(y) + "/"
-
-    string_encoded_network = string_encoded_network[:-1]
-
-    # saves the save string to a text file
-    with open(network_name, "w") as file:
-        file.write(string_encoded_network)
+    return network
 
 
-def load_network(network_name: str) -> Tuple[np.array, dict]:
-    """
-    Load a saved network so that it can be used by the generic network environment.
-
-    :param network_name: The name of the network.
-
-    :returns: The adjacency matrix. A position dictionary for all the nodes.
-
-    .. warning::
-        Deprecated and will be removed in a future version.
-
-    """
-    # loads the file where the data is saved
-    with open(network_name, "r") as file:
-        lines = file.read()
-    split_lines = lines.split("/")
-    adj_matrix = split_lines[0]
-    positions = split_lines[1:]
-
-    # extracts the adj matrix from the saved string
-    adj_matrix = list(map(float, adj_matrix.split(",")))
-    adj_matrix = list(map(int, adj_matrix))
-
-    size = adj_matrix[0]
-
-    adj_matrix = np.asarray(adj_matrix[1:]).reshape((size, size))
-    # extracts the position dict from the saved string
-    positions_dic = {}
-    for i in positions:
-        positions_dic[str(int(i[: i.index(":")]))] = [
-            float(i[i.index(":") + 1 : i.index(",")]),
-            float(i[i.index(",") + 1 :]),
-        ]
-
-    return adj_matrix, positions_dic
-
-
-def create_18_node_network() -> Tuple[np.array, dict]:
+def create_18_node_network() -> Network:
     """
     Create the standard 18 node network found in the Ridley 2017 research paper.
 
@@ -172,7 +131,7 @@ def create_18_node_network() -> Tuple[np.array, dict]:
         "16": [4, 1],
         "17": [5, 1],
     }
-    return adj_matrix, positions
+    return get_network_from_matrix_and_positions(adj_matrix, positions)
 
 
 def dcbo_base_network() -> Tuple[np.array, dict]:
@@ -242,7 +201,7 @@ def create_mesh(size: int = 100, connectivity: float = 0.7) -> Tuple[np.array, d
 
 
 def create_star(
-    first_layer_size: int = 8, group_size: int = 5, group_connectivity: float = 0.5
+        first_layer_size: int = 8, group_size: int = 5, group_connectivity: float = 0.5
 ) -> Tuple[np.array, dict]:
     """
     Create a star node environment.
@@ -282,9 +241,9 @@ def create_star(
 
 
 def create_p2p(
-    group_size: int = 5,
-    inter_group_connectivity: float = 0.1,
-    group_connectivity: int = 1,
+        group_size: int = 5,
+        inter_group_connectivity: float = 0.1,
+        group_connectivity: int = 1,
 ) -> Tuple[np.array, dict]:
     """
     Create a two group network.
@@ -302,10 +261,10 @@ def create_p2p(
     """
     # creates the sizes of the groups
     group1_size = (
-        group_size + random.randint(0, int(group_size / 2)) - int(group_size / 4)
+            group_size + random.randint(0, int(group_size / 2)) - int(group_size / 4)
     )
     group2_size = (
-        group_size + random.randint(0, int(group_size / 2)) - int(group_size / 4)
+            group_size + random.randint(0, int(group_size / 2)) - int(group_size / 4)
     )
     total_size = group1_size + group2_size
 
@@ -340,7 +299,7 @@ def create_p2p(
 
 
 def create_ring(
-    break_probability: float = 0.3, ring_size: int = 60
+        break_probability: float = 0.3, ring_size: int = 60
 ) -> Tuple[np.array, dict]:
     """
     Create a ring network.
@@ -406,7 +365,7 @@ def custom_network() -> Union[Tuple[np.array, dict], Tuple[None, None]]:
 
 
 def gnp_random_connected_graph(
-    n_nodes: int, probability_of_edge: float
+        n_nodes: int, probability_of_edge: float
 ) -> Union[Tuple[np.array, dict], None]:
     """
     Create a randomly connected graph but with the guarntee that each node will have at least one connection.

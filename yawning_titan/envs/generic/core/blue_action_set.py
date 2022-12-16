@@ -28,7 +28,7 @@ class BlueActionSet:
 
         Will not reduce the vulnerability past the lower bound setting in the
         configuration file:
-            - BLUE: node_vulnerability_lower_bound
+            - BLUE: node_vulnerability_min
 
         Args:
             node: the node to reduce the vulnerability of

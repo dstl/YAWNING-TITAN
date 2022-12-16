@@ -44,25 +44,25 @@ class NetworkInterface:
         self.network = network
         self.random_seed = self.game_mode.miscellaneous.random_seed
 
-        number_of_nodes = len(self.network.matrix)
+        number_of_nodes = len(self.network.nodes)
 
         # check if high value nodes were provided
         if self.network.high_value_nodes:
             self.high_value_nodes = self.network.high_value_nodes
 
-        nodes = [str(i) for i in range(number_of_nodes)]
-        df = pd.DataFrame(self.network.matrix, index=nodes, columns=nodes)
-        graph = nx.from_pandas_adjacency(df)
+        #nodes = [str(i) for i in range(number_of_nodes)]
+        #df = pd.DataFrame(self.network.matrix, index=nodes, columns=nodes)
+        #graph = self.network
 
         # initialise the current graph
-        self.current_graph = graph
+        self.current_graph = self.network
 
         # initialise the base graph
-        self.base_graph = copy.deepcopy(graph)
-        self.initial_base_graph = copy.deepcopy(graph)
+        self.base_graph = copy.deepcopy(self.network)
+        self.initial_base_graph = copy.deepcopy(self.network)
 
         # initialise data storage
-
+        self.network.nodes
         self.initial_network_variables = {
             i: {
                 "vulnerability_score": 0,
@@ -73,14 +73,16 @@ class NetworkInterface:
                 "blue_knows_intrusion": False,
                 "isolated": False,
             }
-            for i in nodes
+            for i in self.network.nodes
         }
 
         # If no vulnerabilities supplied then generate some
         vulnerabilities = self.generate_vulnerabilities()
 
         # initialise the network variables
-        for node in nodes:
+        for node in self.network.nodes:
+            node_obj = self.network.get_node_from_uuid(node)
+            positions = [node_obj.x_pos, node_obj.y_pos]
             # vulnerability scores
             self.initial_network_variables[node][
                 "vulnerability_score"
@@ -88,7 +90,7 @@ class NetworkInterface:
             # node positions
             self.initial_network_variables[node][
                 "node_position"
-            ] = self.network.positions[node]
+            ] = positions
 
         self.current_network_variables = copy.deepcopy(self.initial_network_variables)
 
