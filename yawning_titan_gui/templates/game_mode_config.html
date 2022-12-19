@@ -20,15 +20,21 @@
 </header>
 
 <div id="config-forms">
-    <div id="config-form-icons">
-        {% for form_name, section in forms.items %}
-        <a href="{{request.path|url_trim:2}}{{form_name}}/" class="icon-container{% if form_name == section_name %} selected{% endif %}{% if section.status == 'complete' %} complete{% endif %}">
-            <div id="{{form_name}}-icon" class="icon" data-form="#{{form_name}}-config-form">
-                <i class="bi {{section.icon}}"></i>
-            </div>
-            <p>{{form_name}}</p>
-        </a>
-        {% endfor %}
+    <div id="config-form-left">
+        <div id="config-form-icons">
+            {% for form_name, section in forms.items %}
+            <a href="{{request.path|url_trim:2}}{{form_name}}/" class="icon-container{% if form_name == section_name %} selected{% endif %}{% if section.status == 'complete' %} complete{% endif %}">
+                <div id="{{form_name}}-icon" class="icon" data-form="#{{form_name}}-config-form">
+                    <i class="bi {{section.icon}}"></i>
+                </div>
+                <p>{{form_name}}</p>
+            </a>
+            {% endfor %}
+        </div>
+        <div id="config-description">
+            <h3>Description</h3>
+            <textarea></textarea>
+        </div>
     </div>
     <div id="{{section_name}}-config-form-container" class="form-container">
         <form id="{{section_name}}-config-form" class="config-form" action="" method="post" data-form-name="{{section_name}}">
@@ -86,17 +92,31 @@
         display: flex;
         flex-direction: row;
     }
+    #config-form-left{
+        display: flex;
+        flex-direction: column;
+        margin-right: var(--padding);
+        padding-top: var(--padding);
+        padding-bottom: var(--padding);
+    }
     #config-form-icons{
         display: flex;
-        height: 350px;
+        position: relative;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         font-size: 30px;
         color: var(--text-light);
+        margin-bottom: var(--padding);
+    }
+    #config-form-icons::before{
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 5%;
+        display: block;
+        height: 90%;
         border-left: 2px solid var(--text-light);
-        margin-right: var(--padding);
-        margin-top: var(--padding);
     }
 
     /* config icons */
@@ -126,6 +146,20 @@
     #config-form-icons>.icon-container p{
         font-size: 1.25rem;
         margin: 0;
+    }
+
+    /* config description */
+    #config-description{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    #config-description>textarea{
+        background-color: var(--dark);
+        flex: 1;
+        border-radius: .5rem;
+        color: var(--text-light);
+        padding: var(--increment);
     }
 
     /* config elements */
