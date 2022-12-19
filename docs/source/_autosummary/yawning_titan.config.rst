@@ -33,4 +33,3 @@ yawning\_titan.config
    yawning_titan.config.environment
    yawning_titan.config.game_config
    yawning_titan.config.game_modes
-   yawning_titan.config.network_config

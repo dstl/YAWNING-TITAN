@@ -2,186 +2,329 @@
 
 Getting Started
 ===============
+
+
 Pre-Requisites
 **************
-In order to get YAWNING TITAN (YT) installed, you will need to have the following installed:
- * python3.6+
- * python3-pip
- * virtualenv
+To get YAWNING-TITAN (**YT**) installed, you will need to have the following
+installed:
 
-Installation
-************
-1. Navigate to the YT folder and create a new python virtual environment
+* ``python3.8+``
+* ``python3-pip``
+* ``virtualenv``
 
-.. code-block:: text
+**YT** is designed to be OS-agnostic, and thus should work on most
+variations/distros of Linux, Windows, and MacOS.
 
-    python3 -m venv <name_of_venv>
+Installation from source
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-2. Activate virtual environment
+1. Navigate to the YAWNING-TITAN folder and create a new python :term:`Virtual Environment` (**venv**)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block:: text
+.. code:: unix
 
-    source <name_of_venv>
-
-3. Install yawning-titan into the environment along with all of it's dependencies
-
-.. code-block:: text
-
-    python3 -m pip install -e .
+   python3 -m venv <name_of_venv>
 
 
-What's required to create a YT ``GenericEnv()``?
+2. Activate the :term:`venv<Virtual Environment>`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+**Unix**
+
+.. code:: bash
+
+   source <name_of_venv>/bin/activate
+
+
+**Windows**
+
+.. code:: powershell
+
+   .\<name_of_venv>\Scripts\activate
+
+3. Install :mod:`~yawning_titan` into the :term:`venv<Virtual Environment>` along with all of its dependencies
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: bash
+
+   python3 -m pip install -e .
+
+
+This will install all of the dependencies including algorithm libraries. These libraries all use ``torch``. If you’d
+like to install ``tensorflow`` for use with Rllib, you can do this manually or install ``tensorflow`` as an optional
+dependency by postfixing the command in step 3 above with the ``[tensorflow]`` extra. Example:
+
+.. code:: bash
+
+   python3 -m pip install -e .[tensorflow]
+
+Development Installation
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+To install the development dependencies, postfix the command in step 3
+above with the ``[dev]`` extra. Example:
+
+.. code:: bash
+
+   python3 -m pip install -e .[dev]
+
+
+
+What's required to create a **YT** :class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv`?
 ***************************************************
-Now that you have installed YT, it's time to create your first environment but lets first quickly describe whats required to
-create a YT ``GenericEnv()``. YT has the functionality to create generic OpenAI Gym based network environments and
-requires the following to create a ``GenericEnv()``:
+Now that you have installed YT, it's time to create your first environment, but let's first quickly describe what's
+required to create a **YT** :class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv`. **YT** has the functionality
+to create generic OpenAI ``Gym`` based network environments and requires the following to create a
+:class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv`:
 
-* A Scenario Settings File - Within YT, a scenario settings files defines everything other than the networks topology.
-* A Red agent - Within YT, these are represented as probabilistic and can be configured using the scenario's settings file.
-* A Blue agent - Within YT, blue agents are considered as ``learners`` which means they can be driven by some sort of decision making process such as a Reinforcement Learning algorithm.
-* The Network to be defended. This is input into YT in two components. The first is an adjacency matrix which represents an undirected graphs connectivity and the second is a dictionary which contains the x and y co-ordinates for
-  each vertex of the graph to support 2D plotting.
+* An instance of :class:`~yawning_titan.envs.generic.core.network_interface.NetworkInterface`, the primary interface
+  between both red and blue agents and the underlying environment.
+  :class:`~yawning_titan.envs.generic.core.network_interface.NetworkInterface` takes an instance of both
+  :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig` and
+  :class:`~yawning_titan.networks.network.Network`.
+* A Red agent as an instance of :class:`~yawning_titan.envs.generic.core.red_interface.RedInterface`. Within **YT**,
+  these are represented as :term:probabilistic and can be configured using :class:`~yawning_titan.config.agents.red_agent_config.RedAgentConfig`
+  which is a part of the :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig`.
+* A Blue agent as an instance of :class:`~yawning_titan.envs.generic.core.blue_interface.BlueInterface`. Within **YT**, blue
+  agents are considered **learners**, which means they can be driven by some sort of decision-making process such as
+  a :term:`Reinforcement Learning` :term:`algorithm`. They can be configured using :class:`~yawning_titan.config.agents.blue_agent_config.BlueAgentConfig`.
+
 
 .. note::
-    YT contains a network creator helper which generates both the adjacency matrix and the
-    dictionary of points. It wraps ``Networkx``'s standard functions such as star and mesh.
+    **YT** contains a network creator helper module (:mod:`~from yawning_titan.networks.network_creator`) which
+    generates both the adjacency matrix and the dictionary of points. It wraps ``Networkx``'s standard functions such as star and mesh.
     We will demonstrate the use of this later in this Getting Started guide.
 
-    In addition to the five inputs detailed above, you can also supply the environment with optional
-    parameters which are the Entry Node which act as the gateway nodes that the red uses to attack the
-    network and node vulnerability scores. This is to aid modelling real networks within an abstracted
-    environment such as YT.
 
-Creating a YT ``GenericEnv()`` and Training an Stable Baselines 3 Agent
-**************************************************************************
+Creating a **YT** :class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv` and training a Stable Baselines 3 Agent
+****************************************************************************************************************************
 
 .. note::
-    All of this section can be found within the ``notebooks/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering`` if you'd
-    prefer to work through it like that.
+    This section mirrors the steps taken in the provided ``End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb``
+    Jupyter notebook. To follow these steps in the notebook, start a Jupyter notebook environment in ``~/yawning_titan/notebooks``
+    by activating your :term:`venv<Virtual Environment>` (see: `2. Activate the venv`_) and then running the following commands:
+
+    .. code:: bash
+
+        cd ~/yawning_titan/notebooks
+        jupyter notebook
 
 For the purposes of this example, we are going to first create an environment that has the same network topology as
-`Ridley 2017 <https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9>` which
+`Ridley, A. (2017) <https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9>`_ which
 looks likes this.
 
-.. image:: ./images/18-node.gif
-   :width: 400
+.. image:: ../_static/standard_18_node_network.png
+   :width: 800
+
+**YT**'s :class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv` is highly configurable. The main way that
+you can affect and change the environment is through changes to the config classes,
+:class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig` and :class:`~yawning_titan.networks.network.Network`.
+
+The classes utilise Python :py:func:`dataclasses.dataclass` for automatic ``__hash__``, ``__eq__``,
+``__repr__``, and ``__dict__`` methods, but still use traditional OOP getters and setters to enable docstrings to be
+used by Sphinx. An abstract base class, :class:`~yawning_titan.config.game_config.config_abc.ConfigABC`, has been
+defined that has a :func:`~yawning_titan.config.game_config.config_abc.ConfigABC.to_dict` method, and
+:func:`~yawning_titan.config.game_config.config_abc.ConfigABC.create` and
+:func:`~yawning_titan.config.game_config.config_abc.ConfigABC.validate` abstract class methods.
+
+Creating a :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig` serves as the main config class for the
+**YT** game rules. :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig` has single instances of:
+
+* :class:`~yawning_titan.config.agents.red_agent_config.RedAgentConfig`
+* :class:`~yawning_titan.config.agents.blue_agent_config.BlueAgentConfig`
+* :class:`~yawning_titan.config.environment.game_rules_config.GameRulesConfig`
+* :class:`~yawning_titan.config.environment.observation_space_config.ObservationSpaceConfig`
+* :class:`~yawning_titan.config.environment.reset_config.ResetConfig`
+* :class:`~yawning_titan.config.environment.rewards_config.RewardsConfig`
+* :class:`~yawning_titan.config.game_config.miscellaneous_config.MiscellaneousConfig`
+
+A default game mode is provided with **YT** and is stored as `package data <https://setuptools.pypa.io/en/latest/userguide/datafiles.html>`_
+in yaml format. This default yaml file can be accessed using :func:`~yawning_titan.config.game_modes.default_game_mode_path`.
+
+The following code block demonstrates how to instantiate a :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig`
+using the :func:`~yawning_titan.config.game_modes.default_game_mode_path`:
+
+.. code:: python
+
+    from yawning_titan.config.game_config.game_mode_config import GameModeConfig
+    from yawning_titan.config.game_modes import default_game_mode_path
+
+    game_mode_config = GameModeConfig.create_from_yaml(default_game_mode_path())
+
+.. note::
+
+    In the next release of **YT**, users will be able to save their custom instances of
+    :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig` similar to :class:`~yawning_titan.networks.network_db.NetworkDB`.
 
 
-Setting up the configuration file
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. warning::
+    :func:`~yawning_titan.config.game_modes.default_game_mode_path` is being deprecated in the next release of **YT**.
+    Rather than being stored in yaml format, instances of :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig`
+    will be stored in the lightweight document database `TinyDB <https://tinydb.readthedocs.io/en/latest/>`_. Users will
+    be able to save their own :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig`, and query
+    then load them from the db.
 
-YAWNING TITAN's generic network environment is highly configurable. The main way that you can affect
-and change the environment is through the config file. The config file is a yaml file that
-contains settings such as what actions the blue agent can take and how the blue agent
-wins. The config file is broken into the following sections:
+Creating a :class:`~yawning_titan.networks.network.Network`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* RED
-    Settings relating to the red agent
-* BLUE
-    Settings relating to the blue agent
-* GAME RULES
-    Settings relating to the way the game is played and how it is won
-* REWARDS
-    Settings relating to the rewards that the blue agent gets for its actions
-* MISCELLANEOUS
-    Other settings that do not fit into any other category
+The :class:`~yawning_titan.networks.network.Network` class serves as the main config class for
+the network. As a minimum, the :class:`~yawning_titan.networks.network.Network` takes a 2D
+adjacency matrix as an instance of :external:py:class:`numpy.array <numpy.core._multiarray_umath.ndarray>`, and a
+:py:class:`dict` of point locations (used to render the network). An optional :py:class:`list` of entry nodes,
+:py:class:`dict` of vulnerabilities, and :py:class:`list` of high_value_nodes can also be supplied.
 
-The network interface comes with a config file check that ensures that the settings file
-has not become corrupted and that the settings values chosen are valid.
+**YT** provides several built-in functions to create network based of standard topologies. These include:
 
-To see a description of every setting see: :ref:`config file`
+* :func:`~from yawning_titan.networks.network_creator.create_18_node_network`
+    Creates the 18-node network for the research paper: `Ridley, A. (2017) <https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9>`_.
+* :func:`~from yawning_titan.networks.network_creator.create_mesh`
+    Creates a mesh network with variable connectivity.
+* :func:`~from yawning_titan.networks.network_creator.create_star`
+    Creates a network based on the star topology.
+* :func:`~from yawning_titan.networks.network_creator.create_p2p`
+    Creates a network based on two "peers" connecting.
+* :func:`~from yawning_titan.networks.network_creator.create ring`
+    Creates a network based on the ring topology.
+* :func:`~from yawning_titan.networks.network_creator.custom_network`
+    Creates a network using console input from the user.
+* :func:`~from yawning_titan.networks.network_creator.procedural_network`
+    Creates a network with defined amounts of nodes with certain connectivity.
+* :func:`~from yawning_titan.networks.network_creator.gnp_random_connected_graph`
+    Creates a mesh that is guaranteed for each node to have at least one connection.
 
-You can create your own settings file or use one of the pre-made ones.
+In addition to this, **YT** provides a database, :class:`~yawning_titan.networks.network_db.NetworkDB`, that can be
+used to query, insert, update, and delete custom networks so they can be re-used at a later date. See
+:ref:`The NetworkDB and NetworkSchema classes<_network-db-network-schema-classes>` for full details of the db.
 
-If you do not supply the network with a config file then it will use a default one.
-To supply one of your own config files then pass the file path of your config file
-to the network_interface.
+The following code block demonstrates how to instantiate a :class:`~yawning_titan.networks.network.Network`
+using the :func:`~yawning_titan.networks.network_db.default_18_node_network`, with nodes 1, 2, and 3 as
+entry nodes, and nodes 5, 10, and 15 as high-value nodes.
 
-Creating a network representation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-You will need to define the network that the agents will compete in. The network interface
-requires an adjacency matrix and a dictionary of point locations (used to render the network).
+.. code:: python
 
-YT contains a couple of builtin methods to create networks based of standard topologies.
-Theses include:
+    from yawning_titan.networks.network import Network
+    from yawning_titan.networks.network_db import default_18_node_network
 
-* create_18_node_network
-    Creates the 18 node network for the research paper: https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9
-* create_mesh
-    Creates a mesh network with variable connectivity
-* create_star
-    Creates a network based of the star topology
-* create_p2p
-    Creates a network based of two "peers" connecting
-* create ring
-    Creates a network based of the ring topology
-* custom_network
-    Creates a network using console input from the user
-* procedural_network
-    Creates a network with defined amounts of nodes with certain connectivity
-* gnp_random_connected_graph
-    Creates a mesh that is guaranteed for each node to have at least one connection
+    network = default_18_node_network()
+    network.entry_nodes = ["0", "1", "2"]
+    network.high_value_nodes = ["5", "10", "15"]
 
-To create the data for a network::
 
-    matrix, node_positions = network_creator.create_18_node_network()
+Creating the :class:`~yawning_titan.envs.generic.core.network_interface.NetworkInterface`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    network_creator.save_network("current_net.txt", matrix, node_positions)
-    matrix, node_positions = network_creator.load_network("current_net.txt")
+The :class:`~yawning_titan.envs.generic.core.network_interface.NetworkInterface` is the primary interface between both
+the :class:`~yawning_titan.envs.generic.core.red_interface.RedInterface` and
+:class:`~yawning_titan.envs.generic.core.blue_interface.BlueInterface`, and the
+:class:`~yawning_titan.networks.network.Network`.
 
-The above code also shows how to save and load networks
+The following code block demonstrates how to instantiate a :class:`~yawning_titan.envs.generic.core.network_interface.NetworkInterface`
+using the :class:`~yawning_titan.config.game_config.game_mode_config.GameModeConfig` and
+:class:`~yawning_titan.networks.network.Network` we created in the previous steps:
 
-Generating the network interface
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. code:: python
 
-Create the Network Interface object::
+    from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 
-    network_interface = NetworkInterface(matrix, node_positions)
+    network_interface = NetworkInterface(game_mode=game_mode_config, network=network)
 
-There are also some optional parameters that you can use in the the network interface
 
-* entry_nodes
-    A list of node names that act as doorways to the network for the red agent. If left
-    blank then the network generates some automatically. There are options in the settings
-    file to choose how entry nodes are generated if they are left blank.
-* vulnerabilities
-    A dictionary of node names and vulnerabilities. A vulnerability is a number between 0 and 1
-    that represents how easy a node is to compromise (1 very easy, 0 very hard). If left
-    blank then generated randomly.
-* high value node
-    If the config is set up so that the red agent wins if it compromises a high value
-    target then you can set the name of the node to be the target. Generated automatically
-    if left blank.
-* settings_path
-    The path to the settings file. If left blank a default settings file is used. To see
-    more information on the settings file see: :ref:`config file`
+Settings up the :class:`~yawning_titan.envs.generic.core.red_interface.RedInterface` and :class:`~yawning_titan.envs.generic.core.blue_interface.BlueInterface`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Settings up the Red and Blue agents
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-To run an experiment through the generic network environment you will need a red and a
-blue agent.
+To run an experiment through the :class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv`
+you will need a :term:`Red Agent` as an instance of :class:`~yawning_titan.envs.generic.core.red_interface.RedInterface` and a
+:term:`Blue Agent` as an instance of :class:`~yawning_titan.envs.generic.core.blue_interface.BlueInterface`. **YT**
+comes supplied with a :term:`probabilistic` customisable :term:`Red Agent` and a customisable :term:`RL<Reinforcement Learning>` :term:`Blue Agent`.
 
-YAWNING TITAN comes supplied with a probabilistic customisable red agent and a
-customisable RL blue agent.
+The :class:`~yawning_titan.envs.generic.core.red_interface.RedInterface` can be modified by changing the
+:class:`~yawning_titan.config.agents.red_agent_config.RedAgentConfig` at
+:attr:`GameModeConfig.red <yawning_titan.config.game_config.game_mode_config.GameModeConfig.red>` and the
+:class:`~yawning_titan.envs.generic.core.blue_interface.BlueInterface` can be modified by changing the
+:class:`~yawning_titan.config.agents.blue_agent_config.BlueAgentConfig` at
+:attr:`GameModeConfig.red <yawning_titan.config.game_config.game_mode_config.GameModeConfig.blue.>`.
 
-Both the red and blue agents can be modified by changing the settings in the configuration
-file under the appropriate section.
+The following code block demonstrates how to instantiate a :class:`~yawning_titan.envs.generic.core.red_interface.RedInterface`
+and :class:`~yawning_titan.envs.generic.core.blue_interface.BlueInterface` using the
+:class:`~yawning_titan.envs.generic.core.network_interface.NetworkInterface` we created in the previous step:
 
-To create a blue agent::
+.. code:: python
 
-    blue_agent = BlueInterface(network_interface)
-
-To create a red agent::
+    from yawning_titan.envs.generic.core.blue_interface import BlueInterface
+    from yawning_titan.envs.generic.core.red_interface import RedInterface
 
     red_agent = RedInterface(network_interface)
+    blue_agent = BlueInterface(network_interface)
 
 
+Creating the :class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Creating the environment
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Finally, the :class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv` can be instantiated using the
+:class:`~yawning_titan.envs.generic.core.red_interface.RedInterface`,
+:class:`~yawning_titan.envs.generic.core.blue_interface.BlueInterface`,
+and :class:`~yawning_titan.envs.generic.core.network_interface.NetworkInterface` we created in the previous steps:
 
-Create the open AI gym environment ::
 
-    number_of_actions = blue_agent.get_number_of_actions()
+.. code:: python
 
-    env = GenericNetworkEnv(red_agent, blue_agent, network_interface, number_of_actions)
+    from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
+
+    env = GenericNetworkEnv(red_agent, blue_agent, network_interface)
+
+
+Checking the :class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv` is compliant with OpenAI Gym
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A check can be performed using the Stable Baselines 3 :func:`~from stable_baselines3.common.env_checker.check_env` function
+to confirm whether or not the :class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv` is compliant with OpenAI Gym.
+After checking the environment, it should be reset using the :func:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv.reset`
+method to ensure it's at its default state before we train our agent.
+
+.. code:: python
+
+    from stable_baselines3.common.env_checker import check_env
+
+    check_env(env, warn=True)
+    env.reset()
+
+
+Train the Agent
+~~~~~~~~~~~~~~~~~~~~
+
+With the :class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv` setup, the next step is to train the
+:term:`Blue Agent` using a :mod:`stable_baselines3` :term:`algorithm<Algorithm>` with an instance of
+:class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv` and a :class:`stable_baselines3.common.policies.BasePolicy`.
+
+The following code block demonstrates how to setup a :class:`stable_baselines3.PPO` :term:`PPO<Proximal Policy Optimization>`
+:term:`algorithm<Algorithm>` using our instance of :class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv`
+and the :class:`~stable_baselines3.ppo.MlpPolicy`.
+
+.. code:: python
+
+    from stable_baselines3 import PPO
+    from stable_baselines3.ppo import MlpPolicy as PPOMlp
+
+    agent = PPO(PPOMlp, env, verbose=1)
+    agent.learn(total_timesteps=1000)
+
+Evaluating the Agent
+~~~~~~~~~~~~~~~~~~~~
+
+Finally, the only thing left to do is to evaluate the agent against the policy to determine the mean rewards per
+episode and the standard deviation of rewards per episode.
+
+The following code block demonstrates evaluating the agent by passing the :class:`stable_baselines3.PPO`, the
+:class:`~yawning_titan.envs.generic.generic_env.GenericNetworkEnv`, and the number of episodes to evaluate the agent to
+the :func:`~stable_baselines3.common.evaluation.evaluate_policy' function.
+
+.. code:: python
+
+    from stable_baselines3.common.evaluation import evaluate_policy
+
+    evaluate_policy(agent, env, n_eval_episodes=100)

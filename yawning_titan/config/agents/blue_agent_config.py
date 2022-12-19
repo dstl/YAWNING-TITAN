@@ -28,9 +28,6 @@ class BlueAgentConfig(ConfigABC):
         this using the "chance_to_immediately_discover_intrusion". If blue
         does not detect an intrusion then it can use the scan action to try
         and discover these intrusions with
-        "chance_to_discover_intrusion_on_scan".
-
-        There are also deceptive nodes that blue can place down. These nodes
         are used as detectors to inform blue when they are compromised. They
         should have a chance to detect of 1 so that they can detect
         everything (at the very least they should have a chance to detect
