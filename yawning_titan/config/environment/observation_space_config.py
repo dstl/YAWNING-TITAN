@@ -116,7 +116,7 @@ class ObservationSpaceConfig(ConfigABC):
         Args:
             config_dict: A config dict with the required key/values pairs.
         """
-        cls._validate(config_dict)
+        cls.validate(config_dict)
 
         observation_space_config = ObservationSpaceConfig(
             _compromised_status=config_dict["compromised_status"],
@@ -133,7 +133,12 @@ class ObservationSpaceConfig(ConfigABC):
         return observation_space_config
 
     @classmethod
-    def _validate(cls, config_dict: dict):
+    def validate(cls, config_dict: dict):
+        """
+        Validates the bservation space config dict.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+        """
         all_obs = [
             "compromised_status",
             "vulnerabilities",

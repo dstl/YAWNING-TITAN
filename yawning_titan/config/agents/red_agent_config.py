@@ -196,7 +196,7 @@ class RedAgentConfig(ConfigABC):
         return self._red_uses_zero_day_action
 
     @property
-    def zero_day_start_amount(self) -> int:
+    def zero_day_start_amount(self) -> float:
         """The number of zero-day attacks that the red agent starts with."""
         return self._zero_day_start_amount
 
@@ -372,13 +372,16 @@ class RedAgentConfig(ConfigABC):
     @classmethod
     def create(cls, config_dict: Dict[str, Any]) -> RedAgentConfig:
         """
-        Creates an instance of `RedAgentConfig` after calling `.validate`.
+        Creates an instance of :class:`RedAgentConfig <yawning_titan.config.agents.red_agent_config.RedAgentConfig>.
 
-        Args:
-            config_dict: A config dict with the required key/values pairs.
+        This calls :func:`validate() <yawning_titan.config.agents.red_agent_config.RedAgentConfig.validate>.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+
+        :return: An instance of :class:`RedAgentConfig <yawning_titan.config.agents.red_agent_config.RedAgentConfig>.
         """
         # validate red agent config values
-        cls._validate(config_dict)
+        cls.validate(config_dict)
 
         red_agent_config = RedAgentConfig(
             _red_skill=config_dict["red_skill"],
@@ -441,7 +444,12 @@ class RedAgentConfig(ConfigABC):
         return red_agent_config
 
     @classmethod
-    def _validate(cls, config_dict: dict):
+    def validate(cls, config_dict: dict):
+        """
+        Validates the red agent config dict.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+        """
         for name in [
             "chance_for_red_to_spread",
             "chance_for_red_to_random_compromise",

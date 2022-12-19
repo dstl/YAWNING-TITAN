@@ -25,9 +25,9 @@ copyright = "Crown Copyright (C) Dstl 2022"
 author = "Defence Science and Technology Laboratory UK"
 
 # The short Major.Minor.Build version
-version = "0.1.0"
+version = "1.0.1"
 # The full version, including alpha/beta/rc tags
-release = "0.1.0"
+release = "1.0.1"
 
 
 # -- General configuration ---------------------------------------------------
@@ -46,14 +46,20 @@ extensions = [
     "sphinx.ext.autosummary",  # Create neat summary tables for modules/classes/methods etc
     "sphinx.ext.intersphinx",  # Link to other project's documentation (see mapping below)
     "sphinx.ext.viewcode",  # Add a link to the Python source code for classes, functions etc.
+    "sphinx.ext.todo",
+    "sphinx_multiversion",
 ]
 
 # Mappings for sphinx.ext.intersphinx. Projects have to have Sphinx-generated doc! (.inv file)
 # TODO: Add mapping to docs for other dependencies
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
+    "numpy": ("https://numpy.org/doc/stable/", None),
+    "pandas": ("https://pandas.pydata.org/docs/", None),
+    "matplotlib": ("https://matplotlib.org/stable/", None),
+    "Django": ("https://docs.djangoproject.com/en/4.1/", None),
+    "tinydb": ("https://tinydb.readthedocs.io/en/latest/", None),
 }
-
 autosummary_generate = True  # Turn on sphinx.ext.autosummary
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
 html_show_sourcelink = (
@@ -63,9 +69,11 @@ autodoc_inherit_docstrings = True  # If no docstring, inherit from base class
 set_type_checking_flag = True  # Enable 'expensive' imports for sphinx_autodoc_typehints
 add_module_names = True  # Remove namespaces from class/method signatures
 napoleon_google_docstring = True
+todo_include_todos = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
+
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:

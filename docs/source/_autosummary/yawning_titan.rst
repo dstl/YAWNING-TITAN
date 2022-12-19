@@ -23,6 +23,8 @@ yawning\_titan
       GAME_MODES_DIR
       IMAGES_DIR
       AGENTS_DIR
+      AGENTS_LOGS_DIR
+      PPO_TENSORBOARD_LOGS_DIR
 
 
 
@@ -47,7 +49,10 @@ yawning\_titan
 
    yawning_titan.agents
    yawning_titan.config
+   yawning_titan.db
    yawning_titan.envs
+   yawning_titan.exceptions
    yawning_titan.experiment_helpers
    yawning_titan.integrations
+   yawning_titan.networks
    yawning_titan.notebooks

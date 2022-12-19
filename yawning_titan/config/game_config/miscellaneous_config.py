@@ -51,7 +51,7 @@ class MiscellaneousConfig(ConfigABC):
         Args:
             config_dict: A config dict with the required key/values pairs.
         """
-        cls._validate(config_dict)
+        cls.validate(config_dict)
 
         misc_config = MiscellaneousConfig(
             _output_timestep_data_to_json=config_dict["output_timestep_data_to_json"],
@@ -61,5 +61,10 @@ class MiscellaneousConfig(ConfigABC):
         return misc_config
 
     @classmethod
-    def _validate(cls, config_dict: Dict[str, Any]):
+    def validate(cls, config_dict: Dict[str, Any]):
+        """
+        Validates the miscellaneous config dict.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+        """
         check_type(config_dict, "random_seed", [int, None])

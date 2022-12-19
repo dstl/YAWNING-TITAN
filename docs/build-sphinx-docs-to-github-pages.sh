@@ -43,7 +43,7 @@ touch .nojekyll
 # Add README
 cat > README.md <<EOF
 # README for the Sphinx Docs GitHub Pages Branch
-This branch is simply a cache for the website served from https://methodsanalytics.github.io/YAWNING-TITAN/,
+This branch is simply a cache for the website served from https://dstl.github.io/YAWNING-TITAN/,
 and is  not intended to be viewed on github.com.
 For more information on how this site is built using Sphinx, Read the Docs, GitHub Actions/Pages, and demo
 implementation from https://github.com/annegentle, see:

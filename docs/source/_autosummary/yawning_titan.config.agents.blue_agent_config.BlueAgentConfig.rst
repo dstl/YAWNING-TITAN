@@ -21,6 +21,7 @@ yawning\_titan.config.agents.blue\_agent\_config.BlueAgentConfig
 
       ~BlueAgentConfig.create
       ~BlueAgentConfig.to_dict
+      ~BlueAgentConfig.validate
 
 
 

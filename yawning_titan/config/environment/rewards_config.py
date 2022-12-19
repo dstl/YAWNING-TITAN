@@ -100,7 +100,7 @@ class RewardsConfig(ConfigABC):
         Args:
             config_dict: A config dict with the required key/values pairs.
         """
-        cls._validate(config_dict)
+        cls.validate(config_dict)
 
         rewards = RewardsConfig(
             _rewards_for_loss=config_dict["rewards_for_loss"],
@@ -119,7 +119,12 @@ class RewardsConfig(ConfigABC):
         return rewards
 
     @classmethod
-    def _validate(cls, config_dict: dict):
+    def validate(cls, config_dict: dict):
+        """
+        Validates the rewards config dict.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+        """
         # validate types
         check_type(config_dict, "rewards_for_loss", [int, float])
         check_type(config_dict, "rewards_for_reaching_max_steps", [int, float])

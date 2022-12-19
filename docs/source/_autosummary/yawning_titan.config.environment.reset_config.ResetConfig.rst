@@ -21,6 +21,7 @@ yawning\_titan.config.environment.reset\_config.ResetConfig
 
       ~ResetConfig.create
       ~ResetConfig.to_dict
+      ~ResetConfig.validate
 
 
 

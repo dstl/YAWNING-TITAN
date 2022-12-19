@@ -21,6 +21,7 @@ yawning\_titan.config.environment.rewards\_config.RewardsConfig
 
       ~RewardsConfig.create
       ~RewardsConfig.to_dict
+      ~RewardsConfig.validate
 
 
 
