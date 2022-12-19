@@ -21,6 +21,7 @@ yawning\_titan.config.game\_config.miscellaneous\_config.MiscellaneousConfig
 
       ~MiscellaneousConfig.create
       ~MiscellaneousConfig.to_dict
+      ~MiscellaneousConfig.validate
 
 
 

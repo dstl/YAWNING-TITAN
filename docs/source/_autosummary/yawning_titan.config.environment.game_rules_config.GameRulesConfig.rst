@@ -21,6 +21,7 @@ yawning\_titan.config.environment.game\_rules\_config.GameRulesConfig
 
       ~GameRulesConfig.create
       ~GameRulesConfig.to_dict
+      ~GameRulesConfig.validate
 
 
 

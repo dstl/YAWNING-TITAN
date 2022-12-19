@@ -174,7 +174,7 @@ class NodeCollection:
 
     def calculate_reward(self) -> float:
         """
-        Calculate a reward for the current networks state.
+        Calculate a reward for the current network state.
 
         Returns:
             reward: the reward for being in the current state

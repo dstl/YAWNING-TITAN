@@ -66,8 +66,14 @@ class MiscellaneousConfig(ConfigABC):
     @classmethod
     def validate(cls, config_dict: Dict[str, Any]):
         """
+<<<<<<< HEAD
         Check that the settings contained within the section of the config file are valid.
 
         :param config_dict: dictionary representation of the MISCELLANEOUS section of the config yaml file
+=======
+        Validates the miscellaneous config dict.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+>>>>>>> dev-gui
         """
         check_type(config_dict, "random_seed", [int, None])
