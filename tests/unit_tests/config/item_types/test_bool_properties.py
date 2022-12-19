@@ -1,7 +1,7 @@
 import pytest
 
 from yawning_titan.config.item_types.bool_item import BoolProperties
-from yawning_titan.exceptions import ConfigValidationError
+from yawning_titan.exceptions import ConfigItemValidationError
 
 
 @pytest.mark.unit_test
@@ -9,8 +9,8 @@ from yawning_titan.exceptions import ConfigValidationError
     "allow_null, test_val, passed, fail_reason",
     [
         (True, None, True, None),
-        (False, None, False, "Value None when allow_null is not permitted.")
-    ]
+        (False, None, False, "Value None when allow_null is not permitted."),
+    ],
 )
 def test_bool_properties_validation(allow_null, test_val, passed, fail_reason):
     """Tests validation of a bool by `BoolProperties`."""
@@ -20,7 +20,5 @@ def test_bool_properties_validation(allow_null, test_val, passed, fail_reason):
     print(validation)
     assert validation.passed == passed
     if not validation.passed:
-        print("")
-        print(validation.fail_reason)
-        assert type(validation.fail_exception) == ConfigValidationError
+        assert type(validation.fail_exception) == ConfigItemValidationError
         assert validation.fail_reason == fail_reason

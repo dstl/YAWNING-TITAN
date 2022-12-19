@@ -1,16 +1,17 @@
 from dataclasses import dataclass
 from typing import Dict, Optional, Union
 
-from yawning_titan.config.item_types.core import ConfigItem, ConfigValidation, ItemTypeProperties
-from yawning_titan.exceptions import ConfigValidationError
+from yawning_titan.config.item_types.core import (
+    ConfigItem,
+    ConfigItemValidation,
+    ItemTypeProperties,
+)
+from yawning_titan.exceptions import ConfigItemValidationError
 
 
 @dataclass()
 class FloatProperties(ItemTypeProperties):
-    """
-    The :class:`FloatProperties` class holds the properties relevant for defining
-    and validating a float value.
-    """
+    """The FloatProperties class holds the properties relevant for defining and validating a float value."""
 
     min_val: Optional[float] = None
     """A minimum float value."""
@@ -42,7 +43,7 @@ class FloatProperties(ItemTypeProperties):
             config_dict["allow_null"] = self.allow_null
         return config_dict
 
-    def validate(self, val: float) -> ConfigValidation:
+    def validate(self, val: float) -> ConfigItemValidation:
         """
         Validates a float against the properties set in :class:`FloatProperties`.
 
@@ -54,45 +55,54 @@ class FloatProperties(ItemTypeProperties):
         try:
             if not self.allow_null and val is None:
                 msg = f"Value {val} when allow_null is not permitted."
-                raise ConfigValidationError(msg)
+                raise ConfigItemValidationError(msg)
             if val is not None:
                 msg = f"Value {val} is"
                 if not isinstance(val, float):
                     msg = f"{msg} of type {type(val)}, not {float}."
-                    raise ConfigValidationError(msg)
+                    raise ConfigItemValidationError(msg)
 
                 if self.exclusive_min:
                     if self.min_val is not None and val <= self.min_val:
-                        msg = f"{msg} less than the min property {self.min_val+1} " \
-                              f"(min={self.min_val} exclusive of this value)."
-                        raise ConfigValidationError(msg)
+                        msg = (
+                            f"{msg} less than the min property {self.min_val+1} "
+                            f"(min={self.min_val} exclusive of this value)."
+                        )
+                        raise ConfigItemValidationError(msg)
                 else:
                     if self.min_val is not None and val < self.min_val:
                         msg = f"{msg} less than the min property {self.min_val}."
-                        raise ConfigValidationError(msg)
+                        raise ConfigItemValidationError(msg)
 
                 if self.exclusive_max:
                     if self.max_val is not None and val >= self.max_val:
-                        msg = f"{msg} greater than the max property {self.max_val-1} " \
-                              f"(max={self.max_val} exclusive of this value)."
+                        msg = (
+                            f"{msg} greater than the max property {self.max_val-1} "
+                            f"(max={self.max_val} exclusive of this value)."
+                        )
                         print(msg)
-                        raise ConfigValidationError(msg)
+                        raise ConfigItemValidationError(msg)
                 else:
                     if self.max_val is not None and val > self.max_val:
                         msg = f"{msg} greater than the max property {self.max_val}."
                         print(msg)
-                        raise ConfigValidationError(msg)
+                        raise ConfigItemValidationError(msg)
 
-        except ConfigValidationError as e:
-            return ConfigValidation(False, msg, e)
-        return ConfigValidation()
+        except ConfigItemValidationError as e:
+            return ConfigItemValidation(False, msg, e)
+        return ConfigItemValidation()
 
 
 @dataclass()
 class FloatItem(ConfigItem):
+    """A float config item."""
 
-    def __init__(self, value: float, doc: Optional[str] = None,
-                 properties: Optional[FloatProperties] = None):
+    def __init__(
+        self,
+        value: float,
+        doc: Optional[str] = None,
+        properties: Optional[FloatProperties] = None,
+    ):
         if not properties:
             properties = FloatProperties()
         super().__init__(value, doc, properties)
