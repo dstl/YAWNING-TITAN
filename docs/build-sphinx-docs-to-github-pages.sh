@@ -3,6 +3,7 @@ set -x
 
 apt-get update
 apt-get -y install git rsync python3-sphinx
+pip install sphinx_rtd_theme
 
 pwd ls -lah
 export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
@@ -11,11 +12,13 @@ export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
 # BUILD DOCS #
 ##############
 
+cd docs
 # Python Sphinx, configured with source/conf.py
 # See https://www.sphinx-doc.org/
 make clean
 make html
 
+cd ..
 #######################
 # Update GitHub Pages #
 #######################
@@ -24,7 +27,8 @@ git config --global user.name "${GITHUB_ACTOR}"
 git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
 docroot=`mktemp -d`
-rsync -av "./docs/_build/html/" "${docroot}/"
+
+rsync -av $PWD/docs/_build/html/ "${docroot}/"
 
 pushd "${docroot}"
 
@@ -39,7 +43,7 @@ touch .nojekyll
 # Add README
 cat > README.md <<EOF
 # README for the Sphinx Docs GitHub Pages Branch
-This branch is simply a cache for the website served from https://methodsanalytics.github.io/YAWNING-TITAN/,
+This branch is simply a cache for the website served from https://dstl.github.io/YAWNING-TITAN/,
 and is  not intended to be viewed on github.com.
 For more information on how this site is built using Sphinx, Read the Docs, GitHub Actions/Pages, and demo
 implementation from https://github.com/annegentle, see:
@@ -48,15 +52,15 @@ implementation from https://github.com/annegentle, see:
  * https://github.com/annegentle/create-demo
 EOF
 
-# Copy the resulting html pages built from Sphinx to the gh-pages branch
+# Copy the resulting html pages built from Sphinx to the sphinx-docs-github-pages branch
 git add .
 
 # Make a commit with changes and any new files
 msg="Updating Docs for commit ${GITHUB_SHA} made on `date -d"@${SOURCE_DATE_EPOCH}" --iso-8601=seconds` from ${GITHUB_REF} by ${GITHUB_ACTOR}"
 git commit -am "${msg}"
 
-# overwrite the contents of the gh-pages branch on our github.com repo
-git push deploy gh-pages --force
+# overwrite the contents of the sphinx-docs-github-pages branch on our github.com repo
+git push deploy sphinx-docs-github-pages --force
 
 popd # return to main repo sandbox root
 

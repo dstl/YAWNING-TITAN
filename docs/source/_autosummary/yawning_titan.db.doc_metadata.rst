@@ -1,0 +1,27 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.db.doc\_metadata
+===============================
+
+.. automodule:: yawning_titan.db.doc_metadata
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+
+      DocMetadata
+      DocMetadataSchema

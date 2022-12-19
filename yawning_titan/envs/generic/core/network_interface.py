@@ -16,7 +16,7 @@ import pandas as pd
 from numpy.random import choice
 
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
-from yawning_titan.config.network_config.network_config import NetworkConfig
+from yawning_titan.networks.network import Network
 
 _LOGGER = getLogger(__name__)
 
@@ -24,7 +24,7 @@ _LOGGER = getLogger(__name__)
 class NetworkInterface:
     """The primary interface between both red and blue agents and the underlying environment."""
 
-    def __init__(self, game_mode: GameModeConfig, network: NetworkConfig):
+    def __init__(self, game_mode: GameModeConfig, network: Network):
         """
         Initialise the Network Interface and initialises all the necessary components.
 
@@ -801,7 +801,7 @@ class NetworkInterface:
         """
         Sets up the high value nodes (HVNs) to be used by the training environment.
 
-        If HVNs are supplied in the `NetworkConfig`, they are used. However, if they are not supplied, the following
+        If HVNs are supplied in the `Network`, they are used. However, if they are not supplied, the following
         logic is applied:
             If game_mode.game_rules.lose_when_high_value_node_lost is True:
                 An acceptable amount (math.ceil((len(current_graph.nodes) - len(entry_nodes) + 1) * 0.15) of
@@ -830,7 +830,7 @@ class NetworkInterface:
                 ):
                     msg = (
                         f"The configured number of high value nodes exceed the allowable number in the given "
-                        f"network. {str(number_possible_high_value)} high value nodes will be created."
+                        f"networks. {str(number_possible_high_value)} high value nodes will be created."
                     )
                     warnings.warn(msg)
                     number_of_high_value_nodes = number_possible_high_value

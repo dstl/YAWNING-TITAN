@@ -34,6 +34,7 @@ tests
    tests.e2e_integration_tests
    tests.fixtures
    tests.integration_tests
+   tests.mock_and_patch
    tests.test_dcbo_utils
    tests.test_five_node_def
    tests.test_generic_environment

@@ -21,3 +21,4 @@ yawning\_titan.config.game\_config.config\_abc.ConfigABC
 
       ~ConfigABC.create
       ~ConfigABC.to_dict
+      ~ConfigABC.validate
