@@ -1,6 +1,6 @@
 import copy
 from dataclasses import fields
-from typing import Any, Dict
+from typing import Any, Dict, Union
 
 import yaml
 from django import forms as django_forms
@@ -20,6 +20,7 @@ from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
 from yawning_titan.config.game_config.miscellaneous_config import MiscellaneousConfig
 from yawning_titan_gui import DEFAULT_GAME_MODE
+from yawning_titan_gui.helpers import GameModeManager
 
 
 class RangeInput(widgets.NumberInput):
@@ -223,6 +224,23 @@ class ConfigForm(django_forms.Form):
 
         self.fields = field_elements
 
+    def soft_validate(self, data: dict) -> bool:
+        """
+        Validate the config form without raising any errors.
+
+        Use the :func: `ConfigABC.validate <yawning_titan.config.game_config.config_abc.ConfigABC.validate>`
+        to validate the config catching any exceptions.
+
+        :param data: a dictionary of options to validate.
+
+        :return: True if config section is valid otherwise False
+        """
+        try:
+            self.config_class.validate(data)
+            return True
+        except Exception:
+            return False
+
     def is_valid(self) -> bool:
         """
         Check that config form is valid for fields and subsections.
@@ -337,40 +355,36 @@ class GameModeFormManager:
     allows for game modes to be constructed dynamically from the GUI.
     """
 
-    base_forms = {
+    base_forms: Dict[str, Dict[str, Union[str, ConfigForm]]] = {
         "red": {
             "form": RedAgentForm,
             "icon": "bi-lightning",
-            "status": "incomplete",
         },
         "blue": {
             "form": BlueAgentForm,
             "icon": "bi-shield",
-            "status": "incomplete",
         },
         "game_rules": {
             "form": GameRulesForm,
             "icon": "bi-clipboard",
-            "status": "incomplete",
         },
         "observation_space": {
             "form": ObservationSpaceForm,
             "icon": "bi-binoculars",
-            "status": "incomplete",
         },
-        "rewards": {"form": RewardsForm, "icon": "bi-star", "status": "incomplete"},
+        "rewards": {"form": RewardsForm, "icon": "bi-star"},
         "reset": {
             "form": ResetForm,
             "icon": "bi-arrow-clockwise",
-            "status": "incomplete",
         },
         "miscellaneous": {
             "form": MiscellaneousForm,
             "icon": "bi-brush",
-            "status": "incomplete",
         },
     }
     forms: Dict[str, Dict[str, Dict[str, Any]]] = {}
+
+    # Getters
 
     @staticmethod
     def get_config_from_default() -> Dict[str, Dict[str, Any]]:
@@ -383,22 +397,6 @@ class GameModeFormManager:
             new_settings: Dict[str, Dict[str, Any]] = yaml.load(f, Loader=SafeLoader)
 
         return {key.lower(): val for key, val in new_settings.items()}
-
-    @classmethod
-    def verify(cls, **kwargs):
-        print("KWARG", kwargs)
-        if (
-            "game_mode_filename" in kwargs
-            and kwargs["game_mode_filename"] not in cls.forms
-        ):
-            raise ValueError(f"{kwargs['game_mode_filename']} has not been created")
-        if (
-            "section_name" in kwargs
-            and kwargs["section_name"] not in cls.forms[kwargs["game_mode_filename"]]
-        ):
-            raise ValueError(
-                f"{kwargs['section_name']} is not in form set for {kwargs['game_mode_filename']}"
-            )
 
     @classmethod
     def game_mode_section_form_from_default(
@@ -430,29 +428,48 @@ class GameModeFormManager:
 
     @classmethod
     def get_or_create_instance(
-        cls, game_mode_filename, initial_options=None
-    ) -> Dict[str, Dict[str, Any]]:
+        cls, game_mode_filename
+    ) -> Dict[str, Dict[str, Union[str, ConfigForm]]]:
         """
         Get or create the config forms for the current :param:`game_mode_filename`.
+
+        If the game mode is from a saved yaml file set the option values to those set in the file otherwise
+        set the options based off the default configuration.
+
+        Set the status of the game mode sections based upon whether they pass the validation rules in their corresponding
+        :class: `~yawning_titan.config.game_config.config_abc.ConfigABC`
 
         :param game_mode_filename: the file name and extension of the current game mode
         :param initial_options: the initial state of the options for the :param:`game_mode_filename`
         :return: a dictionary representation of the sections of the  :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>`
         """
-        if initial_options is None:
-            initial_options = cls.get_config_from_default()
         if game_mode_filename in cls.forms:
-            print("FOUND")
             return cls.forms[game_mode_filename]
         else:
-            print("NEW")
-            forms = {
-                section_name: {
-                    "form": section.pop("form")(initial=initial_options[section_name]),
-                    **section,
-                }
-                for section_name, section in copy.deepcopy(cls.base_forms).items()
-            }
+            if (
+                game_mode_filename in GameModeManager.game_modes.keys()
+                and GameModeManager.game_modes[game_mode_filename]["complete"]
+            ):
+                initial_options = GameModeManager.get_game_mode(
+                    game_mode_filename
+                ).to_dict()
+            else:
+                initial_options = cls.get_config_from_default()
+
+            forms = copy.deepcopy(cls.base_forms)
+            for section_name, section in forms.items():
+                form: ConfigForm = section["form"](
+                    initial=initial_options[section_name]
+                )
+                section.update(
+                    {
+                        "form": form,
+                        "status": "complete"
+                        if form.soft_validate(initial_options[section_name])
+                        else "incomplete",
+                    }
+                )
+
             cls.forms[game_mode_filename] = forms
             return forms
 
@@ -467,8 +484,8 @@ class GameModeFormManager:
 
     @classmethod
     def get_section(
-        cls, game_mode_filename, section_name=None, initial_options=None
-    ) -> Dict[str, Any]:
+        cls, game_mode_filename, section_name=None
+    ) -> Dict[str, Union[str, ConfigForm]]:
         """
         Get a specific :param:`section` of a form for an active :param:`game_mode_filename`.
 
@@ -479,24 +496,28 @@ class GameModeFormManager:
         """
         if section_name is None:
             section_name = cls.get_first_section()
-        forms = cls.get_or_create_instance(game_mode_filename, initial_options)
+
+        forms = cls.get_or_create_instance(game_mode_filename)
+
         return forms[section_name]
 
-    @classmethod
-    def update_section(cls, game_mode_filename, section_name, data) -> Dict[str, Any]:
-        """
-        Update the values of a specific :param:`section` of a form for an active :param:`game_mode_filename`.
+    # Checkers
 
-        :param game_mode_filename: the file name and extension of the current game mode
-        :param section_name: the name of the section for which the values will be updated
-        :param data: a dictionary representation of config form values to use to update the reference for an active :param: `game_mode_filename`
-        :return: the :param:`section` of the active :param: `game_mode_filename` with values updated from :param:`data`
-        """
-        cls.verify(game_mode_filename=game_mode_filename, section_name=section_name)
-        cls.forms[game_mode_filename][section_name]["form"] = cls.base_forms[
-            section_name
-        ]["form"](data)
-        return cls.forms[game_mode_filename][section_name]
+    @classmethod
+    def verify(cls, **kwargs):
+        """Verify that the lookup keys provided map to a value in :attr: `GameModeFormManager.forms`."""
+        if (
+            "game_mode_filename" in kwargs
+            and kwargs["game_mode_filename"] not in cls.forms
+        ):
+            raise ValueError(f"{kwargs['game_mode_filename']} has not been created")
+        if (
+            "section_name" in kwargs
+            and kwargs["section_name"] not in cls.forms[kwargs["game_mode_filename"]]
+        ):
+            raise ValueError(
+                f"{kwargs['section_name']} is not in form set for {kwargs['game_mode_filename']}"
+            )
 
     @classmethod
     def check_section_complete(cls, game_mode_filename, section_name) -> bool:
@@ -515,6 +536,7 @@ class GameModeFormManager:
         if form.is_valid():
             cls.forms[game_mode_filename][section_name]["status"] = "complete"
             return True
+        cls.forms[game_mode_filename][section_name]["status"] = "incomplete"
         return False
 
     @classmethod
@@ -526,11 +548,30 @@ class GameModeFormManager:
         :return: a boolean True/False value representing if the :param:`game_mode_filename` is complete
         """
         if game_mode_filename in cls.forms and all(
-            section["status"] == "complete"
-            for section in cls.forms[game_mode_filename].values()
+            cls.check_section_complete(game_mode_filename, section_name)
+            for section_name in cls.forms[game_mode_filename].keys()
         ):
+            GameModeManager.game_modes[game_mode_filename]["complete"] = True
             return True
         return False
+
+    # Setters
+
+    @classmethod
+    def update_section(cls, game_mode_filename, section_name, data) -> Dict[str, Any]:
+        """
+        Update the values of a specific :param:`section` of a form for an active :param:`game_mode_filename`.
+
+        :param game_mode_filename: the file name and extension of the current game mode
+        :param section_name: the name of the section for which the values will be updated
+        :param data: a dictionary representation of config form values to use to update the reference for an active :param: `game_mode_filename`
+        :return: the :param:`section` of the active :param: `game_mode_filename` with values updated from :param:`data`
+        """
+        cls.verify(game_mode_filename=game_mode_filename, section_name=section_name)
+        cls.forms[game_mode_filename][section_name]["form"] = cls.base_forms[
+            section_name
+        ]["form"](data)
+        return cls.forms[game_mode_filename][section_name]
 
     @classmethod
     def save_as_game_mode(cls, game_mode_filename: str) -> GameModeConfig:
@@ -546,7 +587,6 @@ class GameModeFormManager:
             section_name.upper(): section["form"].cleaned_data
             for section_name, section in cls.forms[game_mode_filename].items()
         }
-        print("ALL SECS", section_configs)
         game_mode = GameModeConfig.create(section_configs)
         game_mode.to_yaml(GAME_MODES_DIR / game_mode_filename)
         # del cls.forms[game_mode_filename]
