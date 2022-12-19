@@ -576,6 +576,6 @@ class RedAgentConfig(ConfigABC):
                 raise ValueError(
                     "'red_can_naturally_spread', 'chance_to_spread_to_connected_node', "
                     "'chance_to_spread_to_unconnected_node' -> If red can naturally spread however the probabilities "
-                    "for both types of spreading are 0 "
+                    "for both item_types of spreading are 0 "
                     # noqa
                 )

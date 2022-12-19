@@ -125,7 +125,7 @@ class RewardsConfig(ConfigABC):
 
         :param: config_dict: A config dict with the required key/values pairs.
         """
-        # validate types
+        # validate item_types
         check_type(config_dict, "rewards_for_loss", [int, float])
         check_type(config_dict, "rewards_for_reaching_max_steps", [int, float])
         check_type(config_dict, "end_rewards_are_multiplied_by_end_state", [bool])
