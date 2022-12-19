@@ -31,7 +31,7 @@
         {% if request.path == '/' %}
             <h2 class="head">Yawning Titan</h2>
         {% else %}
-            <a href="{% url 'home' %}" class="head">Yawning Titan</a>
+            <a href="{% url 'home' %}" class="head">Yawning Titan Home</a>
         {% endif %}
         <div class="flex-break"></div>
         <div id="error-message" class="{% if error_message is None %}hidden{% endif %}">{{error_message}}</div>
@@ -105,6 +105,7 @@
         --text-superlight: #fff;
         --text-light: #999;
         --text-mid: #888;
+        --text-dark: rgb(87, 87, 87);
 
         --increment: 5px;
         --padding: 50px;
@@ -288,6 +289,7 @@
         width: 50px;
         margin-left: var(--increment);
         -moz-appearance: textfield;
+        padding: .1rem;
     }
     .form-range>.range-setter::-webkit-inner-spin-button,.form-range>.range-setter::-webkit-outer-spin-button{
         -webkit-appearance: none;
