@@ -156,9 +156,10 @@ class Network(nx.Graph):
                     p=weights_normal,
                 )
                 for node in entry_nodes:
+                    print(node)
                     node.entry_node = True
 
-    def _set_random_high_value_nodes(self):
+    def reset_random_high_value_nodes(self):
         """
         Sets up the high value nodes (HVNs) to be used by the training environment.
 

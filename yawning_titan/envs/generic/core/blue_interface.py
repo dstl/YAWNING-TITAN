@@ -61,7 +61,7 @@ class BlueInterface(BlueActionSet):
         """
         Perform an action within the environment.
 
-        Takes in an action number and then maps this to the correct action to perform. There are 3 different types of
+        Takes in an action number and then maps this to the correct action to perform. There are 3 different item_types of
         actions:
             - standard actions
             - deceptive actions
@@ -129,7 +129,7 @@ class BlueInterface(BlueActionSet):
         """
         Get the number of actions that this blue agent can perform.
 
-        There are three types of actions:
+        There are three item_types of actions:
             - global actions (apply to all nodes) - need 1 action space
             - deceptive actions (Add new nodes to environment)
             - standard actions (apply to a single node) - need 2 action space (action and node to perform on)

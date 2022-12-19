@@ -114,7 +114,7 @@ def test_read_valid_config():
 def test_invalid_config_type(
     config_item_to_test: str, config_value: Any, expected_err: str
 ):
-    """Tests invalid types."""
+    """Tests invalid item_types."""
     conf: Dict = get_config_dict()
 
     # set value

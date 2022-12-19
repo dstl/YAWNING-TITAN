@@ -3,12 +3,12 @@ from typing import Union
 
 def check_type(data: dict, name: str, types: list):
     """
-    Check data types contained within a dictionary is one of a list of types.
+    Check data item_types contained within a dictionary is one of a list of item_types.
 
     Args:
         data: The dictionary
         name: The name of the key of the item to check
-        types: A list of types that the item must belong to
+        types: A list of item_types that the item must belong to
     """
     if None in types and data[name] is None:
         return
