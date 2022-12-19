@@ -21,6 +21,7 @@ yawning\_titan.config.environment.observation\_space\_config.ObservationSpaceCon
 
       ~ObservationSpaceConfig.create
       ~ObservationSpaceConfig.to_dict
+      ~ObservationSpaceConfig.validate
 
 
 

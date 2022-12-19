@@ -1,20 +1,19 @@
 name: build-sphinx-to-github-pages
 
 env:
-  GITHUB_ACTOR: methodsanalytics
-  GITHUB_REPOSITORY: methodsanalytics/YAWNING-TITAN
+  GITHUB_ACTOR: dstl
+  GITHUB_REPOSITORY: dstl/YAWNING-TITAN
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
 
 on:
   push:
-    branches: [dev]
+    branches: [main]
 
 
 jobs:
 
   build_sphinx_job:
     runs-on: ubuntu-latest
-    container: debian:buster-slim
 
     steps:
 
@@ -23,12 +22,25 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -x
-          apt-get update
-          apt-get install -y git
+          sudo apt-get update
+          sudo apt-get install -y git
+          sudo add-apt-repository ppa:deadsnakes/ppa -y
+          sudo apt install python3.10-dev -y
+          python -m pip install --upgrade pip
           git clone "https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
+          git checkout origin/dev
         shell: bash
 
+      - name: Install Yawning-Titan for docs autosummary
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -m pip install build
+          python -m pip install wheel
+          python -m pip install -e .[dev]
       - name: Run build script for Sphinx pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bash docs/build-sphinx-docs-to-github-pages.sh
+
+        run: |
+          bash $PWD/docs/build-sphinx-docs-to-github-pages.sh

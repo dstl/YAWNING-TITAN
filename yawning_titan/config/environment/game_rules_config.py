@@ -204,7 +204,7 @@ class GameRulesConfig(ConfigABC):
         Args:
             config_dict: A config dict with the required key/values pairs.
         """
-        cls._validate(config_dict)
+        cls.validate(config_dict)
 
         game_rule_config = GameRulesConfig(
             _min_number_of_network_nodes=config_dict["min_number_of_network_nodes"],
@@ -247,7 +247,12 @@ class GameRulesConfig(ConfigABC):
         return game_rule_config
 
     @classmethod
-    def _validate(cls, config_dict: dict):
+    def validate(cls, config_dict: dict):
+        """
+        Validates the game rules config dict.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+        """
         # data is int or float
         for name in [
             "node_vulnerability_lower_bound",

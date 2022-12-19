@@ -16,7 +16,7 @@ def repeat_check(node: Dict, legend_list: List[Line2D]):
         legend_list: The legend list.
 
     Returns:
-        `True` if is already exists, otherwise `False`.
+        ``True`` if is already exists, otherwise ``False``.
     """
     for legend in legend_list:
         if (

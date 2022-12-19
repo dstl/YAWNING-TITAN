@@ -32,4 +32,3 @@ yawning\_titan.envs.generic.helpers
    yawning_titan.envs.generic.helpers.environment_input_validation
    yawning_titan.envs.generic.helpers.eval_printout
    yawning_titan.envs.generic.helpers.graph2plot
-   yawning_titan.envs.generic.helpers.network_creator

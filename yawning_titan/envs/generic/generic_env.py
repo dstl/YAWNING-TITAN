@@ -97,13 +97,12 @@ class GenericNetworkEnv(gym.Env):
         """
         Reset the environment to the default state.
 
-        Returns:
-            A new starting observation (numpy array)
+        :todo: May need to add customization of cuda setting.
+
+        :return: A new starting observation (numpy array).
         """
         if self.random_seed is not None:  # conditionally set random_seed
-            set_random_seed(
-                self.random_seed, True
-            )  # TODO: may need to add customization of cuda setting
+            set_random_seed(self.random_seed, True)
         self.network_interface.reset()
         self.RED.reset()
         self.current_duration = 0

@@ -28,9 +28,6 @@ class BlueAgentConfig(ConfigABC):
         this using the "chance_to_immediately_discover_intrusion". If blue
         does not detect an intrusion then it can use the scan action to try
         and discover these intrusions with
-        "chance_to_discover_intrusion_on_scan".
-
-        There are also deceptive nodes that blue can place down. These nodes
         are used as detectors to inform blue when they are compromised. They
         should have a chance to detect of 1 so that they can detect
         everything (at the very least they should have a chance to detect
@@ -55,19 +52,19 @@ class BlueAgentConfig(ConfigABC):
 
     _max_number_deceptive_nodes: int
     _can_discover_failed_attacks: bool
-    _chance_to_immediately_discover_intrusion: int
-    _chance_to_discover_intrusion_on_scan: int
-    _chance_to_immediately_discover_intrusion_deceptive_node: int
-    _chance_to_discover_intrusion_on_scan_deceptive_node: int
-    _chance_to_discover_failed_attack: int
+    _chance_to_immediately_discover_intrusion: float
+    _chance_to_discover_intrusion_on_scan: float
+    _chance_to_immediately_discover_intrusion_deceptive_node: float
+    _chance_to_discover_intrusion_on_scan_deceptive_node: float
+    _chance_to_discover_failed_attack: float
     _can_discover_succeeded_attacks_if_compromise_is_discovered: bool
     _can_discover_succeeded_attacks_if_compromise_is_not_discovered: bool
-    _chance_to_discover_succeeded_attack_compromise_known: int
-    _chance_to_discover_succeeded_attack_compromise_not_known: int
-    _chance_to_discover_failed_attack_deceptive_node: int
-    _chance_to_discover_succeeded_attack_deceptive_node: int
+    _chance_to_discover_succeeded_attack_compromise_known: float
+    _chance_to_discover_succeeded_attack_compromise_not_known: float
+    _chance_to_discover_failed_attack_deceptive_node: float
+    _chance_to_discover_succeeded_attack_deceptive_node: float
     _making_node_safe_modifies_vulnerability: bool
-    _vulnerability_change_during_node_patch: int
+    _vulnerability_change_during_node_patch: float
     _making_node_safe_gives_random_vulnerability: bool
     _blue_uses_reduce_vulnerability: bool
     _blue_uses_restore_node: bool
@@ -91,27 +88,27 @@ class BlueAgentConfig(ConfigABC):
         return self._can_discover_failed_attacks
 
     @property
-    def chance_to_immediately_discover_intrusion(self) -> int:
+    def chance_to_immediately_discover_intrusion(self) -> float:
         """Chance for blue to discover a node that red has compromised the instant red compromises the node."""
         return self._chance_to_immediately_discover_intrusion
 
     @property
-    def chance_to_discover_intrusion_on_scan(self) -> int:
+    def chance_to_discover_intrusion_on_scan(self) -> float:
         """When blue performs the scan action this is the chance that a red intrusion is discovered."""
         return self._chance_to_discover_intrusion_on_scan
 
     @property
-    def chance_to_immediately_discover_intrusion_deceptive_node(self) -> int:
+    def chance_to_immediately_discover_intrusion_deceptive_node(self) -> float:
         """Chance for blue to discover a deceptive node that red has compromised the instant it is compromised."""
         return self._chance_to_immediately_discover_intrusion_deceptive_node
 
     @property
-    def chance_to_discover_intrusion_on_scan_deceptive_node(self) -> int:
+    def chance_to_discover_intrusion_on_scan_deceptive_node(self) -> float:
         """When blue uses the scan action what is the chance that blue will detect an intrusion in a deceptive node."""
         return self._chance_to_discover_intrusion_on_scan_deceptive_node
 
     @property
-    def chance_to_discover_failed_attack(self) -> int:
+    def chance_to_discover_failed_attack(self) -> float:
         """Chance for blue to discover information about a failed attack."""
         return self._chance_to_discover_failed_attack
 
@@ -126,22 +123,22 @@ class BlueAgentConfig(ConfigABC):
         return self._can_discover_succeeded_attacks_if_compromise_is_not_discovered
 
     @property
-    def chance_to_discover_succeeded_attack_compromise_known(self) -> int:
+    def chance_to_discover_succeeded_attack_compromise_known(self) -> float:
         """Chance for blue to discover information about an attack that succeeded and the compromise was known."""
         return self._chance_to_discover_succeeded_attack_compromise_known
 
     @property
-    def chance_to_discover_succeeded_attack_compromise_not_known(self) -> int:
+    def chance_to_discover_succeeded_attack_compromise_not_known(self) -> float:
         """Chance for blue to discover information about an attack that succeeded and the compromise was NOT known."""
         return self._chance_to_discover_succeeded_attack_compromise_not_known
 
     @property
-    def chance_to_discover_failed_attack_deceptive_node(self) -> int:
+    def chance_to_discover_failed_attack_deceptive_node(self) -> float:
         """Chance to discover the location of a failed attack on a deceptive node."""
         return self._chance_to_discover_failed_attack_deceptive_node
 
     @property
-    def chance_to_discover_succeeded_attack_deceptive_node(self) -> int:
+    def chance_to_discover_succeeded_attack_deceptive_node(self) -> float:
         """Chance to discover the location of a succeeded attack against a deceptive node."""
         return self._chance_to_discover_succeeded_attack_deceptive_node
 
@@ -151,7 +148,7 @@ class BlueAgentConfig(ConfigABC):
         return self._making_node_safe_modifies_vulnerability
 
     @property
-    def vulnerability_change_during_node_patch(self) -> int:
+    def vulnerability_change_during_node_patch(self) -> float:
         """The amount that the vulnerability of a node changes when it is made safe."""
         return self._vulnerability_change_during_node_patch
 
@@ -166,37 +163,37 @@ class BlueAgentConfig(ConfigABC):
         return self._blue_uses_reduce_vulnerability
 
     @property
-    def blue_uses_restore_node(self):
+    def blue_uses_restore_node(self) -> bool:
         """Blue picks a node and restores everything about the node to its starting state."""
         return self._blue_uses_restore_node
 
     @property
-    def blue_uses_make_node_safe(self):
+    def blue_uses_make_node_safe(self) -> bool:
         """Blue fixes a node but does not restore it to its initial state."""
         return self._blue_uses_make_node_safe
 
     @property
-    def blue_uses_scan(self):
+    def blue_uses_scan(self) -> bool:
         """Blue scans all the nodes to try and detect any red intrusions."""
         return self._blue_uses_scan
 
     @property
-    def blue_uses_isolate_node(self):
+    def blue_uses_isolate_node(self) -> bool:
         """Blue disables all the connections to and from a node."""
         return self._blue_uses_isolate_node
 
     @property
-    def blue_uses_reconnect_node(self):
+    def blue_uses_reconnect_node(self) -> bool:
         """Blue re-connects all the connections to and from a node."""
         return self._blue_uses_reconnect_node
 
     @property
-    def blue_uses_do_nothing(self):
+    def blue_uses_do_nothing(self) -> bool:
         """Blue agent does nothing."""
         return self._blue_uses_do_nothing
 
     @property
-    def blue_uses_deceptive_nodes(self):
+    def blue_uses_deceptive_nodes(self) -> bool:
         """
         Blue agent can place down deceptive nodes.
 
@@ -332,7 +329,7 @@ class BlueAgentConfig(ConfigABC):
         Args:
             config_dict: A config dict with the required key/values pairs.
         """
-        cls._validate(config_dict)
+        cls.validate(config_dict)
         blue_agent_config = BlueAgentConfig(
             _max_number_deceptive_nodes=config_dict["max_number_deceptive_nodes"],
             _can_discover_failed_attacks=config_dict["can_discover_failed_attacks"],
@@ -395,7 +392,12 @@ class BlueAgentConfig(ConfigABC):
         return blue_agent_config
 
     @classmethod
-    def _validate(cls, config_dict: dict):
+    def validate(cls, config_dict: dict):
+        """
+        Validates the blue agent config dict.
+
+        :param: config_dict: A config dict with the required key/values pairs.
+        """
         # data is int or float
         for name in [
             "chance_to_immediately_discover_intrusion",

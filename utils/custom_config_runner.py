@@ -1,3 +1,14 @@
+"""
+A custom config runner module.
+
+This module is used simple as a playground/testbed for custom configurations of
+Yawning-Titan.
+
+.. warning::
+
+    This module is being deprecated in a future release to make way for
+    Yawning-Titan runner module in the main package.
+"""
 import time
 
 from stable_baselines3 import PPO
@@ -7,32 +18,31 @@ from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.ppo import MlpPolicy as PPOMlp
 
 from yawning_titan.agents.sinewave_red import SineWaveRedAgent
+from yawning_titan.config.game_config.game_mode_config import GameModeConfig
+from yawning_titan.config.game_modes import default_game_mode_path
+from yawning_titan.networks.network import Network
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
-from yawning_titan.envs.generic.helpers import network_creator
+from yawning_titan.networks import network_creator
 
-settings_path = "game_modes/default_game_mode.yaml"
+game_mode = GameModeConfig.create_from_yaml(default_game_mode_path())
 
-matrix, node_positions = network_creator.gnp_random_connected_graph(
+matrix, positions = network_creator.gnp_random_connected_graph(
     n_nodes=15, probability_of_edge=0.02
 )
+network = NetworkConfig.create_from_args(matrix=matrix, positions=positions)
 
-network_interface = NetworkInterface(
-    matrix, node_positions, settings_path=settings_path
-)
+network_interface = NetworkInterface(game_mode=game_mode, network=network)
 
 red = SineWaveRedAgent(network_interface)
 blue = BlueInterface(network_interface)
-
-number_of_actions = blue.get_number_of_actions()
 
 env = GenericNetworkEnv(
     red,
     blue,
     network_interface,
-    number_of_actions,
     print_metrics=True,
     show_metrics_every=10,
     collect_additional_per_ts_data=True,
