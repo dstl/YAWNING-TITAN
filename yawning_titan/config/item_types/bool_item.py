@@ -1,17 +1,17 @@
 from dataclasses import dataclass
-from enum import Enum
 from typing import Dict, Optional, Union
 
-from yawning_titan.config.item_types.core import ConfigItem, ConfigValidation, ItemTypeProperties
-from yawning_titan.exceptions import ConfigValidationError
+from yawning_titan.config.item_types.core import (
+    ConfigItem,
+    ConfigItemValidation,
+    ItemTypeProperties,
+)
+from yawning_titan.exceptions import ConfigItemValidationError
 
 
 @dataclass()
 class BoolProperties(ItemTypeProperties):
-    """
-    The :class:`BoolProperties` class holds the properties relevant for defining
-    and validating a bool value.
-    """
+    """The BoolProperties class holds the properties relevant for defining and validating a bool value."""
 
     allow_null: Optional[bool] = None
     """`True` if the config value can be left empty, otherwise `False`."""
@@ -34,7 +34,7 @@ class BoolProperties(ItemTypeProperties):
 
         return config_dict
 
-    def validate(self, val: bool) -> ConfigValidation:
+    def validate(self, val: bool) -> ConfigItemValidation:
         """
         Validates a bool against the properties set in :class:`BoolProperties`.
 
@@ -45,21 +45,26 @@ class BoolProperties(ItemTypeProperties):
         try:
             if not self.allow_null and val is None:
                 msg = f"Value {val} when allow_null is not permitted."
-                raise ConfigValidationError(msg)
+                raise ConfigItemValidationError(msg)
             if val is not None:
                 if not isinstance(val, bool):
                     msg = f"Value {val} is of type {type(val)}, not {bool}."
-                    raise ConfigValidationError(msg)
-        except ConfigValidationError as e:
-            return ConfigValidation(False, msg, e)
-        return ConfigValidation()
+                    raise ConfigItemValidationError(msg)
+        except ConfigItemValidationError as e:
+            return ConfigItemValidation(False, msg, e)
+        return ConfigItemValidation()
 
 
 @dataclass()
 class BoolItem(ConfigItem):
+    """The bool config item."""
 
-    def __init__(self, value: bool, doc: Optional[str] = None,
-                 properties: Optional[BoolProperties] = None):
+    def __init__(
+        self,
+        value: bool,
+        doc: Optional[str] = None,
+        properties: Optional[BoolProperties] = None,
+    ):
         if not properties:
             properties = BoolProperties()
         super().__init__(value, doc, properties)
