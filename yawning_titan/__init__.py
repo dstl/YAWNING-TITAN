@@ -6,7 +6,7 @@ The `yawning_titan` top-level __init__.
         entry_point: `yawning_titan.envs.specific:FiveNodeDef`
     `four-node-def-v0`
         entry_point: `yawning_titan.envs.specific:FourNodeDef`
-    `network-graph-explore-v0`
+    `networks-graph-explore-v0`
         entry_point: `yawning_titan.envs.specific:GraphExplore`
     `18-node-env-v0`
         entry_point: `yawning_titan.envs.specific:NodeEnv`
@@ -37,7 +37,8 @@ User directories initialised:
 Logging configured from the root:
     Logging is configured using the `yawning_titan.config._package_data.logging_config.yaml` config file.
 """
-__version__ = "1.0.0"
+__version__ = "1.0.1"
+
 import logging.config
 import os
 import sys
@@ -53,7 +54,7 @@ register(id="five-node-def-v0", entry_point="yawning_titan.envs.specific:FiveNod
 register(id="four-node-def-v0", entry_point="yawning_titan.envs.specific:FourNodeDef")
 
 register(
-    id="network-graph-explore-v0",
+    id="networks-graph-explore-v0",
     entry_point="yawning_titan.envs.specific:GraphExplore",
 )
 
@@ -148,6 +149,20 @@ def _agents_dir() -> Union[Path, PosixPath]:
     return dir_path
 
 
+def _agents_logs_dir() -> Union[Path, PosixPath]:
+    dir_path = _YT_USER_DIRS / "agents" / "logs"
+    # Create if it doesn't already exist and bypass if it does already exist
+    dir_path.mkdir(parents=True, exist_ok=True)
+    return dir_path
+
+
+def _ppo_tensorboard_logs_dir() -> Union[Path, PosixPath]:
+    dir_path = _YT_USER_DIRS / "agents" / "logs" / "tensorboard"
+    # Create if it doesn't already exist and bypass if it does already exist
+    dir_path.mkdir(parents=True, exist_ok=True)
+    return dir_path
+
+
 # Force all to be created if not already
 DATA_DIR: Final[Union[Path, PosixPath]] = _data_dir()
 """The path to the app data directory as an instance of `Path` or `PosixPath`, depending on the OS."""
@@ -192,7 +207,21 @@ AGENTS_DIR: Final[Union[Path, PosixPath]] = _agents_dir()
 """
 The path to the users agents directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
-Users images are stored at: ~/yawning_titan/agents.
+Users agents are stored at: ~/yawning_titan/agents.
+"""
+
+AGENTS_LOGS_DIR: Final[Union[Path, PosixPath]] = _agents_logs_dir()
+"""
+The path to the users agents logs directory as an instance of `Path` or `PosixPath`, depending on the OS.
+
+Users agent logs are stored at: ~/yawning_titan/agents/logs.
+"""
+
+PPO_TENSORBOARD_LOGS_DIR: Final[Union[Path, PosixPath]] = _ppo_tensorboard_logs_dir()
+"""
+The path to the PPO algorithm tensorboard logs directory as an instance of `Path` or `PosixPath`, depending on the OS.
+
+Users agent PPO algorithm tensorboard logs are stored at: ~/yawning_titan/agents/logs/ppo_tensorboard.
 """
 
 # Setup root logger format

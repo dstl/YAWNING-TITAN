@@ -21,6 +21,7 @@ yawning\_titan.config.agents.red\_agent\_config.RedAgentConfig
 
       ~RedAgentConfig.create
       ~RedAgentConfig.to_dict
+      ~RedAgentConfig.validate
 
 
 
