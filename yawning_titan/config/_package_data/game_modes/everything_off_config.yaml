@@ -3,7 +3,7 @@
 
 RED:
   # The red agents skill level. Higher means that red is more likely to succeed in attacks
-  red_skill: 0
+  red_skill: 1
 
   # CHOOSE AT LEAST ONE OF THE FOLLOWING 3 ITEMS (red_ignores_defences: False counts as choosing an item)
   # Red uses its skill modifier when attacking nodes
@@ -21,34 +21,34 @@ RED:
   # The red agent naturally spreads its influence every time-step
   red_can_naturally_spread: False
   # If a node is connected to a compromised node what chance does it have to become compromised every turn through natural spreading
-  chance_to_spread_to_connected_node: 0
+  chance_to_spread_to_connected_node: 1
   # If a node is not connected to a compromised node what chance does it have to become randomly infected through natural spreading
-  chance_to_spread_to_unconnected_node: 0
+  chance_to_spread_to_unconnected_node: 1
 
   # CHOOSE AT LEAST ONE OF THE FOLLOWING 6 ITEMS (EACH ITEM HAS ASSOCIATED WEIGHTING)
   # SPREAD: Tries to spread to every node connected to an infected node
   red_uses_spread_action: False
   # weighting for action
-  spread_action_likelihood: 0
+  spread_action_likelihood: 1
   # chance for each 'spread' to succeed
-  chance_for_red_to_spread: 0
+  chance_for_red_to_spread: 1
   # RANDOM INFECT: Tries to infect every safe node in the environment
   red_uses_random_infect_action: False
   # weighting for action
-  random_infect_action_likelihood: 0
+  random_infect_action_likelihood: 1
   # chance for each 'infect' to succeed
-  chance_for_red_to_random_compromise: 0
+  chance_for_red_to_random_compromise: 1
   # BASIC ATTACK: The red agent picks a single node connected to an infected node and tries to attack and take over that node
   red_uses_basic_attack_action: False
   # weighting for action
-  basic_attack_action_likelihood: 0
+  basic_attack_action_likelihood: 1
   # DO NOTHING: The red agent does nothing
   red_uses_do_nothing_action: False
-  do_nothing_action_likelihood: 0
+  do_nothing_action_likelihood: 1
   # The red agent moves to a different node
   red_uses_move_action: False
-  move_action_likelihood: 0
-  # ZERO DAY: The red agent will pick a safe node connected to an infect node and take it over with a 100% chance to succeed (can only happen every n timesteps)
+  move_action_likelihood: 1
+  # ZERO DAY: The red agent will pick a safe node connected to an infect node and take it over with a 111% chance to succeed (can only happen every n timesteps)
   red_uses_zero_day_action: False
   # The number of zero day attacks that the red agent starts with
   zero_day_start_amount: 0
@@ -93,7 +93,7 @@ OBSERVATION_SPACE:
 
 BLUE:
   # The max number of deceptive nodes that blue can place
-  max_number_deceptive_nodes: 0
+  max_number_deceptive_nodes: 1
   # Can discover the location an attack came from if the attack failed
   can_discover_failed_attacks: False
 
@@ -124,40 +124,40 @@ BLUE:
   # --INTRUSIONS--
   # -Standard Nodes-
   # Chance for blue to discover a node that red has compromised the instant red compromises the node
-  chance_to_immediately_discover_intrusion: 0
+  chance_to_immediately_discover_intrusion: 1
   # When blue performs the scan action this is the chance that a red intrusion is discovered
-  chance_to_discover_intrusion_on_scan: 0
+  chance_to_discover_intrusion_on_scan: 1
 
   # -Deceptive Nodes-
   # Chance for blue to discover a deceptive node that red has compromised the instant red compromises the node
-  chance_to_immediately_discover_intrusion_deceptive_node: 0
+  chance_to_immediately_discover_intrusion_deceptive_node: 1
   # When blue uses the scan action what is the chance that blue will detect an intrusion in a deceptive node
-  chance_to_discover_intrusion_on_scan_deceptive_node: 0
+  chance_to_discover_intrusion_on_scan_deceptive_node: 1
 
   # --ATTACKS--
   # -Standard Nodes-
   # Chance for blue to discover information about a failed attack
-  chance_to_discover_failed_attack: 0
+  chance_to_discover_failed_attack: 1
   # Can blue learn information about an attack that succeeds if the compromise is known
   can_discover_succeeded_attacks_if_compromise_is_discovered: False
   # Can blue learn information about an attack that succeeds if the compromise is NOT known
   can_discover_succeeded_attacks_if_compromise_is_not_discovered: False
   # Chance for blue to discover information about an attack that succeeded and the compromise was known
-  chance_to_discover_succeeded_attack_compromise_known: 0
+  chance_to_discover_succeeded_attack_compromise_known: 1
   # Chance for blue to discover information about an attack that succeeded and the compromise was NOT known
-  chance_to_discover_succeeded_attack_compromise_not_known: 0
+  chance_to_discover_succeeded_attack_compromise_not_known: 1
 
   # -Deceptive Nodes-
   # Chance to discover the location of a failed attack on a deceptive node
-  chance_to_discover_failed_attack_deceptive_node: 0
+  chance_to_discover_failed_attack_deceptive_node: 1
   # Chance to discover the location of a succeeded attack against a deceptive node
-  chance_to_discover_succeeded_attack_deceptive_node: 0
+  chance_to_discover_succeeded_attack_deceptive_node: 1
 
 
   # If blue fixes a node then the vulnerability score of that node increases
   making_node_safe_modifies_vulnerability: False
   # The amount that the vulnerability of a node changes when it is made safe
-  vulnerability_change_during_node_patch: 0
+  vulnerability_change_during_node_patch: 1
   # When fixing a node the vulnerability score is randomised
   making_node_safe_gives_random_vulnerability: False
 
@@ -185,25 +185,25 @@ BLUE:
 
 GAME_RULES:
   # Minimum number of nodes the network this game mode is allowed to run on
-  min_number_of_network_nodes: 0
+  min_number_of_network_nodes: 1
   # A lower vulnerability means that a node is less likely to be compromised
-  node_vulnerability_lower_bound: 0
+  node_vulnerability_lower_bound: 1
   # A higher vulnerability means that a node is more vulnerable
-  node_vulnerability_upper_bound: 0
+  node_vulnerability_upper_bound: 1
   # The max steps that a game can go on for. If the blue agent reaches this they win
-  max_steps: 0
+  max_steps: 1
   # The blue agent loses if all the nodes become compromised
   lose_when_all_nodes_lost: False
   # The blue agent loses if n% of the nodes become compromised
   lose_when_n_percent_of_nodes_lost: False
   # The percentage of nodes that need to be lost for blue to lose
-  percentage_of_nodes_compromised_equals_loss: 0
+  percentage_of_nodes_compromised_equals_loss: 1
   # Blue loses if a special 'high value' node is lost (a node picked in the environment)
   lose_when_high_value_node_lost: False
   # If no high value nodes are supplied, how many should be chosen
   # Blue loses if a target node it lost
   lose_when_target_node_lost: False
-  number_of_high_value_nodes: 0
+  number_of_high_value_nodes: 1
   # The high value node is picked at random
   choose_high_value_nodes_placement_at_random: False
   # The node furthest away from the entry points to the network is picked as the high value node
@@ -211,12 +211,12 @@ GAME_RULES:
   # If no entry nodes are supplied choose some at random
   choose_entry_nodes_randomly: False
   # If no entry nodes are supplied then how many should be chosen
-  number_of_entry_nodes: 0
+  number_of_entry_nodes: 1
   # If no entry nodes are supplied then what bias is applied to the nodes when choosing random entry nodes
   prefer_central_nodes_for_entry_nodes: False
   prefer_edge_nodes_for_entry_nodes: False
-  # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0 means that there is no grace period)
-  grace_period_length: 0
+  # The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 1 means that there is no grace period)
+  grace_period_length: 1
 
 
 RESET:
@@ -226,9 +226,9 @@ RESET:
 
 REWARDS:
   # Rewards for the blue agent losing
-  rewards_for_loss: 0
+  rewards_for_loss: 1
   # Rewards for the blue agent winning by reaching the maximum number of steps
-  rewards_for_reaching_max_steps: 0
+  rewards_for_reaching_max_steps: 1
   # How good the end state is (what % blue controls) is multiplied by the rewards that blue receives for winning
   end_rewards_are_multiplied_by_end_state: False
   # The negative rewards from the red agent winning are reduced the closer to the end the blue agent gets

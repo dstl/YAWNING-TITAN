@@ -14,8 +14,8 @@ from yawning_titan.envs.generic.helpers.environment_input_validation import (
 class RedAgentConfig(ConfigABC):
     """Class that validates and stores the Red Agent Configuration."""
 
-    _red_skill: float
     _red_uses_skill: bool
+    _red_skill: float
     _red_ignores_defences: bool
     _red_always_succeeds: bool
     _red_can_only_attack_from_red_agent_node: bool
@@ -47,6 +47,12 @@ class RedAgentConfig(ConfigABC):
     _red_always_chooses_shortest_distance_to_target: bool
 
     # region Getters
+
+    @property
+    def red_uses_skill(self) -> bool:
+        """Red uses its skill modifier when attacking nodes."""
+        return self._red_uses_skill
+
     @property
     def red_skill(self) -> float:
         """
@@ -56,11 +62,6 @@ class RedAgentConfig(ConfigABC):
         succeed in attacks.
         """
         return self._red_skill
-
-    @property
-    def red_uses_skill(self) -> bool:
-        """Red uses its skill modifier when attacking nodes."""
-        return self._red_uses_skill
 
     @property
     def red_ignores_defences(self) -> bool:
@@ -243,13 +244,13 @@ class RedAgentConfig(ConfigABC):
     # endregion
 
     # region Setters
-    @red_skill.setter
-    def red_skill(self, value):
-        self._red_skill = value
-
     @red_uses_skill.setter
     def red_uses_skill(self, value):
         self._red_uses_skill = value
+
+    @red_skill.setter
+    def red_skill(self, value):
+        self._red_skill = value
 
     @red_ignores_defences.setter
     def red_ignores_defences(self, value):
@@ -384,8 +385,8 @@ class RedAgentConfig(ConfigABC):
         cls.validate(config_dict)
 
         red_agent_config = RedAgentConfig(
-            _red_skill=config_dict["red_skill"],
             _red_uses_skill=config_dict["red_uses_skill"],
+            _red_skill=config_dict["red_skill"],
             _red_ignores_defences=config_dict["red_ignores_defences"],
             _red_always_succeeds=config_dict["red_always_succeeds"],
             _red_can_only_attack_from_red_agent_node=config_dict[
@@ -463,14 +464,11 @@ class RedAgentConfig(ConfigABC):
             "chance_to_spread_to_unconnected_node",
         ]:
             check_type(config_dict, name, [int, float])
-
         # int
         for name in ["zero_day_start_amount", "days_required_for_zero_day"]:
             check_type(config_dict, name, [int])
-
         if config_dict["red_target_node"] is not None:
             check_type(config_dict, "red_target_node", [str])
-
         # type of data is bool
         for name in [
             "red_uses_skill",
@@ -493,7 +491,6 @@ class RedAgentConfig(ConfigABC):
             "red_always_chooses_shortest_distance_to_target",
         ]:
             check_type(config_dict, name, [bool])
-
         # data satisfies 0 <= data <= 1
         for name in [
             "red_skill",
@@ -503,7 +500,6 @@ class RedAgentConfig(ConfigABC):
             "chance_to_spread_to_unconnected_node",
         ]:
             check_within_range(config_dict, name, 0, 1, True, True)
-
         # data satisfies 0 < data
         for name in [
             "spread_action_likelihood",

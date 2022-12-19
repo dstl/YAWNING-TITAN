@@ -1,3 +1,4 @@
+import copy
 from dataclasses import fields
 from typing import Any, Dict
 
@@ -107,7 +108,7 @@ rewards_config_form_map = {}
 
 miscellaneous_config_form_map = {}
 
-config_form_maps = {
+config_form_maps: Dict[str, Dict[str, Any]] = {
     "red": red_config_form_map,
     "blue": blue_config_form_map,
     "game_rules": game_rules_config_form_map,
@@ -234,12 +235,11 @@ class ConfigForm(django_forms.Form):
         """
         fields_valid = super().is_valid()
         try:
-            self.config_class = self.config_class.create(
-                game_mode_section_form_from_default(
-                    self.cleaned_data,
-                    self.section,
-                )
+            config = GameModeFormManager.game_mode_section_form_from_default(
+                self.cleaned_data,
+                self.section,
             )
+            self.config_class = self.config_class.create(config)
         except Exception as e:
             self.group_errors = e
         groups_valid = True if self.group_errors is None else False
@@ -311,32 +311,6 @@ class MiscellaneousForm(ConfigForm):
         )
 
 
-def game_mode_section_form_from_default(
-    gui_section_options: Dict[str, Any], section: str
-) -> Dict[str, Any]:
-    """
-    Update default game mode options with GUI inputted options.
-
-    Create game mode section dictionary by updating default .yaml config file
-    with settings inputted in the GUI.
-
-    :param gui_section_options: dictionary with options configured in GUI
-    :param section: config section to update
-
-    :return: The modified section of the config as a dictionary
-    """
-    with open(GAME_MODES_DIR / DEFAULT_GAME_MODE) as f:
-        new_settings: Dict[str, Dict[str, Any]] = yaml.load(f, Loader=SafeLoader)
-
-    # add settings items for selection values
-    for name in config_form_maps[section]["groups"].keys():
-        new_settings[section.upper()][gui_section_options[name]] = True
-        del gui_section_options[name]
-
-    new_settings[section.upper()].update(gui_section_options)
-    return new_settings[section.upper()]
-
-
 def create_game_mode_from_form_sections(
     game_mode_forms: Dict[str, django_forms.Form], game_mode_filename: str
 ):
@@ -345,7 +319,7 @@ def create_game_mode_from_form_sections(
 
     :param game_mode_forms: dictionary containing django form objects representing sections of the config.
 
-    :return: a valid instance of :class: `~yawning_titan.config.game_config.game_mode_config.GameModeConfig`
+    :return: a valid instance of :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>`
     """
     section_configs = {
         section_name.upper(): form.cleaned_data
@@ -354,3 +328,226 @@ def create_game_mode_from_form_sections(
     game_mode = GameModeConfig.create(section_configs)
     game_mode.to_yaml(GAME_MODES_DIR / game_mode_filename)
     return game_mode
+
+
+class GameModeFormManager:
+    """
+    Create and manage sets of forms for a given :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>`.
+
+    allows for game modes to be constructed dynamically from the GUI.
+    """
+
+    base_forms = {
+        "red": {
+            "form": RedAgentForm,
+            "icon": "bi-lightning",
+            "status": "incomplete",
+        },
+        "blue": {
+            "form": BlueAgentForm,
+            "icon": "bi-shield",
+            "status": "incomplete",
+        },
+        "game_rules": {
+            "form": GameRulesForm,
+            "icon": "bi-clipboard",
+            "status": "incomplete",
+        },
+        "observation_space": {
+            "form": ObservationSpaceForm,
+            "icon": "bi-binoculars",
+            "status": "incomplete",
+        },
+        "rewards": {"form": RewardsForm, "icon": "bi-star", "status": "incomplete"},
+        "reset": {
+            "form": ResetForm,
+            "icon": "bi-arrow-clockwise",
+            "status": "incomplete",
+        },
+        "miscellaneous": {
+            "form": MiscellaneousForm,
+            "icon": "bi-brush",
+            "status": "incomplete",
+        },
+    }
+    forms: Dict[str, Dict[str, Dict[str, Any]]] = {}
+
+    @staticmethod
+    def get_config_from_default() -> Dict[str, Dict[str, Any]]:
+        """
+        Create game mode config dictionary by formatting default .yaml config file.
+
+        :return: The modified section of the config as a dictionary
+        """
+        with open(GAME_MODES_DIR / DEFAULT_GAME_MODE) as f:
+            new_settings: Dict[str, Dict[str, Any]] = yaml.load(f, Loader=SafeLoader)
+
+        return {key.lower(): val for key, val in new_settings.items()}
+
+    @classmethod
+    def verify(cls, **kwargs):
+        print("KWARG", kwargs)
+        if (
+            "game_mode_filename" in kwargs
+            and kwargs["game_mode_filename"] not in cls.forms
+        ):
+            raise ValueError(f"{kwargs['game_mode_filename']} has not been created")
+        if (
+            "section_name" in kwargs
+            and kwargs["section_name"] not in cls.forms[kwargs["game_mode_filename"]]
+        ):
+            raise ValueError(
+                f"{kwargs['section_name']} is not in form set for {kwargs['game_mode_filename']}"
+            )
+
+    @classmethod
+    def game_mode_section_form_from_default(
+        cls, gui_section_options: Dict[str, Any], section: str
+    ) -> Dict[str, Any]:
+        """
+        Update default game mode options with GUI inputted options.
+
+        Create game mode section dictionary by updating default .yaml config file
+        with settings inputted in the GUI.
+
+        :param gui_section_options: dictionary with options configured in GUI
+        :param section: config section to update
+
+        :return: The modified section of the config as a dictionary
+        """
+        new_settings = cls.get_config_from_default()
+        gui_section_options = {
+            key: val for key, val in gui_section_options.items() if val is not None
+        }  # remove null options from form
+
+        # add settings items for selection values
+        for name in config_form_maps[section].get("groups", {}).keys():
+            new_settings[section][gui_section_options[name]] = True
+            del gui_section_options[name]
+
+        new_settings[section].update(gui_section_options)
+        return new_settings[section]
+
+    @classmethod
+    def get_or_create_instance(
+        cls, game_mode_filename, initial_options=None
+    ) -> Dict[str, Dict[str, Any]]:
+        """
+        Get or create the config forms for the current :param:`game_mode_filename`.
+
+        :param game_mode_filename: the file name and extension of the current game mode
+        :param initial_options: the initial state of the options for the :param:`game_mode_filename`
+        :return: a dictionary representation of the sections of the  :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>`
+        """
+        if initial_options is None:
+            initial_options = cls.get_config_from_default()
+        if game_mode_filename in cls.forms:
+            print("FOUND")
+            return cls.forms[game_mode_filename]
+        else:
+            print("NEW")
+            forms = {
+                section_name: {
+                    "form": section.pop("form")(initial=initial_options[section_name]),
+                    **section,
+                }
+                for section_name, section in copy.deepcopy(cls.base_forms).items()
+            }
+            cls.forms[game_mode_filename] = forms
+            return forms
+
+    @classmethod
+    def get_first_section(cls) -> str:
+        """
+        Get the first key of the `FormManager.base_forms` dictionary.
+
+        :return: _description_
+        """
+        return list(cls.base_forms.keys())[0]
+
+    @classmethod
+    def get_section(
+        cls, game_mode_filename, section_name=None, initial_options=None
+    ) -> Dict[str, Any]:
+        """
+        Get a specific :param:`section` of a form for an active :param:`game_mode_filename`.
+
+        :param game_mode_filename: the file name and extension of the current game mode
+        :param section_name: the name of the section to get from which to retrieve the value of
+        :param initial_options: the initial state of the options for the :param:`game_mode_filename`
+        :return: a dictionary containing status and :class:`ConfigForm` of the selected :param:`section_name`
+        """
+        if section_name is None:
+            section_name = cls.get_first_section()
+        forms = cls.get_or_create_instance(game_mode_filename, initial_options)
+        return forms[section_name]
+
+    @classmethod
+    def update_section(cls, game_mode_filename, section_name, data) -> Dict[str, Any]:
+        """
+        Update the values of a specific :param:`section` of a form for an active :param:`game_mode_filename`.
+
+        :param game_mode_filename: the file name and extension of the current game mode
+        :param section_name: the name of the section for which the values will be updated
+        :param data: a dictionary representation of config form values to use to update the reference for an active :param: `game_mode_filename`
+        :return: the :param:`section` of the active :param: `game_mode_filename` with values updated from :param:`data`
+        """
+        cls.verify(game_mode_filename=game_mode_filename, section_name=section_name)
+        cls.forms[game_mode_filename][section_name]["form"] = cls.base_forms[
+            section_name
+        ]["form"](data)
+        return cls.forms[game_mode_filename][section_name]
+
+    @classmethod
+    def check_section_complete(cls, game_mode_filename, section_name) -> bool:
+        """
+        Check whether a section of the active :param: `game_mode_filename` is complete.
+
+        checks whether the :class:`ConfigForm` representing the :param:`section_name` of the :param:`game_mode_filename` is complete.
+        returns True if the form is valid otherwise returns False. Also updates the forms status in :attr: FormManager.forms.
+
+        :param game_mode_filename: the file name and extension of the current game mode
+        :param section_name: the name of the section for which to check the completion state
+        :return: a boolean True/False value representing if the :param:`section_name` of the :param:`game_mode_filename` is complete
+        """
+        section = cls.get_section(game_mode_filename, section_name)
+        form: ConfigForm = section["form"]
+        if form.is_valid():
+            cls.forms[game_mode_filename][section_name]["status"] = "complete"
+            return True
+        return False
+
+    @classmethod
+    def check_game_mode_complete(cls, game_mode_filename) -> bool:
+        """
+        Checks thats all sections of the active :param: `game_mode_filename` have a status of 'complete' in :class: `FormManager.forms`.
+
+        :param game_mode_filename: the file name and extension of the current game mode
+        :return: a boolean True/False value representing if the :param:`game_mode_filename` is complete
+        """
+        if game_mode_filename in cls.forms and all(
+            section["status"] == "complete"
+            for section in cls.forms[game_mode_filename].values()
+        ):
+            return True
+        return False
+
+    @classmethod
+    def save_as_game_mode(cls, game_mode_filename: str) -> GameModeConfig:
+        """
+        Create a complete config yaml file from a dictionary of form sections.
+
+        :param game_mode_forms: dictionary containing django form objects representing sections of the config.
+
+        :return: a valid instance of :class: `~yawning_titan.config.game_config.game_mode_config.GameModeConfig`
+        """
+        cls.verify(game_mode_filename=game_mode_filename)
+        section_configs = {
+            section_name.upper(): section["form"].cleaned_data
+            for section_name, section in cls.forms[game_mode_filename].items()
+        }
+        print("ALL SECS", section_configs)
+        game_mode = GameModeConfig.create(section_configs)
+        game_mode.to_yaml(GAME_MODES_DIR / game_mode_filename)
+        # del cls.forms[game_mode_filename]
+        return game_mode
