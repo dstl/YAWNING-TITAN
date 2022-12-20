@@ -1,0 +1,33 @@
+@use "@angular/material" as mat;
+@use "./app/app-mixin.scss" as app;
+@include mat.core();
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+$primary: mat.define-palette(mat.$green-palette);
+$accent: mat.define-palette(mat.$teal-palette);
+$warn: mat.define-palette(mat.$red-palette);
+
+$theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $primary,
+      accent: $accent,
+      warn: $warn,
+    ),
+  )
+);
+
+@include mat.all-component-themes($theme);
+@include app.app-mixins($theme);

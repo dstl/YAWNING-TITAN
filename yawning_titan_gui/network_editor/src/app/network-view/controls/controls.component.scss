@@ -1,0 +1,36 @@
+:host {
+  display: flex;
+  flex: 1;
+}
+
+.controls-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin: 20px;
+  overflow: hidden;
+
+  .node-list {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .download-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    .download-button {
+      flex: 1;
+    }
+  }
+}
+
+.reset-view-button {
+  position: absolute;
+  bottom: 20px;
+  left: 320px;
+  z-index: 999;
+}
