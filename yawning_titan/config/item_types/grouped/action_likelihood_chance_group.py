@@ -1,13 +1,13 @@
 from typing import Dict, Optional, Union
 
 from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
-from yawning_titan.config.item_types.core import ConfigGroupValidation, ConfigItemGroup
+from yawning_titan.config.item_types.core import ConfigGroupValidation, ConfigGroup
 from yawning_titan.config.item_types.float_item import FloatItem, FloatProperties
 from yawning_titan.exceptions import ConfigGroupValidationError
 
 
-class ActionLikelihoodChanceGroup(ConfigItemGroup):
-    """The ConfigItemGroup to represent an action, likelihood, and chance common config group."""
+class ActionLikelihoodChanceGroup(ConfigGroup):
+    """The ConfigGroup to represent an action, likelihood, and chance common config group."""
 
     def __init__(
         self,
@@ -23,7 +23,6 @@ class ActionLikelihoodChanceGroup(ConfigItemGroup):
         :param chance: The chance of the action.
         :param doc: An optional descriptor.
         """
-        super().__init__(doc)
         self.use: BoolItem = BoolItem(
             value=use,
             doc="Whether to use the action or not.",
@@ -39,7 +38,8 @@ class ActionLikelihoodChanceGroup(ConfigItemGroup):
             doc="The chance of the action.",
             properties=FloatProperties(allow_null=True, min_val=0, max_val=1),
         )
-        self.validation = self.validate()
+        super().__init__(doc)
+        
 
     def _items_map(self) -> Dict[str, Union[BoolItem, FloatItem]]:
         return {"use": self.use, "likelihood": self.likelihood, "chance": self.chance}
@@ -63,7 +63,7 @@ class ActionLikelihoodChanceGroup(ConfigItemGroup):
 
         This is done at two levels:
             1. A group level validation is performed that checks if likelihood
-            and chance or provided when use is True.
+            and chance are provided when use is True.
             2. An item level validation is performed by calling .validate on
             the use, likelihood, and chance config items.
 
@@ -78,40 +78,23 @@ class ActionLikelihoodChanceGroup(ConfigItemGroup):
                     msg = "Likelihood cannot be null when use=True"
                     raise ConfigGroupValidationError(msg)
                 if self.chance.value is None:
-                    msg = "Likelihood cannot be null when use=True"
+                    msg = "chance cannot be null when use=True"
                     raise ConfigGroupValidationError(msg)
         except ConfigGroupValidationError as e:
             validation = ConfigGroupValidation(False, msg, e)
 
-        for k, item in self._items_map().items():
-            validation.add_item_validation(k, item.validation)
+        # for k, item in self._items_map().items():
+        #     validation.add_item_validation(k, item.validation)
+        super().validate_elements()
 
         return validation
 
-    def __str__(self):
-        return (
-            f"{self.__class__.__name__}("
-            f"use={self.use.value}, "
-            f"likelihood={self.likelihood.value}, "
-            f"action={self.chance.value}, "
-            f"doc={self.doc}"
-            ")"
-        )
 
-    def __repr__(self):
-        return (
-            f"{self.__class__.__name__}("
-            f"use={self.use}, "
-            f"likelihood={self.likelihood}, "
-            f"action={self.chance}, "
-            f"doc={self.doc}"
-            ")"
-        )
+    
 
-    def __hash__(self):
-        return hash((self.use, self.likelihood, self.chance, self.doc))
+alc = ActionLikelihoodChanceGroup(use=True, likelihood=0.5, chance=-5)
 
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return hash(self) == hash(other)
-        return False
+print(alc)
+print(alc.validation)
+print(hash(alc))
+#print(ActionLikelihoodChanceGroup(use=True, likelihood=0.5, chance=-5) == ActionLikelihoodChanceGroup(use=True, likelihood=0.5, chance=-5))

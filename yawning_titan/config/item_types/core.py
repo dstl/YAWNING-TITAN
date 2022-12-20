@@ -3,6 +3,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Dict, Optional, Union
+from collections.abc import Iterable
 
 from yawning_titan.exceptions import ConfigGroupValidationError
 
@@ -23,7 +24,40 @@ class ConfigItemValidation:
     """The :py::class:`Exception` raised when validation failed."""
 
 
-class ConfigGroupValidation:
+class ConfigGroupCore:
+    """
+    Used to provide helper methods to represent a ConfigGroup object.
+    """
+    def get_config_elements(self)->Dict[str,Union[ConfigItem,ConfigGroup]]:
+        return {k:v for k,v in self.__dict__.items() if isinstance(v,ConfigItem) or isinstance(v,ConfigGroup)}
+
+    def get_non_config_elements(self)->Dict[str,Any]:
+        return {k:v for k,v in self.__dict__.items() if k not in self.get_config_elements()}
+
+    def stringify(self):
+        string = f"{self.__class__.__name__}("
+        strings = [f"{name}={val.stringify()}" for name,val in self.get_config_elements().items()]
+        strings.extend([f"{name}={val}" for name,val in self.get_non_config_elements().items()])
+        return string + ", ".join(strings)
+
+
+    def __repr__(self) -> str:
+        return self.stringify()
+
+    def __str__(self) -> str:
+        return self.stringify()
+
+    def __hash__(self) -> int:
+        element_hash = [v.stringify() for v in self.get_config_elements().values()]
+        element_hash.extend([tuple(v) if isinstance(v,Iterable) else v for v in self.get_non_config_elements().values()])
+        return hash(tuple(element_hash))
+
+    def __eq__(self, other) -> bool:
+        if isinstance(other, self.__class__):
+            return hash(self) == hash(other)
+        return False
+
+class ConfigGroupValidation(ConfigGroupCore):
     """
     Used to return a validation result for a group of dependant config items, and the list of item validations.
 
@@ -38,26 +72,27 @@ class ConfigGroupValidation:
     ):
         self.passed: bool = passed
         self.fail_reason: str = fail_reason
-        self.fail_exception: [ConfigGroupValidationError] = fail_exception
-        self._item_validation = {}
+        self.fail_exception: ConfigGroupValidationError = fail_exception
+        self._element_validation = {}
 
-    def add_item_validation(self, item_name: str, validation: ConfigItemValidation):
+    def add_element_validation(self, element_name: str, validation: ConfigItemValidation):
         """
-        Add a ConfigItemValidation to the item validation dict.
+        Add a :class:`ConfigItemValidation` or :class:`ConfigGroupValidation` to the item validation dict.
 
-        :param item_name: The name of the item.
+        :param element_name: The name of the element.
         :param validation: the instance of ConfigItemValidation.
         """
-        self._item_validation[item_name] = validation
+        self._element_validation[element_name] = validation
+
 
     @property
-    def item_validation(self) -> Dict[str, ConfigItemValidation]:
+    def element_validation(self) -> Dict[str, ConfigItemValidation]:
         """
-        The dict of item ConfigItemValidations.
+        The dict of element to :class:`ConfigItemValidation` and :class:`ConfigGroupValidation` validations.
 
         :return: A dict.
         """
-        return self._item_validation
+        return self._element_validation
 
     @property
     def group_passed(self) -> bool:
@@ -66,33 +101,33 @@ class ConfigGroupValidation:
 
         :return: A bool.
         """
-        return all(v.passed for v in self.item_validation.values())
+        return all(v.passed for v in self.element_validation.values())
 
-    def __repr__(self) -> str:
-        return (
-            f"ConfigGroupValidation("
-            f"passed={self.passed}, "
-            f"fail_reason='{self.fail_reason}', "
-            f"fail_exception={self.fail_exception}, "
-            f"item_validation={self._item_validation}, "
-            f"group_passed={self.group_passed}"
-            f")"
-        )
+    # def __repr__(self) -> str:
+    #     return (
+    #         f"ConfigGroupValidation("
+    #         f"passed={self.passed}, "
+    #         f"fail_reason='{self.fail_reason}', "
+    #         f"fail_exception={self.fail_exception}, "
+    #         f"item_validation={self._item_validation}, "
+    #         f"group_passed={self.group_passed}"
+    #         f")"
+    #     )
 
-    def __hash__(self) -> int:
-        return hash(
-            (
-                self.passed,
-                self.fail_reason,
-                self.fail_exception,
-                tuple(self._item_validation),
-            )
-        )
+    # def __hash__(self) -> int:
+    #     return hash(
+    #         (
+    #             self.passed,
+    #             self.fail_reason,
+    #             self.fail_exception,
+    #             tuple(self._item_validation),
+    #         )
+    #     )
 
-    def __eq__(self, other: object) -> bool:
-        if isinstance(other, ConfigGroupValidation):
-            return hash(self) == hash(other)
-        return False
+    # def __eq__(self, other: object) -> bool:
+    #     if isinstance(other, ConfigGroupValidation):
+    #         return hash(self) == hash(other)
+    #    return False
 
 
 @dataclass()
@@ -167,24 +202,28 @@ class ConfigItem:
             return self.properties.validate(self.value)
         return ConfigItemValidation()
 
+    def stringify(self):
+        return self.value
 
-class ConfigItemGroup(ABC):
-    """The ConfigItemGroup class holds a ConfigItem's, doc, properties, and a ConfigItemValidation."""
+
+class ConfigGroup(ConfigGroupCore, ABC):
+    """The ConfigGroup class holds a ConfigItem's, doc, properties, and a ConfigItemValidation."""
 
     def __init__(self, doc: Optional[str] = None):
         self.doc: Optional[str] = doc
         """The groups doc."""
+        self.validation = self.validate()
 
     @abstractmethod
-    def _items_map(self) -> Dict[str, Union[ConfigItem, ConfigItemGroup]]:
+    def _items_map(self) -> Dict[str, Union[ConfigItem, ConfigGroup]]: # TODO: remove this, its not necessary as can be replaced with getter methods on ConfigGroupCore
         pass
 
     @abstractmethod
-    def to_dict(self):
+    def to_dict(self): # TODO: replace with generic method
         """
-        Return the ConfigItemGroup as a dict.
+        Return the ConfigGroup as a dict.
 
-        :return: The ConfigItemGroup as a dict.
+        :return: The ConfigGroup as a dict.
         """
         d = {"doc": self.doc}
         return d
@@ -197,3 +236,14 @@ class ConfigItemGroup(ABC):
         :return: An instance of :class:`ConfigGroupValidation`.
         """
         pass
+        # TODO: modify this so that 
+
+    def validate_elements(self):
+        """
+        
+
+        :param elements: _description_
+        :type elements: Dict[str,Union[ConfigItem,ConfigGroup]]
+        """
+        for k, element in self.get_config_elements().items():
+            self.validation.add_element_validation(k, element.validation)
