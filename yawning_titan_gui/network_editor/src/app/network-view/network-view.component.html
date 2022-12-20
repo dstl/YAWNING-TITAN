@@ -1,0 +1,6 @@
+<div class="window" #window>
+  <div class="controls">
+    <app-controls></app-controls>
+  </div>
+  <div #main class="main" appFileDragDrop (fileDropped)="loadFile($event)"></div>
+</div>

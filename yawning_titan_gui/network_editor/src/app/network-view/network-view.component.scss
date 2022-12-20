@@ -1,0 +1,27 @@
+:host {
+  display: flex;
+  flex: 1;
+  max-height: 100vh;
+}
+
+.window {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+
+  .controls {
+    display: flex;
+    width: 300px;
+    background-color: #636363;
+  }
+
+  .main {
+    display: flex;
+    width: calc(100vw - 300px);
+  }
+}
+
+// drag drop
+.fileover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

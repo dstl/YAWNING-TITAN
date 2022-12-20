@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  flex: 1;
+}
+
+mat-sidenav {
+  width: 20%;
+  min-width: 200px;
+}
+
+mat-sidenav-container,
+mat-sidenav-content,
+app-properties-editor,
+.mat-drawer-backdrop,
+::ng-deep .mat-drawer-inner-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}

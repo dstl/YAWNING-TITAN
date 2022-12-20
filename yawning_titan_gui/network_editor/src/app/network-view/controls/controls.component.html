@@ -1,0 +1,18 @@
+<div class="controls-container">
+  <p>display the node values here!</p>
+  <p>Double click to place a node</p>
+  <p>Click on nodes to connect them</p>
+  <p>Press delete or backspace when selecting a node or edge to delete</p>
+  <div class="node-list">
+    <p *ngFor="let node of nodeList()">Node ID: {{node}}</p>
+  </div>
+  <div class="download-button-container">
+    <button mat-raised-button color="primary" class="download-button" (click)="downloadNetwork()">
+      <mat-icon>download</mat-icon>
+      Download Network</button>
+  </div>
+</div>
+
+<button mat-icon-button class="reset-view-button" (click)="resetView()">
+  <mat-icon>fullscreen</mat-icon>
+</button>
