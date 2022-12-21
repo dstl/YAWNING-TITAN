@@ -9,7 +9,7 @@ describe('ControlsComponent', () => {
   let fixture: ComponentFixture<ControlsComponent>;
 
   let cytoscapeServiceStub: any = {
-
+    resetView: () => { }
   }
 
   beforeEach(async () => {
@@ -31,5 +31,12 @@ describe('ControlsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should reset the cytoscape view', () => {
+    const spy = spyOn(component['cytoscapeService'], 'resetView');
+
+    component.resetView();
+    expect(spy).toHaveBeenCalled();
   });
 });

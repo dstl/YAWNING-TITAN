@@ -20,12 +20,11 @@ export class ImportService {
 
     try {
       const content = await ($event[0] as File).text();
-
       const network = new Network(JSON.parse(content));
 
       this.cytoscapeService.loadNetwork(network);
     } catch (e) {
-      console.error("Unable to parse file", e);
+      throw new Error("Unable to parse file", e);
     }
   }
 }
