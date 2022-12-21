@@ -32,4 +32,11 @@ describe('NetworkViewComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should call the import service when a load file event is triggered', () => {
+    const spy = spyOn(component['importService'], 'loadFile');
+
+    component.loadFile({});
+    expect(spy).toHaveBeenCalled();
+  });
 });

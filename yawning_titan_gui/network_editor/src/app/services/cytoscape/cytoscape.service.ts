@@ -21,9 +21,6 @@ export class CytoscapeService {
   // html element where the graph is rendered
   private renderElement: HTMLElement | undefined;
 
-  // list of elements in the network
-  private elementsArr: cytoscape.ElementDefinition[] | undefined = [];
-
   private defaultNodeStyle = {
     'label': 'data(name)',
     'background-color': '#f0f0f0',
@@ -119,7 +116,7 @@ export class CytoscapeService {
       return;
     }
 
-    const item = this.cy.getElementById(this.selectedElement.id);
+    const item = this.cy.$id(this.selectedElement.id);
     // if node, delete any edges going to it
     if (this.selectedElement.type == ElementType.NODE) {
       // delete all edges connected to node
@@ -129,7 +126,7 @@ export class CytoscapeService {
       this.network.removeEdge(this.selectedElement.id);
     }
 
-    item.remove();
+    this.cy.$id(this.selectedElement.id).remove();
     this.setSelectedItem(null);
   }
 
@@ -144,7 +141,7 @@ export class CytoscapeService {
 
     this.cy = cytoscape({
       container: this.renderElement, // container to render in
-      elements: this.elementsArr,
+      elements: [],
       style: this.style,
       layout: { name: 'random' }
     });
@@ -195,6 +192,10 @@ export class CytoscapeService {
     this.cy.fit(null, 200);
   }
 
+  /**
+   * Handle a single click event
+   * @param evt
+   */
   private handleNodeSingleClick(evt: cytoscape.EventObject): void {// create edge if current selection was a node
     // create an edge if the selected item was a node
     if (this.selectedElement?.type == ElementType.NODE) {
@@ -255,6 +256,7 @@ export class CytoscapeService {
       return;
     }
 
+    // if no id provided, generate one
     edgeId = edgeId ? edgeId : uuid();
 
     this.cy.add({

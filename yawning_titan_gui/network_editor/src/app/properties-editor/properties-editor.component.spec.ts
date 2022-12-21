@@ -9,7 +9,7 @@ describe('PropertiesEditorComponent', () => {
   let fixture: ComponentFixture<PropertiesEditorComponent>;
 
   let propertiesEditorServiceStub: any = {
-
+    loadDetails: () => { }
   }
 
   beforeEach(async () => {
@@ -31,5 +31,30 @@ describe('PropertiesEditorComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('ngOnChanges', () => {
+    it('should load the details of the node if it was not the same as previous', () => {
+      const spy = spyOn(component['propertiesEditorService'], 'loadDetails');
+      const changeObj = {
+        nodeId: {
+          currentValue: 'a',
+          previousValue: 'b'
+        }
+      }
+      component.ngOnChanges(changeObj as any);
+      expect(spy).toHaveBeenCalled();
+    });
+    it('should not load the details of the node if it was the same as previous', () => {
+      const spy = spyOn(component['propertiesEditorService'], 'loadDetails');
+      const changeObj = {
+        nodeId: {
+          currentValue: 'a',
+          previousValue: 'a'
+        }
+      }
+      component.ngOnChanges(changeObj as any);
+      expect(spy).not.toHaveBeenCalled();
+    });
   });
 });
