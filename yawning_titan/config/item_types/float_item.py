@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import Dict, Optional, Union
+from dataclasses import dataclass, field
+from typing import Dict, List, Optional, Union
 
 from yawning_titan.config.item_types.core import (
     ConfigItem,
@@ -12,15 +12,15 @@ from yawning_titan.exceptions import ConfigItemValidationError
 @dataclass()
 class FloatProperties(ItemTypeProperties):
     """The FloatProperties class holds the properties relevant for defining and validating a float value."""
-
+    
     min_val: Optional[float] = None
     """A minimum float value."""
-    exclusive_min: Optional[bool] = None
-    """Indicates whether `min_val` is exclusive of the value (>, rather than >=)."""
+    inclusive_min: Optional[bool] = None
+    """Indicates whether `min_val` is inclusive of the value (>=, rather than >)."""
     max_val: Optional[float] = None
     """A maximum float value."""
-    exclusive_max: Optional[bool] = None
-    """Indicates whether `max_val` is exclusive of the value (<, rather than <=)."""
+    inclusive_max: Optional[bool] = None
+    """Indicates whether `max_val` is exclusive of the value (<=, rather than <)."""
     allow_null: Optional[bool] = None
     """`True` if the config value can be left empty, otherwise `False`."""
     default: Optional[float] = None
@@ -57,12 +57,12 @@ class FloatProperties(ItemTypeProperties):
                 msg = f"Value {val} when allow_null is not permitted."
                 raise ConfigItemValidationError(msg)
             if val is not None:
-                msg = f"Value {val} is"
-                if not isinstance(val, float):
-                    msg = f"{msg} of type {type(val)}, not {float}."
+                if not any(isinstance(val, _type) for _type in [int, float]):
+                    msg = f"Value {val} is of type {type(val)}, should be " + " or ".join(map(str, [int, float])) + "."
                     raise ConfigItemValidationError(msg)
 
-                if self.exclusive_min:
+                msg = f"Value {val} is"
+                if self.inclusive_min:
                     if self.min_val is not None and val <= self.min_val:
                         msg = (
                             f"{msg} less than the min property {self.min_val+1} "
@@ -74,7 +74,7 @@ class FloatProperties(ItemTypeProperties):
                         msg = f"{msg} less than the min property {self.min_val}."
                         raise ConfigItemValidationError(msg)
 
-                if self.exclusive_max:
+                if self.inclusive_max:
                     if self.max_val is not None and val >= self.max_val:
                         msg = (
                             f"{msg} greater than the max property {self.max_val-1} "

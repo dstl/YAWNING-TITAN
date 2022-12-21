@@ -21,18 +21,19 @@ class Parity(Enum):
         return str(self.name)
 
 
+#TODO: range should probably work more intuitively ie be represented by ['>=',a'<=',b]
 @dataclass()
 class IntProperties(ItemTypeProperties):
     """The IntProperties class holds the properties relevant for defining and validating an int value."""
 
     min_val: Optional[int] = None
     """A minimum int value."""
-    exclusive_min: Optional[bool] = None
-    """Indicates whether `min_val` is exclusive of the value (>, rather than >=)."""
+    inclusive_min: Optional[bool] = None
+    """Indicates whether `min_val` is exclusive of the value (>=, rather than >)."""
     max_val: Optional[int] = None
     """A maximum int value."""
-    exclusive_max: Optional[bool] = None
-    """Indicates whether `max_val` is exclusive of the value (<, rather than <=)."""
+    inclusive_max: Optional[bool] = None
+    """Indicates whether `max_val` is exclusive of the value (<=, rather than <)."""
     parity: Optional[Parity] = None
     """The integer parity."""
     allow_null: Optional[bool] = None
@@ -79,7 +80,7 @@ class IntProperties(ItemTypeProperties):
                     msg = f"{msg} of type {type(val)}, not {int}."
                     raise ConfigItemValidationError(msg)
 
-                if self.exclusive_min:
+                if self.inclusive_max:
                     if self.min_val is not None and val <= self.min_val:
                         msg = (
                             f"{msg} less than the min property {self.min_val+1} "
@@ -91,7 +92,7 @@ class IntProperties(ItemTypeProperties):
                         msg = f"{msg} less than the min property {self.min_val}."
                         raise ConfigItemValidationError(msg)
 
-                if self.exclusive_max:
+                if self.inclusive_max:
                     if self.max_val is not None and val >= self.max_val:
                         msg = (
                             f"{msg} greater than the max property {self.max_val-1} "
