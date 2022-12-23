@@ -1,6 +1,6 @@
 import pytest
 
-from yawning_titan.config.item_types.bool_item import BoolProperties
+from yawning_titan.config.toolbox.bool_item import BoolProperties
 from yawning_titan.exceptions import ConfigItemValidationError
 
 

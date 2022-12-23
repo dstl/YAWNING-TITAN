@@ -1,6 +1,6 @@
 import pytest
 
-from yawning_titan.config.item_types.int_item import IntProperties, Parity
+from yawning_titan.config.toolbox.int_item import IntProperties, Parity
 from yawning_titan.exceptions import ConfigItemValidationError
 
 

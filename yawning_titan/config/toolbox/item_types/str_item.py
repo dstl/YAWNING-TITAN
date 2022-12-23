@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from typing import Dict, Optional, Union
+from typing import Dict, List, Optional, Union
 
-from yawning_titan.config.item_types.core import (
+from yawning_titan.config.toolbox.core import (
     ConfigItem,
     ConfigItemValidation,
     ItemTypeProperties,
@@ -10,19 +10,19 @@ from yawning_titan.exceptions import ConfigItemValidationError
 
 
 @dataclass()
-class BoolProperties(ItemTypeProperties):
+class StrProperties(ItemTypeProperties):
     """The BoolProperties class holds the properties relevant for defining and validating a bool value."""
 
     allow_null: Optional[bool] = None
     """`True` if the config value can be left empty, otherwise `False`."""
     default: Optional[bool] = None
     """The default value"""
+    options: Optional[List[str]] = None
+    """A list of allowed values for the item."""
 
     def __post_init__(self):
-        if self.default:
-            validated_default = self.validate(self.default)
-            if not validated_default.passed:
-                raise validated_default.fail_exception
+        self.allowed_types = [str]
+        super().__post_init__()
 
     def to_dict(self) -> Dict[str, Union[bool, str]]:
         """
@@ -42,29 +42,29 @@ class BoolProperties(ItemTypeProperties):
         :return: An instance of :class:`config_toolbox.config.types.ValueValidation`.
         :raise: :class:`config_toolbox.exceptions.ValidationError` when validation fails.
         """
-        try:
-            if not self.allow_null and val is None:
-                msg = f"Value {val} when allow_null is not permitted."
-                raise ConfigItemValidationError(msg)
-            if val is not None:
-                if not isinstance(val, bool):
-                    msg = f"Value {val} is of type {type(val)}, not {bool}."
+        validation: ConfigItemValidation = super().validate()
+
+        if val is not None:
+            try:
+                if self.options is not None and val not in self.options:
+                    msg = f"Value {val} should be one of {', '.join(self.options)}"
                     raise ConfigItemValidationError(msg)
-        except ConfigItemValidationError as e:
-            return ConfigItemValidation(False, msg, e)
-        return ConfigItemValidation()
+            except ConfigItemValidationError as e:
+                validation.add_validation(msg, e)
+
+        return validation
 
 
 @dataclass()
-class BoolItem(ConfigItem):
+class StrItem(ConfigItem):
     """The bool config item."""
 
     def __init__(
         self,
         value: bool,
         doc: Optional[str] = None,
-        properties: Optional[BoolProperties] = None,
+        properties: Optional[StrProperties] = None,
     ):
         if not properties:
-            properties = BoolProperties()
+            properties = StrProperties()
         super().__init__(value, doc, properties)
