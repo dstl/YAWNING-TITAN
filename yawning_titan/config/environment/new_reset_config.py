@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from typing import Optional
 
-from yawning_titan.config.toolbox.groups.validation import AnyTrueGroup
+from yawning_titan.config.toolbox.core import ConfigGroup
 from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
 
 # --- Tier 0 groups
 
 
-class Reset(AnyTrueGroup):
+class Reset(ConfigGroup):
     """The modifications to network performed on reset."""
 
     def __init__(

@@ -108,7 +108,6 @@ class NaturalSpreadChanceGroup(AnyNonZeroGroup):
                 inclusive_max=True,
             ),
         )
-        print("NAT SPREAD CHANCE")
         super().__init__(doc)
 
 
@@ -237,15 +236,17 @@ class RedNaturalSpreadingGroup(ConfigGroup):
 
     def __init__(
         self,
-        doc: Optional[
-            str
-        ] = "The information related to the red natural agents spreading ability.",
+        doc: Optional[str] = None,
         capable: Optional[bool] = False,
         chance: NaturalSpreadChanceGroup = NaturalSpreadChanceGroup(
             doc="the chances of reads natural spreading to different node types."
         ),
     ):
-        self.capable = capable
+        self.capable = BoolItem(
+            value=capable,
+            doc="Whether the red agents infection can naturally spread to surrounding nodes",
+            properties=BoolProperties(allow_null=False, default=False),
+        )
         self.chance = chance
         super().__init__(doc)
 
@@ -265,11 +266,31 @@ class RedTargetMechanismGroup(ConfigGroup):
             doc="The Config group to represent the information relevant to the red agents target node."
         ),
     ):
-        self.random = random
-        self.prioritise_connected_nodes = prioritise_connected_nodes
-        self.prioritise_unconnected_nodes = prioritise_unconnected_nodes
-        self.prioritise_vulnerable_nodes = prioritise_vulnerable_nodes
-        self.prioritise_resilient_nodes = prioritise_resilient_nodes
+        self.random = BoolItem(
+            doc="Red randomly chooses nodes to target",
+            value=random,
+            properties=BoolProperties(default=False, allow_null=True),
+        )
+        self.prioritise_connected_nodes = BoolItem(
+            doc="Red sorts the nodes it can attack and chooses the one that has the most connections",
+            value=prioritise_connected_nodes,
+            properties=BoolProperties(default=False, allow_null=True),
+        )
+        self.prioritise_unconnected_nodes = BoolItem(
+            doc="Red sorts the nodes it can attack and chooses the one that has the least connections",
+            value=prioritise_unconnected_nodes,
+            properties=BoolProperties(default=False, allow_null=True),
+        )
+        self.prioritise_vulnerable_nodes = BoolItem(
+            doc="Red sorts the nodes is can attack and chooses the one that is the most vulnerable",
+            value=prioritise_vulnerable_nodes,
+            properties=BoolProperties(default=False, allow_null=True),
+        )
+        self.prioritise_resilient_nodes = BoolItem(
+            doc="Red sorts the nodes is can attack and chooses the one that is the least vulnerable",
+            value=prioritise_resilient_nodes,
+            properties=BoolProperties(default=False, allow_null=True),
+        )
         self.target = target
         super().__init__(doc)
 
@@ -280,10 +301,10 @@ class RedTargetMechanismGroup(ConfigGroup):
             if not self.random and not any(
                 v is True
                 for v in [
-                    self.prioritise_connected_nodes,
-                    self.prioritise_unconnected_nodes,
-                    self.prioritise_vulnerable_nodes,
-                    self.prioritise_resilient_nodes,
+                    self.prioritise_connected_nodes.value,
+                    self.prioritise_unconnected_nodes.value,
+                    self.prioritise_vulnerable_nodes.value,
+                    self.prioritise_resilient_nodes.value,
                     self.target.use.value,
                 ]
             ):
@@ -327,9 +348,9 @@ class Red(ConfigGroup):
         super().validate()
 
         try:
-            if self.agent_attack.ignores_defences and (
-                self.target_mechanism.prioritise_vulnerable_nodes
-                or self.target_mechanism.prioritise_resilient_nodes
+            if self.agent_attack.ignores_defences.value and (
+                self.target_mechanism.prioritise_vulnerable_nodes.value
+                or self.target_mechanism.prioritise_resilient_nodes.value
             ):
                 msg = "If the red agent ignores defences then targeting based on this trait is impossible as it is ignored."
                 raise ConfigGroupValidationError(msg)
@@ -416,52 +437,53 @@ class Red(ConfigGroup):
 # red_attack.validation.log()
 
 
-red = Red()
-red.set_from_dict(
-    {
-        "agent_attack": {
-            "ignores_defences": False,
-            "always_succeeds": False,
-            "skill": {"use": True, "value": 0.5},
-            "attack_from": {"only_red_node": False, "any_red_node": True},
-        },
-        "action_set": {
-            "spread": {"use": False, "likelihood": 0.5, "chance": 0.5},
-            "random_infect": {"use": False, "likelihood": 0.5, "chance": 0.5},
-            "move": {
-                "use": False,
-                "likelihood": 0.5,
-            },
-            "basic_attack": {
-                "use": False,
-                "likelihood": 0.5,
-            },
-            "do_nothing": {
-                "use": False,
-                "likelihood": 0.5,
-            },
-            "zero_day": {
-                "use": False,
-                "likelihood": 0.5,
-            },
-        },
-        "natural_spreading": {
-            "capable": True,
-            "chance": {"to_connected_node": 0.5, "to_unconnected_node": 0.5},
-        },
-        "target_mechanism": {
-            "random": True,
-            "prioritise_connected_nodes": False,
-            "prioritise_unconnected_nodes": False,
-            "prioritise_vulnerable_nodes": False,
-            "prioritise_resilient_nodes": False,
-            "target_node": {
-                "use": False,
-                # "target": "",
-                "always_choose_shortest_distance": False,
-            },
-        },
-    }
-)
+# red = Red()
+# red.set_from_dict(
+#     {
+#         "agent_attack": {
+#             "ignores_defences": False,
+#             "always_succeeds": False,
+#             "skill": {"use": True, "value": 0.5},
+#             "attack_from": {"only_red_node": False, "any_red_node": True},
+#         },
+#         "action_set": {
+#             "spread": {"use": False, "likelihood": 0.5, "chance": 0.5},
+#             "random_infect": {"use": False, "likelihood": 0.5, "chance": 0.5},
+#             "move": {
+#                 "use": False,
+#                 "likelihood": 0.5,
+#             },
+#             "basic_attack": {
+#                 "use": False,
+#                 "likelihood": 0.5,
+#             },
+#             "do_nothing": {
+#                 "use": False,
+#                 "likelihood": 0.5,
+#             },
+#             "zero_day": {
+#                 "use": False,
+#                 "start_amount": 0.5,
+#                 "days_required": 0.5
+#             },
+#         },
+#         "natural_spreading": {
+#             "capable": True,
+#             "chance": {"to_connected_node": 0.5, "to_unconnected_node": 0.5},
+#         },
+#         "target_mechanism": {
+#             "random": True,
+#             "prioritise_connected_nodes": False,
+#             "prioritise_unconnected_nodes": False,
+#             "prioritise_vulnerable_nodes": False,
+#             "prioritise_resilient_nodes": False,
+#             "target_node": {
+#                 "use": False,
+#                 # "target": "",
+#                 "always_choose_shortest_distance": False,
+#             },
+#         },
+#     }
+# )
 
-red.validation.log("red")
+# red.validation.log("red")

@@ -28,6 +28,23 @@ def default_game_mode_path() -> Path:
     )
 
 
+def default_new_game_mode_path() -> Path:
+    """
+    Return the path.
+
+    Returns: The path to the default_new_game_mode.yaml as an instance of
+        pathlib.Path.
+    """
+    return pathlib.Path(
+        os.path.join(
+            _LIB_CONFIG_ROOT_PATH,
+            "_package_data",
+            "game_modes",
+            "default_new_game_mode.yaml",
+        )
+    )
+
+
 def low_skill_red_with_random_infection_perfect_detection_path() -> Path:
     """
     Return the path.

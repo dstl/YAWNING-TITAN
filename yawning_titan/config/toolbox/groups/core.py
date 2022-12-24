@@ -58,7 +58,6 @@ class ActionLikelihoodGroup(ConfigGroup):
 
         :return: An instance of ConfigGroupValidation.
         """
-        # print("VALIDATE IN AL")
         super().validate()
         if self.use.value is True:
             try:
@@ -113,7 +112,6 @@ class ActionLikelihoodChanceGroup(ActionLikelihoodGroup):
 
         :return: An instance of ConfigGroupValidation.
         """
-        # print("VALIDATE IN ALC")
         super().validate()
 
         if self.use.value is True:
@@ -216,7 +214,7 @@ class UseChancesGroup(ConfigGroup):
     def validate(self) -> ConfigGroupValidation:
         """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
         super().validate()
-        if self.use:
+        if self.use.value is True:
             try:
                 if (
                     self.chance.deceptive_node.value <= self.chance.standard_node.value

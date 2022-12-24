@@ -1,6 +1,6 @@
 import pytest
 
-from yawning_titan.config.toolbox.bool_item import BoolProperties
+from yawning_titan.config.toolbox.item_types.bool_item import BoolProperties
 from yawning_titan.exceptions import ConfigItemValidationError
 
 
@@ -20,5 +20,5 @@ def test_bool_properties_validation(allow_null, test_val, passed, fail_reason):
     print(validation)
     assert validation.passed == passed
     if not validation.passed:
-        assert type(validation.fail_exception) == ConfigItemValidationError
-        assert validation.fail_reason == fail_reason
+        assert type(validation.fail_exceptions[0]) == ConfigItemValidationError
+        assert fail_reason in validation.fail_reasons

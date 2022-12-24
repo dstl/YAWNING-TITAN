@@ -1,6 +1,6 @@
 import pytest
 
-from yawning_titan.config.toolbox.base.groups import ActionLikelihoodChanceGroup
+from yawning_titan.config.toolbox.groups.core import ActionLikelihoodChanceGroup
 
 
 @pytest.mark.unit_test
