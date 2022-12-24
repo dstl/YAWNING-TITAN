@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from collections.abc import Iterable
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Union
 
 import yaml
 
+from yawning_titan.config.game_config.game_mode_config import _LOGGER
 from yawning_titan.exceptions import (
     ConfigGroupValidationError,
     ConfigItemValidationError,
@@ -76,11 +76,13 @@ class ConfigBase:
         element_hash = [v.stringify() for v in self.get_config_elements().values()]
         element_hash.extend(
             [
-                tuple(v) if isinstance(v, Iterable) else v
+                tuple(v) if type(v) in [list, dict, set] else v
                 for v in self.get_non_config_elements().values()
             ]
         )
-        return hash(tuple(element_hash))
+        tuple_hash = tuple(element_hash)
+        print("***", self.__class__.__name__, tuple_hash)
+        return hash(tuple_hash)
 
     def __eq__(self, other) -> bool:
         """Check the equality of any 2 instances of class.
@@ -90,6 +92,7 @@ class ConfigBase:
         :return: A boolean True if the elements holds the same data otherwise False.
         """
         if isinstance(other, self.__class__):
+            print("HAHS", hash(self), hash(other))
             return hash(self) == hash(other)
         return False
 
@@ -129,70 +132,30 @@ class ItemTypeProperties(ABC):
         - Check that the type of the value is in :attribute: `allowed_types`
         """
         validation = ConfigItemValidation()
+        print("VAL=", val, "ALLOWED TYPES=", self.allowed_types)
         try:
             if not self.allow_null and val is None:
                 msg = f"Value {val} when allow_null is not permitted."
+                print("MSG: ", msg)
                 raise ConfigItemValidationError(msg)
         except ConfigItemValidationError as e:
             validation.add_validation(msg, e)
         try:
-            if not any(isinstance(val, _type) for _type in [int, float]):
+            if val is not None and type(val) not in self.allowed_types:
                 msg = (
                     f"Value {val} is of type {type(val)}, should be "
                     + " or ".join(map(str, self.allowed_types))
                     + "."
                 )
+                print("MSG: ", msg)
                 raise ConfigItemValidationError(msg)
         except ConfigItemValidationError as e:
             validation.add_validation(msg, e)
         return validation
 
 
-@dataclass()
-class ConfigItemValidation:
-    """
-    :class:`ConfigItemValidation` is used to return a validation result.
-
-    If validation fails, a reason why and any exception raised are returned.
-    """
-
-    passed: Optional[bool] = True
-    """``True`` if the _value has passed validation, otherwise ``False``."""
-    fail_reason: Optional[str] = None
-    """The reason why validation failed."""
-    fail_exception: Optional[Exception] = None
-    """The :class:`Exception` raised when validation failed."""
-
-    def __post_init__(self):
-        # print("CONFIG ITEM POST INIT")
-        self.fail_reasons: List[str] = (
-            [self.fail_reason] if self.fail_reason is not None else []
-        )
-        self.fail_exceptions: List[ConfigItemValidationError] = (
-            [self.fail_exception] if self.fail_exception is not None else []
-        )
-        delattr(self, "fail_reason")
-        delattr(self, "fail_exception")
-
-    def add_validation(self, fail_reason: str, exception: ConfigItemValidationError):
-        """
-        Add a validation fail_reason, exception pair and set the validation result :attribute: passed as False.
-
-        :param fail_reason: A string message to describe a particular error.
-        :param exception: A wrapped `Exception` object that can be used to raise an error for the `fail_reason`.
-        """
-        self.passed = False
-        print("$$", self.__class__.__name__, fail_reason, exception)
-        self.fail_reasons.append(fail_reason)
-        self.fail_exceptions.append(exception)
-
-
-class ConfigGroupValidation(ConfigBase):
-    """
-    Used to return a validation result for a group of dependant config items, and the list of item validations.
-
-    If validation fails, a reason why and any exception raised are returned.
-    """
+class ConfigValidationBase(ConfigBase):
+    """The base validation methods for a config element."""
 
     def __init__(
         self,
@@ -205,20 +168,6 @@ class ConfigGroupValidation(ConfigBase):
         self.fail_exceptions: List[ConfigGroupValidationError] = (
             [fail_exception] if fail_exception is not None else []
         )
-        self._element_validation = {}
-
-    def add_element_validation(
-        self,
-        element_name: str,
-        validation: Union[ConfigItemValidation, ConfigGroupValidation],
-    ):
-        """
-        Add a :class:`ConfigItemValidation` or :class:`ConfigGroupValidation` to the item validation dict.
-
-        :param element_name: The name of the element.
-        :param validation: the instance of ConfigItemValidation.
-        """
-        self._element_validation[element_name] = validation
 
     def add_validation(self, fail_reason: str, exception: ConfigGroupValidationError):
         """
@@ -234,6 +183,40 @@ class ConfigGroupValidation(ConfigBase):
             self.fail_reasons.append(fail_reason)
         if exception not in self.fail_exceptions:
             self.fail_exceptions.append(exception)
+
+
+class ConfigItemValidation(ConfigValidationBase):
+    """Create :class:`ConfigItemValidation` from :class:`ConfigValidationBase`."""
+
+
+class ConfigGroupValidation(ConfigValidationBase):
+    """
+    Used to return a validation result for a group of dependant config items, and the list of item validations.
+
+    If validation fails, a reason why and any exception raised are returned.
+    """
+
+    def __init__(
+        self,
+        passed: bool = True,
+        fail_reason: Optional[str] = None,
+        fail_exception: Optional[ConfigGroupValidationError] = None,
+    ):
+        self._element_validation = {}
+        super().__init__(passed, fail_reason, fail_exception)
+
+    def add_element_validation(
+        self,
+        element_name: str,
+        validation: Union[ConfigItemValidation, ConfigGroupValidation],
+    ):
+        """
+        Add a :class:`ConfigItemValidation` or :class:`ConfigGroupValidation` to the item validation dict.
+
+        :param element_name: The name of the element.
+        :param validation: the instance of ConfigItemValidation.
+        """
+        self._element_validation[element_name] = validation
 
     def to_dict(self, element_name: str = "root", root: bool = True) -> dict:
         """
@@ -310,9 +293,13 @@ class ConfigItem:
     def __post_init__(self):
         if self.value is None and self.properties.default:
             self.value = self.properties.default
-        self.validation = self.properties.validate(self.value)
+        self.validate()
 
-    def to_dict(self, as_key_val_pair: bool = False):
+    def to_dict(
+        self,
+        as_key_val_pair: Optional[bool] = False,
+        values_only: Optional[bool] = False,
+    ):
         """
         Return the ConfigItem as a dict.
 
@@ -320,6 +307,8 @@ class ConfigItem:
             a key/value pair, the key being the class name.
         :return: The ConfigItem as a dict.
         """
+        if values_only:
+            return self.value
         d = {"value": self.value}
         if self.doc:
             d["doc"] = self.doc
@@ -338,10 +327,10 @@ class ConfigItem:
 
         :return: An instance of :class:`ConfigItemValidation`.
         """
-        # print("VALIDATING ITEM")
+        self.validation = ConfigItemValidation()
         if self.properties:
-            return self.properties.validate(self.value)
-        return ConfigItemValidation()
+            self.validation = self.properties.validate(self.value)
+        return self.validation
 
     def set_value(self, value: Any) -> None:
         """
@@ -384,21 +373,30 @@ class ConfigGroup(ConfigBase, ABC):
 
         :return: An instance of :class:`ConfigGroupValidation`.
         """
-        print("VALIDATE IN BASE CONFIG GROUP", self.__class__.__name__)
-        if not hasattr(self, "validation"):
-            print("SETTING VALIDATION ATTR", self.__class__.__name__)
-            self.validation = ConfigGroupValidation()
+        # if not hasattr(self, "validation"):
+        print("NEW VALIDATION FOR ", self.__class__.__name__)
+        self.validation = ConfigGroupValidation()
         self.validate_elements()
         return self.validation
 
-    def to_dict(self):
+    def reset_validation(self):
+        """Reset the :attribute: `validation` attribute. DEPRICATED."""
+        print("RESETTING VALIDATIOn")
+        self.validation = ConfigGroupValidation()
+
+    def to_dict(self, values_only: Optional[bool] = False):
         """
         Return the ConfigGroup as a dict.
 
         :return: The ConfigGroup as a dict.
         """
         attr_dict = {"doc": self.doc} if self.doc is not None else {}
-        element_dict = {k: e.to_dict() for k, e in self.get_config_elements().items()}
+        element_dict = {
+            k: e.to_dict(values_only=values_only)
+            for k, e in self.get_config_elements().items()
+        }
+        if values_only:
+            return element_dict
         return {**attr_dict, **element_dict}
 
     def validate_elements(self):
@@ -414,7 +412,6 @@ class ConfigGroup(ConfigBase, ABC):
         :param root: Whether the element is a base level element or not.
             if the element is a root then it should validate all of its descendants.
         """
-        # print("-----------------\nSETTING FROM DICT\n-----------------")
         for element_name, v in config_dict.items():
             element = getattr(self, element_name, None)
             if type(v) == dict and isinstance(element, ConfigGroup):
@@ -422,4 +419,36 @@ class ConfigGroup(ConfigBase, ABC):
             elif type(v) != dict and isinstance(element, ConfigItem):
                 element.set_value(v)
         if root:
+            self.reset_validation()
+            print("SETTING FROM DICT")
+            # print(self.__class__.__name__,"POKINOSE",self.validation)
             self.validate()
+
+    def set_from_yaml(self, file_path: str):
+        """
+        Set the elements of the group from a .yaml file.
+
+        :param file_path: The path to the .yaml file
+        """
+        try:
+            with open(file_path) as f:
+                config_dict = yaml.safe_load(f)
+        except FileNotFoundError as e:
+            msg = f"Configuration file does not exist: {file_path}"
+            _LOGGER.critical(msg, exc_info=True)
+            raise e
+        self.set_from_dict(config_dict)
+
+    def to_yaml(self, file_path: str):
+        """
+        Save the values of the elements of the group to a .yaml file.
+
+        :param file_path: The path to the .yaml file
+        """
+        with open(file_path, "w") as file:
+            yaml.safe_dump(
+                self.to_dict(values_only=True),
+                file,
+                sort_keys=False,
+                default_flow_style=False,
+            )

@@ -30,12 +30,6 @@ class FloatProperties(ItemTypeProperties):
         self.allowed_types = [float, int]
         super().__post_init__()
 
-    # def __post_init__(self):
-    #     if self.default:
-    #         validated_default = self.validate(self.default)
-    #         if not validated_default.passed:
-    #             raise validated_default.fail_exception
-
     def to_dict(self) -> Dict[str, Union[float, int]]:
         """
         Serializes the :class:`FloatProperties` as a dict.
@@ -57,36 +51,29 @@ class FloatProperties(ItemTypeProperties):
         """
         validation: ConfigItemValidation = super().validate(val)
         if val is not None and type(val) in self.allowed_types:
-            print(
-                "FLOAT VALIDATING...",
-                val,
-                self.min_val,
-                self.max_val,
-                self.inclusive_min,
-                self.inclusive_max,
-            )
             try:
-                msg = f"Value {val} is"
                 if self.min_val is not None and val < self.min_val:
-                    msg = f"{msg} less than the min property {self.min_val}."
+                    msg = f"Value {val} is less than the min property {self.min_val}."
                     raise ConfigItemValidationError(msg)
                 elif (
                     self.min_val is not None
                     and not self.inclusive_min
                     and val == self.min_val
                 ):
-                    msg = f"{msg} is equal to {self.min_val} but the range is not inclusive of this value."
+                    msg = f"Value {val} is equal to the min value {self.min_val} but the range is not inclusive of this value."
                     raise ConfigItemValidationError(msg)
 
                 if self.max_val is not None and val > self.max_val:
-                    msg = f"{msg} less than the min property {self.max_val}."
+                    msg = (
+                        f"Value {val} is greater than the max property {self.max_val}."
+                    )
                     raise ConfigItemValidationError(msg)
                 elif (
                     self.max_val is not None
                     and not self.inclusive_max
                     and val == self.max_val
                 ):
-                    msg = f"{msg} is equal to {self.max_val} but the range is not inclusive of this value."
+                    msg = f"Value {val} is equal to the max value {self.max_val} but the range is not inclusive of this value."
                     raise ConfigItemValidationError(msg)
 
             except ConfigItemValidationError as e:

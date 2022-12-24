@@ -647,3 +647,42 @@
 #         if not properties:
 #             properties = IntProperties()
 #         super().__init__(value, doc, properties)
+
+
+# @dataclass()
+# class ConfigItemValidation:
+#     """
+#     :class:`ConfigItemValidation` is used to return a validation result.
+
+#     If validation fails, a reason why and any exception raised are returned.
+#     """
+
+#     passed: Optional[bool] = True
+#     """``True`` if the _value has passed validation, otherwise ``False``."""
+#     fail_reason: Optional[str] = None
+#     """The reason why validation failed."""
+#     fail_exception: Optional[Exception] = None
+#     """The :class:`Exception` raised when validation failed."""
+
+#     def __post_init__(self):
+#         # print("CONFIG ITEM POST INIT")
+#         self.fail_reasons: List[str] = (
+#             [self.fail_reason] if self.fail_reason is not None else []
+#         )
+#         self.fail_exceptions: List[ConfigItemValidationError] = (
+#             [self.fail_exception] if self.fail_exception is not None else []
+#         )
+#         delattr(self, "fail_reason")
+#         delattr(self, "fail_exception")
+
+#     def add_validation(self, fail_reason: str, exception: ConfigItemValidationError):
+#         """
+#         Add a validation fail_reason, exception pair and set the validation result :attribute: passed as False.
+
+#         :param fail_reason: A string message to describe a particular error.
+#         :param exception: A wrapped `Exception` object that can be used to raise an error for the `fail_reason`.
+#         """
+#         self.passed = False
+#         print("$$", self.__class__.__name__, fail_reason, exception)
+#         self.fail_reasons.append(fail_reason)
+#         self.fail_exceptions.append(exception)

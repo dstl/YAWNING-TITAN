@@ -176,6 +176,18 @@ class BlueActionSetGroup(ConfigGroup):
         self.deceptive_nodes = deceptive_nodes
         super().__init__(doc)
 
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        super().validate()
+
+        pair = [self.isolate_node.value, self.reconnect_node.value]
+        try:
+            if any(v is True for v in pair) and not all(v is True for v in pair):
+                msg = "Blue should be able to reconnect or isolate nodes if the other is true."
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+
 
 class BlueIntrusionDiscoveryGroup(ConfigGroup):
     """The options related to the ability for the blue agent to discover the red agents intrusions into the network."""
@@ -309,7 +321,7 @@ class Blue(ConfigGroup):
         try:
             if (
                 self.action_set.scan.value
-                and self.intrusion_discovery_chance.immediate == 1
+                and self.intrusion_discovery_chance.immediate.value == 1
             ):
                 msg = (
                     "The scan action is selected yet blue has 100% chance to spot "
@@ -319,11 +331,11 @@ class Blue(ConfigGroup):
                 raise ConfigGroupValidationError(msg)
             elif (
                 not self.action_set.scan.value
-                and self.intrusion_discovery_chance.immediate != 1
+                and self.intrusion_discovery_chance.immediate.value != 1
             ):
                 msg = (
-                    "If the blue agent cannot scan nodes then it should be able to"
-                    "automtically detect the intrusions."
+                    "If the blue agent cannot scan nodes then it should be able to "
+                    "automatically detect the intrusions."
                 )
                 raise ConfigGroupValidationError(msg)
         except ConfigGroupValidationError as e:
@@ -383,55 +395,55 @@ class Blue(ConfigGroup):
 # # print(attack_discovery.failed_attacks.chance.standard_node.value)
 # attack_discovery.validation.log("attack discovery")
 
-blue = Blue()
-blue.set_from_dict(
-    {
-        "action_set": {
-            "restore_node": True,
-            "scan": True,
-            "isolate_node": True,
-            "reconnect_node": True,
-            "make_node_safe": {
-                "use": True,
-                "increases_vulnerability": True,
-                "gives_random_vulnerability": True,
-                "vulnerability_change_during_node_patch": 0.5,
-            },
-            "deceptive_nodes": {
-                "use": True,
-                "max_number": 2,
-                "new_node_on_relocate": False,
-            },
-        },
-        "intrusion_discovery_chance": {
-            "immediate": 0,
-            "immediate_deceptive_node": 0,
-            "on_scan": 0,
-            "on_scan_deceptive_node": 0,
-        },
-        "attack_discovery": {
-            "failed_attacks": {
-                "use": True,
-                "chance": {"standard_node": 0.5, "deceptive_node": 0.5},
-            },
-            "succeeded_attacks": {
-                "use": True,
-                "chance": {"standard_node": 0.5, "deceptive_node": 0.5},
-            },
-            "succeeded_attacks_unknown_comprimise": {"use": True, "chance": 0.4},
-        },
-    }
-)
-blue.validation.log("Blue")
+# blue = Blue()
+# blue.set_from_dict(
+#     {
+#         "action_set": {
+#             "restore_node": True,
+#             "scan": True,
+#             "isolate_node": True,
+#             "reconnect_node": True,
+#             "make_node_safe": {
+#                 "use": True,
+#                 "increases_vulnerability": True,
+#                 "gives_random_vulnerability": True,
+#                 "vulnerability_change_during_node_patch": 0.5,
+#             },
+#             "deceptive_nodes": {
+#                 "use": True,
+#                 "max_number": 2,
+#                 "new_node_on_relocate": False,
+#             },
+#         },
+#         "intrusion_discovery_chance": {
+#             "immediate": 0,
+#             "immediate_deceptive_node": 0,
+#             "on_scan": 0,
+#             "on_scan_deceptive_node": 0,
+#         },
+#         "attack_discovery": {
+#             "failed_attacks": {
+#                 "use": True,
+#                 "chance": {"standard_node": 0.5, "deceptive_node": 0.5},
+#             },
+#             "succeeded_attacks": {
+#                 "use": True,
+#                 "chance": {"standard_node": 0.5, "deceptive_node": 0.5},
+#             },
+#             "succeeded_attacks_unknown_comprimise": {"use": True, "chance": 0.4},
+#         },
+#     }
+# )
+# blue.validation.log("Blue")
 
-print(
-    "A",
-    blue.attack_discovery.succeeded_attacks.chance.deceptive_node.value,
-    blue.attack_discovery.succeeded_attacks_unknown_comprimise.chance.deceptive_node.value,
-)
-blue.attack_discovery.succeeded_attacks.chance.deceptive_node.value = 0.6
-print(
-    "B",
-    blue.attack_discovery.succeeded_attacks.chance.deceptive_node.value,
-    blue.attack_discovery.succeeded_attacks_unknown_comprimise.chance.deceptive_node.value,
-)
+# print(
+#     "A",
+#     blue.attack_discovery.succeeded_attacks.chance.deceptive_node.value,
+#     blue.attack_discovery.succeeded_attacks_unknown_comprimise.chance.deceptive_node.value,
+# )
+# blue.attack_discovery.succeeded_attacks.chance.deceptive_node.value = 0.6
+# print(
+#     "B",
+#     blue.attack_discovery.succeeded_attacks.chance.deceptive_node.value,
+#     blue.attack_discovery.succeeded_attacks_unknown_comprimise.chance.deceptive_node.value,
+# )

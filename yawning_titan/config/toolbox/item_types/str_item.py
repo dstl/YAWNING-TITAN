@@ -42,7 +42,7 @@ class StrProperties(ItemTypeProperties):
         :return: An instance of :class:`config_toolbox.config.types.ValueValidation`.
         :raise: :class:`config_toolbox.exceptions.ValidationError` when validation fails.
         """
-        validation: ConfigItemValidation = super().validate()
+        validation: ConfigItemValidation = super().validate(val)
 
         if val is not None:
             try:
