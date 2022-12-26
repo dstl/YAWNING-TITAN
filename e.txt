@@ -3,2354 +3,1093 @@ platform win32 -- Python 3.9.13, pytest-7.2.0, pluggy-1.0.0
 rootdir: D:\Pycharm projects\YAWNING-TITAN, configfile: pytest.ini, testpaths: tests
 plugins: typeguard-2.13.3, anyio-3.6.2
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  ChanceGroup
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  MakeNodeSafeGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= 1 ALLOWED TYPES= [<class 'int'>]
+VAL 1 TYPE <class 'int'> [<class 'int'>]
 VAL= 1 ALLOWED TYPES= [<class 'int'>]
+VAL 1 TYPE <class 'int'> [<class 'int'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  DeceptiveNodeGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= 1 ALLOWED TYPES= [<class 'int'>]
+VAL 1 TYPE <class 'int'> [<class 'int'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  UseChancesGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  ChanceGroup
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  UseChancesGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  ChanceGroup
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  UseChancesGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  ChanceGroup
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  BlueActionSetGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  MakeNodeSafeGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  DeceptiveNodeGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= 1 ALLOWED TYPES= [<class 'int'>]
+VAL 1 TYPE <class 'int'> [<class 'int'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  BlueIntrusionDiscoveryGroup
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  BlueAttackDiscoveryGroup
 NEW VALIDATION FOR  UseChancesGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  ChanceGroup
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  UseChancesGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  ChanceGroup
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  UseChancesGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  ChanceGroup
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ActionLikelihoodChanceGroup
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ActionLikelihoodChanceGroup
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ActionLikelihoodGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ActionLikelihoodGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ActionLikelihoodGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-NEW VALIDATION FOR  ZeroDayGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  UseValueGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  AttackSourceGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  NaturalSpreadChanceGroup
-VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'str'>]
-MSG:  Value None when allow_null is not permitted.
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  TargetNodeGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'str'>]
-MSG:  Value None when allow_null is not permitted.
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  RedAgentAttackGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  UseValueGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  AttackSourceGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  RedActionSetGroup
-NEW VALIDATION FOR  ActionLikelihoodChanceGroup
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ActionLikelihoodChanceGroup
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ActionLikelihoodGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ActionLikelihoodGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ActionLikelihoodGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ZeroDayGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  RedNaturalSpreadingGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  NaturalSpreadChanceGroup
-VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  RedTargetMechanismGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  TargetNodeGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'str'>]
-MSG:  Value None when allow_null is not permitted.
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-NEW VALIDATION FOR  RestrictRangeGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-NEW VALIDATION FOR  RestrictRangeGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-NEW VALIDATION FOR  RestrictRangeGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  UseValueGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  NetworkCompatibility
-NEW VALIDATION FOR  RestrictRangeGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-NEW VALIDATION FOR  RestrictRangeGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-NEW VALIDATION FOR  RestrictRangeGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  BlueLossConditionGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  UseValueGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  Red
-NEW VALIDATION FOR  RedAgentAttackGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  UseValueGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  AttackSourceGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  RedActionSetGroup
-NEW VALIDATION FOR  ActionLikelihoodChanceGroup
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ActionLikelihoodChanceGroup
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ActionLikelihoodGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ActionLikelihoodGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ActionLikelihoodGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  ZeroDayGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-NEW VALIDATION FOR  RedNaturalSpreadingGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  NaturalSpreadChanceGroup
-VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  RedTargetMechanismGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  TargetNodeGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'str'>]
-MSG:  Value None when allow_null is not permitted.
-VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  Blue
 NEW VALIDATION FOR  BlueActionSetGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  MakeNodeSafeGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  DeceptiveNodeGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 VAL= 1 ALLOWED TYPES= [<class 'int'>]
+VAL 1 TYPE <class 'int'> [<class 'int'>]
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  BlueIntrusionDiscoveryGroup
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  BlueAttackDiscoveryGroup
 NEW VALIDATION FOR  UseChancesGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  ChanceGroup
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  UseChancesGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  ChanceGroup
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  UseChancesGroup
 VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  ChanceGroup
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-NEW VALIDATION FOR  GameRules
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-NEW VALIDATION FOR  NetworkCompatibility
-NEW VALIDATION FOR  RestrictRangeGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-NEW VALIDATION FOR  RestrictRangeGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-NEW VALIDATION FOR  RestrictRangeGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-NEW VALIDATION FOR  BlueLossConditionGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  UseValueGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  ObservationSpace
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  Reset
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= standard_rewards ALLOWED TYPES= [<class 'str'>]
-VAL= standard_rewards ALLOWED TYPES= [<class 'str'>]
-NEW VALIDATION FOR  Rewards
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= 0 ALLOWED TYPES= [<class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= standard_rewards ALLOWED TYPES= [<class 'str'>]
-VAL= None ALLOWED TYPES= [<class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  Miscellaneous
-VAL= None ALLOWED TYPES= [<class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-collected 327 items / 292 deselected / 35 selected
-
-tests\unit_tests\config\agents\test_new_blue_agent_config.py NEW VALIDATION FOR  Blue
-NEW VALIDATION FOR  BlueActionSetGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  MakeNodeSafeGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  DeceptiveNodeGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-VAL= 1 ALLOWED TYPES= [<class 'int'>]
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  BlueIntrusionDiscoveryGroup
-VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  BlueAttackDiscoveryGroup
-NEW VALIDATION FOR  UseChancesGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  ChanceGroup
-VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  UseChancesGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  ChanceGroup
-VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-NEW VALIDATION FOR  UseChancesGroup
-VAL= False ALLOWED TYPES= [<class 'bool'>]
-NEW VALIDATION FOR  ChanceGroup
-VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-RESETTING VALIDATIOn
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 SETTING FROM DICT
 NEW VALIDATION FOR  Blue
 NEW VALIDATION FOR  BlueActionSetGroup
-VAL= 1 ALLOWED TYPES= [<class 'bool'>]
-MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
-VAL= 1 ALLOWED TYPES= [<class 'bool'>]
-MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
-VAL= 1 ALLOWED TYPES= [<class 'bool'>]
-MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
-VAL= 1 ALLOWED TYPES= [<class 'bool'>]
-MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
-VAL= 1 ALLOWED TYPES= [<class 'bool'>]
-MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
-VAL= 1 ALLOWED TYPES= [<class 'bool'>]
-MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  MakeNodeSafeGroup
-VAL= 1 ALLOWED TYPES= [<class 'bool'>]
-MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
-VAL= 1 ALLOWED TYPES= [<class 'bool'>]
-MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
-VAL= 1 ALLOWED TYPES= [<class 'bool'>]
-MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
-VAL= 2 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  DeceptiveNodeGroup
-VAL= 1 ALLOWED TYPES= [<class 'bool'>]
-MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
-VAL= True ALLOWED TYPES= [<class 'int'>]
-MSG:  Value True is of type <class 'bool'>, should be <class 'int'>.
-VAL= 1 ALLOWED TYPES= [<class 'bool'>]
-MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= 2 ALLOWED TYPES= [<class 'int'>]
+VAL 2 TYPE <class 'int'> [<class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  BlueIntrusionDiscoveryGroup
-VAL= 2 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 2 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 2 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 2 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  BlueAttackDiscoveryGroup
 NEW VALIDATION FOR  UseChancesGroup
-VAL= 1 ALLOWED TYPES= [<class 'bool'>]
-MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  ChanceGroup
-VAL= 2 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 2 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
+VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  UseChancesGroup
-VAL= 1 ALLOWED TYPES= [<class 'bool'>]
-MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  ChanceGroup
-VAL= 2 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 2 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
+VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
 NEW VALIDATION FOR  UseChancesGroup
-VAL= 1 ALLOWED TYPES= [<class 'bool'>]
-MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
 NEW VALIDATION FOR  ChanceGroup
-VAL= 2 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-VAL= 2 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
-FFFFFFFFFF...............EEEEEEEEEE
+VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
+VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodChanceGroup
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodChanceGroup
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+NEW VALIDATION FOR  ZeroDayGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  UseValueGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  AttackSourceGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  NaturalSpreadChanceGroup
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'str'>]
+MSG:  Value None when allow_null is not permitted.
+VAL None TYPE <class 'NoneType'> [<class 'str'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  TargetNodeGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'str'>]
+MSG:  Value None when allow_null is not permitted.
+VAL None TYPE <class 'NoneType'> [<class 'str'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  RedAgentAttackGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  UseValueGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  AttackSourceGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  RedActionSetGroup
+NEW VALIDATION FOR  ActionLikelihoodChanceGroup
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodChanceGroup
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ZeroDayGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  RedNaturalSpreadingGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  NaturalSpreadChanceGroup
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  RedTargetMechanismGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  TargetNodeGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'str'>]
+MSG:  Value None when allow_null is not permitted.
+VAL None TYPE <class 'NoneType'> [<class 'str'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+NEW VALIDATION FOR  RestrictRangeGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+NEW VALIDATION FOR  RestrictRangeGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+NEW VALIDATION FOR  RestrictRangeGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  UseValueGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  NetworkCompatibility
+NEW VALIDATION FOR  RestrictRangeGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+NEW VALIDATION FOR  RestrictRangeGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+NEW VALIDATION FOR  RestrictRangeGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  BlueLossConditionGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  UseValueGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  Red
+NEW VALIDATION FOR  RedAgentAttackGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  UseValueGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  AttackSourceGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  RedActionSetGroup
+NEW VALIDATION FOR  ActionLikelihoodChanceGroup
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodChanceGroup
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ZeroDayGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+NEW VALIDATION FOR  RedNaturalSpreadingGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  NaturalSpreadChanceGroup
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  RedTargetMechanismGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  TargetNodeGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'str'>]
+MSG:  Value None when allow_null is not permitted.
+VAL None TYPE <class 'NoneType'> [<class 'str'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  Blue
+NEW VALIDATION FOR  BlueActionSetGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  MakeNodeSafeGroup
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  DeceptiveNodeGroup
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+VAL= 2 ALLOWED TYPES= [<class 'int'>]
+VAL 2 TYPE <class 'int'> [<class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  BlueIntrusionDiscoveryGroup
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  BlueAttackDiscoveryGroup
+NEW VALIDATION FOR  UseChancesGroup
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  ChanceGroup
+VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
+VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  UseChancesGroup
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  ChanceGroup
+VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
+VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  UseChancesGroup
+VAL= True ALLOWED TYPES= [<class 'bool'>]
+VAL True TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  ChanceGroup
+VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
+VAL= 0.5 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0.5 TYPE <class 'float'> [<class 'float'>, <class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+NEW VALIDATION FOR  GameRules
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+NEW VALIDATION FOR  NetworkCompatibility
+NEW VALIDATION FOR  RestrictRangeGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+NEW VALIDATION FOR  RestrictRangeGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+NEW VALIDATION FOR  RestrictRangeGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+NEW VALIDATION FOR  BlueLossConditionGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  UseValueGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  ObservationSpace
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  Reset
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= standard_rewards ALLOWED TYPES= [<class 'str'>]
+VAL standard_rewards TYPE <class 'str'> [<class 'str'>]
+VAL= standard_rewards ALLOWED TYPES= [<class 'str'>]
+VAL standard_rewards TYPE <class 'str'> [<class 'str'>]
+NEW VALIDATION FOR  Rewards
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= standard_rewards ALLOWED TYPES= [<class 'str'>]
+VAL standard_rewards TYPE <class 'str'> [<class 'str'>]
+VAL= None ALLOWED TYPES= [<class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  Miscellaneous
+VAL= None ALLOWED TYPES= [<class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+collected 128 items / 99 deselected / 29 selected
+run-last-failure: rerun previous 29 failures (skipped 25 files)
 
-=================================== ERRORS ====================================
-_ ERROR at setup of test_invalid_config_range[intrusion_discovery_chance.immediate-'chance_to_immediately_discover_intrusion' Needs to have a value less than: 1 (inclusive)] _
-file D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py, line 254
-  @pytest.mark.parametrize(
-      ("config_item_to_test", "expected_err"),
-      [
-          # BETWEEN 0 and 1
-          (
-              "intrusion_discovery_chance.immediate",
-              "'chance_to_immediately_discover_intrusion' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.immediate_deceptive_node",
-              "'chance_to_immediately_discover_intrusion_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan_deceptive_node",
-              "'chance_to_discover_intrusion_on_scan_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan",
-              "'chance_to_discover_intrusion_on_scan' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.standard_node",
-              "'chance_to_discover_failed_attack' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_not_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.deceptive_node",
-              "'chance_to_discover_failed_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.deceptive_node",
-              "'chance_to_discover_succeeded_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          # BETWEEN -1 and 1
-          (
-              "action_set.make_node_safe.vulnerability_change_during_node_patch",
-              "'vulnerability_change_during_node_patch' Needs to have a value less than: 1 (inclusive)",
-          ),
-      ],
-  )
-  def test_invalid_config_range(
-E       fixture 'blue_erroneous_range' not found
->       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, basic_2_agent_loop, blue_erroneous_range_to_high, blue_erroneous_types, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, doctest_namespace, generate_generic_env_test_reqs, init_test_env, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, temp_config_from_base, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
->       use 'pytest --fixtures [testpath]' for help on them.
+tests\unit_tests\config\agents\test_new_red_agent_config.py GHGHGH
+NEW VALIDATION FOR  Red
+NEW VALIDATION FOR  RedAgentAttackGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  UseValueGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  AttackSourceGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  RedActionSetGroup
+NEW VALIDATION FOR  ActionLikelihoodChanceGroup
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodChanceGroup
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL None TYPE <class 'NoneType'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  ZeroDayGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'int'>]
+NEW VALIDATION FOR  RedNaturalSpreadingGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  NaturalSpreadChanceGroup
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+VAL= 0 ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL 0 TYPE <class 'int'> [<class 'float'>, <class 'int'>]
+NEW VALIDATION FOR  RedTargetMechanismGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+NEW VALIDATION FOR  TargetNodeGroup
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+VAL= None ALLOWED TYPES= [<class 'str'>]
+MSG:  Value None when allow_null is not permitted.
+VAL None TYPE <class 'NoneType'> [<class 'str'>]
+VAL= False ALLOWED TYPES= [<class 'bool'>]
+VAL False TYPE <class 'bool'> [<class 'bool'>]
+SETTING FROM DICT
+NEW VALIDATION FOR  Red
+NEW VALIDATION FOR  RedAgentAttackGroup
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+NEW VALIDATION FOR  UseValueGroup
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= True ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL True TYPE <class 'bool'> [<class 'float'>, <class 'int'>]
+MSG:  Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.
+NEW VALIDATION FOR  AttackSourceGroup
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+NEW VALIDATION FOR  RedActionSetGroup
+NEW VALIDATION FOR  ActionLikelihoodChanceGroup
+VAL= True ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL True TYPE <class 'bool'> [<class 'float'>, <class 'int'>]
+MSG:  Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= True ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL True TYPE <class 'bool'> [<class 'float'>, <class 'int'>]
+MSG:  Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.
+NEW VALIDATION FOR  ActionLikelihoodChanceGroup
+VAL= True ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL True TYPE <class 'bool'> [<class 'float'>, <class 'int'>]
+MSG:  Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= True ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL True TYPE <class 'bool'> [<class 'float'>, <class 'int'>]
+MSG:  Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= True ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL True TYPE <class 'bool'> [<class 'float'>, <class 'int'>]
+MSG:  Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= True ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL True TYPE <class 'bool'> [<class 'float'>, <class 'int'>]
+MSG:  Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.
+NEW VALIDATION FOR  ActionLikelihoodGroup
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= True ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL True TYPE <class 'bool'> [<class 'float'>, <class 'int'>]
+MSG:  Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.
+NEW VALIDATION FOR  ZeroDayGroup
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= True ALLOWED TYPES= [<class 'int'>]
+VAL True TYPE <class 'bool'> [<class 'int'>]
+MSG:  Value True is of type <class 'bool'>, should be <class 'int'>.
+VAL= True ALLOWED TYPES= [<class 'int'>]
+VAL True TYPE <class 'bool'> [<class 'int'>]
+MSG:  Value True is of type <class 'bool'>, should be <class 'int'>.
+NEW VALIDATION FOR  RedNaturalSpreadingGroup
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+NEW VALIDATION FOR  NaturalSpreadChanceGroup
+VAL= True ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL True TYPE <class 'bool'> [<class 'float'>, <class 'int'>]
+MSG:  Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.
+VAL= True ALLOWED TYPES= [<class 'float'>, <class 'int'>]
+VAL True TYPE <class 'bool'> [<class 'float'>, <class 'int'>]
+MSG:  Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.
+NEW VALIDATION FOR  RedTargetMechanismGroup
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+NEW VALIDATION FOR  TargetNodeGroup
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+VAL= None ALLOWED TYPES= [<class 'str'>]
+MSG:  Value None when allow_null is not permitted.
+VAL None TYPE <class 'NoneType'> [<class 'str'>]
+VAL= 1 ALLOWED TYPES= [<class 'bool'>]
+VAL 1 TYPE <class 'int'> [<class 'bool'>]
+MSG:  Value 1 is of type <class 'int'>, should be <class 'bool'>.
+ITEM:  action_set.spread.chance VAL True
+.ITEM:  action_set.random_infect.chance VAL True
+.ITEM:  agent_attack.skill.value VAL True
+.ITEM:  action_set.spread.likelihood VAL True
+.ITEM:  action_set.random_infect.likelihood VAL True
+.ITEM:  action_set.basic_attack.likelihood VAL True
+.ITEM:  action_set.do_nothing.likelihood VAL True
+.ITEM:  action_set.move.likelihood VAL True
+.ITEM:  natural_spreading.chance.to_connected_node VAL True
+.ITEM:  natural_spreading.chance.to_unconnected_node VAL True
+.ITEM:  action_set.zero_day.start_amount VAL True
+.ITEM:  action_set.zero_day.days_required VAL True
+.ITEM:  agent_attack.skill.use VAL 1
+.ITEM:  agent_attack.ignores_defences VAL 1
+.ITEM:  agent_attack.always_succeeds VAL 1
+.ITEM:  agent_attack.attack_from.only_red_agent_node VAL 1
+.ITEM:  agent_attack.attack_from.any_red_node VAL 1
+.ITEM:  action_set.spread.use VAL 1
+.ITEM:  action_set.random_infect.use VAL 1
+.ITEM:  action_set.zero_day.use VAL 1
+.ITEM:  action_set.basic_attack.use VAL 1
+.ITEM:  action_set.do_nothing.use VAL 1
+.ITEM:  action_set.move.use VAL 1
+.ITEM:  target_mechanism.random VAL 1
+.ITEM:  target_mechanism.prioritise_connected_nodes VAL 1
+.ITEM:  target_mechanism.prioritise_unconnected_nodes VAL 1
+.ITEM:  target_mechanism.prioritise_vulnerable_nodes VAL 1
+.ITEM:  target_mechanism.prioritise_resilient_nodes VAL 1
+.ITEM:  natural_spreading.capable VAL 1
+.
 
-D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py:254
-_ ERROR at setup of test_invalid_config_range[intrusion_discovery_chance.immediate_deceptive_node-'chance_to_immediately_discover_intrusion_deceptive_node' Needs to have a value less than: 1 (inclusive)] _
-file D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py, line 254
-  @pytest.mark.parametrize(
-      ("config_item_to_test", "expected_err"),
-      [
-          # BETWEEN 0 and 1
-          (
-              "intrusion_discovery_chance.immediate",
-              "'chance_to_immediately_discover_intrusion' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.immediate_deceptive_node",
-              "'chance_to_immediately_discover_intrusion_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan_deceptive_node",
-              "'chance_to_discover_intrusion_on_scan_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan",
-              "'chance_to_discover_intrusion_on_scan' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.standard_node",
-              "'chance_to_discover_failed_attack' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_not_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.deceptive_node",
-              "'chance_to_discover_failed_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.deceptive_node",
-              "'chance_to_discover_succeeded_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          # BETWEEN -1 and 1
-          (
-              "action_set.make_node_safe.vulnerability_change_during_node_patch",
-              "'vulnerability_change_during_node_patch' Needs to have a value less than: 1 (inclusive)",
-          ),
-      ],
-  )
-  def test_invalid_config_range(
-E       fixture 'blue_erroneous_range' not found
->       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, basic_2_agent_loop, blue_erroneous_range_to_high, blue_erroneous_types, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, doctest_namespace, generate_generic_env_test_reqs, init_test_env, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, temp_config_from_base, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
->       use 'pytest --fixtures [testpath]' for help on them.
-
-D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py:254
-_ ERROR at setup of test_invalid_config_range[intrusion_discovery_chance.on_scan_deceptive_node-'chance_to_discover_intrusion_on_scan_deceptive_node' Needs to have a value less than: 1 (inclusive)] _
-file D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py, line 254
-  @pytest.mark.parametrize(
-      ("config_item_to_test", "expected_err"),
-      [
-          # BETWEEN 0 and 1
-          (
-              "intrusion_discovery_chance.immediate",
-              "'chance_to_immediately_discover_intrusion' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.immediate_deceptive_node",
-              "'chance_to_immediately_discover_intrusion_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan_deceptive_node",
-              "'chance_to_discover_intrusion_on_scan_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan",
-              "'chance_to_discover_intrusion_on_scan' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.standard_node",
-              "'chance_to_discover_failed_attack' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_not_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.deceptive_node",
-              "'chance_to_discover_failed_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.deceptive_node",
-              "'chance_to_discover_succeeded_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          # BETWEEN -1 and 1
-          (
-              "action_set.make_node_safe.vulnerability_change_during_node_patch",
-              "'vulnerability_change_during_node_patch' Needs to have a value less than: 1 (inclusive)",
-          ),
-      ],
-  )
-  def test_invalid_config_range(
-E       fixture 'blue_erroneous_range' not found
->       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, basic_2_agent_loop, blue_erroneous_range_to_high, blue_erroneous_types, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, doctest_namespace, generate_generic_env_test_reqs, init_test_env, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, temp_config_from_base, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
->       use 'pytest --fixtures [testpath]' for help on them.
-
-D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py:254
-_ ERROR at setup of test_invalid_config_range[intrusion_discovery_chance.on_scan-'chance_to_discover_intrusion_on_scan' Needs to have a value less than: 1 (inclusive)] _
-file D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py, line 254
-  @pytest.mark.parametrize(
-      ("config_item_to_test", "expected_err"),
-      [
-          # BETWEEN 0 and 1
-          (
-              "intrusion_discovery_chance.immediate",
-              "'chance_to_immediately_discover_intrusion' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.immediate_deceptive_node",
-              "'chance_to_immediately_discover_intrusion_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan_deceptive_node",
-              "'chance_to_discover_intrusion_on_scan_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan",
-              "'chance_to_discover_intrusion_on_scan' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.standard_node",
-              "'chance_to_discover_failed_attack' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_not_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.deceptive_node",
-              "'chance_to_discover_failed_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.deceptive_node",
-              "'chance_to_discover_succeeded_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          # BETWEEN -1 and 1
-          (
-              "action_set.make_node_safe.vulnerability_change_during_node_patch",
-              "'vulnerability_change_during_node_patch' Needs to have a value less than: 1 (inclusive)",
-          ),
-      ],
-  )
-  def test_invalid_config_range(
-E       fixture 'blue_erroneous_range' not found
->       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, basic_2_agent_loop, blue_erroneous_range_to_high, blue_erroneous_types, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, doctest_namespace, generate_generic_env_test_reqs, init_test_env, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, temp_config_from_base, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
->       use 'pytest --fixtures [testpath]' for help on them.
-
-D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py:254
-_ ERROR at setup of test_invalid_config_range[attack_discovery.failed_attacks.chance.standard_node-'chance_to_discover_failed_attack' Needs to have a value less than: 1 (inclusive)] _
-file D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py, line 254
-  @pytest.mark.parametrize(
-      ("config_item_to_test", "expected_err"),
-      [
-          # BETWEEN 0 and 1
-          (
-              "intrusion_discovery_chance.immediate",
-              "'chance_to_immediately_discover_intrusion' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.immediate_deceptive_node",
-              "'chance_to_immediately_discover_intrusion_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan_deceptive_node",
-              "'chance_to_discover_intrusion_on_scan_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan",
-              "'chance_to_discover_intrusion_on_scan' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.standard_node",
-              "'chance_to_discover_failed_attack' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_not_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.deceptive_node",
-              "'chance_to_discover_failed_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.deceptive_node",
-              "'chance_to_discover_succeeded_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          # BETWEEN -1 and 1
-          (
-              "action_set.make_node_safe.vulnerability_change_during_node_patch",
-              "'vulnerability_change_during_node_patch' Needs to have a value less than: 1 (inclusive)",
-          ),
-      ],
-  )
-  def test_invalid_config_range(
-E       fixture 'blue_erroneous_range' not found
->       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, basic_2_agent_loop, blue_erroneous_range_to_high, blue_erroneous_types, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, doctest_namespace, generate_generic_env_test_reqs, init_test_env, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, temp_config_from_base, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
->       use 'pytest --fixtures [testpath]' for help on them.
-
-D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py:254
-_ ERROR at setup of test_invalid_config_range[attack_discovery.succeeded_attacks.chance.standard_node-'chance_to_discover_succeeded_attack_compromise_known' Needs to have a value less than: 1 (inclusive)] _
-file D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py, line 254
-  @pytest.mark.parametrize(
-      ("config_item_to_test", "expected_err"),
-      [
-          # BETWEEN 0 and 1
-          (
-              "intrusion_discovery_chance.immediate",
-              "'chance_to_immediately_discover_intrusion' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.immediate_deceptive_node",
-              "'chance_to_immediately_discover_intrusion_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan_deceptive_node",
-              "'chance_to_discover_intrusion_on_scan_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan",
-              "'chance_to_discover_intrusion_on_scan' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.standard_node",
-              "'chance_to_discover_failed_attack' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_not_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.deceptive_node",
-              "'chance_to_discover_failed_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.deceptive_node",
-              "'chance_to_discover_succeeded_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          # BETWEEN -1 and 1
-          (
-              "action_set.make_node_safe.vulnerability_change_during_node_patch",
-              "'vulnerability_change_during_node_patch' Needs to have a value less than: 1 (inclusive)",
-          ),
-      ],
-  )
-  def test_invalid_config_range(
-E       fixture 'blue_erroneous_range' not found
->       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, basic_2_agent_loop, blue_erroneous_range_to_high, blue_erroneous_types, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, doctest_namespace, generate_generic_env_test_reqs, init_test_env, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, temp_config_from_base, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
->       use 'pytest --fixtures [testpath]' for help on them.
-
-D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py:254
-_ ERROR at setup of test_invalid_config_range[attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node-'chance_to_discover_succeeded_attack_compromise_not_known' Needs to have a value less than: 1 (inclusive)] _
-file D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py, line 254
-  @pytest.mark.parametrize(
-      ("config_item_to_test", "expected_err"),
-      [
-          # BETWEEN 0 and 1
-          (
-              "intrusion_discovery_chance.immediate",
-              "'chance_to_immediately_discover_intrusion' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.immediate_deceptive_node",
-              "'chance_to_immediately_discover_intrusion_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan_deceptive_node",
-              "'chance_to_discover_intrusion_on_scan_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan",
-              "'chance_to_discover_intrusion_on_scan' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.standard_node",
-              "'chance_to_discover_failed_attack' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_not_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.deceptive_node",
-              "'chance_to_discover_failed_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.deceptive_node",
-              "'chance_to_discover_succeeded_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          # BETWEEN -1 and 1
-          (
-              "action_set.make_node_safe.vulnerability_change_during_node_patch",
-              "'vulnerability_change_during_node_patch' Needs to have a value less than: 1 (inclusive)",
-          ),
-      ],
-  )
-  def test_invalid_config_range(
-E       fixture 'blue_erroneous_range' not found
->       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, basic_2_agent_loop, blue_erroneous_range_to_high, blue_erroneous_types, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, doctest_namespace, generate_generic_env_test_reqs, init_test_env, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, temp_config_from_base, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
->       use 'pytest --fixtures [testpath]' for help on them.
-
-D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py:254
-_ ERROR at setup of test_invalid_config_range[attack_discovery.failed_attacks.chance.deceptive_node-'chance_to_discover_failed_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)] _
-file D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py, line 254
-  @pytest.mark.parametrize(
-      ("config_item_to_test", "expected_err"),
-      [
-          # BETWEEN 0 and 1
-          (
-              "intrusion_discovery_chance.immediate",
-              "'chance_to_immediately_discover_intrusion' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.immediate_deceptive_node",
-              "'chance_to_immediately_discover_intrusion_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan_deceptive_node",
-              "'chance_to_discover_intrusion_on_scan_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan",
-              "'chance_to_discover_intrusion_on_scan' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.standard_node",
-              "'chance_to_discover_failed_attack' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_not_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.deceptive_node",
-              "'chance_to_discover_failed_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.deceptive_node",
-              "'chance_to_discover_succeeded_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          # BETWEEN -1 and 1
-          (
-              "action_set.make_node_safe.vulnerability_change_during_node_patch",
-              "'vulnerability_change_during_node_patch' Needs to have a value less than: 1 (inclusive)",
-          ),
-      ],
-  )
-  def test_invalid_config_range(
-E       fixture 'blue_erroneous_range' not found
->       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, basic_2_agent_loop, blue_erroneous_range_to_high, blue_erroneous_types, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, doctest_namespace, generate_generic_env_test_reqs, init_test_env, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, temp_config_from_base, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
->       use 'pytest --fixtures [testpath]' for help on them.
-
-D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py:254
-_ ERROR at setup of test_invalid_config_range[attack_discovery.succeeded_attacks.chance.deceptive_node-'chance_to_discover_succeeded_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)] _
-file D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py, line 254
-  @pytest.mark.parametrize(
-      ("config_item_to_test", "expected_err"),
-      [
-          # BETWEEN 0 and 1
-          (
-              "intrusion_discovery_chance.immediate",
-              "'chance_to_immediately_discover_intrusion' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.immediate_deceptive_node",
-              "'chance_to_immediately_discover_intrusion_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan_deceptive_node",
-              "'chance_to_discover_intrusion_on_scan_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan",
-              "'chance_to_discover_intrusion_on_scan' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.standard_node",
-              "'chance_to_discover_failed_attack' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_not_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.deceptive_node",
-              "'chance_to_discover_failed_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.deceptive_node",
-              "'chance_to_discover_succeeded_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          # BETWEEN -1 and 1
-          (
-              "action_set.make_node_safe.vulnerability_change_during_node_patch",
-              "'vulnerability_change_during_node_patch' Needs to have a value less than: 1 (inclusive)",
-          ),
-      ],
-  )
-  def test_invalid_config_range(
-E       fixture 'blue_erroneous_range' not found
->       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, basic_2_agent_loop, blue_erroneous_range_to_high, blue_erroneous_types, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, doctest_namespace, generate_generic_env_test_reqs, init_test_env, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, temp_config_from_base, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
->       use 'pytest --fixtures [testpath]' for help on them.
-
-D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py:254
-_ ERROR at setup of test_invalid_config_range[action_set.make_node_safe.vulnerability_change_during_node_patch-'vulnerability_change_during_node_patch' Needs to have a value less than: 1 (inclusive)] _
-file D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py, line 254
-  @pytest.mark.parametrize(
-      ("config_item_to_test", "expected_err"),
-      [
-          # BETWEEN 0 and 1
-          (
-              "intrusion_discovery_chance.immediate",
-              "'chance_to_immediately_discover_intrusion' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.immediate_deceptive_node",
-              "'chance_to_immediately_discover_intrusion_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan_deceptive_node",
-              "'chance_to_discover_intrusion_on_scan_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "intrusion_discovery_chance.on_scan",
-              "'chance_to_discover_intrusion_on_scan' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.standard_node",
-              "'chance_to_discover_failed_attack' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-              "'chance_to_discover_succeeded_attack_compromise_not_known' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.failed_attacks.chance.deceptive_node",
-              "'chance_to_discover_failed_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          (
-              "attack_discovery.succeeded_attacks.chance.deceptive_node",
-              "'chance_to_discover_succeeded_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)",
-          ),
-          # BETWEEN -1 and 1
-          (
-              "action_set.make_node_safe.vulnerability_change_during_node_patch",
-              "'vulnerability_change_during_node_patch' Needs to have a value less than: 1 (inclusive)",
-          ),
-      ],
-  )
-  def test_invalid_config_range(
-E       fixture 'blue_erroneous_range' not found
->       available fixtures: anyio_backend, anyio_backend_name, anyio_backend_options, basic_2_agent_loop, blue_erroneous_range_to_high, blue_erroneous_types, cache, capfd, capfdbinary, caplog, capsys, capsysbinary, doctest_namespace, generate_generic_env_test_reqs, init_test_env, monkeypatch, pytestconfig, record_property, record_testsuite_property, record_xml_attribute, recwarn, temp_config_from_base, tmp_path, tmp_path_factory, tmpdir, tmpdir_factory
->       use 'pytest --fixtures [testpath]' for help on them.
-
-D:\Pycharm projects\YAWNING-TITAN\tests\unit_tests\config\agents\test_new_blue_agent_config.py:254
-================================== FAILURES ===================================
-_ test_invalid_config_type[intrusion_discovery_chance.immediate-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.] _
-
-config_item_to_test = 'intrusion_discovery_chance.immediate'
-expected_err = "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>."
-blue_erroneous_range_to_high = Blue(action_set=BlueActionSetGroup(reduce_vulnerability=1, restore_node=1, scan=1, isolate_node=1, reconnect_node=1, d...exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[]))
-
-    @pytest.mark.parametrize(
-        ("config_item_to_test", "expected_err"),
-        [
-            # INT/FLOAT TYPES
-            (
-                "intrusion_discovery_chance.immediate",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "action_set.make_node_safe.vulnerability_change_during_node_patch",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.immediate_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            # INT TYPE
-            (
-                "action_set.deceptive_nodes.max_number",
-                "Value True is of type <class 'bool'>, should be <class 'int'>.",
-            ),
-            # BOOLEANS
-            (
-                "action_set.make_node_safe.increases_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.gives_random_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reduce_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.restore_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.scan",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.isolate_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reconnect_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.do_nothing",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.new_node_on_relocate",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-        ],
-    )
-    def test_invalid_config_type(
-        config_item_to_test: str, expected_err: str, blue_erroneous_range_to_high
-    ):
-        """Tests creation of `BlueAgentConfig` with invalid data type."""
-        item: ConfigItem = eval(f"blue_erroneous_range_to_high.{config_item_to_test}")
-        # assert that the error message is as expected
->       assert expected_err in item.validation.fail_reasons
-E       assert "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>." in ['Value 2 is greater than the max property 1.']
-E        +  where ['Value 2 is greater than the max property 1.'] = ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]).fail_reasons
-E        +    where ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]) = FloatItem(value=2, doc='Chance for blue to discover a node that red has compromised the instant red compromises the no...han the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')])).validation
-
-tests\unit_tests\config\agents\test_new_blue_agent_config.py:251: AssertionError
-_ test_invalid_config_type[intrusion_discovery_chance.on_scan-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.] _
-
-config_item_to_test = 'intrusion_discovery_chance.on_scan'
-expected_err = "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>."
-blue_erroneous_range_to_high = Blue(action_set=BlueActionSetGroup(reduce_vulnerability=1, restore_node=1, scan=1, isolate_node=1, reconnect_node=1, d...exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[]))
-
-    @pytest.mark.parametrize(
-        ("config_item_to_test", "expected_err"),
-        [
-            # INT/FLOAT TYPES
-            (
-                "intrusion_discovery_chance.immediate",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "action_set.make_node_safe.vulnerability_change_during_node_patch",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.immediate_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            # INT TYPE
-            (
-                "action_set.deceptive_nodes.max_number",
-                "Value True is of type <class 'bool'>, should be <class 'int'>.",
-            ),
-            # BOOLEANS
-            (
-                "action_set.make_node_safe.increases_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.gives_random_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reduce_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.restore_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.scan",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.isolate_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reconnect_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.do_nothing",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.new_node_on_relocate",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-        ],
-    )
-    def test_invalid_config_type(
-        config_item_to_test: str, expected_err: str, blue_erroneous_range_to_high
-    ):
-        """Tests creation of `BlueAgentConfig` with invalid data type."""
-        item: ConfigItem = eval(f"blue_erroneous_range_to_high.{config_item_to_test}")
-        # assert that the error message is as expected
->       assert expected_err in item.validation.fail_reasons
-E       assert "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>." in ['Value 2 is greater than the max property 1.']
-E        +  where ['Value 2 is greater than the max property 1.'] = ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]).fail_reasons
-E        +    where ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]) = FloatItem(value=2, doc='When blue performs the scan action this is the chance that a red intrusion is discovered.', pr...han the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')])).validation
-
-tests\unit_tests\config\agents\test_new_blue_agent_config.py:251: AssertionError
-_ test_invalid_config_type[action_set.make_node_safe.vulnerability_change_during_node_patch-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.] _
-
-config_item_to_test = 'action_set.make_node_safe.vulnerability_change_during_node_patch'
-expected_err = "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>."
-blue_erroneous_range_to_high = Blue(action_set=BlueActionSetGroup(reduce_vulnerability=1, restore_node=1, scan=1, isolate_node=1, reconnect_node=1, d...exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[]))
-
-    @pytest.mark.parametrize(
-        ("config_item_to_test", "expected_err"),
-        [
-            # INT/FLOAT TYPES
-            (
-                "intrusion_discovery_chance.immediate",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "action_set.make_node_safe.vulnerability_change_during_node_patch",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.immediate_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            # INT TYPE
-            (
-                "action_set.deceptive_nodes.max_number",
-                "Value True is of type <class 'bool'>, should be <class 'int'>.",
-            ),
-            # BOOLEANS
-            (
-                "action_set.make_node_safe.increases_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.gives_random_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reduce_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.restore_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.scan",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.isolate_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reconnect_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.do_nothing",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.new_node_on_relocate",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-        ],
-    )
-    def test_invalid_config_type(
-        config_item_to_test: str, expected_err: str, blue_erroneous_range_to_high
-    ):
-        """Tests creation of `BlueAgentConfig` with invalid data type."""
-        item: ConfigItem = eval(f"blue_erroneous_range_to_high.{config_item_to_test}")
-        # assert that the error message is as expected
->       assert expected_err in item.validation.fail_reasons
-E       assert "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>." in ['Value 2 is greater than the max property 1.']
-E        +  where ['Value 2 is greater than the max property 1.'] = ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]).fail_reasons
-E        +    where ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]) = FloatItem(value=2, doc='The amount that the vulnerability of a node changes when it is made safe.', properties=FloatPr...han the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')])).validation
-
-tests\unit_tests\config\agents\test_new_blue_agent_config.py:251: AssertionError
-_ test_invalid_config_type[attack_discovery.failed_attacks.chance.standard_node-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.] _
-
-config_item_to_test = 'attack_discovery.failed_attacks.chance.standard_node'
-expected_err = "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>."
-blue_erroneous_range_to_high = Blue(action_set=BlueActionSetGroup(reduce_vulnerability=1, restore_node=1, scan=1, isolate_node=1, reconnect_node=1, d...exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[]))
-
-    @pytest.mark.parametrize(
-        ("config_item_to_test", "expected_err"),
-        [
-            # INT/FLOAT TYPES
-            (
-                "intrusion_discovery_chance.immediate",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "action_set.make_node_safe.vulnerability_change_during_node_patch",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.immediate_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            # INT TYPE
-            (
-                "action_set.deceptive_nodes.max_number",
-                "Value True is of type <class 'bool'>, should be <class 'int'>.",
-            ),
-            # BOOLEANS
-            (
-                "action_set.make_node_safe.increases_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.gives_random_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reduce_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.restore_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.scan",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.isolate_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reconnect_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.do_nothing",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.new_node_on_relocate",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-        ],
-    )
-    def test_invalid_config_type(
-        config_item_to_test: str, expected_err: str, blue_erroneous_range_to_high
-    ):
-        """Tests creation of `BlueAgentConfig` with invalid data type."""
-        item: ConfigItem = eval(f"blue_erroneous_range_to_high.{config_item_to_test}")
-        # assert that the error message is as expected
->       assert expected_err in item.validation.fail_reasons
-E       assert "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>." in ['Value 2 is greater than the max property 1.']
-E        +  where ['Value 2 is greater than the max property 1.'] = ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]).fail_reasons
-E        +    where ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]) = FloatItem(value=2, doc='The chance of the action succeeding for a standard node', properties=FloatProperties(allowed_t...han the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')])).validation
-
-tests\unit_tests\config\agents\test_new_blue_agent_config.py:251: AssertionError
-_ test_invalid_config_type[attack_discovery.succeeded_attacks.chance.standard_node-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.] _
-
-config_item_to_test = 'attack_discovery.succeeded_attacks.chance.standard_node'
-expected_err = "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>."
-blue_erroneous_range_to_high = Blue(action_set=BlueActionSetGroup(reduce_vulnerability=1, restore_node=1, scan=1, isolate_node=1, reconnect_node=1, d...exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[]))
-
-    @pytest.mark.parametrize(
-        ("config_item_to_test", "expected_err"),
-        [
-            # INT/FLOAT TYPES
-            (
-                "intrusion_discovery_chance.immediate",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "action_set.make_node_safe.vulnerability_change_during_node_patch",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.immediate_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            # INT TYPE
-            (
-                "action_set.deceptive_nodes.max_number",
-                "Value True is of type <class 'bool'>, should be <class 'int'>.",
-            ),
-            # BOOLEANS
-            (
-                "action_set.make_node_safe.increases_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.gives_random_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reduce_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.restore_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.scan",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.isolate_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reconnect_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.do_nothing",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.new_node_on_relocate",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-        ],
-    )
-    def test_invalid_config_type(
-        config_item_to_test: str, expected_err: str, blue_erroneous_range_to_high
-    ):
-        """Tests creation of `BlueAgentConfig` with invalid data type."""
-        item: ConfigItem = eval(f"blue_erroneous_range_to_high.{config_item_to_test}")
-        # assert that the error message is as expected
->       assert expected_err in item.validation.fail_reasons
-E       assert "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>." in ['Value 2 is greater than the max property 1.']
-E        +  where ['Value 2 is greater than the max property 1.'] = ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]).fail_reasons
-E        +    where ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]) = FloatItem(value=2, doc='The chance of the action succeeding for a standard node', properties=FloatProperties(allowed_t...han the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')])).validation
-
-tests\unit_tests\config\agents\test_new_blue_agent_config.py:251: AssertionError
-_ test_invalid_config_type[attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.] _
-
-config_item_to_test = 'attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node'
-expected_err = "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>."
-blue_erroneous_range_to_high = Blue(action_set=BlueActionSetGroup(reduce_vulnerability=1, restore_node=1, scan=1, isolate_node=1, reconnect_node=1, d...exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[]))
-
-    @pytest.mark.parametrize(
-        ("config_item_to_test", "expected_err"),
-        [
-            # INT/FLOAT TYPES
-            (
-                "intrusion_discovery_chance.immediate",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "action_set.make_node_safe.vulnerability_change_during_node_patch",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.immediate_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            # INT TYPE
-            (
-                "action_set.deceptive_nodes.max_number",
-                "Value True is of type <class 'bool'>, should be <class 'int'>.",
-            ),
-            # BOOLEANS
-            (
-                "action_set.make_node_safe.increases_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.gives_random_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reduce_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.restore_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.scan",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.isolate_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reconnect_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.do_nothing",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.new_node_on_relocate",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-        ],
-    )
-    def test_invalid_config_type(
-        config_item_to_test: str, expected_err: str, blue_erroneous_range_to_high
-    ):
-        """Tests creation of `BlueAgentConfig` with invalid data type."""
-        item: ConfigItem = eval(f"blue_erroneous_range_to_high.{config_item_to_test}")
-        # assert that the error message is as expected
->       assert expected_err in item.validation.fail_reasons
-E       assert "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>." in ['Value 2 is greater than the max property 1.']
-E        +  where ['Value 2 is greater than the max property 1.'] = ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]).fail_reasons
-E        +    where ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]) = FloatItem(value=2, doc='The chance of the action succeeding for a standard node', properties=FloatProperties(allowed_t...han the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')])).validation
-
-tests\unit_tests\config\agents\test_new_blue_agent_config.py:251: AssertionError
-_ test_invalid_config_type[intrusion_discovery_chance.immediate_deceptive_node-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.] _
-
-config_item_to_test = 'intrusion_discovery_chance.immediate_deceptive_node'
-expected_err = "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>."
-blue_erroneous_range_to_high = Blue(action_set=BlueActionSetGroup(reduce_vulnerability=1, restore_node=1, scan=1, isolate_node=1, reconnect_node=1, d...exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[]))
-
-    @pytest.mark.parametrize(
-        ("config_item_to_test", "expected_err"),
-        [
-            # INT/FLOAT TYPES
-            (
-                "intrusion_discovery_chance.immediate",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "action_set.make_node_safe.vulnerability_change_during_node_patch",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.immediate_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            # INT TYPE
-            (
-                "action_set.deceptive_nodes.max_number",
-                "Value True is of type <class 'bool'>, should be <class 'int'>.",
-            ),
-            # BOOLEANS
-            (
-                "action_set.make_node_safe.increases_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.gives_random_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reduce_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.restore_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.scan",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.isolate_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reconnect_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.do_nothing",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.new_node_on_relocate",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-        ],
-    )
-    def test_invalid_config_type(
-        config_item_to_test: str, expected_err: str, blue_erroneous_range_to_high
-    ):
-        """Tests creation of `BlueAgentConfig` with invalid data type."""
-        item: ConfigItem = eval(f"blue_erroneous_range_to_high.{config_item_to_test}")
-        # assert that the error message is as expected
->       assert expected_err in item.validation.fail_reasons
-E       assert "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>." in ['Value 2 is greater than the max property 1.']
-E        +  where ['Value 2 is greater than the max property 1.'] = ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]).fail_reasons
-E        +    where ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]) = FloatItem(value=2, doc='Chance for blue to discover a deceptive node that red has compromised the instant it is compro...han the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')])).validation
-
-tests\unit_tests\config\agents\test_new_blue_agent_config.py:251: AssertionError
-_ test_invalid_config_type[intrusion_discovery_chance.on_scan_deceptive_node-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.] _
-
-config_item_to_test = 'intrusion_discovery_chance.on_scan_deceptive_node'
-expected_err = "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>."
-blue_erroneous_range_to_high = Blue(action_set=BlueActionSetGroup(reduce_vulnerability=1, restore_node=1, scan=1, isolate_node=1, reconnect_node=1, d...exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[]))
-
-    @pytest.mark.parametrize(
-        ("config_item_to_test", "expected_err"),
-        [
-            # INT/FLOAT TYPES
-            (
-                "intrusion_discovery_chance.immediate",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "action_set.make_node_safe.vulnerability_change_during_node_patch",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.immediate_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            # INT TYPE
-            (
-                "action_set.deceptive_nodes.max_number",
-                "Value True is of type <class 'bool'>, should be <class 'int'>.",
-            ),
-            # BOOLEANS
-            (
-                "action_set.make_node_safe.increases_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.gives_random_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reduce_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.restore_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.scan",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.isolate_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reconnect_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.do_nothing",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.new_node_on_relocate",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-        ],
-    )
-    def test_invalid_config_type(
-        config_item_to_test: str, expected_err: str, blue_erroneous_range_to_high
-    ):
-        """Tests creation of `BlueAgentConfig` with invalid data type."""
-        item: ConfigItem = eval(f"blue_erroneous_range_to_high.{config_item_to_test}")
-        # assert that the error message is as expected
->       assert expected_err in item.validation.fail_reasons
-E       assert "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>." in ['Value 2 is greater than the max property 1.']
-E        +  where ['Value 2 is greater than the max property 1.'] = ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]).fail_reasons
-E        +    where ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]) = FloatItem(value=2, doc='When blue uses the scan action what is the chance that blue will detect an intrusion in a dece...han the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')])).validation
-
-tests\unit_tests\config\agents\test_new_blue_agent_config.py:251: AssertionError
-_ test_invalid_config_type[attack_discovery.failed_attacks.chance.deceptive_node-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.] _
-
-config_item_to_test = 'attack_discovery.failed_attacks.chance.deceptive_node'
-expected_err = "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>."
-blue_erroneous_range_to_high = Blue(action_set=BlueActionSetGroup(reduce_vulnerability=1, restore_node=1, scan=1, isolate_node=1, reconnect_node=1, d...exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[]))
-
-    @pytest.mark.parametrize(
-        ("config_item_to_test", "expected_err"),
-        [
-            # INT/FLOAT TYPES
-            (
-                "intrusion_discovery_chance.immediate",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "action_set.make_node_safe.vulnerability_change_during_node_patch",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.immediate_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            # INT TYPE
-            (
-                "action_set.deceptive_nodes.max_number",
-                "Value True is of type <class 'bool'>, should be <class 'int'>.",
-            ),
-            # BOOLEANS
-            (
-                "action_set.make_node_safe.increases_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.gives_random_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reduce_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.restore_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.scan",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.isolate_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reconnect_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.do_nothing",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.new_node_on_relocate",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-        ],
-    )
-    def test_invalid_config_type(
-        config_item_to_test: str, expected_err: str, blue_erroneous_range_to_high
-    ):
-        """Tests creation of `BlueAgentConfig` with invalid data type."""
-        item: ConfigItem = eval(f"blue_erroneous_range_to_high.{config_item_to_test}")
-        # assert that the error message is as expected
->       assert expected_err in item.validation.fail_reasons
-E       assert "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>." in ['Value 2 is greater than the max property 1.']
-E        +  where ['Value 2 is greater than the max property 1.'] = ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]).fail_reasons
-E        +    where ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]) = FloatItem(value=2, doc='The chance of the action succeeding for a deceptive node', properties=FloatProperties(allowed_...han the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')])).validation
-
-tests\unit_tests\config\agents\test_new_blue_agent_config.py:251: AssertionError
-_ test_invalid_config_type[attack_discovery.succeeded_attacks.chance.deceptive_node-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.] _
-
-config_item_to_test = 'attack_discovery.succeeded_attacks.chance.deceptive_node'
-expected_err = "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>."
-blue_erroneous_range_to_high = Blue(action_set=BlueActionSetGroup(reduce_vulnerability=1, restore_node=1, scan=1, isolate_node=1, reconnect_node=1, d...exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[])}, passed=True, fail_reasons=[], fail_exceptions=[]))
-
-    @pytest.mark.parametrize(
-        ("config_item_to_test", "expected_err"),
-        [
-            # INT/FLOAT TYPES
-            (
-                "intrusion_discovery_chance.immediate",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "action_set.make_node_safe.vulnerability_change_during_node_patch",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.immediate_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "intrusion_discovery_chance.on_scan_deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.chance.deceptive_node",
-                "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.",
-            ),
-            # INT TYPE
-            (
-                "action_set.deceptive_nodes.max_number",
-                "Value True is of type <class 'bool'>, should be <class 'int'>.",
-            ),
-            # BOOLEANS
-            (
-                "action_set.make_node_safe.increases_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.gives_random_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reduce_vulnerability",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.restore_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.make_node_safe.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.scan",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.isolate_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.reconnect_node",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.do_nothing",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.failed_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "attack_discovery.succeeded_attacks_unknown_comprimise.use",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-            (
-                "action_set.deceptive_nodes.new_node_on_relocate",
-                "Value 1 is of type <class 'int'>, should be <class 'bool'>.",
-            ),
-        ],
-    )
-    def test_invalid_config_type(
-        config_item_to_test: str, expected_err: str, blue_erroneous_range_to_high
-    ):
-        """Tests creation of `BlueAgentConfig` with invalid data type."""
-        item: ConfigItem = eval(f"blue_erroneous_range_to_high.{config_item_to_test}")
-        # assert that the error message is as expected
->       assert expected_err in item.validation.fail_reasons
-E       assert "Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>." in ['Value 2 is greater than the max property 1.']
-E        +  where ['Value 2 is greater than the max property 1.'] = ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]).fail_reasons
-E        +    where ConfigItemValidation(passed=False, fail_reasons=['Value 2 is greater than the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')]) = FloatItem(value=2, doc='The chance of the action succeeding for a deceptive node', properties=FloatProperties(allowed_...han the max property 1.'], fail_exceptions=[ConfigItemValidationError('Value 2 is greater than the max property 1.')])).validation
-
-tests\unit_tests\config\agents\test_new_blue_agent_config.py:251: AssertionError
-============================== warnings summary ===============================
-.venv\lib\site-packages\gensim-4.2.0-py3.9-win-amd64.egg\gensim\matutils.py:22
-  d:\Pycharm projects\YAWNING-TITAN\.venv\lib\site-packages\gensim-4.2.0-py3.9-win-amd64.egg\gensim\matutils.py:22: DeprecationWarning: Please use `triu` from the `scipy.linalg` namespace, the `scipy.linalg.special_matrices` namespace is deprecated.
-    from scipy.linalg.special_matrices import triu
-
--- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-=========================== short test summary info ===========================
-FAILED tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_type[intrusion_discovery_chance.immediate-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.]
-FAILED tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_type[intrusion_discovery_chance.on_scan-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.]
-FAILED tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_type[action_set.make_node_safe.vulnerability_change_during_node_patch-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.]
-FAILED tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_type[attack_discovery.failed_attacks.chance.standard_node-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.]
-FAILED tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_type[attack_discovery.succeeded_attacks.chance.standard_node-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.]
-FAILED tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_type[attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.]
-FAILED tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_type[intrusion_discovery_chance.immediate_deceptive_node-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.]
-FAILED tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_type[intrusion_discovery_chance.on_scan_deceptive_node-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.]
-FAILED tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_type[attack_discovery.failed_attacks.chance.deceptive_node-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.]
-FAILED tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_type[attack_discovery.succeeded_attacks.chance.deceptive_node-Value True is of type <class 'bool'>, should be <class 'float'> or <class 'int'>.]
-ERROR tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_range[intrusion_discovery_chance.immediate-'chance_to_immediately_discover_intrusion' Needs to have a value less than: 1 (inclusive)]
-ERROR tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_range[intrusion_discovery_chance.immediate_deceptive_node-'chance_to_immediately_discover_intrusion_deceptive_node' Needs to have a value less than: 1 (inclusive)]
-ERROR tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_range[intrusion_discovery_chance.on_scan_deceptive_node-'chance_to_discover_intrusion_on_scan_deceptive_node' Needs to have a value less than: 1 (inclusive)]
-ERROR tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_range[intrusion_discovery_chance.on_scan-'chance_to_discover_intrusion_on_scan' Needs to have a value less than: 1 (inclusive)]
-ERROR tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_range[attack_discovery.failed_attacks.chance.standard_node-'chance_to_discover_failed_attack' Needs to have a value less than: 1 (inclusive)]
-ERROR tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_range[attack_discovery.succeeded_attacks.chance.standard_node-'chance_to_discover_succeeded_attack_compromise_known' Needs to have a value less than: 1 (inclusive)]
-ERROR tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_range[attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node-'chance_to_discover_succeeded_attack_compromise_not_known' Needs to have a value less than: 1 (inclusive)]
-ERROR tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_range[attack_discovery.failed_attacks.chance.deceptive_node-'chance_to_discover_failed_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)]
-ERROR tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_range[attack_discovery.succeeded_attacks.chance.deceptive_node-'chance_to_discover_succeeded_attack_deceptive_node' Needs to have a value less than: 1 (inclusive)]
-ERROR tests/unit_tests/config/agents/test_new_blue_agent_config.py::test_invalid_config_range[action_set.make_node_safe.vulnerability_change_during_node_patch-'vulnerability_change_during_node_patch' Needs to have a value less than: 1 (inclusive)]
-===== 10 failed, 15 passed, 292 deselected, 1 warning, 10 errors in 1.58s =====
+====================== 29 passed, 99 deselected in 0.17s ======================

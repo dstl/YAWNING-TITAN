@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, Optional, Union
+from typing import Dict, List, Optional, Union
 
 from yawning_titan.config.toolbox.core import (
     ConfigItem,
@@ -42,7 +42,7 @@ class IntProperties(ItemTypeProperties):
     """The default value"""
 
     def __post_init__(self):
-        self.allowed_types = [int]
+        self._allowed_types = [int]
         super().__post_init__()
 
     def to_dict(self) -> Dict[str, Union[int, str]]:
@@ -68,7 +68,7 @@ class IntProperties(ItemTypeProperties):
         """
         validation: ConfigItemValidation = super().validate(val)
 
-        if val is not None and type(val) in self.allowed_types:
+        if val is not None and type(val) in self._allowed_types:
             try:
                 if self.min_val is not None and val < self.min_val:
                     msg = f"Value {val} is less than the min property {self.min_val}."
@@ -118,10 +118,12 @@ class IntItem(ConfigItem):
 
     def __init__(
         self,
-        value: int,
+        value: bool,
         doc: Optional[str] = None,
+        alias: Optional[str] = None,
+        depends_on: Optional[List[str]] = None,
         properties: Optional[IntProperties] = None,
     ):
         if not properties:
             properties = IntProperties()
-        super().__init__(value, doc, properties)
+        super().__init__(value, doc, alias, depends_on, properties)

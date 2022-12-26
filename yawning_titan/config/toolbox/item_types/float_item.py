@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, Optional, Union
+from typing import Dict, List, Optional, Union
 
 from yawning_titan.config.toolbox.core import (
     ConfigItem,
@@ -27,7 +27,7 @@ class FloatProperties(ItemTypeProperties):
     """The default value"""
 
     def __post_init__(self):
-        self.allowed_types = [float, int]
+        self._allowed_types = [float, int]
         super().__post_init__()
 
     def to_dict(self) -> Dict[str, Union[float, int]]:
@@ -50,7 +50,7 @@ class FloatProperties(ItemTypeProperties):
         :raise: :class:`~yawning_titan.exceptions.ConfigItemValidationError` when validation fails.
         """
         validation: ConfigItemValidation = super().validate(val)
-        if val is not None and type(val) in self.allowed_types:
+        if val is not None and type(val) in self._allowed_types:
             try:
                 if self.min_val is not None and val < self.min_val:
                     msg = f"Value {val} is less than the min property {self.min_val}."
@@ -87,10 +87,12 @@ class FloatItem(ConfigItem):
 
     def __init__(
         self,
-        value: float,
+        value: bool,
         doc: Optional[str] = None,
+        alias: Optional[str] = None,
+        depends_on: Optional[List[str]] = None,
         properties: Optional[FloatProperties] = None,
     ):
         if not properties:
             properties = FloatProperties()
-        super().__init__(value, doc, properties)
+        super().__init__(value, doc, alias, depends_on, properties)
