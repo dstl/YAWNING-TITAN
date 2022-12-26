@@ -21,7 +21,7 @@ class StrProperties(ItemTypeProperties):
     """A list of allowed values for the item."""
 
     def __post_init__(self):
-        self.allowed_types = [str]
+        self._allowed_types = [str]
         super().__post_init__()
 
     def to_dict(self) -> Dict[str, Union[bool, str]]:
@@ -63,8 +63,10 @@ class StrItem(ConfigItem):
         self,
         value: bool,
         doc: Optional[str] = None,
+        alias: Optional[str] = None,
+        depends_on: Optional[List[str]] = None,
         properties: Optional[StrProperties] = None,
     ):
         if not properties:
             properties = StrProperties()
-        super().__init__(value, doc, properties)
+        super().__init__(value, doc, alias, depends_on, properties)

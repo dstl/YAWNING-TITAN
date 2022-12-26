@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, Optional, Union
+from typing import Dict, List, Optional, Union
 
 from yawning_titan.config.toolbox.core import ConfigItem, ItemTypeProperties
 
@@ -14,7 +14,7 @@ class BoolProperties(ItemTypeProperties):
     """The default value"""
 
     def __post_init__(self):
-        self.allowed_types = [bool]
+        self._allowed_types = [bool]
         super().__post_init__()
 
     def to_dict(self) -> Dict[str, Union[bool, str]]:
@@ -36,8 +36,10 @@ class BoolItem(ConfigItem):
         self,
         value: bool,
         doc: Optional[str] = None,
+        alias: Optional[str] = None,
+        depends_on: Optional[List[str]] = None,
         properties: Optional[BoolProperties] = None,
     ):
         if not properties:
             properties = BoolProperties()
-        super().__init__(value, doc, properties)
+        super().__init__(value, doc, alias, depends_on, properties)

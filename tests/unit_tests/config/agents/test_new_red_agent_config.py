@@ -1,6 +1,9 @@
 import pytest
 
-from tests.unit_tests.config import get_default_config_dict
+from tests.unit_tests.config import (
+    get_default_config_dict,
+    get_default_config_dict_legacy,
+)
 from yawning_titan.config.agents.new_red_agent_config import Red
 from yawning_titan.config.toolbox.core import ConfigItem
 
@@ -8,14 +11,15 @@ from yawning_titan.config.toolbox.core import ConfigItem
 @pytest.fixture
 def default_red() -> Red:
     """Create a red agent using the default config file."""
-    blue = Red()
-    blue.set_from_dict(get_default_config_dict()["red"])
-    return blue
+    red = Red()
+    red.set_from_dict(get_default_config_dict()["red"])
+    return red
 
 
 @pytest.fixture(scope="module")
 def red_erroneous_types():
     """Create a red agent where items have erroneous types."""
+    print("GHGHGH")
     red_erroneous_types_config = {
         "agent_attack": {
             "ignores_defences": 1,
@@ -322,6 +326,7 @@ def test_invalid_config_type(
 ):
     """Tests creation of `Red` with invalid data type."""
     item: ConfigItem = eval(f"red_erroneous_types.{config_item_to_test}")
+    print("ITEM: ", config_item_to_test, "VAL", item.value)
     # assert that the error message is as expected
     assert expected_err in item.validation.fail_reasons
 
@@ -417,3 +422,11 @@ def test_invalid_config_range_too_low(
     item: ConfigItem = eval(f"red_erroneous_range_to_low.{config_item_to_test}")
     # assert that the error message is as expected
     assert expected_err in item.validation.fail_reasons
+
+
+def test_default_red_from_legacy(default_red: Red) -> Red:
+    """Create a red agent using the default config file."""
+    red = Red()
+    red.set_from_dict(get_default_config_dict_legacy()["RED"], legacy=True)
+    assert red == default_red
+    assert red.to_dict() == default_red.to_dict()

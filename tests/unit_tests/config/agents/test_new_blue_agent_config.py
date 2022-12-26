@@ -1,6 +1,9 @@
 import pytest
 
-from tests.unit_tests.config import get_default_config_dict
+from tests.unit_tests.config import (
+    get_default_config_dict,
+    get_default_config_dict_legacy,
+)
 from yawning_titan.config.agents.new_blue_agent_config import Blue
 from yawning_titan.config.toolbox.core import ConfigItem
 
@@ -424,3 +427,15 @@ def test_no_max_number_deceptive_nodes(default_blue: Blue):
         "if the blue agent can use deceptive nodes then it must be able to create at least 1."
         in default_blue.action_set.deceptive_nodes.validation.fail_reasons
     )
+
+
+def test_default_red_from_legacy(default_blue: Blue) -> Blue:
+    """Create a red agent using the default config file."""
+    blue = Blue()
+    import yaml
+
+    print(yaml.dump(blue.to_dict(values_only=True)))
+    blue.set_from_dict(get_default_config_dict_legacy()["BLUE"], legacy=True)
+    print(yaml.dump(blue.to_dict(values_only=True)))
+    assert blue == default_blue
+    assert blue.to_dict() == default_blue.to_dict()

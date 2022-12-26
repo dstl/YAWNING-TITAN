@@ -28,21 +28,25 @@ class MakeNodeSafeGroup(ConfigGroup):
         self.use: BoolItem = BoolItem(
             value=use,
             doc="Blue fixes a node but does not restore it to its initial state.",
+            alias="blue_uses_make_node_safe",
             properties=BoolProperties(allow_null=False, default=False),
         )
         self.increases_vulnerability: BoolItem = BoolItem(
             value=increases_vulnerability,
             doc="If blue fixes a node then the vulnerability score of that node increases.",
+            alias="making_node_safe_modifies_vulnerability",
             properties=BoolProperties(allow_null=False),
         )
         self.gives_random_vulnerability: BoolItem = BoolItem(
             value=gives_random_vulnerability,
-            doc="When fixing a node the vulnerability score is randomised.",
+            doc="making_node_safe_gives_random_vulnerability",
+            alias="making_node_safe_gives_random_vulnerability",
             properties=BoolProperties(allow_null=False),
         )
         self.vulnerability_change_during_node_patch: FloatItem = FloatItem(
             value=vulnerability_change_during_node_patch,
             doc="The amount that the vulnerability of a node changes when it is made safe.",
+            alias="vulnerability_change_during_node_patch",
             properties=FloatProperties(
                 allow_null=True,
                 default=0,
@@ -85,11 +89,13 @@ class DeceptiveNodeGroup(ConfigGroup):
                 "Blue agent can place down deceptive nodes. These nodes act as just another node "
                 "in the network but have a different chance of spotting attacks and always show when they are compromised."
             ),
+            alias="blue_uses_deceptive_nodes",
             properties=BoolProperties(allow_null=False, default=False),
         )
         self.max_number: IntItem = IntItem(
             value=max_number,
             doc="The max number of deceptive nodes that blue can place.",
+            alias="max_number_deceptive_nodes",
             properties=IntProperties(
                 allow_null=True, default=1, min_val=1, inclusive_min=True
             ),
@@ -101,6 +107,7 @@ class DeceptiveNodeGroup(ConfigGroup):
             the first deceptive node that it used and "relocate it" When relocating a node will the stats for the node
             (such as the vulnerability and compromised status)
             be re-generated as if adding a new node or will they carry over from the "old" node.""",
+            alias="relocating_deceptive_nodes_generates_a_new_node",
             properties=BoolProperties(allow_null=True, default=False),
         )
         super().__init__(doc)
@@ -130,50 +137,64 @@ class BlueActionSetGroup(ConfigGroup):
         isolate_node: Optional[bool] = False,
         reconnect_node: Optional[bool] = False,
         do_nothing: Optional[bool] = False,
-        make_node_safe: MakeNodeSafeGroup = MakeNodeSafeGroup(
-            doc="all information relating to the process of the blue fixing a node but not restoring it to its initial state."
-        ),
-        deceptive_nodes: DeceptiveNodeGroup = DeceptiveNodeGroup(
-            doc=(
-                "all information relating to the blue agent placing down deceptive nodes."
-                "These nodes act as just another node in the network but have a "
-                "different chance of spotting attacks and always show when they "
-                "are compromised."
-            )
-        ),
+        make_node_safe: MakeNodeSafeGroup = None,
+        deceptive_nodes: DeceptiveNodeGroup = None,
     ):
         self.reduce_vulnerability: BoolItem = BoolItem(
             value=reduce_vulnerability,
             doc="Blue picks a node and reduces the vulnerability score.",
+            alias="blue_uses_reduce_vulnerability",
             properties=BoolProperties(allow_null=True, default=False),
         )
         self.restore_node: BoolItem = BoolItem(
             value=restore_node,
             doc="Blue picks a node and restores everything about the node to its starting state.",
+            alias="blue_uses_restore_node",
             properties=BoolProperties(allow_null=True, default=False),
         )
         self.scan: BoolItem = BoolItem(
             value=scan,
             doc="Blue scans all the nodes to try and detect any red intrusions.",
+            alias="blue_uses_scan",
             properties=BoolProperties(allow_null=True, default=False),
         )
         self.isolate_node: BoolItem = BoolItem(
             value=isolate_node,
             doc="Blue disables all the connections to and from a node.",
+            alias="blue_uses_isolate_node",
             properties=BoolProperties(allow_null=True, default=False),
         )
         self.reconnect_node: BoolItem = BoolItem(
             value=reconnect_node,
             doc="Blue re-connects all the connections to and from a node.",
+            alias="blue_uses_reconnect_node",
             properties=BoolProperties(allow_null=True, default=False),
         )
         self.do_nothing: BoolItem = BoolItem(
             value=do_nothing,
             doc="The blue agent is able to perform no attack for a given turn.",
+            alias="blue_uses_do_nothing",
             properties=BoolProperties(allow_null=True, default=False),
         )
-        self.make_node_safe = make_node_safe
-        self.deceptive_nodes = deceptive_nodes
+        self.make_node_safe: MakeNodeSafeGroup = (
+            make_node_safe
+            if make_node_safe
+            else MakeNodeSafeGroup(
+                doc="all information relating to the process of the blue fixing a node but not restoring it to its initial state."
+            ),
+        )
+        self.deceptive_nodes: DeceptiveNodeGroup = (
+            deceptive_nodes
+            if deceptive_nodes
+            else DeceptiveNodeGroup(
+                doc=(
+                    "all information relating to the blue agent placing down deceptive nodes."
+                    "These nodes act as just another node in the network but have a "
+                    "different chance of spotting attacks and always show when they "
+                    "are compromised."
+                )
+            )
+        )
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
@@ -202,6 +223,7 @@ class BlueIntrusionDiscoveryGroup(ConfigGroup):
     ):
         self.immediate = FloatItem(
             doc="Chance for blue to discover a node that red has compromised the instant red compromises the node.",
+            alias="chance_to_immediately_discover_intrusion",
             value=immediate,
             properties=FloatProperties(
                 allow_null=True,
@@ -214,6 +236,7 @@ class BlueIntrusionDiscoveryGroup(ConfigGroup):
         )
         self.immediate_deceptive_node = FloatItem(
             doc="Chance for blue to discover a deceptive node that red has compromised the instant it is compromised.",
+            alias="chance_to_immediately_discover_intrusion_deceptive_node",
             value=immediate_deceptive_node,
             properties=FloatProperties(
                 allow_null=True,
@@ -226,6 +249,7 @@ class BlueIntrusionDiscoveryGroup(ConfigGroup):
         )
         self.on_scan = FloatItem(
             doc="When blue performs the scan action this is the chance that a red intrusion is discovered.",
+            alias="chance_to_discover_intrusion_on_scan",
             value=on_scan,
             properties=FloatProperties(
                 allow_null=True,
@@ -238,6 +262,7 @@ class BlueIntrusionDiscoveryGroup(ConfigGroup):
         )
         self.on_scan_deceptive_node = FloatItem(
             doc="When blue uses the scan action what is the chance that blue will detect an intrusion in a deceptive node.",
+            alias="chance_to_discover_intrusion_on_scan_deceptive_node",
             value=on_scan_deceptive_node,
             properties=FloatProperties(
                 allow_null=True,
@@ -270,19 +295,60 @@ class BlueAttackDiscoveryGroup(ConfigGroup):
     def __init__(
         self,
         doc: Optional[str] = None,
-        failed_attacks: UseChancesGroup = UseChancesGroup(
-            doc="Whether the blue can discover failed attacks and the associated chance of discovery."
-        ),
-        succeeded_attacks: UseChancesGroup = UseChancesGroup(
-            doc="Whether the blue can discover succeeded attacks where the nature of the compromise is known and the associated chance of discovery."
-        ),
-        succeeded_attacks_unknown_comprimise: UseChancesGroup = UseChancesGroup(
-            doc="Whether the blue can discover succeeded attacks where the nature of the compromise is unknown and the associated chance of discovery."
-        ),
+        failed_attacks: UseChancesGroup = None,
+        succeeded_attacks: UseChancesGroup = None,
+        succeeded_attacks_unknown_comprimise: UseChancesGroup = None,
     ):
-        self.failed_attacks = failed_attacks
-        self.succeeded_attacks_unknown_comprimise = succeeded_attacks_unknown_comprimise
-        self.succeeded_attacks = succeeded_attacks
+        self.failed_attacks: UseChancesGroup = (
+            failed_attacks
+            if failed_attacks
+            else UseChancesGroup(
+                doc="Whether the blue can discover failed attacks and the associated chance of discovery."
+            )
+        )
+        self.failed_attacks.use.alias = "can_discover_failed_attacks"
+        self.failed_attacks.chance.standard_node.alias = (
+            "chance_to_discover_failed_attack"
+        )
+        self.failed_attacks.chance.deceptive_node.alias = (
+            "chance_to_discover_failed_attack_deceptive_node"
+        )
+
+        self.succeeded_attacks_unknown_comprimise: UseChancesGroup = (
+            succeeded_attacks_unknown_comprimise
+            if succeeded_attacks_unknown_comprimise
+            else UseChancesGroup(
+                doc="Whether the blue can discover succeeded attacks where the nature "
+                "of the compromise is unknown and the associated chance of discovery."
+            )
+        )
+        self.succeeded_attacks_unknown_comprimise.use.alias = (
+            "can_discover_succeeded_attacks_if_compromise_is_not_discovered"
+        )
+        self.succeeded_attacks_unknown_comprimise.chance.standard_node.alias = (
+            "chance_to_discover_succeeded_attack_compromise_not_known"
+        )
+        self.succeeded_attacks_unknown_comprimise.chance.deceptive_node.alias = (
+            "chance_to_discover_succeeded_attack_deceptive_node"
+        )
+
+        self.succeeded_attacks: UseChancesGroup = (
+            succeeded_attacks
+            if succeeded_attacks
+            else UseChancesGroup(
+                doc="Whether the blue can discover succeeded attacks where the nature "
+                "of the compromise is known and the associated chance of discovery."
+            )
+        )
+        self.succeeded_attacks.use.alias = (
+            "can_discover_succeeded_attacks_if_compromise_is_discovered"
+        )
+        self.succeeded_attacks.chance.standard_node.alias = (
+            "chance_to_discover_succeeded_attack_compromise_known"
+        )
+        self.succeeded_attacks.chance.deceptive_node.alias = (
+            "chance_to_discover_succeeded_attack_deceptive_node"
+        )
 
         # assign a shared link to 'chance_to_discover_succeeded_attack_deceptive_node' as this
         self.succeeded_attacks.chance.deceptive_node = (
@@ -300,19 +366,31 @@ class Blue(ConfigGroup):
     def __init__(
         self,
         doc: Optional[str] = None,
-        action_set: BlueActionSetGroup = BlueActionSetGroup(
-            doc="The set of actions the blue agent can perform and their associated information."
-        ),
-        intrusion_discovery_chance: BlueIntrusionDiscoveryGroup = BlueIntrusionDiscoveryGroup(
-            doc="The chances of blue discovering intrusions for different node types."
-        ),
-        attack_discovery: BlueAttackDiscoveryGroup = BlueAttackDiscoveryGroup(
-            doc="Which of reds attacks can the blue agent discover together with their associated discovery chances for different node types."
-        ),
+        action_set: BlueActionSetGroup = None,
+        intrusion_discovery_chance: BlueIntrusionDiscoveryGroup = None,
+        attack_discovery: BlueAttackDiscoveryGroup = None,
     ):
-        self.action_set = action_set
-        self.intrusion_discovery_chance = intrusion_discovery_chance
-        self.attack_discovery = attack_discovery
+        self.action_set: BlueActionSetGroup = (
+            action_set
+            if action_set
+            else BlueActionSetGroup(
+                doc="The set of actions the blue agent can perform and their associated information."
+            )
+        )
+        self.intrusion_discovery_chance: BlueIntrusionDiscoveryGroup = (
+            intrusion_discovery_chance
+            if intrusion_discovery_chance
+            else BlueIntrusionDiscoveryGroup(
+                doc="The chances of blue discovering intrusions for different node types."
+            )
+        )
+        self.attack_discovery: BlueAttackDiscoveryGroup = (
+            attack_discovery
+            if attack_discovery
+            else BlueAttackDiscoveryGroup(
+                doc="Which of reds attacks can the blue agent discover together with their associated discovery chances for different node types."
+            ),
+        )
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
@@ -357,6 +435,7 @@ class Blue(ConfigGroup):
 #         "vulnerability_change_during_node_patch": 0.5
 #     }
 # })
+
 # action_set.validation.log()
 
 # intrusions = BlueIntrusionDiscoveryGroup()
@@ -435,6 +514,9 @@ class Blue(ConfigGroup):
 #     }
 # )
 # blue.validation.log("Blue")
+# keys = blue.to_legacy().keys()
+# for k in keys:
+#     print("$$$",k)
 
 # print(
 #     "A",

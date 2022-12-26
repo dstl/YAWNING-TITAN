@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Union
 
 import yaml
@@ -29,11 +29,15 @@ class ConfigBase:
         :return: A dictionary of names to config elements.
         """
         if _type is not None:
-            return {k: v for k, v in self.__dict__.items() if isinstance(v, _type)}
+            return {
+                k: v
+                for k, v in self.__dict__.items()
+                if isinstance(v, _type) and not k.startswith("_")
+            }
         return {
             k: v
             for k, v in self.__dict__.items()
-            if isinstance(v, ConfigItem) or isinstance(v, ConfigGroup)
+            if isinstance(v, (ConfigItem, ConfigGroup)) and not k.startswith("_")
         }
 
     def get_non_config_elements(self) -> Dict[str, Any]:
@@ -45,7 +49,7 @@ class ConfigBase:
         return {
             k: v
             for k, v in self.__dict__.items()
-            if k not in self.get_config_elements()
+            if k not in self.get_config_elements() and not k.startswith("_")
         }
 
     def stringify(self):
@@ -81,7 +85,6 @@ class ConfigBase:
             ]
         )
         tuple_hash = tuple(element_hash)
-        print("***", self.__class__.__name__, tuple_hash)
         return hash(tuple_hash)
 
     def __eq__(self, other) -> bool:
@@ -101,8 +104,8 @@ class ConfigBase:
 class ItemTypeProperties(ABC):
     """An Abstract Base Class that is inherited by config data type properties."""
 
-    allowed_types: List[type] = None
-    """"""
+    _allowed_types: List[type] = None
+    """The allowed data types for the item."""
     allow_null: Optional[bool] = None
     """`True` if the config _value can be left empty, otherwise `False`."""
     default: Optional[Any] = None
@@ -123,7 +126,6 @@ class ItemTypeProperties(ABC):
         """
         return {k: v for k, v in self.__dict__.items() if v is not None}
 
-    # @abstractmethod
     def validate(self, val) -> ConfigItemValidation:
         """Perform the base validation checks common to all `ConfigItem` elements.
 
@@ -132,22 +134,19 @@ class ItemTypeProperties(ABC):
         - Check that the type of the value is in :attribute: `allowed_types`
         """
         validation = ConfigItemValidation()
-        print("VAL=", val, "ALLOWED TYPES=", self.allowed_types)
         try:
             if not self.allow_null and val is None:
                 msg = f"Value {val} when allow_null is not permitted."
-                print("MSG: ", msg)
                 raise ConfigItemValidationError(msg)
         except ConfigItemValidationError as e:
             validation.add_validation(msg, e)
         try:
-            if val is not None and type(val) not in self.allowed_types:
+            if val is not None and type(val) not in self._allowed_types:
                 msg = (
                     f"Value {val} is of type {type(val)}, should be "
-                    + " or ".join(map(str, self.allowed_types))
+                    + " or ".join(map(str, self._allowed_types))
                     + "."
                 )
-                print("MSG: ", msg)
                 raise ConfigItemValidationError(msg)
         except ConfigItemValidationError as e:
             validation.add_validation(msg, e)
@@ -285,6 +284,10 @@ class ConfigItem:
     """The items value."""
     doc: Optional[str] = None
     """The items doc."""
+    alias: str = field(default=None, repr=False)
+    """The alias of the config item, i.e. its representation from the original config."""
+    depends_on: List[str] = field(default_factory=list, repr=False)
+    """A list of :class: `ConfigItem`'s upon which this item depends. If these items are set so must this item be."""
     properties: Optional[ItemTypeProperties] = None
     """The items properties."""
     validation: ConfigItemValidation = None
@@ -294,6 +297,17 @@ class ConfigItem:
         if self.value is None and self.properties.default:
             self.value = self.properties.default
         self.validate()
+
+    def __setattr__(self, __name: str, __value: Any) -> None:
+        """
+        Set an attribute of the :class: `ConfigItem` if the value is to be set, call the validation method.
+
+        :param __name: the name of the attribute to be set
+        :param __value: the value to set the attribute to
+        """
+        self.__dict__[__name] = __value
+        if __name == "value":
+            self.validate()
 
     def to_dict(
         self,
@@ -340,17 +354,6 @@ class ConfigItem:
         """
         self.__dict__["value"] = value
 
-    def __setattr__(self, __name: str, __value: Any) -> None:
-        """
-        Set an attribute of the `ConfigItem` if the value is to be set, call the validation method.
-
-        :param __name: the name of the attribute to be set
-        :param __value: the value to set the attribute to
-        """
-        self.__dict__[__name] = __value
-        if __name == "value":
-            self.validate()
-
     def stringify(self):
         """This is here to allow stringify methods to be call on both :class: `ConfigItem` and :class: `ConfigGroup` classes."""
         return self.value
@@ -367,29 +370,40 @@ class ConfigGroup(ConfigBase, ABC):
         self.doc: Optional[str] = doc
         self.validation = self.validate()
 
+    def __setattr__(self, __name: str, __value: Any) -> None:
+        """
+        Set an attribute of the :class: `ConfigGroup` if the value is to be set, call the validation method.
+
+        :param __name: the name of the attribute to be set
+        :param __value: the value to set the attribute to
+        """
+        if __value is not None:
+            self.__dict__[__name] = __value
+
     def validate(self) -> ConfigGroupValidation:
         """
         Validate the grouped items against their properties.
 
         :return: An instance of :class:`ConfigGroupValidation`.
         """
-        # if not hasattr(self, "validation"):
         print("NEW VALIDATION FOR ", self.__class__.__name__)
         self.validation = ConfigGroupValidation()
         self.validate_elements()
         return self.validation
 
-    def reset_validation(self):
-        """Reset the :attribute: `validation` attribute. DEPRICATED."""
-        print("RESETTING VALIDATIOn")
-        self.validation = ConfigGroupValidation()
-
-    def to_dict(self, values_only: Optional[bool] = False):
+    def to_dict(self, values_only: Optional[bool] = False, legacy: bool = False):
         """
         Return the ConfigGroup as a dict.
 
+        :param values_only: Create a dictionary containing only the value of :class: `ConfigItem`'s
+        :param legacy: Convert the group into a unitary depth dictionary of legacy config value (aliases) to :class: `ConfigItem`'s
+            by calling :method: `ConfigGroup.to_legacy`.
+
         :return: The ConfigGroup as a dict.
         """
+        if legacy:
+            return self.to_legacy()
+
         attr_dict = {"doc": self.doc} if self.doc is not None else {}
         element_dict = {
             k: e.to_dict(values_only=values_only)
@@ -399,12 +413,26 @@ class ConfigGroup(ConfigBase, ABC):
             return element_dict
         return {**attr_dict, **element_dict}
 
+    def to_legacy(self, flattened_dict: Dict[str, Any] = None) -> Dict[str, ConfigItem]:
+        """Convert the group into a unitary depth dictionary of legacy config value (aliases) to :class: `ConfigItem`'s.
+
+        :return: a dictionary
+        """
+        if flattened_dict is None:
+            flattened_dict = {}
+        for v in self.get_config_elements().values():
+            if isinstance(v, ConfigItem):
+                flattened_dict[v.alias] = v
+            else:
+                flattened_dict.update(v.to_legacy(flattened_dict))
+        return flattened_dict
+
     def validate_elements(self):
         """Call the .validate() method on each of the elements in the group."""
         for k, element in self.get_config_elements().items():
             self.validation.add_element_validation(k, element.validate())
 
-    def set_from_dict(self, config_dict: dict, root: bool = True):
+    def set_from_dict(self, config_dict: dict, root: bool = True, legacy: bool = False):
         """
         Set the values of all :class: `ConfigGroup` or :class:`ConfigItem` elements.
 
@@ -412,16 +440,21 @@ class ConfigGroup(ConfigBase, ABC):
         :param root: Whether the element is a base level element or not.
             if the element is a root then it should validate all of its descendants.
         """
-        for element_name, v in config_dict.items():
-            element = getattr(self, element_name, None)
-            if type(v) == dict and isinstance(element, ConfigGroup):
-                element.set_from_dict(v, False)
-            elif type(v) != dict and isinstance(element, ConfigItem):
-                element.set_value(v)
+        if legacy:
+            legacy_lookup = self.to_legacy()
+            for element_name, v in config_dict.items():
+                element = legacy_lookup.get(element_name)
+                if not isinstance(v, dict) and isinstance(element, ConfigItem):
+                    element.set_value(v)
+        else:
+            for element_name, v in config_dict.items():
+                element = getattr(self, element_name, None)
+                if isinstance(v, dict) and isinstance(element, ConfigGroup):
+                    element.set_from_dict(v, False)
+                elif not isinstance(v, dict) and isinstance(element, ConfigItem):
+                    element.set_value(v)
         if root:
-            self.reset_validation()
             print("SETTING FROM DICT")
-            # print(self.__class__.__name__,"POKINOSE",self.validation)
             self.validate()
 
     def set_from_yaml(self, file_path: str):
