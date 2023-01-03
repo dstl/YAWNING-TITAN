@@ -3,6 +3,7 @@ import pytest
 from yawning_titan.config.item_types.grouped.action_likelihood_chance_group import (
     ActionLikelihoodChanceGroup,
 )
+from yawning_titan.exceptions import ConfigGroupValidationError
 
 
 @pytest.mark.unit_test
@@ -12,6 +13,39 @@ def test_action_likelihood_chance_not_used():
 
     assert alc.validation.passed
     assert alc.validation.group_passed
+
+
+@pytest.mark.unit_test
+def test_action_likelihood_chance_used_chance_not_set():
+    """Test the ActionLikelihoodGroup when used but chance not set."""
+    alc = ActionLikelihoodChanceGroup(use=True, likelihood=0.5)
+
+    assert not alc.validation.passed
+
+    with pytest.raises(ConfigGroupValidationError):
+        raise alc.validation.fail_exception
+
+
+@pytest.mark.unit_test
+def test_action_likelihood_chance_used_likelihood_not_set():
+    """Test the ActionLikelihoodGroup when used but likelihood not set."""
+    alc = ActionLikelihoodChanceGroup(use=True, chance=0.25)
+
+    assert not alc.validation.passed
+
+    with pytest.raises(ConfigGroupValidationError):
+        raise alc.validation.fail_exception
+
+
+@pytest.mark.unit_test
+def test_action_likelihood_chance_used_chance_and_likelihood_not_set():
+    """Test the ActionLikelihoodGroup when used but chance and likelihood not set."""
+    alc = ActionLikelihoodChanceGroup(use=True)
+
+    assert not alc.validation.passed
+
+    with pytest.raises(ConfigGroupValidationError):
+        raise alc.validation.fail_exception
 
 
 @pytest.mark.unit_test
