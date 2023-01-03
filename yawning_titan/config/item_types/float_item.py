@@ -103,6 +103,11 @@ class FloatItem(ConfigItem):
         doc: Optional[str] = None,
         properties: Optional[FloatProperties] = None,
     ):
-        if not properties:
+        if properties:
+            if not isinstance(properties, FloatProperties):
+                raise TypeError(
+                    f"The properties param must be of type {FloatProperties}, not {type(properties)}."
+                )
+        else:
             properties = FloatProperties()
         super().__init__(value, doc, properties)

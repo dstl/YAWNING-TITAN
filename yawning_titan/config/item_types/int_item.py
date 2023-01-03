@@ -128,6 +128,11 @@ class IntItem(ConfigItem):
         doc: Optional[str] = None,
         properties: Optional[IntProperties] = None,
     ):
-        if not properties:
+        if properties:
+            if not isinstance(properties, IntProperties):
+                raise TypeError(
+                    f"The properties param must be of type {IntProperties}, not {type(properties)}."
+                )
+        else:
             properties = IntProperties()
         super().__init__(value, doc, properties)

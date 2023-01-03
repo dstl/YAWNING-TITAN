@@ -65,6 +65,11 @@ class BoolItem(ConfigItem):
         doc: Optional[str] = None,
         properties: Optional[BoolProperties] = None,
     ):
-        if not properties:
+        if properties:
+            if not isinstance(properties, BoolProperties):
+                raise TypeError(
+                    f"The properties param must be of type {BoolProperties}, not {type(properties)}."
+                )
+        else:
             properties = BoolProperties()
         super().__init__(value, doc, properties)
