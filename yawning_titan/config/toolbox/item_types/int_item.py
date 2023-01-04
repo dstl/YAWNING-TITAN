@@ -51,7 +51,7 @@ class IntProperties(ItemTypeProperties):
 
         :return: The :class:`IntProperties` as a dict.
         """
-        config_dict = {k: v for k, v in self.__dict__.items() if v is not None}
+        config_dict = super().to_dict()
         if "parity" in config_dict:
             config_dict["parity"] = str(config_dict["parity"])
         if self.allow_null is not None:
@@ -125,8 +125,10 @@ class IntItem(ConfigItem):
         properties: Optional[IntProperties] = None,
     ):
         if properties:
-            if not isinstance(properties,IntProperties):
-                raise InvalidPropertyTypeError("Properties of IntItem should be of type IntProperties.")
+            if not isinstance(properties, IntProperties):
+                raise InvalidPropertyTypeError(
+                    "Properties of IntItem should be of type IntProperties."
+                )
         else:
             properties = IntProperties()
         super().__init__(value, doc, alias, depends_on, properties)

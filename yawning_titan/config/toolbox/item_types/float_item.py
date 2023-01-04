@@ -36,7 +36,7 @@ class FloatProperties(ItemTypeProperties):
 
         :return: The :class:`FloatProperties` as a dict.
         """
-        config_dict = {k: v for k, v in self.__dict__.items() if v is not None}
+        config_dict = super().to_dict()
         if self.allow_null is not None:
             config_dict["allow_null"] = self.allow_null
         return config_dict
@@ -94,8 +94,10 @@ class FloatItem(ConfigItem):
         properties: Optional[FloatProperties] = None,
     ):
         if properties:
-            if not isinstance(properties,FloatProperties):
-                raise InvalidPropertyTypeError("Properties of FloatItem should be of type FloatProperties.")
+            if not isinstance(properties, FloatProperties):
+                raise InvalidPropertyTypeError(
+                    "Properties of FloatItem should be of type FloatProperties."
+                )
         else:
             properties = FloatProperties()
         super().__init__(value, doc, alias, depends_on, properties)

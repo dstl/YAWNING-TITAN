@@ -1,12 +1,13 @@
 import os
 from pathlib import Path
-from typing import Dict
 from uuid import uuid4
 
 import pytest
 
-from tests import TEST_BASE_NEW_CONFIG_PATH
-from tests.config_test_utils import read_yaml_file
+from tests.unit_tests.config import (
+    get_default_config_dict,
+    get_default_config_dict_legacy,
+)
 from yawning_titan.config.agents.new_blue_agent_config import Blue
 from yawning_titan.config.agents.new_red_agent_config import Red
 from yawning_titan.config.environment.new_game_rules_config import GameRules
@@ -17,27 +18,22 @@ from yawning_titan.config.environment.new_reset_config import Reset
 from yawning_titan.config.environment.new_rewards_config import Rewards
 from yawning_titan.config.game_config.game_mode import GameMode
 from yawning_titan.config.game_config.new_miscellaneous_config import Miscellaneous
-from yawning_titan.config.game_modes import default_new_game_mode_path
 
 
-def get_config_dict() -> Dict:
-    """Return the config dict from the `TEST_BASE_CONFIG_PATH`."""
-    return read_yaml_file(TEST_BASE_NEW_CONFIG_PATH)
+@pytest.fixture
+def default_game_mode() -> GameMode:
+    """Create a game mode instance using the default config."""
+    game_mode = GameMode()
+    game_mode.set_from_dict(get_default_config_dict())
+    return game_mode
 
 
-def get_default_config_dict() -> Dict:
-    """Return the default game mode config."""
-    return read_yaml_file(default_new_game_mode_path())
-
-
-def test_read_valid_path_and_valid_config_classes_match():
+def test_read_valid_path_and_valid_config_classes_match(default_game_mode: GameMode):
     """Tests reading config from a valid path that is a valid config.
 
     Compare complete classes by calling the eq dunder.
     """
-    config_dict = get_config_dict()
-    game_mode: GameMode = GameMode()
-    game_mode.set_from_yaml(TEST_BASE_NEW_CONFIG_PATH)
+    config_dict = get_default_config_dict()
 
     red = Red("The configuration of the red agent")
     blue = Blue("The configuration of the blue agent")
@@ -58,23 +54,22 @@ def test_read_valid_path_and_valid_config_classes_match():
     rewards.set_from_dict(config_dict["rewards"])
     miscellaneous.set_from_dict(config_dict["miscellaneous"])
 
-    game_mode.set_from_yaml(TEST_BASE_NEW_CONFIG_PATH)
-    assert game_mode.red == red
-    assert game_mode.blue == blue
-    assert game_mode.blue_can_observe == blue_can_observe
-    assert game_mode.game_rules == game_rules
-    assert game_mode.on_reset == on_reset
-    assert game_mode.rewards == rewards
-    assert game_mode.miscellaneous == miscellaneous
+    assert default_game_mode.red == red
+    assert default_game_mode.blue == blue
+    assert default_game_mode.blue_can_observe == blue_can_observe
+    assert default_game_mode.game_rules == game_rules
+    assert default_game_mode.on_reset == on_reset
+    assert default_game_mode.rewards == rewards
+    assert default_game_mode.miscellaneous == miscellaneous
 
 
-def test_read_valid_path_and_valid_config_values_match():
+def test_read_valid_path_and_valid_config_values_match(default_game_mode: GameMode):
     """Tests reading config from a valid path that is a valid config.
 
     Compare dictionary representations of elements.
     """
-    config_dict = get_config_dict()
-    game_mode: GameMode = GameMode()
+    config_dict = get_default_config_dict()
+
     red = Red("The configuration of the red agent")
     blue = Blue("The configuration of the blue agent")
     game_rules = GameRules("The rules of the overall game mode")
@@ -94,30 +89,33 @@ def test_read_valid_path_and_valid_config_values_match():
     rewards.set_from_dict(config_dict["rewards"])
     miscellaneous.set_from_dict(config_dict["miscellaneous"])
 
-    game_mode.set_from_yaml(TEST_BASE_NEW_CONFIG_PATH)
-    assert game_mode.red.to_dict(values_only=True) == red.to_dict(values_only=True)
-    assert game_mode.blue.to_dict(values_only=True) == blue.to_dict(values_only=True)
-    assert game_mode.blue_can_observe.to_dict(
+    assert default_game_mode.red.to_dict(values_only=True) == red.to_dict(
+        values_only=True
+    )
+    assert default_game_mode.blue.to_dict(values_only=True) == blue.to_dict(
+        values_only=True
+    )
+    assert default_game_mode.blue_can_observe.to_dict(
         values_only=True
     ) == blue_can_observe.to_dict(values_only=True)
-    assert game_mode.game_rules.to_dict(values_only=True) == game_rules.to_dict(
+    assert default_game_mode.game_rules.to_dict(values_only=True) == game_rules.to_dict(
         values_only=True
     )
-    assert game_mode.on_reset.to_dict(values_only=True) == on_reset.to_dict(
+    assert default_game_mode.on_reset.to_dict(values_only=True) == on_reset.to_dict(
         values_only=True
     )
-    assert game_mode.rewards.to_dict(values_only=True) == rewards.to_dict(
+    assert default_game_mode.rewards.to_dict(values_only=True) == rewards.to_dict(
         values_only=True
     )
-    assert game_mode.miscellaneous.to_dict(values_only=True) == miscellaneous.to_dict(
+    assert default_game_mode.miscellaneous.to_dict(
         values_only=True
-    )
+    ) == miscellaneous.to_dict(values_only=True)
 
 
-def test_read_default_config():
+def test_read_default_config(default_game_mode: GameMode):
     """Tests reading the default game mode config."""
     config_dict = get_default_config_dict()
-    game_mode: GameMode = GameMode()
+
     red = Red("The configuration of the red agent")
     blue = Blue("The configuration of the blue agent")
     game_rules = GameRules("The rules of the overall game mode")
@@ -129,8 +127,6 @@ def test_read_default_config():
     rewards = Rewards("The rewards the blue agent gets for different game states")
     miscellaneous = Miscellaneous("Additional options")
 
-    game_mode.set_from_yaml(default_new_game_mode_path())
-
     red.set_from_dict(config_dict["red"])
     blue.set_from_dict(config_dict["blue"])
     game_rules.set_from_dict(config_dict["game_rules"])
@@ -139,13 +135,13 @@ def test_read_default_config():
     rewards.set_from_dict(config_dict["rewards"])
     miscellaneous.set_from_dict(config_dict["miscellaneous"])
 
-    assert game_mode.red == red
-    assert game_mode.blue == blue
-    assert game_mode.blue_can_observe == blue_can_observe
-    assert game_mode.game_rules == game_rules
-    assert game_mode.on_reset == on_reset
-    assert game_mode.rewards == rewards
-    assert game_mode.miscellaneous == miscellaneous
+    assert default_game_mode.red == red
+    assert default_game_mode.blue == blue
+    assert default_game_mode.blue_can_observe == blue_can_observe
+    assert default_game_mode.game_rules == game_rules
+    assert default_game_mode.on_reset == on_reset
+    assert default_game_mode.rewards == rewards
+    assert default_game_mode.miscellaneous == miscellaneous
 
 
 def test_read_created_yaml(tmp_path_factory):
@@ -172,3 +168,15 @@ def test_invalid_path():
 
     # assert that the error message is as expected
     assert err_info.value.args[1] == "No such file or directory"
+
+
+def test_default_game_mode_from_legacy(default_game_mode: GameMode):
+    """Create a game mode instance using the default config file."""
+    game_mode = GameMode()
+
+    game_mode.set_from_dict(get_default_config_dict_legacy(), legacy=True)
+    import yaml
+
+    print("LLLL", yaml.dump(game_mode.to_dict(values_only=True)))
+    assert game_mode == default_game_mode
+    assert game_mode.to_dict() == default_game_mode.to_dict()

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Union
+from typing import List, Optional
 
 from yawning_titan.config.toolbox.core import (
     ConfigItem,
@@ -16,23 +16,13 @@ class StrProperties(ItemTypeProperties):
     allow_null: Optional[bool] = None
     """`True` if the config value can be left empty, otherwise `False`."""
     default: Optional[bool] = None
-    """The default value"""
+    """The default value."""
     options: Optional[List[str]] = None
     """A list of allowed values for the item."""
 
     def __post_init__(self):
         self._allowed_types = [str]
         super().__post_init__()
-
-    def to_dict(self) -> Dict[str, Union[bool, str]]:
-        """
-        Serializes the :class:`BoolProperties` as a dict.
-
-        :return: The :class:`BoolProperties` as a dict.
-        """
-        config_dict = {k: v for k, v in self.__dict__.items() if v is not None}
-
-        return config_dict
 
     def validate(self, val: bool) -> ConfigItemValidation:
         """
@@ -68,8 +58,10 @@ class StrItem(ConfigItem):
         properties: Optional[StrProperties] = None,
     ):
         if properties:
-            if not isinstance(properties,StrProperties):
-                raise InvalidPropertyTypeError("Properties of StrItem should be of type StrProperties.")
+            if not isinstance(properties, StrProperties):
+                raise InvalidPropertyTypeError(
+                    "Properties of StrItem should be of type StrProperties."
+                )
         else:
             properties = StrProperties()
         super().__init__(value, doc, alias, depends_on, properties)
