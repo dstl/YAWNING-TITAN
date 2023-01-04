@@ -122,7 +122,8 @@ describe('CytoscapeService', () => {
         entry_node: false,
         classes: '',
         x_pos: 1,
-        y_pos: 1
+        y_pos: 1,
+        vulnerability: 0
       }
 
       service['createNode'](1, 1, node);

@@ -59,7 +59,8 @@ export class Network {
         entry_node: nodes[`${nodeUUID}`]?.entry_node,
         classes: nodes[`${nodeUUID}`]?.classes,
         x_pos: nodes[`${nodeUUID}`]?.x_pos,
-        y_pos: nodes[`${nodeUUID}`]?.y_pos
+        y_pos: nodes[`${nodeUUID}`]?.y_pos,
+        vulnerability: nodes[`${nodeUUID}`]?.vulnerability,
       });
     });
   }
@@ -155,7 +156,8 @@ export class Network {
       entry_node: false,
       classes: "standard_node",
       x_pos: x_pos,
-      y_pos: y_pos
+      y_pos: y_pos,
+      vulnerability: 0
     });
 
     return true;

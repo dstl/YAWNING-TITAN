@@ -60,7 +60,7 @@ describe('Network', () => {
       const network = new Network();
       network['loadNodesFromJson'](test_network.nodes);
 
-      expect(network.nodeList.length).toBe(2);
+      expect(network.nodeList.length).toBe(18);
     });
   });
 
@@ -73,12 +73,13 @@ describe('Network', () => {
     });
 
     it('should add edges to the edge list', () => {
-      const addEgdeSpy = spyOn(Network.prototype, 'addEgde').and.returnValue(null);
+      const addEgdeSpy = spyOn(Network.prototype, 'addEgde').and.callThrough();
       const network = new Network();
       network['loadNodesFromJson'](test_network.nodes);
       network['loadEdgesFromJson'](test_network.edges);
 
-      expect(addEgdeSpy).toHaveBeenCalledTimes(2);
+      expect(addEgdeSpy).toHaveBeenCalledTimes(34);
+      expect(network.edgeList.length).toBe(17);
     });
   });
 
