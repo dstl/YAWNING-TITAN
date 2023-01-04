@@ -6,7 +6,7 @@ from yawning_titan.config.toolbox.core import (
     ConfigItemValidation,
     ItemTypeProperties,
 )
-from yawning_titan.exceptions import ConfigItemValidationError, InvalidPropertyTypeError
+from yawning_titan.exceptions import ConfigItemValidationError
 
 
 @dataclass()
@@ -95,7 +95,7 @@ class FloatItem(ConfigItem):
     ):
         if properties:
             if not isinstance(properties, FloatProperties):
-                raise InvalidPropertyTypeError(
+                raise TypeError(
                     "Properties of FloatItem should be of type FloatProperties."
                 )
         else:

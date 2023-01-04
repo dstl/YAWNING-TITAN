@@ -1,6 +1,13 @@
 import pytest
 
-from yawning_titan.config.toolbox.item_types.int_item import IntProperties, Parity
+from yawning_titan.config.toolbox.item_types.bool_item import BoolProperties
+from yawning_titan.config.toolbox.item_types.float_item import FloatProperties
+from yawning_titan.config.toolbox.item_types.int_item import (
+    IntItem,
+    IntProperties,
+    Parity,
+)
+from yawning_titan.config.toolbox.item_types.str_item import StrProperties
 from yawning_titan.exceptions import ConfigItemValidationError
 
 
@@ -55,3 +62,13 @@ def test_int_properties_validation(
     if not validation.passed:
         assert type(validation.fail_exceptions[0]) == ConfigItemValidationError
         assert fail_reason in validation.fail_reasons
+
+
+def test_int_item_incorrect_properties_type():
+    """Tests instantiation fails with incorrect properties type."""
+    with pytest.raises(TypeError):
+        IntItem(value=1, properties=BoolProperties())
+    with pytest.raises(TypeError):
+        IntItem(value=1, properties=FloatProperties())
+    with pytest.raises(TypeError):
+        IntItem(value=1, properties=StrProperties())

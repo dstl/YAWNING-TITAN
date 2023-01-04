@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 from yawning_titan.config.toolbox.core import ConfigItem, ItemTypeProperties
-from yawning_titan.exceptions import InvalidPropertyTypeError
 
 
 @dataclass()
@@ -17,16 +16,6 @@ class BoolProperties(ItemTypeProperties):
     def __post_init__(self):
         self._allowed_types = [bool]
         super().__post_init__()
-
-    # def to_dict(self) -> Dict[str, Union[bool, str]]:
-    #     """
-    #     Serializes the :class:`BoolProperties` as a dict.
-
-    #     :return: The :class:`BoolProperties` as a dict.
-    #     """
-    #     config_dict = {k: v for k, v in self.__dict__.items() if v is not None}
-
-    #     return config_dict
 
 
 @dataclass()
@@ -43,7 +32,7 @@ class BoolItem(ConfigItem):
     ):
         if properties:
             if not isinstance(properties, BoolProperties):
-                raise InvalidPropertyTypeError(
+                raise TypeError(
                     "Properties of BoolItem should be of type BoolProperties."
                 )
         else:

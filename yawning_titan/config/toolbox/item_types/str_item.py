@@ -6,7 +6,7 @@ from yawning_titan.config.toolbox.core import (
     ConfigItemValidation,
     ItemTypeProperties,
 )
-from yawning_titan.exceptions import ConfigItemValidationError, InvalidPropertyTypeError
+from yawning_titan.exceptions import ConfigItemValidationError
 
 
 @dataclass()
@@ -37,7 +37,7 @@ class StrProperties(ItemTypeProperties):
         if val is not None:
             try:
                 if self.options is not None and val not in self.options:
-                    msg = f"Value {val} should be one of {', '.join(self.options)}"
+                    msg = f"Value {val} should be one of {', '.join(map(str,self.options))}"
                     raise ConfigItemValidationError(msg)
             except ConfigItemValidationError as e:
                 validation.add_validation(msg, e)
@@ -59,7 +59,7 @@ class StrItem(ConfigItem):
     ):
         if properties:
             if not isinstance(properties, StrProperties):
-                raise InvalidPropertyTypeError(
+                raise TypeError(
                     "Properties of StrItem should be of type StrProperties."
                 )
         else:
