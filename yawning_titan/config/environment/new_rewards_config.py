@@ -27,7 +27,7 @@ class Rewards(ConfigGroup):
             doc="Rewards for the blue agent losing",
             properties=IntProperties(allow_null=True, default=0),
         )
-        self.for_reaching_max_steps = BoolItem(
+        self.for_reaching_max_steps = IntItem(
             value=for_reaching_max_steps,
             doc="Rewards for the blue agent winning by reaching the maximum number of steps",
             properties=IntProperties(allow_null=True, default=0),

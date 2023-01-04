@@ -201,14 +201,14 @@ class UseChancesGroup(ConfigGroup):
         self,
         doc: Optional[str] = None,
         use: Optional[bool] = False,
-        chance: ChanceGroup = ChanceGroup(doc="The chance(s) of the result occurring."),
+        chance: ChanceGroup = None,
     ):
         self.use: BoolItem = BoolItem(
             doc="Whether the element is used",
             value=use,
             properties=BoolProperties(allow_null=True, default=False),
         )
-        self.chance: ChanceGroup = chance
+        self.chance: ChanceGroup = chance if chance else ChanceGroup(doc="The chance(s) of the result occurring.")
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
@@ -233,8 +233,8 @@ class RestrictRangeGroup(ConfigGroup):
         self,
         doc: Optional[str] = None,
         restrict: Optional[bool] = False,
-        min: Optional[bool] = 0,
-        max: Optional[bool] = 0,
+        min: Optional[bool] = None,
+        max: Optional[bool] = None,
     ):
         self.restrict = BoolItem(
             value=restrict,
@@ -245,17 +245,32 @@ class RestrictRangeGroup(ConfigGroup):
             value=min,
             doc="The minimum value of the attribute to restrict.",
             properties=IntProperties(
-                allow_null=True, default=0, min_val=0, inclusive_min=True
+                allow_null=True, min_val=0, inclusive_min=True
             ),
         )
         self.max: IntItem = IntItem(
             value=max,
             doc="The maximum value of the attribute to restrict.",
             properties=IntProperties(
-                allow_null=True, default=0, min_val=0, inclusive_min=True
+                allow_null=True, min_val=0, inclusive_min=True
             ),
         )
         super().__init__(doc)
 
+    def validate(self) -> ConfigGroupValidation:
+        super().validate()
+        if self.restrict.value:
+            try:
+                if all(e is None for e in [self.min.value,self.max.value]):
+                    msg = f"If an element is to be range bound either the min or max bounds must be set."
+                    raise ConfigGroupValidationError(msg)
+            except ConfigGroupValidationError as e:
+                self.validation.add_validation(msg,e)
 
-# class XorGroup(ConfigGroup)
+            try:
+                if all(e is not None for e in [self.min.value,self.max.value]) and self.min.value > self.max.value:
+                    msg = f"The minimum value of a range bound item ({self.min.value}) cannot be larger than the maximum value ({self.max.value})."
+                    raise ConfigGroupValidationError(msg)
+            except ConfigGroupValidationError as e:
+                self.validation.add_validation(msg,e)
+        return self.validation

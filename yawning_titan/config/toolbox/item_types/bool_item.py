@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Dict, List, Optional, Union
 
 from yawning_titan.config.toolbox.core import ConfigItem, ItemTypeProperties
+from yawning_titan.exceptions import InvalidPropertyTypeError
 
 
 @dataclass()
@@ -40,6 +41,10 @@ class BoolItem(ConfigItem):
         depends_on: Optional[List[str]] = None,
         properties: Optional[BoolProperties] = None,
     ):
-        if not properties:
+        if properties:
+            print("T",type(properties))
+            if not isinstance(properties,BoolProperties):
+                raise InvalidPropertyTypeError("Properties of BoolItem should be of type BoolProperties.")
+        else:
             properties = BoolProperties()
         super().__init__(value, doc, alias, depends_on, properties)
