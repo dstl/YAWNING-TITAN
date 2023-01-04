@@ -137,8 +137,8 @@ class BlueActionSetGroup(ConfigGroup):
         isolate_node: Optional[bool] = False,
         reconnect_node: Optional[bool] = False,
         do_nothing: Optional[bool] = False,
-        make_node_safe: MakeNodeSafeGroup = None,
-        deceptive_nodes: DeceptiveNodeGroup = None,
+        make_node_safe: Optional[MakeNodeSafeGroup] = None,
+        deceptive_nodes: Optional[DeceptiveNodeGroup] = None,
     ):
         self.reduce_vulnerability: BoolItem = BoolItem(
             value=reduce_vulnerability,
@@ -181,7 +181,7 @@ class BlueActionSetGroup(ConfigGroup):
             if make_node_safe
             else MakeNodeSafeGroup(
                 doc="all information relating to the process of the blue fixing a node but not restoring it to its initial state."
-            ),
+            )
         )
         self.deceptive_nodes: DeceptiveNodeGroup = (
             deceptive_nodes
@@ -295,9 +295,9 @@ class BlueAttackDiscoveryGroup(ConfigGroup):
     def __init__(
         self,
         doc: Optional[str] = None,
-        failed_attacks: UseChancesGroup = None,
-        succeeded_attacks: UseChancesGroup = None,
-        succeeded_attacks_unknown_comprimise: UseChancesGroup = None,
+        failed_attacks: Optional[UseChancesGroup] = None,
+        succeeded_attacks: Optional[UseChancesGroup] = None,
+        succeeded_attacks_unknown_comprimise: Optional[UseChancesGroup] = None,
     ):
         self.failed_attacks: UseChancesGroup = (
             failed_attacks
@@ -366,9 +366,9 @@ class Blue(ConfigGroup):
     def __init__(
         self,
         doc: Optional[str] = None,
-        action_set: BlueActionSetGroup = None,
-        intrusion_discovery_chance: BlueIntrusionDiscoveryGroup = None,
-        attack_discovery: BlueAttackDiscoveryGroup = None,
+        action_set: Optional[BlueActionSetGroup] = None,
+        intrusion_discovery_chance: Optional[BlueIntrusionDiscoveryGroup] = None,
+        attack_discovery: Optional[BlueAttackDiscoveryGroup] = None,
     ):
         self.action_set: BlueActionSetGroup = (
             action_set
@@ -389,7 +389,7 @@ class Blue(ConfigGroup):
             if attack_discovery
             else BlueAttackDiscoveryGroup(
                 doc="Which of reds attacks can the blue agent discover together with their associated discovery chances for different node types."
-            ),
+            )
         )
         super().__init__(doc)
 

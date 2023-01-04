@@ -1,6 +1,7 @@
 import pytest
 
 from yawning_titan.config.toolbox.groups.core import ChanceGroup, UseChancesGroup
+from yawning_titan.exceptions import ConfigGroupValidationError, ConfigItemValidationError
 
 
 @pytest.mark.unit_test
@@ -32,7 +33,9 @@ def test_chance_group_fail_used_item_fail():
 
     assert alc.validation.passed
     assert not alc.validation.group_passed
-
+    with pytest.raises(ConfigItemValidationError):
+        raise alc.validation.element_validation["use"].fail_exceptions[0]
+        
 
 @pytest.mark.unit_test
 def test_chance_group_fail_used_group_fail():
@@ -43,3 +46,5 @@ def test_chance_group_fail_used_group_fail():
 
     assert not alc.validation.passed
     assert alc.validation.group_passed
+    with pytest.raises(ConfigGroupValidationError):
+        raise alc.validation.fail_exceptions[0]

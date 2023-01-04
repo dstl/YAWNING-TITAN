@@ -6,7 +6,7 @@ from yawning_titan.config.toolbox.core import (
     ConfigItemValidation,
     ItemTypeProperties,
 )
-from yawning_titan.exceptions import ConfigItemValidationError
+from yawning_titan.exceptions import ConfigItemValidationError, InvalidPropertyTypeError
 
 
 @dataclass()
@@ -93,6 +93,9 @@ class FloatItem(ConfigItem):
         depends_on: Optional[List[str]] = None,
         properties: Optional[FloatProperties] = None,
     ):
-        if not properties:
+        if properties:
+            if not isinstance(properties,FloatProperties):
+                raise InvalidPropertyTypeError("Properties of FloatItem should be of type FloatProperties.")
+        else:
             properties = FloatProperties()
         super().__init__(value, doc, alias, depends_on, properties)

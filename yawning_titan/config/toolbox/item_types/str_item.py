@@ -6,7 +6,7 @@ from yawning_titan.config.toolbox.core import (
     ConfigItemValidation,
     ItemTypeProperties,
 )
-from yawning_titan.exceptions import ConfigItemValidationError
+from yawning_titan.exceptions import ConfigItemValidationError, InvalidPropertyTypeError
 
 
 @dataclass()
@@ -67,6 +67,9 @@ class StrItem(ConfigItem):
         depends_on: Optional[List[str]] = None,
         properties: Optional[StrProperties] = None,
     ):
-        if not properties:
+        if properties:
+            if not isinstance(properties,StrProperties):
+                raise InvalidPropertyTypeError("Properties of StrItem should be of type StrProperties.")
+        else:
             properties = StrProperties()
         super().__init__(value, doc, alias, depends_on, properties)

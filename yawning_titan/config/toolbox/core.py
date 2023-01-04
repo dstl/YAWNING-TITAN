@@ -95,7 +95,6 @@ class ConfigBase:
         :return: A boolean True if the elements holds the same data otherwise False.
         """
         if isinstance(other, self.__class__):
-            print("HAHS", hash(self), hash(other))
             return hash(self) == hash(other)
         return False
 
@@ -370,16 +369,6 @@ class ConfigGroup(ConfigBase, ABC):
         self.doc: Optional[str] = doc
         self.validation = self.validate()
 
-    def __setattr__(self, __name: str, __value: Any) -> None:
-        """
-        Set an attribute of the :class: `ConfigGroup` if the value is to be set, call the validation method.
-
-        :param __name: the name of the attribute to be set
-        :param __value: the value to set the attribute to
-        """
-        if __value is not None:
-            self.__dict__[__name] = __value
-
     def validate(self) -> ConfigGroupValidation:
         """
         Validate the grouped items against their properties.
@@ -450,6 +439,7 @@ class ConfigGroup(ConfigBase, ABC):
             for element_name, v in config_dict.items():
                 element = getattr(self, element_name, None)
                 if isinstance(v, dict) and isinstance(element, ConfigGroup):
+                    print("E",element_name)
                     element.set_from_dict(v, False)
                 elif not isinstance(v, dict) and isinstance(element, ConfigItem):
                     element.set_value(v)

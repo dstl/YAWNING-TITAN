@@ -31,3 +31,8 @@ class ConfigGroupValidationError(ValueError):
     """A config group has failed validation."""
 
     pass
+
+
+class InvalidPropertyTypeError(TypeError):
+    """An invalid property applied to an item."""
+    pass

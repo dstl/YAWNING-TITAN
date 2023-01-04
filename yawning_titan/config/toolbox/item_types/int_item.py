@@ -7,7 +7,7 @@ from yawning_titan.config.toolbox.core import (
     ConfigItemValidation,
     ItemTypeProperties,
 )
-from yawning_titan.exceptions import ConfigItemValidationError
+from yawning_titan.exceptions import ConfigItemValidationError, InvalidPropertyTypeError
 
 
 class Parity(Enum):
@@ -124,6 +124,9 @@ class IntItem(ConfigItem):
         depends_on: Optional[List[str]] = None,
         properties: Optional[IntProperties] = None,
     ):
-        if not properties:
+        if properties:
+            if not isinstance(properties,IntProperties):
+                raise InvalidPropertyTypeError("Properties of IntItem should be of type IntProperties.")
+        else:
             properties = IntProperties()
         super().__init__(value, doc, alias, depends_on, properties)

@@ -29,6 +29,17 @@ def test_to_dict(test_group: ConfigGroup):
     d = test_group.to_dict(values_only=True)
     assert d == {"a": False, "b": 1, "c": "test"}
 
+@pytest.mark.unit_test
+def test_stringify(test_group: ConfigGroup):
+    """
+    Test the group can represent itself as a string.
+    
+    The string should contain the groups class name, 
+    the validation failure reasons and exceptions together with the names and values of each of its elements. 
+    This should all be wrapped in parentheses.
+    """
+    s = test_group.stringify()
+    assert s == "TestGroup(a=False, b=1, c=test, doc=None, validation=ConfigGroupValidation(passed=True, fail_reasons=[], fail_exceptions=[]))"
 
 @pytest.mark.unit_test
 def test_yaml_round_trip(test_group: ConfigGroup, tmp_path: Path):
