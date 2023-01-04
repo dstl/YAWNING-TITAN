@@ -514,7 +514,7 @@ class Blue(ConfigGroup):
 #     }
 # )
 # blue.validation.log("Blue")
-# keys = blue.to_legacy().keys()
+# keys = blue.to_legacy_dict().keys()
 # for k in keys:
 #     print("$$$",k)
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import ABC
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Union
 
@@ -116,14 +116,17 @@ class ItemTypeProperties(ABC):
             if not validated_default.passed:
                 raise validated_default.fail_exceptions[0]
 
-    @abstractmethod
     def to_dict(self) -> Dict[str, Any]:
         """
         An abstract method that returns the properties as a dict.
 
         :return: A dict.
         """
-        return {k: v for k, v in self.__dict__.items() if v is not None}
+        return {
+            k: v
+            for k, v in self.__dict__.items()
+            if v is not None and not k.startswith("_")
+        }
 
     def validate(self, val) -> ConfigItemValidation:
         """Perform the base validation checks common to all `ConfigItem` elements.
@@ -375,7 +378,6 @@ class ConfigGroup(ConfigBase, ABC):
 
         :return: An instance of :class:`ConfigGroupValidation`.
         """
-        print("NEW VALIDATION FOR ", self.__class__.__name__)
         self.validation = ConfigGroupValidation()
         self.validate_elements()
         return self.validation
@@ -391,18 +393,21 @@ class ConfigGroup(ConfigBase, ABC):
         :return: The ConfigGroup as a dict.
         """
         if legacy:
-            return self.to_legacy()
+            return self.to_legacy_dict()
 
         attr_dict = {"doc": self.doc} if self.doc is not None else {}
         element_dict = {
             k: e.to_dict(values_only=values_only)
             for k, e in self.get_config_elements().items()
+            if not k.startswith("_")
         }
         if values_only:
             return element_dict
         return {**attr_dict, **element_dict}
 
-    def to_legacy(self, flattened_dict: Dict[str, Any] = None) -> Dict[str, ConfigItem]:
+    def to_legacy_dict(
+        self, flattened_dict: Dict[str, Any] = None
+    ) -> Dict[str, ConfigItem]:
         """Convert the group into a unitary depth dictionary of legacy config value (aliases) to :class: `ConfigItem`'s.
 
         :return: a dictionary
@@ -413,7 +418,7 @@ class ConfigGroup(ConfigBase, ABC):
             if isinstance(v, ConfigItem):
                 flattened_dict[v.alias] = v
             else:
-                flattened_dict.update(v.to_legacy(flattened_dict))
+                flattened_dict.update(v.to_legacy_dict(flattened_dict))
         return flattened_dict
 
     def validate_elements(self):
@@ -430,7 +435,7 @@ class ConfigGroup(ConfigBase, ABC):
             if the element is a root then it should validate all of its descendants.
         """
         if legacy:
-            legacy_lookup = self.to_legacy()
+            legacy_lookup = self.to_legacy_dict()
             for element_name, v in config_dict.items():
                 element = legacy_lookup.get(element_name)
                 if not isinstance(v, dict) and isinstance(element, ConfigItem):
@@ -439,12 +444,10 @@ class ConfigGroup(ConfigBase, ABC):
             for element_name, v in config_dict.items():
                 element = getattr(self, element_name, None)
                 if isinstance(v, dict) and isinstance(element, ConfigGroup):
-                    print("E",element_name)
                     element.set_from_dict(v, False)
                 elif not isinstance(v, dict) and isinstance(element, ConfigItem):
                     element.set_value(v)
         if root:
-            print("SETTING FROM DICT")
             self.validate()
 
     def set_from_yaml(self, file_path: str):

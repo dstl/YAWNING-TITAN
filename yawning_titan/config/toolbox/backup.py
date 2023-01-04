@@ -396,7 +396,7 @@
 #         :return: The ConfigGroup as a dict.
 #         """
 #         if legacy:
-#             return self.to_legacy()
+#             return self.to_legacy_dict()
 
 #         attr_dict = {"doc": self.doc} if self.doc is not None else {}
 #         element_dict = {
@@ -420,7 +420,7 @@
 #     #             flattened_dict.update(v.flatten(f"{target}.{k}",flattened_dict,False))
 #     #     return flattened_dict
 
-#     def to_legacy(self, flattened_dict: Dict[str, Any]=None)->Dict[str,ConfigItem]:
+#     def to_legacy_dict(self, flattened_dict: Dict[str, Any]=None)->Dict[str,ConfigItem]:
 #         """Convert the group into a unitary depth dictionary of legacy config value (aliases) to :class: `ConfigItem`'s.
 
 #         :return: a dictionary
@@ -431,7 +431,7 @@
 #             if isinstance(v,ConfigItem):
 #                 flattened_dict[v.alias] = v
 #             else:
-#                 flattened_dict.update(v.to_legacy(flattened_dict))
+#                 flattened_dict.update(v.to_legacy_dict(flattened_dict))
 #         return flattened_dict
 
 
@@ -449,7 +449,7 @@
 #             if the element is a root then it should validate all of its descendants.
 #         """
 #         if legacy:
-#             legacy_lookup = self.to_legacy()
+#             legacy_lookup = self.to_legacy_dict()
 #             for element_name, v in config_dict.items():
 #                 element = legacy_lookup.get(element_name)
 #                 if not isinstance(v,dict) and isinstance(element, ConfigItem):
