@@ -2,12 +2,13 @@ import pytest
 
 from yawning_titan.config.toolbox.core import ConfigItem
 from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
-from yawning_titan.config.toolbox.item_types.float_item import FloatItem, FloatProperties
+from yawning_titan.config.toolbox.item_types.float_item import (
+    FloatItem,
+    FloatProperties,
+)
 from yawning_titan.config.toolbox.item_types.int_item import IntItem, IntProperties
 from yawning_titan.config.toolbox.item_types.str_item import StrItem, StrProperties
-from yawning_titan.exceptions import InvalidPropertyTypeError
 
-InvalidPropertyTypeError
 
 @pytest.mark.unit_test
 def test_to_dict():
@@ -37,15 +38,16 @@ def test_set_value():
 
 
 @pytest.mark.unit_test
-@pytest.mark.parametrize(("item","properties"),(
-    (IntItem,BoolProperties),
-    (BoolItem,IntProperties),
-    (StrItem,FloatProperties),
-    (FloatItem,StrProperties)
-))
-def test_assign_incorrect_properties(item,properties):
-    """Test item types raise an :class: `~yawning_titan.exceptions.InvalidPropertyTypeError` error when using incorrect property types."""
-    with pytest.raises(InvalidPropertyTypeError):
-        item(value=None,properties=properties)
-
-
+@pytest.mark.parametrize(
+    ("item", "properties"),
+    (
+        (IntItem, BoolProperties),
+        (BoolItem, IntProperties),
+        (StrItem, FloatProperties),
+        (FloatItem, StrProperties),
+    ),
+)
+def test_assign_incorrect_properties(item, properties):
+    """Test item types raise an :class: `~yawning_titan.exceptions.TypeError` error when using incorrect property types."""
+    with pytest.raises(TypeError):
+        item(value=None, properties=properties)
