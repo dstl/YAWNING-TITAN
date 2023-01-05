@@ -34,11 +34,11 @@ class GameMode(ConfigGroup):
         ),
         miscellaneous: Miscellaneous = Miscellaneous(doc="Additional options"),
     ):
-        self.red = red
-        self.blue = blue
-        self.game_rules = game_rules
-        self.blue_can_observe = blue_can_observe
-        self.on_reset = on_reset
-        self.rewards = rewards
-        self.miscellaneous = miscellaneous
+        self.red: Red = red
+        self.blue: Blue = blue
+        self.game_rules: GameRules = game_rules
+        self.blue_can_observe: ObservationSpace = blue_can_observe
+        self.on_reset: Reset = on_reset
+        self.rewards: Rewards = rewards
+        self.miscellaneous: Miscellaneous = miscellaneous
         super().__init__(doc)

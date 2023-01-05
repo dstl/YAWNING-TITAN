@@ -43,7 +43,7 @@ red:
     prioritise_unconnected_nodes: False
     prioritise_vulnerable_nodes: False
     prioritise_resilient_nodes: False
-    target:
+    target_specific_node:
       use: False
       target:
       always_choose_shortest_distance: True

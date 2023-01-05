@@ -291,7 +291,7 @@ class RedTargetMechanismGroup(ConfigGroup):
         prioritise_unconnected_nodes: Optional[bool] = False,
         prioritise_vulnerable_nodes: Optional[bool] = False,
         prioritise_resilient_nodes: Optional[bool] = False,
-        target: Optional[TargetNodeGroup] = None
+        target_specific_node: Optional[TargetNodeGroup] = None
     ):
         self.random = BoolItem(
             doc="Red randomly chooses nodes to target",
@@ -323,7 +323,7 @@ class RedTargetMechanismGroup(ConfigGroup):
             properties=BoolProperties(default=False, allow_null=True),
             alias="red_prioritises_resilient_nodes"
         )
-        self.target = target if target else TargetNodeGroup(
+        self.target_specific_node = target_specific_node if target_specific_node else TargetNodeGroup(
             doc="The Config group to represent the information relevant to the red agents target node."
         )
         super().__init__(doc)
@@ -339,7 +339,7 @@ class RedTargetMechanismGroup(ConfigGroup):
                     self.prioritise_unconnected_nodes.value,
                     self.prioritise_vulnerable_nodes.value,
                     self.prioritise_resilient_nodes.value,
-                    self.target.use.value,
+                    self.target_specific_node.use.value,
                 ]
             ):
                 msg = "If the red agent does not target nodes randomly a method of targeting nodes must be set."
