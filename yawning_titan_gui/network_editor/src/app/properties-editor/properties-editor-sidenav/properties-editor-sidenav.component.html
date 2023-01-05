@@ -1,0 +1,9 @@
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" position="end">
+    <app-properties-editor [nodeId]="nodeId"></app-properties-editor>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>
