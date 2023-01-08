@@ -8,7 +8,7 @@ from yawning_titan.config.toolbox.groups.core import (
     ActionLikelihoodGroup,
     UseValueGroup,
 )
-from yawning_titan.config.toolbox.groups.validation import AnyNonZeroGroup
+from yawning_titan.config.toolbox.groups.validation import AnyNonZeroGroup, AnyUsedGroup
 from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
 from yawning_titan.config.toolbox.item_types.float_item import (
     FloatItem,
@@ -34,7 +34,7 @@ class ZeroDayGroup(ConfigGroup):
             value=use,
             doc="The red agent will pick a safe node connected to an infected node and take it over with a 100% chance to succeed (can only happen every n timesteps).",
             properties=BoolProperties(allow_null=False, default=False),
-            alias="red_uses_zero_day_action"
+            alias="red_uses_zero_day_action",
         )
         self.start_amount: IntItem = IntItem(
             value=start_amount,
@@ -42,7 +42,7 @@ class ZeroDayGroup(ConfigGroup):
             properties=IntProperties(
                 allow_null=True, default=0, min_val=0, inclusive_min=True
             ),
-            alias="zero_day_start_amount"
+            alias="zero_day_start_amount",
         )
         self.days_required: IntItem = IntItem(
             value=days_required,
@@ -50,7 +50,7 @@ class ZeroDayGroup(ConfigGroup):
             properties=IntProperties(
                 allow_null=True, default=0, min_val=0, inclusive_min=True
             ),
-            alias="days_required_for_zero_day"
+            alias="days_required_for_zero_day",
         )
         super().__init__(doc)
 
@@ -61,20 +61,20 @@ class AttackSourceGroup(ConfigGroup):
     def __init__(
         self,
         doc: Optional[str] = None,
-        only_red_agent_node: Optional[bool] = False,
+        only_main_red_node: Optional[bool] = False,
         any_red_node: Optional[bool] = False,
     ):
-        self.only_red_agent_node = BoolItem(
-            value=only_red_agent_node,
+        self.only_main_red_node = BoolItem(
+            value=only_main_red_node,
             doc="Red agent can only attack from its main node on that turn.",
             properties=BoolProperties(allow_null=False, default=False),
-            alias="red_can_only_attack_from_red_agent_node"
+            alias="red_can_only_attack_from_red_agent_node",
         )
         self.any_red_node = BoolItem(
             value=any_red_node,
             doc="Red can attack from any node that it controls.",
             properties=BoolProperties(allow_null=False, default=False),
-            alias="red_can_attack_from_any_red_node"
+            alias="red_can_attack_from_any_red_node",
         )
 
         super().__init__(doc)
@@ -100,7 +100,7 @@ class NaturalSpreadChanceGroup(AnyNonZeroGroup):
                 inclusive_min=True,
                 inclusive_max=True,
             ),
-            alias="chance_to_spread_to_connected_node"
+            alias="chance_to_spread_to_connected_node",
         )
         self.to_unconnected_node = FloatItem(
             value=to_unconnected_node,
@@ -113,7 +113,7 @@ class NaturalSpreadChanceGroup(AnyNonZeroGroup):
                 inclusive_min=True,
                 inclusive_max=True,
             ),
-            alias="chance_to_spread_to_unconnected_node"
+            alias="chance_to_spread_to_unconnected_node",
         )
         super().__init__(doc)
 
@@ -137,21 +137,32 @@ class TargetNodeGroup(ConfigGroup):
             value=target,
             doc="The name of a node that the red agent targets.",
             properties=StrProperties(allow_null=False),
-            alias="red_target_node"
+            alias="red_target_node",
         )
         self.always_choose_shortest_distance: BoolItem = BoolItem(
             value=always_choose_shortest_distance,
             doc="Whether red should pick the absolute shortest distance to the target node or choose nodes to attack based on a chance weighted inversely by distance",
             properties=BoolProperties(allow_null=True),
-            alias="red_always_chooses_shortest_distance_to_target"
+            alias="red_always_chooses_shortest_distance_to_target",
         )
         super().__init__(doc)
+
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        super().validate()
+        try:
+            if self.target.value is not None and not self.use.value:
+                msg = "If the target is set to a specific node then the element must have `used` set to True"
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        return self.validation
 
 
 # --- Tier 1 groups ---
 
 
-class RedActionSetGroup(ConfigGroup):
+class RedActionSetGroup(AnyUsedGroup):
     """The ConfigGroup to represent all permissable actions the red agent can perform."""
 
     def __init__(
@@ -162,7 +173,7 @@ class RedActionSetGroup(ConfigGroup):
         move: Optional[ActionLikelihoodChanceGroup] = None,
         basic_attack: Optional[ActionLikelihoodChanceGroup] = None,
         do_nothing: Optional[ActionLikelihoodChanceGroup] = None,
-        zero_day: Optional[ZeroDayGroup] = None
+        zero_day: Optional[ZeroDayGroup] = None,
     ):
         """The ActionLikelihoodChanceGroup constructor.
 
@@ -170,23 +181,47 @@ class RedActionSetGroup(ConfigGroup):
         :param random_infect: The chance of the action.
         :param doc: An optional descriptor.
         """
-        self.spread:ActionLikelihoodChanceGroup = spread if spread else ActionLikelihoodChanceGroup(
-            doc="Whether red tries to spread to every node connected to an infected node and the associated likelihood of this occurring."
+        self.spread: ActionLikelihoodChanceGroup = (
+            spread
+            if spread
+            else ActionLikelihoodChanceGroup(
+                doc="Whether red tries to spread to every node connected to an infected node and the associated likelihood of this occurring."
+            )
         )
-        self.random_infect:ActionLikelihoodChanceGroup = random_infect if random_infect else ActionLikelihoodChanceGroup(
-            doc="Whether red tries to infect every safe node in the environment and the associated likelihood of this occurring."
+        self.random_infect: ActionLikelihoodChanceGroup = (
+            random_infect
+            if random_infect
+            else ActionLikelihoodChanceGroup(
+                doc="Whether red tries to infect every safe node in the environment and the associated likelihood of this occurring."
+            )
         )
-        self.move:ActionLikelihoodChanceGroup = move if move else ActionLikelihoodGroup(
-            doc="Whether the red agent moves to a different node and the associated likelihood of this occurring."
+        self.move: ActionLikelihoodChanceGroup = (
+            move
+            if move
+            else ActionLikelihoodGroup(
+                doc="Whether the red agent moves to a different node and the associated likelihood of this occurring."
+            )
         )
-        self.basic_attack:ActionLikelihoodChanceGroup = basic_attack if basic_attack else ActionLikelihoodGroup(
-            doc="Whether the red agent picks a single node connected to an infected node and tries to attack and take over that node and the associated likelihood of this occurring."
+        self.basic_attack: ActionLikelihoodChanceGroup = (
+            basic_attack
+            if basic_attack
+            else ActionLikelihoodGroup(
+                doc="Whether the red agent picks a single node connected to an infected node and tries to attack and take over that node and the associated likelihood of this occurring."
+            )
         )
-        self.do_nothing:ActionLikelihoodChanceGroup = do_nothing if do_nothing else ActionLikelihoodGroup(
-            doc="Whether the red agent is able to perform no attack for a given turn and the likelihood of this occurring."
+        self.do_nothing: ActionLikelihoodChanceGroup = (
+            do_nothing
+            if do_nothing
+            else ActionLikelihoodGroup(
+                doc="Whether the red agent is able to perform no attack for a given turn and the likelihood of this occurring."
+            )
         )
-        self.zero_day:ActionLikelihoodChanceGroup = zero_day if zero_day else ZeroDayGroup(
-            doc="Group of values that collectively describe the red zero day action."
+        self.zero_day: ZeroDayGroup = (
+            zero_day
+            if zero_day
+            else ZeroDayGroup(
+                doc="Group of values that collectively describe the red zero day action."
+            )
         )
 
         self.spread.use.alias = "red_uses_spread_action"
@@ -205,19 +240,6 @@ class RedActionSetGroup(ConfigGroup):
         self.random_infect.chance.alias = "chance_for_red_to_random_compromise"
         super().__init__(doc)
 
-    def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
-        super().validate()
-
-        try:
-            if not any(e.use.value for e in self.get_config_elements().values()):
-                msg = f"At least one of {', '.join(self.get_config_elements().keys())} should be used."
-                raise ConfigGroupValidationError(msg)
-        except ConfigGroupValidationError as e:
-            self.validation.add_validation(msg, e)
-
-        return self.validation
-
 
 class RedAgentAttackGroup(ConfigGroup):
     """The ConfigGroup to represent the information related to the red agents attacks."""
@@ -230,27 +252,33 @@ class RedAgentAttackGroup(ConfigGroup):
         ignores_defences: Optional[bool] = False,
         always_succeeds: Optional[bool] = False,
         skill: Optional[UseValueGroup] = None,
-        attack_from: Optional[AttackSourceGroup] = None
+        attack_from: Optional[AttackSourceGroup] = None,
     ):
         self.ignores_defences = BoolItem(
             value=ignores_defences,
             doc="The red agent ignores the defences of nodes.",
             properties=BoolProperties(allow_null=False, default=False),
-            alias="red_ignores_defences"
+            alias="red_ignores_defences",
         )
         self.always_succeeds = BoolItem(
             value=always_succeeds,
             doc="Reds attacks always succeed.",
             properties=BoolProperties(allow_null=False, default=False),
-            alias="red_always_succeeds"
+            alias="red_always_succeeds",
         )
-        self.skill = skill if skill else UseValueGroup(
-            doc="Red uses its skill modifier when attacking nodes."
+        self.skill = (
+            skill
+            if skill
+            else UseValueGroup(doc="Red uses its skill modifier when attacking nodes.")
         )
-        self.attack_from = attack_from if attack_from else AttackSourceGroup(
-            doc=(
-                "The red agent will only ever be in one node however it can control any amount of nodes. "
-                "Can the red agent only attack from its one main node or can it attack from any node that it controls."
+        self.attack_from = (
+            attack_from
+            if attack_from
+            else AttackSourceGroup(
+                doc=(
+                    "The red agent will only ever be in one node however it can control any amount of nodes. "
+                    "Can the red agent only attack from its one main node or can it attack from any node that it controls."
+                )
             )
         )
 
@@ -266,21 +294,25 @@ class RedNaturalSpreadingGroup(ConfigGroup):
         self,
         doc: Optional[str] = None,
         capable: Optional[bool] = False,
-        chance: Optional[NaturalSpreadChanceGroup] = None
+        chance: Optional[NaturalSpreadChanceGroup] = None,
     ):
         self.capable = BoolItem(
             value=capable,
             doc="Whether the red agents infection can naturally spread to surrounding nodes",
             properties=BoolProperties(allow_null=False, default=False),
-            alias="red_can_naturally_spread"
+            alias="red_can_naturally_spread",
         )
-        self.chance = chance if chance else NaturalSpreadChanceGroup(
-            doc="the chances of reads natural spreading to different node types."
+        self.chance = (
+            chance
+            if chance
+            else NaturalSpreadChanceGroup(
+                doc="the chances of reads natural spreading to different node types."
+            )
         )
         super().__init__(doc)
 
 
-class RedTargetMechanismGroup(ConfigGroup):
+class RedTargetMechanismGroup(AnyUsedGroup):
     """The ConfigGroup to represent all possible target mechanism the red agent can use."""
 
     def __init__(
@@ -291,62 +323,66 @@ class RedTargetMechanismGroup(ConfigGroup):
         prioritise_unconnected_nodes: Optional[bool] = False,
         prioritise_vulnerable_nodes: Optional[bool] = False,
         prioritise_resilient_nodes: Optional[bool] = False,
-        target_specific_node: Optional[TargetNodeGroup] = None
+        target_specific_node: Optional[TargetNodeGroup] = None,
     ):
         self.random = BoolItem(
             doc="Red randomly chooses nodes to target",
             value=random,
             properties=BoolProperties(default=False, allow_null=True),
-            alias="red_chooses_target_at_random"
+            alias="red_chooses_target_at_random",
         )
         self.prioritise_connected_nodes = BoolItem(
             doc="Red sorts the nodes it can attack and chooses the one that has the most connections",
             value=prioritise_connected_nodes,
             properties=BoolProperties(default=False, allow_null=True),
-            alias="red_prioritises_connected_nodes"
+            alias="red_prioritises_connected_nodes",
         )
         self.prioritise_unconnected_nodes = BoolItem(
             doc="Red sorts the nodes it can attack and chooses the one that has the least connections",
             value=prioritise_unconnected_nodes,
             properties=BoolProperties(default=False, allow_null=True),
-            alias="red_prioritises_un_connected_nodes"
+            alias="red_prioritises_un_connected_nodes",
         )
         self.prioritise_vulnerable_nodes = BoolItem(
             doc="Red sorts the nodes is can attack and chooses the one that is the most vulnerable",
             value=prioritise_vulnerable_nodes,
             properties=BoolProperties(default=False, allow_null=True),
-            alias="red_prioritises_vulnerable_nodes"
+            alias="red_prioritises_vulnerable_nodes",
         )
         self.prioritise_resilient_nodes = BoolItem(
             doc="Red sorts the nodes is can attack and chooses the one that is the least vulnerable",
             value=prioritise_resilient_nodes,
             properties=BoolProperties(default=False, allow_null=True),
-            alias="red_prioritises_resilient_nodes"
+            alias="red_prioritises_resilient_nodes",
         )
-        self.target_specific_node = target_specific_node if target_specific_node else TargetNodeGroup(
-            doc="The Config group to represent the information relevant to the red agents target node."
+        self.target_specific_node = (
+            target_specific_node
+            if target_specific_node
+            else TargetNodeGroup(
+                doc="The Config group to represent the information relevant to the red agents target node."
+            )
         )
         super().__init__(doc)
 
-    def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
-        super().validate()
-        try:
-            if not self.random and not any(
-                v is True
-                for v in [
-                    self.prioritise_connected_nodes.value,
-                    self.prioritise_unconnected_nodes.value,
-                    self.prioritise_vulnerable_nodes.value,
-                    self.prioritise_resilient_nodes.value,
-                    self.target_specific_node.use.value,
-                ]
-            ):
-                msg = "If the red agent does not target nodes randomly a method of targeting nodes must be set."
-                raise ConfigGroupValidationError(msg)
-        except ConfigGroupValidationError as e:
-            self.validation.add_validation(msg, e)
-        return self.validation
+    # def validate(self) -> ConfigGroupValidation:
+    #     """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+    #     super().validate()
+    #     try:
+    #         if not self.random and not any(
+    #             v is True
+    #             for v in [
+    #                 self.prioritise_connected_nodes.value,
+    #                 self.prioritise_unconnected_nodes.value,
+    #                 self.prioritise_vulnerable_nodes.value,
+    #                 self.prioritise_resilient_nodes.value,
+    #                 self.target_specific_node.use.value,
+    #             ]
+    #         ):
+    #             msg = "If the red agent does not target nodes randomly a method of targeting nodes must be set."
+    #             raise ConfigGroupValidationError(msg)
+    #     except ConfigGroupValidationError as e:
+    #         self.validation.add_validation(msg, e)
+    #     return self.validation
 
 
 # --- Tier 2 group ---
@@ -361,19 +397,35 @@ class Red(ConfigGroup):
         agent_attack: Optional[RedAgentAttackGroup] = None,
         action_set: Optional[RedActionSetGroup] = None,
         natural_spreading: Optional[RedNaturalSpreadingGroup] = None,
-        target_mechanism: Optional[RedTargetMechanismGroup] = None
+        target_mechanism: Optional[RedTargetMechanismGroup] = None,
     ):
-        self.agent_attack = agent_attack if agent_attack else RedAgentAttackGroup(
-            doc="All information related to the red agents attacks."
+        self.agent_attack = (
+            agent_attack
+            if agent_attack
+            else RedAgentAttackGroup(
+                doc="All information related to the red agents attacks."
+            )
         )
-        self.action_set = action_set if action_set else RedActionSetGroup(
-            doc="All permissable actions the red agent can perform."
+        self.action_set = (
+            action_set
+            if action_set
+            else RedActionSetGroup(
+                doc="All permissable actions the red agent can perform."
+            )
         )
-        self.natural_spreading = natural_spreading if natural_spreading else RedNaturalSpreadingGroup(
-            doc="The information related to the red agents natural spreading ability."
+        self.natural_spreading = (
+            natural_spreading
+            if natural_spreading
+            else RedNaturalSpreadingGroup(
+                doc="The information related to the red agents natural spreading ability."
+            )
         )
-        self.target_mechanism = target_mechanism if target_mechanism else RedTargetMechanismGroup(
-            doc="all possible target mechanism the red agent can use."
+        self.target_mechanism = (
+            target_mechanism
+            if target_mechanism
+            else RedTargetMechanismGroup(
+                doc="all possible target mechanism the red agent can use."
+            )
         )
         super().__init__(doc)
 

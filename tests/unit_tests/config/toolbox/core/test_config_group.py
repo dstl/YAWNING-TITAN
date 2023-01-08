@@ -3,24 +3,75 @@ from typing import Optional
 
 import pytest
 
-from yawning_titan.config.toolbox.core import ConfigGroup
+from yawning_titan.config.toolbox.core import ConfigGroup, ConfigGroupValidation
 from yawning_titan.config.toolbox.item_types.bool_item import BoolItem
 from yawning_titan.config.toolbox.item_types.float_item import FloatItem
+from yawning_titan.config.toolbox.item_types.int_item import IntItem
 from yawning_titan.config.toolbox.item_types.str_item import StrItem
+from yawning_titan.exceptions import ConfigGroupValidationError
+
+
+class Group(ConfigGroup):
+    """Basic implementation of a :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+
+    def __init__(self, doc: Optional[str] = None):
+        self.a: BoolItem = BoolItem(value=False, alias="legacy_a")
+        self.b: FloatItem = FloatItem(value=1, alias="legacy_b")
+        self.c: StrItem = StrItem(value="test", alias="legacy_c")
+        super().__init__(doc)
+
+
+class GroupTier1(ConfigGroup):
+    """Basic implementation of a nested :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+
+    def __init__(self, doc: Optional[str] = None):
+        self.bool: BoolItem = BoolItem(value=False)
+        self.float: FloatItem = FloatItem(value=1)
+        super().__init__(doc)
+
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        super().validate()
+        try:
+            if self.bool.value and self.float.value != 1:
+                msg = "test error tier 1"
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        return self.validation
+
+
+class GroupTier2(ConfigGroup):
+    """Basic implementation of a nested :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+
+    def __init__(self, doc: Optional[str] = None):
+        self.bool: BoolItem = BoolItem(value=False)
+        self.int: IntItem = IntItem(value=1)
+        self.tier_1: GroupTier1 = GroupTier1()
+        super().__init__(doc)
+
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        super().validate()
+        try:
+            if self.bool.value and self.int.value != 1:
+                msg = "test error tier 2"
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        return self.validation
 
 
 @pytest.fixture
 def test_group():
     """A test instance of :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+    return Group()
 
-    class TestGroup(ConfigGroup):
-        def __init__(self, doc: Optional[str] = None):
-            self.a: BoolItem = BoolItem(value=False, alias="legacy_a")
-            self.b: FloatItem = FloatItem(value=1, alias="legacy_b")
-            self.c: StrItem = StrItem(value="test", alias="legacy_c")
-            super().__init__(doc)
 
-    return TestGroup()
+@pytest.fixture
+def multi_tier_test_group():
+    """A nested test instance of :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+    return GroupTier2()
 
 
 @pytest.mark.unit_test
@@ -58,8 +109,69 @@ def test_stringify(test_group: ConfigGroup):
     s = test_group.stringify()
     assert (
         s
-        == "TestGroup(a=False, b=1, c=test, doc=None, validation=ConfigGroupValidation(passed=True, fail_reasons=[], fail_exceptions=[]))"
+        == "Group(a=False, b=1, c=test, doc=None, validation=ConfigGroupValidation(passed=True, fail_reasons=[], fail_exceptions=[]))"
     )
+
+
+@pytest.mark.unit_test
+def test_multi_tier_group_validation_passed(multi_tier_test_group: GroupTier2):
+    """Test the element and group validation works for groups with multiple nested tiers."""
+    multi_tier_test_group.validate()
+    assert multi_tier_test_group.validation.passed
+
+
+@pytest.mark.unit_test
+def test_multi_tier_group_tier_1_validation_group_failed(
+    multi_tier_test_group: GroupTier2,
+):
+    """Test the element and group validation works for groups with multiple nested tiers."""
+    multi_tier_test_group.tier_1.bool.value = True
+    multi_tier_test_group.tier_1.float.value = 2
+
+    multi_tier_test_group.validate()
+
+    assert not multi_tier_test_group.validation.passed
+    assert multi_tier_test_group.validation.group_passed
+    assert not multi_tier_test_group.validation.elements_passed
+
+
+@pytest.mark.unit_test
+def test_multi_tier_group_tier_2_validation_group_failed(
+    multi_tier_test_group: GroupTier2,
+):
+    """Test the element and group validation works for groups with multiple nested tiers."""
+    multi_tier_test_group.bool.value = True
+    multi_tier_test_group.int.value = 2
+
+    multi_tier_test_group.validate()
+
+    assert not multi_tier_test_group.validation.passed
+    assert not multi_tier_test_group.validation.group_passed
+    assert multi_tier_test_group.validation.elements_passed
+
+
+@pytest.mark.unit_test
+def test_multi_tier_group_tier_2_item_failed(multi_tier_test_group: GroupTier2):
+    """Test the element and group validation works for groups with multiple nested tiers."""
+    multi_tier_test_group.bool.value = "test"
+
+    multi_tier_test_group.validate()
+
+    assert not multi_tier_test_group.validation.passed
+    assert multi_tier_test_group.validation.group_passed
+    assert not multi_tier_test_group.validation.elements_passed
+
+
+@pytest.mark.unit_test
+def test_multi_tier_group_tier_1_item_failed(multi_tier_test_group: GroupTier2):
+    """Test the element and group validation works for groups with multiple nested tiers."""
+    multi_tier_test_group.tier_1.bool.value = "test"
+
+    multi_tier_test_group.validate()
+
+    assert not multi_tier_test_group.validation.passed
+    assert multi_tier_test_group.validation.group_passed
+    assert not multi_tier_test_group.validation.elements_passed
 
 
 @pytest.mark.unit_test

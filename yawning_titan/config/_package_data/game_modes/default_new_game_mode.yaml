@@ -8,7 +8,7 @@ red:
       use: True
       value: 0.5
     attack_from:
-      only_red_agent_node: False
+      only_main_red_node: False
       any_red_node: True
   action_set:
     spread:

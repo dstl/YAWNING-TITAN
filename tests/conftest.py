@@ -12,7 +12,7 @@ from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.ppo import MlpPolicy as PPOMlp
 from yaml import SafeLoader
 
-from yawning_titan.config.game_config.game_mode_config import GameModeConfig
+from yawning_titan.config.game_config.game_mode import GameMode
 from yawning_titan.config.game_modes import default_game_mode_path
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
@@ -20,7 +20,7 @@ from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.networks import network_creator
-from yawning_titan.networks.network import Network
+from yawning_titan.networks.new_network import Network
 
 
 @pytest.fixture
@@ -82,14 +82,19 @@ def init_test_env():
         Returns:
             env: An OpenAI gym environment
         """
+        with open(settings_path) as f:
+            config_dict = yaml.safe_load(f)
+
         network = Network(
             matrix=adj_matrix,
             positions=positions,
             entry_nodes=entry_nodes,
             high_value_nodes=high_value_nodes,
         )
+        network.set_from_dict(config_dict["GAME_RULES"], legacy=True)
 
-        game_mode = GameModeConfig.create_from_yaml(settings_path)
+        game_mode = GameMode()
+        game_mode.set_from_dict(config_dict, legacy=True)
 
         network_interface = NetworkInterface(game_mode=game_mode, network=network)
 
@@ -184,7 +189,7 @@ def basic_2_agent_loop(
         )
 
         agent = PPO(
-            PPOMlp, env, verbose=1, seed=env.network_interface.random_seed
+            PPOMlp, env, verbose=1, seed=env.network_interface.random_seed.value
         )  # TODO: allow PPO to inherit environment random_seed. Monkey patch additional feature?
 
         agent.learn(total_timesteps=1000, n_eval_episodes=100, callback=eval_callback)
