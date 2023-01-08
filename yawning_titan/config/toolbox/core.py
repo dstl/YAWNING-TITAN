@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from abc import ABC
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Union
 
 import yaml
 
-from yawning_titan.config.game_config.game_mode_config import _LOGGER
+from yawning_titan.config.game_config import _LOGGER
 from yawning_titan.exceptions import (
     ConfigGroupValidationError,
     ConfigItemValidationError,
@@ -15,11 +15,11 @@ from yawning_titan.exceptions import (
 yaml.Dumper.ignore_aliases = lambda *args: True
 
 
-class ConfigBase:
+class ConfigBase(ABC):
     """Used to provide helper methods to represent a ConfigGroup object."""
 
     def get_config_elements(
-        self, _type: Optional[Union[ConfigItem, ConfigGroup]] = None
+        self, types: Optional[Union[ConfigItem, ConfigGroup]] = None
     ) -> Dict[str, Union[ConfigItem, ConfigGroup]]:
         """
         Get the attributes of the class that are either :class: `ConfigGroup` or :class:`ConfigItem`.
@@ -28,11 +28,13 @@ class ConfigBase:
 
         :return: A dictionary of names to config elements.
         """
-        if _type is not None:
+        if types is not None:
+            if isinstance(types, list):
+                types = tuple(types)
             return {
                 k: v
                 for k, v in self.__dict__.items()
-                if isinstance(v, _type) and not k.startswith("_")
+                if isinstance(v, types) and not k.startswith("_")
             }
         return {
             k: v
@@ -160,34 +162,83 @@ class ConfigValidationBase(ConfigBase):
 
     def __init__(
         self,
-        passed: bool = True,
-        fail_reason: Optional[str] = None,
-        fail_exception: Optional[ConfigGroupValidationError] = None,
+        fail_reasons: Optional[Union[List[str], str]] = None,
+        fail_exceptions: Optional[
+            Union[
+                List[Union[ConfigGroupValidationError, ConfigItemValidationError]],
+                Union[ConfigGroupValidationError, ConfigItemValidationError],
+            ]
+        ] = None,
     ):
-        self.passed: bool = passed
-        self.fail_reasons: List[str] = [fail_reason] if fail_reason is not None else []
-        self.fail_exceptions: List[ConfigGroupValidationError] = (
-            [fail_exception] if fail_exception is not None else []
-        )
+        if isinstance(fail_reasons, list):
+            self.fail_reasons: List[str] = fail_reasons
+        elif isinstance(fail_reasons, str):
+            self.fail_reasons: List[str] = [fail_reasons]
+        else:
+            self.fail_reasons: List[str] = []
+
+        if isinstance(fail_exceptions, list):
+            self.fail_exceptions: List[
+                Union[ConfigGroupValidationError, ConfigItemValidationError]
+            ] = fail_exceptions
+        elif isinstance(fail_reasons, str):
+            self.fail_exceptions: List[
+                Union[ConfigGroupValidationError, ConfigItemValidationError]
+            ] = [fail_exceptions]
+        else:
+            self.fail_exceptions: List[
+                Union[ConfigGroupValidationError, ConfigItemValidationError]
+            ] = []
 
     def add_validation(self, fail_reason: str, exception: ConfigGroupValidationError):
         """
-        Add a validation fail_reason, exception pair and set the validation result :attribute: passed as False.
+        Add a validation fail_reason, exception pair to their respective lists.
 
         Additionally check that no such error already exists.
 
         :param fail_reason: A string message to describe a particular error.
         :param exception: A wrapped `Exception` object that can be used to raise an error for the `fail_reason`.
         """
-        self.passed = False
         if fail_reason not in self.fail_reasons:
             self.fail_reasons.append(fail_reason)
         if exception not in self.fail_exceptions:
             self.fail_exceptions.append(exception)
 
+    def stringify(self):
+        """Represent the class as a string.
+
+        :return: A string.
+        """
+        string = f"{self.__class__.__name__}("
+
+        strings = [f"passed={self.passed}"]
+        strings.extend(
+            [f"{name}={val}" for name, val in self.get_non_config_elements().items()]
+        )
+        return string + ", ".join(strings) + ")"
+
+    @property
+    @abstractmethod
+    def passed(self) -> bool:
+        """
+        Returns True if there are no :attribute: `fail_reasons` or :attribute: `fail_exceptions`.
+
+        :return: A bool.
+        """
+        pass
+
 
 class ConfigItemValidation(ConfigValidationBase):
     """Create :class:`ConfigItemValidation` from :class:`ConfigValidationBase`."""
+
+    @property
+    def passed(self) -> bool:
+        """
+        Returns True if there are no :attribute: `fail_reasons` or :attribute: `fail_exceptions`.
+
+        :return: A bool.
+        """
+        return not (self.fail_exceptions or self.fail_reasons)
 
 
 class ConfigGroupValidation(ConfigValidationBase):
@@ -199,12 +250,16 @@ class ConfigGroupValidation(ConfigValidationBase):
 
     def __init__(
         self,
-        passed: bool = True,
-        fail_reason: Optional[str] = None,
-        fail_exception: Optional[ConfigGroupValidationError] = None,
+        fail_reasons: Optional[Union[List[str], str]] = None,
+        fail_exceptions: Optional[
+            Union[
+                List[Union[ConfigGroupValidationError, ConfigItemValidationError]],
+                Union[ConfigGroupValidationError, ConfigItemValidationError],
+            ]
+        ] = None,
     ):
         self._element_validation = {}
-        super().__init__(passed, fail_reason, fail_exception)
+        super().__init__(fail_reasons, fail_exceptions)
 
     def add_element_validation(
         self,
@@ -260,7 +315,29 @@ class ConfigGroupValidation(ConfigValidationBase):
         print(string)
 
     @property
-    def element_validation(self) -> Dict[str, ConfigItemValidation]:
+    def passed(self) -> bool:
+        """
+        Returns True if there are no :attribute: `fail_reasons` or :attribute: `fail_exceptions` and the group passed.
+
+        The group validation has passed and all element validation has passed.
+
+        :return: A bool.
+        """
+        return self.elements_passed and self.group_passed
+
+    @property
+    def group_passed(self) -> bool:
+        """
+        Returns True if there are no :attribute: `fail_reasons` or :attribute: `fail_exceptions`.
+
+        :return: A bool.
+        """
+        return not (self.fail_exceptions or self.fail_reasons)
+
+    @property
+    def element_validation(
+        self,
+    ) -> Dict[str, Union[ConfigItemValidation, ConfigGroupValidationError]]:
         """
         The dict of element to :class:`ConfigItemValidation` and :class:`ConfigGroupValidation` validations.
 
@@ -269,7 +346,7 @@ class ConfigGroupValidation(ConfigValidationBase):
         return self._element_validation
 
     @property
-    def group_passed(self) -> bool:
+    def elements_passed(self) -> bool:
         """
         Returns True if all items passed validation, otherwise returns False.
 
@@ -396,11 +473,13 @@ class ConfigGroup(ConfigBase, ABC):
             return self.to_legacy_dict()
 
         attr_dict = {"doc": self.doc} if self.doc is not None else {}
+        # attr_dict = self.get_non_config_elements()
         element_dict = {
             k: e.to_dict(values_only=values_only)
             for k, e in self.get_config_elements().items()
             if not k.startswith("_")
         }
+
         if values_only:
             return element_dict
         return {**attr_dict, **element_dict}
@@ -419,6 +498,7 @@ class ConfigGroup(ConfigBase, ABC):
                 flattened_dict[v.alias] = v
             else:
                 flattened_dict.update(v.to_legacy_dict(flattened_dict))
+
         return flattened_dict
 
     def validate_elements(self):
@@ -426,19 +506,32 @@ class ConfigGroup(ConfigBase, ABC):
         for k, element in self.get_config_elements().items():
             self.validation.add_element_validation(k, element.validate())
 
-    def set_from_dict(self, config_dict: dict, root: bool = True, legacy: bool = False):
+    def set_from_dict(
+        self,
+        config_dict: dict,
+        root: bool = True,
+        legacy: bool = False,
+        legacy_lookup=None,
+    ):
         """
         Set the values of all :class: `ConfigGroup` or :class:`ConfigItem` elements.
 
         :param config_dict: A dictionary representing values of all config elements.
         :param root: Whether the element is a base level element or not.
             if the element is a root then it should validate all of its descendants.
+        :param legacy: Whether to use the alias names for config elements to construct the config from a legacy dictionary.
         """
         if legacy:
-            legacy_lookup = self.to_legacy_dict()
+            if legacy_lookup is None:
+                legacy_lookup = self.to_legacy_dict()
+
             for element_name, v in config_dict.items():
-                element = legacy_lookup.get(element_name)
-                if not isinstance(v, dict) and isinstance(element, ConfigItem):
+                element: ConfigItem = legacy_lookup.get(element_name)
+                if isinstance(v, dict):
+                    self.set_from_dict(
+                        v, legacy=True, root=False, legacy_lookup=legacy_lookup
+                    )
+                if element is not None:
                     element.set_value(v)
         else:
             for element_name, v in config_dict.items():
@@ -450,11 +543,12 @@ class ConfigGroup(ConfigBase, ABC):
         if root:
             self.validate()
 
-    def set_from_yaml(self, file_path: str):
+    def set_from_yaml(self, file_path: str, legacy: bool = False):
         """
         Set the elements of the group from a .yaml file.
 
-        :param file_path: The path to the .yaml file
+        :param file_path: The path to the .yaml file.
+        :param legacy: Whether to use the alias names for config elements to construct the config from a legacy dictionary.
         """
         try:
             with open(file_path) as f:
@@ -463,7 +557,7 @@ class ConfigGroup(ConfigBase, ABC):
             msg = f"Configuration file does not exist: {file_path}"
             _LOGGER.critical(msg, exc_info=True)
             raise e
-        self.set_from_dict(config_dict)
+        self.set_from_dict(config_dict, legacy=legacy)
 
     def to_yaml(self, file_path: str):
         """

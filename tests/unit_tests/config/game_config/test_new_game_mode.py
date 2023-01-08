@@ -3,7 +3,9 @@ from pathlib import Path
 from uuid import uuid4
 
 import pytest
+import yaml
 
+from tests import TEST_CONFIG_PATH
 from tests.unit_tests.config import (
     get_default_config_dict,
     get_default_config_dict_legacy,
@@ -158,6 +160,8 @@ def test_read_created_yaml(tmp_path_factory):
     new_game_mode: GameMode = GameMode()
 
     new_game_mode.set_from_yaml(config_path)
+    print("---1", yaml.dump(new_game_mode.to_dict(values_only=True)))
+    print("---2", yaml.dump(config_dict))
     assert new_game_mode.to_dict(values_only=True) == config_dict
 
 
@@ -175,8 +179,22 @@ def test_default_game_mode_from_legacy(default_game_mode: GameMode):
     game_mode = GameMode()
 
     game_mode.set_from_dict(get_default_config_dict_legacy(), legacy=True)
-    import yaml
 
-    print("LLLL", yaml.dump(game_mode.to_dict(values_only=True)))
     assert game_mode == default_game_mode
     assert game_mode.to_dict() == default_game_mode.to_dict()
+
+
+def test_everything_changed_game_mode_from_legacy():
+    """Create a game mode instance using the everything changed config file to ensure all items can be updated."""
+    with open(TEST_CONFIG_PATH / "new/everything_changed.yaml") as f:
+        config_dict = yaml.safe_load(f)
+
+    game_mode = GameMode()
+    game_mode.set_from_yaml(
+        (TEST_CONFIG_PATH / "everything_changed.yaml").as_posix(), legacy=True
+    )
+
+    d = game_mode.to_dict(values_only=True)
+    d["red"]["target_mechanism"]["target_specific_node"].pop("use")
+
+    assert d == config_dict

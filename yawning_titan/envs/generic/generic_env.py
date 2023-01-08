@@ -101,8 +101,8 @@ class GenericNetworkEnv(gym.Env):
 
         :return: A new starting observation (numpy array).
         """
-        if self.random_seed is not None:  # conditionally set random_seed
-            set_random_seed(self.random_seed, True)
+        if self.random_seed.value is not None:  # conditionally set random_seed
+            set_random_seed(self.random_seed.value, True)
         self.network_interface.reset()
         self.RED.reset()
         self.current_duration = 0
@@ -149,7 +149,7 @@ class GenericNetworkEnv(gym.Env):
 
         # The red agent performs their turn
         if (
-            self.network_interface.game_mode.game_rules.grace_period_length
+            self.network_interface.game_mode.game_rules.grace_period_length.value
             <= self.current_duration
         ):
             red_info = self.RED.perform_action()
@@ -200,13 +200,15 @@ class GenericNetworkEnv(gym.Env):
         blue_node = None
 
         # Check if the game is over and red has won
-        if self.network_interface.game_mode.game_rules.lose_when_all_nodes_lost:
+        if (
+            self.network_interface.game_mode.game_rules.blue_loss_condition.all_nodes_lost.value
+        ):
             if number_uncompromised == 0:
                 done = True
-                reward = self.network_interface.game_mode.rewards.rewards_for_loss
+                reward = self.network_interface.game_mode.rewards.for_loss.value
                 blue_action = "failed"
         if (
-            self.network_interface.game_mode.game_rules.lose_when_n_percent_of_nodes_lost
+            self.network_interface.game_mode.game_rules.blue_loss_condition.n_percent_nodes_lost.use.value
         ):
             # calculate the number of safe nodes
             percent_comp = (
@@ -215,13 +217,15 @@ class GenericNetworkEnv(gym.Env):
             )
             if (
                 percent_comp
-                >= self.network_interface.game_mode.game_rules.percentage_of_nodes_compromised_equals_loss
+                >= self.network_interface.game_mode.game_rules.blue_loss_condition.n_percent_nodes_lost.value.value
             ):
                 done = True
-                reward = self.network_interface.game_mode.rewards.rewards_for_loss
+                reward = self.network_interface.game_mode.rewards.for_loss.value
                 # If the game ends before blue has had their turn the the blue action is set to failed
                 blue_action = "failed"
-        if self.network_interface.game_mode.game_rules.lose_when_high_value_node_lost:
+        if (
+            self.network_interface.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value
+        ):
 
             # check if a high value node was compromised
             compromised_hvn = False
@@ -233,7 +237,7 @@ class GenericNetworkEnv(gym.Env):
             if compromised_hvn:
                 # If this mode is selected then the game ends if the high value node has been compromised
                 done = True
-                reward = self.network_interface.game_mode.rewards.rewards_for_loss
+                reward = self.network_interface.game_mode.rewards.for_loss.value
                 blue_action = "failed"
 
         # if self.network_interface.gr_loss_tn:
@@ -246,18 +250,18 @@ class GenericNetworkEnv(gym.Env):
             ):
                 # If this mode is selected then the game ends if the target node has been compromised
                 done = True
-                reward = self.network_interface.game_mode.rewards.rewards_for_loss
+                reward = self.network_interface.game_mode.rewards.for_loss.value
                 blue_action = "failed"
 
         if done:
             if (
-                self.network_interface.game_mode.rewards.reduce_negative_rewards_for_closer_fails
+                self.network_interface.game_mode.rewards.reduce_negative_rewards_for_closer_fails.value
             ):
                 reward = reward * (
                     1
                     - (
                         self.current_duration
-                        / self.network_interface.game_mode.game_rules.max_steps
+                        / self.network_interface.game_mode.game_rules.max_steps.value
                     )
                 )
         if not done:
@@ -288,7 +292,7 @@ class GenericNetworkEnv(gym.Env):
 
             reward = getattr(
                 reward_functions,
-                self.network_interface.game_mode.rewards.reward_function,
+                self.network_interface.game_mode.rewards.function.value,
             )(reward_args)
 
             # gets the current observation from the environment
@@ -300,13 +304,13 @@ class GenericNetworkEnv(gym.Env):
             # if the total number of steps reaches the set end then the blue agent wins and is rewarded accordingly
             if (
                 self.current_duration
-                == self.network_interface.game_mode.game_rules.max_steps
+                == self.network_interface.game_mode.game_rules.max_steps.value
             ):
                 if (
-                    self.network_interface.game_mode.rewards.end_rewards_are_multiplied_by_end_state
+                    self.network_interface.game_mode.rewards.end_rewards_are_multiplied_by_end_state.value
                 ):
                     reward = (
-                        self.network_interface.game_mode.rewards.end_rewards_are_multiplied_by_end_state
+                        self.network_interface.game_mode.rewards.end_rewards_are_multiplied_by_end_state.value
                         * (
                             len(self.network_interface.get_nodes(filter_true_safe=True))
                             / self.network_interface.get_number_of_nodes()
@@ -314,7 +318,7 @@ class GenericNetworkEnv(gym.Env):
                     )
                 else:
                     reward = (
-                        self.network_interface.game_mode.rewards.rewards_for_reaching_max_steps
+                        self.network_interface.game_mode.rewards.for_reaching_max_steps.value
                     )
                 done = True
 
@@ -337,7 +341,9 @@ class GenericNetworkEnv(gym.Env):
                 self.network_interface.get_red_location()
             )
 
-        if self.network_interface.game_mode.miscellaneous.output_timestep_data_to_json:
+        if (
+            self.network_interface.game_mode.miscellaneous.output_timestep_data_to_json.value
+        ):
             current_state = self.network_interface.create_json_time_step()
             self.network_interface.save_json(current_state, self.current_duration)
 
@@ -349,7 +355,7 @@ class GenericNetworkEnv(gym.Env):
             # Populate the current game's dictionary of stats with the episode winner and the number of timesteps
             if (
                 self.current_duration
-                == self.network_interface.game_mode.game_rules.max_steps
+                == self.network_interface.game_mode.game_rules.max_steps.value
             ):
 
                 self.current_game_stats = {
@@ -427,7 +433,9 @@ class GenericNetworkEnv(gym.Env):
             attacks = self.network_interface.get_true_attacks()
         reward = round(self.current_reward, 2)
         special_nodes = {}
-        if self.network_interface.game_mode.game_rules.lose_when_high_value_node_lost:
+        if (
+            self.network_interface.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value
+        ):
             hvn = self.network_interface.get_high_value_nodes()
 
             # iterate through the high value nodes
@@ -452,7 +460,7 @@ class GenericNetworkEnv(gym.Env):
             "RL blue agent vs probabilistic red in a generic network environment",
             special_nodes=special_nodes,
             entrance_nodes=self.network_interface.entry_nodes,
-            target_node=self.network_interface.game_mode.red.red_target_node,
+            target_node=self.network_interface.game_mode.red.target_mechanism.target_specific_node.target.value,
             show_only_blue_view=show_only_blue_view,
             show_node_names=show_node_names,
         )

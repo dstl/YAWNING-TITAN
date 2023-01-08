@@ -1,12 +1,12 @@
 # from __future__ import annotations
 
-# from abc import ABC, abstractmethod
+# from abc import ABC
 # from dataclasses import dataclass, field
 # from typing import Any, Dict, List, Optional, Union
 
 # import yaml
+# from yawning_titan.config.game_config import _LOGGER
 
-# from yawning_titan.config.game_config.game_mode_config import _LOGGER
 # from yawning_titan.exceptions import (
 #     ConfigGroupValidationError,
 #     ConfigItemValidationError,
@@ -29,7 +29,11 @@
 #         :return: A dictionary of names to config elements.
 #         """
 #         if _type is not None:
-#             return {k: v for k, v in self.__dict__.items() if isinstance(v, _type) and not k.startswith("_")}
+#             return {
+#                 k: v
+#                 for k, v in self.__dict__.items()
+#                 if isinstance(v, _type) and not k.startswith("_")
+#             }
 #         return {
 #             k: v
 #             for k, v in self.__dict__.items()
@@ -91,7 +95,6 @@
 #         :return: A boolean True if the elements holds the same data otherwise False.
 #         """
 #         if isinstance(other, self.__class__):
-#             print("HAHS", hash(self), hash(other))
 #             return hash(self) == hash(other)
 #         return False
 
@@ -101,7 +104,7 @@
 #     """An Abstract Base Class that is inherited by config data type properties."""
 
 #     _allowed_types: List[type] = None
-#     """"""
+#     """The allowed data types for the item."""
 #     allow_null: Optional[bool] = None
 #     """`True` if the config _value can be left empty, otherwise `False`."""
 #     default: Optional[Any] = None
@@ -113,16 +116,18 @@
 #             if not validated_default.passed:
 #                 raise validated_default.fail_exceptions[0]
 
-#     @abstractmethod
 #     def to_dict(self) -> Dict[str, Any]:
 #         """
 #         An abstract method that returns the properties as a dict.
 
 #         :return: A dict.
 #         """
-#         return {k: v for k, v in self.__dict__.items() if v is not None}
+#         return {
+#             k: v
+#             for k, v in self.__dict__.items()
+#             if v is not None and not k.startswith("_")
+#         }
 
-#     # @abstractmethod
 #     def validate(self, val) -> ConfigItemValidation:
 #         """Perform the base validation checks common to all `ConfigItem` elements.
 
@@ -270,7 +275,9 @@
 
 #         :return: A bool.
 #         """
-#         return all(v.passed for v in self.element_validation.values())
+#         items_passed = all(v.passed for v in self.element_validation.values() if not hasattr(v,"group_passed"))
+#         groups_passed = all((v.passed and v.group_passed) for v in self.element_validation.values() if hasattr(v,"group_passed"))
+#         return items_passed and groups_passed
 
 
 # @dataclass
@@ -290,11 +297,21 @@
 #     validation: ConfigItemValidation = None
 #     """The instance of ConfigItemValidation that provides access to the item validation details."""
 
-
 #     def __post_init__(self):
 #         if self.value is None and self.properties.default:
 #             self.value = self.properties.default
 #         self.validate()
+
+#     def __setattr__(self, __name: str, __value: Any) -> None:
+#         """
+#         Set an attribute of the :class: `ConfigItem` if the value is to be set, call the validation method.
+
+#         :param __name: the name of the attribute to be set
+#         :param __value: the value to set the attribute to
+#         """
+#         self.__dict__[__name] = __value
+#         if __name == "value":
+#             self.validate()
 
 #     def to_dict(
 #         self,
@@ -341,17 +358,6 @@
 #         """
 #         self.__dict__["value"] = value
 
-#     def __setattr__(self, __name: str, __value: Any) -> None:
-#         """
-#         Set an attribute of the `ConfigItem` if the value is to be set, call the validation method.
-
-#         :param __name: the name of the attribute to be set
-#         :param __value: the value to set the attribute to
-#         """
-#         self.__dict__[__name] = __value
-#         if __name == "value":
-#             self.validate()
-
 #     def stringify(self):
 #         """This is here to allow stringify methods to be call on both :class: `ConfigItem` and :class: `ConfigGroup` classes."""
 #         return self.value
@@ -374,18 +380,11 @@
 
 #         :return: An instance of :class:`ConfigGroupValidation`.
 #         """
-#         # if not hasattr(self, "validation"):
-#         print("NEW VALIDATION FOR ", self.__class__.__name__)
 #         self.validation = ConfigGroupValidation()
 #         self.validate_elements()
 #         return self.validation
 
-#     # def reset_validation(self):
-#     #     """Reset the :attribute: `validation` attribute. DEPRICATED."""
-#     #     print("RESETTING VALIDATIOn")
-#     #     self.validation = ConfigGroupValidation()
-
-#     def to_dict(self, values_only: Optional[bool] = False, legacy: bool=False):
+#     def to_dict(self, values_only: Optional[bool] = False, legacy: bool = False):
 #         """
 #         Return the ConfigGroup as a dict.
 
@@ -399,28 +398,20 @@
 #             return self.to_legacy_dict()
 
 #         attr_dict = {"doc": self.doc} if self.doc is not None else {}
+#         #attr_dict = self.get_non_config_elements()
 #         element_dict = {
 #             k: e.to_dict(values_only=values_only)
 #             for k, e in self.get_config_elements().items()
+#             if not k.startswith("_")
 #         }
+
 #         if values_only:
 #             return element_dict
 #         return {**attr_dict, **element_dict}
 
-#     # def flatten(self, target:str=None, flattened_dict:Dict[str,Any]=None, root:bool=True):
-#     #     """Flatten the group into a unitary depth dictionary """
-#     #     if root:
-#     #         flattened_dict = {}
-#     #     for k, v in self.get_config_elements().items():
-#     #         if root:
-#     #             target = "self"
-#     #         if isinstance(v,ConfigItem):
-#     #             flattened_dict[f"{target}.{k}"] = v
-#     #         else:
-#     #             flattened_dict.update(v.flatten(f"{target}.{k}",flattened_dict,False))
-#     #     return flattened_dict
-
-#     def to_legacy_dict(self, flattened_dict: Dict[str, Any]=None)->Dict[str,ConfigItem]:
+#     def to_legacy_dict(
+#         self, flattened_dict: Dict[str, Any] = None
+#     ) -> Dict[str, ConfigItem]:
 #         """Convert the group into a unitary depth dictionary of legacy config value (aliases) to :class: `ConfigItem`'s.
 
 #         :return: a dictionary
@@ -428,49 +419,54 @@
 #         if flattened_dict is None:
 #             flattened_dict = {}
 #         for v in self.get_config_elements().values():
-#             if isinstance(v,ConfigItem):
+#             if isinstance(v, ConfigItem):
 #                 flattened_dict[v.alias] = v
 #             else:
 #                 flattened_dict.update(v.to_legacy_dict(flattened_dict))
-#         return flattened_dict
 
+#         return flattened_dict
 
 #     def validate_elements(self):
 #         """Call the .validate() method on each of the elements in the group."""
 #         for k, element in self.get_config_elements().items():
 #             self.validation.add_element_validation(k, element.validate())
 
-#     def set_from_dict(self, config_dict: dict, root: bool = True, legacy:bool=False):
+#     def set_from_dict(self, config_dict: dict, root: bool = True, legacy: bool = False, legacy_lookup = None):
 #         """
 #         Set the values of all :class: `ConfigGroup` or :class:`ConfigItem` elements.
 
 #         :param config_dict: A dictionary representing values of all config elements.
 #         :param root: Whether the element is a base level element or not.
 #             if the element is a root then it should validate all of its descendants.
+#         :param legacy: Whether to use the alias names for config elements to construct the config from a legacy dictionary.
 #         """
 #         if legacy:
-#             legacy_lookup = self.to_legacy_dict()
+#             if legacy_lookup is None:
+#                 legacy_lookup = self.to_legacy_dict()
+#             # print("LEGACY KEYS",legacy_lookup.keys())
+#             # print("DFKG KEYS",config_dict.keys())
 #             for element_name, v in config_dict.items():
-#                 element = legacy_lookup.get(element_name)
-#                 if not isinstance(v,dict) and isinstance(element, ConfigItem):
+#                 element:ConfigItem = legacy_lookup.get(element_name)
+#                 if isinstance(v, dict):
+#                     self.set_from_dict(v,legacy=True,root=False,legacy_lookup=legacy_lookup)
+#                 if element is not None:
 #                     element.set_value(v)
 #         else:
 #             for element_name, v in config_dict.items():
 #                 element = getattr(self, element_name, None)
-#                 if isinstance(v,dict) and isinstance(element, ConfigGroup):
+#                 if isinstance(v, dict) and isinstance(element, ConfigGroup):
 #                     element.set_from_dict(v, False)
-#                 elif not isinstance(v,dict) and isinstance(element, ConfigItem):
+#                 elif not isinstance(v, dict) and isinstance(element, ConfigItem):
 #                     element.set_value(v)
 #         if root:
-#             # self.reset_validation()
-#             print("SETTING FROM DICT")
 #             self.validate()
 
-#     def set_from_yaml(self, file_path: str):
+#     def set_from_yaml(self, file_path: str, legacy: bool = False):
 #         """
 #         Set the elements of the group from a .yaml file.
 
-#         :param file_path: The path to the .yaml file
+#         :param file_path: The path to the .yaml file.
+#         :param legacy: Whether to use the alias names for config elements to construct the config from a legacy dictionary.
 #         """
 #         try:
 #             with open(file_path) as f:
@@ -479,7 +475,7 @@
 #             msg = f"Configuration file does not exist: {file_path}"
 #             _LOGGER.critical(msg, exc_info=True)
 #             raise e
-#         self.set_from_dict(config_dict)
+#         self.set_from_dict(config_dict, legacy=legacy)
 
 #     def to_yaml(self, file_path: str):
 #         """

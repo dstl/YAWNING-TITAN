@@ -22,23 +22,43 @@ class GameMode(ConfigGroup):
     def __init__(
         self,
         doc: Optional[str] = None,
-        red: Red = Red(doc="The configuration of the red agent"),
-        blue: Blue = Blue(doc="The configuration of the blue agent"),
-        game_rules: GameRules = GameRules(doc="The rules of the overall game mode"),
-        blue_can_observe: ObservationSpace = ObservationSpace(
-            doc="The characteristics of the network and the red agent that the blue agent can observe"
-        ),
-        on_reset: Reset = Reset(doc="The changes to the network made upon reset"),
-        rewards: Rewards = Rewards(
-            doc="The rewards the blue agent gets for different game states"
-        ),
-        miscellaneous: Miscellaneous = Miscellaneous(doc="Additional options"),
+        red: Red = None,
+        blue: Blue = None,
+        game_rules: GameRules = None,
+        blue_can_observe: ObservationSpace = None,
+        on_reset: Reset = None,
+        rewards: Rewards = None,
+        miscellaneous: Miscellaneous = None,
     ):
-        self.red: Red = red
-        self.blue: Blue = blue
-        self.game_rules: GameRules = game_rules
-        self.blue_can_observe: ObservationSpace = blue_can_observe
-        self.on_reset: Reset = on_reset
-        self.rewards: Rewards = rewards
-        self.miscellaneous: Miscellaneous = miscellaneous
+        self.red: Red = red if red else Red(doc="The configuration of the red agent")
+        self.blue: Blue = (
+            blue if blue else Blue(doc="The configuration of the blue agent")
+        )
+        self.game_rules: GameRules = (
+            game_rules
+            if game_rules
+            else GameRules(doc="The rules of the overall game mode")
+        )
+        self.blue_can_observe: ObservationSpace = (
+            blue_can_observe
+            if blue_can_observe
+            else ObservationSpace(
+                doc="The characteristics of the network and the red agent that the blue agent can observe"
+            )
+        )
+        self.on_reset: Reset = (
+            on_reset
+            if on_reset
+            else Reset(doc="The changes to the network made upon reset")
+        )
+        self.rewards: Rewards = (
+            rewards
+            if rewards
+            else Rewards(
+                doc="The rewards the blue agent gets for different game states"
+            )
+        )
+        self.miscellaneous: Miscellaneous = (
+            miscellaneous if miscellaneous else Miscellaneous(doc="Additional options")
+        )
         super().__init__(doc)

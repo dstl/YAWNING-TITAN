@@ -14,7 +14,7 @@ from tinydb.table import Document
 from yawning_titan.db.doc_metadata import DocMetadata, DocMetadataSchema
 from yawning_titan.db.query import YawningTitanQuery
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
-from yawning_titan.networks.network import Network
+from yawning_titan.networks.new_network import Network
 
 __all__ = ["NetworkDB", "NetworkSchema"]
 
@@ -104,6 +104,7 @@ class NetworkDB:
         :return: The doc as a :class:`~yawning_titan.networks.network.Network`.
         """
         doc["matrix"] = np.array(doc["matrix"])
+        print("DOC  ;;;", doc)
         doc["_doc_metadata"] = DocMetadata(**doc["_doc_metadata"])
         return Network(**doc)
 
@@ -274,7 +275,7 @@ class NetworkDB:
         self._db.db.clear_cache()
         network_root = Path(__file__).parent.resolve()
         default_network_path = os.path.join(
-            network_root, "_package_data", "network.json"
+            network_root, "_package_data", "new_network.json"
         )
 
         # Load the default db file into TinyDB
@@ -286,8 +287,12 @@ class NetworkDB:
             uuid = network["_doc_metadata"]["uuid"]
             name = network["_doc_metadata"]["name"]
 
-            # Get the matching network from the  networks db
+            print("---" * 3)
+            # Get the matching network from the networks db
             db_network = self.get(uuid)
+
+            print("NETWORK", network)
+            print("DB_NETWORK", db_network)
 
             # If the network doesn't match the default, or it doesn't exist,
             # perform an upsert.
@@ -298,9 +303,10 @@ class NetworkDB:
                 )
             else:
                 reset = True
-
+            print("===RESET: ", reset)
             if reset:
                 self._db.db.upsert(network, DocMetadataSchema.UUID == uuid)
+                print("UPSERTED")
                 _LOGGER.info(
                     f"Reset default network '{name}' in the "
                     f"{self._db.name} db with uuid='{uuid}'."
@@ -308,7 +314,9 @@ class NetworkDB:
 
         # Clear the default db cache and close the file.
         default_db.clear_cache()
+        print("CLEARED CACHE")
         default_db.close()
+        print("==CLOSED==")
 
     def rebuild_db(self):
         """

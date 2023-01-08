@@ -4,6 +4,7 @@ from typing import Optional, Union
 
 from yawning_titan.config.toolbox.core import ConfigGroup, ConfigGroupValidation
 from yawning_titan.config.toolbox.groups.core import UseChancesGroup
+from yawning_titan.config.toolbox.groups.validation import AnyUsedGroup
 from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
 from yawning_titan.config.toolbox.item_types.float_item import (
     FloatItem,
@@ -116,7 +117,7 @@ class DeceptiveNodeGroup(ConfigGroup):
         """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
         super().validate()
         try:
-            if self.use and self.max_number == 0:
+            if self.use.value and self.max_number.value == 0:
                 msg = "if the blue agent can use deceptive nodes then it must be able to create at least 1."
                 raise ConfigGroupValidationError(msg)
         except ConfigGroupValidationError as e:
@@ -125,7 +126,7 @@ class DeceptiveNodeGroup(ConfigGroup):
 
 
 # --- Tier 2 groups ---
-class BlueActionSetGroup(ConfigGroup):
+class BlueActionSetGroup(AnyUsedGroup):
     """The options related to the actions that the blue agent can perform."""
 
     def __init__(
@@ -208,6 +209,7 @@ class BlueActionSetGroup(ConfigGroup):
                 raise ConfigGroupValidationError(msg)
         except ConfigGroupValidationError as e:
             self.validation.add_validation(msg, e)
+        return self.validation
 
 
 class BlueIntrusionDiscoveryGroup(ConfigGroup):
@@ -282,7 +284,7 @@ class BlueIntrusionDiscoveryGroup(ConfigGroup):
             if (self.on_scan_deceptive_node.value <= self.on_scan.value) and (
                 self.on_scan_deceptive_node.value != 1
             ):
-                msg = "there should be a higher chance at detecting intrusions on deceptive nodes than regular nodes."
+                msg = "there should be a higher chance at detecting intrusions on deceptive nodes than standard nodes."
                 raise ConfigGroupValidationError(msg)
         except ConfigGroupValidationError as e:
             self.validation.add_validation(msg, e)
@@ -419,113 +421,3 @@ class Blue(ConfigGroup):
         except ConfigGroupValidationError as e:
             self.validation.add_validation(msg, e)
         return self.validation
-
-
-# action_set = BlueActionSetGroup()
-# action_set.set_from_dict({
-#     "restore_node": True,
-#     "make_node_safe": True,
-#     "scan": True,
-#     "isolate_node": True,
-#     "reconnect_node": True,
-#     "make_node_safe":{
-#         "use": True,
-#         "increases_vulnerability": True,
-#         "gives_random_vulnerability": True,
-#         "vulnerability_change_during_node_patch": 0.5
-#     }
-# })
-
-# action_set.validation.log()
-
-# intrusions = BlueIntrusionDiscoveryGroup()
-# intrusions.set_from_dict({
-#     "immediate": -10,
-#     "immediate_deceptive_node": -9,
-#     "on_scan": "0",
-#     "on_scan_deceptive_node": 0
-# })
-# intrusions.validation.log()
-
-# use_chance = UseChancesGroup()
-# use_chance.set_from_dict({
-#     "use": True,
-#     "chance":{
-#         "standard_node": -0.5,
-#         "deceptive_node": -0.5
-#     }
-# })
-# use_chance.validation.log()
-
-# attack_discovery = BlueAttackDiscoveryGroup()
-# attack_discovery.set_from_dict(
-#     {
-#         "failed_attacks": {
-#             "use": True,
-#             "chance": {"standard_node": -0.5, "deceptive_node": -0.5},
-#         },
-#         "succeeded_attacks": {
-#             "use": True,
-#             "chance": {"standard_node": -0.5, "deceptive_node": -0.5},
-#         },
-#         "succeeded_attacks_unknown_comprimise": {"use": True, "chance": -0.4},
-#     }
-# )
-# # print(attack_discovery.failed_attacks.chance.standard_node.value)
-# attack_discovery.validation.log("attack discovery")
-
-# blue = Blue()
-# blue.set_from_dict(
-#     {
-#         "action_set": {
-#             "restore_node": True,
-#             "scan": True,
-#             "isolate_node": True,
-#             "reconnect_node": True,
-#             "make_node_safe": {
-#                 "use": True,
-#                 "increases_vulnerability": True,
-#                 "gives_random_vulnerability": True,
-#                 "vulnerability_change_during_node_patch": 0.5,
-#             },
-#             "deceptive_nodes": {
-#                 "use": True,
-#                 "max_number": 2,
-#                 "new_node_on_relocate": False,
-#             },
-#         },
-#         "intrusion_discovery_chance": {
-#             "immediate": 0,
-#             "immediate_deceptive_node": 0,
-#             "on_scan": 0,
-#             "on_scan_deceptive_node": 0,
-#         },
-#         "attack_discovery": {
-#             "failed_attacks": {
-#                 "use": True,
-#                 "chance": {"standard_node": 0.5, "deceptive_node": 0.5},
-#             },
-#             "succeeded_attacks": {
-#                 "use": True,
-#                 "chance": {"standard_node": 0.5, "deceptive_node": 0.5},
-#             },
-#             "succeeded_attacks_unknown_comprimise": {"use": True, "chance": 0.4},
-#         },
-#     }
-# )
-# blue.validation.log("Blue")
-# keys = blue.to_legacy_dict().keys()
-# for k in keys:
-#     print("$$$",k)
-
-# print(
-#     "A",
-#     blue.attack_discovery.succeeded_attacks.chance.deceptive_node.value,
-#     blue.attack_discovery.succeeded_attacks_unknown_comprimise.chance.deceptive_node.value,
-# )
-# blue.attack_discovery.succeeded_attacks.chance.deceptive_node.value = 0.6
-# print(
-#     "B",
-#     blue.attack_discovery.succeeded_attacks.chance.deceptive_node.value,
-#     blue.attack_discovery.succeeded_attacks_unknown_comprimise.chance.deceptive_node.value,
-# )
