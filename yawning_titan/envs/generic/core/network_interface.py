@@ -42,6 +42,7 @@ class NetworkInterface:
 
         self.game_mode = game_mode
         self.network = network
+
         self.random_seed = self.game_mode.miscellaneous.random_seed
 
         number_of_nodes = len(self.network.nodes)
@@ -50,12 +51,12 @@ class NetworkInterface:
         if self.network.high_value_nodes:
             self.high_value_nodes = self.network.high_value_nodes
 
-        #nodes = [str(i) for i in range(number_of_nodes)]
-        #df = pd.DataFrame(self.network.matrix, index=nodes, columns=nodes)
-        #graph = self.network
+        # nodes = [str(i) for i in range(number_of_nodes)]
+        # df = pd.DataFrame(self.network.matrix, index=nodes, columns=nodes)
+        # graph = self.network
 
-        # initialise the current graph
-        self.current_graph = self.network
+        # initialise the current graph as None
+        self.current_graph = None
 
         # initialise the base graph
         self.base_graph = copy.deepcopy(self.network)
@@ -81,16 +82,13 @@ class NetworkInterface:
 
         # initialise the network variables
         for node in self.network.nodes:
-            node_obj = self.network.get_node_from_uuid(node)
             positions = [node_obj.x_pos, node_obj.y_pos]
             # vulnerability scores
             self.initial_network_variables[node][
                 "vulnerability_score"
             ] = vulnerabilities[node]
             # node positions
-            self.initial_network_variables[node][
-                "node_position"
-            ] = positions
+            self.initial_network_variables[node]["node_position"] = positions
 
         self.current_network_variables = copy.deepcopy(self.initial_network_variables)
 
@@ -138,6 +136,22 @@ class NetworkInterface:
         self.connectivity = -math.exp(-0.1 * edges_per_node) + 1
 
         self.adj_matrix = nx.to_numpy_array(self.current_graph)
+
+    def _initialise_current_network(self):
+        self.network.reset_random_entry_nodes()
+        self.network.reset_random_high_value_nodes()
+        self.network.reset_random_vulnerabilities()
+
+        self.current_graph = nx.Graph()
+        for node in self.network.nodes:
+            self.current_graph.add_node(
+                node,
+                true_compromised_status=0,
+                blue_view_compromised_status=0,
+                blue_knows_intrusion=False,
+                deceptive_node=False,
+                isolated=False,
+            )
 
     """
     GETTERS
@@ -703,47 +717,6 @@ class NetworkInterface:
     def get_observation_size(self) -> int:
         """Use base observation size calculator with feather switched off."""
         return self.get_observation_size_base(False)
-
-    def generate_vulnerability(self) -> float:
-        """
-        Generate a single vulnerability value.
-
-        Args:
-            lower_bound: lower bound of random generation
-            upper_bound: upper bound of random generation
-        Returns:
-            A single float representing a vulnerability
-        """
-        return round(
-            random.randint(
-                (100 * self.game_mode.game_rules.node_vulnerability_lower_bound),
-                (100 * self.game_mode.game_rules.node_vulnerability_upper_bound),
-            )
-            / 100,
-            2,
-        )
-
-    def generate_vulnerabilities(self) -> dict:
-        """
-        Generate vulnerability values for n nodes.
-
-        These values are randomly generated between the upper and lower bounds within the
-        game_mode.
-        Args:
-            n_nodes: Number of nodes within the environment
-            game_mode_data: The environment game_mode object
-        Returns:
-            vulnerabilities: A dictionary containing the vulnerabilities
-        """
-        if self.network.vulnerabilities:
-            return self.network.vulnerabilities
-
-        vulnerabilities = {}
-
-        for i in range(self.get_number_of_nodes()):
-            vulnerabilities[str(i)] = self.generate_vulnerability()
-
-        return vulnerabilities
 
     """
     SETTERS

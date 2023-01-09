@@ -5,16 +5,18 @@ from uuid import uuid4
 
 
 class Node:
+    """A Node class that is used by the Network subclass of networkx.Graph."""
+
     def __init__(
-            self,
-            uuid: Optional[str] = None,
-            name: Optional[str] = None,
-            high_value_node: bool = False,
-            entry_node: bool = False,
-            vulnerability: int = 0,
-            x_pos: float = 0.0,
-            y_pos: float = 0.0,
-            classes: Optional[str] = None
+        self,
+        uuid: Optional[str] = None,
+        name: Optional[str] = None,
+        high_value_node: bool = False,
+        entry_node: bool = False,
+        vulnerability: float = 0.0,
+        x_pos: float = 0.0,
+        y_pos: float = 0.0,
+        classes: Optional[str] = None,
     ):
         if uuid is None:
             uuid = str(uuid4())
@@ -41,10 +43,12 @@ class Node:
 
     @property
     def uuid(self) -> str:
+        """The node UUID."""
         return self._uuid
 
     @property
     def high_value_node(self) -> bool:
+        """True if the Node is high value, otherwise False."""
         return self._high_value_node
 
     @high_value_node.setter
@@ -54,6 +58,7 @@ class Node:
 
     @property
     def entry_node(self) -> bool:
+        """True if the Node is an entry node, otherwise False."""
         return self._entry_node
 
     @entry_node.setter
@@ -63,6 +68,7 @@ class Node:
 
     @property
     def x_pos(self) -> float:
+        """The x-position of the node."""
         return self._x_pos
 
     @x_pos.setter
@@ -71,6 +77,7 @@ class Node:
 
     @property
     def y_pos(self) -> float:
+        """The y-position of the node."""
         return self._y_pos
 
     @y_pos.setter
@@ -78,6 +85,7 @@ class Node:
         self._y_pos = y_pos
 
     def to_dict(self):
+        """The Node as a dict."""
         return {
             "uuid": self._uuid,
             "name": self.name,
@@ -101,6 +109,7 @@ class Node:
             f"name='{self.name}', "
             f"high_value_node={self._high_value_node}, "
             f"entry_node={self._entry_node}, "
+            f"vulnerability={self.vulnerability}, "
             f"x_pos={self._x_pos}, "
             f"y_pos={self._y_pos}"
             f")"

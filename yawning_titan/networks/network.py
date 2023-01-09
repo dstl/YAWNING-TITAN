@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import math
+import random
 import warnings
 from collections import Counter
 from enum import Enum
 from logging import getLogger
-from random import sample
+from random import randint, sample
 from typing import Counter, List, Optional, Union
 
 import networkx as nx
@@ -19,6 +20,7 @@ _LOGGER = getLogger(__name__)
 
 class RandomHighValueNodePreference(Enum):
     """Preference of how the random high value nodes are placed."""
+
     FURTHEST_AWAY_FROM_ENTRY = "furthest_away_from_entry"
     """Prefer nodes furthest away from entry nodes."""
     NONE = "none"
@@ -27,6 +29,7 @@ class RandomHighValueNodePreference(Enum):
 
 class RandomEntryNodePreference(Enum):
     """Preference of hw the random entry nodes are placed."""
+
     CENTRAL = "central"
     """Prefer central nodes."""
     EDGE = "edge"
@@ -36,18 +39,18 @@ class RandomEntryNodePreference(Enum):
 
 
 class Network(nx.Graph):
-
     def __init__(
-            self,
-            set_random_entry_nodes: bool = False,
-            random_entry_node_preference: RandomEntryNodePreference = RandomEntryNodePreference.NONE,
-            num_of_random_entry_nodes: int = 0,
-            set_random_high_value_nodes: bool = False,
-            random_high_value_node_preference: RandomHighValueNodePreference = RandomHighValueNodePreference.NONE,
-            num_of_random_high_value_nodes: int = 0,
-            node_vulnerability_lower_bound: int = 0,
-            node_vulnerability_upper_bound: int = 1,
-            doc_metadata: Optional[DocMetadata] = None,
+        self,
+        set_random_entry_nodes: bool = False,
+        random_entry_node_preference: RandomEntryNodePreference = RandomEntryNodePreference.NONE,
+        num_of_random_entry_nodes: int = 0,
+        set_random_high_value_nodes: bool = False,
+        random_high_value_node_preference: RandomHighValueNodePreference = RandomHighValueNodePreference.NONE,
+        num_of_random_high_value_nodes: int = 0,
+        set_random_vulnerabilities: bool = False,
+        node_vulnerability_lower_bound: int = 0,
+        node_vulnerability_upper_bound: int = 1,
+        doc_metadata: Optional[DocMetadata] = None,
     ):
         super().__init__()
         self.set_random_entry_nodes = set_random_entry_nodes
@@ -62,11 +65,14 @@ class Network(nx.Graph):
         """The type of random high value node preference."""
         self.num_of_random_high_value_nodes = num_of_random_high_value_nodes
         """The number of random high_value nodes to be generated."""
+        self.set_random_vulnerabilities = set_random_vulnerabilities
+        """If True, random vulnerability is set for each node using the upper and lower bounds."""
         self.node_vulnerability_lower_bound = node_vulnerability_lower_bound
         """A lower vulnerability means that a node is less likely to be compromised. Default value is 0."""
         self.node_vulnerability_upper_bound = node_vulnerability_upper_bound
         """A higher vulnerability means that a node is more vulnerable. Default value is 1."""
         self._doc_metadata = doc_metadata
+
         if self._doc_metadata is None:
             self._doc_metadata = DocMetadata()
 
@@ -76,7 +82,7 @@ class Network(nx.Graph):
             self._check_intersect(node_for_adding)
 
     def remove_node(self, n: Node):
-        super().remove_node(n.uuid)
+        super().remove_node(n)
 
     def get_node_from_uuid(self, uuid: str) -> Union[Node, None]:
         for node in self.nodes:
@@ -95,7 +101,7 @@ class Network(nx.Graph):
             uuids_intersect = set(self.entry_nodes) & set(self.high_value_nodes)
             if uuids_intersect:
                 if node.uuid in uuids_intersect:
-                    node_str = str(self._uuid_node_map[node.uuid])
+                    node_str = str(node)
                     warnings.warn(
                         f"Entry nodes and high value nodes intersect at node "
                         f"'{node_str}', and may cause the training to end "
@@ -114,7 +120,7 @@ class Network(nx.Graph):
     def entry_nodes(self) -> List[Node]:
         nodes = []
         for node in self.nodes:
-            if node.high_value_node:
+            if node.entry_node:
                 nodes.append(node)
         return nodes
 
@@ -126,7 +132,7 @@ class Network(nx.Graph):
         """
         entry_node_weights = [
             1 / self.number_of_nodes() for _ in range(self.number_of_nodes())
-        ]
+        ]  # TODO: Is this needed anywhere?
         if not self.entry_nodes:
             if self.set_random_entry_nodes:
                 try:
@@ -141,22 +147,26 @@ class Network(nx.Graph):
 
                 if self.random_entry_node_preference == RandomEntryNodePreference.EDGE:
                     weights = list(map(lambda x: (1 / x) ** 4, weights))
-                elif self.random_entry_node_preference == RandomEntryNodePreference.CENTRAL:
-                    weights = list(map(lambda x: x ** 4, weights))
-                elif self.random_entry_node_preference == RandomEntryNodePreference.NONE:
+                elif (
+                    self.random_entry_node_preference
+                    == RandomEntryNodePreference.CENTRAL
+                ):
+                    weights = list(map(lambda x: x**4, weights))
+                elif (
+                    self.random_entry_node_preference == RandomEntryNodePreference.NONE
+                ):
                     weights = [1] * len(all_nodes)
 
                 weights_normal = [float(i) / sum(weights) for i in weights]
 
-                entry_node_weights = weights_normal
                 entry_nodes = choice(
                     all_nodes,
                     self.num_of_random_entry_nodes,
                     replace=False,
                     p=weights_normal,
                 )
+
                 for node in entry_nodes:
-                    print(node)
                     node.entry_node = True
 
     def reset_random_high_value_nodes(self):
@@ -199,17 +209,24 @@ class Network(nx.Graph):
                     number_of_high_value_nodes = number_possible_high_value
                 possible_high_value_nodes = []
                 # chooses a random node to be the high value node
-                if self.random_high_value_node_preference == RandomHighValueNodePreference.NONE:
+                if (
+                    self.random_high_value_node_preference
+                    == RandomHighValueNodePreference.NONE
+                ):
                     possible_high_value_nodes = list(
                         set(self.nodes).difference(set(self.entry_nodes))
                     )
                 # Choose the node that is the furthest away from the entry points as the high value node
-                elif self.random_high_value_node_preference.FURTHEST_AWAY_FROM_ENTRY == \
-                        RandomHighValueNodePreference.FURTHEST_AWAY_FROM_ENTRY:
+                elif (
+                    self.random_high_value_node_preference.FURTHEST_AWAY_FROM_ENTRY
+                    == RandomHighValueNodePreference.FURTHEST_AWAY_FROM_ENTRY
+                ):
                     # gets all the paths between nodes
                     paths = []
                     for i in self.entry_nodes:
-                        paths.append(dict(nx.all_pairs_shortest_path_length(self.graph))[i])
+                        paths.append(
+                            dict(nx.all_pairs_shortest_path_length(self.graph))[i]
+                        )
                     print(paths)
                     sums = Counter()
                     counters = Counter()
@@ -237,6 +254,21 @@ class Network(nx.Graph):
                 for node in high_value_nodes:
                     node.high_value_node = True
 
+    def _generate_random_vulnerability(self) -> float:
+        """
+        Generate a single random vulnerability value from the lower and upper bounds.
+
+        :returns: A single float representing a vulnerability.
+        """
+        return random.uniform(
+            self.node_vulnerability_lower_bound, self.node_vulnerability_upper_bound
+        )
+
+    def reset_random_vulnerabilities(self):
+        if self.set_random_vulnerabilities:
+            for node in self.nodes:
+                node.vulnerability = self._generate_random_vulnerability()
+
     def to_dict(self):
         random_entry_node_preference = None
         if self.random_entry_node_preference:
@@ -244,7 +276,9 @@ class Network(nx.Graph):
 
         random_high_value_node_preference = None
         if self.random_high_value_node_preference:
-            random_high_value_node_preference = self.random_high_value_node_preference.value
+            random_high_value_node_preference = (
+                self.random_high_value_node_preference.value
+            )
         return {
             "set_random_entry_nodes": self.set_random_entry_nodes,
             "random_entry_node_preference": random_entry_node_preference,
@@ -252,12 +286,23 @@ class Network(nx.Graph):
             "set_random_high_value_nodes": self.set_random_high_value_nodes,
             "random_high_value_node_preference": random_high_value_node_preference,
             "num_of_random_high_value_nodes": self.num_of_random_high_value_nodes,
+            "set_random_vulnerabilities": self.set_random_vulnerabilities,
             "node_vulnerability_lower_bound": self.node_vulnerability_lower_bound,
             "node_vulnerability_upper_bound": self.node_vulnerability_upper_bound,
-            "nodes": super().__dict__["_node"],
-            "edges": super().__dict__["_adj"],
-            "_doc_metadata": self._doc_metadata.to_dict(True)
+            "nodes": self.__dict__["_node"],
+            "edges": self.__dict__["_adj"],
+            "_doc_metadata": self._doc_metadata,
         }
+
+    def to_json(self):
+        d = self.to_dict()
+        d["nodes"] = {k.uuid: k.to_dict() for k, v in d["nodes"].items()}
+        d["edges"] = {
+            k.uuid: {node.uuid: attrs for node, attrs in v.items()}
+            for k, v in d["edges"].items()
+        }
+        d["_doc_metadata"] = d["_doc_metadata"].to_dict()
+        return d
 
     @property
     def doc_metadata(self) -> DocMetadata:
