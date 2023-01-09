@@ -449,7 +449,7 @@ class ConfigGroup(ConfigBase, ABC):
         self.doc: Optional[str] = doc
         self.validation = self.validate()
 
-    def validate(self) -> ConfigGroupValidation:
+    def validate(self, raise_overall_exception: bool = False) -> ConfigGroupValidation:
         """
         Validate the grouped items against their properties.
 
@@ -457,6 +457,9 @@ class ConfigGroup(ConfigBase, ABC):
         """
         self.validation = ConfigGroupValidation()
         self.validate_elements()
+
+        if raise_overall_exception and not self.validation.passed:
+            raise ConfigGroupValidationError(self.validation.log())
         return self.validation
 
     def to_dict(self, values_only: Optional[bool] = False, legacy: bool = False):
