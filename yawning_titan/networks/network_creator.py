@@ -55,8 +55,7 @@ def generate_node_positions(adj_matrix: np.array) -> dict:
 
 
 def get_network_from_matrix_and_positions(
-        adj_matrix: np.ndarray,
-        positions: Dict[str, List[int]]
+    adj_matrix: np.ndarray, positions: Dict[str, List[int]]
 ):
     network = Network()
     edges = []
@@ -71,12 +70,13 @@ def get_network_from_matrix_and_positions(
             x, y = positions[str(y_i)]
             nodes[y_i].x_pos = x
             nodes[y_i].y_pos = y
+
         # If the edge hasn't already been added, add it
         for x_i, x_node in enumerate(y_node):
             if x_node == 1:
                 edge = tuple(sorted([y_i, x_i]))
                 if edge not in edges:
-                    network.add_edge(nodes[edge[0]], nodes[edge[0]])
+                    network.add_edge(nodes[edge[0]], nodes[edge[1]])
 
     return network
 
@@ -201,7 +201,7 @@ def create_mesh(size: int = 100, connectivity: float = 0.7) -> Tuple[np.array, d
 
 
 def create_star(
-        first_layer_size: int = 8, group_size: int = 5, group_connectivity: float = 0.5
+    first_layer_size: int = 8, group_size: int = 5, group_connectivity: float = 0.5
 ) -> Tuple[np.array, dict]:
     """
     Create a star node environment.
@@ -241,9 +241,9 @@ def create_star(
 
 
 def create_p2p(
-        group_size: int = 5,
-        inter_group_connectivity: float = 0.1,
-        group_connectivity: int = 1,
+    group_size: int = 5,
+    inter_group_connectivity: float = 0.1,
+    group_connectivity: int = 1,
 ) -> Tuple[np.array, dict]:
     """
     Create a two group network.
@@ -261,10 +261,10 @@ def create_p2p(
     """
     # creates the sizes of the groups
     group1_size = (
-            group_size + random.randint(0, int(group_size / 2)) - int(group_size / 4)
+        group_size + random.randint(0, int(group_size / 2)) - int(group_size / 4)
     )
     group2_size = (
-            group_size + random.randint(0, int(group_size / 2)) - int(group_size / 4)
+        group_size + random.randint(0, int(group_size / 2)) - int(group_size / 4)
     )
     total_size = group1_size + group2_size
 
@@ -299,7 +299,7 @@ def create_p2p(
 
 
 def create_ring(
-        break_probability: float = 0.3, ring_size: int = 60
+    break_probability: float = 0.3, ring_size: int = 60
 ) -> Tuple[np.array, dict]:
     """
     Create a ring network.
@@ -365,7 +365,7 @@ def custom_network() -> Union[Tuple[np.array, dict], Tuple[None, None]]:
 
 
 def gnp_random_connected_graph(
-        n_nodes: int, probability_of_edge: float
+    n_nodes: int, probability_of_edge: float
 ) -> Union[Tuple[np.array, dict], None]:
     """
     Create a randomly connected graph but with the guarntee that each node will have at least one connection.

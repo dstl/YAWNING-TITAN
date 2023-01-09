@@ -292,10 +292,7 @@ class NetworkDB:
             # If the network doesn't match the default, or it doesn't exist,
             # perform an upsert.
             if db_network:
-                reset = (
-                    db_network.to_dict()
-                    != network
-                )
+                reset = db_network.to_dict() != network
             else:
                 reset = True
 

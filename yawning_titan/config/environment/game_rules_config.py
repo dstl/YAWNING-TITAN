@@ -66,7 +66,6 @@ class GameRulesConfig(ConfigABC):
         """Blue loses if the target node is lost (a node picked in the environment)."""
         return self._lose_when_target_node_lost
 
-
     @property
     def grace_period_length(self) -> int:
         """
@@ -129,12 +128,8 @@ class GameRulesConfig(ConfigABC):
         cls.validate(config_dict)
 
         game_rule_config = GameRulesConfig(
-            _node_vulnerability_lower_bound=config_dict[
-                "node_vulnerability_min"
-            ],
-            _node_vulnerability_upper_bound=config_dict[
-                "node_vulnerability_max"
-            ],
+            _node_vulnerability_lower_bound=config_dict["node_vulnerability_min"],
+            _node_vulnerability_upper_bound=config_dict["node_vulnerability_max"],
             _max_steps=config_dict["max_steps"],
             _lose_when_all_nodes_lost=config_dict["lose_when_all_nodes_lost"],
             _lose_when_n_percent_of_nodes_lost=config_dict[
@@ -147,7 +142,6 @@ class GameRulesConfig(ConfigABC):
                 "lose_when_high_value_node_lost"
             ],
             _lose_when_target_node_lost=config_dict["lose_when_target_node_lost"],
-
             _grace_period_length=config_dict["grace_period_length"],
         )
 
