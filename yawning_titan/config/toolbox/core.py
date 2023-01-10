@@ -392,7 +392,7 @@ class ConfigItem:
         self,
         as_key_val_pair: Optional[bool] = False,
         values_only: Optional[bool] = False,
-    ):
+    ) -> dict:
         """
         Return the ConfigItem as a dict.
 
@@ -433,7 +433,7 @@ class ConfigItem:
         """
         self.__dict__["value"] = value
 
-    def stringify(self):
+    def stringify(self) -> Any:
         """This is here to allow stringify methods to be call on both :class: `ConfigItem` and :class: `ConfigGroup` classes."""
         return self.value
 
