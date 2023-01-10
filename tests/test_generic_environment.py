@@ -388,9 +388,9 @@ def test_new_vulnerabilities(generate_generic_env_test_reqs):
             env.reset()
     # calculate the average vulnerability
     vulnerabilities = (vulnerabilities / 15) / resets
-    vuln_aim = env.network_interface.network.node_vulnerabilities.min.value + 0.5 * (
-        env.network_interface.network.node_vulnerabilities.max.value
-        - env.network_interface.network.node_vulnerabilities.min.value
+    vuln_aim = env.network_interface.network.vulnerabilities.min.value + 0.5 * (
+        env.network_interface.network.vulnerabilities.max.value
+        - env.network_interface.network.vulnerabilities.min.value
     )
     # ensure the average vulnerability is half way between the upper and lower range
     assert (vuln_aim - 0.01 * vuln_aim) < vulnerabilities < (vuln_aim + 0.01 * vuln_aim)

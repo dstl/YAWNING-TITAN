@@ -6,10 +6,10 @@ import pytest
 from yawning_titan.exceptions import ConfigGroupValidationError
 from yawning_titan.networks import network_creator
 from yawning_titan.networks.new_network import (
-    EntryRandomNodePlacementGroup,
     Network,
     NodeGroup,
     NodeVulnerabilityGroup,
+    RandomEntryNodeGroup,
     RandomNodePlacementGroup,
 )
 
@@ -17,7 +17,7 @@ from yawning_titan.networks.new_network import (
 @pytest.fixture
 def node_group():
     """A test group of nodes."""
-    node_placement = EntryRandomNodePlacementGroup(
+    node_placement = RandomEntryNodeGroup(
         use=True, count=2, place_close_to_center=False, place_close_to_edge=True
     )
     node_group = NodeGroup(random_placement=node_placement)
@@ -47,12 +47,12 @@ def test_entry_node_placement_valid_input():
     assert node_placement.validation.group_passed
 
 
-# test the NodeGroup instead \/
-
-
 def test_node_group_erroneous_entry_node_placement(node_group: NodeGroup):
     """Tests validation of :class: `~yawning_titan.networks.new_network.NodeGroup`."""
     node_group.random_placement.place_close_to_center.value = True
+    node_group.random_placement.place_close_to_edge.value = True
+
+    node_group.validate()
 
     assert not node_group.validation.passed
     assert node_group.validation.elements_passed

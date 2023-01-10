@@ -18,7 +18,8 @@
                 },
                 "nodes": ["1"]
             },
-            "node_vulnerabilities": {
+            "vulnerabilities": {
+                "node_vulnerabilities": null,
                 "restrict": false,
                 "min": null,
                 "max": null
@@ -63,7 +64,6 @@
                 "16": [4, 1],
                 "17": [5, 1]
             },
-            "vulnerabilities": null,
             "_doc_metadata": {
                 "uuid": "b3cd9dfd-b178-415d-93f0-c9e279b3c511",
                 "created_at": "2022-12-08T14:56:42.891677",
