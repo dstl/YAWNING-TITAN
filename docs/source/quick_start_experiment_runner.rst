@@ -71,5 +71,5 @@ An example command might look like this: ::
     python3 experiment_runner.py --agent ppo --env 18-node-env-v0 --training-period 10000
 
 This will begin the training of a Proximal Policy Optimisation agent using the Stable Baselines 3 RL algorithm library within the environment outlined within the papers published by the NSA which can be
-found at https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9 for a total of 10K training timesteps. Once the training
+found at https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9 for a total of 10K training timesteps. Once the training
 period has completed, the agent will enter an evaluation phase, run through a specified number of evaluation episodes (defaults to 25) and then output some summary statistics.

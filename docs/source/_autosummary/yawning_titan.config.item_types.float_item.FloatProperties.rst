@@ -1,0 +1,38 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.item\_types.float\_item.FloatProperties
+=============================================================
+
+.. currentmodule:: yawning_titan.config.item_types.float_item
+
+.. autoclass:: FloatProperties
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~FloatProperties.to_dict
+      ~FloatProperties.validate
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~FloatProperties.allow_null
+      ~FloatProperties.default
+      ~FloatProperties.exclusive_max
+      ~FloatProperties.exclusive_min
+      ~FloatProperties.max_val
+      ~FloatProperties.min_val
