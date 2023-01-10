@@ -716,8 +716,8 @@ class NetworkInterface:
         """
         return round(
             random.randint(
-                (100 * self.network.node_vulnerabilities.min.value),
-                (100 * self.network.node_vulnerabilities.max.value),
+                (100 * self.network.vulnerabilities.min.value),
+                (100 * self.network.vulnerabilities.max.value),
             )
             / 100,
             2,
@@ -735,8 +735,8 @@ class NetworkInterface:
         Returns:
             vulnerabilities: A dictionary containing the vulnerabilities
         """
-        if self.network.vulnerabilities:
-            return self.network.vulnerabilities
+        if self.network.vulnerabilities.node_vulnerabilities:
+            return self.network.vulnerabilities.node_vulnerabilities
 
         vulnerabilities = {}
 

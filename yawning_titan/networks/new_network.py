@@ -54,7 +54,9 @@ class NodeVulnerabilityGroup(RestrictRangeGroup):
         restrict: Optional[bool] = False,
         min: Optional[Union[int, float]] = None,
         max: Optional[Union[int, float]] = None,
+        node_vulnerabilities: Optional[Dict[str, int]] = None,
     ):
+        self.node_vulnerabilities = node_vulnerabilities
         self.restrict = BoolItem(
             value=restrict,
             doc="Whether to restrict this attribute.",
@@ -73,11 +75,16 @@ class NodeVulnerabilityGroup(RestrictRangeGroup):
         self.doc: Optional[str] = doc
         self.validation = self.validate()
 
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        if self.node_vulnerabilities is None:
+            return super().validate()
+
 
 # --- Tier 1 groups
 
 
-class EntryRandomNodePlacementGroup(RandomNodePlacementGroup):
+class RandomEntryNodeGroup(RandomNodePlacementGroup):
     """The pseudo random placement of the nodes in the network."""
 
     def __init__(
@@ -104,7 +111,7 @@ class EntryRandomNodePlacementGroup(RandomNodePlacementGroup):
         super().__init__(doc, use, count)
 
 
-class HighValueRandomNodePlacementGroup(RandomNodePlacementGroup):
+class RandomHighValueNodeGroup(RandomNodePlacementGroup):
     """The pseudo random placement of the nodes in the network."""
 
     def __init__(
@@ -134,7 +141,7 @@ class NodeGroup(ConfigGroup):
         doc: Optional[str] = None,
         nodes: Optional[List[str]] = None,
         random_placement: Optional[
-            Union[EntryRandomNodePlacementGroup, HighValueRandomNodePlacementGroup]
+            Union[RandomEntryNodeGroup, RandomHighValueNodeGroup]
         ] = None,
     ):
         self.nodes = nodes
@@ -182,42 +189,30 @@ class Network(ConfigGroup):
         doc: Optional[str] = None,
         matrix: ndarray = None,
         positions: Dict[str, List[str]] = None,
-        entry_nodes: Optional[List[str]] = None,
-        high_value_nodes: Optional[List[str]] = None,
-        vulnerabilities: Optional[Dict] = None,
+        entry_nodes: Optional[Union[NodeGroup, List[str]]] = None,
+        high_value_nodes: Optional[Union[NodeGroup, List[str]]] = None,
+        vulnerabilities: Optional[Union[NodeVulnerabilityGroup, Dict[str, int]]] = None,
         _doc_metadata: Optional[DocMetadata] = None,
-        entry_node_random_placement: Optional[EntryRandomNodePlacementGroup] = None,
-        high_value_node_random_placement: Optional[
-            HighValueRandomNodePlacementGroup
-        ] = None,
-        node_vulnerabilities: Optional[RestrictRangeGroup] = None,
     ):
         self._doc_metadata = _doc_metadata
         self.matrix = matrix
         self.positions = positions
         self.vulnerabilities = vulnerabilities
 
-        entry_node_random_placement = (
-            entry_node_random_placement
-            if entry_node_random_placement
-            else EntryRandomNodePlacementGroup(
-                doc="The pseudo random placement of the entry nodes in the network."
-            )
-        )
-
-        high_value_node_random_placement = (
-            high_value_node_random_placement
-            if high_value_node_random_placement
-            else HighValueRandomNodePlacementGroup(
-                doc="The pseudo random placement of the high value nodes in the network."
-            )
-        )
-
         self.entry_nodes = NodeGroup(
-            nodes=entry_nodes, random_placement=entry_node_random_placement
+            nodes=entry_nodes,
+            random_placement=RandomEntryNodeGroup(
+                doc="The pseudo random placement of the entry nodes in the network."
+            ),
         )
         self.high_value_nodes = NodeGroup(
-            nodes=high_value_nodes, random_placement=high_value_node_random_placement
+            nodes=high_value_nodes,
+            random_placement=RandomHighValueNodeGroup(
+                doc="The pseudo random placement of the high value nodes in the network."
+            ),
+        )
+        self.vulnerabilities = NodeVulnerabilityGroup(
+            node_vulnerabilities=vulnerabilities
         )
 
         if isinstance(entry_nodes, NodeGroup):
@@ -230,14 +225,10 @@ class Network(ConfigGroup):
         elif isinstance(high_value_nodes, dict):
             self.high_value_nodes.set_from_dict(high_value_nodes)
 
-        if isinstance(node_vulnerabilities, RestrictRangeGroup):
-            self.node_vulnerabilities = node_vulnerabilities
-        elif isinstance(node_vulnerabilities, dict):
-            self.node_vulnerabilities = RestrictRangeGroup(**node_vulnerabilities)
-        else:
-            self.node_vulnerabilities = RestrictRangeGroup(
-                doc="The range of vulnerabilities for the nodes in the network used when vulnerability is set randomly."
-            )
+        if isinstance(vulnerabilities, NodeVulnerabilityGroup):
+            self.vulnerabilities = vulnerabilities
+        elif isinstance(vulnerabilities, dict):
+            self.vulnerabilities.set_from_dict(vulnerabilities)
 
         self.entry_nodes.random_placement.count.alias = "number_of_entry_nodes"
         self.entry_nodes.random_placement.use.alias = "choose_entry_nodes_randomly"
@@ -249,8 +240,8 @@ class Network(ConfigGroup):
             "choose_high_value_nodes_placement_at_random"
         )
 
-        self.node_vulnerabilities.max.alias = "node_vulnerability_upper_bound"
-        self.node_vulnerabilities.min.alias = "node_vulnerability_lower_bound"
+        self.vulnerabilities.max.alias = "node_vulnerability_upper_bound"
+        self.vulnerabilities.min.alias = "node_vulnerability_lower_bound"
 
         super().__init__(doc)
 
@@ -293,7 +284,9 @@ class Network(ConfigGroup):
         config_dict["positions"] = self.positions
         config_dict["entry_nodes"]["nodes"] = self.entry_nodes.nodes
         config_dict["high_value_nodes"]["nodes"] = self.high_value_nodes.nodes
-        config_dict["vulnerabilities"] = self.vulnerabilities
+        config_dict["vulnerabilities"][
+            "node_vulnerabilities"
+        ] = self.vulnerabilities.node_vulnerabilities
 
         if json_serializable:
             config_dict["matrix"] = config_dict["matrix"].tolist()
