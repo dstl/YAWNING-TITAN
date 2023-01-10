@@ -96,8 +96,8 @@ def test_lower_chance_detecting_deceptive_node_intrusion_on_scan_fail(
     intrusion_discovery = BlueIntrusionDiscoveryGroup()
 
     # check cannot be lower
-    intrusion_discovery.on_scan_deceptive_node.value = on_scan_deceptive_node
-    intrusion_discovery.on_scan.value = on_scan
+    intrusion_discovery.on_scan.deceptive_node.value = on_scan_deceptive_node
+    intrusion_discovery.on_scan.standard_node.value = on_scan
 
     intrusion_discovery.validate()
     assert not intrusion_discovery.validation.group_passed
@@ -115,8 +115,8 @@ def test_lower_chance_detecting_deceptive_node_intrusion_on_scan_pass():
     """Tests that the validation passes when detection chances for deceptive and standard nodes are both 1."""
     intrusion_discovery = BlueIntrusionDiscoveryGroup()
 
-    intrusion_discovery.on_scan_deceptive_node.value = 1
-    intrusion_discovery.on_scan.value = 1
+    intrusion_discovery.on_scan.deceptive_node.value = 1
+    intrusion_discovery.on_scan.standard_node.value = 1
 
     intrusion_discovery.validate()
     assert intrusion_discovery.validation.passed
@@ -130,7 +130,7 @@ def test_using_scan_with_assured_immediate_detection():
     blue = Blue()
 
     blue.action_set.scan.value = True
-    blue.intrusion_discovery_chance.immediate.value = 1
+    blue.intrusion_discovery_chance.immediate.standard_node.value = 1
 
     blue.validate()
 
@@ -151,7 +151,7 @@ def test_not_using_scan_without_assured_immediate_detection():
     blue = Blue()
 
     blue.action_set.scan.value = False
-    blue.intrusion_discovery_chance.immediate.value = 0.1
+    blue.intrusion_discovery_chance.immediate.standard_node.value = 0.1
 
     blue.validate()
 

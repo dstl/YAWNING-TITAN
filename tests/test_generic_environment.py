@@ -547,7 +547,7 @@ def test_generic_env(
         # random high value node placement
         if not done:
             if (
-                not env.network_interface.network.high_value_node_random_placement.random.value
+                not env.network_interface.network.high_value_nodes.random_placement.use.value
             ):
                 assert (
                     env.network_interface.get_high_value_nodes() == prev_high_value
@@ -746,18 +746,18 @@ def test_generic_env(
                             discovered_immediately += 1
                         if (
                             red_target[counter][0] == "d"
-                            and env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate_deceptive_node.value
+                            and env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate.deceptive_node.value
                             == 1
                         ):
                             assert post_red_blue_view[red_target[counter]] == 1
                         if (
-                            env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate.value
+                            env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate.standard_node.value
                             == 0
                             and red_target[counter][0] != "d"
                         ):
                             assert post_red_blue_view[red_target[counter]] == 0
                         if (
-                            env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate.value
+                            env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate.standard_node.value
                             == 1
                             and red_target[counter][0] != "d"
                         ):
@@ -873,14 +873,14 @@ def test_generic_env(
                     nodes_missed_scan += 1
                 if "d" not in node:
                     if (
-                        env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.value
+                        env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.standard_node.value
                         == 1
                     ):
                         if end_state[node] == 1:
                             assert end_blue_view[node] == 1
                 else:
                     if (
-                        env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan_deceptive_node.value
+                        env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.deceptive_node.value
                         == 1
                     ):
                         if end_state[node] == 1:
@@ -1044,7 +1044,7 @@ def test_generic_env(
         assert (
             (
                 0.95
-                * env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.value
+                * env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.standard_node.value
             )
             < (
                 discovered_from_scanning
@@ -1052,7 +1052,7 @@ def test_generic_env(
             )
             < (
                 1.05
-                * env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.value
+                * env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.standard_node.value
             )
         )
 

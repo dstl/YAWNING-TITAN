@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional, Union
 
 from yawning_titan.config.toolbox.core import ConfigGroup, ConfigGroupValidation
-from yawning_titan.config.toolbox.groups.core import UseChancesGroup
+from yawning_titan.config.toolbox.groups.core import ChanceGroup, UseChancesGroup
 from yawning_titan.config.toolbox.groups.validation import AnyUsedGroup
 from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
 from yawning_titan.config.toolbox.item_types.float_item import (
@@ -24,7 +24,7 @@ class MakeNodeSafeGroup(ConfigGroup):
         use: Optional[bool] = False,
         increases_vulnerability: Optional[bool] = False,
         gives_random_vulnerability: Optional[bool] = False,
-        vulnerability_change_during_node_patch: Optional[Union[float, int]] = None,
+        vulnerability_change: Optional[Union[float, int]] = None,
     ):
         self.use: BoolItem = BoolItem(
             value=use,
@@ -44,8 +44,8 @@ class MakeNodeSafeGroup(ConfigGroup):
             alias="making_node_safe_gives_random_vulnerability",
             properties=BoolProperties(allow_null=False),
         )
-        self.vulnerability_change_during_node_patch: FloatItem = FloatItem(
-            value=vulnerability_change_during_node_patch,
+        self.vulnerability_change: FloatItem = FloatItem(
+            value=vulnerability_change,
             doc="The amount that the vulnerability of a node changes when it is made safe.",
             alias="vulnerability_change_during_node_patch",
             properties=FloatProperties(
@@ -218,72 +218,45 @@ class BlueIntrusionDiscoveryGroup(ConfigGroup):
     def __init__(
         self,
         doc: Optional[str] = None,
-        immediate: Optional[Union[int, float]] = None,
+        immediate_standard_node: Optional[Union[int, float]] = None,
         immediate_deceptive_node: Optional[Union[int, float]] = None,
-        on_scan: Optional[Union[int, float]] = None,
+        on_scan_standard_node: Optional[Union[int, float]] = None,
         on_scan_deceptive_node: Optional[Union[int, float]] = None,
     ):
-        self.immediate = FloatItem(
-            doc="Chance for blue to discover a node that red has compromised the instant red compromises the node.",
-            alias="chance_to_immediately_discover_intrusion",
-            value=immediate,
-            properties=FloatProperties(
-                allow_null=True,
-                default=0.5,
-                min_val=0,
-                max_val=1,
-                inclusive_min=True,
-                inclusive_max=True,
-            ),
+        self.immediate = ChanceGroup(
+            standard_node=immediate_standard_node,
+            deceptive_node=immediate_deceptive_node,
         )
-        self.immediate_deceptive_node = FloatItem(
-            doc="Chance for blue to discover a deceptive node that red has compromised the instant it is compromised.",
-            alias="chance_to_immediately_discover_intrusion_deceptive_node",
-            value=immediate_deceptive_node,
-            properties=FloatProperties(
-                allow_null=True,
-                default=0.5,
-                min_val=0,
-                max_val=1,
-                inclusive_min=True,
-                inclusive_max=True,
-            ),
+
+        self.immediate.standard_node.alias = "chance_to_immediately_discover_intrusion"
+        self.immediate.standard_node.doc = "Chance for blue to discover a node that red has compromised the instant red compromises the node."
+
+        self.immediate.deceptive_node.alias = (
+            "chance_to_immediately_discover_intrusion_deceptive_node"
         )
-        self.on_scan = FloatItem(
-            doc="When blue performs the scan action this is the chance that a red intrusion is discovered.",
-            alias="chance_to_discover_intrusion_on_scan",
-            value=on_scan,
-            properties=FloatProperties(
-                allow_null=True,
-                default=0.5,
-                min_val=0,
-                max_val=1,
-                inclusive_min=True,
-                inclusive_max=True,
-            ),
+        self.immediate.deceptive_node.doc = "Chance for blue to discover a deceptive node that red has compromised the instant it is compromised."
+
+        self.on_scan = ChanceGroup(
+            standard_node=on_scan_standard_node, deceptive_node=on_scan_deceptive_node
         )
-        self.on_scan_deceptive_node = FloatItem(
-            doc="When blue uses the scan action what is the chance that blue will detect an intrusion in a deceptive node.",
-            alias="chance_to_discover_intrusion_on_scan_deceptive_node",
-            value=on_scan_deceptive_node,
-            properties=FloatProperties(
-                allow_null=True,
-                default=0.5,
-                min_val=0,
-                max_val=1,
-                inclusive_min=True,
-                inclusive_max=True,
-            ),
+
+        self.on_scan.standard_node.alias = "chance_to_discover_intrusion_on_scan"
+        self.on_scan.standard_node.doc = "When blue performs the scan action this is the chance that a red intrusion is discovered."
+
+        self.on_scan.deceptive_node.alias = (
+            "chance_to_discover_intrusion_on_scan_deceptive_node"
         )
+        self.on_scan.deceptive_node.doc = "When blue uses the scan action what is the chance that blue will detect an intrusion in a deceptive node."
+
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
         """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
         super().validate()
         try:
-            if (self.on_scan_deceptive_node.value <= self.on_scan.value) and (
-                self.on_scan_deceptive_node.value != 1
-            ):
+            if (
+                self.on_scan.deceptive_node.value <= self.on_scan.standard_node.value
+            ) and (self.on_scan.deceptive_node.value != 1):
                 msg = "there should be a higher chance at detecting intrusions on deceptive nodes than standard nodes."
                 raise ConfigGroupValidationError(msg)
         except ConfigGroupValidationError as e:
@@ -401,7 +374,7 @@ class Blue(ConfigGroup):
         try:
             if (
                 self.action_set.scan.value
-                and self.intrusion_discovery_chance.immediate.value == 1
+                and self.intrusion_discovery_chance.immediate.standard_node.value == 1
             ):
                 msg = (
                     "The scan action is selected yet blue has 100% chance to spot "
@@ -411,7 +384,7 @@ class Blue(ConfigGroup):
                 raise ConfigGroupValidationError(msg)
             elif (
                 not self.action_set.scan.value
-                and self.intrusion_discovery_chance.immediate.value != 1
+                and self.intrusion_discovery_chance.immediate.standard_node.value != 1
             ):
                 msg = (
                     "If the blue agent cannot scan nodes then it should be able to "

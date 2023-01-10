@@ -59,16 +59,18 @@ blue:
       use: "changed"
       increases_vulnerability: "changed"
       gives_random_vulnerability: "changed"
-      vulnerability_change_during_node_patch: "changed"
+      vulnerability_change: "changed"
     deceptive_nodes:
       use: "changed"
       max_number: "changed"
       new_node_on_relocate: "changed"
   intrusion_discovery_chance:
-    immediate: "changed"
-    immediate_deceptive_node: "changed"
-    on_scan: "changed"
-    on_scan_deceptive_node: "changed"
+    immediate:
+      standard_node: "changed"
+      deceptive_node: "changed"
+    on_scan:
+      standard_node: "changed"
+      deceptive_node: "changed"
   attack_discovery:
     failed_attacks:
       use: "changed"

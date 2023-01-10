@@ -449,7 +449,9 @@ class ConfigGroup(ConfigBase, ABC):
         self.doc: Optional[str] = doc
         self.validation = self.validate()
 
-    def validate(self, raise_overall_exception: bool = False) -> ConfigGroupValidation:
+    def validate(
+        self, raise_overall_exception: Optional[bool] = False
+    ) -> ConfigGroupValidation:
         """
         Validate the grouped items against their properties.
 
@@ -461,6 +463,11 @@ class ConfigGroup(ConfigBase, ABC):
         if raise_overall_exception and not self.validation.passed:
             raise ConfigGroupValidationError(self.validation.log())
         return self.validation
+
+    def validate_elements(self):
+        """Call the .validate() method on each of the elements in the group."""
+        for k, element in self.get_config_elements().items():
+            self.validation.add_element_validation(k, element.validate())
 
     def to_dict(self, values_only: Optional[bool] = False, legacy: bool = False):
         """
@@ -504,17 +511,26 @@ class ConfigGroup(ConfigBase, ABC):
 
         return flattened_dict
 
-    def validate_elements(self):
-        """Call the .validate() method on each of the elements in the group."""
-        for k, element in self.get_config_elements().items():
-            self.validation.add_element_validation(k, element.validate())
+    def to_yaml(self, file_path: str):
+        """
+        Save the values of the elements of the group to a .yaml file.
+
+        :param file_path: The path to the .yaml file
+        """
+        with open(file_path, "w") as file:
+            yaml.safe_dump(
+                self.to_dict(values_only=True),
+                file,
+                sort_keys=False,
+                default_flow_style=False,
+            )
 
     def set_from_dict(
         self,
         config_dict: dict,
         root: bool = True,
         legacy: bool = False,
-        legacy_lookup=None,
+        legacy_lookup: dict = None,
     ):
         """
         Set the values of all :class: `ConfigGroup` or :class:`ConfigItem` elements.
@@ -523,6 +539,7 @@ class ConfigGroup(ConfigBase, ABC):
         :param root: Whether the element is a base level element or not.
             if the element is a root then it should validate all of its descendants.
         :param legacy: Whether to use the alias names for config elements to construct the config from a legacy dictionary.
+        :param legacy_lookup: The current flattened dictionary representation of the class by its legacy keys.
         """
         if legacy:
             if legacy_lookup is None:
@@ -543,6 +560,8 @@ class ConfigGroup(ConfigBase, ABC):
                     element.set_from_dict(v, False)
                 elif not isinstance(v, dict) and isinstance(element, ConfigItem):
                     element.set_value(v)
+                else:
+                    setattr(self, element_name, v)
         if root:
             self.validate()
 
@@ -561,17 +580,3 @@ class ConfigGroup(ConfigBase, ABC):
             _LOGGER.critical(msg, exc_info=True)
             raise e
         self.set_from_dict(config_dict, legacy=legacy)
-
-    def to_yaml(self, file_path: str):
-        """
-        Save the values of the elements of the group to a .yaml file.
-
-        :param file_path: The path to the .yaml file
-        """
-        with open(file_path, "w") as file:
-            yaml.safe_dump(
-                self.to_dict(values_only=True),
-                file,
-                sort_keys=False,
-                default_flow_style=False,
-            )

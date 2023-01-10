@@ -33,7 +33,6 @@ def test_restrict_range_min_greater_than_max():
 def test_restrict_range_no_range():
     """Test the :class:`~yawning_titan.config.toolbox.groups.core.RestrictRangeGroup` with no range set."""
     restrict = RestrictRangeGroup(restrict=True)
-    print("%%%", restrict.validation.group_passed)
     assert not restrict.validation.passed
     with pytest.raises(ConfigGroupValidationError):
         raise restrict.validation.fail_exceptions[0]

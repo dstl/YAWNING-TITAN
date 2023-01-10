@@ -60,16 +60,18 @@ blue:
       use: True
       increases_vulnerability: False
       gives_random_vulnerability: False
-      vulnerability_change_during_node_patch: 0.4
+      vulnerability_change: 0.4
     deceptive_nodes:
       use: False
       max_number: 2
       new_node_on_relocate: True
   intrusion_discovery_chance:
-    immediate: 0.5
-    immediate_deceptive_node: 1
-    on_scan: 1
-    on_scan_deceptive_node: 1
+    immediate:
+      standard_node: 0.5
+      deceptive_node: 1
+    on_scan:
+      standard_node: 1
+      deceptive_node: 1
   attack_discovery:
     failed_attacks:
       use: True

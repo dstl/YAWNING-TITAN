@@ -79,6 +79,19 @@ class AttackSourceGroup(ConfigGroup):
 
         super().__init__(doc)
 
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        super().validate()
+        try:
+            if self.only_main_red_node.value and self.any_red_node.value:
+                msg = (
+                    "The red agent cannot attack from multiple sources simultaneously."
+                )
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        return self.validation
+
 
 class NaturalSpreadChanceGroup(AnyNonZeroGroup):
     """The ConfigGroup to represent the chances of reads natural spreading to different node types."""
@@ -170,9 +183,9 @@ class RedActionSetGroup(AnyUsedGroup):
         doc: Optional[str] = "All permissable actions the red agent can perform.",
         spread: Optional[ActionLikelihoodChanceGroup] = None,
         random_infect: Optional[ActionLikelihoodChanceGroup] = None,
-        move: Optional[ActionLikelihoodChanceGroup] = None,
-        basic_attack: Optional[ActionLikelihoodChanceGroup] = None,
-        do_nothing: Optional[ActionLikelihoodChanceGroup] = None,
+        move: Optional[ActionLikelihoodGroup] = None,
+        basic_attack: Optional[ActionLikelihoodGroup] = None,
+        do_nothing: Optional[ActionLikelihoodGroup] = None,
         zero_day: Optional[ZeroDayGroup] = None,
     ):
         """The ActionLikelihoodChanceGroup constructor.
@@ -195,21 +208,21 @@ class RedActionSetGroup(AnyUsedGroup):
                 doc="Whether red tries to infect every safe node in the environment and the associated likelihood of this occurring."
             )
         )
-        self.move: ActionLikelihoodChanceGroup = (
+        self.move: ActionLikelihoodGroup = (
             move
             if move
             else ActionLikelihoodGroup(
                 doc="Whether the red agent moves to a different node and the associated likelihood of this occurring."
             )
         )
-        self.basic_attack: ActionLikelihoodChanceGroup = (
+        self.basic_attack: ActionLikelihoodGroup = (
             basic_attack
             if basic_attack
             else ActionLikelihoodGroup(
                 doc="Whether the red agent picks a single node connected to an infected node and tries to attack and take over that node and the associated likelihood of this occurring."
             )
         )
-        self.do_nothing: ActionLikelihoodChanceGroup = (
+        self.do_nothing: ActionLikelihoodGroup = (
             do_nothing
             if do_nothing
             else ActionLikelihoodGroup(
@@ -363,26 +376,6 @@ class RedTargetMechanismGroup(AnyUsedGroup):
             )
         )
         super().__init__(doc)
-
-    # def validate(self) -> ConfigGroupValidation:
-    #     """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
-    #     super().validate()
-    #     try:
-    #         if not self.random and not any(
-    #             v is True
-    #             for v in [
-    #                 self.prioritise_connected_nodes.value,
-    #                 self.prioritise_unconnected_nodes.value,
-    #                 self.prioritise_vulnerable_nodes.value,
-    #                 self.prioritise_resilient_nodes.value,
-    #                 self.target_specific_node.use.value,
-    #             ]
-    #         ):
-    #             msg = "If the red agent does not target nodes randomly a method of targeting nodes must be set."
-    #             raise ConfigGroupValidationError(msg)
-    #     except ConfigGroupValidationError as e:
-    #         self.validation.add_validation(msg, e)
-    #     return self.validation
 
 
 # --- Tier 2 group ---
