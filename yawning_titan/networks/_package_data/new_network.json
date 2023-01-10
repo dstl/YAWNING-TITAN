@@ -1,18 +1,22 @@
 {
     "_default": {
         "1": {
-            "entry_node_random_placement": {
-                "place_close_to_edge": false,
-                "place_close_to_center": false,
-                "use": false,
-                "count": null,
-                "random": false
+            "high_value_nodes": {
+                "random_placement": {
+                    "place_far_from_entry": false,
+                    "count": null,
+                    "use": false
+                },
+                "nodes": null
             },
-            "high_value_node_random_placement": {
-                "place_far_from_entry": false,
-                "use": false,
-                "count": null,
-                "random": false
+            "entry_nodes": {
+                "random_placement": {
+                    "place_close_to_edge": false,
+                    "place_close_to_center": false,
+                    "count": null,
+                    "use": false
+                },
+                "nodes": ["1"]
             },
             "node_vulnerabilities": {
                 "restrict": false,
@@ -59,9 +63,7 @@
                 "16": [4, 1],
                 "17": [5, 1]
             },
-            "entry_nodes": ["1"],
             "vulnerabilities": null,
-            "high_value_nodes": null,
             "_doc_metadata": {
                 "uuid": "b3cd9dfd-b178-415d-93f0-c9e279b3c511",
                 "created_at": "2022-12-08T14:56:42.891677",

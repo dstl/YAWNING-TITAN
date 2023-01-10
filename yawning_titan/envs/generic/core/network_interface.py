@@ -40,15 +40,15 @@ class NetworkInterface:
         """
         # opens the fle the user has specified to be the location of the game_mode
 
-        self.game_mode = game_mode
-        self.network = network
+        self.game_mode: GameMode = game_mode
+        self.network: Network = network
         self.random_seed = self.game_mode.miscellaneous.random_seed
 
         number_of_nodes = len(self.network.matrix)
 
         # check if high value nodes were provided
         if self.network.high_value_nodes:
-            self.high_value_nodes = self.network.high_value_nodes
+            self.high_value_nodes = self.network.high_value_nodes.nodes
 
         nodes = [str(i) for i in range(number_of_nodes)]
         df = pd.DataFrame(self.network.matrix, index=nodes, columns=nodes)
@@ -761,8 +761,8 @@ class NetworkInterface:
         self.entry_node_weights = [
             1 / self.get_number_of_nodes() for _ in range(self.get_number_of_nodes())
         ]
-        if self.network.entry_nodes is None:
-            if self.network.entry_node_random_placement.use.value:
+        if self.network.entry_nodes.nodes is None:
+            if self.network.entry_nodes.random_placement.use.value:
                 try:
                     node_dict = nx.algorithms.centrality.eigenvector_centrality(
                         self.current_graph, max_iter=500
@@ -772,10 +772,10 @@ class NetworkInterface:
                 weights = list(node_dict.values())
                 all_nodes = list(node_dict.keys())
 
-                if self.network.entry_node_random_placement.place_close_to_edge.value:
+                if self.network.entry_nodes.random_placement.place_close_to_edge.value:
                     weights = list(map(lambda x: (1 / x) ** 4, weights))
                 elif (
-                    self.network.entry_node_random_placement.place_close_to_center.value
+                    self.network.entry_nodes.random_placement.place_close_to_center.value
                 ):
                     weights = list(map(lambda x: x**4, weights))
                 else:
@@ -785,19 +785,19 @@ class NetworkInterface:
                 self.entry_node_weights = weights_normal
                 entry_nodes = choice(
                     all_nodes,
-                    self.network.entry_node_random_placement.count.value,
+                    self.network.entry_nodes.random_placement.count.value,
                     replace=False,
                     p=weights_normal,
                 )
 
             else:
                 entry_nodes = []
-                for i in range(self.network.entry_node_random_placement.count.value):
+                for i in range(self.network.entry_nodes.random_placement.count.value):
                     entry_nodes.append(nodes[i])
 
             self.entry_nodes = entry_nodes
         else:
-            self.entry_nodes = self.network.entry_nodes
+            self.entry_nodes = self.network.entry_nodes.nodes
 
     def set_high_value_nodes(self):
         """
@@ -812,9 +812,9 @@ class NetworkInterface:
             Otherwise:
                 HVNs are set to an empty list.
         """
-        if self.network.high_value_nodes:
+        if self.network.high_value_nodes.nodes:
             # if high value nodes were provided, use them
-            self.high_value_nodes = self.network.high_value_nodes
+            self.high_value_nodes = self.network.high_value_nodes.nodes
         else:
             # if no high value nodes set, set up the possible high value node list
             if self.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value:
@@ -827,7 +827,7 @@ class NetworkInterface:
                 # print warning that the number of high value nodes exceed the above preferably this would be handled
                 # elsewhere i.e. configuration.
                 if (
-                    self.network.high_value_node_random_placement.count.value
+                    self.network.high_value_nodes.random_placement.count.value
                     > number_possible_high_value
                 ):
                     msg = (
@@ -838,19 +838,19 @@ class NetworkInterface:
                     number_of_high_value_nodes = number_possible_high_value
                 else:
                     number_of_high_value_nodes = (
-                        self.network.high_value_node_random_placement.count.value
+                        self.network.high_value_nodes.random_placement.count.value
                     )
 
                 self.possible_high_value_nodes = []
                 # chooses a random node to be the high value node
-                if self.network.high_value_node_random_placement.random.value:
+                if self.network.high_value_nodes.random_placement.use.value:
                     nodes = [str(i) for i in range(len(self.network.matrix))]
                     self.possible_high_value_nodes = list(
                         set(nodes).difference(set(self.entry_nodes))
                     )
                 # Choose the node that is the furthest away from the entry points as the high value node
                 if (
-                    self.network.high_value_node_random_placement.place_far_from_entry.value
+                    self.network.high_value_nodes.random_placement.place_far_from_entry.value
                 ):
                     # gets all the paths between nodes
                     paths = []
@@ -1062,7 +1062,7 @@ class NetworkInterface:
             # change the entry nodes to a number of new random entry nodes using the pre-made wights
             entry_nodes = choice(
                 self.get_nodes(),
-                self.network.entry_node_random_placement.count.value,
+                self.network.entry_nodes.random_placement.count.value,
                 replace=False,
                 p=self.entry_node_weights,
             )
@@ -1391,7 +1391,8 @@ class NetworkInterface:
         if true_state == 1:
             if (
                 random.randint(0, 99)
-                < self.game_mode.blue.intrusion_discovery_chance.immediate.value * 100
+                < self.game_mode.blue.intrusion_discovery_chance.immediate.standard_node.value
+                * 100
                 or node in self.deceptive_nodes
             ):
                 self.current_network_variables[node][
@@ -1440,7 +1441,8 @@ class NetworkInterface:
             if true_state == 1:
                 if (
                     random.randint(0, 99)
-                    < self.game_mode.blue.intrusion_discovery_chance.on_scan.value * 100
+                    < self.game_mode.blue.intrusion_discovery_chance.on_scan.standard_node.value
+                    * 100
                     or self.current_network_variables[node]["deceptive_node"]
                 ):
                     self.current_network_variables[node]["blue_knows_intrusion"] = True

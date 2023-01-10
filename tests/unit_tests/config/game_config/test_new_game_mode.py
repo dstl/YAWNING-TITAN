@@ -160,8 +160,7 @@ def test_read_created_yaml(tmp_path_factory):
     new_game_mode: GameMode = GameMode()
 
     new_game_mode.set_from_yaml(config_path)
-    print("---1", yaml.dump(new_game_mode.to_dict(values_only=True)))
-    print("---2", yaml.dump(config_dict))
+
     assert new_game_mode.to_dict(values_only=True) == config_dict
 
 
@@ -195,6 +194,7 @@ def test_everything_changed_game_mode_from_legacy():
     )
 
     d = game_mode.to_dict(values_only=True)
+
     d["red"]["target_mechanism"]["target_specific_node"].pop("use")
 
     assert d == config_dict

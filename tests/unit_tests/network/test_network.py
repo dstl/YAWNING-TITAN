@@ -6,12 +6,22 @@ import pytest
 from yawning_titan.exceptions import ConfigGroupValidationError
 from yawning_titan.networks import network_creator
 from yawning_titan.networks.new_network import (
-    EntryNodePlacementGroup,
-    HighValueNodePlacementGroup,
+    EntryRandomNodePlacementGroup,
     Network,
-    NodePlacementGroup,
+    NodeGroup,
     NodeVulnerabilityGroup,
+    RandomNodePlacementGroup,
 )
+
+
+@pytest.fixture
+def node_group():
+    """A test group of nodes."""
+    node_placement = EntryRandomNodePlacementGroup(
+        use=True, count=2, place_close_to_center=False, place_close_to_edge=True
+    )
+    node_group = NodeGroup(random_placement=node_placement)
+    return node_group
 
 
 def test_config_properties():
@@ -26,45 +36,32 @@ def test_config_properties():
 
     assert np.array_equal(network.matrix, matrix) is True
     assert network.positions == node_positions
-    assert network.entry_nodes[0] == "0"
-    assert network.high_value_nodes[0] == "1"
+    assert network.entry_nodes.nodes[0] == "0"
+    assert network.high_value_nodes.nodes[0] == "1"
 
 
 def test_entry_node_placement_valid_input():
-    """Tests validation of :class: `~yawning_titan.networks.new_network.NodePlacementGroup`."""
-    node_placement = NodePlacementGroup(use=False, count=2, random=True)
+    """Tests validation of :class: `~yawning_titan.networks.new_network.RandomNodePlacementGroup`."""
+    node_placement = RandomNodePlacementGroup(use=True, count=2)
     assert node_placement.validation.passed
     assert node_placement.validation.group_passed
 
 
-def test_entry_node_placement_multiple_methods():
-    """Tests validation of :class: `~yawning_titan.networks.new_network.EntryNodePlacementGroup`."""
-    node_placement = EntryNodePlacementGroup(
-        use=True, count=2, random=True, place_close_to_center=True
-    )
-    assert not node_placement.validation.passed
-    assert node_placement.validation.elements_passed
-    assert (
-        "2 methods of choosing node placement have been selected but only 1 can be used"
-        in node_placement.validation.fail_reasons
-    )
-    with pytest.raises(ConfigGroupValidationError):
-        raise node_placement.validation.fail_exceptions[0]
+# test the NodeGroup instead \/
 
 
-def test_high_value_node_placement_multiple_methods():
-    """Tests validation of :class: `~yawning_titan.networks.new_network.HighValueNodePlacementGroup`."""
-    node_placement = HighValueNodePlacementGroup(
-        use=True, count=2, random=True, place_far_from_entry=True
-    )
-    assert not node_placement.validation.passed
-    assert node_placement.validation.elements_passed
+def test_node_group_erroneous_entry_node_placement(node_group: NodeGroup):
+    """Tests validation of :class: `~yawning_titan.networks.new_network.NodeGroup`."""
+    node_group.random_placement.place_close_to_center.value = True
+
+    assert not node_group.validation.passed
+    assert node_group.validation.elements_passed
     assert (
         "2 methods of choosing node placement have been selected but only 1 can be used"
-        in node_placement.validation.fail_reasons
+        in node_group.validation.fail_reasons
     )
     with pytest.raises(ConfigGroupValidationError):
-        raise node_placement.validation.fail_exceptions[0]
+        raise node_group.validation.fail_exceptions[0]
 
 
 def test_node_vulnerability_group_float_value():

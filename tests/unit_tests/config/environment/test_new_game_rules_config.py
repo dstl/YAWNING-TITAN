@@ -39,7 +39,7 @@ def test_grace_period_longer_than_game_length(game_rules: GameRules):
         raise game_rules.validation.fail_exceptions[0]  #
 
 
-def test_default_game_mode_from_legacy(
+def test_default_game_rules_from_legacy(
     default_game_rules: GameRules, game_rules: GameRules
 ):
     """Create a game_rules instance using the default config file."""

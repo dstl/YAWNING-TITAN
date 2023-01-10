@@ -73,7 +73,7 @@ class BlueActionSet:
         Can also affect the vulnerability of the node. There are settings that can change how this
         action works in the configuration file:
             - BLUE: making_node_safe_modifies_vulnerability
-            - BLUE: vulnerability_change_during_node_patch
+            - BLUE: vulnerability_change
             - BLUE: making_node_safe_gives_random_vulnerability
 
         Args:
@@ -89,7 +89,7 @@ class BlueActionSet:
         ):
             # Modifies the vulnerability by a set amount (cannot increase it past the limit in the config file)
             change_amount = (
-                self.network_interface.game_mode.blue.action_set.make_node_safe.vulnerability_change_during_node_patch.value
+                self.network_interface.game_mode.blue.action_set.make_node_safe.vulnerability_change.value
             )
             current_vulnerability = (
                 self.network_interface.get_single_node_vulnerability(node)

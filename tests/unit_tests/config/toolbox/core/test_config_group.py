@@ -33,8 +33,14 @@ class GroupTier1(ConfigGroup):
         """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
         super().validate()
         try:
-            if self.bool.value and self.float.value != 1:
+            if self.bool.value and self.float.value > 1:
                 msg = "test error tier 1"
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        try:
+            if self.bool.value and self.float.value < 0:
+                msg = "test error tier 1 b"
                 raise ConfigGroupValidationError(msg)
         except ConfigGroupValidationError as e:
             self.validation.add_validation(msg, e)
@@ -75,7 +81,7 @@ def multi_tier_test_group():
 
 
 @pytest.mark.unit_test
-def test_to_dict(test_group: ConfigGroup):
+def test_to_dict(test_group: Group):
     """Test the to_dict method produces a dictionary with the values as set."""
     d1 = test_group.to_dict(values_only=True)
     d2 = test_group.to_dict()
@@ -88,7 +94,7 @@ def test_to_dict(test_group: ConfigGroup):
 
 
 @pytest.mark.unit_test
-def test_create_from_legacy(test_group: ConfigGroup):
+def test_create_from_legacy(test_group: Group):
     """Test the group can be created using legacy config names."""
     d1 = {"legacy_a": True, "legacy_b": 2, "legacy_c": "set"}
     test_group.set_from_dict(config_dict=d1, legacy=True)
@@ -98,7 +104,7 @@ def test_create_from_legacy(test_group: ConfigGroup):
 
 
 @pytest.mark.unit_test
-def test_stringify(test_group: ConfigGroup):
+def test_stringify(test_group: Group):
     """
     Test the group can represent itself as a string.
 
@@ -111,6 +117,38 @@ def test_stringify(test_group: ConfigGroup):
         s
         == "Group(a=False, b=1, c=test, doc=None, validation=ConfigGroupValidation(passed=True, fail_reasons=[], fail_exceptions=[]))"
     )
+
+
+@pytest.mark.unit_test
+def test_repeat_item_validation(test_group: Group):
+    """Test validating a group then modifying its items and re-validating."""
+    test_group.a.value = "test"
+    test_group.validate()
+
+    test_group.a.value = 1
+    test_group.validate()
+
+    assert test_group.a.validation.fail_reasons == [
+        "Value 1 is of type <class 'int'>, should be <class 'bool'>."
+    ]
+
+
+@pytest.mark.unit_test
+def test_repeat_group_validation(multi_tier_test_group: GroupTier2):
+    """Test validating a group then modifying its sub-groups and re-validating."""
+    multi_tier_test_group.tier_1.bool.value = True
+    multi_tier_test_group.tier_1.float.value = 2
+
+    multi_tier_test_group.validate()
+
+    multi_tier_test_group.tier_1.bool.value = True
+    multi_tier_test_group.tier_1.float.value = -1
+
+    multi_tier_test_group.validate()
+
+    assert multi_tier_test_group.tier_1.validation.fail_reasons == [
+        "test error tier 1 b"
+    ]
 
 
 @pytest.mark.unit_test
@@ -175,7 +213,7 @@ def test_multi_tier_group_tier_1_item_failed(multi_tier_test_group: GroupTier2):
 
 
 @pytest.mark.unit_test
-def test_yaml_round_trip(test_group: ConfigGroup, tmp_path: Path):
+def test_yaml_round_trip(test_group: Group, tmp_path: Path):
     """Test that the items can be stored in a yaml file and subsequently reloaded."""
     d1 = test_group.to_dict()
 
