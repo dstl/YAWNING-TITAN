@@ -1,0 +1,34 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.item\_types.bool\_item.BoolProperties
+===========================================================
+
+.. currentmodule:: yawning_titan.config.item_types.bool_item
+
+.. autoclass:: BoolProperties
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~BoolProperties.to_dict
+      ~BoolProperties.validate
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~BoolProperties.allow_null
+      ~BoolProperties.default
