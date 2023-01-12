@@ -16,7 +16,7 @@ from yawning_titan.db.query import YawningTitanQuery
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
 from yawning_titan.networks.network import Network
 
-__all__ = ["NetworkDB", "NetworkSchema"]
+__all__ = ["NetworkDB", "NetworkSchema", "default_18_node_network"]
 
 _LOGGER = getLogger(__name__)
 
@@ -85,7 +85,7 @@ class NetworkDB:
 
     def __init__(self):
         self._db = YawningTitanDB("networks")
-        self.reset_default_networks_in_db()
+        # self.reset_default_networks_in_db()
 
     def __enter__(self) -> NetworkDB:
         return NetworkDB()
