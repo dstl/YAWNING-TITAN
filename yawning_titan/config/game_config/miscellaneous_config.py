@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.envs.generic.helpers.environment_input_validation import check_type
@@ -12,7 +12,7 @@ class MiscellaneousConfig(ConfigABC):
     """Class that validates and stores the Miscellaneous Configuration."""
 
     _output_timestep_data_to_json: bool
-    _random_seed: Optional[int]
+    _random_seed: int
 
     @property
     def output_timestep_data_to_json(self) -> bool:
@@ -29,7 +29,7 @@ class MiscellaneousConfig(ConfigABC):
         self._output_timestep_data_to_json = value
 
     @property
-    def random_seed(self) -> Optional[int]:
+    def random_seed(self) -> int:
         """
         A random_seed int.
 
