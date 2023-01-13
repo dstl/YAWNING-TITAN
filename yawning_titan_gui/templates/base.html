@@ -7,22 +7,22 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
      <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
-    
+
     <script type="text/javascript">
         const CSRF_TOKEN = "{{ csrf_token }}";
     </script>
 
     <script src="{% static 'js/app.js' %}"></script>
 
-    {% block scripts %}   
+    {% block scripts %}
 
     {% endblock %}
 </head>
-<body>
+<body class="preload">
     <nav id="view-selector">
         <div id="sandwich-icon" data-sidebar="#sidebar-left">
             <span></span>
@@ -35,25 +35,27 @@
         {% else %}
             <a href="{% url 'home' %}" class="head">Yawning Titan</a>
         {% endif %}
+        <div class="flex-break"></div>
+        <div id="error-message" class="{% if error_message is None %}hidden{% endif %}">{{error_message}}</div>
     </nav>
     <div id="window-container">
         <div id="toolbar">
-            <div id="game-mode-set" class="stage">
+            <div id="game-mode-set" class="stage" data-toggle="tooltip" data-placement="right" title="Game mode config incomplete">
                 <i class="bi bi-gear"></i>
                 <i class="bi bi-gear-fill"></i>
             </div>
-            <div class="stage">
+            <div class="stage" data-toggle="tooltip" data-placement="right" title="Network config incomplete">
                 <i class="bi bi-diagram-2"></i>
                 <i class="bi bi-diagram-2-fill"></i>
-            </div>            
-            <div class="stage">
+            </div>
+            <div class="stage" data-toggle="tooltip" data-placement="right" title="Run config incomplete">
                 <i class="bi bi-collection-play"></i>
                 <i class="bi bi-collection-play-fill"></i>
-            </div>            
-            <div class="stage">
+            </div>
+            <div class="stage" data-toggle="tooltip" data-placement="right" title="Run game">
                 <i class="bi bi-play"></i>
                 <i class="bi bi-play-fill"></i>
-            </div>           
+            </div>
         </div>
         <div id="window">
             <div id="sidebar-left">
@@ -72,52 +74,116 @@
                             {% endfor %}
                             </div>
                         </div>
-                    </div> 
-                    {% endfor %}    
-                </div> 
+                    </div>
+                    {% endfor %}
+                </div>
                 {% block sidebar %}
-                
+
                 {% endblock %}
             </div>
             <div id="main">
                 {% block main %}
 
                 {% endblock %}
-            </div>    
+            </div>
         </div>
     </div>
     <div id="mask" class="hidden">
         {% block dialogues %}
 
         {% endblock %}
-    </div>  
+    </div>
+    <script> </script>
 </body>
-
 <style>
     :root{
         --primary: #00A86B;
         --primary-light: #A8E4A0;
+        --superlight: #bababa;
         --light: #323233;
         --mid: #252526;
         --dark: #1e1e1e;
+
+        --text-superlight: #fff;
         --text-light: #999;
         --text-mid: #888;
-        
+
         --increment: 5px;
         --padding: 50px;
     }
+
+    /* scrollbar styling */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: var(--mid);
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        background: var(--text-light);
+    }
+
+    /* base elements */
     body{
         width: 100vw;
         height: 100vh;
         display: flex;
         flex-direction: column;
-        background-color: var(--dark);
+        background-color: var(--light);
         color: #666;
-        line-height: auto; 
+        line-height: auto;
         position: relative;
     }
+    h2{
+        color: var(--text-light);
+    }
+    a,button,div,form { /* linkable elements */
+        color: var(--text-mid);
 
-    /* base elements */
+    }
+
+    /* input elements */
+    input:checked{
+        background-color: var(--primary) !important;
+    }
+    input[type="checkbox"]:focus:checked{
+        background-color: var(--primary) !important;
+    }
+    input:focus{
+        background-color: var(--dark) !important;
+        color: var(--text-light) !important;
+    }
+    input[type='search']{
+        background-color: var(--mid);
+        color: var(--text-light);
+    }
+    input[type='search']:focus{
+        background-color: var(--mid);
+        color: var(--text-light);
+    }
+    input[type='search'].rounded{
+        border-top-right-radius:0 !important;
+        border-bottom-right-radius:0 !important;
+    }
+    option:hover{
+        background-color: var(--primary-light);
+    }
+
+    /* specific elements */
+    #error-message{
+        background-color: var(--bs-danger);
+        padding: var(--increment);
+        border-radius: var(--increment);
+        color: var(--text-superlight);
+        margin-right: var(--increment);
+    }
+
     #view-selector{
         width: 100%;
         height: var(--padding);
@@ -153,7 +219,16 @@
         display: flex;
         flex-direction: row;
         width: 100%;
+        min-height: 0;
+        max-height: calc(100vh - var(--padding));
         overflow: hidden;
+    }
+    #main{
+        position: relative;
+        flex: 1;
+        height: 100%;
+        padding: var(--padding);
+        background-color: var(--mid);
     }
     #sidebar-left{
         width: 700px;
@@ -163,20 +238,12 @@
         transition: all 0.8s ease;
         margin-left: -700px;
         /* transform: translate(-700px, 0); */
-    }   
-    #sidebar-left.open{
-        
-        margin-left: 0px;
-    } 
-    #main{
-        position: relative;
-        flex: 1;
-        height: 100%;
-        padding: var(--padding);        
     }
-
-    #center-container{       
-        position: absolute;       
+    #sidebar-left.open{
+        margin-left: 0px;
+    }
+    #center-container{
+        position: absolute;
         top: 50%;
         left: 50%;
         padding: 30px;
@@ -198,6 +265,38 @@
         max-height: 100%;
     }
 
+    /* base classes */
+    .icon{
+        border-radius: 50%;
+        background-color: var(--light);
+        margin-left: var(--increment);
+        padding: .5rem;
+        cursor: pointer;
+    }
+    .icon:hover{
+        background-color: var(--superlight);
+        color: var(--primary-light);
+    }
+    .form-label{
+        color: var(--text-superlight);
+    }
+    .form-switch{
+        text-align: center;
+    }
+    .form-range{
+        display: flex;
+        flex-direction: row;
+    }
+    .form-range>.range-setter{
+        width: 50px;
+        margin-left: var(--increment);
+        -moz-appearance: textfield;
+    }
+    .form-range>.range-setter::-webkit-inner-spin-button,.form-range>.range-setter::-webkit-outer-spin-button{
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
     /* dialogue boxes */
     #mask{
         position: absolute;
@@ -216,16 +315,23 @@
         padding: calc(2*var(--increment));
         display: flex;
         flex-direction: column;
-        justify-content: space-between;       
-        background-color: var(--light);
+        justify-content: space-between;
+        background-color: var(--dark);
         border-radius: .5rem;
         transform: translate(-50%,-50%);
+        color: var(--text-superlight);
     }
     .dialogue-center>p{
         flex: 1;
+        vertical-align: middle;
+    }
+    .dialogue-center>input{
+        margin-bottom: var(--padding);
+        background-color: var(--mid);
+        border: none;
     }
     .dialogue-center>h3{
-        color: var(--text-light);
+        color: var(--text-superlight);
     }
 
     /* toolbar */
@@ -258,7 +364,7 @@
     .accordion{
         width:100%;
         max-height: 100%;
-        margin: var(--increment);        
+        margin: var(--increment);
     }
     .accordion-item,.accordion-header,.accordion-button{
         background-color: var(--light);
@@ -266,8 +372,8 @@
         border: none;
     }
     .accordion-button:not(.collapsed){
-        background-color: var(--primary-light);
-        color: var(--primary);
+        background-color: var(--primary);
+        color: var(--text-superlight);
     }
     .accordion-button.collapsed::after {
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23888'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
@@ -276,9 +382,12 @@
         background-color: var(--mid);
     }
 
-    /* helpers */
+    /* style helpers */
     .hidden{
         display: none !important;
+    }
+    .disabled{
+        pointer-events: none;
     }
     .clear{
         background-color: transparent !important;
@@ -287,14 +396,22 @@
     .blur{
         filter: blur(5px);
     }
+    .preload * {
+        -webkit-transition: none !important;
+        -moz-transition: none !important;
+        -ms-transition: none !important;
+        -o-transition: none !important;
+    }
     .btn-primary{
-        background-color: var(--primary-light);
-        border-color: var(--primary-light);
+        background-color: var(--primary);
+        border-color: var(--primary);
+        color: var(--text-superlight) !important;
     }
     .btn{
         color: var(--text-light);
     }
 
+    /* layout helpers */
     .list{
         display: flex;
         flex-direction: column;
@@ -317,6 +434,10 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+    }
+
+    .flex-break{
+        flex:1;
     }
 
     /* animated sandwich */
