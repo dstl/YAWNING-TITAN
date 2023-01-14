@@ -4,30 +4,27 @@
 
 {% block scripts %}
 <script src="{% static 'js/game_mode_config.js' %}"></script>
-<script text="text/javascript">const game_mode_filename = "{{game_mode_filename}}";</script>
+<script text="text/javascript">
+    const game_mode_filename = "{{game_mode_filename}}";
+    const section_name = "{{current_section_name}}";
+</script>
 {% endblock %}
 
 {% block main %}
 <header id="config-header" class="el-row">
     <h2>Game mode file: {{game_mode_filename}}</h2>
-    <div id="config-options" >
-        <div class="el-container">
-            <label for="show-hidden-dependents">Show inactive options</label>
-            <input type="checkbox" name="show-hidden-dependents" role="switch" class="form-check-input" id="show-hidden-dependents">
-        </div>
-        <a id="game-modes-return" href="{% url 'Manage game modes' %}"><i class="bi bi-arrow-90deg-left"></i></a>
-    </div>
+    <a id="game-modes-return" href="{% url 'Manage game modes' %}"><i class="bi bi-arrow-90deg-left"></i></a>
 </header>
 
 <div id="config-forms">
     <div id="config-form-left">
         <div id="config-form-icons">
-            {% for form_name, section in forms.items %}
-            <a href="{{request.path|url_trim:2}}{{form_name}}/" class="icon-container{% if form_name == section_name %} selected{% endif %}{% if section.status == 'complete' %} complete{% endif %}">
-                <div id="{{form_name}}-icon" class="icon" data-form="#{{form_name}}-config-form">
+            {% for section_name, section in sections.items %}
+            <a href="{{request.path|url_trim:2}}{{section_name}}/" class="icon-container{% if section_name == current_section_name %} selected{% endif %}{% if section.config_class.validation.passed %} complete{% endif %}">
+                <div id="{{section_name}}-icon" class="icon" data-form="#{{section_name}}-config-form">
                     <i class="bi {{section.icon}}"></i>
                 </div>
-                <p>{{form_name}}</p>
+                <p>{{section_name}}</p>
             </a>
             {% endfor %}
         </div>
@@ -36,36 +33,51 @@
             <textarea></textarea>
         </div>
     </div>
-    <div id="{{section_name}}-config-form-container" class="form-container">
-        <form id="{{section_name}}-config-form" class="config-form" action="" method="post" data-form-name="{{section_name}}">
-            {% csrf_token %}
-            <div class="fields">
-                {% for field in form %}
-                    {% label_subsection field subsection_labels as subsection_label %}
-                    {% if subsection_label is not None %}
-                        <p class="subsection-label">{{subsection_label}}</p>
+    <div id="{{current_section_name}}-config-form-container" class="form-container">
+        <div id="subsection-forms">
+            {% for form in section.forms %}
+                <p class="title tier-{{form.tier}}">{{form.name|format_text}}</p>
+                <form id="config-form-{{forloop.counter0}}" class="config-form tier-{{form.tier}}"  data-id="{{forloop.counter0}}">
+                    {% csrf_token %}
+                    {% if form.config_class.validation.fail_reasons %}
+                        <ul class="error-list">
+                            {% for error in form.config_class.validation.fail_reasons %}
+                                <li>{{error}}</li>
+                            {% endfor %}
+                        </ul>
                     {% endif %}
-                    <div class="mb-3 active">
-                        <div class="info">
-                            <label for="id_{{field.name}}" class="form-label">{{field.label}}</label>
-                            <p class="help-text">{{field.help_text}}</p>
-                        </div>
-                        <div class="field-container {% if protected %}disabled{% endif %}">
-                            {{ field }}
-                            {% if field.errors %}
-                            <ul style="color:var(--bs-danger)">
-                                {% for error in field.errors %}
-                                <li><strong>{{ error|escapejs }}</strong></li>
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
-                        </div>
+                    <div class="fields">
+                        {% for field in form %}
+                            <div class="mb-3 active">
+                                <div class="info">
+                                    <label for="id_{{field.name}}" class="form-label">{{field.label}}</label>
+                                    <p class="help-text">{{field.help_text}}</p>
+                                    {% if field.errors %}
+                                    <ul class="error-list">
+                                        {% for error in field.errors %}
+                                        <li>{{ error|escapejs }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                </div>
+                                <div class="field-container {% if protected %}disabled{% endif %}">
+                                    {{ field }}
+                                </div>
 
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
-            </div>
-            <div class="flex-break"></div>
-            <button type="submit" class="btn btn-primary next-form">{% if section == forms|keys|last %}Finish{% else %}Next{% endif %}</button>
+                </form>
+            {% endfor %}
+        </div>
+        <form id="section-controls" action="" method="post">
+            {% csrf_token %}
+            {% if last %}
+                <button id="next-section" type="submit" class="btn btn-primary">Finish</button>
+            {% else %}
+                <button id="next-section" type="submit" class="btn btn-primary">Next</button>
+                <button id="save-game-mode" type="button" class="btn btn-primary">Save</button>
+            {% endif %}
         </form>
     </div>
 </div>
@@ -118,6 +130,17 @@
         height: 90%;
         border-left: 2px solid var(--text-light);
     }
+    #subsection-forms{
+        flex: 1;
+        min-height: 0;
+        max-height: calc(100% - 50px);
+        overflow-y: auto;
+    }
+    #section-controls{
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+    }
 
     /* config icons */
     #config-form-icons .icon{
@@ -163,58 +186,54 @@
     }
 
     /* config elements */
-    #config-options{
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        background-color: var(--dark);
-        border-radius: .5rem;
-        padding: var(--increment);
-    }
-    #config-options>div{
-        display: flex;
-        padding: var(--increment);
-    }
-    #config-options>*:not(:last-child){
-        margin-right: calc(3*var(--increment));
-    }
-
     #config-header{
         margin-bottom: calc(2*var(--increment));
 
     }
+    #section-controls>button{
+        flex: 1;
+        margin-left: var(--increment);
+        margin-right: var(--increment);
+    }
 
     /* config form elements */
     .form-container{
-        display: flex;
         flex-direction: column;
         flex: 1;
-        min-height: 0;
-        max-height: 100%;
-    }
-    .form-container div, .form-container form{
-        min-height: 0;
-        max-height: 100%;
     }
     .config-form{
         display: flex;
         flex-direction: column;
-        flex: 1;
 
     }
     .config-form>.fields{
         overflow-y: auto;
         padding-right: var(--increment);
     }
-    .next-form{
-        width: 100%;
+    .error-list{
+        color: red;
+        font-size: 0.7rem;
+        margin: 0;
+        padding: 0;
+        display:  flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .error-list>li{
+        margin-left: 1rem;
     }
 
+
     /* form layouts */
+
+    /* root field element */
     .mb-3{
         display: flex;
         flex-wrap: wrap;
-        margin: 3px;
+        /* margin: 3px; */
+        margin: 0 !important;
+        /* border-top: 1px solid var(--text-dark); */
     }
     .mb-3 label{
         display: flex;
@@ -238,6 +257,27 @@
         margin-left: var(--padding); /*calc(var(--increment)*3);*/
     }
 
+    .config-form.tier-0,.title.tier-1{
+        padding-left: calc(2 * var(--increment));
+    }
+    .config-form.tier-1,.title.tier-2{
+        padding-left: calc(4 * var(--increment));
+    }
+    .config-form.tier-2,.title.tier-3{
+        padding-left: calc(6 * var(--increment));
+    }
+    .config-form.tier-3,.title.tier-4{
+        padding-left: calc(8 * var(--increment));
+    }
+    .config-form.tier-4,.title.tier-5{
+        padding-left: calc(10 * var(--increment));
+    }
+
+    div.mb-3:has(.hidden){
+        display: none;
+    }
+    /* --------------------- */
+
     .help-text{
         font-size: .8rem;
         color: #888;
@@ -245,6 +285,9 @@
         margin: 0;
     }
     .field-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         max-width: 400px;
         height: 60px;
     }
@@ -263,13 +306,12 @@
     .selector:hover{
         background-color: aliceblue;
     }
-    .subsection-label{
+
+    .title{
         color: var(--text-light);
-        border-top: 1px solid var(--text-mid);
-        border-bottom: 1px solid var(--text-mid);
+        font-size: 1.4rem;
+        margin-bottom: 0;
     }
-    div.mb-3:has(.hidden){
-        display: none;
-    }
+
 </style>
 {% endblock %}

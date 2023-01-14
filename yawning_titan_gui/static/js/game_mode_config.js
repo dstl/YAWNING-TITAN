@@ -1,7 +1,13 @@
+$(window).on("unload", function(e) {
+    localStorage.setItem('scrollpos', $(".form-container").scrollTop());
+});
+
 $(document).ready(function(){
+    let scrollpos = localStorage.getItem('scrollpos');
+    if (scrollpos)  $(".form-container").scrollTop(scrollpos);
+
     // set the initial value of show-hidden-dependents persisting through refreshes.
     $("#show-hidden-dependents").prop("checked",sessionStorage.getItem("show-hidden-dependents") || false);
-    toggle_show_hidden_dependents();
 
     // check select dependencies on page load
     $("select").each(function(){
@@ -29,6 +35,7 @@ $(document).ready(function(){
             $(child_el).closest(".mb-3").removeClass("active");
         }
     });
+    //
 
     // update select dependencies
     $(document).on("change",".config-form select",function(){
@@ -60,14 +67,12 @@ $(document).ready(function(){
     });
 
     // form updates
-    $(".config-form").change(function(){
-        submit_form(this)
+    $("#save-game-mode").click(function(){
+        save_game_mode();
     });
 
-    // buttons
-    $("#show-hidden-dependents").click(function(){
-        sessionStorage.setItem("show-hidden-dependents",$(this).is(":checked"));
-        toggle_show_hidden_dependents();
+    $(".config-form").change(function(){
+        submit_form(this,"update")
     });
 
     $("#config-form-icons>.icon").click(function(){
@@ -78,12 +83,29 @@ $(document).ready(function(){
     });
 });
 
+function save_game_mode(){
+    config = new FormData();
+    config.append('_game_mode_filename',game_mode_filename);
+    config.append('_operation',"save");
+    $.ajax({
+        type: "POST",
+        url: window.location.origin + "/update_config/",
+        data: config,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: "json"
+    });
+
+}
 
 // wrapper for async post request for config section form processing
 function submit_form(form_element){
     config = new FormData($(form_element)[0]);
-    config.append('section_name',$(form_element).data("form-name"));
-    config.append('game_mode_filename',game_mode_filename);
+    config.append('_form_id',$(form_element).data("id"));
+    config.append('_section_name',section_name);
+    config.append('_game_mode_filename',game_mode_filename);
+    config.append('_operation',"update");
     $.ajax({
         type: "POST",
         url: window.location.origin + "/update_config/",
@@ -93,16 +115,34 @@ function submit_form(form_element){
         cache: false,
         dataType: "json",
         success: function(response){
-            $("#error-message").text("").addClass("hidden");
-            console.log("RE",response);
         },
         error: function(response){
-            console.log("ERR",response);
-            if("errors" in response.responseJSON){
-                $("#error-message").text(response.responseJSON.errors).removeClass("hidden")
-            }
+            let errors = response.responseJSON.errors;
+            add_form_errors(JSON.parse(errors));
         }
     });
+
+}
+
+function add_form_errors(errors){
+    for (const [form_id, error] of Object.entries(errors)){
+        $(".error-list","#config-form-"+form_id).remove()
+        let group_error_list = $("<ul class='error-list'></ul>");
+
+        for (const msg of error["group"]){
+            group_error_list.append("<li>"+msg+"</li>")
+        }
+        $("#config-form-"+form_id).prepend(group_error_list);
+        for (const [item_id, item_errors] of Object.entries(error["items"])){
+            let item_error_list = $("<ul class='error-list'></ul>");
+            for (const msg of item_errors){
+                item_error_list.append("<li>"+msg+"</li>")
+            }
+            let info_obj = $(`label[for='id_${item_id}']`,"#config-form-"+form_id).closest(".info");
+            info_obj.children(".error-list").remove();
+            info_obj.append(item_error_list);
+        }
+    }
 }
 
 // update dependent elements state
@@ -117,16 +157,5 @@ function handle_dependent_elements(selector, operation){
         }
         $(selector).attr("disabled","disabled");
         $(selector).closest(".mb-3").removeClass("active");
-    }
-}
-
-// toggle the visibility of dependent child elements
-function toggle_show_hidden_dependents(){
-    if($("#show-hidden-dependents").is(":checked")){
-        $(".config-form input.grouped:not(.parent)").removeClass("hidden");
-        $("#show-hidden-dependents").closest(".el-container").find("label").text("Hide inactive options");
-    }else{
-        $(".config-form input.grouped:not(.parent)").addClass("hidden");
-        $("#show-hidden-dependents").closest(".el-container").find("label").text("Show inactive options");
     }
 }

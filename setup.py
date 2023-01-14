@@ -175,19 +175,9 @@ setup(
     ],
     extras_require={
         "dev": [
-<<<<<<< HEAD
-            "pytest",
-            "pytest-flake8",
-            "pytest-cov",
-            "pip-licenses",
-            "sphinx_rtd_theme",
-            "sphinx",
-            "pre-commit",
-            "nbmake==1.3.4",
             "Django==4.1.2",
             "flaskwebgui==1.0.1",
             "pyinstaller>=5.7.0",
-=======
             "nbmake==1.3.5",
             "pip-licenses==4.0.2",
             "pre-commit==2.20.0",
@@ -196,7 +186,6 @@ setup(
             "pytest-flake8==1.1.1",
             "sphinx==5.3.0",
             "sphinx_rtd_theme==1.1.1",
->>>>>>> dev-gui
         ],
         "tensorflow": ["tensorflow==2.11.0"],
     },

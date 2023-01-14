@@ -1,6 +1,7 @@
 import copy
+import os
 from dataclasses import fields
-from typing import Any, Dict, Union
+from typing import Any, Dict, List, Union
 
 import yaml
 from django import forms as django_forms
@@ -8,127 +9,29 @@ from django.forms import widgets
 from yaml import SafeLoader
 
 from yawning_titan import GAME_MODES_DIR
-from yawning_titan.config.agents.blue_agent_config import BlueAgentConfig
-from yawning_titan.config.agents.red_agent_config import RedAgentConfig
-from yawning_titan.config.environment.game_rules_config import GameRulesConfig
-from yawning_titan.config.environment.observation_space_config import (
-    ObservationSpaceConfig,
+from yawning_titan.config.agents.new_blue_agent_config import Blue
+from yawning_titan.config.agents.new_red_agent_config import Red
+from yawning_titan.config.environment.new_game_rules_config import GameRules
+from yawning_titan.config.environment.new_observation_space_config import (
+    ObservationSpace,
 )
-from yawning_titan.config.environment.reset_config import ResetConfig
-from yawning_titan.config.environment.rewards_config import RewardsConfig
-from yawning_titan.config.game_config.config_abc import ConfigABC
-from yawning_titan.config.game_config.game_mode_config import GameModeConfig
-from yawning_titan.config.game_config.miscellaneous_config import MiscellaneousConfig
+from yawning_titan.config.environment.new_reset_config import Reset
+from yawning_titan.config.environment.new_rewards_config import Rewards
+from yawning_titan.config.game_config.game_mode import GameMode
+from yawning_titan.config.game_config.new_miscellaneous_config import Miscellaneous
+from yawning_titan.config.toolbox.core import ConfigGroup, ConfigItem
+from yawning_titan.config.toolbox.item_types.bool_item import BoolItem
+from yawning_titan.config.toolbox.item_types.float_item import FloatItem
+from yawning_titan.config.toolbox.item_types.int_item import IntItem
+from yawning_titan.config.toolbox.item_types.str_item import StrItem
 from yawning_titan_gui import DEFAULT_GAME_MODE
-from yawning_titan_gui.helpers import GameModeManager
+from yawning_titan_gui.helpers import GameModeManager, next_key
 
 
 class RangeInput(widgets.NumberInput):
     """Custom widget for range input range input field."""
 
     input_type = "range"
-
-
-red_config_form_map = {
-    "groups": {
-        "target_mechanism": [
-            "red_chooses_target_at_random",
-            "red_target_node",
-            "red_prioritises_connected_nodes",
-            "red_prioritises_un_connected_nodes",
-            "red_prioritises_vulnerable_nodes",
-            "red_prioritises_resilient_nodes",
-        ],
-        "target_source": [
-            "red_can_only_attack_from_red_agent_node",
-            "red_can_attack_from_any_red_node",
-        ],
-    },
-    "dependencies": {
-        "red_can_naturally_spread": [
-            "chance_to_spread_to_connected_node",
-            "chance_to_spread_to_unconnected_node",
-        ],
-        "red_uses_spread_action": [
-            "spread_action_likelihood",
-            "chance_for_red_to_spread",
-        ],
-        "red_uses_random_infect_action": [
-            "random_infect_action_likelihood",
-            "chance_for_red_to_random_compromise",
-        ],
-        "red_uses_basic_attack_action": ["basic_attack_action_likelihood"],
-        "red_uses_do_nothing_action": ["do_nothing_action_likelihood"],
-        "red_uses_move_action": ["move_action_likelihood"],
-        "red_uses_zero_day_action": [
-            "zero_day_start_amount",
-            "days_required_for_zero_day",
-        ],
-        "red_target_node": ["red_always_chooses_shortest_distance_to_target"],
-        "red_uses_skill": ["red_skill"],
-    },
-}
-
-blue_config_form_map = {"groups": {}, "dependencies": {}}
-
-observation_space_config_form_map = {
-    "groups": {},
-    "dependencies": {
-        "can_discover_failed_attacks": ["chance_to_discover_failed_attack"],
-        "can_discover_succeeded_attacks_if_compromise_is_not_discovered": [
-            "chance_to_discover_succeeded_attack_compromise_not_known"
-        ],
-        "can_discover_succeeded_attacks_if_compromise_is_discovered": [
-            "chance_to_discover_succeeded_attack_compromise_known"
-        ],
-        "making_node_safe_modifies_vulnerability": [
-            "vulnerability_change_during_node_patch",
-            "making_node_safe_gives_random_vulnerability",
-        ],
-    },
-}
-
-game_rules_config_form_map = {
-    "groups": {
-        "high_value_node_choice": [
-            "choose_high_value_nodes_placement_at_random",
-            "choose_high_value_nodes_furthest_away_from_entry",
-        ],
-        "entry_node_choice": [
-            "choose_entry_nodes_randomly",
-            "prefer_central_nodes_for_entry_nodes",
-            "prefer_edge_nodes_for_entry_nodes",
-        ],
-    },
-    "dependencies": {},
-}
-
-reset_config_form_map = {}
-
-rewards_config_form_map = {}
-
-miscellaneous_config_form_map = {}
-
-config_form_maps: Dict[str, Dict[str, Any]] = {
-    "red": red_config_form_map,
-    "blue": blue_config_form_map,
-    "game_rules": game_rules_config_form_map,
-    "observation_space": observation_space_config_form_map,
-    "reset": reset_config_form_map,
-    "rewards": rewards_config_form_map,
-    "miscellaneous": miscellaneous_config_form_map,
-}
-
-subsection_labels = {
-    "red": {
-        "red_uses_skill": "Red agent attack behavior: Choose at least 1 of the following 3 items (red_ignores_defences: False counts as choosing an item)",
-        "red_uses_spread_action": "Red agent actions: Choose at least one of the following 6 'red_uses_***' items (each item has associated weighting)",
-        "red_can_naturally_spread": "Red agent natural spread",
-    },
-    "blue": {
-        "blue_uses_reduce_vulnerability": "Blue agent actions: Choose at least one of the following 8 items"
-    },
-}
 
 
 class ConfigForm(django_forms.Form):
@@ -142,106 +45,34 @@ class ConfigForm(django_forms.Form):
     - Represent elements that are mutually exclusive as dropdowns
 
     :param section: The string name of a config section in the Yawning Titan config
-    :param config_form_map: A dictionary representing the structure of the config form
-    :param ConfigClass: An instance of :class: `~yawning_titan.config.game_config.config_abc.ConfigABC` representing a
+    :param ConfigClass: An instance of :class: `~yawning_titan.config.toolbox.core.ConfigGroup` representing a
         section of the Yawning Titan config
     """
 
     def __init__(
         self,
-        section: str,
-        config_form_map: Dict[str, dict],
-        ConfigClass: ConfigABC,
+        name: str,
+        tier: int,
+        config_class: ConfigGroup,
+        fields: Dict[str, django_forms.Field],
         *args,
         **kwargs,
     ):
-        super(ConfigForm, self).__init__(*args, **kwargs)
 
-        self.config_class = ConfigClass
-        self.section = section
+        self.config_class: ConfigGroup = config_class
         self.group_errors = None
+        self.name = name
+        self.tier = tier
 
-        field_elements = {}
-        attrs = {}
-        grouped_elements = []
-
+        super(ConfigForm, self).__init__(*args, **kwargs)
         # created dropdowns from grouped elements
-        for name, group in config_form_map.get("groups", {}).items():
-            field_elements[name] = django_forms.ChoiceField(
-                choices=((val, val.replace("_", " ")) for i, val in enumerate(group)),
-                widget=django_forms.Select(
-                    attrs={"class": "form-control"},
-                ),
-                required=True,
-                help_text="this will be replaced with description",
-            )
-            grouped_elements.extend(group)
+        self.fields: Dict[str, django_forms.Field] = fields
+        if self.is_bound:
+            self.update_and_check()
 
-        for parent, dependents in config_form_map.get("dependencies", {}).items():
-            attrs[parent] = f" {parent} grouped parent"
-            for field in dependents:
-                attrs[field] = f" {parent} grouped child hidden"
+    # def update_config_class(self):
 
-        for name, _type in {
-            field.name.lstrip("_"): field.type for field in fields(ConfigClass)
-        }.items():
-            _class = attrs.get(name, "")
-            if name in grouped_elements:
-                continue
-
-            if _type == "bool":
-                field_elements[name] = django_forms.BooleanField(
-                    widget=widgets.CheckboxInput(
-                        attrs={"role": "switch", "class": "form-check-input" + _class}
-                    ),
-                    required=False,
-                    help_text=getattr(ConfigClass, name).__doc__,
-                )
-            elif _type == "float":
-                field_elements[name] = django_forms.FloatField(
-                    widget=RangeInput(
-                        attrs={"class": "form-control" + _class, "step": "0.01"}
-                    ),
-                    required=False,
-                    help_text=getattr(ConfigClass, name).__doc__,
-                    min_value=0,
-                    max_value=1,
-                )
-            elif _type == "int":
-                field_elements[name] = django_forms.IntegerField(
-                    widget=widgets.NumberInput(
-                        attrs={"class": "form-control" + _class}
-                    ),
-                    required=False,
-                    help_text=getattr(ConfigClass, name).__doc__,
-                )
-            else:
-                field_elements[name] = django_forms.CharField(
-                    widget=widgets.TextInput(attrs={"class": "form-control" + _class}),
-                    required=False,
-                    help_text=getattr(ConfigClass, name).__doc__,
-                )
-
-        self.fields = field_elements
-
-    def soft_validate(self, data: dict) -> bool:
-        """
-        Validate the config form without raising any errors.
-
-        Use the :func: `ConfigABC.validate <yawning_titan.config.game_config.config_abc.ConfigABC.validate>`
-        to validate the config catching any exceptions.
-
-        :param data: a dictionary of options to validate.
-
-        :return: True if config section is valid otherwise False
-        """
-        try:
-            self.config_class.validate(data)
-            return True
-        except Exception:
-            return False
-
-    def is_valid(self) -> bool:
+    def update_and_check(self) -> bool:
         """
         Check that config form is valid for fields and subsections.
 
@@ -249,103 +80,111 @@ class ConfigForm(django_forms.Form):
         on other fields.
 
         :return: A bool value True if the form meets the validation criteria and produces a valid
-            :class: `~yawning_titan.config.game_config.config_abc.ConfigABC`
+            section of the config group.
         """
-        fields_valid = super().is_valid()
-        try:
-            config = GameModeFormManager.game_mode_section_form_from_default(
-                self.cleaned_data,
-                self.section,
+        v = super().is_valid()
+
+        self.config_class.set_from_dict(self.cleaned_data)
+
+        if self.config_class.validation.passed:
+            return True
+        else:
+            for k, v in self.config_class.validation.element_validation.items():
+                for error in v.fail_reasons:
+                    self.add_error(k, error)
+
+        self.group_errors = self.config_class.validation.fail_reasons
+        return False
+
+
+class GameModeSection:
+    def __init__(self, section: ConfigGroup, form_name: str, icon: str) -> None:
+        self.forms: List[ConfigForm] = []
+        self.form_classes: List[ConfigForm] = []
+        self.icon = icon
+        self.config_class = section
+        self.create_form_from_group(section, form_name=form_name)
+
+    def create_form_from_group(
+        self, group: ConfigGroup, form_name: str = "", tier: int = 0
+    ):
+        field_elements = {}
+        for name, e in group.get_config_elements(ConfigItem).items():
+            if isinstance(e, BoolItem):
+                el = django_forms.BooleanField(
+                    widget=widgets.CheckboxInput(
+                        attrs={"role": "switch", "class": "form-check-input"}
+                    ),
+                    required=False,
+                    help_text=e.doc,
+                    label=name,
+                )
+            elif isinstance(e, FloatItem):
+                el = django_forms.FloatField(
+                    widget=RangeInput(attrs={"class": "form-control", "step": "0.01"}),
+                    required=False,
+                    help_text=e.doc,
+                    min_value=e.properties.min_val,
+                    max_value=e.properties.max_val,
+                    label=name,
+                )
+            elif isinstance(e, IntItem):
+                el = django_forms.IntegerField(
+                    widget=widgets.NumberInput(attrs={"class": "form-control"}),
+                    required=False,
+                    help_text=e.doc,
+                    label=name,
+                )
+            else:
+                el = django_forms.CharField(
+                    widget=widgets.TextInput(attrs={"class": "form-control"}),
+                    required=False,
+                    help_text=e.doc,
+                    label=name,
+                )
+            field_elements[name] = el
+
+        class ConfigFormSubsection(ConfigForm):
+            def __init__(self, *args, **kwargs):
+                # print("INIT SUBSECTION",form_name)
+                # TODO: have init auto add config data 'data' to form!!
+                super().__init__(
+                    form_name, tier, group, field_elements, *args, **kwargs
+                )
+
+        self.form_classes.append(ConfigFormSubsection)
+        self.forms.append(ConfigFormSubsection(data=group.to_dict(values_only=True)))
+
+        for name, e in group.get_config_elements(ConfigGroup).items():
+            self.create_form_from_group(e, form_name=name, tier=tier + 1)
+
+    def get_form_errors(self) -> Dict[str, Dict[str, List[str]]]:
+        """
+        Create a formatted dictionary of the errors in each of the forms that constitute the game mode section.
+
+        The 'group' errors are the errors for each of the constituent groups in the game mode.
+        The 'items' errors are the errors attribute to each item with the group.
+
+        only groups where either group specific errors exist or where an item element within the group has failed
+        will be included in the output. This excludes groups that have failed due to a child group failing.
+
+        :return: a dict
+        """
+        return {
+            i: {
+                "group": form.config_class.validation.fail_reasons,
+                "items": {
+                    k: v.fail_reasons
+                    for k, v in form.config_class.validation.element_validation.items()
+                },
+            }
+            for i, form in enumerate(self.forms)
+            if not form.config_class.validation.group_passed
+            or any(
+                not item.validation.passed
+                for item in form.config_class.get_config_elements(ConfigItem).values()
             )
-            self.config_class = self.config_class.create(config)
-        except Exception as e:
-            self.group_errors = e
-        groups_valid = True if self.group_errors is None else False
-        return groups_valid and fields_valid
-
-
-class RedAgentForm(ConfigForm):
-    """Representation of :class:`~yawning_titan.config.agents.red_agent_config.RedAgentConfig` as html form."""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__("red", red_config_form_map, RedAgentConfig, *args, **kwargs)
-
-
-class BlueAgentForm(ConfigForm):
-    """Representation of :class:`~yawning_titan.config.agents.blue_agent_config.BlueAgentConfig` as html form."""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__("blue", blue_config_form_map, BlueAgentConfig, *args, **kwargs)
-
-
-class ObservationSpaceForm(ConfigForm):
-    """Representation of :class:`~yawning_titan.config.environment.observation_space_config.ObservationSpaceConfig` as html form."""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(
-            "observation_space",
-            observation_space_config_form_map,
-            ObservationSpaceConfig,
-            *args,
-            **kwargs,
-        )
-
-
-class ResetForm(ConfigForm):
-    """Representation of :class:`~yawning_titan.config.environment.reset_config.ResetConfig` as html form."""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__("reset", reset_config_form_map, ResetConfig, *args, **kwargs)
-
-
-class RewardsForm(ConfigForm):
-    """Representation of :class:`~yawning_titan.config.environment.rewards_config.RewardsConfig` as html form."""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(
-            "rewards", rewards_config_form_map, RewardsConfig, *args, **kwargs
-        )
-
-
-class GameRulesForm(ConfigForm):
-    """Representation of :class:`~yawning_titan.config.environment.game_rules_config.GameRulesConfig` as html form."""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(
-            "game_rules", game_rules_config_form_map, GameRulesConfig, *args, **kwargs
-        )
-
-
-class MiscellaneousForm(ConfigForm):
-    """Representation of :class:`~yawning_titan.config.game_config.miscellaneous_config.MiscellaneousConfig` as html form."""
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(
-            "miscellaneous",
-            miscellaneous_config_form_map,
-            MiscellaneousConfig,
-            *args,
-            **kwargs,
-        )
-
-
-def create_game_mode_from_form_sections(
-    game_mode_forms: Dict[str, django_forms.Form], game_mode_filename: str
-):
-    """
-    Create a complete config yaml file from a dictionary of form sections.
-
-    :param game_mode_forms: dictionary containing django form objects representing sections of the config.
-
-    :return: a valid instance of :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>`
-    """
-    section_configs = {
-        section_name.upper(): form.cleaned_data
-        for section_name, form in game_mode_forms.items()
-    }
-    game_mode = GameModeConfig.create(section_configs)
-    game_mode.to_yaml(GAME_MODES_DIR / game_mode_filename)
-    return game_mode
+        }
 
 
 class GameModeFormManager:
@@ -355,81 +194,30 @@ class GameModeFormManager:
     allows for game modes to be constructed dynamically from the GUI.
     """
 
-    base_forms: Dict[str, Dict[str, Union[str, ConfigForm]]] = {
-        "red": {
-            "form": RedAgentForm,
-            "icon": "bi-lightning",
-        },
-        "blue": {
-            "form": BlueAgentForm,
-            "icon": "bi-shield",
-        },
-        "game_rules": {
-            "form": GameRulesForm,
-            "icon": "bi-clipboard",
-        },
-        "observation_space": {
-            "form": ObservationSpaceForm,
-            "icon": "bi-binoculars",
-        },
-        "rewards": {"form": RewardsForm, "icon": "bi-star"},
-        "reset": {
-            "form": ResetForm,
-            "icon": "bi-arrow-clockwise",
-        },
-        "miscellaneous": {
-            "form": MiscellaneousForm,
-            "icon": "bi-brush",
-        },
+    icons: Dict[str, str] = {
+        "red": "bi-lightning",
+        "blue": "bi-shield",
+        "game_rules": "bi-clipboard",
+        "blue_can_observe": "bi-binoculars",
+        "rewards": "bi-star",
+        "on_reset": "bi-arrow-clockwise",
+        "miscellaneous": "bi-brush",
     }
-    forms: Dict[str, Dict[str, Dict[str, Any]]] = {}
+    game_modes: Dict[str, Dict[str, GameModeSection]] = {}
 
     # Getters
 
     @staticmethod
-    def get_config_from_default() -> Dict[str, Dict[str, Any]]:
+    def get_first_section(game_mode_sections: Dict[str, GameModeSection]) -> str:
         """
-        Create game mode config dictionary by formatting default .yaml config file.
+        Get the first key of the `FormManager.base_forms` dictionary.
 
-        :return: The modified section of the config as a dictionary
+        :return: _description_
         """
-        with open(GAME_MODES_DIR / DEFAULT_GAME_MODE) as f:
-            new_settings: Dict[str, Dict[str, Any]] = yaml.load(f, Loader=SafeLoader)
-
-        return {key.lower(): val for key, val in new_settings.items()}
+        return list(game_mode_sections.keys())[0]
 
     @classmethod
-    def game_mode_section_form_from_default(
-        cls, gui_section_options: Dict[str, Any], section: str
-    ) -> Dict[str, Any]:
-        """
-        Update default game mode options with GUI inputted options.
-
-        Create game mode section dictionary by updating default .yaml config file
-        with settings inputted in the GUI.
-
-        :param gui_section_options: dictionary with options configured in GUI
-        :param section: config section to update
-
-        :return: The modified section of the config as a dictionary
-        """
-        new_settings = cls.get_config_from_default()
-        gui_section_options = {
-            key: val for key, val in gui_section_options.items() if val is not None
-        }  # remove null options from form
-
-        # add settings items for selection values
-        for name in config_form_maps[section].get("groups", {}).keys():
-            new_settings[section][gui_section_options[name]] = True
-            del gui_section_options[name]
-
-        new_settings[section].update(gui_section_options)
-        return new_settings[section]
-
-    @classmethod
-    def get_or_create_instance(
-        cls, game_mode_filename
-    ) -> Dict[str, Dict[str, Union[str, ConfigForm]]]:
+    def get_or_create_instance(cls, game_mode_filename) -> Dict[str, GameModeSection]:
         """
         Get or create the config forms for the current :param:`game_mode_filename`.
 
@@ -440,66 +228,51 @@ class GameModeFormManager:
         :class: `~yawning_titan.config.game_config.config_abc.ConfigABC`
 
         :param game_mode_filename: the file name and extension of the current game mode
-        :param initial_options: the initial state of the options for the :param:`game_mode_filename`
         :return: a dictionary representation of the sections of the  :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>`
         """
-        if game_mode_filename in cls.forms:
-            return cls.forms[game_mode_filename]
+        if game_mode_filename in cls.game_modes:
+            return cls.game_modes[game_mode_filename]
         else:
-            if (
-                game_mode_filename in GameModeManager.game_modes.keys()
-                and GameModeManager.game_modes[game_mode_filename]["complete"]
-            ):
-                initial_options = GameModeManager.get_game_mode(
-                    game_mode_filename
-                ).to_dict()
-            else:
-                initial_options = cls.get_config_from_default()
+            game_mode = GameModeManager.get_game_mode(game_mode_filename)
+            sections = {
+                k: GameModeSection(v, k, cls.icons[k])
+                for k, v in game_mode.get_config_elements(ConfigGroup).items()
+            }
 
-            forms = copy.deepcopy(cls.base_forms)
-            for section_name, section in forms.items():
-                form: ConfigForm = section["form"](
-                    initial=initial_options[section_name]
-                )
-                section.update(
-                    {
-                        "form": form,
-                        "status": "complete"
-                        if form.soft_validate(initial_options[section_name])
-                        else "incomplete",
-                    }
-                )
-
-            cls.forms[game_mode_filename] = forms
-            return forms
-
-    @classmethod
-    def get_first_section(cls) -> str:
-        """
-        Get the first key of the `FormManager.base_forms` dictionary.
-
-        :return: _description_
-        """
-        return list(cls.base_forms.keys())[0]
+            cls.game_modes[game_mode_filename] = sections
+            return sections
 
     @classmethod
     def get_section(
         cls, game_mode_filename, section_name=None
-    ) -> Dict[str, Union[str, ConfigForm]]:
+    ) -> Dict[str, GameModeSection]:
         """
         Get a specific :param:`section` of a form for an active :param:`game_mode_filename`.
 
         :param game_mode_filename: the file name and extension of the current game mode
         :param section_name: the name of the section to get from which to retrieve the value of
-        :param initial_options: the initial state of the options for the :param:`game_mode_filename`
         :return: a dictionary containing status and :class:`ConfigForm` of the selected :param:`section_name`
         """
+        game_mode_sections = cls.get_or_create_instance(game_mode_filename)
         if section_name is None:
-            section_name = cls.get_first_section()
+            section_name = cls.get_first_section(game_mode_sections)
 
-        forms = cls.get_or_create_instance(game_mode_filename)
+        return game_mode_sections[section_name]
 
-        return forms[section_name]
+    @classmethod
+    def get_next_section_name(cls, game_mode_filename, section_name=None) -> str:
+        """
+        Get a specific :param:`section` of a form for an active :param:`game_mode_filename`.
+
+        :param game_mode_filename: the file name and extension of the current game mode
+        :param section_name: the name of the section to get from which to retrieve the value of
+        :return: a dictionary containing status and :class:`ConfigForm` of the selected :param:`section_name`
+        """
+        game_mode_sections = cls.get_or_create_instance(game_mode_filename)
+        if section_name is None:
+            section_name = cls.get_first_section(game_mode_sections)
+
+        return next_key(game_mode_sections, section_name)
 
     # Checkers
 
@@ -508,36 +281,17 @@ class GameModeFormManager:
         """Verify that the lookup keys provided map to a value in :attr: `GameModeFormManager.forms`."""
         if (
             "game_mode_filename" in kwargs
-            and kwargs["game_mode_filename"] not in cls.forms
+            and kwargs["game_mode_filename"] not in cls.game_modes
         ):
             raise ValueError(f"{kwargs['game_mode_filename']} has not been created")
         if (
             "section_name" in kwargs
-            and kwargs["section_name"] not in cls.forms[kwargs["game_mode_filename"]]
+            and kwargs["section_name"]
+            not in cls.game_modes[kwargs["game_mode_filename"]]
         ):
             raise ValueError(
                 f"{kwargs['section_name']} is not in form set for {kwargs['game_mode_filename']}"
             )
-
-    @classmethod
-    def check_section_complete(cls, game_mode_filename, section_name) -> bool:
-        """
-        Check whether a section of the active :param: `game_mode_filename` is complete.
-
-        checks whether the :class:`ConfigForm` representing the :param:`section_name` of the :param:`game_mode_filename` is complete.
-        returns True if the form is valid otherwise returns False. Also updates the forms status in :attr: FormManager.forms.
-
-        :param game_mode_filename: the file name and extension of the current game mode
-        :param section_name: the name of the section for which to check the completion state
-        :return: a boolean True/False value representing if the :param:`section_name` of the :param:`game_mode_filename` is complete
-        """
-        section = cls.get_section(game_mode_filename, section_name)
-        form: ConfigForm = section["form"]
-        if form.is_valid():
-            cls.forms[game_mode_filename][section_name]["status"] = "complete"
-            return True
-        cls.forms[game_mode_filename][section_name]["status"] = "incomplete"
-        return False
 
     @classmethod
     def check_game_mode_complete(cls, game_mode_filename) -> bool:
@@ -547,18 +301,19 @@ class GameModeFormManager:
         :param game_mode_filename: the file name and extension of the current game mode
         :return: a boolean True/False value representing if the :param:`game_mode_filename` is complete
         """
-        if game_mode_filename in cls.forms and all(
-            cls.check_section_complete(game_mode_filename, section_name)
-            for section_name in cls.forms[game_mode_filename].keys()
+        if game_mode_filename in cls.game_modes and all(
+            section.config_class.validation.passed
+            for section in cls.game_modes[game_mode_filename].values()
         ):
-            GameModeManager.game_modes[game_mode_filename]["complete"] = True
             return True
         return False
 
     # Setters
 
     @classmethod
-    def update_section(cls, game_mode_filename, section_name, data) -> Dict[str, Any]:
+    def update_section(
+        cls, game_mode_filename: str, section_name: str, form_id: int, data: dict
+    ) -> Dict[str, Any]:
         """
         Update the values of a specific :param:`section` of a form for an active :param:`game_mode_filename`.
 
@@ -567,14 +322,15 @@ class GameModeFormManager:
         :param data: a dictionary representation of config form values to use to update the reference for an active :param: `game_mode_filename`
         :return: the :param:`section` of the active :param: `game_mode_filename` with values updated from :param:`data`
         """
-        cls.verify(game_mode_filename=game_mode_filename, section_name=section_name)
-        cls.forms[game_mode_filename][section_name]["form"] = cls.base_forms[
-            section_name
-        ]["form"](data)
-        return cls.forms[game_mode_filename][section_name]
+        # cls.verify(game_mode_filename=game_mode_filename, section_name=section_name)
+        section = cls.game_modes[game_mode_filename][section_name]
+        section.forms[form_id] = section.form_classes[form_id](data=data)
+        section.forms[form_id].update_and_check()
+        section.config_class.validate()
+        return section
 
     @classmethod
-    def save_as_game_mode(cls, game_mode_filename: str) -> GameModeConfig:
+    def save_as_game_mode(cls, game_mode_filename: str) -> GameMode:
         """
         Create a complete config yaml file from a dictionary of form sections.
 
@@ -582,12 +338,15 @@ class GameModeFormManager:
 
         :return: a valid instance of :class: `~yawning_titan.config.game_config.game_mode_config.GameModeConfig`
         """
-        cls.verify(game_mode_filename=game_mode_filename)
-        section_configs = {
-            section_name.upper(): section["form"].cleaned_data
-            for section_name, section in cls.forms[game_mode_filename].items()
-        }
-        game_mode = GameModeConfig.create(section_configs)
+        game_mode = GameModeManager.get_game_mode(game_mode_filename)
+        sections = cls.get_or_create_instance(game_mode_filename)
+        for section_name, section in sections.items():
+            setattr(game_mode, section_name, section.config_class)
+        print("NAME", game_mode_filename)
+        import yaml
+
+        print("GM", yaml.dump(game_mode.to_dict(values_only=True)))
+
         game_mode.to_yaml(GAME_MODES_DIR / game_mode_filename)
-        # del cls.forms[game_mode_filename]
+        # del cls.sections[game_mode_filename]
         return game_mode

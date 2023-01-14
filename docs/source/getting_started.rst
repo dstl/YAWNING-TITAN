@@ -112,7 +112,7 @@ Creating a **YT** :class:`~yawning_titan.envs.generic.generic_env.GenericNetwork
         jupyter notebook
 
 For the purposes of this example, we are going to first create an environment that has the same network topology as
-`Ridley, A. (2017) <https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9>`_ which
+`Ridley, A. (2017) <https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9>`_ which
 looks likes this.
 
 .. image:: ../_static/standard_18_node_network.png
@@ -181,7 +181,7 @@ adjacency matrix as an instance of :external:py:class:`numpy.array <numpy.core._
 **YT** provides several built-in functions to create network based of standard topologies. These include:
 
 * :func:`~from yawning_titan.networks.network_creator.create_18_node_network`
-    Creates the 18-node network for the research paper: `Ridley, A. (2017) <https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9>`_.
+    Creates the 18-node network for the research paper: `Ridley, A. (2017) <https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9>`_.
 * :func:`~from yawning_titan.networks.network_creator.create_mesh`
     Creates a mesh network with variable connectivity.
 * :func:`~from yawning_titan.networks.network_creator.create_star`

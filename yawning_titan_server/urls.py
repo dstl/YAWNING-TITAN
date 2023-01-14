@@ -15,6 +15,11 @@ urlpatterns = [
     path("docs/", DocsView.as_view(), name="docs"),
     path("game_modes/", GameModesView.as_view(), name="Manage game modes"),
     path(
+        "game_mode_config/",
+        GameModeConfigView.as_view(),
+        name="game mode config",
+    ),
+    path(
         "game_mode_config/<str:game_mode_filename>/",
         GameModeConfigView.as_view(),
         name="game mode config",
@@ -25,7 +30,7 @@ urlpatterns = [
         name="game mode config",
     ),
     path("manage_files/", config_file_manager, name="file manager"),
-    path("update_config/", update_config, name="validate config"),
+    path("update_config/", update_config, name="update config"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
