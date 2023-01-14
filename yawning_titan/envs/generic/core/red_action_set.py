@@ -34,12 +34,12 @@ class RedActionSet:
             action_probabilities: The likelihood of those actions being chosen (list)
         """
         self.network_interface = network_interface
-        self.skill = self.network_interface.game_mode.red.red_skill
+        self.skill = self.network_interface.game_mode.red.agent_attack.skill.value.value
         self.zero_day_amount = (
-            self.network_interface.game_mode.red.zero_day_start_amount
+            self.network_interface.game_mode.red.action_set.zero_day.start_amount.value
         )
         self.zero_day_required = (
-            self.network_interface.game_mode.red.days_required_for_zero_day
+            self.network_interface.game_mode.red.action_set.zero_day.days_required.value
         )
 
         self.action_set = action_set
@@ -50,7 +50,7 @@ class RedActionSet:
     def reset(self):
         """Reset red agent episode dependent variables to initial value."""
         self.zero_day_amount = (
-            self.network_interface.game_mode.red.zero_day_start_amount
+            self.network_interface.game_mode.red.action_set.zero_day.start_amount.value
         )
         self.zero_day_current_day = 0
 
@@ -65,7 +65,9 @@ class RedActionSet:
         # creates a set of nodes that the red agent could attack
         possible_to_attack = set()
         original_node = {}
-        if self.network_interface.game_mode.red.red_can_attack_from_any_red_node:
+        if (
+            self.network_interface.game_mode.red.agent_attack.attack_from.any_red_node.value
+        ):
             nodes = self.network_interface.get_nodes(filter_true_compromised=True)
             # runs through the connected nodes and adds the safe nodes to a set of possible nodes to attack
             for node in nodes:
@@ -79,7 +81,7 @@ class RedActionSet:
                         original_node[connected_node] = node
                         possible_to_attack.add(connected_node)
         elif (
-            self.network_interface.game_mode.red.red_can_only_attack_from_red_agent_node
+            self.network_interface.game_mode.red.agent_attack.attack_from.only_main_red_node.value
         ):
             # If red can only attack from the central red node
             red_location = self.network_interface.get_red_location()
@@ -102,17 +104,21 @@ class RedActionSet:
 
         weights = []
         # red can prioritise nodes based on some different parameters chosen in the settings menu
-        if self.network_interface.game_mode.red.red_chooses_target_at_random:
+        if self.network_interface.game_mode.red.target_mechanism.random.value:
             for _ in possible_to_attack:
                 # equal weighting for all nodes
                 weights.append(1)
-        elif self.network_interface.game_mode.red.red_prioritises_connected_nodes:
+        elif (
+            self.network_interface.game_mode.red.target_mechanism.prioritise_connected_nodes.value
+        ):
             for node in possible_to_attack:
                 # more connections means a higher weight
                 weights.append(
                     len(self.network_interface.get_current_connected_nodes(node))
                 )
-        elif self.network_interface.game_mode.red.red_prioritises_un_connected_nodes:
+        elif (
+            self.network_interface.game_mode.red.target_mechanism.prioritise_unconnected_nodes.value
+        ):
             for node in possible_to_attack:
                 # higher connections means a lower weight
                 current_connected = len(
@@ -121,25 +127,33 @@ class RedActionSet:
                 if current_connected == 0:
                     current_connected = 0.1
                 weights.append(1 / current_connected)
-        elif self.network_interface.game_mode.red.red_prioritises_vulnerable_nodes:
+        elif (
+            self.network_interface.game_mode.red.target_mechanism.prioritise_vulnerable_nodes.value
+        ):
             for node in possible_to_attack:
                 # higher vulnerability means a higher weight
                 weights.append(
                     self.network_interface.get_single_node_vulnerability(node)
                 )
-        elif self.network_interface.game_mode.red.red_prioritises_resilient_nodes:
+        elif (
+            self.network_interface.game_mode.red.target_mechanism.prioritise_resilient_nodes.value
+        ):
             for node in possible_to_attack:
                 # higher vulnerability means a lower weight
                 weights.append(
                     1 / self.network_interface.get_single_node_vulnerability(node)
                 )
-        elif self.network_interface.game_mode.red.red_target_node is not None:
+        elif (
+            self.network_interface.game_mode.red.target_mechanism.target_specific_node.use.value
+            or self.network_interface.game_mode.red.target_mechanism.target_specific_node.target.value
+            is not None
+        ):
             distances = self.network_interface.get_shortest_distances_to_target(
                 possible_to_attack
             )
             for dist in distances:
                 if (
-                    self.network_interface.game_mode.red.red_always_chooses_shortest_distance_to_target
+                    self.network_interface.game_mode.red.target_mechanism.target_specific_node.always_choose_shortest_distance.value
                 ):
                     weight = 1 if dist == min(distances) else 0
                 else:
@@ -336,11 +350,11 @@ class RedActionSet:
         attack_status = self.network_interface.attack_node(
             target,
             skill=self.skill,
-            use_skill=self.network_interface.game_mode.red.red_uses_skill,
+            use_skill=self.network_interface.game_mode.red.agent_attack.skill.use.value,
             use_vulnerability=(
-                not self.network_interface.game_mode.red.red_ignores_defences
+                not self.network_interface.game_mode.red.agent_attack.ignores_defences.value
             ),
-            guarantee=self.network_interface.game_mode.red.red_always_succeeds,
+            guarantee=self.network_interface.game_mode.red.agent_attack.always_succeeds.value,
         )
         if attack_status:
             # update the location of the red agent if applicable
@@ -402,24 +416,24 @@ class RedActionSet:
                     attacking_node_map[node] = compromised_node
 
         if (
-            self.network_interface.game_mode.red.chance_to_spread_to_unconnected_node
+            self.network_interface.game_mode.red.natural_spreading.chance.to_connected_node.value
             > 0
         ):
             for node in set_of_spreading_nodes:
                 if (
                     random.randint(0, 100)
-                    < self.network_interface.game_mode.red.chance_to_spread_to_unconnected_node
+                    < self.network_interface.game_mode.red.natural_spreading.chance.to_unconnected_node.value
                     * 100
                 ):
                     # try to naturally spread to the node based on a percentage change listed in the config file
                     attack_status = self.network_interface.attack_node(
                         node,
                         skill=self.skill,
-                        use_skill=self.network_interface.game_mode.red.red_uses_skill,
+                        use_skill=self.network_interface.game_mode.red.agent_attack.skill.use.value,
                         use_vulnerability=(
-                            not self.network_interface.game_mode.red.red_ignores_defences
+                            not self.network_interface.game_mode.red.agent_attack.ignores_defences.value
                         ),
-                        guarantee=self.network_interface.game_mode.red.red_always_succeeds,
+                        guarantee=self.network_interface.game_mode.red.agent_attack.always_succeeds.value,
                     )
                     if attack_status:
                         # If the attack succeeds
@@ -430,7 +444,9 @@ class RedActionSet:
                     attacking_nodes.append(attacking_node_map[node])
                     targets.append(node)
 
-        if self.network_interface.game_mode.red.chance_to_spread_to_connected_node:
+        if (
+            self.network_interface.game_mode.red.natural_spreading.chance.to_connected_node
+        ):
             # Calculate the list of nodes that are not connected to a compromised node
             nodes_not_connected_to_red = (
                 set(self.network_interface.get_nodes())
@@ -442,18 +458,18 @@ class RedActionSet:
             for node in nodes_not_connected_to_red:
                 if (
                     random.randint(0, 100)
-                    < self.network_interface.game_mode.red.chance_to_spread_to_connected_node
+                    < self.network_interface.game_mode.red.natural_spreading.chance.to_connected_node.value
                     * 100
                 ):
                     # Try to naturally randomly infect nodes based on a percentage chance in the config file
                     attack_status = self.network_interface.attack_node(
                         node,
                         skill=self.skill,
-                        use_skill=self.network_interface.game_mode.red.red_uses_skill,
+                        use_skill=self.network_interface.game_mode.red.agent_attack.skill.use.value,
                         use_vulnerability=(
-                            not self.network_interface.game_mode.red.red_ignores_defences
+                            not self.network_interface.game_mode.red.agent_attack.ignores_defences.value
                         ),
-                        guarantee=self.network_interface.game_mode.red.red_always_succeeds,
+                        guarantee=self.network_interface.game_mode.red.agent_attack.always_succeeds.value,
                     )
                     targets.append(node)
                     if attack_status:
@@ -486,11 +502,15 @@ class RedActionSet:
         """
         compromised_nodes = []
         # check the nodes red can attack based on the current configuration
-        if self.network_interface.game_mode.red.red_can_attack_from_any_red_node:
+        if (
+            self.network_interface.game_mode.red.agent_attack.attack_from.any_red_node.value
+        ):
             compromised_nodes = self.network_interface.get_nodes(
                 filter_true_compromised=True
             )
-        if self.network_interface.game_mode.red.red_can_only_attack_from_red_agent_node:
+        if (
+            self.network_interface.game_mode.red.agent_attack.attack_from.only_main_red_node.value
+        ):
             compromised_nodes = [self.network_interface.get_red_location()]
         nodes = []
         # store the location the attack originated from
@@ -520,12 +540,12 @@ class RedActionSet:
                 nodes.append(connected_node)
                 attack_status = self.network_interface.attack_node(
                     connected_node,
-                    skill=self.network_interface.game_mode.red.chance_for_red_to_spread,
+                    skill=self.network_interface.game_mode.red.action_set.spread.chance.value,
                     use_skill=True,
                     use_vulnerability=(
-                        not self.network_interface.game_mode.red.red_ignores_defences
+                        not self.network_interface.game_mode.red.agent_attack.ignores_defences.value
                     ),
-                    guarantee=self.network_interface.game_mode.red.red_always_succeeds,
+                    guarantee=self.network_interface.game_mode.red.agent_attack.always_succeeds.value,
                 )
                 if attack_status:
                     # If the attack succeeds
@@ -566,12 +586,12 @@ class RedActionSet:
         for node in safe_nodes:
             attack_status = self.network_interface.attack_node(
                 node,
-                skill=self.network_interface.game_mode.red.chance_for_red_to_random_compromise,
+                skill=self.network_interface.game_mode.red.action_set.random_infect.chance.value,
                 use_skill=True,
                 use_vulnerability=(
-                    not self.network_interface.game_mode.red.red_ignores_defences
+                    not self.network_interface.game_mode.red.agent_attack.ignores_defences.value
                 ),
-                guarantee=self.network_interface.game_mode.red.red_always_succeeds,
+                guarantee=self.network_interface.game_mode.red.agent_attack.always_succeeds.value,
             )
             nodes.append(node)
             if attack_status:

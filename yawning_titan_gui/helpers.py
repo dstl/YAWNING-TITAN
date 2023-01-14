@@ -3,31 +3,32 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 from yawning_titan import GAME_MODES_DIR
-from yawning_titan.config.game_config.game_mode_config import GameModeConfig
+from yawning_titan.config.game_config.game_mode import GameMode
 
 
 class GameModeManager:
-    """Handle all interfacing with Yawning Titan game modes in :var: `GAME_MODES_DIR` and their info for the GUI session."""
+    """Handle all interfacing with Yawning Titan game modes in :attribute: `root_dir` and their info for the GUI session."""
 
     game_modes: Dict[str, Dict[str, Any]] = {}
-    protected_game_mode_filenames = ["base_config.yaml"]
+    protected_game_mode_filenames: List[str] = ["base_config.yaml"]
+    root_dir: Path = GAME_MODES_DIR
 
     # Getters
 
-    @staticmethod
-    def get_game_mode_path(game_mode_filename: str) -> Path:
+    @classmethod
+    def get_game_mode_path(cls, game_mode_filename: str) -> Path:
         """
         Generate path for game mode file.
 
-        :param game_mode_filename: A string filename (including extension) of a game mode file in the `GAME_MODES_DIR`
+        :param game_mode_filename: A string filename (including extension) of a game mode file in the :attribute: `root_dir`
 
         :return: a string representation of the full path to the `game_mode_filename`
         """
-        return GAME_MODES_DIR / game_mode_filename
+        return cls.root_dir / game_mode_filename
 
     @classmethod
     def load_game_mode_info(cls) -> None:
-        """Create a summary of information related to each game mode available in :var: `GAME_MODES_DIR`."""
+        """Create a summary of information related to each game mode available in :attribute: `root_dir`."""
         cls.game_modes = {
             path.name: {
                 "name": path.stem,
@@ -39,28 +40,30 @@ class GameModeManager:
         }
 
     @classmethod
-    def get_game_mode(cls, game_mode_filename: str) -> GameModeConfig:
+    def get_game_mode(cls, game_mode_filename: str) -> GameMode:
         """
         Get an instance of :class: `~yawning_titan.config.game_config.game_mode_config.GameModeConfig` corresponding to the :param: `game_mode_filename`.
 
         :param game_mode_filename: a file name and extension of a `~yawning_titan.config.game_config.game_mode_config.GameModeConfig`
         :return: the instance of `~yawning_titan.config.game_config.game_mode_config.GameModeConfig` populated with the data from :param: `game_mode_filename`
         """
-        return GameModeConfig.create_from_yaml(
-            cls.get_game_mode_path(game_mode_filename)
+        game_mode = GameMode()
+        game_mode.set_from_yaml(
+            cls.get_game_mode_path(game_mode_filename), infer_legacy=True
         )
+        return game_mode
 
     @classmethod
     def get_game_mode_file_paths(cls, valid_only=False) -> List[Path]:
         """
-        Select all game modes in the `GAME_MODES_DIR` matching criteria.
+        Select all game modes in the :attribute: `root_dir` matching criteria.
 
         :param: valid_only: whether to return only those game modes that pass the :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>` validation check
 
         :return: a list of file Path objects representing game modes.
         """
         game_modes = [
-            g for g in GAME_MODES_DIR.iterdir() if g.stem != "everything_off_config"
+            g for g in cls.root_dir.iterdir() if g.stem != "everything_off_config"
         ]
         if not valid_only:
             return game_modes
@@ -77,11 +80,9 @@ class GameModeManager:
 
         :return: a boolean True/False value indicating whether the game mode passes the validation checks in `GameModeConfig`
         """
-        try:
-            GameModeConfig.create_from_yaml(game_mode_path)
-            return True
-        except Exception:
-            return False
+        game_mode = GameMode()
+        game_mode.set_from_yaml(game_mode_path)
+        return game_mode.validation.passed
 
     # Setters
 
@@ -92,7 +93,7 @@ class GameModeManager:
 
         :param game_mode_filename: a file name and extension for a new Yawning Titan game mode config file
         """
-        new_game_mode_path = uniquify(GAME_MODES_DIR / game_mode_filename)
+        new_game_mode_path = uniquify(cls.root_dir / game_mode_filename)
         cls.game_modes[game_mode_filename] = {
             "name": new_game_mode_path.stem,
             "description": None,
@@ -110,9 +111,13 @@ class GameModeManager:
         :param source_game_mode_filename: a file name and extension for an existing Yawning Titan game mode config file
         :param new_game_mode_filename: a file name and extension for a new Yawning Titan game mode config file
         """
-        source_game_mode_path = GAME_MODES_DIR / source_game_mode_filename
-        new_game_mode_path = uniquify(GAME_MODES_DIR / new_game_mode_filename)
+        source_game_mode_path = cls.root_dir / source_game_mode_filename
+        new_game_mode_path = uniquify(cls.root_dir / new_game_mode_filename)
         shutil.copy(source_game_mode_path, new_game_mode_path)
+        cls.game_modes[new_game_mode_filename] = cls.game_modes[
+            source_game_mode_filename
+        ]
+        cls.game_modes[new_game_mode_filename].update({"name": new_game_mode_path.stem})
 
     @classmethod
     def delete_game_mode(cls, game_mode_filename: str) -> None:
@@ -121,7 +126,7 @@ class GameModeManager:
 
         :param game_mode_filename: a file name and extension for a new Yawning Titan game mode config file
         """
-        path = GAME_MODES_DIR / game_mode_filename
+        path = cls.root_dir / game_mode_filename
         if (
             path.exists()
             and game_mode_filename not in cls.protected_game_mode_filenames

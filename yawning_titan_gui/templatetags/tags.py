@@ -56,6 +56,12 @@ def keys(_dict: dict):
 
 
 @register.filter
+def format_text(text: str):
+    """Return the text string with '_' replaced by spaces and first letter capitalized."""
+    return text.replace("_", " ").capitalize()
+
+
+@register.filter
 def get_url(url_name: str):
     """
     Wrapped implementation of Django's reverse url.
@@ -91,6 +97,6 @@ def value_at(_dict: dict, key: Any):
 
 
 @register.simple_tag
-def label_subsection(field: Field, subsection_labels: dict):
-    """Return the subsection label that precedes the given field name."""
-    return subsection_labels.get(field.name)
+def get_title(field: Field, titles: dict):
+    """Return the title label that precedes the given field name."""
+    return titles.get(field.name)

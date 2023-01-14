@@ -14,7 +14,7 @@ from tinydb.table import Document
 from yawning_titan.db.doc_metadata import DocMetadata, DocMetadataSchema
 from yawning_titan.db.query import YawningTitanQuery
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
-from yawning_titan.networks.network import Network
+from yawning_titan.networks.new_network import Network
 
 __all__ = ["NetworkDB", "NetworkSchema"]
 
@@ -274,7 +274,7 @@ class NetworkDB:
         self._db.db.clear_cache()
         network_root = Path(__file__).parent.resolve()
         default_network_path = os.path.join(
-            network_root, "_package_data", "network.json"
+            network_root, "_package_data", "new_network.json"
         )
 
         # Load the default db file into TinyDB
@@ -286,7 +286,7 @@ class NetworkDB:
             uuid = network["_doc_metadata"]["uuid"]
             name = network["_doc_metadata"]["name"]
 
-            # Get the matching network from the  networks db
+            # Get the matching network from the networks db
             db_network = self.get(uuid)
 
             # If the network doesn't match the default, or it doesn't exist,
@@ -298,7 +298,6 @@ class NetworkDB:
                 )
             else:
                 reset = True
-
             if reset:
                 self._db.db.upsert(network, DocMetadataSchema.UUID == uuid)
                 _LOGGER.info(
@@ -336,7 +335,7 @@ def default_18_node_network() -> Network:
     """
     The standard 18-node network found in the Ridley, A. (2017) research paper.
 
-    .. seealso:: https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9
+    .. seealso:: https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9
 
     :return: An instance of :class:`~yawning_titan.networks.network.Network`.
     """

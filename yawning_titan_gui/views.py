@@ -1,3 +1,4 @@
+import json
 from typing import Any, Optional
 
 from django.http import HttpRequest, JsonResponse
@@ -5,7 +6,8 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
 
-from yawning_titan_gui.forms import ConfigForm, GameModeFormManager, subsection_labels
+from dist.manage.django.http.response import Http404
+from yawning_titan_gui.forms import ConfigForm, GameModeFormManager, GameModeSection
 from yawning_titan_gui.helpers import GameModeManager, next_key
 
 GameModeManager.load_game_mode_info()  # pull all game modes from GAME_MODES_DIR
@@ -23,14 +25,7 @@ default_sidebar = {
 protected_game_mode_filenames = ["base_config.yaml"]
 
 
-class OnLoadView(View):
-    """Inherit from this `django.views.View` to run additional code when a view is requested."""
-
-    def __init__(self, **kwargs: Any) -> None:
-        super().__init__(**kwargs)
-
-
-class HomeView(OnLoadView):
+class HomeView(View):
     """Django page template for landing page."""
 
     def get(self, request: HttpRequest, *args, **kwargs):
@@ -54,7 +49,7 @@ class HomeView(OnLoadView):
         return render(request, "home.html", {"sidebar": default_sidebar})
 
 
-class DocsView(OnLoadView):
+class DocsView(View):
     """
     Django representation of home.html.
 
@@ -96,18 +91,8 @@ class GameModesView(View):
             {"sidebar": default_sidebar, "game_modes": GameModeManager.game_modes},
         )
 
-    def post(self, request, *args, **kwargs):
-        """
-        Handle page get requests.
 
-        Currently there are no POST request on the `game_modes.html` page.
-
-        :param request: the Django page `request` object containing the html data for `game_modes.html` and the server GET / POST request bodies.
-        """
-        pass
-
-
-class GameModeConfigView(OnLoadView):
+class GameModeConfigView(View):
     """Django page template for game mode creation and editing."""
 
     def get(
@@ -127,13 +112,18 @@ class GameModeConfigView(OnLoadView):
 
         :return: Html string representing an instance of the`GameModeConfigView`
         """
-        if section_name is None:
-            section_name = GameModeFormManager.get_first_section()
+        if game_mode_filename is None:
+            raise (
+                Http404(
+                    f"Can't find game mode section {section_name} in game mode {game_mode_filename}"
+                )
+            )
 
-        section = GameModeFormManager.get_section(game_mode_filename, section_name)
-        return self.render_page(
-            request, section["form"], section_name, game_mode_filename
+        section: GameModeSection = GameModeFormManager.get_section(
+            game_mode_filename, section_name
         )
+
+        return self.render_page(request, section, section_name, game_mode_filename)
 
     def post(
         self,
@@ -152,32 +142,34 @@ class GameModeConfigView(OnLoadView):
 
         :return: Html string representing an instance of the`GameModeConfigView`
         """
-        if section_name is None:
-            section_name = GameModeFormManager.get_first_section()
+        section: GameModeSection = GameModeFormManager.get_section(
+            game_mode_filename, section_name
+        )
+        game_mode_sections = GameModeFormManager.get_or_create_instance(
+            game_mode_filename
+        )
 
-        form: ConfigForm = GameModeFormManager.update_section(
-            game_mode_filename, section_name, request.POST
-        )["form"]
-        if GameModeFormManager.check_section_complete(game_mode_filename, section_name):
-            if GameModeFormManager.check_game_mode_complete(game_mode_filename):
+        if section.config_class.validation.passed:
+            if section_name == list(game_mode_sections.keys())[
+                -1
+            ] and GameModeFormManager.check_game_mode_complete(game_mode_filename):
                 GameModeFormManager.save_as_game_mode(game_mode_filename)
                 return redirect("Manage game modes")
             return redirect(
                 "game mode config",
                 game_mode_filename,
-                next_key(GameModeFormManager.base_forms, section_name),
+                GameModeFormManager.get_next_section_name(
+                    game_mode_filename, section_name
+                ),
             )
-        return self.render_page(
-            request, form, section_name, game_mode_filename, form.group_errors
-        )
+        return self.render_page(request, section, section_name, game_mode_filename)
 
     def render_page(
         self,
         request: HttpRequest,
-        form: ConfigForm,
+        section: ConfigForm,
         section_name: str,
         game_mode_filename: str,
-        error_message: Optional[str] = None,
     ):
         """
         Process pythonic tags in game_mode_config.html and return formatted page.
@@ -193,14 +185,15 @@ class GameModeConfigView(OnLoadView):
             request,
             "game_mode_config.html",
             {
-                "forms": GameModeFormManager.get_or_create_instance(game_mode_filename),
-                "form": form,
-                "section_name": section_name,
-                "error_message": error_message,
+                "sections": GameModeFormManager.get_or_create_instance(
+                    game_mode_filename
+                ),
+                "section": section,
+                "current_section_name": section_name,
+                "last": False,
                 "sidebar": default_sidebar,
                 "game_mode_filename": game_mode_filename,
                 "protected": game_mode_filename in protected_game_mode_filenames,
-                "subsection_labels": subsection_labels.get(section_name, {}),
             },
         )
 
@@ -222,6 +215,7 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
     if request.method == "POST":
         game_mode_filename = f"{request.POST.get('game_mode_name')}.yaml"
         operation = request.POST.get("operation")
+        load = None
 
         if operation == "create":
             GameModeManager.create_game_mode(game_mode_filename)
@@ -242,13 +236,15 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
                 "game mode config",
                 kwargs={"game_mode_filename": game_mode_filename},
             )
+        if not load:
+            return JsonResponse({"message:": "FAILED"}, status=400)
         return JsonResponse({"load": load})
     return JsonResponse({"message:": "FAILED"}, status=400)
 
 
 def update_config(request: HttpRequest) -> JsonResponse:
     """
-    Update the :var:`edited_forms` dictionary with the current state of the config and check for errors.
+    Update the :attribute: `edited_forms` dictionary with the current state of the config and check for errors.
 
     Check the current contents of the :class:`ConfigForm <yawning_titan_gui.forms.ConfigForm>` are valid
     using the criteria defined in the appropriate section of the :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>`
@@ -259,13 +255,23 @@ def update_config(request: HttpRequest) -> JsonResponse:
     :return: response object containing error if config is invalid or redirect parameters if valid
     """
     if request.method == "POST":
-        game_mode_filename = request.POST.get("game_mode_filename")
-        section_name = request.POST.get("section_name")
+        game_mode_filename = request.POST.get("_game_mode_filename")
+        operation = request.POST.get("_operation")
+        print("OPERATION", operation)
+        if operation == "save":
+            GameModeFormManager.save_as_game_mode(game_mode_filename)
+            return JsonResponse({"message": "saved"})
+        elif operation == "update":
 
-        form: ConfigForm = GameModeFormManager.update_section(
-            game_mode_filename, section_name, request.POST
-        )["form"]
-        if GameModeFormManager.check_section_complete(game_mode_filename, section_name):
-            return JsonResponse({"message": "success"})
-        else:
-            return JsonResponse({"errors": str(form.group_errors)}, status=400)
+            section_name = request.POST.get("_section_name")
+            form_id = int(request.POST.get("_form_id"))
+            section: GameModeSection = GameModeFormManager.update_section(
+                game_mode_filename, section_name, form_id, request.POST
+            )
+            if section.config_class.validation.passed:
+                return JsonResponse({"message": "updated"})
+            else:
+                return JsonResponse(
+                    {"errors": json.dumps(section.get_form_errors())}, status=400
+                )
+    return JsonResponse({"message": "Invalid operation"})
