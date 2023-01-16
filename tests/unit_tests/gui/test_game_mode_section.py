@@ -1,6 +1,6 @@
-from conftest import Group, GroupTier2
 from django import forms as django_forms
 
+from tests.conftest import Group, GroupTier2
 from yawning_titan_gui.forms import GameModeSection
 
 
@@ -41,7 +41,7 @@ def test_game_mode_section_single_form_errors(test_group: Group):
             },
         }
     }
-    assert errors["items"]["a"] == config_class.a.validation.fail_reasons
+    assert errors[0]["items"]["a"] == config_class.a.validation.fail_reasons
 
 
 def test_game_mode_section_only_relevant_errors_returned(

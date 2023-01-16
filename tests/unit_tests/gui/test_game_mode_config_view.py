@@ -68,9 +68,13 @@ class TestGameModeConfigView:
                 "section_name": "miscellaneous",
             },
         )
+        game_mode_path = GameModeManager.root_dir / "default_new_game_mode.yaml"
+        game_mode_path.unlink()
         response = client.post(url)
+
         assert response.status_code == 302
         assert response["location"] == reverse("Manage game modes")
+        assert os.path.exists(game_mode_path)
         # TODO add check that game mode saved
 
     def test_next_section(self, client: Client):

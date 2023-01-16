@@ -21,10 +21,13 @@ def test_game_modes_view_get(client: Client):
 
 
 def test_game_modes_view_post(client: Client):
-    """Test that the Manage game modes view cannot accept POST requests."""
+    """Test that the Manage game modes view cannot accept POST requests.
+
+    Status 405 represents not allowed request method.
+    """
     url = reverse("Manage game modes")
     response = client.post(url)
-    assert response.status_code == 400
+    assert response.status_code == 405
 
 
 class TestGameModeManagerView:
