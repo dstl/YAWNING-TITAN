@@ -1,7 +1,7 @@
 :host {
   display: flex;
   flex: 1;
-  max-height: 100vh;
+  max-height: 100%;
 }
 
 .window {
@@ -12,12 +12,13 @@
   .controls {
     display: flex;
     width: 300px;
+    flex: 1;
     background-color: #636363;
   }
 
   .main {
     display: flex;
-    width: calc(100vw - 300px);
+    width: calc(100% - 300px);
   }
 }
 

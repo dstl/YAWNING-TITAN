@@ -11,8 +11,13 @@ export class ImportService {
     private cytoscapeService: CytoscapeService
   ) { }
 
+  /**
+   * Parse the dropped file and load the network if the file is valid
+   * @param $event
+   *
+   * @returns
+   */
   public async loadFile($event): Promise<void> {
-
     // read first file
     if (!$event || !$event[0]) {
       return;
@@ -25,6 +30,24 @@ export class ImportService {
       this.cytoscapeService.loadNetwork(network);
     } catch (e) {
       throw new Error("Unable to parse file", e);
+    }
+  }
+
+  /**
+   * Load the JSON passed from the window.NETWORK variable that is loaded from the Django side
+   * @param windowNetwork
+   */
+  public loadNetworkFromWindow(windowNetwork: any) {
+    // read first file
+    if (!windowNetwork) {
+      return;
+    }
+
+    try {
+      const network = new Network(JSON.parse(windowNetwork));
+      this.cytoscapeService.loadNetwork(network);
+    } catch (e) {
+      throw new Error("Unable to parse JSON", e);
     }
   }
 }

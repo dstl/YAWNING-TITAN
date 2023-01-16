@@ -22,6 +22,34 @@ NPM can be used as the default package manager, but yarn is recommended:
 - `yarn start`
 - open http://localhost:4200/ in browser
 
+### Run node editor unit tests
+- navigate to the root of the network editor project
+- `yarn test`
+
+### Run node editor end to end tests
+If the node editor has not been built yet, follow the "Building the node editor files" step.
+
+#### Run the django server:
+- navigate to repository root
+- run `python ./manage.py runserver`
+
+#### Run the end to end test via GUI:
+- navigate to the root of the network editor project
+- `yarn test:e2e`
+- Select "E2E Testing"
+- YT GUI was developed primary for Chrome, however,
+should work in other browsers - select any browser
+then press "Start E2E Testing"
+- In the new window that opens, select any test to run
+
+#### Run the end to end test:
+- navigate to the root of the network editor project
+- `yarn test:e2e:ci`
+
+### Building the node editor files
+- navigate to the root of the network editor project
+- `yarn build`
+
 ### Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

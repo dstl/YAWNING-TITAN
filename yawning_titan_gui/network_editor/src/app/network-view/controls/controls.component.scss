@@ -1,30 +1,38 @@
 :host {
   display: flex;
   flex: 1;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
 .controls-container {
   display: flex;
-  flex: 1;
   flex-direction: column;
   margin: 20px;
   overflow: hidden;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  height: 0px;
 
   .node-list {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
     overflow-y: auto;
+    height: 100%;
+    flex-direction: column;
   }
+}
 
-  .download-button-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
+.control-action-buttons-container {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  margin-top: 20px;
+  padding: 5px;
 
-    .download-button {
-      flex: 1;
-    }
+  .download-button, .save-button {
+    margin: 5px;
+    padding: 5px;
+    flex: 1;
   }
 }
 

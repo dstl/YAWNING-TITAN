@@ -136,14 +136,14 @@ export class CytoscapeService {
   private renderUpdate(): void {
     // save layout
     var layout = this.cy.layout({
-      name: 'random'
+      name: 'cose'
     });
 
     this.cy = cytoscape({
       container: this.renderElement, // container to render in
       elements: [],
       style: this.style,
-      layout: { name: 'random' }
+      layout: { name: 'cose' }
     });
 
     cytoscape.warnings(false);

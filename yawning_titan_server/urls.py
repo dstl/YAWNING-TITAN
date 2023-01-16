@@ -8,6 +8,7 @@ from yawning_titan_gui.views import (
     HomeView,
     DocsView,
     config_file_manager,
+    NodeEditor
 )
 
 urlpatterns = [
@@ -26,4 +27,5 @@ urlpatterns = [
     ),
     path("game_mode_config/", GameModeConfigView.as_view(), name="game mode config"),
     path("manage_files/", config_file_manager, name="file manager"),
+    path("node_editor/", NodeEditor.as_view(), name="node editor"),
 ]

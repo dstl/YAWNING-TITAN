@@ -20,3 +20,6 @@ notebooks/.ipynb_checkpoints
 ppo-*/
 **.pkl
 docs/_build
+
+# dist file
+**/dist/

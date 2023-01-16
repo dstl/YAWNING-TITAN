@@ -1,5 +1,5 @@
 import { Network } from './network';
-import { test_network } from '../../assets/testing/test-network';
+import { test_network } from '../../testing/test-network';
 import { fakeAsync, tick } from '@angular/core/testing';
 
 describe('Network', () => {
