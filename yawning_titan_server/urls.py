@@ -6,6 +6,7 @@ from yawning_titan_gui.views import (
     GameModeConfigView,
     GameModesView,
     HomeView,
+    NodeEditor,
     config_file_manager,
     update_config,
 )
@@ -29,6 +30,7 @@ urlpatterns = [
         GameModeConfigView.as_view(),
         name="game mode config",
     ),
+    path("node_editor/", NodeEditor.as_view(), name="node editor"),
     path("manage_files/", config_file_manager, name="file manager"),
     path("update_config/", update_config, name="update config"),
 ]

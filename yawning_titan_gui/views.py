@@ -77,6 +77,32 @@ class DocsView(View):
         return render(request, "docs.html", {"sidebar": default_sidebar})
 
 
+class NodeEditor(View):
+    """
+    Django representation of node_editor.html.
+
+    implements 'get' and 'post' methods to handle page requests.
+    """
+
+    def get(self, request, *args, **kwargs):
+        """Handle page get requests.
+
+        :param request: A Django `request` object that contains the data passed from
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
+        """
+        return render(request, "node_editor.html", {"sidebar": default_sidebar})
+
+    def post(self, request, *args, **kwargs):
+        """Handle page post requests.
+
+        :param request: A Django `request` object that contains the data passed from
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
+        """
+        return render(request, "node_editor.html", {"sidebar": default_sidebar})
+
+
 class GameModesView(View):
     """Django page template for game mode management."""
 

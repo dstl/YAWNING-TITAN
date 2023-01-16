@@ -1,8 +1,10 @@
 import shutil
+from pathlib import Path
 
 from django.core.management.base import BaseCommand
 
 from yawning_titan import _YT_ROOT_DIR
+from yawning_titan_gui import DEFAULT_GAME_MODE
 
 
 class Command(BaseCommand):
@@ -33,4 +35,10 @@ class Command(BaseCommand):
             (_YT_ROOT_DIR / "config/_package_data/game_modes").as_posix(),
             GAME_MODES_DIR.as_posix(),
             dirs_exist_ok=True,
+        )
+        shutil.copyfile(
+            (
+                _YT_ROOT_DIR / "config/_package_data/game_modes" / DEFAULT_GAME_MODE
+            ).as_posix(),
+            (GAME_MODES_DIR / Path(DEFAULT_GAME_MODE).name).as_posix(),
         )
