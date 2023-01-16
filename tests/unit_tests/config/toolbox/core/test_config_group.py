@@ -1,7 +1,8 @@
 from pathlib import Path
 
 import pytest
-from conftest import Group, GroupTier2
+
+from tests.conftest import Group, GroupTier2
 
 
 @pytest.mark.unit_test

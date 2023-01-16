@@ -450,7 +450,11 @@ class ConfigGroup(ConfigBase, ABC):
         self.validation = self.validate()
 
     def __setattr__(self, __name: str, __value: Any) -> None:
-        if hasattr(self, __name) and isinstance(getattr(self, __name), ConfigItem):
+        if (
+            hasattr(self, __name)
+            and isinstance(getattr(self, __name), ConfigItem)
+            and not isinstance(__value, ConfigItem)
+        ):
             self.__dict__[__name].value = __value
         else:
             self.__dict__[__name] = __value
