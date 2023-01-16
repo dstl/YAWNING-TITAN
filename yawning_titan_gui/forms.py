@@ -1,30 +1,13 @@
-import copy
-import os
-from dataclasses import fields
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List
 
-import yaml
 from django import forms as django_forms
 from django.forms import widgets
-from yaml import SafeLoader
 
-from yawning_titan import GAME_MODES_DIR
-from yawning_titan.config.agents.new_blue_agent_config import Blue
-from yawning_titan.config.agents.new_red_agent_config import Red
-from yawning_titan.config.environment.new_game_rules_config import GameRules
-from yawning_titan.config.environment.new_observation_space_config import (
-    ObservationSpace,
-)
-from yawning_titan.config.environment.new_reset_config import Reset
-from yawning_titan.config.environment.new_rewards_config import Rewards
 from yawning_titan.config.game_config.game_mode import GameMode
-from yawning_titan.config.game_config.new_miscellaneous_config import Miscellaneous
 from yawning_titan.config.toolbox.core import ConfigGroup, ConfigItem
 from yawning_titan.config.toolbox.item_types.bool_item import BoolItem
 from yawning_titan.config.toolbox.item_types.float_item import FloatItem
 from yawning_titan.config.toolbox.item_types.int_item import IntItem
-from yawning_titan.config.toolbox.item_types.str_item import StrItem
-from yawning_titan_gui import DEFAULT_GAME_MODE
 from yawning_titan_gui.helpers import GameModeManager, next_key
 
 
@@ -70,8 +53,6 @@ class ConfigForm(django_forms.Form):
         if self.is_bound:
             self.update_and_check()
 
-    # def update_config_class(self):
-
     def update_and_check(self) -> bool:
         """
         Check that config form is valid for fields and subsections.
@@ -98,7 +79,16 @@ class ConfigForm(django_forms.Form):
 
 
 class GameModeSection:
-    def __init__(self, section: ConfigGroup, form_name: str, icon: str) -> None:
+    """
+    A representation of a section of a :class: `~yawning_titan.config.game_config.game_mode.GameMode`.
+
+    Each group within the section has its items converted into a django form element and is assigned
+    an icon string representing a bootsrap icon.
+    """
+
+    def __init__(
+        self, section: ConfigGroup = None, form_name: str = None, icon: str = None
+    ) -> None:
         self.forms: List[ConfigForm] = []
         self.form_classes: List[ConfigForm] = []
         self.icon = icon
@@ -108,6 +98,12 @@ class GameModeSection:
     def create_form_from_group(
         self, group: ConfigGroup, form_name: str = "", tier: int = 0
     ):
+        """Create a representation of a single :class: `~yawning_titan.config.toolbox.core.ConfigGroup` element as a django form.
+
+        :param group: A config group object
+        :param form_name: The name of the group/form element
+        :param tier: The nested level of the group element which is also used to set the indentation level in the gui
+        """
         field_elements = {}
         for name, e in group.get_config_elements(ConfigItem).items():
             if isinstance(e, BoolItem):
@@ -146,8 +142,6 @@ class GameModeSection:
 
         class ConfigFormSubsection(ConfigForm):
             def __init__(self, *args, **kwargs):
-                # print("INIT SUBSECTION",form_name)
-                # TODO: have init auto add config data 'data' to form!!
                 super().__init__(
                     form_name, tier, group, field_elements, *args, **kwargs
                 )
@@ -168,8 +162,9 @@ class GameModeSection:
         only groups where either group specific errors exist or where an item element within the group has failed
         will be included in the output. This excludes groups that have failed due to a child group failing.
 
-        :return: a dict
+        :return: a dict.
         """
+        self.config_class.validate()
         return {
             i: {
                 "group": form.config_class.validation.fail_reasons,
@@ -189,7 +184,7 @@ class GameModeSection:
 
 class GameModeFormManager:
     """
-    Create and manage sets of forms for a given :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>`.
+    Create and manage sets of forms for a given :class: `~yawning_titan.config.game_config.game_mode.GameMode`.
 
     allows for game modes to be constructed dynamically from the GUI.
     """
@@ -225,10 +220,10 @@ class GameModeFormManager:
         set the options based off the default configuration.
 
         Set the status of the game mode sections based upon whether they pass the validation rules in their corresponding
-        :class: `~yawning_titan.config.game_config.config_abc.ConfigABC`
+        :class: `~yawning_titan.config.toolbox.core.ConfigGroup`
 
         :param game_mode_filename: the file name and extension of the current game mode
-        :return: a dictionary representation of the sections of the  :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>`
+        :return: a dictionary representation of the sections of the :class: `~yawning_titan.config.game_config.game_mode.GameMode`
         """
         if game_mode_filename in cls.game_modes:
             return cls.game_modes[game_mode_filename]
@@ -278,7 +273,7 @@ class GameModeFormManager:
 
     @classmethod
     def verify(cls, **kwargs):
-        """Verify that the lookup keys provided map to a value in :attr: `GameModeFormManager.forms`."""
+        """Verify that the lookup keys provided map to a value in :attribute: `GameModeFormManager.forms`."""
         if (
             "game_mode_filename" in kwargs
             and kwargs["game_mode_filename"] not in cls.game_modes
@@ -296,7 +291,7 @@ class GameModeFormManager:
     @classmethod
     def check_game_mode_complete(cls, game_mode_filename) -> bool:
         """
-        Checks thats all sections of the active :param: `game_mode_filename` have a status of 'complete' in :class: `FormManager.forms`.
+        Checks thats all sections of the active :param: `game_mode_filename` have a status of 'complete' in :attribute: `FormManager.forms`.
 
         :param game_mode_filename: the file name and extension of the current game mode
         :return: a boolean True/False value representing if the :param:`game_mode_filename` is complete
@@ -342,11 +337,6 @@ class GameModeFormManager:
         sections = cls.get_or_create_instance(game_mode_filename)
         for section_name, section in sections.items():
             setattr(game_mode, section_name, section.config_class)
-        print("NAME", game_mode_filename)
-        import yaml
 
-        print("GM", yaml.dump(game_mode.to_dict(values_only=True)))
-
-        game_mode.to_yaml(GAME_MODES_DIR / game_mode_filename)
-        # del cls.sections[game_mode_filename]
+        game_mode.to_yaml(GameModeManager.root_dir / game_mode_filename)
         return game_mode

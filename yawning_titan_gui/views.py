@@ -1,5 +1,4 @@
 import json
-from typing import Any, Optional
 
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
@@ -8,9 +7,11 @@ from django.views import View
 
 from dist.manage.django.http.response import Http404
 from yawning_titan_gui.forms import ConfigForm, GameModeFormManager, GameModeSection
-from yawning_titan_gui.helpers import GameModeManager, next_key
+from yawning_titan_gui.helpers import GameModeManager
 
-GameModeManager.load_game_mode_info()  # pull all game modes from GAME_MODES_DIR
+GameModeManager.load_game_modes(
+    info_only=True
+)  # pull all game modes from GAME_MODES_DIR
 
 default_sidebar = {
     "Documentation": ["Getting started", "Tutorials", "How to configure", "Code"],
@@ -257,12 +258,10 @@ def update_config(request: HttpRequest) -> JsonResponse:
     if request.method == "POST":
         game_mode_filename = request.POST.get("_game_mode_filename")
         operation = request.POST.get("_operation")
-        print("OPERATION", operation)
         if operation == "save":
             GameModeFormManager.save_as_game_mode(game_mode_filename)
             return JsonResponse({"message": "saved"})
         elif operation == "update":
-
             section_name = request.POST.get("_section_name")
             form_id = int(request.POST.get("_form_id"))
             section: GameModeSection = GameModeFormManager.update_section(

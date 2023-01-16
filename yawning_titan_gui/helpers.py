@@ -24,20 +24,41 @@ class GameModeManager:
 
         :return: a string representation of the full path to the `game_mode_filename`
         """
-        return cls.root_dir / game_mode_filename
+        path = cls.root_dir / game_mode_filename
+        if path.exists():
+            return path
+        else:
+            raise FileNotFoundError(
+                f"Game mode {game_mode_filename} does not exist in {cls.root_dir}"
+            )
 
     @classmethod
-    def load_game_mode_info(cls) -> None:
+    def load_game_mode(
+        cls, game_mode_path: Path, info_only: bool = False, valid_only: bool = False
+    ) -> None:
         """Create a summary of information related to each game mode available in :attribute: `root_dir`."""
-        cls.game_modes = {
-            path.name: {
-                "name": path.stem,
-                "description": "description",  # TODO: allow the description to be set on point of creation or got from tinydb.
-                "protected": path.stem in cls.protected_game_mode_filenames,
-                "complete": cls.check_game_mode(path),
-            }
-            for path in cls.get_game_mode_file_paths(valid_only=False)
+        game_mode = GameMode()
+        game_mode.set_from_yaml(game_mode_path, infer_legacy=True)
+        if valid_only and not cls.check_game_mode(game_mode):
+            return
+        cls.game_modes[game_mode_path.name] = {
+            "name": game_mode_path.stem,
+            "description": "description",  # TODO: allow the description to be set on point of creation or got from tinydb.
+            "protected": game_mode_path.stem in cls.protected_game_mode_filenames,
+            "complete": cls.check_game_mode(game_mode),
         }
+        if info_only:
+            cls.game_modes[game_mode_path.name]["config_class"] = None
+        else:
+            cls.game_modes[game_mode_path.name]["config_class"] = game_mode
+
+    @classmethod
+    def load_game_modes(cls, info_only: bool = False, valid_only: bool = False) -> None:
+        """Create a summary of information related to each game mode available in :attribute: `root_dir`."""
+        cls.game_modes = {}
+        game_mode_paths = cls.root_dir.iterdir()
+        for path in game_mode_paths:
+            cls.load_game_mode(path, info_only, valid_only)
 
     @classmethod
     def get_game_mode(cls, game_mode_filename: str) -> GameMode:
@@ -47,41 +68,27 @@ class GameModeManager:
         :param game_mode_filename: a file name and extension of a `~yawning_titan.config.game_config.game_mode_config.GameModeConfig`
         :return: the instance of `~yawning_titan.config.game_config.game_mode_config.GameModeConfig` populated with the data from :param: `game_mode_filename`
         """
-        game_mode = GameMode()
-        game_mode.set_from_yaml(
-            cls.get_game_mode_path(game_mode_filename), infer_legacy=True
-        )
-        return game_mode
-
-    @classmethod
-    def get_game_mode_file_paths(cls, valid_only=False) -> List[Path]:
-        """
-        Select all game modes in the :attribute: `root_dir` matching criteria.
-
-        :param: valid_only: whether to return only those game modes that pass the :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>` validation check
-
-        :return: a list of file Path objects representing game modes.
-        """
-        game_modes = [
-            g for g in cls.root_dir.iterdir() if g.stem != "everything_off_config"
-        ]
-        if not valid_only:
-            return game_modes
-        return [g for g in game_modes if cls.check_game_mode(g)]
+        if game_mode_filename not in cls.game_modes:
+            cls.load_game_mode(
+                game_mode_path=cls.get_game_mode_path(game_mode_filename)
+            )
+        if cls.game_modes[game_mode_filename]["config_class"] is None:
+            game_mode = GameMode()
+            game_mode.set_from_yaml(
+                cls.get_game_mode_path(game_mode_filename), infer_legacy=True
+            )
+            cls.game_modes[game_mode_filename]["config_class"] = game_mode
+        return cls.game_modes[game_mode_filename]["config_class"]
 
     # Checkers
 
     @classmethod
-    def check_game_mode(cls, game_mode_path: Path) -> bool:
+    def check_game_mode(cls, game_mode: GameMode) -> bool:
         """
         Check that a game mode path can construct a valid GameModeConfig object.
 
-        :param: game_mode_path: A pathlib `Path` object representing a Yawning Titan game mode
-
         :return: a boolean True/False value indicating whether the game mode passes the validation checks in `GameModeConfig`
         """
-        game_mode = GameMode()
-        game_mode.set_from_yaml(game_mode_path)
         return game_mode.validation.passed
 
     # Setters
@@ -98,6 +105,7 @@ class GameModeManager:
             "name": new_game_mode_path.stem,
             "description": None,
             "protected": False,
+            "config_class": True,
             "complete": False,
         }
 

@@ -449,6 +449,12 @@ class ConfigGroup(ConfigBase, ABC):
         self.doc: Optional[str] = doc
         self.validation = self.validate()
 
+    def __setattr__(self, __name: str, __value: Any) -> None:
+        if hasattr(self, __name) and isinstance(getattr(self, __name), ConfigItem):
+            self.__dict__[__name].value = __value
+        else:
+            self.__dict__[__name] = __value
+
     def validate(
         self, raise_overall_exception: Optional[bool] = False
     ) -> ConfigGroupValidation:

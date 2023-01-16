@@ -14,11 +14,17 @@ from yaml import SafeLoader
 
 from yawning_titan.config.game_config.game_mode import GameMode
 from yawning_titan.config.game_modes import default_game_mode_path
+from yawning_titan.config.toolbox.core import ConfigGroup, ConfigGroupValidation
+from yawning_titan.config.toolbox.item_types.bool_item import BoolItem
+from yawning_titan.config.toolbox.item_types.float_item import FloatItem
+from yawning_titan.config.toolbox.item_types.int_item import IntItem
+from yawning_titan.config.toolbox.item_types.str_item import StrItem
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
+from yawning_titan.exceptions import ConfigGroupValidationError
 from yawning_titan.networks import network_creator
 from yawning_titan.networks.new_network import Network
 
@@ -197,3 +203,73 @@ def basic_2_agent_loop(
         return ActionLoop(env, agent, episode_count=num_episodes)
 
     return _basic_2_agent_loop
+
+
+class Group(ConfigGroup):
+    """Basic implementation of a :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+
+    def __init__(self, doc: Optional[str] = None):
+        print("GROUP")
+        self.a: BoolItem = BoolItem(value=False, alias="legacy_a")
+        self.b: FloatItem = FloatItem(value=1, alias="legacy_b")
+        self.c: StrItem = StrItem(value="test", alias="legacy_c")
+        super().__init__(doc)
+
+
+class GroupTier1(ConfigGroup):
+    """Basic implementation of a nested :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+
+    def __init__(self, doc: Optional[str] = None):
+        self.bool: BoolItem = BoolItem(value=False)
+        self.float: FloatItem = FloatItem(value=1)
+        super().__init__(doc)
+
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        super().validate()
+        try:
+            if self.bool.value and self.float.value > 1:
+                msg = "test error tier 1"
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        try:
+            if self.bool.value and self.float.value < 0:
+                msg = "test error tier 1 b"
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        return self.validation
+
+
+class GroupTier2(ConfigGroup):
+    """Basic implementation of a nested :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+
+    def __init__(self, doc: Optional[str] = None):
+        self.bool: BoolItem = BoolItem(value=False)
+        self.int: IntItem = IntItem(value=1)
+        self.tier_1: GroupTier1 = GroupTier1()
+        super().__init__(doc)
+
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        super().validate()
+        try:
+            if self.bool.value and self.int.value != 1:
+                msg = "test error tier 2"
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        return self.validation
+
+
+@pytest.fixture
+def test_group() -> Group:
+    """A test instance of :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+    return Group()
+
+
+@pytest.fixture
+def multi_tier_test_group() -> GroupTier2:
+    """A nested test instance of :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+    return GroupTier2()
