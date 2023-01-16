@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tags %}
+
+{% block scripts %}
+<script type="text/javascript">
+    const handler = {
+        set(obj, prop, value) {
+            // listen to NETWORK property changes
+            if (prop === 'NETWORK') {
+                // trigger a window event to mark that the value was changed
+                document.dispatchEvent(new CustomEvent('networkUpdate', {detail: value}));
+            }
+
+            return true;
+        }
+    };
+
+    var proxy = new Proxy(window, handler);
+
+    /**
+     * We use a proxy instead of the standard window.NETWORK.
+     * This removes the need to poll for any changes to the
+     * network on the Django side.
+     * 
+     * This also allows us to run end to end tests
+    */
+
+    // set the proxy.NETWORK with the django JSON string
+    proxy.NETWORK = '';
+</script>
+{% endblock %}
+
+{% block main %}
+{% include 'ng-node-editor.html' %}
+{% endblock %}
+
+{% block style %}
+<style>
+</style>
+{% endblock %}

@@ -1,0 +1,16 @@
+<mat-card class="properties-editor-container">
+  <mat-card-header mat-header>
+    <mat-card-title-group>
+      <mat-card-title>Node ID</mat-card-title>
+      <mat-card-subtitle>{{currentNode?.uuid}}</mat-card-subtitle>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <p>name: {{currentNode?.name}}</p>
+    <p>high_value_node: {{currentNode?.high_value_node}}</p>
+    <p>entry_node: {{currentNode?.entry_node}}</p>
+    <p>classes: {{currentNode?.classes}}</p>
+    <p>x_pos: {{currentNode?.x_pos}}</p>
+    <p>y_pos: {{currentNode?.y_pos}}</p>
+  </mat-card-content>
+</mat-card>
