@@ -44,5 +44,44 @@ describe('ImportService', () => {
       }).toThrowError();
       expect(spy).not.toHaveBeenCalled();
     }));
+
+    it('should load a network if the JSON is valid', fakeAsync(() => {
+      const spy = spyOn(service['cytoscapeService'], 'loadNetwork');
+      spyOn(JSON, 'parse').and.returnValue({})
+      const event = [{
+        text: (): any => { }
+      }];
+
+      spyOn(event[0], 'text').and.returnValue(Promise.resolve());
+
+      service.loadFile(event);
+      tick();
+      expect(spy).toHaveBeenCalled();
+    }));
+  });
+
+  describe('METHOD: loadNetworkFromWindow', () => {
+    it('should do nothing if no event to process', () => {
+      const spy = spyOn(service['cytoscapeService'], 'loadNetwork');
+      service.loadNetworkFromWindow(null);
+      expect(spy).not.toHaveBeenCalled();
+    });
+
+    it('should throw an error if JSON is invalid', () => {
+      const spy = spyOn(service['cytoscapeService'], 'loadNetwork');
+
+      expect(() => {
+        service.loadNetworkFromWindow({ text: (): any => { } });
+      }).toThrowError();
+      expect(spy).not.toHaveBeenCalled();
+    });
+
+    it('should load a network if the JSON is valid', () => {
+      const spy = spyOn(service['cytoscapeService'], 'loadNetwork');
+      spyOn(JSON, 'parse').and.returnValue({});
+
+      service.loadNetworkFromWindow({ text: (): any => { } });
+      expect(spy).toHaveBeenCalled();
+    });
   });
 });

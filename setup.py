@@ -175,6 +175,9 @@ setup(
     ],
     extras_require={
         "dev": [
+            "Django==4.1.2",
+            "flaskwebgui==1.0.1",
+            "pyinstaller>=5.7.0",
             "nbmake==1.3.5",
             "pip-licenses==4.0.2",
             "pre-commit==2.20.0",

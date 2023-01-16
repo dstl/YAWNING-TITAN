@@ -1,16 +1,17 @@
 <div class="controls-container">
-  <p>display the node values here!</p>
-  <p>Double click to place a node</p>
-  <p>Click on nodes to connect them</p>
-  <p>Press delete or backspace when selecting a node or edge to delete</p>
   <div class="node-list">
-    <p *ngFor="let node of nodeList()">Node ID: {{node}}</p>
+    <p *ngFor="let node of nodeList()" class="node-list-item">Node ID: {{node}}</p>
   </div>
-  <div class="download-button-container">
-    <button mat-raised-button color="primary" class="download-button" (click)="downloadNetwork()">
-      <mat-icon>download</mat-icon>
-      Download Network</button>
-  </div>
+</div>
+<div class="control-action-buttons-container">
+  <button mat-raised-button color="primary" class="button download-button" (click)="downloadNetwork()">
+    <mat-icon>download</mat-icon>
+    Download Network
+  </button>
+  <button mat-raised-button color="primary" class="save-button" (click)="saveNetwork()">
+    <mat-icon>save</mat-icon>
+    Save Network
+  </button>
 </div>
 
 <button mat-icon-button class="reset-view-button" (click)="resetView()">
