@@ -1,11 +1,10 @@
 import json
 
-from django.http import HttpRequest, JsonResponse
+from django.http import Http404, HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
 
-from dist.manage.django.http.response import Http404
 from yawning_titan_gui.forms import ConfigForm, GameModeFormManager, GameModeSection
 from yawning_titan_gui.helpers import GameModeManager
 
