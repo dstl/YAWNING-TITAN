@@ -83,7 +83,7 @@ class GameModeSection:
     A representation of a section of a :class: `~yawning_titan.config.game_config.game_mode.GameMode`.
 
     Each group within the section has its items converted into a django form element and is assigned
-    an icon string representing a bootsrap icon.
+    an icon string representing a bootstrap icon.
     """
 
     def __init__(
