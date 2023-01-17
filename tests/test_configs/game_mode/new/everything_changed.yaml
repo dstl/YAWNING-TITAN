@@ -77,12 +77,12 @@ blue:
       chance:
         standard_node: "changed"
         deceptive_node: "changed"
-    succeeded_attacks:
+    succeeded_attacks_known_compromise:
       use: "changed"
       chance:
         standard_node: "changed"
         deceptive_node: "changed"
-    succeeded_attacks_unknown_comprimise:
+    succeeded_attacks_unknown_compromise:
       use: "changed"
       chance:
         standard_node: "changed"

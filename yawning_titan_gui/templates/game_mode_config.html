@@ -12,7 +12,7 @@
 
 {% block main %}
 <header id="config-header" class="el-row">
-    <h2>Game mode file: {{game_mode_filename}}</h2>
+    <h2>Game mode file: {{ game_mode_filename }}</h2>
     <a id="game-modes-return" href="{% url 'Manage game modes' %}"><i class="bi bi-arrow-90deg-left"></i></a>
 </header>
 
@@ -20,11 +20,11 @@
     <div id="config-form-left">
         <div id="config-form-icons">
             {% for section_name, section in sections.items %}
-            <a href="{{request.path|url_trim:2}}{{section_name}}/" class="icon-container{% if section_name == current_section_name %} selected{% endif %}{% if section.config_class.validation.passed %} complete{% endif %}">
-                <div id="{{section_name}}-icon" class="icon" data-form="#{{section_name}}-config-form">
-                    <i class="bi {{section.icon}}"></i>
+            <a href="{{request.path|url_trim:2}}{{ section_name }}/" class="icon-container{% if section_name == current_section_name %} selected{% endif %}{% if section.config_class.validation.passed %} complete{% endif %}">
+                <div id="{{ section_name }}-icon" class="icon" data-form="#{{ section_name }}-config-form">
+                    <i class="bi {{ section.icon }}"></i>
                 </div>
-                <p>{{section_name}}</p>
+                <p>{{ section_name }}</p>
             </a>
             {% endfor %}
         </div>
@@ -36,34 +36,33 @@
     <div id="{{current_section_name}}-config-form-container" class="form-container">
         <div id="subsection-forms">
             {% for form in section.forms %}
-                <p class="title tier-{{form.tier}}">{{form.name|format_text}}</p>
-                <form id="config-form-{{forloop.counter0}}" class="config-form tier-{{form.tier}}"  data-id="{{forloop.counter0}}">
+                <form id="config-form-{{ forloop.counter0 }}" class="config-form tier-{{form.tier}}{% if form.config_class.validation.fail_reasons %} erroneous{% endif %}" data-id="{{forloop.counter0}}">
+                    <p class="title">{{ form.name|format_text }}</p>
                     {% csrf_token %}
                     {% if form.config_class.validation.fail_reasons %}
                         <ul class="error-list">
                             {% for error in form.config_class.validation.fail_reasons %}
-                                <li>{{error}}</li>
+                                <li>{{ error|escape }}</li>
                             {% endfor %}
                         </ul>
                     {% endif %}
                     <div class="fields">
                         {% for field in form %}
-                            <div class="mb-3 active">
+                            <div class="mb-3 active{% if field.errors %} erroneous{% endif %}">
                                 <div class="info">
-                                    <label for="id_{{field.name}}" class="form-label">{{field.label}}</label>
+                                    <label for="id_{{ field.name }}" class="form-label">{{ field.label|format_text }}</label>
                                     <p class="help-text">{{field.help_text}}</p>
                                     {% if field.errors %}
-                                    <ul class="error-list">
-                                        {% for error in field.errors %}
-                                        <li>{{ error|escapejs }}</li>
-                                        {% endfor %}
-                                    </ul>
+                                        <ul class="error-list">
+                                            {% for error in field.errors %}
+                                            <li>{{ error|escape }}</li>
+                                            {% endfor %}
+                                        </ul>
                                     {% endif %}
                                 </div>
                                 <div class="field-container {% if protected %}disabled{% endif %}">
                                     {{ field }}
                                 </div>
-
                             </div>
                         {% endfor %}
                     </div>
@@ -96,6 +95,10 @@
     }
 
     /* specific elements */
+    #main{
+        flex-direction: column;
+        padding: var(--padding) !important;
+    }
     #game-modes-return{
         font-size: 1.5rem;
     }
@@ -131,14 +134,18 @@
         border-left: 2px solid var(--text-light);
     }
     #subsection-forms{
+        position: relative;
         flex: 1;
         min-height: 0;
         max-height: calc(100% - 50px);
+        width: 1000px;
+        padding-right: calc(2* var(--increment));
         overflow-y: auto;
     }
     #section-controls{
         display: flex;
         flex-direction: row;
+        width: 1000px;
         margin: 0;
     }
 
@@ -198,17 +205,16 @@
 
     /* config form elements */
     .form-container{
-        flex-direction: column;
-        flex: 1;
-    }
-    .config-form{
         display: flex;
         flex-direction: column;
-
+        align-items: center;
+        flex: 1;
+        min-height: 100%;
     }
-    .config-form>.fields{
-        overflow-y: auto;
-        padding-right: var(--increment);
+    .config-form{
+        position: relative;
+        padding-left: calc(4 * var(--increment));
+        z-index: 2;
     }
     .error-list{
         color: red;
@@ -223,17 +229,36 @@
     .error-list>li{
         margin-left: 1rem;
     }
-
+    .config-form.erroneous{
+        border: 1px solid red;
+        border-radius: 1rem;
+    }
+    .mb-3.erroneous input{
+        border: 1px solid red !important;
+    }
 
     /* form layouts */
 
     /* root field element */
+    .tier-indicator{
+        top: 0px;
+        left: calc(2.5*var(--increment));
+        position: absolute;
+        width: 0px;
+        border-left: 1px solid var(--text-light);
+        z-index: 2;
+    }
     .mb-3{
         display: flex;
         flex-wrap: wrap;
         /* margin: 3px; */
         margin: 0 !important;
+        margin-top: var(--increment) !important;
         /* border-top: 1px solid var(--text-dark); */
+        background-color: var(--dark);
+        border-radius: .5rem;
+        padding-left: calc(2 * var(--increment));
+        padding-right: calc(2 * var(--increment));
     }
     .mb-3 label{
         display: flex;
@@ -256,21 +281,26 @@
     .mb-3:has(.grouped.child) .info{
         margin-left: var(--padding); /*calc(var(--increment)*3);*/
     }
-
-    .config-form.tier-0,.title.tier-1{
-        padding-left: calc(2 * var(--increment));
+    .title{
+        margin-left: calc(-2 * var(--increment));
+        color: var(--text-light);
+        font-size: 1.4rem;
+        margin-bottom: 0;
     }
-    .config-form.tier-1,.title.tier-2{
-        padding-left: calc(4 * var(--increment));
+    .tier-0{
+        margin-left: calc(2 * var(--increment));
     }
-    .config-form.tier-2,.title.tier-3{
-        padding-left: calc(6 * var(--increment));
+    .tier-1{
+        margin-left: calc(4 * var(--increment));
     }
-    .config-form.tier-3,.title.tier-4{
-        padding-left: calc(8 * var(--increment));
+    .tier-2{
+        margin-left: calc(6 * var(--increment));
     }
-    .config-form.tier-4,.title.tier-5{
-        padding-left: calc(10 * var(--increment));
+    .tier-3{
+        margin-left: calc(8 * var(--increment));
+    }
+    .tier-4{
+        margin-left: calc(10 * var(--increment));
     }
 
     div.mb-3:has(.hidden){
@@ -289,7 +319,7 @@
         flex-direction: column;
         justify-content: center;
         max-width: 400px;
-        height: 60px;
+        height: 3rem;
     }
     .field-container>*{
         width:100%;
@@ -305,12 +335,6 @@
     }
     .selector:hover{
         background-color: aliceblue;
-    }
-
-    .title{
-        color: var(--text-light);
-        font-size: 1.4rem;
-        margin-bottom: 0;
     }
 
 </style>

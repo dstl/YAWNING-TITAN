@@ -63,15 +63,15 @@ class ConfigForm(django_forms.Form):
         :return: A bool value True if the form meets the validation criteria and produces a valid
             section of the config group.
         """
-        v = super().is_valid()
+        v = super().is_valid()  # noqa: F841
 
         self.config_class.set_from_dict(self.cleaned_data)
 
         if self.config_class.validation.passed:
             return True
         else:
-            for k, v in self.config_class.validation.element_validation.items():
-                for error in v.fail_reasons:
+            for k, i in self.config_class.get_config_elements(ConfigItem).items():
+                for error in i.validation.fail_reasons:
                     self.add_error(k, error)
 
         self.group_errors = self.config_class.validation.fail_reasons
@@ -93,6 +93,7 @@ class GameModeSection:
         self.form_classes: List[ConfigForm] = []
         self.icon = icon
         self.config_class = section
+        self.name = form_name
         self.create_form_from_group(section, form_name=form_name)
 
     def create_form_from_group(
@@ -230,17 +231,15 @@ class GameModeFormManager:
         else:
             game_mode = GameModeManager.get_game_mode(game_mode_filename)
             sections = {
-                k: GameModeSection(v, k, cls.icons[k])
-                for k, v in game_mode.get_config_elements(ConfigGroup).items()
+                k: GameModeSection(section=g, form_name=k, icon=cls.icons[k])
+                for k, g in game_mode.get_config_elements(ConfigGroup).items()
             }
 
             cls.game_modes[game_mode_filename] = sections
             return sections
 
     @classmethod
-    def get_section(
-        cls, game_mode_filename, section_name=None
-    ) -> Dict[str, GameModeSection]:
+    def get_section(cls, game_mode_filename, section_name=None) -> GameModeSection:
         """
         Get a specific :param:`section` of a form for an active :param:`game_mode_filename`.
 

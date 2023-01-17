@@ -150,7 +150,7 @@ class GameModeConfigView(View):
             game_mode_filename, section_name
         )
 
-        return self.render_page(request, section, section_name, game_mode_filename)
+        return self.render_page(request, section, game_mode_filename)
 
     def post(
         self,
@@ -189,13 +189,12 @@ class GameModeConfigView(View):
                     game_mode_filename, section_name
                 ),
             )
-        return self.render_page(request, section, section_name, game_mode_filename)
+        return self.render_page(request, section, game_mode_filename)
 
     def render_page(
         self,
         request: HttpRequest,
         section: ConfigForm,
-        section_name: str,
         game_mode_filename: str,
     ):
         """
@@ -216,7 +215,7 @@ class GameModeConfigView(View):
                     game_mode_filename
                 ),
                 "section": section,
-                "current_section_name": section_name,
+                "current_section_name": section.name,
                 "last": False,
                 "sidebar": default_sidebar,
                 "game_mode_filename": game_mode_filename,
