@@ -19,7 +19,7 @@ export class ConfigurationService {
    * @returns
    */
   public loadConfig(location: string): any {
-    return this.httpClient.get(location)
+    return this.httpClient.get(`${window.location.origin}/${location}`)
       .pipe(tap(res => this._config = res));
   }
 }
