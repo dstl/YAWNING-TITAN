@@ -5,10 +5,10 @@ import tempfile
 from pathlib import Path
 
 import pytest
+from django.http import Http404
 from django.test import Client
 from django.urls import reverse
 
-from dist.manage.django.http.response import Http404
 from yawning_titan import GAME_MODES_DIR
 from yawning_titan.config import _LIB_CONFIG_ROOT_PATH
 from yawning_titan_gui.forms import GameModeFormManager
