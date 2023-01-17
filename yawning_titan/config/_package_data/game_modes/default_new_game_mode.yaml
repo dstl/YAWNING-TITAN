@@ -78,12 +78,12 @@ blue:
       chance:
         standard_node: 1
         deceptive_node: 1
-    succeeded_attacks:
+    succeeded_attacks_known_compromise:
       use: True
       chance:
         standard_node: 1
         deceptive_node: 1
-    succeeded_attacks_unknown_comprimise:
+    succeeded_attacks_unknown_compromise:
       use: True
       chance:
         standard_node: 1
