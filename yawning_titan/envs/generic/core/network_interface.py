@@ -959,7 +959,7 @@ class NetworkInterface:
                     # chance of seeing the attack if the attack succeeded
                     if (
                         100
-                        * self.game_mode.blue.attack_discovery.succeeded_attacks.chance.deceptive_node.value
+                        * self.game_mode.blue.attack_discovery.succeeded_attacks_known_compromise.chance.deceptive_node.value
                         > random.randint(0, 99)
                     ):
                         self.detected_attacks.append([i, j])
@@ -991,21 +991,21 @@ class NetworkInterface:
                         == 1
                     ):
                         if (
-                            self.game_mode.blue.attack_discovery.succeeded_attacks.use.value
+                            self.game_mode.blue.attack_discovery.succeeded_attacks_known_compromise.use.value
                         ):
                             if (
-                                self.game_mode.blue.attack_discovery.succeeded_attacks.chance.standard_node.value
+                                self.game_mode.blue.attack_discovery.succeeded_attacks_known_compromise.chance.standard_node.value
                                 > random.randint(0, 99)
                             ):
                                 self.detected_attacks.append([i, j])
                     else:
                         # If the attack succeeded but blue did not detect it
                         if (
-                            self.game_mode.blue.attack_discovery.succeeded_attacks_unknown_comprimise.use.value
+                            self.game_mode.blue.attack_discovery.succeeded_attacks_unknown_compromise.use.value
                         ):
                             if (
                                 100
-                                * self.game_mode.blue.attack_discovery.succeeded_attacks_unknown_comprimise.chance.standard_node.value
+                                * self.game_mode.blue.attack_discovery.succeeded_attacks_unknown_compromise.chance.standard_node.value
                                 > random.randint(0, 99)
                             ):
                                 self.detected_attacks.append([i, j])

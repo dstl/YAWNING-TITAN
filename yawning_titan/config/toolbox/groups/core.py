@@ -39,9 +39,7 @@ class ActionLikelihoodGroup(ConfigGroup):
             properties=FloatProperties(
                 allow_null=True,
                 min_val=0,
-                max_val=1,
                 inclusive_min=True,
-                inclusive_max=True,
             ),
         )
         super().__init__(doc)
@@ -87,6 +85,8 @@ class ActionLikelihoodChanceGroup(ActionLikelihoodGroup):
         :param chance: The chance of the action.
         :param doc: An optional descriptor.
         """
+        self.use = None
+        self.likelihood = None
         self.chance: FloatItem = FloatItem(
             value=chance,
             doc="The chance of the action.",

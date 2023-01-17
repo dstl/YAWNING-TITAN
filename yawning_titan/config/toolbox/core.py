@@ -449,6 +449,16 @@ class ConfigGroup(ConfigBase, ABC):
         self.doc: Optional[str] = doc
         self.validation = self.validate()
 
+    def __setattr__(self, __name: str, __value: Any) -> None:
+        if (
+            hasattr(self, __name)
+            and isinstance(getattr(self, __name), ConfigItem)
+            and not isinstance(__value, ConfigItem)
+        ):
+            self.__dict__[__name].value = __value
+        else:
+            self.__dict__[__name] = __value
+
     def validate(
         self, raise_overall_exception: Optional[bool] = False
     ) -> ConfigGroupValidation:
@@ -565,12 +575,15 @@ class ConfigGroup(ConfigBase, ABC):
         if root:
             self.validate()
 
-    def set_from_yaml(self, file_path: str, legacy: bool = False):
+    def set_from_yaml(
+        self, file_path: str, legacy: bool = False, infer_legacy: bool = False
+    ):
         """
         Set the elements of the group from a .yaml file.
 
         :param file_path: The path to the .yaml file.
         :param legacy: Whether to use the alias names for config elements to construct the config from a legacy dictionary.
+        :param infer_legacy: Attempt to recognise if a config is of a legacy type.
         """
         try:
             with open(file_path) as f:
@@ -579,4 +592,10 @@ class ConfigGroup(ConfigBase, ABC):
             msg = f"Configuration file does not exist: {file_path}"
             _LOGGER.critical(msg, exc_info=True)
             raise e
+        if infer_legacy:
+            legacy = (
+                True
+                if all(k in config_dict for k in ["RED", "BLUE", "OBSERVATION_SPACE"])
+                else False
+            )
         self.set_from_dict(config_dict, legacy=legacy)

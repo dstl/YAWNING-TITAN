@@ -149,7 +149,7 @@ class TargetNodeGroup(ConfigGroup):
         self.target: StrItem = StrItem(
             value=target,
             doc="The name of a node that the red agent targets.",
-            properties=StrProperties(allow_null=False),
+            properties=StrProperties(allow_null=True),
             alias="red_target_node",
         )
         self.always_choose_shortest_distance: BoolItem = BoolItem(
@@ -164,8 +164,8 @@ class TargetNodeGroup(ConfigGroup):
         """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
         super().validate()
         try:
-            if self.target.value is not None and not self.use.value:
-                msg = "If the target is set to a specific node then the element must have `used` set to True"
+            if self.target.value and not self.use.value:
+                msg = f"Red is set to target {self.target.value}, if the target is set to a specific node then the element must have `used` set to True"
                 raise ConfigGroupValidationError(msg)
         except ConfigGroupValidationError as e:
             self.validation.add_validation(msg, e)

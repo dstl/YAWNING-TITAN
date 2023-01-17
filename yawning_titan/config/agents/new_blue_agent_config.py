@@ -271,8 +271,8 @@ class BlueAttackDiscoveryGroup(ConfigGroup):
         self,
         doc: Optional[str] = None,
         failed_attacks: Optional[UseChancesGroup] = None,
-        succeeded_attacks: Optional[UseChancesGroup] = None,
-        succeeded_attacks_unknown_comprimise: Optional[UseChancesGroup] = None,
+        succeeded_attacks_known_compromise: Optional[UseChancesGroup] = None,
+        succeeded_attacks_unknown_compromise: Optional[UseChancesGroup] = None,
     ):
         self.failed_attacks: UseChancesGroup = (
             failed_attacks
@@ -289,46 +289,44 @@ class BlueAttackDiscoveryGroup(ConfigGroup):
             "chance_to_discover_failed_attack_deceptive_node"
         )
 
-        self.succeeded_attacks_unknown_comprimise: UseChancesGroup = (
-            succeeded_attacks_unknown_comprimise
-            if succeeded_attacks_unknown_comprimise
-            else UseChancesGroup(
-                doc="Whether the blue can discover succeeded attacks where the nature "
-                "of the compromise is unknown and the associated chance of discovery."
-            )
-        )
-        self.succeeded_attacks_unknown_comprimise.use.alias = (
-            "can_discover_succeeded_attacks_if_compromise_is_not_discovered"
-        )
-        self.succeeded_attacks_unknown_comprimise.chance.standard_node.alias = (
-            "chance_to_discover_succeeded_attack_compromise_not_known"
-        )
-        self.succeeded_attacks_unknown_comprimise.chance.deceptive_node.alias = (
-            "chance_to_discover_succeeded_attack_deceptive_node"
-        )
-
-        self.succeeded_attacks: UseChancesGroup = (
-            succeeded_attacks
-            if succeeded_attacks
+        self.succeeded_attacks_known_compromise: UseChancesGroup = (
+            succeeded_attacks_known_compromise
+            if succeeded_attacks_known_compromise
             else UseChancesGroup(
                 doc="Whether the blue can discover succeeded attacks where the nature "
                 "of the compromise is known and the associated chance of discovery."
             )
         )
-        self.succeeded_attacks.use.alias = (
+        self.succeeded_attacks_known_compromise.use.alias = (
             "can_discover_succeeded_attacks_if_compromise_is_discovered"
         )
-        self.succeeded_attacks.chance.standard_node.alias = (
+        self.succeeded_attacks_known_compromise.chance.standard_node.alias = (
             "chance_to_discover_succeeded_attack_compromise_known"
         )
-        self.succeeded_attacks.chance.deceptive_node.alias = (
+        self.succeeded_attacks_known_compromise.chance.deceptive_node.alias = (
             "chance_to_discover_succeeded_attack_deceptive_node"
         )
 
-        # assign a shared link to 'chance_to_discover_succeeded_attack_deceptive_node' as this
-        self.succeeded_attacks.chance.deceptive_node = (
-            self.succeeded_attacks_unknown_comprimise.chance.deceptive_node
+        self.succeeded_attacks_unknown_compromise: UseChancesGroup = (
+            succeeded_attacks_unknown_compromise
+            if succeeded_attacks_unknown_compromise
+            else UseChancesGroup(
+                doc="Whether the blue can discover succeeded attacks where the nature "
+                "of the compromise is unknown and the associated chance of discovery."
+            )
         )
+        self.succeeded_attacks_unknown_compromise.use.alias = (
+            "can_discover_succeeded_attacks_if_compromise_is_not_discovered"
+        )
+        self.succeeded_attacks_unknown_compromise.chance.standard_node.alias = (
+            "chance_to_discover_succeeded_attack_compromise_not_known"
+        )
+
+        # Set the deceptive node chances to both reference same config item
+        self.succeeded_attacks_unknown_compromise.chance.deceptive_node = (
+            self.succeeded_attacks_known_compromise.chance.deceptive_node
+        )
+
         super().__init__(doc)
 
 
