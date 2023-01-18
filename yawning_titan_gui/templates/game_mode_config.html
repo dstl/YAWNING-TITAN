@@ -37,15 +37,17 @@
         <div id="subsection-forms">
             {% for form in section.forms %}
                 <form id="config-form-{{ forloop.counter0 }}" class="config-form tier-{{form.tier}}{% if form.config_class.validation.fail_reasons %} erroneous{% endif %}" data-id="{{forloop.counter0}}">
-                    <p class="title">{{ form.name|format_text }}</p>
-                    {% csrf_token %}
-                    {% if form.config_class.validation.fail_reasons %}
-                        <ul class="error-list">
-                            {% for error in form.config_class.validation.fail_reasons %}
-                                <li>{{ error|escape }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
+                    <div class="title-container">
+                        <p class="title">{{ form.name|format_text }}</p>
+                        {% csrf_token %}
+                        {% if form.config_class.validation.fail_reasons %}
+                            <ul class="error-list">
+                                {% for error in form.config_class.validation.fail_reasons %}
+                                    <li>{{ error|escape }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
                     <div class="fields">
                         {% for field in form %}
                             <div class="mb-3 active{% if field.errors %} erroneous{% endif %}">
@@ -213,8 +215,11 @@
     }
     .config-form{
         position: relative;
+        padding: calc(2 * var(--increment));
         padding-left: calc(4 * var(--increment));
+        padding-top: 0;
         z-index: 2;
+        border: 1px solid var(--mid);
     }
     .error-list{
         color: red;
@@ -240,13 +245,10 @@
     /* form layouts */
 
     /* root field element */
-    .tier-indicator{
-        top: 0px;
-        left: calc(2.5*var(--increment));
-        position: absolute;
-        width: 0px;
-        border-left: 1px solid var(--text-light);
-        z-index: 2;
+    .title-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
     }
     .mb-3{
         display: flex;
@@ -280,10 +282,11 @@
         margin-left: var(--padding); /*calc(var(--increment)*3);*/
     }
     .title{
-        margin-left: calc(-2 * var(--increment));
         color: var(--text-light);
         font-size: 1.4rem;
         margin-bottom: 0;
+        margin-left: calc(-2 * var(--increment));
+        margin-right: calc(2 * var(--increment));
     }
     .tier-0{
         margin-left: calc(2 * var(--increment));
