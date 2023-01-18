@@ -4,10 +4,10 @@ import shutil
 import tempfile
 from pathlib import Path
 
+from django.http.response import HttpResponse
 from django.test import Client
 from django.urls import reverse
 
-from dist.manage.django.http.response import HttpResponse
 from yawning_titan import GAME_MODES_DIR
 from yawning_titan.config import _LIB_CONFIG_ROOT_PATH
 from yawning_titan_gui.helpers import GameModeManager
