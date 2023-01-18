@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.0.0">
+<<<<<<< HEAD
   <zoom_level>9</zoom_level>
   <element>
     <id>UMLClass</id>
@@ -24,12 +25,39 @@
 + validate(): None
 + set_value(value: Any): None
 + stringify(): Any
+=======
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>860</x>
+      <y>220</y>
+      <w>360</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>ConfigItem
+--
++ data_types: Union[type, List[type]]
++ default: Any
++ description: Optional[str]
++ value: Optional[Any]
++ depends_on: Optional[Union[Any, List[Any]]]
++ validators: Optional[List[Any]]
+
+
+
+
+--
+_/+ set(name,value)/_
+_/+ validate(name,value)/_
+>>>>>>> origin/dev
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
+<<<<<<< HEAD
       <x>792</x>
       <y>369</y>
       <w>324</w>
@@ -38,11 +66,30 @@
     <panel_attributes>@dataclass
 *IntItem*
 --</panel_attributes>
+=======
+      <x>860</x>
+      <y>570</y>
+      <w>360</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>IntConfigItem
+--
++ data_types: Union[type, List[type]] = [int]
++ default: int = 0
++ validators: List[Any] = [check_type]
+
+
+
+
+--
+</panel_attributes>
+>>>>>>> origin/dev
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
+<<<<<<< HEAD
       <x>1152</x>
       <y>369</y>
       <w>324</w>
@@ -51,11 +98,30 @@
     <panel_attributes>@dataclass
 *FloatItem*
 --</panel_attributes>
+=======
+      <x>1260</x>
+      <y>570</y>
+      <w>360</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>FloatConfigItem
+--
++ data_types: Union[type, List[type]] = [float,int]
++ default: float = 0
++ validators: List[Any] = [check_type,check_range]
+
+
+
+
+--
+</panel_attributes>
+>>>>>>> origin/dev
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
+<<<<<<< HEAD
       <x>432</x>
       <y>369</y>
       <w>324</w>
@@ -64,15 +130,40 @@
     <panel_attributes>@dataclass
 *BoolItem*
 --</panel_attributes>
+=======
+      <x>460</x>
+      <y>570</y>
+      <w>360</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>BoolConfigItem
+--
++ data_types: Union[type, List[type]] = [bool]
++ default: bool = False
++ validators: List[Any] = [check_type]
+
+
+
+
+--
+</panel_attributes>
+>>>>>>> origin/dev
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
+<<<<<<< HEAD
       <x>936</x>
       <y>261</y>
       <w>27</w>
       <h>126</h>
+=======
+      <x>1020</x>
+      <y>450</y>
+      <w>30</w>
+      <h>140</h>
+>>>>>>> origin/dev
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
@@ -80,10 +171,17 @@
   <element>
     <id>Relation</id>
     <coordinates>
+<<<<<<< HEAD
       <x>936</x>
       <y>261</y>
       <w>387</w>
       <h>126</h>
+=======
+      <x>1020</x>
+      <y>450</y>
+      <w>430</w>
+      <h>140</h>
+>>>>>>> origin/dev
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;70.0;410.0;70.0;410.0;120.0</additional_attributes>
@@ -91,10 +189,17 @@
   <element>
     <id>Relation</id>
     <coordinates>
+<<<<<<< HEAD
       <x>576</x>
       <y>261</y>
       <w>387</w>
       <h>126</h>
+=======
+      <x>620</x>
+      <y>450</y>
+      <w>430</w>
+      <h>140</h>
+>>>>>>> origin/dev
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>410.0;10.0;410.0;70.0;10.0;70.0;10.0;120.0</additional_attributes>
@@ -102,6 +207,7 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
+<<<<<<< HEAD
       <x>1512</x>
       <y>369</y>
       <w>324</w>
@@ -110,19 +216,44 @@
     <panel_attributes>@dataclass
 *StrItem*
 --</panel_attributes>
+=======
+      <x>1660</x>
+      <y>570</y>
+      <w>360</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>FloatConfigItem
+--
++ data_types: Union[type, List[type]] = [str]
++ validators: List[Any] = [check_type,check_is_option]
+
+
+
+
+--
+</panel_attributes>
+>>>>>>> origin/dev
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
+<<<<<<< HEAD
       <x>936</x>
       <y>261</y>
       <w>756</w>
       <h>126</h>
+=======
+      <x>1020</x>
+      <y>450</y>
+      <w>840</w>
+      <h>140</h>
+>>>>>>> origin/dev
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;70.0;820.0;70.0;820.0;120.0</additional_attributes>
   </element>
+<<<<<<< HEAD
   <element>
     <id>UMLClass</id>
     <coordinates>
@@ -299,4 +430,6 @@ bg=BLACK</panel_attributes>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>410.0;10.0;410.0;70.0;10.0;70.0;10.0;10.0</additional_attributes>
   </element>
+=======
+>>>>>>> origin/dev
 </diagram>
