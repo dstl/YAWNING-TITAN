@@ -4,7 +4,7 @@ from tests.unit_tests.config import (
     get_default_config_dict,
     get_default_config_dict_legacy,
 )
-from yawning_titan.config.agents.new_blue_agent_config import (
+from yawning_titan.config.agents.blue_agent_config import (
     Blue,
     BlueActionSetGroup,
     BlueIntrusionDiscoveryGroup,

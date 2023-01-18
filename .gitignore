@@ -1,5 +1,6 @@
 venv/
-YTFrontEnd/
+yawning_titan_gui/
+yawning_titan_server/
 .idea/
 *.egg-info
 dist/
