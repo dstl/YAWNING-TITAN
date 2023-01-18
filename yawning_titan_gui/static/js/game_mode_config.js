@@ -125,14 +125,16 @@ function submit_form(form_element){
 }
 
 function add_form_errors(errors){
+    $(".error-list").remove(); // remove existing errors
+    $(".erroneous").removeClass("erroneous"); // remove all erroneous settings
     for (const [form_id, error] of Object.entries(errors)){
-        $(".error-list","#config-form-"+form_id).remove()
         let group_error_list = $("<ul class='error-list'></ul>");
 
         for (const msg of error["group"]){
             group_error_list.append("<li>"+msg+"</li>")
         }
-        $("#config-form-"+form_id).prepend(group_error_list);
+        $(`#config-form-${form_id}`).addClass("erroneous");
+        $(".title-container",`#config-form-${form_id}`).append(group_error_list);
         for (const [item_id, item_errors] of Object.entries(error["items"])){
             let item_error_list = $("<ul class='error-list'></ul>");
             for (const msg of item_errors){
