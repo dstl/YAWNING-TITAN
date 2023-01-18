@@ -4,7 +4,7 @@ from tests.unit_tests.config import (
     get_default_config_dict,
     get_default_config_dict_legacy,
 )
-from yawning_titan.config.environment.new_game_rules_config import GameRules
+from yawning_titan.config.environment.game_rules_config import GameRules
 from yawning_titan.exceptions import ConfigGroupValidationError
 
 
