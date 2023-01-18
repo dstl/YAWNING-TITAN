@@ -1,6 +1,7 @@
 venv/
 YTFrontEnd/
 .idea/
+.vscode/
 *.egg-info
 dist/
 build/
