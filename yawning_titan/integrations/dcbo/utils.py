@@ -7,12 +7,12 @@ from stable_baselines3.common.env_checker import check_env
 from yawning_titan.agents.sinewave_red import SineWaveRedAgent
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
 from yawning_titan.config.game_modes import dcbo_game_mode_path
-from yawning_titan.networks.network import Network
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.integrations.dcbo.dcbo_agent import DCBOAgent
 from yawning_titan.networks import network_creator
+from yawning_titan.networks.network import Network
 
 _LOGGER = getLogger(__name__)
 
@@ -31,10 +31,10 @@ def create_env(use_same_net: bool = False) -> GenericNetworkEnv:
 
     if use_same_net:
         matrix, positions = network_creator.dcbo_base_network()
-        network = NetworkConfig.create_from_args(matrix=matrix, positions=positions)
+        network = Network(matrix=matrix, positions=positions)
     else:
         matrix, positions = network_creator.create_mesh(size=10)
-        network = NetworkConfig.create_from_args(matrix=matrix, positions=positions)
+        network = Network(matrix=matrix, positions=positions)
 
     network_interface = NetworkInterface(game_mode, network)
 
