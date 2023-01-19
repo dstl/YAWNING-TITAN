@@ -4,8 +4,6 @@ import shutil
 import tempfile
 from pathlib import Path
 
-import pytest
-from django.http import Http404
 from django.test import Client
 from django.urls import reverse
 
@@ -46,11 +44,9 @@ class TestGameModeConfigView:
 
     def test_get_with_no_args(self, client: Client):
         """Test that a game mode config cannot be retrieved without a game_mode_filename."""
-        with pytest.raises(
-            Http404, match="Can't find game mode section None in game mode None"
-        ):
-            url = reverse("game mode config")
-            response = client.get(url)  # noqa: F841
+        url = reverse("game mode config")
+        response = client.get(url)
+        assert response.status_code == 404
 
     def test_get(self, client: Client):
         """Test that a valid game mode config url responds successfully to a get request."""
