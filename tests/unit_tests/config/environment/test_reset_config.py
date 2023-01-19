@@ -4,7 +4,7 @@ from tests.unit_tests.config import (
     get_default_config_dict,
     get_default_config_dict_legacy,
 )
-from yawning_titan.config.environment.new_reset_config import Reset
+from yawning_titan.config.environment.reset_config import Reset
 
 
 @pytest.fixture

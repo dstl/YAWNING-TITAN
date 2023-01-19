@@ -5,7 +5,7 @@ import pytest
 
 from yawning_titan.exceptions import ConfigGroupValidationError
 from yawning_titan.networks import network_creator
-from yawning_titan.networks.new_network import (
+from yawning_titan.networks.network import (
     Network,
     NodeGroup,
     NodeVulnerabilityGroup,
