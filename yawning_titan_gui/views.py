@@ -3,10 +3,12 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, List, Optional
 
-from django.http import JsonResponse
+from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
+from yawning_titan.networks.network_db import NetworkDB
+
 
 from yawning_titan import GAME_MODES_DIR
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
@@ -238,6 +240,24 @@ class GameModesView(View):
             request: the Django page `request` object containing the html data for `game_modes.html` and the server GET / POST request bodies.
         """
         pass
+
+class NetworksView(View):
+    """Django page template for network management."""
+
+    def get(self, request: HttpRequest, *args, **kwargs):
+        """
+        Handle page get requests.
+
+        :param: request: the Django page `request` object containing the html data for `networks.html` and the server GET / POST request bodies.
+        """
+        return render(
+            request,
+            "networks.html",
+            {
+                "sidebar": default_sidebar,
+                "networks": [network.doc_metadata for network in NetworkDB().all()],
+            },
+        )
 
 
 class GameModeConfigView(OnLoadView):
