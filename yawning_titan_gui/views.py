@@ -3,15 +3,17 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, List, Optional
 
+import numpy as np
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
-from yawning_titan.networks.network_db import NetworkDB
-
 
 from yawning_titan import GAME_MODES_DIR
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
+from yawning_titan.db.doc_metadata import DocMetadata
+from yawning_titan.networks.network import Network
+from yawning_titan.networks.network_db import NetworkDB
 from yawning_titan_gui.forms import (
     BlueAgentForm,
     ConfigForm,
@@ -90,9 +92,9 @@ def uniquify(path: Path) -> Path:
         The transformed path object.
 
     Examples:
-        >>>test.txt -> exists
-        >>>test(1).txt -> exists
-        >>>test(2).txt -> new path
+        >>> test.txt -> exists
+        >>> test(1).txt -> exists
+        >>> test(2).txt -> new path
     """
     filename = path.stem
     extension = path.suffix
@@ -127,7 +129,14 @@ forms = {
 
 completed_game_modes = defaultdict(dict)
 
-protected_game_modes = ["base_config"]
+protected_game_modes = [
+    "base_config",
+    "default_game_mode",
+    "default_new_game_mode",
+    "dcbo_config",
+    "low_skill_red_with_random_infection_perfect_detection",
+    "multiple_high_value_targets",
+]
 
 unfinished_game_modes = []
 
@@ -241,6 +250,7 @@ class GameModesView(View):
         """
         pass
 
+
 class NetworksView(View):
     """Django page template for network management."""
 
@@ -285,8 +295,7 @@ class GameModeConfigView(OnLoadView):
                     game_mode_path(game_mode_file)
                 )
                 game_mode_config = game_mode.to_dict()
-            except Exception as e:
-                print("BUGGER", e)
+            except Exception:
                 pass
 
         form = completed_game_modes[game_mode_file].get(
@@ -377,42 +386,74 @@ def config_file_manager(request) -> JsonResponse:
     """
     global unfinished_game_modes
     if request.method == "POST":
-        game_mode_name = request.POST.get("game_mode_name")
+        load = "reload"
+
         operation = request.POST.get("operation")
+        item_type = request.POST.get("item_type")
+
+        item_names = request.POST.getlist("item_names[]")
+        item_ids = request.POST.getlist("item_ids[]")
+
+        item_name = item_names[0] if item_names else None
+        item_id = item_ids[0] if item_ids else None
+
+        if item_type == "network":
+            db = NetworkDB()
 
         if operation == "create":
-            new_game_mode_path = uniquify(GAME_MODES_DIR / f"{game_mode_name}.yaml")
-            unfinished_game_modes.append(
-                {
-                    "filename": new_game_mode_path.name,
-                    "name": new_game_mode_path.stem,
-                    "description": "latest game mode",
-                    "protected": new_game_mode_path.stem in protected_game_modes,
-                    "complete": False,
-                }
-            )
-            load = reverse(
-                "game mode config", kwargs={"game_mode_file": new_game_mode_path.name}
-            )
+            if item_type == "game mode":
+                new_game_mode_path = uniquify(GAME_MODES_DIR / f"{item_name}.yaml")
+                unfinished_game_modes.append(
+                    {
+                        "filename": new_game_mode_path.name,
+                        "name": new_game_mode_path.stem,
+                        "description": "latest game mode",
+                        "protected": new_game_mode_path.stem in protected_game_modes,
+                        "complete": False,
+                    }
+                )
+                load = reverse(
+                    "game mode config",
+                    kwargs={"game_mode_file": new_game_mode_path.name},
+                )
+            elif item_type == "network":
+                db.insert(
+                    network=Network(matrix=np.asarray([]), positions=[]), name=item_name
+                )
 
         elif operation == "delete":
-            path = GAME_MODES_DIR / f"{game_mode_name}.yaml"
-            if path.exists():
-                path.unlink()
-            load = "reload"
+            if item_type == "game mode":
+                for name in item_names:
+                    path = GAME_MODES_DIR / f"{name}.yaml"
+                    if path.exists():
+                        path.unlink()
+            elif item_type == "network":
+                for id in item_ids:
+                    db.remove(db.get(id))
 
         elif operation == "create from":
-            source_game_mode_path = (
-                GAME_MODES_DIR / f"{request.POST.get('source_game_mode')}.yaml"
-            )
-            new_game_mode_path = uniquify(GAME_MODES_DIR / f"{game_mode_name}.yaml")
-            shutil.copy(source_game_mode_path, new_game_mode_path)
-            load = reverse(
-                "game mode config", kwargs={"game_mode_file": new_game_mode_path.name}
-            )
+            if item_type == "game mode":
+                source_game_mode_path = (
+                    GAME_MODES_DIR / f"{request.POST.get('source_game_mode')}.yaml"
+                )
+                new_game_mode_path = uniquify(GAME_MODES_DIR / f"{item_name}.yaml")
+                shutil.copy(source_game_mode_path, new_game_mode_path)
+                load = reverse(
+                    "game mode config",
+                    kwargs={"game_mode_file": new_game_mode_path.name},
+                )
+            elif item_type == "network":
+                network = db.get(item_id)
+                meta = network.doc_metadata.to_dict()
+                meta["uuid"] = None
+                meta["locked"] = False
+                network._doc_metadata = DocMetadata(**meta)
+                db.insert(network=network, name=item_name)
+
         print("LOAD", load)
         return JsonResponse({"load": load})
     return JsonResponse({"message:": "FAILED"}, status=400)
+
 
 class NodeEditor(View):
     """
@@ -422,17 +463,14 @@ class NodeEditor(View):
     """
 
     def get(self, request, *args, **kwargs):
-        """
+        """Handle page get requests.
+
         Args:
             request: A Django `request` object that contains the data passed from
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        return render(
-            request,
-            "node_editor.html",
-            {"sidebar": default_sidebar}
-        )
+        return render(request, "node_editor.html", {"sidebar": default_sidebar})
 
     def post(self, request, *args, **kwargs):
         """Handle page post requests.
@@ -442,11 +480,6 @@ class NodeEditor(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-
         print(request.body)
 
-        return render(
-            request,
-            "node_editor.html",
-            {"sidebar": default_sidebar}
-        )
+        return render(request, "node_editor.html", {"sidebar": default_sidebar})

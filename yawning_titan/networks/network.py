@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from logging import getLogger
 from typing import Any, Dict, List, Optional
 
-from numpy import ndarray
+import numpy as np
 
 from yawning_titan.config.game_config.config_abc import ConfigABC
 from yawning_titan.db.doc_metadata import DocMetadata
@@ -17,7 +17,7 @@ _LOGGER = getLogger(__name__)
 class Network(ConfigABC):
     """Class that validates and stores Network Configuration."""
 
-    matrix: ndarray
+    matrix: np.ndarray
     """The matrix as a 2D Numpy Array dictating how each node is connected to each other."""
 
     positions: Dict[str, List[str]]

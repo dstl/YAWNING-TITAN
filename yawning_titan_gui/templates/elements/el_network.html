@@ -1,4 +1,4 @@
-<div class="network" data-network-name="{{network.name}}">
+<div class="list-item" data-item-name="{{network.name}}" data-item-id="{{network.uuid}}">
     <div class="contents">
         <h3 class="subhead">{{network.name}}</h3>
         <p class="description">{{network.description}}</p>
@@ -7,13 +7,14 @@
         <div class="icon create-from">
             <i class="bi bi-clipboard"></i>
         </div>
-        {% if not game_mode_info.protected %}
+        {% if not network.locked %}
         <a class="icon" href="{% url 'node editor' %}">
             <i class="bi bi-pencil"></i>
         </a>
         <div class="icon delete">
             <i class="bi bi-trash3"></i>
         </div>
+        <input class="form-check-input icon" type="checkbox" value="">
         {% else %}
         <a class="icon" href="{% url 'node editor' %}">
             <i class="bi bi-eye"></i>

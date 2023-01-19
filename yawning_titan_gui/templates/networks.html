@@ -4,10 +4,11 @@
 <!-- <!DOCTYPE html> -->
 
 {% block scripts %}
-<!-- <script src="{% static 'js/game_mode.js' %}"></script> -->
+<script src="{% static 'js/game_mode.js' %}"></script>
 <script src="{% static 'js/networks.js' %}"></script>
 <script type="text/javascript">
-    const FILE_MANAGER_URL = "{% url 'file manager' %}"
+    const FILE_MANAGER_URL = "{% url 'file manager' %}";
+    const FILE_TYPE = "network";
 </script>
 {% endblock %}
 
@@ -21,47 +22,38 @@
             </span>
             <!-- TODO: add advanced filtered search from db -->
         </div>
-      
-        <div slider id="slider-distance">
-            <div>
-              <div inverse-left style="width:70%;"></div>
-              <div inverse-right style="width:70%;"></div>
-              <div range style="left:30%;right:40%;"></div>
-              <span thumb style="left:30%;"></span>
-              <span thumb style="left:60%;"></span>
+        <div class="multi-range">
+            <input class="value-left range-setter" type="number" min="0" max="100">
+            <div slider id="slider-distance">
+                <div>
+                    <div inverse-left style="width:70%;"></div>
+                    <div inverse-right style="width:70%;"></div>
+                    <div range style="left:30%;right:40%;"></div>
+                    <span thumb style="left:30%;"></span>
+                    <span thumb style="left:60%;"></span>
+                </div>
+                <input class="multi-range-input left" type="range" tabindex="0" value="30" max="100" min="0" step="1" />
+                <input class="multi-range-input right" type="range" tabindex="0" value="60" max="100" min="0" step="1"/>
             </div>
-            <input type="range" tabindex="0" value="30" max="100" min="0" step="1" oninput="
-            this.value=Math.min(this.value,this.parentNode.childNodes[5].value-1);
-            var value=(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.value)-(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.min);
-            var children = this.parentNode.childNodes[1].childNodes;
-            children[1].style.width=value+'%';
-            children[5].style.left=value+'%';
-            children[7].style.left=value+'%';children[11].style.left=value+'%';" />
-          
-            <input type="range" tabindex="0" value="60" max="100" min="0" step="1" oninput="
-            this.value=Math.max(this.value,this.parentNode.childNodes[3].value-(-1));
-            var value=(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.value)-(100/(parseInt(this.max)-parseInt(this.min)))*parseInt(this.min);
-            var children = this.parentNode.childNodes[1].childNodes;
-            children[3].style.width=(100-value)+'%';
-            children[5].style.right=(100-value)+'%';
-            children[9].style.left=value+'%';children[13].style.left=value+'%';" />
-          </div>
-        
-    <div id="networks">
+            <input class="value-right range-setter" type="number" min="0" max="100">
+        </div>
+    </div>
+    <div id="list-items">
         {% for network in networks %}
             {% include 'elements/el_network.html' with network=network %}
         {% endfor %}
     </div>
 </div>
 <div id="bottom-buttons">
-    <button id="create-game-mode" class="btn btn-primary">Create network</button>
+    <button id="delete-all" class="btn btn-primary hidden">Delete all</button>
+    <button id="create" class="btn btn-primary">Create network</button>
 </div>
 {% endblock %}
 
 {% block dialogues %}
-    {% include 'elements/el_dialogue_center.html' with id='delete-dialogue' message='Are you sure you want to delete this game mode?<br>This action cannot be undone.' action_name='Delete game mode' %}
-    {% include 'elements/el_dialogue_center.html' with id='create-dialogue' header='Create new game mode' message='Enter a name for your new game mode config' action_name='Create game mode' input_prompt='game mode name...' %}
-    {% include 'elements/el_dialogue_center.html' with id='create-from-dialogue' header='Create game mode from' message='Enter a name for your new game mode config' action_name='Create game mode' input_prompt='game mode name...' %}
+    {% include 'elements/el_dialogue_center.html' with id='delete-dialogue' message='Are you sure you want to delete the selected network(s)?<br><br>This action cannot be undone.' action_name='Delete network' %}
+    {% include 'elements/el_dialogue_center.html' with id='create-dialogue' header='Create new network' message='Enter a name for your new network config' action_name='Create network' input_prompt='network name...' %}
+    {% include 'elements/el_dialogue_center.html' with id='create-from-dialogue' header='Create network from' message='Enter a name for your new network config' action_name='Create network' input_prompt='network name...' %}
 {% endblock %}
 
 {% block style %}
@@ -90,7 +82,7 @@
     }
 
     /* Game mode elements */
-    .network{
+    .list-item{
         margin: calc(var(--increment) * 2);
         padding: calc(var(--increment) * 2);
         display: flex;
@@ -103,29 +95,29 @@
         box-sizing: border-box;
         border: 1px solid var(--text-light);
     }
-    .network.complete{
+    .list-item.complete{
         border: 1px solid var(--primary);
     }
-    .network:hover .icon:has(.bi-check-lg),.network.selected .icon:has(.bi-check-lg){
+    .list-item:hover .icon:has(.bi-check-lg),.list-item.selected .icon:has(.bi-check-lg){
         background-color: var(--text-mid);
     }
-    .network:hover .bi-check-lg,.network.selected .bi-check-lg{
+    .list-item:hover .bi-check-lg,.list-item.selected .bi-check-lg{
         color: lawngreen;
     }
-    .network .icon:hover>.bi-trash3{
+    .list-item .icon:hover>.bi-trash3{
         color: red;
     }
-    .network .icon:hover>.bi-pencil{
+    .list-item .icon:hover>.bi-pencil{
         color: lawngreen;
     }
-    .network>.icons{
+    .list-item>.icons{
         height: 100%;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
     }
-    .network>.contents{
+    .list-item>.contents{
         min-width: 0;
         max-width: 100%;
         margin-right: var(--increment);
@@ -134,7 +126,7 @@
         justify-content: space-around;
         align-items: flex-start;
     }
-    .network>.contents>*{
+    .list-item>.contents>*{
         min-width: 0;
         max-width: 100%;
         padding: 0;
@@ -144,152 +136,162 @@
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    .network .subhead{
+    .list-item .subhead{
         color: var(--text-light);
     }
-    .network .description{
+    .list-item .description{
         color: var(--text-dark);
     }
 
 
+    /* multi range slider */
 
-   
+    .multi-range{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: var(--increment);
+    }
+    .multi-range>input[type="number"]{
+        width: 2rem;
+    }
+    #slider-distance{
+        flex: 1;
+    }
 
+    [slider] {
+    position: relative;
+    height: 9px;
+    border-radius: 10px;
+    text-align: left;
+    margin: 10px 0 10px 0;
+    }
 
- 
+    [slider] > div {
+    position: absolute;
+    left: 13px;
+    right: 15px;
+    height: 9px;
+    }
 
-[slider] {
-  position: relative;
-  height: 9px;
-  border-radius: 10px;
-  text-align: left;
-  margin: 45px 0 10px 0;
-}
+    [slider] > div > [inverse-left] {
+    position: absolute;
+    left: 0;
+    height: 9px;
+    border-radius: 10px;
+    background-color: #CCC;
+    margin: 0 7px;
+    }
 
-[slider] > div {
-  position: absolute;
-  left: 13px;
-  right: 15px;
-  height: 9px;
-}
+    [slider] > div > [inverse-right] {
+    position: absolute;
+    right: 0;
+    height: 9px;
+    border-radius: 10px;
+    background-color: #CCC;
+    margin: 0 7px;
+    }
 
-[slider] > div > [inverse-left] {
-  position: absolute;
-  left: 0;
-  height: 9px;
-  border-radius: 10px;
-  background-color: #CCC;
-  margin: 0 7px;
-}
+    [slider] > div > [range] {
+    position: absolute;
+    left: 0;
+    height: 9px;
+    border-radius: 9px;
+    background-color: var(--primary);
+    }
 
-[slider] > div > [inverse-right] {
-  position: absolute;
-  right: 0;
-  height: 9px;
-  border-radius: 10px;
-  background-color: #CCC;
-  margin: 0 7px;
-}
+    [slider] > div > [thumb] {
+    position: absolute;
+    top: -5px;
+    z-index: 2;
+    height: 18px;
+    width: 18px;
+    text-align: left;
+    margin-left: -11px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    background-color: #FFF;
+    border-radius: 50%;
+    outline: none;
+    }
 
-[slider] > div > [range] {
-  position: absolute;
-  left: 0;
-  height: 9px;
-  border-radius: 9px;
-  background-color: var(--primary);
-}
+    [slider] > input[type=range] {
+    position: absolute;
+    pointer-events: none;
+    -webkit-appearance: none;
+    z-index: 3;
+    height: 9px;
+    top: -2px;
+    width: 100%;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    opacity: 0;
+    }
 
-[slider] > div > [thumb] {
-  position: absolute;
-  top: -5px;
-  z-index: 2;
-  height: 18px;
-  width: 18px;
-  text-align: left;
-  margin-left: -11px;
-  cursor: pointer;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
-  background-color: #FFF;
-  border-radius: 50%;
-  outline: none;
-}
+    div[slider] > input[type=range]::-ms-track {
+    -webkit-appearance: none;
+    background: transparent;
+    color: transparent;
+    }
 
-[slider] > input[type=range] {
-  position: absolute;
-  pointer-events: none;
-  -webkit-appearance: none;
-  z-index: 3;
-  height: 9px;
-  top: -2px;
-  width: 100%;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  filter: alpha(opacity=0);
-  -moz-opacity: 0;
-  -khtml-opacity: 0;
-  opacity: 0;
-}
+    div[slider] > input[type=range]::-moz-range-track {
+    -moz-appearance: none;
+    background: transparent;
+    color: transparent;
+    }
 
-div[slider] > input[type=range]::-ms-track {
-  -webkit-appearance: none;
-  background: transparent;
-  color: transparent;
-}
+    div[slider] > input[type=range]:focus::-webkit-slider-runnable-track {
+    background: transparent;
+    border: transparent;
+    }
 
-div[slider] > input[type=range]::-moz-range-track {
-  -moz-appearance: none;
-  background: transparent;
-  color: transparent;
-}
+    div[slider] > input[type=range]:focus {
+    outline: none;
+    }
 
-div[slider] > input[type=range]:focus::-webkit-slider-runnable-track {
-  background: transparent;
-  border: transparent;
-}
+    div[slider] > input[type=range]::-ms-thumb {
+    pointer-events: all;
+    width: 18px;
+    height: 18px;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+    }
 
-div[slider] > input[type=range]:focus {
-  outline: none;
-}
+    div[slider] > input[type=range]::-moz-range-thumb {
+    pointer-events: all;
+    width: 18px;
+    height: 18px;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+    }
 
-div[slider] > input[type=range]::-ms-thumb {
-  pointer-events: all;
-  width: 18px;
-  height: 18px;
-  border-radius: 0px;
-  border: 0 none;
-  background: red;
-}
+    div[slider] > input[type=range]::-webkit-slider-thumb {
+    pointer-events: all;
+    width: 18px;
+    height: 18px;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+    -webkit-appearance: none;
+    }
 
-div[slider] > input[type=range]::-moz-range-thumb {
-  pointer-events: all;
-  width: 18px;
-  height: 18px;
-  border-radius: 0px;
-  border: 0 none;
-  background: red;
-}
+    div[slider] > input[type=range]::-ms-fill-lower {
+    background: transparent;
+    border: 0 none;
+    }
 
-div[slider] > input[type=range]::-webkit-slider-thumb {
-  pointer-events: all;
-  width: 18px;
-  height: 18px;
-  border-radius: 0px;
-  border: 0 none;
-  background: red;
-  -webkit-appearance: none;
-}
+    div[slider] > input[type=range]::-ms-fill-upper {
+    background: transparent;
+    border: 0 none;
+    }
 
-div[slider] > input[type=range]::-ms-fill-lower {
-  background: transparent;
-  border: 0 none;
-}
-
-div[slider] > input[type=range]::-ms-fill-upper {
-  background: transparent;
-  border: 0 none;
-}
-
-div[slider] > input[type=range]::-ms-tooltip {
-  display: none;
-}
+    div[slider] > input[type=range]::-ms-tooltip {
+    display: none;
+    }
 </style>
 {% endblock %}

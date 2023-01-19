@@ -6,7 +6,8 @@
 {% block scripts %}
 <script src="{% static 'js/game_mode.js' %}"></script>
 <script type="text/javascript">
-    const FILE_MANAGER_URL = "{% url 'file manager' %}"
+    const FILE_MANAGER_URL = "{% url 'file manager' %}";
+    const FILE_TYPE = "game mode";
 </script>
 {% endblock %}
 
@@ -14,21 +15,21 @@
 <div id="center-container" class="stretch clear">
     <div id="search-container">
         <div class="input-group rounded">
-            <input id="filter-game-modes" type="search" class="form-control rounded" placeholder="Filter" aria-label="Search" aria-describedby="search-addon" />
+            <input id="filter-list-items" type="search" class="form-control rounded" placeholder="Filter" aria-label="Search" aria-describedby="search-addon" />
             <span class="input-group-text border-0" id="search-addon">
                 <i class="bi bi-search"></i>
             </span>
             <!-- TODO: add advanced filtered search from db -->
         </div>
     </div>
-    <div id="game-modes">
+    <div id="list-items">
         {% for game_mode in game_modes %}
             {% include 'elements/el_game_mode.html' with game_mode=game_mode %}
         {% endfor %}
     </div>
 </div>
 <div id="bottom-buttons">
-    <button id="create-game-mode" class="btn btn-primary">Create game mode</button>
+    <button id="create" class="btn btn-primary">Create game mode</button>
 </div>
 {% endblock %}
 
@@ -64,7 +65,7 @@
     }
 
     /* Game mode elements */
-    .game-mode{
+    .list-item{
         margin: calc(var(--increment) * 2);
         padding: calc(var(--increment) * 2);
         display: flex;
@@ -77,29 +78,29 @@
         box-sizing: border-box;
         border: 1px solid orange;
     }
-    .game-mode.complete{
+    .list-item.complete{
         border: 1px solid var(--primary);
     }
-    .game-mode:hover .icon:has(.bi-check-lg),.game-mode.selected .icon:has(.bi-check-lg){
+    .list-item:hover .icon:has(.bi-check-lg),.list-item.selected .icon:has(.bi-check-lg){
         background-color: var(--text-mid);
     }
-    .game-mode:hover .bi-check-lg,.game-mode.selected .bi-check-lg{
+    .list-item:hover .bi-check-lg,.list-item.selected .bi-check-lg{
         color: lawngreen;
     }
-    .game-mode .icon:hover>.bi-trash3{
+    .list-item .icon:hover>.bi-trash3{
         color: red;
     }
-    .game-mode .icon:hover>.bi-pencil{
+    .list-item .icon:hover>.bi-pencil{
         color: lawngreen;
     }
-    .game-mode>.icons{
+    .list-item>.icons{
         height: 100%;
         display: flex;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
     }
-    .game-mode>.contents{
+    .list-item>.contents{
         min-width: 0;
         max-width: 100%;
         margin-right: var(--increment);
@@ -108,7 +109,7 @@
         justify-content: space-around;
         align-items: flex-start;
     }
-    .game-mode>.contents>*{
+    .list-item>.contents>*{
         min-width: 0;
         max-width: 100%;
         padding: 0;
@@ -118,10 +119,10 @@
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    .game-mode .subhead{
+    .list-item .subhead{
         color: var(--text-light);
     }
-    .game-mode .description{
+    .list-item .description{
         color: var(--text-dark);
     }
 </style>
