@@ -19,3 +19,15 @@ class YawningTitanDBCriticalError(ValueError):
     """
 
     pass
+
+
+class ConfigItemValidationError(ValueError):
+    """A config value has failed validation against a given ``ItemTypeProperties``."""
+
+    pass
+
+
+class ConfigGroupValidationError(ValueError):
+    """A config group has failed validation."""
+
+    pass

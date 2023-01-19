@@ -25,5 +25,7 @@ yawning\_titan.exceptions
    .. autosummary::
       :toctree:
 
+      ConfigGroupValidationError
+      ConfigItemValidationError
       YawningTitanDBCriticalError
       YawningTitanDBError
