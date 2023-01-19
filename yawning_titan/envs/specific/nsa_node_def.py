@@ -2,7 +2,7 @@
 A new node network that can be configured for multiple different configurations.
 
 Paper:
-https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf
+https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf
 
 Currently suppports:
     - 18 node network from the research paper.
