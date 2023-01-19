@@ -1,31 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.0.0">
-<<<<<<< HEAD
-  <zoom_level>9</zoom_level>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>792</x>
-      <y>54</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*ConfigItem*
---
-+ value: object
-+ doc: str
-+ alias: str
-+ depends_on: List[str]
-+ properties: ItemTypeProperties
-+ validation: ConfigItemValidation
-
---
-+ to_dict(as_key_val_pair:bool, values_only: bool): dict
-+ validate(): None
-+ set_value(value: Any): None
-+ stringify(): Any
-=======
   <zoom_level>10</zoom_level>
   <element>
     <id>UMLClass</id>
@@ -50,23 +24,12 @@
 --
 _/+ set(name,value)/_
 _/+ validate(name,value)/_
->>>>>>> origin/dev
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>792</x>
-      <y>369</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*IntItem*
---</panel_attributes>
-=======
       <x>860</x>
       <y>570</y>
       <w>360</w>
@@ -83,22 +46,11 @@ _/+ validate(name,value)/_
 
 --
 </panel_attributes>
->>>>>>> origin/dev
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1152</x>
-      <y>369</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*FloatItem*
---</panel_attributes>
-=======
       <x>1260</x>
       <y>570</y>
       <w>360</w>
@@ -115,22 +67,11 @@ _/+ validate(name,value)/_
 
 --
 </panel_attributes>
->>>>>>> origin/dev
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>432</x>
-      <y>369</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*BoolItem*
---</panel_attributes>
-=======
       <x>460</x>
       <y>570</y>
       <w>360</w>
@@ -147,23 +88,15 @@ _/+ validate(name,value)/_
 
 --
 </panel_attributes>
->>>>>>> origin/dev
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>936</x>
-      <y>261</y>
-      <w>27</w>
-      <h>126</h>
-=======
       <x>1020</x>
       <y>450</y>
       <w>30</w>
       <h>140</h>
->>>>>>> origin/dev
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
@@ -171,17 +104,10 @@ _/+ validate(name,value)/_
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>936</x>
-      <y>261</y>
-      <w>387</w>
-      <h>126</h>
-=======
       <x>1020</x>
       <y>450</y>
       <w>430</w>
       <h>140</h>
->>>>>>> origin/dev
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;70.0;410.0;70.0;410.0;120.0</additional_attributes>
@@ -189,17 +115,10 @@ _/+ validate(name,value)/_
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>576</x>
-      <y>261</y>
-      <w>387</w>
-      <h>126</h>
-=======
       <x>620</x>
       <y>450</y>
       <w>430</w>
       <h>140</h>
->>>>>>> origin/dev
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>410.0;10.0;410.0;70.0;10.0;70.0;10.0;120.0</additional_attributes>
@@ -207,16 +126,6 @@ _/+ validate(name,value)/_
   <element>
     <id>UMLClass</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>1512</x>
-      <y>369</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*StrItem*
---</panel_attributes>
-=======
       <x>1660</x>
       <y>570</y>
       <w>360</w>
@@ -232,204 +141,17 @@ _/+ validate(name,value)/_
 
 --
 </panel_attributes>
->>>>>>> origin/dev
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-<<<<<<< HEAD
-      <x>936</x>
-      <y>261</y>
-      <w>756</w>
-      <h>126</h>
-=======
       <x>1020</x>
       <y>450</y>
       <w>840</w>
       <h>140</h>
->>>>>>> origin/dev
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;70.0;820.0;70.0;820.0;120.0</additional_attributes>
   </element>
-<<<<<<< HEAD
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>792</x>
-      <y>963</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*ItemProperties*
---
-+ _allowed_types: List[type]
-+ allow_null: bool
-+ default: Any
-
-
-
-
---
-+ to_dict(): dict
-+ validate(val: Any): ConfigItemValidation
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>792</x>
-      <y>648</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*IntProperties*
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>945</x>
-      <y>855</y>
-      <w>387</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0;410.0;70.0;410.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>945</x>
-      <y>855</y>
-      <w>27</w>
-      <h>126</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>945</x>
-      <y>576</y>
-      <w>27</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-fg=DARK_GRAY
-bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1305</x>
-      <y>576</y>
-      <w>27</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-fg=DARK_GRAY
-bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1152</x>
-      <y>648</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*FloatProperties*
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>945</x>
-      <y>855</y>
-      <w>756</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0;820.0;70.0;820.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1512</x>
-      <y>648</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*StrProperties*
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>432</x>
-      <y>648</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*BoolProperties*
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1665</x>
-      <y>576</y>
-      <w>27</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-fg=DARK_GRAY
-bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>576</x>
-      <y>576</y>
-      <w>27</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-fg=DARK_GRAY
-bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>585</x>
-      <y>855</y>
-      <w>387</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>410.0;10.0;410.0;70.0;10.0;70.0;10.0;10.0</additional_attributes>
-  </element>
-=======
->>>>>>> origin/dev
 </diagram>
