@@ -20,7 +20,7 @@ from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.networks import network_creator
-from yawning_titan.networks.new_network import Network
+from yawning_titan.networks.network import Network
 
 
 @pytest.fixture
