@@ -4,13 +4,11 @@ from typing import Optional
 
 from yawning_titan.config.agents.blue_agent_config import Blue
 from yawning_titan.config.agents.red_agent_config import Red
-from yawning_titan.config.environment.new_game_rules_config import GameRules
-from yawning_titan.config.environment.new_observation_space_config import (
-    ObservationSpace,
-)
-from yawning_titan.config.environment.new_rewards_config import Rewards
+from yawning_titan.config.environment.game_rules_config import GameRules
+from yawning_titan.config.environment.observation_space_config import ObservationSpace
 from yawning_titan.config.environment.reset_config import Reset
-from yawning_titan.config.game_config.new_miscellaneous_config import Miscellaneous
+from yawning_titan.config.environment.rewards_config import Rewards
+from yawning_titan.config.game_config.miscellaneous_config import Miscellaneous
 from yawning_titan.config.toolbox.core import ConfigGroup
 
 # --- Tier 0 groups
