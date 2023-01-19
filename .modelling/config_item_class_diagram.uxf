@@ -1,78 +1,102 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.0.0">
-  <zoom_level>9</zoom_level>
+  <zoom_level>10</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>792</x>
-      <y>54</y>
-      <w>324</w>
-      <h>216</h>
+      <x>860</x>
+      <y>220</y>
+      <w>360</w>
+      <h>240</h>
     </coordinates>
-    <panel_attributes>@dataclass
-*ConfigItem*
+    <panel_attributes>ConfigItem
 --
-+ value: object
-+ doc: str
-+ alias: str
-+ depends_on: List[str]
-+ properties: ItemTypeProperties
-+ validation: ConfigItemValidation
++ data_types: Union[type, List[type]]
++ default: Any
++ description: Optional[str]
++ value: Optional[Any]
++ depends_on: Optional[Union[Any, List[Any]]]
++ validators: Optional[List[Any]]
+
+
+
 
 --
-+ to_dict(as_key_val_pair:bool, values_only: bool): dict
-+ validate(): None
-+ set_value(value: Any): None
-+ stringify(): Any
+_/+ set(name,value)/_
+_/+ validate(name,value)/_
 </panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>792</x>
-      <y>369</y>
-      <w>324</w>
-      <h>216</h>
+      <x>860</x>
+      <y>570</y>
+      <w>360</w>
+      <h>240</h>
     </coordinates>
-    <panel_attributes>@dataclass
-*IntItem*
---</panel_attributes>
+    <panel_attributes>IntConfigItem
+--
++ data_types: Union[type, List[type]] = [int]
++ default: int = 0
++ validators: List[Any] = [check_type]
+
+
+
+
+--
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1152</x>
-      <y>369</y>
-      <w>324</w>
-      <h>216</h>
+      <x>1260</x>
+      <y>570</y>
+      <w>360</w>
+      <h>240</h>
     </coordinates>
-    <panel_attributes>@dataclass
-*FloatItem*
---</panel_attributes>
+    <panel_attributes>FloatConfigItem
+--
++ data_types: Union[type, List[type]] = [float,int]
++ default: float = 0
++ validators: List[Any] = [check_type,check_range]
+
+
+
+
+--
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>432</x>
-      <y>369</y>
-      <w>324</w>
-      <h>216</h>
+      <x>460</x>
+      <y>570</y>
+      <w>360</w>
+      <h>240</h>
     </coordinates>
-    <panel_attributes>@dataclass
-*BoolItem*
---</panel_attributes>
+    <panel_attributes>BoolConfigItem
+--
++ data_types: Union[type, List[type]] = [bool]
++ default: bool = False
++ validators: List[Any] = [check_type]
+
+
+
+
+--
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>936</x>
-      <y>261</y>
-      <w>27</w>
-      <h>126</h>
+      <x>1020</x>
+      <y>450</y>
+      <w>30</w>
+      <h>140</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
@@ -80,10 +104,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>936</x>
-      <y>261</y>
-      <w>387</w>
-      <h>126</h>
+      <x>1020</x>
+      <y>450</y>
+      <w>430</w>
+      <h>140</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;70.0;410.0;70.0;410.0;120.0</additional_attributes>
@@ -91,10 +115,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>576</x>
-      <y>261</y>
-      <w>387</w>
-      <h>126</h>
+      <x>620</x>
+      <y>450</y>
+      <w>430</w>
+      <h>140</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>410.0;10.0;410.0;70.0;10.0;70.0;10.0;120.0</additional_attributes>
@@ -102,201 +126,32 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1512</x>
-      <y>369</y>
-      <w>324</w>
-      <h>216</h>
+      <x>1660</x>
+      <y>570</y>
+      <w>360</w>
+      <h>240</h>
     </coordinates>
-    <panel_attributes>@dataclass
-*StrItem*
---</panel_attributes>
+    <panel_attributes>FloatConfigItem
+--
++ data_types: Union[type, List[type]] = [str]
++ validators: List[Any] = [check_type,check_is_option]
+
+
+
+
+--
+</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>936</x>
-      <y>261</y>
-      <w>756</w>
-      <h>126</h>
+      <x>1020</x>
+      <y>450</y>
+      <w>840</w>
+      <h>140</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;70.0;820.0;70.0;820.0;120.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>792</x>
-      <y>963</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*ItemProperties*
---
-+ _allowed_types: List[type]
-+ allow_null: bool
-+ default: Any
-
-
-
-
---
-+ to_dict(): dict
-+ validate(val: Any): ConfigItemValidation
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>792</x>
-      <y>648</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*IntProperties*
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>945</x>
-      <y>855</y>
-      <w>387</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0;410.0;70.0;410.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>945</x>
-      <y>855</y>
-      <w>27</w>
-      <h>126</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>945</x>
-      <y>576</y>
-      <w>27</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-fg=DARK_GRAY
-bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1305</x>
-      <y>576</y>
-      <w>27</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-fg=DARK_GRAY
-bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1152</x>
-      <y>648</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*FloatProperties*
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>945</x>
-      <y>855</y>
-      <w>756</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;70.0;820.0;70.0;820.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1512</x>
-      <y>648</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*StrProperties*
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>432</x>
-      <y>648</y>
-      <w>324</w>
-      <h>216</h>
-    </coordinates>
-    <panel_attributes>@dataclass
-*BoolProperties*
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1665</x>
-      <y>576</y>
-      <w>27</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-fg=DARK_GRAY
-bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>576</x>
-      <y>576</y>
-      <w>27</w>
-      <h>90</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
-fg=DARK_GRAY
-bg=BLACK</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>585</x>
-      <y>855</y>
-      <w>387</w>
-      <h>81</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>410.0;10.0;410.0;70.0;10.0;70.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
