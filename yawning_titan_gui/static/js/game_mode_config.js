@@ -1,4 +1,28 @@
 $(document).ready(function(){
+    // create toggle switches from checkboxes
+    $("input[role='switch']").wrap("<div class=form-switch></div>");
+
+    // add range setter input field
+    $("input[type='range']").wrap("<div class=form-range></div>");
+    $(".form-range").append("<input type='number' class='range-setter'>");
+
+    // constrain range setter input field
+    $(".range-setter").each(function(){
+        let slider_el = $(this).closest(".form-range").children("input[type='range']").first();
+        $(this).prop("min",slider_el.prop("min"));
+        $(this).prop("max",slider_el.prop("max"));
+        $(this).prop("step",slider_el.prop("step"));
+        $(this).val(slider_el.val());
+    })
+
+    // implement cross updates between range-setter and range sliders
+    $(document).on("keyup",".range-setter",function(){
+        $(this).siblings("input[type='range']").first().val($(this).val());
+    });
+    $(document).on("mousemove","input[type='range']",function(){
+        $(this).siblings(".range-setter").first().val($(this).val());
+    });
+ 
     // check select dependencies on page load
     $("select").each(function(){
         $("."+$("option:selected",this).text().replaceAll(" ","_")).removeClass("hidden")
