@@ -246,7 +246,7 @@
     #main{
         position: relative;
         flex: 1;
-        display: flex;     
+        display: flex;
         height: 100%;
     }
     #center-container{
@@ -270,6 +270,9 @@
         width: 1000px;
         min-height: 60%;
         max-height: 100%;
+    }
+    #bottom-buttons>button:not(:last-child){
+        margin-right: var(--increment);
     }
 
     /* base classes */
@@ -297,9 +300,8 @@
     .form-range>.range-setter{
         width: 50px;
         margin-left: var(--increment);
-        -moz-appearance: textfield;
     }
-    .form-range>.range-setter::-webkit-inner-spin-button,.form-range>.range-setter::-webkit-outer-spin-button{
+    .range-setter::-webkit-inner-spin-button,.form-range>.range-setter::-webkit-outer-spin-button{
         -webkit-appearance: none;
         margin: 0;
     }
@@ -318,7 +320,7 @@
         top: 50%;
         left: 50%;
         width: 500px;
-        height: 500px;
+        height: 250px;
         padding: calc(2*var(--increment));
         display: flex;
         flex-direction: column;
