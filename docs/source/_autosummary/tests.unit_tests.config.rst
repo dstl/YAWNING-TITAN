@@ -32,4 +32,5 @@ tests.unit\_tests.config
    tests.unit_tests.config.agents
    tests.unit_tests.config.environment
    tests.unit_tests.config.game_config
+   tests.unit_tests.config.item_types
    tests.unit_tests.config.test_game_modes
