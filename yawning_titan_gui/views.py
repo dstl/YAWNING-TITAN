@@ -260,12 +260,15 @@ class NetworksView(View):
 
         :param: request: the Django page `request` object containing the html data for `networks.html` and the server GET / POST request bodies.
         """
+        networks = NetworkDB().all()
+        range_bound_elements = []
+        entry_node_settings = {"name":"Entry nodes","min":min(*[len(network.entry_nodes) for network in networks])}
         return render(
             request,
             "networks.html",
             {
                 "sidebar": default_sidebar,
-                "networks": [network.doc_metadata for network in NetworkDB().all()],
+                "networks": [network.doc_metadata for network in networks],
             },
         )
 
