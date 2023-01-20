@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild }
 import { CytoscapeService } from './services/cytoscape/cytoscape.service';
 import { ElementType } from './services/cytoscape/graph-objects';
 import { PropertiesEditorSidenavComponent } from './properties-editor/properties-editor-sidenav/properties-editor-sidenav.component';
+import { InteractionService } from './services/interaction/interaction.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ export class AppComponent implements OnInit {
   @ViewChild('appSideNav', { static: true }) sidenav: PropertiesEditorSidenavComponent;
 
   constructor(
-    private cytoscapeService: CytoscapeService
+    private cytoscapeService: CytoscapeService,
+    private interactionService: InteractionService
   ) { }
 
   ngOnInit() {

@@ -4,6 +4,7 @@ import { PropertiesEditorComponent } from './properties-editor.component';
 import { PropertiesEditorSidenavComponent } from './properties-editor-sidenav/properties-editor-sidenav.component';
 import { MaterialModule } from '../material.module';
 import { PropertiesEditorService } from './properties-editor.service';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const components = [
   PropertiesEditorComponent,
@@ -20,6 +21,7 @@ const components = [
   imports: [
     CommonModule,
     MaterialModule,
+    ReactiveFormsModule,
   ],
   providers: [
     PropertiesEditorService

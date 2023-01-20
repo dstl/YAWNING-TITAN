@@ -9,7 +9,6 @@ describe('PropertiesEditorService', () => {
     name: 'name',
     high_value_node: false,
     entry_node: false,
-    classes: '',
   }
 
   const stubNode = {
@@ -48,7 +47,6 @@ describe('PropertiesEditorService', () => {
         expect(res.name).toBe('name');
         expect(res.high_value_node).toBeFalsy();
         expect(res.entry_node).toBeFalsy();
-        expect(res.classes).toBe('');
         expect(res.x_pos).toBe(0);
         expect(res.y_pos).toBe(0);
       });

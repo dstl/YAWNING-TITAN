@@ -17,3 +17,65 @@
 .mat-mdc-card-content {
   padding-top: 50px;
 }
+
+.mat-mdc-card-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  .properties-editor-form {
+    flex: 1;
+
+    .mat-mdc-form-field {
+      display: flex;
+      flex: 1;
+    }
+
+    .mat-mdc-slide-toggle {
+      display: flex;
+      flex: 1;
+      padding: 10px;
+    }
+
+    .properties-editor-vulnerability-label-container,
+    .mat-mdc-slider {
+      display: flex;
+      flex: 1;
+    }
+
+    .properties-editor-vulnerability-label-container {
+      flex-direction: row;
+    }
+
+    .properties-editor-vulnerability-label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+    }
+
+    .properties-editor-vulnerability-value {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      padding-left: 20px;
+      margin-bottom: 0;
+    }
+  }
+
+  .properties-editor-action-buttons {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+    justify-content: flex-end;
+  }
+}
+
+// hide toggle icons
+::ng-deep .properties-editor-form .mdc-switch__icons {
+  display: none;
+}
+
+// toggle padding
+::ng-deep .properties-editor-form .mat-mdc-slide-toggle label {
+  padding-left: 20px;
+}
