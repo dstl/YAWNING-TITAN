@@ -1,16 +1,46 @@
 <mat-card class="properties-editor-container">
   <mat-card-header mat-header>
     <mat-card-title-group>
-      <mat-card-title>Node ID</mat-card-title>
-      <mat-card-subtitle>{{currentNode?.uuid}}</mat-card-subtitle>
+      <mat-card-title>Node Details</mat-card-title>
     </mat-card-title-group>
   </mat-card-header>
   <mat-card-content>
-    <p>name: {{currentNode?.name}}</p>
-    <p>high_value_node: {{currentNode?.high_value_node}}</p>
-    <p>entry_node: {{currentNode?.entry_node}}</p>
-    <p>classes: {{currentNode?.classes}}</p>
-    <p>x_pos: {{currentNode?.x_pos}}</p>
-    <p>y_pos: {{currentNode?.y_pos}}</p>
+    <form [formGroup]="formGroup" *ngIf="!!formGroup" class="properties-editor-form">
+      <mat-form-field>
+        <mat-label>UUID</mat-label>
+        <input matInput formControlName="uuid">
+      </mat-form-field>
+      <mat-form-field hideRequiredMarker="true">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+      <mat-form-field hideRequiredMarker="true">
+        <mat-label>X Position</mat-label>
+        <input matInput formControlName="x_pos">
+      </mat-form-field>
+      <mat-form-field hideRequiredMarker="true">
+        <mat-label>Y Position</mat-label>
+        <input matInput formControlName="y_pos">
+      </mat-form-field>
+      <div class="properties-editor-vulnerability-container">
+        <div class="properties-editor-vulnerability-label-container">
+          <p class="properties-editor-vulnerability-label">Vulnerability</p>
+          <p class="properties-editor-vulnerability-value">{{vulnerabilityVal}}</p>
+        </div>
+        <mat-slider min="0" max="1" step="0.01">
+          <input matSliderThumb formControlName="vulnerability">
+        </mat-slider>
+      </div>
+      <mat-slide-toggle color="primary" formControlName="entry_node">
+        Entry Node
+      </mat-slide-toggle>
+      <mat-slide-toggle color="primary" formControlName="high_value_node">
+        High Value Node
+      </mat-slide-toggle>
+
+    </form>
+    <div class="properties-editor-action-buttons">
+      <button mat-raised-button color="primary">Close</button>
+    </div>
   </mat-card-content>
 </mat-card>

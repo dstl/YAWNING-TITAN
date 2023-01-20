@@ -1,5 +1,6 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Node } from '../network-class/network-interfaces';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { PropertiesEditorService } from './properties-editor.service';
 
 @Component({
@@ -7,18 +8,32 @@ import { PropertiesEditorService } from './properties-editor.service';
   templateUrl: './properties-editor.component.html',
   styleUrls: ['./properties-editor.component.scss']
 })
-export class PropertiesEditorComponent implements OnInit, OnChanges {
+export class PropertiesEditorComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input('nodeId') nodeId: string = null;
 
-  public currentNode: Node;
+  public formGroup: FormGroup = null;
+
+  public vulnerabilityVal = 0;
+
+  private vulnerabilityChangeListener: Subscription;
 
   constructor(
     private propertiesEditorService: PropertiesEditorService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
-    this.propertiesEditorService.nodeDetailsSubject?.subscribe(node => this.currentNode = node)
+    this.propertiesEditorService.nodePropertiesFormGroupSubject.subscribe(res => {
+      this.formGroup = res;
+
+      this.vulnerabilityVal = this.formGroup.get('vulnerability').value;
+
+      this.vulnerabilityChangeListener = this.formGroup.get('vulnerability').valueChanges
+      .subscribe(val => {
+        this.vulnerabilityVal = val;
+      })
+    });
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -31,4 +46,7 @@ export class PropertiesEditorComponent implements OnInit, OnChanges {
     this.propertiesEditorService.loadDetails(this.nodeId);
   }
 
+  ngOnDestroy(): void {
+    this.vulnerabilityChangeListener.unsubscribe();
+  }
 }

@@ -88,6 +88,10 @@ export class CytoscapeService {
    * @param network
    */
   public loadNetwork(network: Network): void {
+    if (!network) {
+      return;
+    }
+
     // reset cytoscape
     this.cy.elements().remove();
 
@@ -105,6 +109,32 @@ export class CytoscapeService {
 
     // fit to screen
     this.cy.fit();
+  }
+
+  /**
+   * Update a node using the given details
+   * @param nodeId
+   * @param nodeDetails
+   * @returns
+   */
+  public updateNode(nodeId: string, nodeDetails: Node): void {
+    // check if node with id exists
+    const node = this.cy.getElementById(nodeId);
+
+    if (!node || !node.isNode || !node.isNode()) {
+      return;
+    }
+
+    // update position
+    node.position('x', Number(nodeDetails.x_pos));
+    node.position('y', Number(nodeDetails.y_pos));
+
+    // remove x and y
+    delete nodeDetails['x_pos'];
+    delete nodeDetails['y_pos'];
+
+    const data = Object.keys(nodeDetails);
+    data.forEach(key => node.data(key, nodeDetails[`${key}`]));
   }
 
   /**
@@ -134,22 +164,14 @@ export class CytoscapeService {
    * Update the graph render
    */
   private renderUpdate(): void {
-    // save layout
-    var layout = this.cy.layout({
-      name: 'cose'
-    });
 
     this.cy = cytoscape({
       container: this.renderElement, // container to render in
       elements: [],
-      style: this.style,
-      layout: { name: 'cose' }
+      style: this.style
     });
 
     cytoscape.warnings(false);
-
-    //this.cy.layout = layout;
-    layout.run();
 
     // set up listeners
     this.listenToCanvasDoubleClick();
@@ -219,8 +241,11 @@ export class CytoscapeService {
       this.cy.add({
         data: {
           id: nodeId,
+          entry_node: false,
+          high_value_node: false,
           x_pos: x,
-          y_pos: y
+          y_pos: y,
+          vulnerablity: 0
         },
         position: { x: x, y: y }
       });
@@ -236,9 +261,9 @@ export class CytoscapeService {
         name: node?.name,
         high_value_node: node?.high_value_node,
         entry_node: node?.entry_node,
-        classes: node?.classes,
         x_pos: node?.x_pos,
-        y_pos: node?.y_pos
+        y_pos: node?.y_pos,
+        vulnerability: node?.vulnerability
       },
       position: { x: x, y: y }
     });
@@ -250,7 +275,7 @@ export class CytoscapeService {
    * @param nodeB
    * @returns
    */
-  public createEdge(edgeId: string, nodeA: string, nodeB: string): void {
+  private createEdge(edgeId: string, nodeA: string, nodeB: string): void {
     // check if nodes already have connection
     if (this.areNodesConnected(nodeA, nodeB)) {
       return;

@@ -120,7 +120,6 @@ describe('CytoscapeService', () => {
         name: 'name',
         high_value_node: false,
         entry_node: false,
-        classes: '',
         x_pos: 1,
         y_pos: 1,
         vulnerability: 0
