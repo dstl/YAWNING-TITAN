@@ -262,7 +262,10 @@ class NetworksView(View):
         """
         networks = NetworkDB().all()
         range_bound_elements = []
-        entry_node_settings = {"name":"Entry nodes","min":min(*[len(network.entry_nodes) for network in networks])}
+        entry_node_settings = {
+            "name": "Entry nodes",
+            "min": min(*[len(network.entry_nodes) for network in networks]),
+        }
         return render(
             request,
             "networks.html",
