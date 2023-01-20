@@ -22,21 +22,9 @@
             </span>
             <!-- TODO: add advanced filtered search from db -->
         </div>
-        <div class="multi-range">
-            <input class="value-left range-setter" type="number" min="0" max="100">
-            <div slider id="slider-distance">
-                <div>
-                    <div inverse-left style="width:70%;"></div>
-                    <div inverse-right style="width:70%;"></div>
-                    <div range style="left:30%;right:40%;"></div>
-                    <span thumb style="left:30%;"></span>
-                    <span thumb style="left:60%;"></span>
-                </div>
-                <input class="multi-range-input left" type="range" tabindex="0" value="30" max="100" min="0" step="1" />
-                <input class="multi-range-input right" type="range" tabindex="0" value="60" max="100" min="0" step="1"/>
-            </div>
-            <input class="value-right range-setter" type="number" min="0" max="100">
-        </div>
+        {% for settings in range_bound_items %}
+            {% include 'elements/el_multi_range.html' with settings=settings %}
+        {% endfor %}
     </div>
     <div id="list-items">
         {% for network in networks %}
