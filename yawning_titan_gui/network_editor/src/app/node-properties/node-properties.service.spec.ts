@@ -1,6 +1,6 @@
 import { fakeAsync, tick } from '@angular/core/testing';
 
-import { PropertiesEditorService } from './properties-editor.service';
+import { PropertiesEditorService } from './node-properties.service';
 
 describe('PropertiesEditorService', () => {
   let service: PropertiesEditorService;

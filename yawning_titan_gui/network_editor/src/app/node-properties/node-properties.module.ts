@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PropertiesEditorComponent } from './properties-editor.component';
-import { PropertiesEditorSidenavComponent } from './properties-editor-sidenav/properties-editor-sidenav.component';
+import { PropertiesEditorComponent } from './node-properties.component';
+import { NodePropertiesSidenavComponent } from './node-properties-sidenav/node-properties-sidenav.component';
 import { MaterialModule } from '../material.module';
-import { PropertiesEditorService } from './properties-editor.service';
+import { PropertiesEditorService } from './node-properties.service';
 import { ReactiveFormsModule } from '@angular/forms';
 
 const components = [
   PropertiesEditorComponent,
-  PropertiesEditorSidenavComponent
+  NodePropertiesSidenavComponent
 ]
 
 @NgModule({
@@ -27,4 +27,4 @@ const components = [
     PropertiesEditorService
   ]
 })
-export class PropertiesEditorModule { }
+export class NodePropertiesModule { }
