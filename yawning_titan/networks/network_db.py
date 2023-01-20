@@ -274,7 +274,7 @@ class NetworkDB:
         self._db.db.clear_cache()
         network_root = Path(__file__).parent.resolve()
         default_network_path = os.path.join(
-            network_root, "_package_data", "new_network.json"
+            network_root, "_package_data", "network.json"
         )
 
         # Load the default db file into TinyDB

@@ -40,7 +40,6 @@ def test_reset_default_networks():
         db = NetworkDB()
 
         configs = db.all()
-        print("=" * 100)
 
         config = configs[0]
 
@@ -52,16 +51,12 @@ def test_reset_default_networks():
             config.to_dict(json_serializable=True),
             DocMetadataSchema.UUID == config.doc_metadata.uuid,
         )
-        print("=" * 100)
         # Perform the default network reset
         db.reset_default_networks_in_db()
 
         expected = [config.to_dict(json_serializable=True) for config in configs]
         actual = [config.to_dict(json_serializable=True) for config in db.all()]
 
-        print("=" * 100)
-        print(expected)
-        print(actual)
         assert expected == actual
 
         db._db.close_and_delete_temp_db()
