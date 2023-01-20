@@ -1,8 +1,8 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PropertiesEditorComponent } from './properties-editor.component';
-import { PropertiesEditorService } from './properties-editor.service';
+import { PropertiesEditorComponent } from './node-properties.component';
+import { PropertiesEditorService } from './node-properties.service';
 
 describe('PropertiesEditorComponent', () => {
   let component: PropertiesEditorComponent;

@@ -1,12 +1,12 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { PropertiesEditorService } from './properties-editor.service';
+import { PropertiesEditorService } from './node-properties.service';
 
 @Component({
-  selector: 'app-properties-editor',
-  templateUrl: './properties-editor.component.html',
-  styleUrls: ['./properties-editor.component.scss']
+  selector: 'app-node-properties',
+  templateUrl: './node-properties.component.html',
+  styleUrls: ['./node-properties.component.scss']
 })
 export class PropertiesEditorComponent implements OnInit, OnChanges, OnDestroy {
 

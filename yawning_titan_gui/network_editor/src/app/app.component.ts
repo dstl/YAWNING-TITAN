@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { CytoscapeService } from './services/cytoscape/cytoscape.service';
 import { ElementType } from './services/cytoscape/graph-objects';
-import { PropertiesEditorSidenavComponent } from './properties-editor/properties-editor-sidenav/properties-editor-sidenav.component';
+import { NodePropertiesSidenavComponent } from './node-properties/node-properties-sidenav/node-properties-sidenav.component';
 import { InteractionService } from './services/interaction/interaction.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { InteractionService } from './services/interaction/interaction.service';
 export class AppComponent implements OnInit {
   title = 'network_editor';
 
-  @ViewChild('appSideNav', { static: true }) sidenav: PropertiesEditorSidenavComponent;
+  @ViewChild('appSideNav', { static: true }) sidenav: NodePropertiesSidenavComponent;
 
   constructor(
     private cytoscapeService: CytoscapeService,

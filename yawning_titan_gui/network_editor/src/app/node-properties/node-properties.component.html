@@ -1,11 +1,11 @@
-<mat-card class="properties-editor-container">
+<mat-card class="node-properties-container">
   <mat-card-header mat-header>
     <mat-card-title-group>
       <mat-card-title>Node Details</mat-card-title>
     </mat-card-title-group>
   </mat-card-header>
   <mat-card-content>
-    <form [formGroup]="formGroup" *ngIf="!!formGroup" class="properties-editor-form">
+    <form [formGroup]="formGroup" *ngIf="!!formGroup" class="node-properties-form">
       <mat-form-field>
         <mat-label>UUID</mat-label>
         <input matInput formControlName="uuid">
@@ -22,10 +22,10 @@
         <mat-label>Y Position</mat-label>
         <input matInput formControlName="y_pos">
       </mat-form-field>
-      <div class="properties-editor-vulnerability-container">
-        <div class="properties-editor-vulnerability-label-container">
-          <p class="properties-editor-vulnerability-label">Vulnerability</p>
-          <p class="properties-editor-vulnerability-value">{{vulnerabilityVal}}</p>
+      <div class="node-properties-vulnerability-container">
+        <div class="node-properties-vulnerability-label-container">
+          <p class="node-properties-vulnerability-label">Vulnerability</p>
+          <p class="node-properties-vulnerability-value">{{vulnerabilityVal}}</p>
         </div>
         <mat-slider min="0" max="1" step="0.01">
           <input matSliderThumb formControlName="vulnerability">
@@ -39,7 +39,7 @@
       </mat-slide-toggle>
 
     </form>
-    <div class="properties-editor-action-buttons">
+    <div class="node-properties-action-buttons">
       <button mat-raised-button color="primary">Close</button>
     </div>
   </mat-card-content>
