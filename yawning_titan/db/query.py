@@ -143,3 +143,31 @@ class YawningTitanQuery(Query):
                 return False
 
         return self.test(test_len, i)
+
+    def len_bt(self, i: int, j: int) -> QueryInstance:
+        """Tests the length of a field. This could be the length of a string or an array field.
+
+        Fields whose length is greater than or equal to ``i`` are returned in the search.
+
+        :Example:
+
+        >>> from yawning_titan.networks.network_db import NetworkDB
+        >>> from yawning_titan.db.query import YawningTitanQuery
+        >>> db = NetworkDB()
+        >>> db.search(YawningTitanQuery.matrix.len_bt(1,18)))
+
+        :param i: The minimum length of a field as an int.
+        :param j: The maximum length of a field as an int.
+        :return: ``True`` if it does exist, otherwise ``False``. if the field length is greater than or equal to ``i``
+            and less than or equal to ``j``, otherwise ``False``.
+        :raises TypeError: When the field :func:`~yawning_titan.db.query.YawningTitanQuery.len_bt` is called on
+            does not have a :func:`len` function.
+        """
+
+        def test_len(val, i, j):
+            try:
+                return len(val) >= i and len(val) <= j
+            except TypeError:
+                return False
+
+        return self.test(test_len, i, j)

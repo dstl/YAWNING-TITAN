@@ -4,8 +4,14 @@ let selected_item_names = [],
 
 $(document).ready(function(){
     $("#filter-list-items").keyup(function(){
-        $(".list-item").removeClass("hidden");
-        $(".list-item").find(".subhead:not(:contains(" + $(this).val() + "))").closest(".list-item").addClass("hidden");
+        let input = this;
+        item_filter.set(
+            $(".list-item").filter(function(){
+                return !$(this).data("item-name").toLowerCase().includes($(input).val())
+            }),
+            "search"
+        );
+        item_filter.update_elements();
     });
 
     // dialogue launchers

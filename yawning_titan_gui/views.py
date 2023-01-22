@@ -1,3 +1,4 @@
+import json
 import shutil
 from collections import defaultdict
 from pathlib import Path
@@ -13,7 +14,7 @@ from yawning_titan import GAME_MODES_DIR
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
 from yawning_titan.db.doc_metadata import DocMetadata
 from yawning_titan.networks.network import Network
-from yawning_titan.networks.network_db import NetworkDB
+from yawning_titan.networks.network_db import NetworkDB, NetworkSchema
 from yawning_titan_gui.forms import (
     BlueAgentForm,
     ConfigForm,
@@ -261,19 +262,148 @@ class NetworksView(View):
         :param: request: the Django page `request` object containing the html data for `networks.html` and the server GET / POST request bodies.
         """
         networks = NetworkDB().all()
-        range_bound_elements = []
-        entry_node_settings = {
-            "name": "Entry nodes",
-            "min": min(*[len(network.entry_nodes) for network in networks]),
-        }
+        range_bound_items = [
+            {
+                "name": "Entry nodes",
+                "min": min(*[len(network.entry_nodes) for network in networks]),
+                "max": max(*[len(network.entry_nodes) for network in networks]),
+            },
+            {
+                "name": "High value nodes",
+                "min": min(*[len(network.high_value_nodes) for network in networks]),
+                "max": max(*[len(network.high_value_nodes) for network in networks]),
+            },
+            {
+                "name": "Network nodes",
+                "min": min(*[len(network.matrix[0]) for network in networks]),
+                "max": max(*[len(network.matrix[0]) for network in networks]),
+            },
+        ]
         return render(
             request,
             "networks.html",
             {
                 "sidebar": default_sidebar,
                 "networks": [network.doc_metadata for network in networks],
+                "range_bound_items": range_bound_items,
             },
         )
+
+    def post(self, request: HttpRequest, *args, **kwargs):
+        """Handle page get requests.
+
+        Args:
+            request: A Django `request` object that contains the data passed from
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
+        """
+        db = NetworkDB()
+        min = int(request.POST.get("min"))
+        max = int(request.POST.get("max"))
+        operations = {
+            "Network nodes": lambda min, max: [
+                network.doc_metadata.uuid
+                for network in db.search(NetworkSchema.MATRIX.len_bt(min, max))
+            ],
+            "Entry nodes": lambda min, max: [
+                network.doc_metadata.uuid
+                for network in db.search(NetworkSchema.ENTRY_NODES.len_bt(min, max))
+            ],
+            "High value nodes": lambda min, max: [
+                network.doc_metadata.uuid
+                for network in db.search(
+                    NetworkSchema.HIGH_VALUE_NODES.len_bt(min, max)
+                )
+            ],
+        }
+        return JsonResponse(
+            {"ids": operations[request.POST.get("attribute")](min, max)}
+        )
+
+
+class NodeEditor(View):
+    """
+    Django representation of node_editor.html.
+
+    implements 'get' and 'post' methods to handle page requests.
+    """
+
+    def get(self, request, *args, **kwargs):
+        """Handle page get requests.
+
+        Args:
+            request: A Django `request` object that contains the data passed from
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
+        """
+        return render(
+            request,
+            "node_editor.html",
+            {
+                "sidebar": default_sidebar,
+                "network_json": json.dumps(
+                    {
+                        "nodes": {
+                            "test1": {
+                                "uuid": "test1",
+                                "name": "test1",
+                                "high_value_node": False,
+                                "entry_node": False,
+                                "vulnerability": 0.6,
+                                "classes": "standard_node",
+                                "x_pos": 1,
+                                "y_pos": 7,
+                            },
+                            "test2": {
+                                "uuid": "test2",
+                                "name": "test2",
+                                "high_value_node": False,
+                                "entry_node": False,
+                                "vulnerability": 0.79,
+                                "classes": "standard_node",
+                                "x_pos": 3,
+                                "y_pos": 6,
+                            },
+                            "test3": {
+                                "uuid": "test3",
+                                "name": "test3",
+                                "high_value_node": False,
+                                "entry_node": False,
+                                "vulnerability": 0.3,
+                                "classes": "standard_node",
+                                "x_pos": 2,
+                                "y_pos": 7,
+                            },
+                        },
+                        "edges": {
+                            "test1": {"test2": {}, "test3": {}},
+                            "test2": {"test1": {}},
+                            "test3": {"test1": {}},
+                        },
+                        "_doc_metadata": {
+                            "uuid": "test-network",
+                            "created_at": "2022-12-08T14:56:42.891677",
+                            "name": "test-network",
+                            "description": "end to end test network",
+                            "author": "Czar",
+                            "locked": True,
+                        },
+                    }
+                ),
+            },
+        )
+
+    def post(self, request, *args, **kwargs):
+        """Handle page post requests.
+
+        Args:
+            request: A Django `request` object that contains the data passed from
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
+        """
+        print(request.body)
+
+        return render(request, "node_editor.html", {"sidebar": default_sidebar})
 
 
 class GameModeConfigView(OnLoadView):
@@ -459,33 +589,3 @@ def config_file_manager(request) -> JsonResponse:
         print("LOAD", load)
         return JsonResponse({"load": load})
     return JsonResponse({"message:": "FAILED"}, status=400)
-
-
-class NodeEditor(View):
-    """
-    Django representation of node_editor.html.
-
-    implements 'get' and 'post' methods to handle page requests.
-    """
-
-    def get(self, request, *args, **kwargs):
-        """Handle page get requests.
-
-        Args:
-            request: A Django `request` object that contains the data passed from
-            the html page. A `request` object will always be delivered when a page
-            object is accessed.
-        """
-        return render(request, "node_editor.html", {"sidebar": default_sidebar})
-
-    def post(self, request, *args, **kwargs):
-        """Handle page post requests.
-
-        Args:
-            request: A Django `request` object that contains the data passed from
-            the html page. A `request` object will always be delivered when a page
-            object is accessed.
-        """
-        print(request.body)
-
-        return render(request, "node_editor.html", {"sidebar": default_sidebar})
