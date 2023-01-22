@@ -111,8 +111,8 @@ describe('Network', () => {
     it('should add edges between 2 nodes', () => {
       const network = new Network();
       // add 2 nodes
-      network.addNode('uuid1', 0, 0);
-      network.addNode('uuid2', 0, 0);
+      network.addNode({uuid: 'uuid1'} as any);
+      network.addNode({uuid: 'uuid2'} as any);
 
       network.addEgde('edgeid', 'uuid1', 'uuid2');
 
@@ -123,17 +123,17 @@ describe('Network', () => {
   describe('METHOD: addNode', () => {
     it('should add the node if it does not exist', () => {
       const network = new Network();
-      network.addNode('uuid', 0, 0);
+      network.addNode({uuid: 'uuid1'} as any);
 
       expect(network.nodeList.length).toBe(1);
     });
 
     it('should not add the node if it already exists', () => {
       const network = new Network();
-      network.addNode('uuid', 0, 0);
+      network.addNode({uuid: 'uuid1'} as any);
       expect(network.nodeList.length).toBe(1);
 
-      network.addNode('uuid', 0, 0);
+      network.addNode({uuid: 'uuid1'} as any);
       expect(network.nodeList.length).toBe(1);
     });
   });
@@ -142,8 +142,8 @@ describe('Network', () => {
     it('should remove the edge with the matching id', () => {
       const network = new Network();
       // add 2 nodes
-      network.addNode('uuid1', 0, 0);
-      network.addNode('uuid2', 0, 0);
+      network.addNode({uuid: 'uuid1'} as any);
+      network.addNode({uuid: 'uuid2'} as any);
 
       network.addEgde('edgeid', 'uuid1', 'uuid2');
       expect(network.edgeList.length).toBe(1);
@@ -156,8 +156,8 @@ describe('Network', () => {
     it('should remove a node and any edges pointing to it', fakeAsync(() => {
       const network = new Network();
       // add 2 nodes
-      network.addNode('uuid1', 0, 0);
-      network.addNode('uuid2', 0, 0);
+      network.addNode({uuid: 'uuid1'} as any);
+      network.addNode({uuid: 'uuid2'} as any);
       expect(network.nodeList.length).toBe(2);
 
       network.addEgde('edgeid', 'uuid1', 'uuid2');

@@ -31,16 +31,20 @@
           <input matSliderThumb formControlName="vulnerability">
         </mat-slider>
       </div>
-      <mat-slide-toggle color="primary" formControlName="entry_node">
+      <div class="node-properties-toggle-input-container">
+        <mat-slide-toggle color="primary" formControlName="entry_node">
         Entry Node
       </mat-slide-toggle>
       <mat-slide-toggle color="primary" formControlName="high_value_node">
         High Value Node
       </mat-slide-toggle>
+      </div>
+
 
     </form>
     <div class="node-properties-action-buttons">
-      <button mat-raised-button color="primary">Close</button>
+      <button mat-raised-button color="primary" (click)="updateNode()" [disabled]="!isFormValid()">Update Node</button>
+      <button mat-raised-button>Close</button>
     </div>
   </mat-card-content>
 </mat-card>

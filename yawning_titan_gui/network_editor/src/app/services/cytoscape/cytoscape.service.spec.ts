@@ -21,8 +21,8 @@ describe('CytoscapeService', () => {
   describe('METHOD: loadNetwork', () => {
     it('should load the network into cytoscape', () => {
       const network = new Network();
-      network.addNode('uuid1', 0, 0);
-      network.addNode('uuid2', 0, 0);
+      network.addNode({uuid: 'uuid1'} as any);
+      network.addNode({uuid: 'uuid2'} as any);
       network.addEgde('edge', 'uuid1', 'uuid2');
 
       service.loadNetwork(network);
@@ -35,8 +35,8 @@ describe('CytoscapeService', () => {
   describe('METHOD: deleteItem', () => {
     it('should delete an edge', () => {
       const network = new Network();
-      network.addNode('uuid1', 0, 0);
-      network.addNode('uuid2', 0, 0);
+      network.addNode({uuid: 'uuid1'} as any);
+      network.addNode({uuid: 'uuid2'} as any);
       network.addEgde('edge', 'uuid1', 'uuid2');
 
       service.loadNetwork(network);
@@ -60,8 +60,8 @@ describe('CytoscapeService', () => {
 
     it('should delete edges connected to the nodes', () => {
       const network = new Network();
-      network.addNode('uuid1', 0, 0);
-      network.addNode('uuid2', 0, 0);
+      network.addNode({uuid: 'uuid1'} as any);
+      network.addNode({uuid: 'uuid2'} as any);
       network.addEgde('edge', 'uuid1', 'uuid2');
 
       service.loadNetwork(network);
@@ -92,7 +92,7 @@ describe('CytoscapeService', () => {
 
   describe('METHOD: handleSingleClick', () => {
     it('should create an edge if there was a node that was previously selected', () => {
-      const spy = spyOn(service, 'createEdge');
+      const spy = spyOn<any>(service, 'createEdge');
 
       service['selectedElement'] = { id: 'id', type: ElementType.NODE };
       service['handleNodeSingleClick']({
@@ -140,7 +140,7 @@ describe('CytoscapeService', () => {
       const spy = spyOn(service['cy'], 'add');
       spyOn<any>(service, 'areNodesConnected').and.returnValue(true);
 
-      service.createEdge(null, null, null);
+      (<any>service).createEdge(null, null, null);
       expect(spy).not.toHaveBeenCalled();
     });
 
@@ -148,7 +148,7 @@ describe('CytoscapeService', () => {
       const spy = spyOn(service['cy'], 'add');
       spyOn<any>(service, 'areNodesConnected').and.returnValue(false);
 
-      service.createEdge(null, null, null);
+      (<any>service).createEdge(null, null, null);
       expect(spy).toHaveBeenCalled();
     });
   });

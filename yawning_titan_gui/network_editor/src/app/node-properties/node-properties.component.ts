@@ -8,7 +8,7 @@ import { PropertiesEditorService } from './node-properties.service';
   templateUrl: './node-properties.component.html',
   styleUrls: ['./node-properties.component.scss']
 })
-export class PropertiesEditorComponent implements OnInit, OnChanges, OnDestroy {
+export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input('nodeId') nodeId: string = null;
 
@@ -30,9 +30,9 @@ export class PropertiesEditorComponent implements OnInit, OnChanges, OnDestroy {
       this.vulnerabilityVal = this.formGroup.get('vulnerability').value;
 
       this.vulnerabilityChangeListener = this.formGroup.get('vulnerability').valueChanges
-      .subscribe(val => {
-        this.vulnerabilityVal = val;
-      })
+        .subscribe(val => {
+          this.vulnerabilityVal = val;
+        })
     });
   }
 
@@ -47,6 +47,19 @@ export class PropertiesEditorComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.vulnerabilityChangeListener.unsubscribe();
+    if (!!this.vulnerabilityChangeListener) {
+      this.vulnerabilityChangeListener.unsubscribe();
+    }
+  }
+
+  public isFormValid(): boolean {
+    return !!this.formGroup && this.formGroup.valid;
+  }
+
+  /**
+   * Persists the node properties that the user has changed
+   */
+  public updateNode(): void {
+    this.propertiesEditorService.updateNodeProperties();
   }
 }

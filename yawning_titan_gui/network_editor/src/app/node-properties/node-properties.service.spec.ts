@@ -1,4 +1,5 @@
 import { fakeAsync, tick } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
 
 import { PropertiesEditorService } from './node-properties.service';
 
@@ -33,7 +34,7 @@ describe('PropertiesEditorService', () => {
   }
 
   beforeEach(() => {
-    service = new PropertiesEditorService(cytoscapeService)
+    service = new PropertiesEditorService(cytoscapeService, new FormBuilder())
   });
 
   it('should be created', () => {
