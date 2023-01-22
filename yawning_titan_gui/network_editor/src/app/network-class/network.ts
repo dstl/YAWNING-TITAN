@@ -142,20 +142,21 @@ export class Network {
    * @param y_pos
    * @returns true when successful
    */
-  public addNode(uuid: string, x_pos: number, y_pos: number): boolean {
+  public addNode(nodeDetails: Node): boolean {
     // if uuid already exists, return
-    if (this.nodeList.find(node => node.uuid === uuid)) {
+    if (!nodeDetails || !nodeDetails.uuid ||
+      this.nodeList.find(node => node.uuid === nodeDetails.uuid)) {
       return;
     }
 
     this.nodeList.push({
-      uuid: uuid,
-      name: null,
-      high_value_node: false,
-      entry_node: false,
-      x_pos: x_pos,
-      y_pos: y_pos,
-      vulnerability: 0
+      uuid: nodeDetails.uuid,
+      name: nodeDetails.name,
+      high_value_node: nodeDetails.high_value_node,
+      entry_node: nodeDetails.entry_node,
+      x_pos: nodeDetails.x_pos,
+      y_pos: nodeDetails.y_pos,
+      vulnerability: nodeDetails.vulnerability
     });
 
     return true;
@@ -167,7 +168,9 @@ export class Network {
    * @param details
    */
   public editNodeDetails(uuid: string, details: Node): void {
-    console.log(details)
+    const matchingNode = this.nodeList.findIndex(node => node.uuid === uuid);
+
+    this.nodeList[matchingNode] = details;
   }
 
   /**

@@ -1,20 +1,22 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Subject } from 'rxjs';
 
-import { PropertiesEditorComponent } from './node-properties.component';
+import { NodePropertiesComponent } from './node-properties.component';
 import { PropertiesEditorService } from './node-properties.service';
 
-describe('PropertiesEditorComponent', () => {
-  let component: PropertiesEditorComponent;
-  let fixture: ComponentFixture<PropertiesEditorComponent>;
+describe('NodePropertiesComponent', () => {
+  let component: NodePropertiesComponent;
+  let fixture: ComponentFixture<NodePropertiesComponent>;
 
   let propertiesEditorServiceStub: any = {
-    loadDetails: () => { }
+    loadDetails: () => { },
+    nodePropertiesFormGroupSubject: new Subject()
   }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PropertiesEditorComponent],
+      declarations: [NodePropertiesComponent],
       providers: [
         { provide: PropertiesEditorService, useValue: propertiesEditorServiceStub }
       ],
@@ -24,7 +26,7 @@ describe('PropertiesEditorComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(PropertiesEditorComponent);
+    fixture = TestBed.createComponent(NodePropertiesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -49,19 +49,28 @@ export class PropertiesEditorService {
       entry_node: new FormControl(this.nodeDetails.entry_node, Validators.required),
     });
 
-    // listen to changes
-    this._nodePropertiesFormGroup.valueChanges.pipe(debounceTime(200))
-      .subscribe(res => this.updateCytoscapeObject(res))
-
     // update form group
     this.nodePropertiesFormGroupSubject.next(this._nodePropertiesFormGroup);
   }
 
   /**
-   * Update the cytoscape object
-   * @param changes
+   * Function that triggers the persisting of the updated node properties
    */
-  private updateCytoscapeObject(changes: Node): void {
-    this.cytoscapeService.updateNode(this._nodePropertiesFormGroup.controls['uuid'].value, changes);
+  public updateNodeProperties(): void {
+    // check if form is valid
+    if (!this._nodePropertiesFormGroup || !this._nodePropertiesFormGroup.valid) {
+      return;
+    }
+
+    // update
+    this.cytoscapeService.updateNode(this._nodePropertiesFormGroup.get('uuid').value, {
+      uuid: this._nodePropertiesFormGroup.get('uuid').value,
+      name: this._nodePropertiesFormGroup.get('name').value,
+      x_pos: this._nodePropertiesFormGroup.get('x_pos').value,
+      y_pos: this._nodePropertiesFormGroup.get('y_pos').value,
+      vulnerability: this._nodePropertiesFormGroup.get('vulnerability').value,
+      high_value_node: this._nodePropertiesFormGroup.get('high_value_node').value,
+      entry_node: this._nodePropertiesFormGroup.get('entry_node').value,
+    })
   }
 }

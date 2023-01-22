@@ -135,6 +135,8 @@ export class CytoscapeService {
 
     const data = Object.keys(nodeDetails);
     data.forEach(key => node.data(key, nodeDetails[`${key}`]));
+
+    this.network.editNodeDetails(nodeDetails.uuid, nodeDetails)
   }
 
   /**
@@ -235,29 +237,35 @@ export class CytoscapeService {
   private createNode(x: number, y: number, node?: Node): void {
 
     if (!node) {
-      const nodeId: string = uuid();
-      // add to network
 
+      const uniqueId = uuid();
+
+      const nodeProperties = {
+        id: uniqueId,
+        uuid: uniqueId,
+        name: `node ${this.cy.nodes().length + 1}`,
+        entry_node: false,
+        high_value_node: false,
+        x_pos: x,
+        y_pos: y,
+        vulnerability: 0
+      }
+
+      // add to network
       this.cy.add({
-        data: {
-          id: nodeId,
-          entry_node: false,
-          high_value_node: false,
-          x_pos: x,
-          y_pos: y,
-          vulnerablity: 0
-        },
+        data: nodeProperties,
         position: { x: x, y: y }
       });
 
       // add node to network
-      this.network.addNode(nodeId, x, y)
+      this.network.addNode(nodeProperties);
       return;
     }
 
     this.cy.add({
       data: {
         id: node?.uuid,
+        uiid: node?.uuid,
         name: node?.name,
         high_value_node: node?.high_value_node,
         entry_node: node?.entry_node,
