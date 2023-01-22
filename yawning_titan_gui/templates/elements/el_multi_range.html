@@ -1,16 +1,16 @@
-<h3>{{settings.name}}</h3>
-<div class="multi-range">
-    <input class="value-left range-setter" type="number" min="0" max="100">
-    <div slider id="slider-distance">
-        <div>
-            <div inverse-left style="width:70%;"></div>
-            <div inverse-right style="width:70%;"></div>
-            <div range style="left:30%;right:40%;"></div>
-            <span thumb style="left:30%;"></span>
-            <span thumb style="left:60%;"></span>
+<p>{{settings.name}}</p>
+<div class="multi-range" data-attribute-name="{{settings.name}}">
+    <input class="range-setter left" type="number" value="0" min="0" max="{{settings.max}}">
+    <div class="slider slider-distance">
+        <div class="slider-container">
+            <div class="inverse-left" style="width:70%;"></div>
+            <div class="inverse-right" style="width:70%;"></div>
+            <div class="range" style="left:30%;right:40%;"></div>
+            <span class="thumb" style="left:30%;"></span>
+            <span class="thumb" style="left:60%;"></span>
         </div>
-        <input class="multi-range-input left" type="range" tabindex="0" value="30" max="100" min="0" step="1" />
-        <input class="multi-range-input right" type="range" tabindex="0" value="60" max="100" min="0" step="1"/>
+        <input class="multi-range-input left" type="range" tabindex="0" value="0" max="{{settings.max}}" min="0" step="1" />
+        <input class="multi-range-input right" type="range" tabindex="0" value="{{settings.max}}" max="{{settings.max}}" min="0" step="1"/>
     </div>
-    <input class="value-right range-setter" type="number" min="0" max="100">
+    <input class="range-setter right" type="number" value="{{settings.max}}" min="0" max="{{settings.max}}">
 </div>

@@ -43,3 +43,22 @@ $(document).ready(function(){
         }
     });
 });
+
+class Filter{
+    constructor(){
+        this.hidden = {};
+    }
+    update_elements(){
+        $(".list-item").removeClass("hidden");
+        // console.log("TESTING 123",this.hidden);
+        for (const [group,elements] of Object.entries(this.hidden)){
+            elements.each(function(){
+                $(this).addClass("hidden")
+            })
+        }
+    }
+    set(elements,group){
+        this.hidden[group] = elements
+    }
+}
+const item_filter = new Filter();

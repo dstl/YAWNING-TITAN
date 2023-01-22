@@ -16,7 +16,7 @@ export class NetworkViewComponent implements AfterViewInit {
   constructor(
     private cytoscapeService: CytoscapeService,
     private importService: ImportService
-  ) { }
+  ) {}
 
   ngAfterViewInit() {
     // set the element to render to
