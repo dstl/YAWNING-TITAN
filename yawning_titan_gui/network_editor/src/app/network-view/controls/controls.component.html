@@ -1,5 +1,5 @@
 <div class="controls-container">
-  <div class="node-list">
+  <div class="node-list" *ngIf="nodeList && nodeList.length">
     <p *ngFor="let node of nodeList()" class="node-list-item">Node ID: {{node}}</p>
   </div>
 </div>

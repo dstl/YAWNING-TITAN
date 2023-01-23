@@ -22,6 +22,30 @@ describe('Network', () => {
     expect(spy).not.toHaveBeenCalled();
   });
 
+  describe('METHOD: getNodeById', () => {
+    it('should return null if no node is found', () => {
+      const network = new Network();
+      expect(network.getNodeById('id')).toBeNull();
+    });
+
+    it('should return the correct node details', () => {
+      const network = new Network();
+      const node = {
+        uuid: 'id',
+        name: 'name',
+        high_value_node: false,
+        entry_node: false,
+        x_pos: 0,
+        y_pos: 0,
+        vulnerability: 0
+      };
+
+      network.addNode(node);
+
+      expect(network.getNodeById('id')).toEqual(node)
+    });
+  });
+
   describe('METHOD: loadFromJson', () => {
     it('should do nothing if the JSON object does not have any nodes and a doc metadata to load', () => {
       const loadNodeSpy = spyOn<any>(Network.prototype, 'loadNodesFromJson').and.callFake(() => { });
@@ -111,8 +135,8 @@ describe('Network', () => {
     it('should add edges between 2 nodes', () => {
       const network = new Network();
       // add 2 nodes
-      network.addNode({uuid: 'uuid1'} as any);
-      network.addNode({uuid: 'uuid2'} as any);
+      network.addNode({ uuid: 'uuid1' } as any);
+      network.addNode({ uuid: 'uuid2' } as any);
 
       network.addEgde('edgeid', 'uuid1', 'uuid2');
 
@@ -123,18 +147,76 @@ describe('Network', () => {
   describe('METHOD: addNode', () => {
     it('should add the node if it does not exist', () => {
       const network = new Network();
-      network.addNode({uuid: 'uuid1'} as any);
+      network.addNode({ uuid: 'uuid1' } as any);
 
       expect(network.nodeList.length).toBe(1);
     });
 
     it('should not add the node if it already exists', () => {
       const network = new Network();
-      network.addNode({uuid: 'uuid1'} as any);
+      network.addNode({ uuid: 'uuid1' } as any);
       expect(network.nodeList.length).toBe(1);
 
-      network.addNode({uuid: 'uuid1'} as any);
+      network.addNode({ uuid: 'uuid1' } as any);
       expect(network.nodeList.length).toBe(1);
+    });
+  });
+
+  describe('METHOD: editNodeDetails', () => {
+    it('should change nothing if the node is not found', () => {
+      const network = new Network();
+
+      network.editNodeDetails('id', {
+        uuid: 'id',
+        name: 'name',
+        high_value_node: false,
+        entry_node: false,
+        x_pos: 0,
+        y_pos: 0,
+        vulnerability: 0
+      });
+
+      expect(network.nodeList).toEqual([]);
+    });
+
+    it('should change the correct node', () => {
+      const base = {
+        name: 'name',
+        high_value_node: false,
+        entry_node: false,
+        x_pos: 0,
+        y_pos: 0,
+        vulnerability: 0
+      }
+
+      const node1 = {
+        uuid: 'id1',
+        ...base
+      }
+
+      const node2 = {
+        uuid: 'id2',
+        ...base
+      }
+
+      const update = {
+        uuid: 'id2',
+        name: 'updates',
+        high_value_node: true,
+        entry_node: true,
+        x_pos: 10,
+        y_pos: 10,
+        vulnerability: 0.5
+      }
+
+      const network = new Network();
+      network.addNode(node1);
+      network.addNode(node2);
+      expect(network.nodeList).toEqual([node1, node2]);
+
+      // update node 2
+      network.editNodeDetails('id2', update);
+      expect(network.nodeList).toEqual([node1, update]);
     });
   });
 
@@ -142,8 +224,8 @@ describe('Network', () => {
     it('should remove the edge with the matching id', () => {
       const network = new Network();
       // add 2 nodes
-      network.addNode({uuid: 'uuid1'} as any);
-      network.addNode({uuid: 'uuid2'} as any);
+      network.addNode({ uuid: 'uuid1' } as any);
+      network.addNode({ uuid: 'uuid2' } as any);
 
       network.addEgde('edgeid', 'uuid1', 'uuid2');
       expect(network.edgeList.length).toBe(1);
@@ -156,8 +238,8 @@ describe('Network', () => {
     it('should remove a node and any edges pointing to it', fakeAsync(() => {
       const network = new Network();
       // add 2 nodes
-      network.addNode({uuid: 'uuid1'} as any);
-      network.addNode({uuid: 'uuid2'} as any);
+      network.addNode({ uuid: 'uuid1' } as any);
+      network.addNode({ uuid: 'uuid2' } as any);
       expect(network.nodeList.length).toBe(2);
 
       network.addEgde('edgeid', 'uuid1', 'uuid2');

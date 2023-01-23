@@ -22,7 +22,7 @@ export class ControlsComponent {
    * @returns
    */
   nodeList(): string[] {
-    return this.cytoscapeService?.cytoscapeObj?.nodes().map(node => node.id())
+    return this.cytoscapeService?.network?.nodeList.map(node => node.uuid)
   }
 
   /**

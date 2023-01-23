@@ -3,17 +3,20 @@ import { CommonModule } from '@angular/common';
 import { NodePropertiesComponent } from './node-properties.component';
 import { NodePropertiesSidenavComponent } from './node-properties-sidenav/node-properties-sidenav.component';
 import { MaterialModule } from '../material.module';
-import { PropertiesEditorService } from './node-properties.service';
+import { NodePropertiesService } from './node-properties.service';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FocusTrackingDirective } from './directive/focus-tracking.directive'
 
 const components = [
   NodePropertiesComponent,
-  NodePropertiesSidenavComponent
+  NodePropertiesSidenavComponent,
+  FocusTrackingDirective
 ]
 
 @NgModule({
   declarations: [
-    ...components
+    ...components,
+
   ],
   exports: [
     ...components
@@ -24,7 +27,7 @@ const components = [
     ReactiveFormsModule,
   ],
   providers: [
-    PropertiesEditorService
+    NodePropertiesService
   ]
 })
 export class NodePropertiesModule { }
