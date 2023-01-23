@@ -35,6 +35,8 @@ $(document).ready(function(){
         toggle_dialogue($(this).closest(".dialogue-center"))
     });
 
+    $("#main").click(function(){$("#sidebar-left, #sandwich-icon").removeClass("open")});
+
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
