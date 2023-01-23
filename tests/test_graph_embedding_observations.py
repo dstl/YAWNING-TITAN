@@ -5,7 +5,7 @@ import pytest
 from stable_baselines3.common.env_checker import check_env
 from stable_baselines3.common.env_util import is_wrapped
 
-from tests import TEST_CONFIG_PATH
+from tests import TEST_CONFIG_PATH_OLD
 from yawning_titan.config.game_modes import (
     low_skill_red_with_random_infection_perfect_detection_path,
 )
@@ -19,9 +19,9 @@ from yawning_titan.envs.generic.wrappers.graph_embedding_observations import (
     ("path", "creator_type", "num_nodes"),
     [
         (str(low_skill_red_with_random_infection_perfect_detection_path()), "mesh", 18),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml"), "18node", 50),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"), "mesh", 100),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"), "mesh", 250),
+        (os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_1.yaml"), "18node", 50),
+        (os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_2.yaml"), "mesh", 100),
+        (os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_3.yaml"), "mesh", 250),
     ],
 )
 def test_wrapped_env(
@@ -41,9 +41,9 @@ def test_wrapped_env(
     ("path", "creator_type", "num_nodes"),
     [
         (str(low_skill_red_with_random_infection_perfect_detection_path()), "mesh", 18),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml"), "18node", 50),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"), "mesh", 100),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"), "mesh", 250),
+        (os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_1.yaml"), "18node", 50),
+        (os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_2.yaml"), "mesh", 100),
+        (os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_3.yaml"), "mesh", 250),
     ],
 )
 def test_obs_size(
@@ -72,9 +72,24 @@ def test_obs_size(
             18,
             18,
         ),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml"), "18node", 50, 52),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"), "mesh", 100, 100),
-        (os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"), "mesh", 250, 252),
+        (
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_1.yaml"),
+            "18node",
+            50,
+            52,
+        ),
+        (
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_2.yaml"),
+            "mesh",
+            100,
+            100,
+        ),
+        (
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_3.yaml"),
+            "mesh",
+            250,
+            252,
+        ),
     ],
 )
 def test_obs_range(
@@ -97,11 +112,11 @@ def test_obs_range(
         ),
         num_nodes,
     )
-    for i in range(5):
+    for _ in range(5):
         obs = env.reset()
         np.set_printoptions(suppress=True)
         start = 0
-        if env.network_interface.game_mode.observation_space.node_connections:
+        if env.network_interface.game_mode.blue_can_observe.node_connections.value:
             start = 500
             embedding = obs[0:500]
 
@@ -112,8 +127,8 @@ def test_obs_range(
         for j in obs[start:]:
             assert -1 <= j <= 1
         if (
-            env.network_interface.game_mode.observation_space.compromised_status
-            and env.network_interface.game_mode.observation_space.vulnerabilities
+            env.network_interface.game_mode.blue_can_observe.compromised_status.value
+            and env.network_interface.game_mode.blue_can_observe.vulnerabilities.value
         ):
             padded_vulns = obs[start + num_nodes_check : (start + num_nodes_check * 2)]
             assert len(padded_vulns) == num_nodes_check

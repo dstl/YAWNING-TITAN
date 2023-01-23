@@ -20,7 +20,11 @@ The reward function returns a single number (integer or float) that is the blue 
 """
 
 # Functions:
+from __future__ import annotations
+
 import math
+
+from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 
 REMOVE_RED_POINTS = []
 for i in range(0, 101):
@@ -60,7 +64,7 @@ def standard_rewards(args: dict) -> float:
         The reward earned for this specific turn for the blue agent
     """
     # Get information about the current state of the environment
-    network_interface = args["network_interface"]
+    network_interface: NetworkInterface = args["network_interface"]
     blue_action = args["blue_action"]
     start_state = args["start_state"]
     end_state = args["end_state"]
@@ -136,7 +140,7 @@ def standard_rewards(args: dict) -> float:
 
     # rewards for reducing node vulnerabilities
     if (
-        network_interface.game_mode.red.red_ignores_defences is False
+        network_interface.game_mode.red.agent_attack.ignores_defences.value is False
         and blue_action == "reduce_vulnerability"
     ):
         initial_cumulative_vuln = sum(start_vulnerabilities.values())
@@ -175,7 +179,7 @@ def experimental_rewards(args: dict) -> float:
         The reward earned for this specific turn for the blue agent
     """
     # Get information about the current state of the environment
-    network_interface = args["network_interface"]
+    network_interface: NetworkInterface = args["network_interface"]
     blue_action = args["blue_action"]
     start_state = args["start_state"]
     end_state = args["end_state"]
@@ -334,7 +338,7 @@ def punish_bad_actions(args: dict) -> float:
 
     """
     # Get information about the current state of the game
-    network_interface = args["network_interface"]
+    network_interface: NetworkInterface = args["network_interface"]
     blue_action = args["blue_action"]
     start_state = args["start_state"]
     end_state = args["end_state"]
