@@ -137,20 +137,24 @@ BLUE:
   # -Standard Nodes-
   # Chance for blue to discover information about a failed attack
   chance_to_discover_failed_attack: 1
+
   # Can blue learn information about an attack that succeeds if the compromise is known
   can_discover_succeeded_attacks_if_compromise_is_discovered: True
-  # Can blue learn information about an attack that succeeds if the compromise is NOT known
-  can_discover_succeeded_attacks_if_compromise_is_not_discovered: True
   # Chance for blue to discover information about an attack that succeeded and the compromise was known
   chance_to_discover_succeeded_attack_compromise_known: 1
+
+  # Can blue learn information about an attack that succeeds if the compromise is NOT known
+  can_discover_succeeded_attacks_if_compromise_is_not_discovered: True
   # Chance for blue to discover information about an attack that succeeded and the compromise was NOT known
   chance_to_discover_succeeded_attack_compromise_not_known: 1
+
+  # Chance to discover the location of a succeeded attack against a deceptive node
+  chance_to_discover_succeeded_attack_deceptive_node: 1
 
   # -Deceptive Nodes-
   # Chance to discover the location of a failed attack on a deceptive node
   chance_to_discover_failed_attack_deceptive_node: 1
-  # Chance to discover the location of a succeeded attack against a deceptive node
-  chance_to_discover_succeeded_attack_deceptive_node: 1
+
 
 
   # If blue fixes a node then the vulnerability score of that node increases
