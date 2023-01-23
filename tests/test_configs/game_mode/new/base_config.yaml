@@ -76,12 +76,12 @@ blue:
       chance:
         standard_node: 0.5
         deceptive_node: 1
-    succeeded_attacks:
+    succeeded_attacks_known_compromise:
       use: True
       chance:
         standard_node: 0.3
         deceptive_node: 1
-    succeeded_attacks_unknown_comprimise:
+    succeeded_attacks_unknown_compromise:
       use: True
       chance:
         standard_node: 0.1

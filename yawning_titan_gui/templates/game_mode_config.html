@@ -4,55 +4,81 @@
 
 {% block scripts %}
 <script src="{% static 'js/game_mode_config.js' %}"></script>
+<script text="text/javascript">
+    const game_mode_filename = "{{game_mode_filename}}";
+    const section_name = "{{current_section_name}}";
+</script>
 {% endblock %}
 
 {% block main %}
-<div class="el-row">
-    <h2>{{game_mode_file}}</h2>
+<header id="config-header" class="el-row">
+    <h2>Game mode file: {{ game_mode_filename }}</h2>
     <a id="game-modes-return" href="{% url 'Manage game modes' %}"><i class="bi bi-arrow-90deg-left"></i></a>
-</div>
+</header>
 
 <div id="config-forms">
-    <div id="config-form-icons">
-        {% for form_name, config in forms.items %}
-        <a href="{{request.path|url_trim:2}}{{form_name}}/" class="icon-container{% if form_name == section %} selected{% endif %}{% if form_name in completed_sections %} complete{% endif %}">
-            <div id="{{form_name}}-icon" class="icon" data-form="#{{form_name}}-config-form">
-                <i class="bi {{config.icon}}"></i>
-            </div>
-            <p>{{form_name}}</p>
-        </a>
-        {% endfor %}
+    <div id="config-form-left">
+        <div id="config-form-icons">
+            {% for section_name, section in sections.items %}
+            <a href="{{request.path|url_trim:2}}{{ section_name }}/" class="icon-container{% if section_name == current_section_name %} selected{% endif %}{% if section.config_class.validation.passed %} complete{% endif %}">
+                <div id="{{ section_name }}-icon" class="icon" data-form="#{{ section_name }}-config-form">
+                    <i class="bi {{ section.icon }}"></i>
+                </div>
+                <p>{{ section_name }}</p>
+            </a>
+            {% endfor %}
+        </div>
+        <div id="config-description">
+            <h3>Description</h3>
+            <textarea></textarea>
+        </div>
     </div>
-    <div id="{{section}}-config-form-container" class="form-container">
-        <form id="{{section}}-config-form" class="config-form" action="" method="post" data-form-name="{{section}}">
-            {% csrf_token %}
-            <div class="fields">
-                {% for field in form %}
-                    {% label_subsection field subsection_labels as subsection_label %}
-                    {% if subsection_label is not None %}
-                        <p class="subsection-label">{{subsection_label}}</p>
-                    {% endif %}
-                    <div class="mb-3">
-                        <div class="info">
-                            <label for="id_{{field.name}}" class="form-label">{{field.label}}</label>
-                            <p class="help-text">{{field.help_text}}</p>
-                        </div>
-                        <div class="field-container {% if protected %}disabled{% endif %}">
-                            {{ field }}
-                            {% if field.errors %}
-                            <ul style="color:var(--bs-danger)">
-                                {% for error in field.errors %}
-                                <li><strong>{{ error|escapejs }}</strong></li>
+    <div id="{{current_section_name}}-config-form-container" class="form-container">
+        <div id="subsection-forms">
+            {% for form in section.forms %}
+                <form id="config-form-{{ forloop.counter0 }}" class="config-form tier-{{form.tier}}{% if form.config_class.validation.fail_reasons %} erroneous{% endif %}" data-id="{{forloop.counter0}}">
+                    <div class="title-container">
+                        <p class="title">{{ form.name|format_text }}</p>
+                        {% csrf_token %}
+                        {% if form.config_class.validation.fail_reasons %}
+                            <ul class="error-list">
+                                {% for error in form.config_class.validation.fail_reasons %}
+                                    <li>{{ error|escape }}</li>
                                 {% endfor %}
                             </ul>
-                            {% endif %}
-                        </div>
-
+                        {% endif %}
                     </div>
-                {% endfor %}
-            </div>
-            <div class="flex-break"></div>
-            <button type="submit" class="btn btn-primary next-form">{% if section == forms|keys|last %}Finish{% else %}Next{% endif %}</button>
+                    <div class="fields">
+                        {% for field in form %}
+                            <div class="mb-3 active{% if field.errors %} erroneous{% endif %}">
+                                <div class="info">
+                                    <label for="id_{{ field.name }}" class="form-label">{{ field.label|format_text }}</label>
+                                    <p class="help-text">{{field.help_text}}</p>
+                                    {% if field.errors %}
+                                        <ul class="error-list">
+                                            {% for error in field.errors %}
+                                            <li>{{ error|escape }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                                <div class="field-container {% if protected %}disabled{% endif %}">
+                                    {{ field }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </form>
+            {% endfor %}
+        </div>
+        <form id="section-controls" action="" method="post">
+            {% csrf_token %}
+            {% if last %}
+                <button id="next-section" type="submit" class="btn btn-primary">Finish</button>
+            {% else %}
+                <button id="next-section" type="submit" class="btn btn-primary">Next</button>
+                <button id="save-game-mode" type="button" class="btn btn-primary">Save</button>
+            {% endif %}
         </form>
     </div>
 </div>
@@ -64,7 +90,12 @@
 
     /* specific elements */
     #main{
+<<<<<<< HEAD
         padding: var(--padding);
+=======
+        flex-direction: column;
+        padding: var(--padding) !important;
+>>>>>>> AIDT-154-feedback-on-yt-install-exe
     }
     #game-modes-return{
         font-size: 1.5rem;
@@ -74,17 +105,46 @@
         display: flex;
         flex-direction: row;
     }
+    #config-form-left{
+        display: flex;
+        flex-direction: column;
+        margin-right: var(--padding);
+        padding-top: var(--padding);
+        padding-bottom: var(--padding);
+    }
     #config-form-icons{
         display: flex;
-        height: 350px;
+        position: relative;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         font-size: 30px;
         color: var(--text-light);
+        margin-bottom: var(--padding);
+    }
+    #config-form-icons::before{
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 5%;
+        display: block;
+        height: 90%;
         border-left: 2px solid var(--text-light);
-        margin-right: var(--padding);
-        margin-top: var(--padding);
+    }
+    #subsection-forms{
+        position: relative;
+        flex: 1;
+        min-height: 0;
+        max-height: calc(100% - 50px);
+        width: 1000px;
+        padding-right: calc(2* var(--increment));
+        overflow-y: auto;
+    }
+    #section-controls{
+        display: flex;
+        flex-direction: row;
+        width: 1000px;
+        margin: 0;
     }
 
     /* config icons */
@@ -116,6 +176,7 @@
         margin: 0;
     }
 
+<<<<<<< HEAD
 
 
     .next-form{
@@ -123,6 +184,154 @@
     }
 
 
+=======
+    /* config description */
+    #config-description{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    #config-description>textarea{
+        background-color: var(--dark);
+        flex: 1;
+        border-radius: .5rem;
+        color: var(--text-light);
+        padding: var(--increment);
+    }
+
+    /* config elements */
+    #config-header{
+        margin-bottom: calc(2*var(--increment));
+
+    }
+    #section-controls>button{
+        flex: 1;
+        margin-left: var(--increment);
+        margin-right: var(--increment);
+    }
+
+    /* config form elements */
+    .form-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        min-height: 100%;
+    }
+    .config-form{
+        position: relative;
+        padding: calc(2 * var(--increment));
+        padding-left: calc(4 * var(--increment));
+        padding-top: 0;
+        z-index: 2;
+        border: 1px solid var(--mid);
+    }
+    .error-list{
+        color: red;
+        font-size: 0.7rem;
+        margin: 0;
+        padding: 0;
+        display:  flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .error-list>li{
+        margin-left: 1rem;
+    }
+    .config-form.erroneous{
+        border: 1px solid red;
+        border-radius: 1rem;
+    }
+    .mb-3.erroneous input{
+        border: 1px solid red !important;
+    }
+
+    /* form layouts */
+
+    /* root field element */
+    .title-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+    .mb-3{
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 !important;
+        margin-top: var(--increment) !important;
+        background-color: var(--dark);
+        border-radius: .5rem;
+        padding: calc(2 * var(--increment));
+        padding-top: 0;
+    }
+    .mb-3 label{
+        display: flex;
+        align-items: center;
+        margin: 0;
+    }
+    .mb-3:not(.active) label{
+        color: var(--text-dark);
+    }
+    .mb-3.active label{
+        color: var(--text-superlight);
+    }
+    .mb-3 input{
+        height: 25px;
+    }
+    .mb-3>div{
+        flex: 1;
+    }
+
+    .mb-3:has(.grouped.child) .info{
+        margin-left: var(--padding); /*calc(var(--increment)*3);*/
+    }
+    .title{
+        color: var(--text-light);
+        font-size: 1.4rem;
+        margin-bottom: 0;
+        margin-left: calc(-2 * var(--increment));
+        margin-right: calc(2 * var(--increment));
+    }
+    .tier-0{
+        margin-left: calc(2 * var(--increment));
+    }
+    .tier-1{
+        margin-left: calc(4 * var(--increment));
+    }
+    .tier-2{
+        margin-left: calc(6 * var(--increment));
+    }
+    .tier-3{
+        margin-left: calc(8 * var(--increment));
+    }
+    .tier-4{
+        margin-left: calc(10 * var(--increment));
+    }
+
+    div.mb-3:has(.hidden){
+        display: none;
+    }
+    /* --------------------- */
+
+    .help-text{
+        font-size: .8rem;
+        color: #888;
+        flex-basis: 100%;
+        margin: 0;
+    }
+    .field-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        max-width: 400px;
+        height: 3rem;
+    }
+    .field-container>*{
+        width:100%;
+        margin: 0;
+    }
+>>>>>>> AIDT-154-feedback-on-yt-install-exe
     .selector{
         width: 100%;
         border: none;
@@ -134,13 +343,6 @@
     .selector:hover{
         background-color: aliceblue;
     }
-    .subsection-label{
-        color: var(--text-light);
-        border-top: 1px solid var(--text-mid);
-        border-bottom: 1px solid var(--text-mid);
-    }
-    div.mb-3:has(.hidden){
-        display: none;
-    }
+
 </style>
 {% endblock %}

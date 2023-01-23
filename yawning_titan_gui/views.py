@@ -1,112 +1,16 @@
 import json
-import shutil
-from collections import defaultdict
-from pathlib import Path
-from typing import Any, List, Optional
 
-import numpy as np
-from django.http import HttpRequest, JsonResponse
+from django.http import Http404, HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
 
-from yawning_titan import GAME_MODES_DIR
-from yawning_titan.config.game_config.game_mode_config import GameModeConfig
-from yawning_titan.db.doc_metadata import DocMetadata
-from yawning_titan.networks.network import Network
-from yawning_titan.networks.network_db import NetworkDB, NetworkSchema
-from yawning_titan_gui.forms import (
-    BlueAgentForm,
-    ConfigForm,
-    GameRulesForm,
-    MiscellaneousForm,
-    ObservationSpaceForm,
-    RedAgentForm,
-    ResetForm,
-    RewardsForm,
-    create_game_mode_from_form_sections,
-    subsection_labels,
-)
+from yawning_titan_gui.forms import ConfigForm, GameModeFormManager, GameModeSection
+from yawning_titan_gui.helpers import GameModeManager
 
-
-def game_mode_path(game_mode_filename: str):
-    """Generate path for game mode file."""
-    return (GAME_MODES_DIR / game_mode_filename).as_posix()
-
-
-def check_game_mode(game_mode_path: Path) -> bool:
-    """Check that a game mode path can construct a valid GameModeConfig object."""
-    try:
-        GameModeConfig.create_from_yaml(game_mode_path)
-        return True
-    except Exception:
-        return False
-
-
-def get_game_mode_file_paths(valid_only=False) -> List[Path]:
-    """
-    Select all game modes in the `GAME_MODES_DIR` matching criteria.
-
-    Args:
-        valid_only: whether to return only those game modes that pass the `GameModeConfig` validation check
-
-    Returns:
-        a list of file Path objects representing game modes.
-    """
-    game_modes = [
-        g for g in GAME_MODES_DIR.iterdir() if g.stem != "everything_off_config"
-    ]
-    if not valid_only:
-        return game_modes
-    return [g for g in game_modes if check_game_mode(g)]
-
-
-def next_key(_dict: dict, key: int) -> Any:
-    """
-    Get the next key in a dictionary.
-
-    Use key_index + 1 if there is a subsequent key
-    otherwise return first key.
-
-    Args:
-        _dict: a dictionary object
-        key: the current key
-
-    Returns:
-        the subsequent key in the dictionary after `key`
-    """
-    keys = list(_dict.keys())
-    key_index = keys.index(key)
-    if key_index < (len(keys) - 1):
-        return keys[key_index + 1]
-    return keys[0]
-
-
-def uniquify(path: Path) -> Path:
-    """
-    Create a unique file path from a proposed path by adding a numeral to the filename.
-
-    Transforms the input `Path` object by iteratively adding numerals to the end
-    of the filename until the proposed path does not exist.
-
-    Returns:
-        The transformed path object.
-
-    Examples:
-        >>> test.txt -> exists
-        >>> test(1).txt -> exists
-        >>> test(2).txt -> new path
-    """
-    filename = path.stem
-    extension = path.suffix
-    parent = path.parent
-    counter = 1
-
-    while path.exists():
-        path = parent / f"{filename}({counter}){extension}"
-        counter += 1
-    return path
-
+GameModeManager.load_game_modes(
+    info_only=True
+)  # pull all game modes from GAME_MODES_DIR
 
 default_sidebar = {
     "Documentation": ["Getting started", "Tutorials", "How to configure", "Code"],
@@ -125,61 +29,29 @@ default_toolbar = {
     "run-view": {"icon": "bi-play", "title": "Run game"},
 }
 
-forms = {
-    "red": {"form": RedAgentForm, "icon": "bi-lightning"},
-    "blue": {"form": BlueAgentForm, "icon": "bi-shield"},
-    "game_rules": {"form": GameRulesForm, "icon": "bi-clipboard"},
-    "observation_space": {"form": ObservationSpaceForm, "icon": "bi-binoculars"},
-    "rewards": {"form": RewardsForm, "icon": "bi-star"},
-    "reset": {"form": ResetForm, "icon": "bi-arrow-clockwise"},
-    "miscellaneous": {"form": MiscellaneousForm, "icon": "bi-brush"},
-}
-
-completed_game_modes = defaultdict(dict)
-
-protected_game_modes = [
-    "base_config",
-    "default_game_mode",
-    "default_new_game_mode",
-    "dcbo_config",
-    "low_skill_red_with_random_infection_perfect_detection",
-    "multiple_high_value_targets",
-]
-
-unfinished_game_modes = []
+protected_game_mode_filenames = ["base_config.yaml"]
 
 
-class OnLoadView(View):
-    """Inherit from this `django.views.View` to run additional code when a view is requested."""
-
-    def __init__(self, **kwargs: Any) -> None:
-        super().__init__(**kwargs)
-        global unfinished_game_modes
-        unfinished_game_modes = []
-
-
-class HomeView(OnLoadView):
+class HomeView(View):
     """Django page template for landing page."""
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args, **kwargs):
         """
         Handle page get requests.
 
-        Args:
-            request: the Django page `request` object containing the html data for `home.html` and the server GET / POST request bodies.
+        :param request: the Django page `request` object containing the html data for `home.html` and the server GET / POST request bodies.
         """
         return self.render_page(request)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args, **kwargs):
         """
         Handle page post requests.
 
-        Args:
-            request: the Django page `request` object containing the html data for `home.html` and the server GET / POST request bodies.
+        :param request: the Django page `request` object containing the html data for `home.html` and the server GET / POST request bodies.
         """
         return self.render_page(request)
 
-    def render_page(self, request):
+    def render_page(self, request: HttpRequest):
         """Process pythonic tags in home.html and return formatted page."""
         return render(
             request,
@@ -188,19 +60,18 @@ class HomeView(OnLoadView):
         )
 
 
-class DocsView(OnLoadView):
+class DocsView(View):
     """
     Django representation of home.html.
 
     implements 'get' and 'post' methods to handle page requests.
     """
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request: HttpRequest, *args, **kwargs):
         """
         Handle page get requests.
 
-        Args:
-            request: A Django `request` object that contains the data passed from
+        :param request: A Django `request` object that contains the data passed from
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
@@ -210,11 +81,10 @@ class DocsView(OnLoadView):
             {"sidebar": default_sidebar, "toolbar": default_toolbar},
         )
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args, **kwargs):
         """Handle page post requests.
 
-        Args:
-            request: A Django `request` object that contains the data passed from
+        :param request: A Django `request` object that contains the data passed from
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
@@ -431,106 +301,131 @@ class NodeEditor(View):
         )
 
 
-class GameModeConfigView(OnLoadView):
+
+
+
+class GameModesView(View):
+    """Django page template for game mode management."""
+
+    def get(self, request: HttpRequest, *args, **kwargs):
+        """
+        Handle page get requests.
+
+        :param: request: the Django page `request` object containing the html data for `game_modes.html` and the server GET / POST request bodies.
+        """
+        return render(
+            request,
+            "game_modes.html",
+            {"sidebar": default_sidebar, "game_modes": GameModeManager.game_modes},
+        )
+
+
+class GameModeConfigView(View):
     """Django page template for game mode creation and editing."""
 
     def get(
-        self, request, *args, game_mode_file: str = None, section: str = None, **kwargs
+        self,
+        request: HttpRequest,
+        *args,
+        game_mode_filename: str = None,
+        section_name: str = None,
+        **kwargs,
     ):
         """
         Handle page get requests.
 
-        Args:
-            request: the Django page `request` object containing the html data for `game_mode_config.html` and the server GET / POST request bodies.
-            game_mode_file: a game mode filename passed within the page url parameters
-            section: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
+        :param request: the Django page `request` object containing the html data for `game_mode_config.html` and the server GET / POST request bodies.
+        :param game_mode_filename: a game mode filename passed within the page url parameters
+        :param section_name: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
+
+        :return: Html string representing an instance of the`GameModeConfigView`
         """
-        game_mode_config = defaultdict(dict)
-        section = list(forms.keys())[0] if section is None else section
-
-        if game_mode_file is not None and not any(
-            g["filename"] == game_mode_file for g in unfinished_game_modes
-        ):
-            try:
-                game_mode = GameModeConfig.create_from_yaml(
-                    game_mode_path(game_mode_file)
+        if game_mode_filename is None:
+            raise (
+                Http404(
+                    f"Can't find game mode section {section_name} in game mode {game_mode_filename}"
                 )
-                game_mode_config = game_mode.to_dict()
-            except Exception:
-                pass
+            )
 
-        form = completed_game_modes[game_mode_file].get(
-            section, forms[section]["form"](initial=game_mode_config[section])
-        )  # get completed form if available
-        return self.render_page(request, form, section, game_mode_file)
+        section: GameModeSection = GameModeFormManager.get_section(
+            game_mode_filename, section_name
+        )
+
+        return self.render_page(request, section, game_mode_filename)
 
     def post(
-        self, request, *args, game_mode_file: str = None, section: str = None, **kwargs
+        self,
+        request: HttpRequest,
+        *args,
+        game_mode_filename: str = None,
+        section_name: str = None,
+        **kwargs,
     ):
         """
         Handle page post requests.
 
-        Args:
-            request: the Django page `request` object containing the html data for `game_mode_config.html` and the server GET / POST request bodies.
-            game_mode_file: a game mode filename passed within the page url parameters
-            section: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
-        """
-        section = list(forms.keys())[0] if section is None else section
-        form: ConfigForm = forms[section]["form"](request.POST)
+        :param request: the Django page `request` object containing the html data for `game_mode_config.html` and the server GET / POST request bodies.
+        :param game_mode_filename: a game mode filename passed within the page url parameters
+        :param section_name: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
 
-        if form.is_valid():
-            completed_game_modes[game_mode_file][section] = form
-            if len(completed_game_modes[game_mode_file].keys()) == len(forms):
-                create_game_mode_from_form_sections(
-                    completed_game_modes[game_mode_file], game_mode_file
-                )
-                completed_game_modes[game_mode_file] = {}
+        :return: Html string representing an instance of the`GameModeConfigView`
+        """
+        section: GameModeSection = GameModeFormManager.get_section(
+            game_mode_filename, section_name
+        )
+        game_mode_sections = GameModeFormManager.get_or_create_instance(
+            game_mode_filename
+        )
+
+        if section.config_class.validation.passed:
+            if section_name == list(game_mode_sections.keys())[
+                -1
+            ] and GameModeFormManager.check_game_mode_complete(game_mode_filename):
+                GameModeFormManager.save_as_game_mode(game_mode_filename)
                 return redirect("Manage game modes")
             return redirect(
-                "game mode config", game_mode_file, next_key(forms, section)
+                "game mode config",
+                game_mode_filename,
+                GameModeFormManager.get_next_section_name(
+                    game_mode_filename, section_name
+                ),
             )
-
-        return self.render_page(
-            request, form, section, game_mode_file, form.group_errors
-        )
+        return self.render_page(request, section, game_mode_filename)
 
     def render_page(
         self,
-        request,
-        form: ConfigForm,
-        section: str,
-        game_mode_file: str,
-        error_message: Optional[str] = None,
+        request: HttpRequest,
+        section: ConfigForm,
+        game_mode_filename: str,
     ):
         """
         Process pythonic tags in game_mode_config.html and return formatted page.
 
-        Args:
-            request: the Django page `request` object containing the html data and the server GET / POST request bodies.
-            game_mode_file: a game mode filename passed within the page url parameters
-            section: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
-            error_message: an optional error message string to be displayed in the `#error-message` html element
+        :param request: the Django page `request` object containing the html data and the server GET / POST request bodies.
+        :param game_mode_filename: a game mode filename passed within the page url parameters
+        :param section_name: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
+        :param error_message: an optional error message string to be displayed in the `#error-message` html element
+
+        :return: Html string representing an instance of the`GameModeConfigView`
         """
-        section = list(forms.keys())[0] if section is None else section
         return render(
             request,
             "game_mode_config.html",
             {
-                "sidebar": default_sidebar,
-                "toolbar": default_toolbar,
-                "forms": forms,
-                "form": form,
+                "sections": GameModeFormManager.get_or_create_instance(
+                    game_mode_filename
+                ),
                 "section": section,
-                "error_message": error_message,
-                "game_mode_file": game_mode_file,
-                "protected": Path(game_mode_file).stem in protected_game_modes,
-                "completed_sections": completed_game_modes[game_mode_file].keys(),
-                "subsection_labels": subsection_labels.get(section, {}),
+                "current_section_name": section.name,
+                "last": False,
+                "sidebar": default_sidebar,
+                "game_mode_filename": game_mode_filename,
+                "protected": game_mode_filename in protected_game_mode_filenames,
             },
         )
 
 
-def config_file_manager(request) -> JsonResponse:
+def config_file_manager(request: HttpRequest) -> JsonResponse:
     """
     Create, edit, delete config yaml files.
 
