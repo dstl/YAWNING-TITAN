@@ -12,7 +12,7 @@ import yaml
 from stable_baselines3.common.env_checker import check_env
 from yaml.loader import SafeLoader
 
-from tests import TEST_CONFIG_PATH
+from tests import TEST_CONFIG_PATH_OLD
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 TOLERANCE = 0.1
@@ -41,21 +41,21 @@ def test_input_validation(generate_generic_env_test_reqs):
     """Test that incorrect/broken configuration files raise errors."""
     with pytest.raises(ValueError):
         _, _ = generate_generic_env_test_reqs(
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_broken_1.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_broken_1.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
             entry_nodes=["0", "1", "2"],
         )
 
         _, _ = generate_generic_env_test_reqs(
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_broken_2.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_broken_2.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
             entry_nodes=["0", "1", "2"],
         )
 
         _, _ = generate_generic_env_test_reqs(
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_broken_3.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_broken_3.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
             entry_nodes=["0", "1", "2"],
@@ -64,7 +64,7 @@ def test_input_validation(generate_generic_env_test_reqs):
         # error thrown because choose_high_value_nodes_furthest_away_from_entry is True and
         # the high value nodes is manually provided
         _, _ = generate_generic_env_test_reqs(
-            os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
             high_value_nodes=["0"],
@@ -73,7 +73,7 @@ def test_input_validation(generate_generic_env_test_reqs):
 
         # error thrown because there are more high value nodes than there are nodes in the network
         _, _ = generate_generic_env_test_reqs(
-            os.path.join(TEST_CONFIG_PATH, "too_many_high_value_nodes.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "too_many_high_value_nodes.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
             entry_nodes=["0", "1", "2"],
@@ -83,7 +83,7 @@ def test_input_validation(generate_generic_env_test_reqs):
 def test_network_interface(generate_generic_env_test_reqs):
     """Test the network interface class and associated methods work as intended."""
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        os.path.join(TEST_CONFIG_PATH, "everything_guaranteed.yaml"),
+        os.path.join(TEST_CONFIG_PATH_OLD, "everything_guaranteed.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
         entry_nodes=["0", "1", "2"],
@@ -149,7 +149,7 @@ def test_natural_spreading(generate_generic_env_test_reqs):
     # generate an env
     n_nodes = 100
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        os.path.join(TEST_CONFIG_PATH, "spreading_config.yaml"),
+        os.path.join(TEST_CONFIG_PATH_OLD, "spreading_config.yaml"),
         net_creator_type="mesh",
         n_nodes=n_nodes,
         entry_nodes=["0", "1", "2"],
@@ -171,7 +171,7 @@ def test_natural_spreading(generate_generic_env_test_reqs):
 def test_env_reset(generate_generic_env_test_reqs):
     """Test environment resets clean up properly."""
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
+        os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
         entry_nodes=["0", "1", "2"],
@@ -220,7 +220,7 @@ def test_new_high_value_node(generate_generic_env_test_reqs):
     """Test the high value node gaol mechanic - focus on selection."""
     # check that a new high value node is being chosen
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        os.path.join(TEST_CONFIG_PATH, "new_high_value_node.yaml"),
+        os.path.join(TEST_CONFIG_PATH_OLD, "new_high_value_node.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
         entry_nodes=["0", "1", "2"],
@@ -252,7 +252,7 @@ def test_new_high_value_node(generate_generic_env_test_reqs):
 def test_high_value_node_passed_into_network_interface(generate_generic_env_test_reqs):
     """Test the high value node gaol mechanic - manually passed to ."""
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        os.path.join(TEST_CONFIG_PATH, "high_value_node_provided.yaml"),
+        os.path.join(TEST_CONFIG_PATH_OLD, "high_value_node_provided.yaml"),
         net_creator_type="mesh",
         n_nodes=30,
         high_value_nodes=["15", "16"],
@@ -292,7 +292,7 @@ def test_high_value_node_and_entry_nodes_matching(generate_generic_env_test_reqs
     """Test the high value node gaol mechanic - manually passed to ."""
     with warnings.catch_warnings(record=True) as w:
         env: GenericNetworkEnv = generate_generic_env_test_reqs(
-            os.path.join(TEST_CONFIG_PATH, "high_value_node_provided.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "high_value_node_provided.yaml"),
             net_creator_type="mesh",
             n_nodes=30,
             entry_nodes=["0", "15"],
@@ -333,7 +333,7 @@ def test_high_value_node_and_entry_nodes_matching(generate_generic_env_test_reqs
 def test_new_entry_nodes(generate_generic_env_test_reqs):
     """Test the selection of entry nodes and validate they are correct."""
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        os.path.join(TEST_CONFIG_PATH, "new_entry_nodes.yaml"),
+        os.path.join(TEST_CONFIG_PATH_OLD, "new_entry_nodes.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
         entry_nodes=["0", "1", "2"],
@@ -367,7 +367,7 @@ def test_new_vulnerabilities(generate_generic_env_test_reqs):
     """Test that new vulnerabilities are chosen at each reset if activated within configuration."""
     # check that new vulnerabilities are being chosen (randomly)
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        os.path.join(TEST_CONFIG_PATH, "new_high_value_node.yaml"),
+        os.path.join(TEST_CONFIG_PATH_OLD, "new_high_value_node.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
         entry_nodes=["0", "1", "2"],
@@ -431,39 +431,49 @@ class RandomGen:
     ("path", "creator_type", "num_nodes", "timesteps"),
     [
         (
-            os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
             "18node",
             18,
             N_TIME_STEPS,
         ),
-        (os.path.join(TEST_CONFIG_PATH, "base_config.yaml"), "mesh", 50, N_TIME_STEPS),
-        (os.path.join(TEST_CONFIG_PATH, "base_config.yaml"), "mesh", 50, N_TIME_STEPS),
         (
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
             "mesh",
             50,
             N_TIME_STEPS,
         ),
         (
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
+            "mesh",
+            50,
+            N_TIME_STEPS,
+        ),
+        (
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_1.yaml"),
+            "mesh",
+            50,
+            N_TIME_STEPS,
+        ),
+        (
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_2.yaml"),
             "mesh",
             100,
             N_TIME_STEPS,
         ),
         (
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_3.yaml"),
             "mesh",
             250,
             N_TIME_STEPS,
         ),
         (
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_4.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_4.yaml"),
             "mesh",
             5,
             N_TIME_STEPS,
         ),
         (
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_5.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_5.yaml"),
             "mesh",
             24,
             N_TIME_STEPS,

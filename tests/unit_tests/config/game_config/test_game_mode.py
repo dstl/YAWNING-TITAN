@@ -5,7 +5,7 @@ from uuid import uuid4
 import pytest
 import yaml
 
-from tests import TEST_CONFIG_PATH
+from tests import TEST_CONFIG_PATH_NEW, TEST_CONFIG_PATH_OLD
 from tests.unit_tests.config import (
     get_default_config_dict,
     get_default_config_dict_legacy,
@@ -183,12 +183,12 @@ def test_default_game_mode_from_legacy(default_game_mode: GameMode):
 
 def test_everything_changed_game_mode_from_legacy():
     """Create a game mode instance using the everything changed config file to ensure all items can be updated."""
-    with open(TEST_CONFIG_PATH / "new/everything_changed.yaml") as f:
+    with open(TEST_CONFIG_PATH_NEW / "everything_changed.yaml") as f:
         config_dict = yaml.safe_load(f)
 
     game_mode = GameMode()
     game_mode.set_from_yaml(
-        (TEST_CONFIG_PATH / "everything_changed.yaml").as_posix(), legacy=True
+        (TEST_CONFIG_PATH_OLD / "everything_changed.yaml").as_posix(), legacy=True
     )
 
     d = game_mode.to_dict(values_only=True)

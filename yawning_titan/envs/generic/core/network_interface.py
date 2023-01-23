@@ -18,7 +18,7 @@ from numpy.random import choice
 
 if TYPE_CHECKING:
     from yawning_titan.config.game_config.game_mode import GameMode
-    from yawning_titan.networks.new_network import Network
+    from yawning_titan.networks.network import Network
 
 
 class NetworkInterface:
