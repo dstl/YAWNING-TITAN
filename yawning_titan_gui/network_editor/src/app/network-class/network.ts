@@ -16,6 +16,19 @@ export class Network {
   }
 
   /**
+   * Get node properties via id
+   * @param id
+   * @returns
+   */
+  public getNodeById(id: string): Node {
+    if (!this.nodeList || !this.nodeList.length) {
+      return null;
+    }
+
+    return this.nodeList.find(node => node.uuid == id);
+  }
+
+  /**
    * Load the network details from the JSON object
    * @param json
    * @returns
@@ -169,6 +182,11 @@ export class Network {
    */
   public editNodeDetails(uuid: string, details: Node): void {
     const matchingNode = this.nodeList.findIndex(node => node.uuid === uuid);
+
+    // find index returns -1 if matching node is not found
+    if (matchingNode < 0) {
+      return;
+    }
 
     this.nodeList[matchingNode] = details;
   }

@@ -11,7 +11,7 @@ describe('CytoscapeService', () => {
   beforeEach(() => {
     service = new CytoscapeService();
 
-    service['network'] = new Network();
+    service['_network'] = new Network();
   });
 
   it('should be created', () => {
@@ -27,8 +27,8 @@ describe('CytoscapeService', () => {
 
       service.loadNetwork(network);
 
-      expect(service.cytoscapeObj.nodes().length).toBe(2);
-      expect(service.cytoscapeObj.edges().length).toBe(1);
+      expect(service['cy'].nodes().length).toBe(2);
+      expect(service['cy'].edges().length).toBe(1);
     });
   });
 
@@ -41,8 +41,8 @@ describe('CytoscapeService', () => {
 
       service.loadNetwork(network);
 
-      expect(service.cytoscapeObj.nodes().length).toBe(2);
-      expect(service.cytoscapeObj.edges().length).toBe(1);
+      expect(service['cy'].nodes().length).toBe(2);
+      expect(service['cy'].edges().length).toBe(1);
 
       // select edge
       service['selectedElement'] = {
@@ -52,10 +52,10 @@ describe('CytoscapeService', () => {
 
       service.deleteItem();
 
-      expect(service.cytoscapeObj.nodes().length).toBe(2);
+      expect(service['cy'].nodes().length).toBe(2);
       expect(service['network'].edgeList.length).toBe(0);
       // possibly a bug in cytoscape
-      // expect(service.cytoscapeObj.edges().length).toBe(0);
+      // expect(service['cy'].edges().length).toBe(0);
     });
 
     it('should delete edges connected to the nodes', () => {
@@ -66,8 +66,8 @@ describe('CytoscapeService', () => {
 
       service.loadNetwork(network);
 
-      expect(service.cytoscapeObj.nodes().length).toBe(2);
-      expect(service.cytoscapeObj.edges().length).toBe(1);
+      expect(service['cy'].nodes().length).toBe(2);
+      expect(service['cy'].edges().length).toBe(1);
 
       // select edge
       service['selectedElement'] = {
@@ -77,8 +77,8 @@ describe('CytoscapeService', () => {
 
       service.deleteItem();
 
-      expect(service.cytoscapeObj.nodes().length).toBe(1);
-      expect(service.cytoscapeObj.edges().length).toBe(0);
+      expect(service['cy'].nodes().length).toBe(1);
+      expect(service['cy'].edges().length).toBe(0);
     });
   });
 

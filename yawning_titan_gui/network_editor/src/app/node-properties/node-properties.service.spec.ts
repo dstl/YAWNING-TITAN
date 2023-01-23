@@ -1,40 +1,18 @@
 import { fakeAsync, tick } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
+import { Network } from '../network-class/network';
 
-import { PropertiesEditorService } from './node-properties.service';
+import { NodePropertiesService } from './node-properties.service';
 
-describe('PropertiesEditorService', () => {
-  let service: PropertiesEditorService;
-
-  const stubNodeData = {
-    name: 'name',
-    high_value_node: false,
-    entry_node: false,
-  }
-
-  const stubNode = {
-    id: () => 'id',
-    data: (key: string) => stubNodeData[`${key}`],
-    position: () => {
-      return {
-        x: 0,
-        y: 0
-      }
-    }
-  }
+describe('NodePropertiesService', () => {
+  let service: NodePropertiesService;
 
   let cytoscapeService: any = {
-    cytoscapeObj: {
-      nodes: () => {
-        return {
-          getElementById: () => stubNode
-        }
-      }
-    }
+    network: new Network()
   }
 
   beforeEach(() => {
-    service = new PropertiesEditorService(cytoscapeService, new FormBuilder())
+    service = new NodePropertiesService(cytoscapeService, new FormBuilder())
   });
 
   it('should be created', () => {
@@ -43,13 +21,13 @@ describe('PropertiesEditorService', () => {
 
   describe('METHOD: loadDetails', () => {
     it('should update the nodeDetailsSubject with the details of the given node', fakeAsync(() => {
-      service.nodeDetailsSubject.subscribe(res => {
-        expect(res.uuid).toBe('id');
-        expect(res.name).toBe('name');
-        expect(res.high_value_node).toBeFalsy();
-        expect(res.entry_node).toBeFalsy();
-        expect(res.x_pos).toBe(0);
-        expect(res.y_pos).toBe(0);
+      service.nodePropertiesFormGroupSubject.subscribe((res: any) => {
+        expect(res.get('uuid').value).toBe('id');
+        expect(res.get('name').value).toBe('name');
+        expect(res.get('high_value_node').value).toBeFalsy();
+        expect(res.get('entry_node').value).toBeFalsy();
+        expect(res.get('x_pos').value).toBe(0);
+        expect(res.get('y_pos').value).toBe(0);
       });
 
       service.loadDetails('id');

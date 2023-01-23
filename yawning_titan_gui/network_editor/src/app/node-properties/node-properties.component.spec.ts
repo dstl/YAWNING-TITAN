@@ -3,13 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 
 import { NodePropertiesComponent } from './node-properties.component';
-import { PropertiesEditorService } from './node-properties.service';
+import { NodePropertiesService } from './node-properties.service';
 
 describe('NodePropertiesComponent', () => {
   let component: NodePropertiesComponent;
   let fixture: ComponentFixture<NodePropertiesComponent>;
 
-  let propertiesEditorServiceStub: any = {
+  let NodePropertiesServiceStub: any = {
     loadDetails: () => { },
     nodePropertiesFormGroupSubject: new Subject()
   }
@@ -18,7 +18,7 @@ describe('NodePropertiesComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [NodePropertiesComponent],
       providers: [
-        { provide: PropertiesEditorService, useValue: propertiesEditorServiceStub }
+        { provide: NodePropertiesService, useValue: NodePropertiesServiceStub }
       ],
       schemas: [
         NO_ERRORS_SCHEMA
@@ -37,7 +37,7 @@ describe('NodePropertiesComponent', () => {
 
   describe('ngOnChanges', () => {
     it('should load the details of the node if it was not the same as previous', () => {
-      const spy = spyOn(component['propertiesEditorService'], 'loadDetails');
+      const spy = spyOn(component['NodePropertiesService'], 'loadDetails');
       const changeObj = {
         nodeId: {
           currentValue: 'a',
@@ -48,7 +48,7 @@ describe('NodePropertiesComponent', () => {
       expect(spy).toHaveBeenCalled();
     });
     it('should not load the details of the node if it was the same as previous', () => {
-      const spy = spyOn(component['propertiesEditorService'], 'loadDetails');
+      const spy = spyOn(component['NodePropertiesService'], 'loadDetails');
       const changeObj = {
         nodeId: {
           currentValue: 'a',

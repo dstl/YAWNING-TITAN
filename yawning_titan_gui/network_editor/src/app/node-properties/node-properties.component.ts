@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { PropertiesEditorService } from './node-properties.service';
+import { NodePropertiesService } from './node-properties.service';
 
 @Component({
   selector: 'app-node-properties',
@@ -19,12 +19,12 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
   private vulnerabilityChangeListener: Subscription;
 
   constructor(
-    private propertiesEditorService: PropertiesEditorService
+    private NodePropertiesService: NodePropertiesService
   ) {
   }
 
   ngOnInit() {
-    this.propertiesEditorService.nodePropertiesFormGroupSubject.subscribe(res => {
+    this.NodePropertiesService.nodePropertiesFormGroupSubject.subscribe(res => {
       this.formGroup = res;
 
       this.vulnerabilityVal = this.formGroup.get('vulnerability').value;
@@ -43,7 +43,7 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     // load the details of the new selected node
-    this.propertiesEditorService.loadDetails(this.nodeId);
+    this.NodePropertiesService.loadDetails(this.nodeId);
   }
 
   ngOnDestroy(): void {
@@ -60,6 +60,6 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
    * Persists the node properties that the user has changed
    */
   public updateNode(): void {
-    this.propertiesEditorService.updateNodeProperties();
+    this.NodePropertiesService.updateNodeProperties();
   }
 }
