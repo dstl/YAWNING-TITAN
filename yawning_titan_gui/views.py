@@ -118,6 +118,13 @@ default_sidebar = {
     "About": ["Contributors", "Report bug", "FAQ"],
 }
 
+default_toolbar = {
+    "game-mode-set": {"icon": "bi-gear", "title": "Game mode config"},
+    "network-set": {"icon": "bi-diagram-2", "title": "Network config"},
+    "run-config-set": {"icon": "bi-collection-play", "title": "Run config"},
+    "run-view": {"icon": "bi-play", "title": "Run game"},
+}
+
 forms = {
     "red": {"form": RedAgentForm, "icon": "bi-lightning"},
     "blue": {"form": BlueAgentForm, "icon": "bi-shield"},
@@ -149,7 +156,6 @@ class OnLoadView(View):
         super().__init__(**kwargs)
         global unfinished_game_modes
         unfinished_game_modes = []
-        print("U", unfinished_game_modes)
 
 
 class HomeView(OnLoadView):
@@ -175,7 +181,11 @@ class HomeView(OnLoadView):
 
     def render_page(self, request):
         """Process pythonic tags in home.html and return formatted page."""
-        return render(request, "home.html", {"sidebar": default_sidebar})
+        return render(
+            request,
+            "home.html",
+            {"sidebar": default_sidebar, "toolbar": default_toolbar},
+        )
 
 
 class DocsView(OnLoadView):
@@ -194,7 +204,11 @@ class DocsView(OnLoadView):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        return render(request, "docs.html", {"sidebar": default_sidebar})
+        return render(
+            request,
+            "docs.html",
+            {"sidebar": default_sidebar, "toolbar": default_toolbar},
+        )
 
     def post(self, request, *args, **kwargs):
         """Handle page post requests.
@@ -204,7 +218,11 @@ class DocsView(OnLoadView):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        return render(request, "docs.html", {"sidebar": default_sidebar})
+        return render(
+            request,
+            "docs.html",
+            {"sidebar": default_sidebar, "toolbar": default_toolbar},
+        )
 
 
 class GameModesView(View):
@@ -222,6 +240,7 @@ class GameModesView(View):
             "game_modes.html",
             {
                 "sidebar": default_sidebar,
+                "toolbar": default_toolbar,
                 "game_modes": [
                     *unfinished_game_modes,
                     *[
@@ -284,6 +303,7 @@ class NetworksView(View):
             "networks.html",
             {
                 "sidebar": default_sidebar,
+                "toolbar": default_toolbar,
                 "networks": [network.doc_metadata for network in networks],
                 "range_bound_items": range_bound_items,
             },
@@ -341,6 +361,7 @@ class NodeEditor(View):
             "node_editor.html",
             {
                 "sidebar": default_sidebar,
+                "toolbar": default_toolbar,
                 "network_json": json.dumps(
                     {
                         "nodes": {
@@ -403,7 +424,11 @@ class NodeEditor(View):
         """
         print(request.body)
 
-        return render(request, "node_editor.html", {"sidebar": default_sidebar})
+        return render(
+            request,
+            "node_editor.html",
+            {"sidebar": default_sidebar, "toolbar": default_toolbar},
+        )
 
 
 class GameModeConfigView(OnLoadView):
@@ -491,11 +516,12 @@ class GameModeConfigView(OnLoadView):
             request,
             "game_mode_config.html",
             {
+                "sidebar": default_sidebar,
+                "toolbar": default_toolbar,
                 "forms": forms,
                 "form": form,
                 "section": section,
                 "error_message": error_message,
-                "sidebar": default_sidebar,
                 "game_mode_file": game_mode_file,
                 "protected": Path(game_mode_file).stem in protected_game_modes,
                 "completed_sections": completed_game_modes[game_mode_file].keys(),

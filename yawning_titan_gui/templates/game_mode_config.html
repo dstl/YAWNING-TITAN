@@ -60,17 +60,12 @@
 
 {% block style %}
 <style>
-    /* base elements */
-    input{
-        border: none !important;
-    }
-    input,select{
-        background-color: var(--light) !important;
-        color: var(--text-light) !important;
-        border: none !important;
-    }
+
 
     /* specific elements */
+    #main{
+        padding: var(--padding);
+    }
     #game-modes-return{
         font-size: 1.5rem;
     }
@@ -121,68 +116,13 @@
         margin: 0;
     }
 
-    /* config form elements */
-    .form-container{
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        min-height: 0;
-        max-height: 100%;
-    }
-    .form-container div, .form-container form{
-        min-height: 0;
-        max-height: 100%;
-    }
-    .config-form{
-        display: flex;
-        flex-direction: column;
-        flex: 1;
 
-    }
-    .config-form>.fields{
-        overflow-y: auto;
-        padding-right: var(--increment);
-    }
+
     .next-form{
         width: 100%;
     }
 
-    /* form layouts */
-    .mb-3{
-        display: flex;
-        flex-wrap: wrap;
-        margin: 3px;
-    }
-    .mb-3 label{
-        display: flex;
-        align-items: center;
-        margin: 0;
-    }
-    .mb-3 input{
-        height: 25px;
-    }
-    .mb-3>div{
-        flex: 1;
-    }
 
-    .mb-3:has(.grouped.child) .info{
-        margin-left: var(--padding); /*calc(var(--increment)*3);*/
-    }
-
-    .help-text{
-        font-size: .8rem;
-        color: #888;
-        flex-basis: 100%;
-        margin: 0;
-    }
-    .field-container{
-        max-width: 400px;
-        height: 60px;
-    }
-    .field-container>*{
-        width:100%;
-        margin: 0;
-    }
     .selector{
         width: 100%;
         border: none;

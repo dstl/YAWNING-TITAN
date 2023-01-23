@@ -1,0 +1,56 @@
+
+.list-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: calc(var(--increment) * 2);
+    padding: calc(var(--increment) * 2);
+    border-radius: .5rem;
+    background-color: var(--mid);
+    box-shadow: rgba(181, 181, 181, 0.15) 1.95px 1.95px 2.6px;
+    cursor: pointer;
+    box-sizing: border-box;
+    border: 1px solid orange;
+}
+.list-item.complete{
+    border: 1px solid var(--primary);
+}
+.list-item:hover .icon:has(.bi-check-lg),.list-item.selected .icon:has(.bi-check-lg){
+    background-color: var(--text-mid);
+}
+.list-item:hover .bi-check-lg,.list-item.selected .bi-check-lg{
+    color: lawngreen;
+}
+.list-item .icon:hover>.bi-trash3{
+    color: red;
+}
+.list-item .icon:hover>.bi-pencil{
+    color: lawngreen;
+}
+.list-item>.icons{
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.list-item>.contents{
+    min-width: 0;
+    flex: 1;
+    margin-right: var(--increment);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+.list-item>.contents>*{
+    min-width: 0;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
