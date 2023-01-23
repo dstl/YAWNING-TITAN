@@ -286,7 +286,7 @@ class NetworkDB:
             uuid = network["_doc_metadata"]["uuid"]
             name = network["_doc_metadata"]["name"]
 
-            # Get the matching network from the  networks db
+            # Get the matching network from the networks db
             db_network = self.get(uuid)
 
             # If the network doesn't match the default, or it doesn't exist,
@@ -298,7 +298,6 @@ class NetworkDB:
                 )
             else:
                 reset = True
-
             if reset:
                 self._db.db.upsert(network, DocMetadataSchema.UUID == uuid)
                 _LOGGER.info(
