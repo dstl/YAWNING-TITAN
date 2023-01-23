@@ -1,0 +1,143 @@
+# This file contains an example config for the generic network environment.
+
+red:
+  agent_attack:
+    ignores_defences: False
+    always_succeeds: False
+    skill:
+      use: True
+      value: 0.5
+    attack_from:
+      only_main_red_node: False
+      any_red_node: True
+  action_set:
+    spread:
+      use: False
+      likelihood: 1
+      chance: 0.1
+    random_infect:
+      use: False
+      likelihood: 1
+      chance: 0.1
+    move:
+      use: False
+      likelihood: 1
+    basic_attack:
+      use: True
+      likelihood: 2
+    do_nothing:
+      use: True
+      likelihood: 1
+    zero_day:
+      use: True
+      start_amount: 1
+      days_required: 4
+  natural_spreading:
+    capable: True
+    chance:
+      to_connected_node: 0.05
+      to_unconnected_node: 0
+  target_mechanism:
+    random: True
+    prioritise_connected_nodes: False
+    prioritise_unconnected_nodes: False
+    prioritise_vulnerable_nodes: False
+    prioritise_resilient_nodes: False
+    target_specific_node:
+      use: False
+      target:
+      always_choose_shortest_distance: True
+
+blue:
+  action_set:
+    restore_node: True
+    scan: True
+    isolate_node: False
+    reconnect_node: False
+    reduce_vulnerability: False
+    do_nothing: False
+    make_node_safe:
+      use: True
+      increases_vulnerability: False
+      gives_random_vulnerability: False
+      vulnerability_change: 0.4
+    deceptive_nodes:
+      use: False
+      max_number: 2
+      new_node_on_relocate: True
+  intrusion_discovery_chance:
+    immediate:
+      standard_node: 0.5
+      deceptive_node: 1
+    on_scan:
+      standard_node: 1
+      deceptive_node: 1
+  attack_discovery:
+    failed_attacks:
+      use: True
+      chance:
+        standard_node: 1
+        deceptive_node: 1
+    succeeded_attacks_known_compromise:
+      use: True
+      chance:
+        standard_node: 1
+        deceptive_node: 1
+    succeeded_attacks_unknown_compromise:
+      use: True
+      chance:
+        standard_node: 1
+        deceptive_node: 1
+
+game_rules:
+  grace_period_length: 0
+  max_steps: 1000
+  network_compatibility:
+    node_count:
+      max:
+      min: 18
+      restrict: False
+    entry_node_count:
+      max:
+      min:
+      restrict: false
+    high_value_node_count:
+      max:
+      min:
+      restrict: false
+  blue_loss_condition:
+    all_nodes_lost: False
+    high_value_node_lost: True
+    target_node_lost: False
+    n_percent_nodes_lost:
+      use: False
+      value: 0.8
+
+blue_can_observe:
+  compromised_status: True
+  vulnerabilities: True
+  node_connections: True
+  average_vulnerability: False
+  graph_connectivity: True
+  attacking_nodes: True
+  attacked_nodes: True
+  special_nodes: True
+  red_agent_skill: True
+
+
+on_reset:
+  randomise_vulnerabilities: False
+  choose_new_high_value_nodes: True
+  choose_new_entry_nodes: True
+
+rewards:
+  for_loss: -100
+  for_reaching_max_steps: 100
+  end_rewards_are_multiplied_by_end_state: True
+  reduce_negative_rewards_for_closer_fails: True
+  function: "standard_rewards"
+
+
+miscellaneous:
+  output_timestep_data_to_json: False
+  random_seed:
