@@ -1,8 +1,10 @@
 venv/
 .idea/
+.vscode/
 *.egg-info
 dist/
 build/
+yawning_titan_gui/network_editor/node_modules
 logs/*
 !logs/.gitkeep
 *__pycache__
