@@ -4,8 +4,14 @@
 
 {% block scripts %}
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<<<<<<< HEAD
 <link rel="stylesheet" href="{% static 'dist/styles.css' %}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{% static 'dist/styles.css' %}">
+=======
+
+<link rel="stylesheet" href="{% static 'dist/styles.css' %}" media="print" onload="this.media='all'">
+<!-- <link rel="stylesheet" href="{% static 'dist/styles.css' %}"> -->
+>>>>>>> AIDT-154-feedback-on-yt-install-exe
 
 <script src="{% static 'dist/runtime.js' %}" type="module"></script>
 <script src="{% static 'dist/polyfills.js' %}" type="module"></script>
@@ -43,6 +49,7 @@
 {% endblock %}
 
 {% block main %}
+<<<<<<< HEAD
 <app-root></app-root>
 {% endblock %}
 
@@ -84,5 +91,48 @@
       display: flex;
       font-family: Arial, Helvetica, sans-serif
     }
+=======
+    <app-root></app-root>
+{% endblock %}
+
+{% block style %}
+<style type="text/css">
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialicons/v139/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+html {
+    display: flex;
+    flex: 1;
+    height: 100%
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    font-family: Arial, Helvetica, sans-serif
+}
+>>>>>>> AIDT-154-feedback-on-yt-install-exe
 </style>
 {% endblock %}
