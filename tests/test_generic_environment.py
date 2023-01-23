@@ -2,6 +2,7 @@
 import os
 import random
 import warnings
+from collections import defaultdict
 from typing import Dict
 
 import networkx as nx
@@ -11,7 +12,7 @@ import yaml
 from stable_baselines3.common.env_checker import check_env
 from yaml.loader import SafeLoader
 
-from tests import TEST_CONFIG_PATH
+from tests import TEST_CONFIG_PATH_OLD
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 TOLERANCE = 0.1
@@ -40,21 +41,21 @@ def test_input_validation(generate_generic_env_test_reqs):
     """Test that incorrect/broken configuration files raise errors."""
     with pytest.raises(ValueError):
         _, _ = generate_generic_env_test_reqs(
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_broken_1.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_broken_1.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
             entry_nodes=["0", "1", "2"],
         )
 
         _, _ = generate_generic_env_test_reqs(
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_broken_2.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_broken_2.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
             entry_nodes=["0", "1", "2"],
         )
 
         _, _ = generate_generic_env_test_reqs(
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_broken_3.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_broken_3.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
             entry_nodes=["0", "1", "2"],
@@ -63,7 +64,7 @@ def test_input_validation(generate_generic_env_test_reqs):
         # error thrown because choose_high_value_nodes_furthest_away_from_entry is True and
         # the high value nodes is manually provided
         _, _ = generate_generic_env_test_reqs(
-            os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
             high_value_nodes=["0"],
@@ -72,7 +73,7 @@ def test_input_validation(generate_generic_env_test_reqs):
 
         # error thrown because there are more high value nodes than there are nodes in the network
         _, _ = generate_generic_env_test_reqs(
-            os.path.join(TEST_CONFIG_PATH, "too_many_high_value_nodes.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "too_many_high_value_nodes.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
             entry_nodes=["0", "1", "2"],
@@ -82,7 +83,7 @@ def test_input_validation(generate_generic_env_test_reqs):
 def test_network_interface(generate_generic_env_test_reqs):
     """Test the network interface class and associated methods work as intended."""
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        os.path.join(TEST_CONFIG_PATH, "everything_guaranteed.yaml"),
+        os.path.join(TEST_CONFIG_PATH_OLD, "everything_guaranteed.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
         entry_nodes=["0", "1", "2"],
@@ -148,7 +149,7 @@ def test_natural_spreading(generate_generic_env_test_reqs):
     # generate an env
     n_nodes = 100
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        os.path.join(TEST_CONFIG_PATH, "spreading_config.yaml"),
+        os.path.join(TEST_CONFIG_PATH_OLD, "spreading_config.yaml"),
         net_creator_type="mesh",
         n_nodes=n_nodes,
         entry_nodes=["0", "1", "2"],
@@ -170,7 +171,7 @@ def test_natural_spreading(generate_generic_env_test_reqs):
 def test_env_reset(generate_generic_env_test_reqs):
     """Test environment resets clean up properly."""
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
+        os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
         entry_nodes=["0", "1", "2"],
@@ -219,14 +220,14 @@ def test_new_high_value_node(generate_generic_env_test_reqs):
     """Test the high value node gaol mechanic - focus on selection."""
     # check that a new high value node is being chosen
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        os.path.join(TEST_CONFIG_PATH, "new_high_value_node.yaml"),
+        os.path.join(TEST_CONFIG_PATH_OLD, "new_high_value_node.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
         entry_nodes=["0", "1", "2"],
     )
     check_env(env, warn=True)
     env.reset()
-    nodes = {}
+    nodes = defaultdict(lambda: 0)
     for i in range(0, N_TIME_STEPS_LONG):
         obs, rew, done, notes = env.step(
             random.randint(0, env.BLUE.get_number_of_actions() - 1)
@@ -236,10 +237,7 @@ def test_new_high_value_node(generate_generic_env_test_reqs):
 
             # add 1 to each node that gets chosen as a high value node
             for node in hvn:
-                if node not in nodes:
-                    nodes[node] = 1
-                else:
-                    nodes[node] += 1
+                nodes[node] += 1
 
             env.reset()
     # check that entry nodes cannot be chosen
@@ -254,7 +252,7 @@ def test_new_high_value_node(generate_generic_env_test_reqs):
 def test_high_value_node_passed_into_network_interface(generate_generic_env_test_reqs):
     """Test the high value node gaol mechanic - manually passed to ."""
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        os.path.join(TEST_CONFIG_PATH, "high_value_node_provided.yaml"),
+        os.path.join(TEST_CONFIG_PATH_OLD, "high_value_node_provided.yaml"),
         net_creator_type="mesh",
         n_nodes=30,
         high_value_nodes=["15", "16"],
@@ -294,7 +292,7 @@ def test_high_value_node_and_entry_nodes_matching(generate_generic_env_test_reqs
     """Test the high value node gaol mechanic - manually passed to ."""
     with warnings.catch_warnings(record=True) as w:
         env: GenericNetworkEnv = generate_generic_env_test_reqs(
-            os.path.join(TEST_CONFIG_PATH, "high_value_node_provided.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "high_value_node_provided.yaml"),
             net_creator_type="mesh",
             n_nodes=30,
             entry_nodes=["0", "15"],
@@ -335,7 +333,7 @@ def test_high_value_node_and_entry_nodes_matching(generate_generic_env_test_reqs
 def test_new_entry_nodes(generate_generic_env_test_reqs):
     """Test the selection of entry nodes and validate they are correct."""
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        os.path.join(TEST_CONFIG_PATH, "new_entry_nodes.yaml"),
+        os.path.join(TEST_CONFIG_PATH_OLD, "new_entry_nodes.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
         entry_nodes=["0", "1", "2"],
@@ -369,7 +367,7 @@ def test_new_vulnerabilities(generate_generic_env_test_reqs):
     """Test that new vulnerabilities are chosen at each reset if activated within configuration."""
     # check that new vulnerabilities are being chosen (randomly)
     env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        os.path.join(TEST_CONFIG_PATH, "new_high_value_node.yaml"),
+        os.path.join(TEST_CONFIG_PATH_OLD, "new_high_value_node.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
         entry_nodes=["0", "1", "2"],
@@ -390,13 +388,9 @@ def test_new_vulnerabilities(generate_generic_env_test_reqs):
             env.reset()
     # calculate the average vulnerability
     vulnerabilities = (vulnerabilities / 15) / resets
-    vuln_aim = (
-        env.network_interface.game_mode.game_rules.node_vulnerability_lower_bound
-        + 0.5
-        * (
-            env.network_interface.game_mode.game_rules.node_vulnerability_upper_bound
-            - env.network_interface.game_mode.game_rules.node_vulnerability_lower_bound
-        )
+    vuln_aim = env.network_interface.network.vulnerabilities.min.value + 0.5 * (
+        env.network_interface.network.vulnerabilities.max.value
+        - env.network_interface.network.vulnerabilities.min.value
     )
     # ensure the average vulnerability is half way between the upper and lower range
     assert (vuln_aim - 0.01 * vuln_aim) < vulnerabilities < (vuln_aim + 0.01 * vuln_aim)
@@ -437,39 +431,49 @@ class RandomGen:
     ("path", "creator_type", "num_nodes", "timesteps"),
     [
         (
-            os.path.join(TEST_CONFIG_PATH, "base_config.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
             "18node",
             18,
             N_TIME_STEPS,
         ),
-        (os.path.join(TEST_CONFIG_PATH, "base_config.yaml"), "mesh", 50, N_TIME_STEPS),
-        (os.path.join(TEST_CONFIG_PATH, "base_config.yaml"), "mesh", 50, N_TIME_STEPS),
         (
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_1.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
             "mesh",
             50,
             N_TIME_STEPS,
         ),
         (
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_2.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
+            "mesh",
+            50,
+            N_TIME_STEPS,
+        ),
+        (
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_1.yaml"),
+            "mesh",
+            50,
+            N_TIME_STEPS,
+        ),
+        (
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_2.yaml"),
             "mesh",
             100,
             N_TIME_STEPS,
         ),
         (
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_3.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_3.yaml"),
             "mesh",
             250,
             N_TIME_STEPS,
         ),
         (
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_4.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_4.yaml"),
             "mesh",
             5,
             N_TIME_STEPS,
         ),
         (
-            os.path.join(TEST_CONFIG_PATH, "red_config_test_5.yaml"),
+            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_5.yaml"),
             "mesh",
             24,
             N_TIME_STEPS,
@@ -553,7 +557,7 @@ def test_generic_env(
         # random high value node placement
         if not done:
             if (
-                not env.network_interface.game_mode.game_rules.choose_high_value_nodes_placement_at_random
+                not env.network_interface.network.high_value_nodes.random_placement.use.value
             ):
                 assert (
                     env.network_interface.get_high_value_nodes() == prev_high_value
@@ -592,7 +596,7 @@ def test_generic_env(
         # only use the set number of deceptive nodes
         assert (
             sum("d" in s for s in env.network_interface.get_nodes())
-            <= env.network_interface.game_mode.blue.max_number_deceptive_nodes
+            <= env.network_interface.game_mode.blue.action_set.deceptive_nodes.max_number.value
         )
         # cannot place too many deceptive nodes
         assert (
@@ -600,7 +604,7 @@ def test_generic_env(
             <= env.network_interface.get_number_base_edges()
             <= (
                 initial_edges
-                + env.network_interface.game_mode.blue.max_number_deceptive_nodes
+                + env.network_interface.game_mode.blue.action_set.deceptive_nodes.max_number.value
             )
         )
 
@@ -608,7 +612,7 @@ def test_generic_env(
         adj_matrix = nx.to_numpy_array(env.network_interface.current_graph)
         open_spaces = env.network_interface.get_number_unused_deceptive_nodes()
         adj_matrix = np.pad(adj_matrix, (0, open_spaces), "constant").flatten()
-        if env.network_interface.game_mode.observation_space.node_connections:
+        if env.network_interface.game_mode.blue_can_observe.node_connections.value:
             assert np.array_equal(obs[: len(adj_matrix)], adj_matrix)
 
         observation_size = env.calculate_observation_space_size(with_feather=False)
@@ -715,7 +719,7 @@ def test_generic_env(
             if red_action == "basic_attack":
                 for counter, current_success in enumerate(red_success):
                     if (
-                        env.network_interface.game_mode.red.chance_to_spread_to_unconnected_node
+                        env.network_interface.game_mode.red.natural_spreading.chance.to_unconnected_node.value
                         == 0
                     ):
                         assert (
@@ -752,18 +756,18 @@ def test_generic_env(
                             discovered_immediately += 1
                         if (
                             red_target[counter][0] == "d"
-                            and env.network_interface.game_mode.blue.chance_to_immediately_discover_intrusion_deceptive_node
+                            and env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate.deceptive_node.value
                             == 1
                         ):
                             assert post_red_blue_view[red_target[counter]] == 1
                         if (
-                            env.network_interface.game_mode.blue.chance_to_immediately_discover_intrusion
+                            env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate.standard_node.value
                             == 0
                             and red_target[counter][0] != "d"
                         ):
                             assert post_red_blue_view[red_target[counter]] == 0
                         if (
-                            env.network_interface.game_mode.blue.chance_to_immediately_discover_intrusion
+                            env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate.standard_node.value
                             == 1
                             and red_target[counter][0] != "d"
                         ):
@@ -823,8 +827,8 @@ def test_generic_env(
                     assert initial_blue_view == post_red_blue_view
             elif red_action == "no_possible_targets":
                 if (
-                    env.network_interface.game_mode.red.red_can_attack_from_any_red_node
-                    and not env.network_interface.game_mode.blue.blue_uses_isolate_node
+                    env.network_interface.game_mode.red.agent_attack.attack_from.any_red_node.value
+                    and not env.network_interface.game_mode.blue.action_set.isolate_node.value
                 ):
                     assert (
                         len(env.network_interface.get_nodes(filter_true_safe=True)) == 0
@@ -879,14 +883,14 @@ def test_generic_env(
                     nodes_missed_scan += 1
                 if "d" not in node:
                     if (
-                        env.network_interface.game_mode.blue.chance_to_discover_intrusion_on_scan
+                        env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.standard_node.value
                         == 1
                     ):
                         if end_state[node] == 1:
                             assert end_blue_view[node] == 1
                 else:
                     if (
-                        env.network_interface.game_mode.blue.chance_to_discover_intrusion_on_scan_deceptive_node
+                        env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.deceptive_node.value
                         == 1
                     ):
                         if end_state[node] == 1:
@@ -919,7 +923,7 @@ def test_generic_env(
 
             if deceptive_node in post_red_state:
                 if (
-                    env.network_interface.game_mode.blue.relocating_deceptive_nodes_generates_a_new_node
+                    env.network_interface.game_mode.blue.action_set.deceptive_nodes.new_node_on_relocate.value
                 ):
                     if post_red_state[deceptive_node] == 1:
                         assert end_state[deceptive_node] == 0
@@ -966,21 +970,23 @@ def test_generic_env(
                 and env.network_interface.get_number_of_nodes() < 15
             ):
                 if (
-                    env.network_interface.game_mode.blue.blue_uses_make_node_safe
-                    or env.network_interface.game_mode.blue.blue_uses_restore_node
+                    env.network_interface.game_mode.blue.action_set.make_node_safe.use.value
+                    or env.network_interface.game_mode.blue.action_set.restore_node.value
                 ):
                     if "d0" in env.network_interface.get_nodes():
                         assert deceptive_counter != 0
             if (
                 env.current_duration
-                != env.network_interface.game_mode.game_rules.max_steps
+                != env.network_interface.game_mode.game_rules.max_steps.value
             ):
-                if env.network_interface.game_mode.game_rules.lose_when_all_nodes_lost:
+                if (
+                    env.network_interface.game_mode.game_rules.blue_loss_condition.all_nodes_lost.value
+                ):
                     assert (
                         len(env.network_interface.get_nodes(filter_true_safe=True)) == 0
                     )
                 if (
-                    env.network_interface.game_mode.game_rules.lose_when_n_percent_of_nodes_lost
+                    env.network_interface.game_mode.game_rules.blue_loss_condition.n_percent_nodes_lost.use.value
                 ):
                     assert (
                         (
@@ -991,10 +997,10 @@ def test_generic_env(
                             )
                             / len(env.network_interface.get_nodes())
                         )
-                        >= env.network_interface.game_mode.game_rules.percentage_of_nodes_compromised_equals_loss
+                        >= env.network_interface.game_mode.game_rules.blue_loss_condition.n_percent_nodes_lost.value.value
                     )
                 if (
-                    env.network_interface.game_mode.game_rules.lose_when_high_value_node_lost
+                    env.network_interface.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value
                 ):
                     # the game ends when a high value node is compromised, this needs to be checked
                     compromised_hvn = False
@@ -1008,10 +1014,12 @@ def test_generic_env(
             env.reset()
             number_of_resets += 1
         else:
-            if env.network_interface.game_mode.game_rules.lose_when_all_nodes_lost:
+            if (
+                env.network_interface.game_mode.game_rules.blue_loss_condition.all_nodes_lost.value
+            ):
                 assert len(env.network_interface.get_nodes(filter_true_safe=True)) != 0
             if (
-                env.network_interface.game_mode.game_rules.lose_when_n_percent_of_nodes_lost
+                env.network_interface.game_mode.game_rules.blue_loss_condition.n_percent_nodes_lost.use.value
             ):
                 assert (
                     (
@@ -1022,10 +1030,10 @@ def test_generic_env(
                         )
                         / len(env.network_interface.get_nodes())
                     )
-                    < env.network_interface.game_mode.game_rules.percentage_of_nodes_compromised_equals_loss
+                    < env.network_interface.game_mode.game_rules.blue_loss_condition.n_percent_nodes_lost.value.value
                 )
             if (
-                env.network_interface.game_mode.game_rules.lose_when_high_value_node_lost
+                env.network_interface.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value
             ):
                 # the game would end if a high value node was compromised, this needs to be checked
                 compromised_hvn = False
@@ -1039,11 +1047,14 @@ def test_generic_env(
                 assert compromised_hvn is False
 
     # tests on data collected from trial
-    if not env.network_interface.game_mode.blue.blue_uses_deceptive_nodes and scan_used:
+    if (
+        not env.network_interface.game_mode.blue.action_set.deceptive_nodes.use.value
+        and scan_used
+    ):
         assert (
             (
                 0.95
-                * env.network_interface.game_mode.blue.chance_to_discover_intrusion_on_scan
+                * env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.standard_node.value
             )
             < (
                 discovered_from_scanning
@@ -1051,7 +1062,7 @@ def test_generic_env(
             )
             < (
                 1.05
-                * env.network_interface.game_mode.blue.chance_to_discover_intrusion_on_scan
+                * env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.standard_node.value
             )
         )
 
