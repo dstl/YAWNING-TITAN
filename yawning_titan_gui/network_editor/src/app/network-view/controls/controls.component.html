@@ -1,6 +1,6 @@
 <div class="controls-container">
-  <div class="node-list" *ngIf="nodeList && nodeList.length">
-    <p *ngFor="let node of nodeList()" class="node-list-item">Node ID: {{node}}</p>
+  <div class="node-list" *ngIf="nodeList">
+    <p *ngFor="let node of nodeList()" class="node-list-item">Node: {{node?.name}}</p>
   </div>
 </div>
 <div class="control-action-buttons-container">

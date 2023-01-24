@@ -16,8 +16,7 @@ export class InteractionService {
    */
   constructor(
     private cytoscapeService: CytoscapeService
-  ) {
-  }
+  ) { }
 
   /**
    * Function that is used to update if the user is typing in input fields or not

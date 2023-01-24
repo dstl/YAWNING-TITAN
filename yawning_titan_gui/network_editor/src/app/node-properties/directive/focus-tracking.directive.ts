@@ -13,7 +13,7 @@ export class FocusTrackingDirective {
     this.interactionService.setInputFocusStatus(true);
   }
 
-  @HostListener('blur', ['$event']) onblur() {
+  @HostListener('blur', ['$event']) onBlur() {
     this.interactionService.setInputFocusStatus(false);
   }
 }
