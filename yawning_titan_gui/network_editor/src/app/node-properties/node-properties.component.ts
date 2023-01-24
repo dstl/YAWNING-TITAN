@@ -19,12 +19,12 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
   private vulnerabilityChangeListener: Subscription;
 
   constructor(
-    private NodePropertiesService: NodePropertiesService
+    private nodePropertiesService: NodePropertiesService
   ) {
   }
 
   ngOnInit() {
-    this.NodePropertiesService.nodePropertiesFormGroupSubject.subscribe(res => {
+    this.nodePropertiesService.nodePropertiesFormGroupSubject.subscribe(res => {
       this.formGroup = res;
 
       this.vulnerabilityVal = this.formGroup.get('vulnerability').value;
@@ -43,7 +43,7 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     // load the details of the new selected node
-    this.NodePropertiesService.loadDetails(this.nodeId);
+    this.nodePropertiesService.loadDetails(this.nodeId);
   }
 
   ngOnDestroy(): void {
@@ -60,6 +60,6 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
    * Persists the node properties that the user has changed
    */
   public updateNode(): void {
-    this.NodePropertiesService.updateNodeProperties();
+    this.nodePropertiesService.updateNodeProperties();
   }
 }

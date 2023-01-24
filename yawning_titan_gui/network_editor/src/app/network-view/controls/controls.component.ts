@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { DJANGO_SAVE_URL } from 'src/app/app.tokens';
+import { Node } from '../../../app/network-class/network-interfaces';
 import { CytoscapeService } from '../../services/cytoscape/cytoscape.service';
 
 @Component({
@@ -17,12 +18,12 @@ export class ControlsComponent {
   ) { }
 
   /**
-   * Returns a list of node ids
+   * Returns the node list
    * TODO: needs to return the full object
    * @returns
    */
-  nodeList(): string[] {
-    return this.cytoscapeService?.network?.nodeList.map(node => node.uuid)
+  nodeList(): Node[] {
+    return this.cytoscapeService?.network?.nodeList;
   }
 
   /**

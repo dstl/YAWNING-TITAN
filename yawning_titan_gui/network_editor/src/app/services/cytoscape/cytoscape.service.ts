@@ -10,6 +10,8 @@ import { ElementType } from '../cytoscape/graph-objects';
 @Injectable()
 export class CytoscapeService {
 
+  private nodeCount = 0;
+
   private cy: cytoscape.Core = cytoscape();
 
   private _network: Network;
@@ -254,11 +256,13 @@ export class CytoscapeService {
    * @returns
    */
   private createNode(x: number, y: number, node?: Node): void {
+    this.nodeCount++;
+
     // if no node properties are provided, create an empty node and add to network
     if (!node) {
       const nodeProperties = {
         uuid: uuid(),
-        name: `node ${this.cy.nodes().length + 1}`,
+        name: `node ${this.nodeCount}`,
         entry_node: false,
         high_value_node: false,
         x_pos: x,

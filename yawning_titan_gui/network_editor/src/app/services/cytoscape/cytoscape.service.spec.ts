@@ -1,4 +1,4 @@
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Node } from '../../network-class/network-interfaces';
 import { Network } from '../../network-class/network';
 
@@ -21,8 +21,8 @@ describe('CytoscapeService', () => {
   describe('METHOD: loadNetwork', () => {
     it('should load the network into cytoscape', () => {
       const network = new Network();
-      network.addNode({uuid: 'uuid1'} as any);
-      network.addNode({uuid: 'uuid2'} as any);
+      network.addNode({ uuid: 'uuid1' } as any);
+      network.addNode({ uuid: 'uuid2' } as any);
       network.addEgde('edge', 'uuid1', 'uuid2');
 
       service.loadNetwork(network);
@@ -32,11 +32,50 @@ describe('CytoscapeService', () => {
     });
   });
 
+  describe('METHOD: updateNode', () => {
+    it('should not do anything unless a node with a matching id is found', () => {
+      const spy = spyOn(service['_network'], 'editNodeDetails');
+
+      const node = {
+        uuid: 'id'
+      } as any
+
+      service['createNode'](0, 0, node);
+
+      service.updateNode({ uuid: 'fake' } as any);
+      expect(spy).not.toHaveBeenCalled();
+    });
+
+    it('should update a node with matching id', fakeAsync(() => {
+      const spy = spyOn(service['_network'], 'editNodeDetails');
+
+      const node = {
+        uuid: 'id'
+      } as any
+
+      const nodeUpdate = {
+        uuid: 'id',
+        name: 'name',
+        high_value_node: false,
+        entry_node: false,
+        x_pos: 0,
+        y_pos: 0,
+        vulnerability: 0
+      };
+
+      service['createNode'](0, 0, node);
+
+      service.updateNode(nodeUpdate);
+      tick();
+      expect(spy).toHaveBeenCalledWith(nodeUpdate.uuid, nodeUpdate);
+    }));
+  });
+
   describe('METHOD: deleteItem', () => {
     it('should delete an edge', () => {
       const network = new Network();
-      network.addNode({uuid: 'uuid1'} as any);
-      network.addNode({uuid: 'uuid2'} as any);
+      network.addNode({ uuid: 'uuid1' } as any);
+      network.addNode({ uuid: 'uuid2' } as any);
       network.addEgde('edge', 'uuid1', 'uuid2');
 
       service.loadNetwork(network);
@@ -60,8 +99,8 @@ describe('CytoscapeService', () => {
 
     it('should delete edges connected to the nodes', () => {
       const network = new Network();
-      network.addNode({uuid: 'uuid1'} as any);
-      network.addNode({uuid: 'uuid2'} as any);
+      network.addNode({ uuid: 'uuid1' } as any);
+      network.addNode({ uuid: 'uuid2' } as any);
       network.addEgde('edge', 'uuid1', 'uuid2');
 
       service.loadNetwork(network);
@@ -150,6 +189,69 @@ describe('CytoscapeService', () => {
 
       (<any>service).createEdge(null, null, null);
       expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('METHOD: setSelectedItem', () => {
+    it('should set the selected element to null if nothing was selected', fakeAsync(() => {
+      service['setSelectedItem'](null);
+      expect(service['selectedElement']).toBeNull();
+
+      service['setSelectedItem']({ target: null } as any);
+      expect(service['selectedElement']).toBeNull();
+    }));
+
+    it('should highlight the target element', () => {
+      service['setSelectedItem']({
+        target: {
+          id: () => 'test',
+          isNode: () => true,
+          isEdge: () => true,
+          style: () => { }
+        }
+      } as any);
+      expect(service['selectedElement']).not.toBeNull();
+    });
+  });
+
+  describe('METHOD: areNodesConnected', () => {
+    it('should return true if we are trying to connect a node to itself', () => {
+      service['cy'].add({ data: { id: 'id' } });
+
+      expect(service['areNodesConnected']('id', 'id')).toBeTruthy();
+    });
+
+    it('should return false if either of the nodes do not exist', () => {
+      service['cy'].add({ data: { id: 'id' } });
+
+      expect(service['areNodesConnected']('id', 'id2')).toBeFalsy();
+      expect(service['areNodesConnected']('id1', 'id')).toBeFalsy();
+    });
+
+    it('should return false if we are trying to connect a node to an edge', () => {
+      service['cy'].add({ data: { id: 'id1' } });
+      service['cy'].add({ data: { id: 'id2' } });
+
+      service['createEdge']('edge', 'id1', 'id2');
+
+      expect(service['areNodesConnected']('edge', 'id2')).toBeFalsy();
+      expect(service['areNodesConnected']('id1', 'edge')).toBeFalsy();
+    });
+
+    it('should return true if both nodes are connected', () => {
+      service['cy'].add({ data: { id: 'id1' } });
+      service['cy'].add({ data: { id: 'id2' } });
+
+      service['createEdge']('edge', 'id1', 'id2');
+
+      expect(service['areNodesConnected']('id1', 'id2')).toBeTruthy();
+    });
+
+    it('should return false if the nodes exists but are not connected', () => {
+      service['cy'].add({ data: { id: 'id1' } });
+      service['cy'].add({ data: { id: 'id2' } });
+
+      expect(service['areNodesConnected']('id1', 'id2')).toBeFalsy();
     });
   });
 });
