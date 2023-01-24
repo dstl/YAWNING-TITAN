@@ -86,4 +86,15 @@ describe('NodePropertiesComponent', () => {
       expect(spy).toHaveBeenCalled();
     });
   });
+
+  describe('METHOD: closeSideNav', () => {
+    it('should emit the close event', (done) => {
+      component.close.subscribe(() => {
+        expect(true);
+        done();
+      });
+
+      component.closeSideNav();
+    });
+  });
 });

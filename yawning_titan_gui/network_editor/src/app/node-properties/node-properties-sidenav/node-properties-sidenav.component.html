@@ -1,6 +1,6 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="side" position="end">
-    <app-node-properties [nodeId]="nodeId"></app-node-properties>
+    <app-node-properties [nodeId]="nodeId" (close)="close()"></app-node-properties>
   </mat-sidenav>
 
   <mat-sidenav-content>
