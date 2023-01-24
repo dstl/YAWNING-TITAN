@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { NodePropertiesService } from './node-properties.service';
@@ -11,6 +11,8 @@ import { NodePropertiesService } from './node-properties.service';
 export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input('nodeId') nodeId: string = null;
+
+  @Output() close = new EventEmitter();
 
   public formGroup: FormGroup = null;
 
@@ -52,14 +54,17 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public isFormValid(): boolean {
-    return !!this.formGroup && this.formGroup.valid;
-  }
-
   /**
    * Persists the node properties that the user has changed
    */
   public updateNode(): void {
     this.nodePropertiesService.updateNodeProperties();
+  }
+
+  /**
+   * Triggers the event that closes the sidenav
+   */
+  public closeSideNav(): void {
+    this.close.emit();
   }
 }
