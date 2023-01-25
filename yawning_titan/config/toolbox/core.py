@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Hashable, List, Optional, Union
 
 import yaml
 
@@ -79,13 +79,15 @@ class ConfigBase(ABC):
 
     def __hash__(self) -> int:
         """Generate a unique hash for the class."""
+        print("HASHING")
         element_hash = [v.stringify() for v in self.get_config_elements().values()]
         element_hash.extend(
             [
-                tuple(v) if type(v) in [list, dict, set] else v
+                tuple(v) if isinstance(v, (list, dict, set)) else v
                 for v in self.get_non_config_elements().values()
             ]
         )
+        element_hash = [v for v in element_hash if isinstance(v, Hashable)]
         tuple_hash = tuple(element_hash)
         return hash(tuple_hash)
 

@@ -1,6 +1,7 @@
+{% load tags %}
 <div class="list-item" data-item-name="{{network.name}}" data-item-id="{{network.uuid}}">
     <div class="contents">
-        <h3 class="subhead">{{network.name}}</h3>
+        <h3 class="subhead">{{network.name | format_text}}</h3>
         <p class="description">{{network.description}}</p>
     </div>
     <div class="icons">

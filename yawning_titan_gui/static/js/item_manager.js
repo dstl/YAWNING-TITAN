@@ -50,7 +50,7 @@ $(document).ready(function(){
 
     $("#create-from-dialogue .submit").click(function(){
         let item_names = [$(this).closest(".dialogue-center").find("input").first().val()];
-        manage_items("create from", item_names, selected_item_ids,{"source_game_mode":selected_item_names[0]});
+        manage_items("create from", item_names, selected_item_ids,{"source_item_id":selected_item_ids[0]});
     });
 
     $("#delete-dialogue .submit").click(function(){

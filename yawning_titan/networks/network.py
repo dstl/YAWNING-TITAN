@@ -194,7 +194,7 @@ class Network(ConfigGroup):
         vulnerabilities: Optional[Union[NodeVulnerabilityGroup, Dict[str, int]]] = None,
         _doc_metadata: Optional[DocMetadata] = None,
     ):
-        self._doc_metadata = _doc_metadata
+        self._doc_metadata = _doc_metadata if _doc_metadata else DocMetadata()
         self.matrix = matrix
         self.positions = positions
         self.vulnerabilities = vulnerabilities
@@ -294,3 +294,19 @@ class Network(ConfigGroup):
             config_dict["_doc_metadata"] = self.doc_metadata.to_dict()
 
         return config_dict
+
+    def __hash__(self) -> int:
+        return super().__hash__()
+
+    def __eq__(self, other) -> bool:
+        """Check the equality of any 2 instances of class.
+
+        :param other: Another potential instance of the class to be compared against.
+
+        :return: A boolean True if the elements holds the same data otherwise False.
+        """
+        if isinstance(other, self.__class__):
+            return (hash(self) == hash(other)) and np.array_equal(
+                self.matrix, other.matrix
+            )
+        return False
