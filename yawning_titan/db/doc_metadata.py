@@ -5,7 +5,25 @@ from datetime import datetime
 from typing import Dict, Final, Optional, Union
 from uuid import uuid4
 
+from yawning_titan.config.game_config import _LOGGER
 from yawning_titan.db.query import YawningTitanQuery
+
+
+class DocMetaDataObject:
+    """A base class for managing access to the ``doc_metadata`` attribute."""
+
+    @property
+    def doc_metadata(self) -> DocMetadata:
+        """The configs document metadata."""
+        return self._doc_metadata
+
+    @doc_metadata.setter
+    def doc_metadata(self, doc_metadata: DocMetadata):
+        if self._doc_metadata is None:
+            self._doc_metadata = doc_metadata
+        else:
+            msg = "Cannot set doc_metadata as it has already been set."
+            _LOGGER.error(msg)
 
 
 @dataclass()

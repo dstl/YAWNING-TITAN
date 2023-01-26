@@ -392,6 +392,7 @@ class ConfigItem:
         self,
         as_key_val_pair: Optional[bool] = False,
         values_only: Optional[bool] = False,
+        include_none: Optional[bool] = True,
     ) -> dict:
         """
         Return the ConfigItem as a dict.
@@ -400,6 +401,8 @@ class ConfigItem:
             a key/value pair, the key being the class name.
         :return: The ConfigItem as a dict.
         """
+        if not include_none and self.value is None:
+            return None
         if values_only:
             return self.value
         d = {"value": self.value}
@@ -479,7 +482,12 @@ class ConfigGroup(ConfigBase, ABC):
         for k, element in self.get_config_elements().items():
             self.validation.add_element_validation(k, element.validate())
 
-    def to_dict(self, values_only: Optional[bool] = False, legacy: bool = False):
+    def to_dict(
+        self,
+        values_only: Optional[bool] = False,
+        legacy: Optional[bool] = False,
+        include_none: Optional[bool] = True,
+    ):
         """
         Return the ConfigGroup as a dict.
 
@@ -494,11 +502,12 @@ class ConfigGroup(ConfigBase, ABC):
 
         attr_dict = {"doc": self.doc} if self.doc is not None else {}
         # attr_dict = self.get_non_config_elements()
-        element_dict = {
-            k: e.to_dict(values_only=values_only)
-            for k, e in self.get_config_elements().items()
-            if not k.startswith("_")
-        }
+
+        element_dict = {}
+        for k, e in self.get_config_elements().items():
+            d = e.to_dict(values_only=values_only, include_none=include_none)
+            if not k.startswith("_") and (include_none or d is not None):
+                element_dict[k] = d
 
         if values_only:
             return element_dict

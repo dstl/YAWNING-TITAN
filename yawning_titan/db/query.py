@@ -1,4 +1,6 @@
 """The :mod:`~yawning_titan.db.query` module provides a Yawning-Titan extension to :class:`tinydb.queries.Query`."""
+from typing import Optional
+
 from tinydb import Query
 from tinydb.queries import QueryInstance
 
@@ -143,3 +145,50 @@ class YawningTitanQuery(Query):
                 return False
 
         return self.test(test_len, i)
+
+    def compatible_with(
+        self, n: int, include_null: Optional[bool] = True
+    ) -> QueryInstance:
+        """Tests the value of a field is greater than the value ``i``.
+
+        Fields whose value is greater than or equal to ``i`` are returned in the search.
+
+        :Example:
+
+        >>> from yawning_titan.game_modes.game_mode_db import GameModeDB
+        >>> from yawning_titan.db.query import YawningTitanQuery
+        >>> db = GameModeDB()
+        >>> db.search(YawningTitanQuery.ENTRY_NODE_COUNT.ge(18)))
+
+        :param i: The target value of a field as an int.
+        :return: ``True`` if it does exist, otherwise ``False``. if the field length is greater than or equal to ``i``, otherwise ``False``.
+        :raises TypeError: When the field :func:`~yawning_titan.db.query.YawningTitanQuery.len_lt` is called on
+            does not have a :func:`len` function.
+        """
+
+        def test_compatible_with(val, n, include_null):
+            if not isinstance(val,dict) or not all(k in val for k in ["min","max","restrict"]):
+                return False
+
+            if not val["restrict"]:
+                return True
+
+            check_min = False
+            if val["min"] is None and include_null:
+                check_min = True
+            elif n > val["min"]:
+                check_min = True
+
+            check_max = False
+            if val["max"] is None and include_null:
+                check_max = True
+            elif n < val["max"]:
+                check_max = True
+
+            return check_min and check_max
+
+        return self.test(test_compatible_with, n, include_null)
+
+# TEST NETWORK COMPATIBILITY NESTED DICT
+
+# ALLOW n parameter to either be a number or network
