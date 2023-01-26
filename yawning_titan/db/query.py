@@ -167,7 +167,9 @@ class YawningTitanQuery(Query):
         """
 
         def test_compatible_with(val, n, include_null):
-            if not isinstance(val,dict) or not all(k in val for k in ["min","max","restrict"]):
+            if not isinstance(val, dict) or not all(
+                k in val for k in ["min", "max", "restrict"]
+            ):
                 return False
 
             if not val["restrict"]:
@@ -188,6 +190,7 @@ class YawningTitanQuery(Query):
             return check_min and check_max
 
         return self.test(test_compatible_with, n, include_null)
+
 
 # TEST NETWORK COMPATIBILITY NESTED DICT
 
