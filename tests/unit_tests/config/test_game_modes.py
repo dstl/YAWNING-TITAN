@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from yawning_titan.config.game_modes import (
+from yawning_titan.game_modes.game_modes import (
     default_game_mode_path,
     low_skill_red_with_random_infection_perfect_detection_path,
 )

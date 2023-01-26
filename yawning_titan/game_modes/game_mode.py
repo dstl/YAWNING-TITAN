@@ -10,11 +10,12 @@ from yawning_titan.config.environment.reset_config import Reset
 from yawning_titan.config.environment.rewards_config import Rewards
 from yawning_titan.config.game_config.miscellaneous_config import Miscellaneous
 from yawning_titan.config.toolbox.core import ConfigGroup
+from yawning_titan.db.doc_metadata import DocMetadata, DocMetaDataObject
 
 # --- Tier 0 groups
 
 
-class GameMode(ConfigGroup):
+class GameMode(ConfigGroup, DocMetaDataObject):
     """All options to configure and represent a complete game mode."""
 
     def __init__(
@@ -27,6 +28,7 @@ class GameMode(ConfigGroup):
         on_reset: Reset = None,
         rewards: Rewards = None,
         miscellaneous: Miscellaneous = None,
+        _doc_metadata: Optional[DocMetadata] = None,
     ):
         self.red: Red = red if red else Red(doc="The configuration of the red agent")
         self.blue: Blue = (
@@ -59,4 +61,28 @@ class GameMode(ConfigGroup):
         self.miscellaneous: Miscellaneous = (
             miscellaneous if miscellaneous else Miscellaneous(doc="Additional options")
         )
+        self._doc_metadata = _doc_metadata if _doc_metadata else DocMetadata()
         super().__init__(doc)
+
+    def to_dict(
+        self,
+        json_serializable: bool = False,
+        include_none: bool = True,
+        values_only: bool = False,
+    ) -> dict:
+        """
+        Serialize the :class:`~yawning_titan.networks.network.Network` as a :class:`dict`.
+
+        :param json_serializable: If ``True``, the :attr:`~yawning_titan.networks.network.Network`
+            "d numpy array is converted to a list."
+        :param include_none: Determines whether to include empty fields in the dict. Has a default
+            value of ``True``.
+        :return: The :class:`~yawning_titan.networks.network.Network` as a :class:`dict`.
+        """
+        config_dict = super().to_dict(
+            values_only=values_only, include_none=include_none
+        )
+
+        config_dict["_doc_metadata"] = self.doc_metadata.to_dict()
+
+        return config_dict

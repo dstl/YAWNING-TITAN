@@ -16,8 +16,8 @@ from yawning_titan.config.environment.game_rules_config import GameRules
 from yawning_titan.config.environment.observation_space_config import ObservationSpace
 from yawning_titan.config.environment.reset_config import Reset
 from yawning_titan.config.environment.rewards_config import Rewards
-from yawning_titan.config.game_config.game_mode import GameMode
 from yawning_titan.config.game_config.miscellaneous_config import Miscellaneous
+from yawning_titan.game_modes.game_mode import GameMode
 
 
 @pytest.fixture

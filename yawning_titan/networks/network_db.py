@@ -127,7 +127,11 @@ class NetworkDB:
         :return: The inserted :class:`~yawning_titan.networks.network.Network`.
         """
         network.doc_metadata.update(name, description, author)
-        self._db.insert(network.to_dict(json_serializable=True, include_none=False))
+        self._db.insert(
+            network.to_dict(
+                json_serializable=True, include_none=False, values_only=True
+            )
+        )
 
         return network
 
@@ -135,7 +139,7 @@ class NetworkDB:
         """
         Get all :class:`~yawning_titan.networks.network.Network` from the network DB.
 
-        :return: A :py:classs:`list` of :class:`~yawning_titan.networks.network.Network`.
+        :return: A :class:`list` of :class:`~yawning_titan.networks.network.Network`.
         """
         return [self._doc_to_network_config(doc) for doc in self._db.all()]
 
@@ -158,7 +162,7 @@ class NetworkDB:
         Searches the :class:`~yawning_titan.networks.network.Network` with a :class:`NetworkSchema` query.
 
         :param query: A :class:`~yawning_titan.db.query.YawningTitanQuery`.
-        :return: A :py:class:`list` of :class:`~yawning_titan.networks.network.Network`.
+        :return: A :class:`list` of :class:`~yawning_titan.networks.network.Network`.
         """
         network_configs = []
         for doc in self._db.search(query):
