@@ -351,4 +351,6 @@ print(
         for g in db.all()
     ],
 )
-print("TEST", db.search(GameModeSchema.ENTRY_NODES.compatible_with(2,include_null=True)))
+print(
+    "TEST", db.search(GameModeSchema.ENTRY_NODES.compatible_with(2, include_null=True))
+)
