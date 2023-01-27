@@ -3,6 +3,7 @@ from __future__ import annotations
 from logging import getLogger
 from typing import Dict, List, Optional, Union
 
+import numpy as np
 from numpy import ndarray
 
 from yawning_titan.config.toolbox.core import ConfigGroup, ConfigGroupValidation
@@ -281,3 +282,19 @@ class Network(ConfigGroup, DocMetaDataObject):
             config_dict["_doc_metadata"] = self.doc_metadata.to_dict()
 
         return config_dict
+
+    def __hash__(self) -> int:
+        return super().__hash__()
+
+    def __eq__(self, other) -> bool:
+        """Check the equality of any 2 instances of class.
+
+        :param other: Another potential instance of the class to be compared against.
+
+        :return: A boolean True if the elements holds the same data otherwise False.
+        """
+        if isinstance(other, self.__class__):
+            return (hash(self) == hash(other)) and np.array_equal(
+                self.matrix, other.matrix
+            )
+        return False

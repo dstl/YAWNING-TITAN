@@ -6,7 +6,6 @@ from logging import getLogger
 from pathlib import Path
 from typing import Final, List, Optional, Union
 
-import numpy as np
 from tinydb import TinyDB
 from tinydb.queries import QueryInstance
 from tinydb.table import Document
@@ -339,18 +338,3 @@ class GameModeDB:
             game_mode = GameMode()
             game_mode.set_from_yaml(game_mode_path)
             self.insert(game_mode)
-
-
-db = GameModeDB()
-db.rebuild_db()
-db.add_yaml_game_modes_to_db()
-print(
-    "ALL",
-    [
-        g.game_rules.network_compatibility.entry_node_count.to_dict(values_only=True)
-        for g in db.all()
-    ],
-)
-print(
-    "TEST", db.search(GameModeSchema.ENTRY_NODES.compatible_with(2, include_null=True))
-)
