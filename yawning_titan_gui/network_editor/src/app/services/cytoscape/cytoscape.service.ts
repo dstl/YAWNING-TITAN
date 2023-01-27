@@ -1,6 +1,6 @@
-import { HostListener, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as cytoscape from 'cytoscape';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Network } from '../../../app/network-class/network';
 import { NetworkJson, Node } from '../../../app/network-class/network-interfaces';
 import { v4 as uuid } from 'uuid';
@@ -10,12 +10,14 @@ import { ElementType } from '../cytoscape/graph-objects';
 @Injectable()
 export class CytoscapeService {
 
+  private nodeCount = 0;
+
   private cy: cytoscape.Core = cytoscape();
 
-  private network: Network;
+  private _network: Network;
 
-  get cytoscapeObj(): cytoscape.Core {
-    return this.cy;
+  get network(): Network {
+    return this._network;
   }
 
   // html element where the graph is rendered
@@ -58,7 +60,17 @@ export class CytoscapeService {
   // id of the current selected node
   private selectedElement: { id: string, type: ElementType };
 
-  public selectedElementSubject = new Subject<{ id: string, type: ElementType }>();
+  // used to update the application what node/edge is currently selected
+  private selectedElementSubject = new Subject<{ id: string, type: ElementType }>();
+  get selectedElementEvent(): Observable<{ id: string, type: ElementType }> {
+    return this.selectedElementSubject.asObservable();
+  }
+
+  // used to update the x and y positions in the node properties component
+  private elementDragSubject = new Subject<{ id: string, position: { x: number, y: number } }>();
+  get elementDragEvent(): Observable<{ id: string, position: { x: number, y: number } }> {
+    return this.elementDragSubject.asObservable();
+  }
 
   /**
    * Initialise service
@@ -69,7 +81,7 @@ export class CytoscapeService {
     // set the element the network will render on
     this.renderElement = element;
 
-    this.network = new Network();
+    this._network = new Network();
 
     // re render the network
     this.renderUpdate();
@@ -80,7 +92,7 @@ export class CytoscapeService {
    * @returns
    */
   public getNetworkJson(): NetworkJson {
-    return this.network.toJson();
+    return this._network.toJson();
   }
 
   /**
@@ -88,11 +100,15 @@ export class CytoscapeService {
    * @param network
    */
   public loadNetwork(network: Network): void {
+    if (!network) {
+      return;
+    }
+
     // reset cytoscape
     this.cy.elements().remove();
 
     // set network
-    this.network = network;
+    this._network = network;
 
     // load all nodes
     network.nodeList.forEach(node => this.createNode(node.x_pos, node.y_pos, node));
@@ -105,6 +121,30 @@ export class CytoscapeService {
 
     // fit to screen
     this.cy.fit();
+  }
+
+  /**
+   * Update a node using the given details
+   * @param nodeId
+   * @param nodeDetails
+   * @returns
+   */
+  public updateNode(nodeDetails: Node): void {
+    // check if node with id exists
+    const node = this.cy.getElementById(nodeDetails?.uuid);
+
+    if (!node || !node.isNode || !node.isNode()) {
+      return;
+    }
+
+    // update position
+    node.position('x', Number(nodeDetails.x_pos));
+    node.position('y', Number(nodeDetails.y_pos));
+
+    const data = Object.keys(nodeDetails);
+    data.forEach(key => node.data(key, nodeDetails[`${key}`]));
+
+    this._network.editNodeDetails(nodeDetails.uuid, nodeDetails)
   }
 
   /**
@@ -121,9 +161,9 @@ export class CytoscapeService {
     if (this.selectedElement.type == ElementType.NODE) {
       // delete all edges connected to node
       item.connectedEdges().remove();
-      this.network.removeNode(this.selectedElement.id);
+      this._network.removeNode(this.selectedElement.id);
     } else {
-      this.network.removeEdge(this.selectedElement.id);
+      this._network.removeEdge(this.selectedElement.id);
     }
 
     this.cy.$id(this.selectedElement.id).remove();
@@ -134,28 +174,35 @@ export class CytoscapeService {
    * Update the graph render
    */
   private renderUpdate(): void {
-    // save layout
-    var layout = this.cy.layout({
-      name: 'cose'
-    });
-
     this.cy = cytoscape({
       container: this.renderElement, // container to render in
       elements: [],
-      style: this.style,
-      layout: { name: 'cose' }
+      style: this.style
     });
 
     cytoscape.warnings(false);
 
-    //this.cy.layout = layout;
-    layout.run();
-
     // set up listeners
     this.listenToCanvasDoubleClick();
     this.listenToSingleClick();
+    this.listenToDragEvent();
   }
 
+  /**
+   * Listens to any events regarding a node being dragged
+   */
+  private listenToDragEvent(): void {
+    this.cy.on('drag', (evt) => {
+      this.elementDragSubject.next({
+        id: evt.target.id(),
+        position: evt.target.position()
+      })
+    })
+  }
+
+  /**
+   * Function that listens to double clicks on the canvas
+   */
   private listenToCanvasDoubleClick(): void {
     this.cy.on('dbltap', (evt) => {
       // check if there is a node/edge targeted
@@ -167,20 +214,18 @@ export class CytoscapeService {
     });
   }
 
+  /**
+   * Function that listens to clicks on the canvas
+   */
   private listenToSingleClick(): void {
     this.cy.bind('tap', (evt) => {
-
-
       // clicked on a node
       if (evt.target?.isNode && evt.target?.isNode()) {
         // current selected target
         this.handleNodeSingleClick(evt);
       }
 
-      // clicked on an edge
-      if (evt.target?.isEdge && evt.target?.isEdge()) {
-      }
-
+      // set the clicked node/edge as the selected item
       this.setSelectedItem(evt)
     });
   }
@@ -196,7 +241,7 @@ export class CytoscapeService {
    * Handle a single click event
    * @param evt
    */
-  private handleNodeSingleClick(evt: cytoscape.EventObject): void {// create edge if current selection was a node
+  private handleNodeSingleClick(evt: cytoscape.EventObject): void {
     // create an edge if the selected item was a node
     if (this.selectedElement?.type == ElementType.NODE) {
       this.createEdge(null, this.selectedElement.id, evt.target?.id())
@@ -211,34 +256,39 @@ export class CytoscapeService {
    * @returns
    */
   private createNode(x: number, y: number, node?: Node): void {
+    this.nodeCount++;
 
+    // if no node properties are provided, create an empty node and add to network
     if (!node) {
-      const nodeId: string = uuid();
-      // add to network
+      const nodeProperties = {
+        uuid: uuid(),
+        name: `node ${this.nodeCount}`,
+        entry_node: false,
+        high_value_node: false,
+        x_pos: x,
+        y_pos: y,
+        vulnerability: 0
+      }
 
+      // add to network
       this.cy.add({
         data: {
-          id: nodeId,
-          x_pos: x,
-          y_pos: y
+          id: nodeProperties.uuid,
+          name: nodeProperties.name
         },
         position: { x: x, y: y }
       });
 
       // add node to network
-      this.network.addNode(nodeId, x, y)
+      this._network.addNode(nodeProperties);
       return;
     }
 
+    // add the node onto cytoscape
     this.cy.add({
       data: {
         id: node?.uuid,
-        name: node?.name,
-        high_value_node: node?.high_value_node,
-        entry_node: node?.entry_node,
-        classes: node?.classes,
-        x_pos: node?.x_pos,
-        y_pos: node?.y_pos
+        name: node?.name
       },
       position: { x: x, y: y }
     });
@@ -250,7 +300,7 @@ export class CytoscapeService {
    * @param nodeB
    * @returns
    */
-  public createEdge(edgeId: string, nodeA: string, nodeB: string): void {
+  private createEdge(edgeId: string, nodeA: string, nodeB: string): void {
     // check if nodes already have connection
     if (this.areNodesConnected(nodeA, nodeB)) {
       return;
