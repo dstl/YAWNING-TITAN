@@ -613,6 +613,7 @@ class NetworkInterface:
 
             if self.game_mode.game_rules.blue_loss_condition.target_node_lost.value:
                 # gets the target node
+                print("TJT")
                 target_nodes = {name: 0 for name in self.get_nodes()}
                 target_nodes[self.get_target_node()] = 1
                 target_nodes = list(target_nodes.values())
