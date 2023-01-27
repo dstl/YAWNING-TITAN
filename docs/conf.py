@@ -216,3 +216,8 @@ autodoc_default_options = {
     "undoc-members": True,
     "exclude-members": "__weakref__",
 }
+
+
+def setup(app):
+    """Set up the necessary files needed to build the docs page."""
+    app.add_css_file("docs.css")

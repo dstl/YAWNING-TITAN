@@ -74,6 +74,7 @@ If you would like to include a citation for **YT** in your work, please cite the
    Contribute to YT <source/contributing>
    source/glossary
    source/license
+   source/dependencies
 
 
 Indices and tables
