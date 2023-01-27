@@ -25,6 +25,13 @@ if errorlevel 9009 (
 
 if "%1" == "" goto help
 
+
+REM print the YT licenses
+set YTLICENSEBUILD=pip-licenses --format=rst --with-urls
+set YTDEPS="%cd%\source\yt-dependencies.rst"
+
+%YTLICENSEBUILD% --output-file=%YTDEPS%
+
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
 goto end
 
