@@ -1,6 +1,8 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { test_network } from '../../testing/test-network';
 import { CytoscapeService } from '../services/cytoscape/cytoscape.service';
+import { ImportService } from '../services/export-import/import.service';
 
 import { NetworkViewComponent } from './network-view.component';
 
@@ -9,14 +11,20 @@ describe('NetworkViewComponent', () => {
   let fixture: ComponentFixture<NetworkViewComponent>;
 
   let cytoscapeServiceStub: any = {
+    init: () => { }
+  }
 
+  let importServiceStub = {
+    loadNetworkFromWindow: () => { },
+    loadFile: () => { }
   }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [NetworkViewComponent],
       providers: [
-        { provide: CytoscapeService, cytoscapeServiceStub }
+        { provide: CytoscapeService, cytoscapeServiceStub },
+        { provide: ImportService, useValue: importServiceStub }
       ],
       schemas: [
         NO_ERRORS_SCHEMA
@@ -39,4 +47,23 @@ describe('NetworkViewComponent', () => {
     component.loadFile({});
     expect(spy).toHaveBeenCalled();
   });
+
+  it('should process the network from the global window object', fakeAsync(() => {
+    (<any>window).NETWORK = test_network;
+
+    const spy = spyOn<any>(component['importService'], 'loadNetworkFromWindow').and.callFake(() => { });
+    component.ngAfterViewInit();
+    tick(200);
+    expect(spy).toHaveBeenCalled();
+  }));
+
+  describe('METHOD: listenToNetworkChange', () => {
+    it('should load the network if the networkUpdate event is triggered', fakeAsync(() => {
+      const spy = spyOn<any>(component['importService'], 'loadNetworkFromWindow').and.callFake(() => { });
+      document.dispatchEvent(new CustomEvent('networkUpdate', { detail: JSON.stringify(test_network) }));
+      component.ngAfterViewInit();
+      tick(200);
+      expect(spy).toHaveBeenCalled();
+    }));
+  })
 });

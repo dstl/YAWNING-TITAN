@@ -2,11 +2,11 @@ import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
-  selector: 'app-properties-editor-sidenav',
-  templateUrl: './properties-editor-sidenav.component.html',
-  styleUrls: ['./properties-editor-sidenav.component.scss']
+  selector: 'app-node-properties-sidenav',
+  templateUrl: './node-properties-sidenav.component.html',
+  styleUrls: ['./node-properties-sidenav.component.scss']
 })
-export class PropertiesEditorSidenavComponent {
+export class NodePropertiesSidenavComponent {
 
   public nodeId = null;
 

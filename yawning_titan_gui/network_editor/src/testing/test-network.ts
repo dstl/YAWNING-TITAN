@@ -15,7 +15,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0.6,
-          "classes": "standard_node",
           "x_pos": 1,
           "y_pos": 7
       },
@@ -25,7 +24,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0.79,
-          "classes": "standard_node",
           "x_pos": 3,
           "y_pos": 6
       },
@@ -35,7 +33,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0.3,
-          "classes": "standard_node",
           "x_pos": 2,
           "y_pos": 7
       },
@@ -45,7 +42,6 @@ export const test_network = {
           "high_value_node": true,
           "entry_node": false,
           "vulnerability": 0.79,
-          "classes": "high_value_node",
           "x_pos": 3,
           "y_pos": 7
       },
@@ -55,7 +51,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0.64,
-          "classes": "standard_node",
           "x_pos": 4,
           "y_pos": 7
       },
@@ -65,7 +60,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": true,
           "vulnerability": 0.08,
-          "classes": "entry_node",
           "x_pos": 5,
           "y_pos": 7
       },
@@ -75,7 +69,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": true,
           "vulnerability": 0.8,
-          "classes": "entry_node",
           "x_pos": 3,
           "y_pos": 4
       },
@@ -85,7 +78,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0.06,
-          "classes": "standard_node",
           "x_pos": 1,
           "y_pos": 4
       },
@@ -95,7 +87,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0.01,
-          "classes": "standard_node",
           "x_pos": 4,
           "y_pos": 4
       },
@@ -105,7 +96,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0.56,
-          "classes": "standard_node",
           "x_pos": 3,
           "y_pos": 2
       },
@@ -115,7 +105,6 @@ export const test_network = {
           "high_value_node": true,
           "entry_node": false,
           "vulnerability": 0.04,
-          "classes": "high_value_node",
           "x_pos": 6,
           "y_pos": 5
       },
@@ -125,7 +114,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0.98,
-          "classes": "standard_node",
           "x_pos": 6,
           "y_pos": 4
       },
@@ -135,7 +123,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0.28,
-          "classes": "standard_node",
           "x_pos": 6,
           "y_pos": 3
       },
@@ -145,7 +132,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0.77,
-          "classes": "standard_node",
           "x_pos": 1,
           "y_pos": 1
       },
@@ -155,7 +141,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0.47,
-          "classes": "standard_node",
           "x_pos": 2,
           "y_pos": 1
       },
@@ -165,7 +150,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0.97,
-          "classes": "standard_node",
           "x_pos": 3,
           "y_pos": 1
       },
@@ -175,7 +159,6 @@ export const test_network = {
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0.2,
-          "classes": "standard_node",
           "x_pos": 4,
           "y_pos": 1
       },
@@ -185,7 +168,6 @@ export const test_network = {
           "high_value_node": true,
           "entry_node": false,
           "vulnerability": 0.18,
-          "classes": "high_value_node",
           "x_pos": 5,
           "y_pos": 1
       }

@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { CytoscapeService } from './services/cytoscape/cytoscape.service';
 import { MaterialModule } from './material.module';
 import { NetworkViewModule } from './network-view/network-view.module';
-import { PropertiesEditorModule } from './properties-editor/properties-editor.module';
+import { NodePropertiesModule } from './node-properties/node-properties.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ConfigurationService } from './services/configuration/configuration.service';
 import { DJANGO_SAVE_URL } from './app.tokens';
@@ -24,7 +24,7 @@ export function djangoSaveUrlFactory(configurationService: ConfigurationService)
     BrowserAnimationsModule,
     HttpClientModule,
     MaterialModule,
-    PropertiesEditorModule,
+    NodePropertiesModule,
     NetworkViewModule
   ],
   providers: [
