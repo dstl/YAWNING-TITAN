@@ -241,17 +241,17 @@ class GenericNetworkEnv(gym.Env):
                 blue_action = "failed"
 
         # if self.network_interface.gr_loss_tn:
-        if self.network_interface.get_target_node() is not None:
-            if (
-                self.network_interface.get_single_node_state(
-                    self.network_interface.get_target_node()
-                )
-                == 1
-            ):
-                # If this mode is selected then the game ends if the target node has been compromised
-                done = True
-                reward = self.network_interface.game_mode.rewards.for_loss.value
-                blue_action = "failed"
+        if (
+            self.network_interface.game_mode.game_rules.blue_loss_condition.target_node_lost.value
+            and self.network_interface.get_single_node_state(
+                self.network_interface.get_target_node()
+            )
+            == 1
+        ):
+            # If this mode is selected then the game ends if the target node has been compromised
+            done = True
+            reward = self.network_interface.game_mode.rewards.for_loss.value
+            blue_action = "failed"
 
         if done:
             if (
