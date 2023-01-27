@@ -27,7 +27,6 @@ export interface Node {
   name: string,
   high_value_node: boolean,
   entry_node: boolean,
-  classes: string,
   x_pos: number,
   y_pos: number,
   vulnerability: number

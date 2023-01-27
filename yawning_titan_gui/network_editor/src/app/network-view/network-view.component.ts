@@ -1,4 +1,3 @@
-import { DOCUMENT } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, HostListener, Inject, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { CytoscapeService } from '../services/cytoscape/cytoscape.service';
 import { ImportService } from '../services/export-import/import.service';
