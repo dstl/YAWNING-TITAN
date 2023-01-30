@@ -3,7 +3,7 @@ from typing import List
 
 from pandas import DataFrame
 
-from tests import TEST_CONFIG_PATH
+from tests import TEST_CONFIG_PATH_OLD
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 
 
@@ -15,7 +15,7 @@ def test_target_specific_node(basic_2_agent_loop: ActionLoop):
     the RED agent will follow a prescribed path to a target node
     avoiding all other nodes
     """
-    TARGET_NODE_CONFIG = TEST_CONFIG_PATH / "settable_target_node.yaml"
+    TARGET_NODE_CONFIG = TEST_CONFIG_PATH_OLD / "settable_target_node.yaml"
 
     nodes_on_path = ["0", "5", "7", "8", "9"]
     target_nodes = set()
