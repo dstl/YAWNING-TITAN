@@ -1,21 +1,21 @@
-<div class="game-mode{% if game_mode.complete %} complete{% endif %}" data-game-mode-name="{{game_mode.name}}">
+<div class="game-mode{% if game_mode_info.complete %} complete{% endif %}" data-game-mode-name="{{game_mode_info.name}}">
     <div class="contents">
-        <h3 class="subhead">{{game_mode.name}}</h3>
-        <p class="description">{{game_mode.description}}</p>
+        <h3 class="subhead">{{game_mode_info.name}}</h3>
+        <p class="description">{{game_mode_info.description}}</p>
     </div>
     <div class="icons">
         <div class="icon create-from">
             <i class="bi bi-clipboard"></i>
         </div>
-        {% if not game_mode.protected %}
-        <a class="icon" href="{% url 'game mode config' game_mode_file=game_mode.filename %}">
+        {% if not game_mode_info.protected %}
+        <a class="icon" href="{% url 'game mode config' game_mode_filename=game_mode_filename %}">
             <i class="bi bi-pencil"></i>
         </a>
         <div class="icon delete">
             <i class="bi bi-trash3"></i>
         </div>
         {% else %}
-        <a class="icon" href="{% url 'game mode config' game_mode_file=game_mode.filename %}">
+        <a class="icon" href="{% url 'game mode config' game_mode_filename=game_mode_filename %}">
             <i class="bi bi-eye"></i>
         </a>
         {% endif %}

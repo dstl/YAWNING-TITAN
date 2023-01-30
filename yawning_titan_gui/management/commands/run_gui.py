@@ -8,8 +8,9 @@ class Command(BaseCommand):
     """
     Command to run the yawning titan gui in a window.
 
-    Examples:
-        >>> python manage.py run_gui
+    :Examples:
+
+    >>> python manage.py run_gui
     """
 
     help = "Run yawning titan gui in window."
