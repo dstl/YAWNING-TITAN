@@ -9,13 +9,13 @@ Used to test the built in reward functions
 """
 
 
-def test_standard_rewards(generate_generic_env_test_reqs):
+def test_standard_rewards(generate_generic_env_test_run):
     """
     Tests the standard reward function.
 
     Will raise an error if the function does not return the expected result
     """
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
         net_creator_type="mesh",
         n_nodes=5,
@@ -99,13 +99,13 @@ def test_standard_rewards(generate_generic_env_test_reqs):
     assert reward == -9.0769
 
 
-def test_safe_gives_rewards(generate_generic_env_test_reqs):
+def test_safe_gives_rewards(generate_generic_env_test_run):
     """
     Tests the safe_nodes_give reward function.
 
     Will raise an error if the function does not return the expected result
     """
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
         net_creator_type="mesh",
         n_nodes=5,
@@ -142,13 +142,13 @@ def test_safe_gives_rewards(generate_generic_env_test_reqs):
     assert round(reward, 4) == 5
 
 
-def test_punish_bad_actions(generate_generic_env_test_reqs):
+def test_punish_bad_actions(generate_generic_env_test_run):
     """
     Tests the punish_bad_actions function.
 
     Will raise an error if the function does not return the expected result
     """
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
         net_creator_type="mesh",
         n_nodes=5,

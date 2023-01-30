@@ -5,22 +5,15 @@ from typing import Any, Dict, List, Optional
 import numpy as np
 import pytest
 import yaml
-from stable_baselines3 import PPO
-from stable_baselines3.common.callbacks import EvalCallback
-from stable_baselines3.common.env_checker import check_env
-from stable_baselines3.common.monitor import Monitor
-from stable_baselines3.ppo import MlpPolicy as PPOMlp
 from yaml import SafeLoader
 
 from yawning_titan.config.game_config.game_mode import GameMode
 from yawning_titan.config.game_modes import default_game_mode_path
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
-from yawning_titan.envs.generic.core.blue_interface import BlueInterface
-from yawning_titan.envs.generic.core.network_interface import NetworkInterface
-from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.networks import network_creator
 from yawning_titan.networks.network import Network
+from yawning_titan.yawning_titan_run import YawningTitanRun
 
 
 @pytest.fixture
@@ -59,16 +52,16 @@ def temp_config_from_base(tmpdir_factory) -> str:
 
 
 @pytest.fixture
-def init_test_env():
-    """Return a `GenericNetworkEnv`."""
+def init_test_run():
+    """Return a `YawningTitanRun`."""
 
-    def _init_test_env(
+    def _init_test_run(
         settings_path: str,
         adj_matrix: np.array,
         positions,
         entry_nodes: List[str],
         high_value_nodes: List[str],
-    ) -> GenericNetworkEnv:
+    ) -> YawningTitanRun:
         """
         Generate the test GenericEnv() and number of actions for the blue agent.
 
@@ -96,32 +89,32 @@ def init_test_env():
         game_mode = GameMode()
         game_mode.set_from_dict(config_dict, legacy=True)
 
-        network_interface = NetworkInterface(game_mode=game_mode, network=network)
+        yt_run = YawningTitanRun(
+            network=network,
+            game_mode=game_mode,
+            collect_additional_per_ts_data=True,
+            auto=False,
+            total_timesteps=1000,
+            eval_freq=1000,
+        )
+        yt_run.setup()
+        return yt_run
 
-        red = RedInterface(network_interface)
-        blue = BlueInterface(network_interface)
-
-        env = GenericNetworkEnv(red, blue, network_interface)
-
-        check_env(env, warn=True)
-        env.reset()
-
-        return env
-
-    return _init_test_env
+    return _init_test_run
 
 
 @pytest.fixture
-def generate_generic_env_test_reqs(init_test_env):
+def generate_generic_env_test_run(init_test_run):
     """Return a `GenericNetworkEnv`."""
 
-    def _generate_generic_env_test_reqs(
+    def _generate_generic_env_test_run(
         settings_path: Optional[str] = default_game_mode_path(),
         net_creator_type="mesh",
         n_nodes: int = 10,
         connectivity: float = 0.7,
         entry_nodes=None,
         high_value_nodes=None,
+        env_only: bool = True,
     ) -> GenericNetworkEnv:
         """
         Generate test environment requirements.
@@ -151,18 +144,22 @@ def generate_generic_env_test_reqs(init_test_env):
                 size=n_nodes, connectivity=connectivity
             )
 
-        env = init_test_env(
+        yt_run: YawningTitanRun = init_test_run(
             settings_path, adj_matrix, node_positions, entry_nodes, high_value_nodes
         )
+        if env_only:
+            return yt_run.env
 
-        return env
+        yt_run.train()
+        yt_run.evaluate()
+        return yt_run
 
-    return _generate_generic_env_test_reqs
+    return _generate_generic_env_test_run
 
 
 @pytest.fixture
 def basic_2_agent_loop(
-    generate_generic_env_test_reqs, temp_config_from_base
+    generate_generic_env_test_run, temp_config_from_base
 ) -> ActionLoop:
     """Return a basic 2-agent `ActionLoop`."""
 
@@ -177,23 +174,14 @@ def basic_2_agent_loop(
         if custom_settings is not None:
             settings_path = temp_config_from_base(settings_path, custom_settings)
 
-        env: GenericNetworkEnv = generate_generic_env_test_reqs(
+        yt_run: YawningTitanRun = generate_generic_env_test_run(
             settings_path=settings_path,
             net_creator_type="18node",
             entry_nodes=entry_nodes,
             high_value_nodes=high_value_nodes,
+            env_only=False,
         )
 
-        eval_callback = EvalCallback(
-            Monitor(env), eval_freq=1000, deterministic=False, render=False
-        )
-
-        agent = PPO(
-            PPOMlp, env, verbose=1, seed=env.network_interface.random_seed.value
-        )  # TODO: allow PPO to inherit environment random_seed. Monkey patch additional feature?
-
-        agent.learn(total_timesteps=1000, n_eval_episodes=100, callback=eval_callback)
-
-        return ActionLoop(env, agent, episode_count=num_episodes)
+        return ActionLoop(yt_run.env, yt_run.agent, episode_count=num_episodes)
 
     return _basic_2_agent_loop

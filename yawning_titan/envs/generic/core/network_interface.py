@@ -42,7 +42,7 @@ class NetworkInterface:
 
         self.game_mode: GameMode = game_mode
         self.network: Network = network
-        self.random_seed = self.game_mode.miscellaneous.random_seed
+        self.random_seed = self.game_mode.miscellaneous.random_seed.value
 
         number_of_nodes = len(self.network.matrix)
 

@@ -101,8 +101,8 @@ class GenericNetworkEnv(gym.Env):
 
         :return: A new starting observation (numpy array).
         """
-        if self.random_seed.value is not None:  # conditionally set random_seed
-            set_random_seed(self.random_seed.value, True)
+        if self.random_seed is not None:  # conditionally set random_seed
+            set_random_seed(self.random_seed, True)
         self.network_interface.reset()
         self.RED.reset()
         self.current_duration = 0
