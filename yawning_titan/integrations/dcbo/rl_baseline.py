@@ -64,13 +64,15 @@ def generate(
     :return: A trained agent as an instance of
         :class:`stable_baselines3.ppo.ppo.PPO`.
     """
+    matrix, positions = network_creator.dcbo_base_network()
+    network = Network(matrix=matrix, positions=positions)
+    network.set_from_yaml(dcbo_game_mode_path(), legacy=True)
+
     game_mode = GameMode()
     game_mode.set_from_yaml(dcbo_game_mode_path(), legacy=True)
 
-    matrix, positions = network_creator.dcbo_base_network()
-
     yt_run = YawningTitanRun(
-        network=Network(matrix=matrix, positions=positions),
+        network=network,
         game_mode=game_mode,
         red_agent_class=SineWaveRedAgent,
         blue_agent_class=BlueInterface,
