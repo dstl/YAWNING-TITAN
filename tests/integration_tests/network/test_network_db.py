@@ -38,24 +38,25 @@ def test_reset_default_networks():
     """Test attempted deletion of locked network fails."""
     with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
         db = NetworkDB()
+
         configs = db.all()
 
         config = configs[0]
 
         # Update the object locally
-        config.entry_nodes = ["1"]
+        config.entry_nodes.nodes = ["1"]
 
         # Hack an update to the locked network in the db
         db._db.db.update(
             config.to_dict(json_serializable=True),
             DocMetadataSchema.UUID == config.doc_metadata.uuid,
         )
-
         # Perform the default network reset
         db.reset_default_networks_in_db()
 
         expected = [config.to_dict(json_serializable=True) for config in configs]
         actual = [config.to_dict(json_serializable=True) for config in db.all()]
+
         assert expected == actual
 
         db._db.close_and_delete_temp_db()

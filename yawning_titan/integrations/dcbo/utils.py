@@ -5,7 +5,7 @@ from gym import spaces
 from stable_baselines3.common.env_checker import check_env
 
 from yawning_titan.agents.sinewave_red import SineWaveRedAgent
-from yawning_titan.config.game_config.game_mode_config import GameModeConfig
+from yawning_titan.config.game_config.game_mode import GameMode
 from yawning_titan.config.game_modes import dcbo_game_mode_path
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
@@ -27,7 +27,8 @@ def create_env(use_same_net: bool = False) -> GenericNetworkEnv:
     :returns: A YAWNING TITAN OpenAI Gym environment.
 
     """
-    game_mode = GameModeConfig.create_from_yaml(dcbo_game_mode_path())
+    game_mode = GameMode()
+    game_mode.set_from_yaml(dcbo_game_mode_path(), legacy=True)
 
     if use_same_net:
         matrix, positions = network_creator.dcbo_base_network()
