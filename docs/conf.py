@@ -46,8 +46,7 @@ extensions = [
     "sphinx.ext.autosummary",  # Create neat summary tables for modules/classes/methods etc
     "sphinx.ext.intersphinx",  # Link to other project's documentation (see mapping below)
     "sphinx.ext.viewcode",  # Add a link to the Python source code for classes, functions etc.
-    "sphinx.ext.todo",
-    "sphinx_multiversion",
+    "sphinx.ext.todo"
 ]
 
 # Mappings for sphinx.ext.intersphinx. Projects have to have Sphinx-generated doc! (.inv file)
@@ -216,3 +215,8 @@ autodoc_default_options = {
     "undoc-members": True,
     "exclude-members": "__weakref__",
 }
+
+
+def setup(app):
+    """Set up the necessary files needed to build the docs page."""
+    app.add_css_file("docs.css")

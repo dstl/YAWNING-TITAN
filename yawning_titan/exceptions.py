@@ -31,3 +31,9 @@ class ConfigGroupValidationError(ValueError):
     """A config group has failed validation."""
 
     pass
+
+
+class YawningTitanRunError(ValueError):
+    """An error has occurred during the instantiation of the YawningTitanRun class."""
+
+    pass
