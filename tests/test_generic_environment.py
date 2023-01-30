@@ -37,24 +37,24 @@ def open_config_file(settings_path: str) -> Dict:
 
 
 # tests to check invalid config files return errors
-def test_input_validation(generate_generic_env_test_reqs):
+def test_input_validation(generate_generic_env_test_run):
     """Test that incorrect/broken configuration files raise errors."""
     with pytest.raises(ValueError):
-        _, _ = generate_generic_env_test_reqs(
+        _, _ = generate_generic_env_test_run(
             os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_broken_1.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
             entry_nodes=["0", "1", "2"],
         )
 
-        _, _ = generate_generic_env_test_reqs(
+        _, _ = generate_generic_env_test_run(
             os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_broken_2.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
             entry_nodes=["0", "1", "2"],
         )
 
-        _, _ = generate_generic_env_test_reqs(
+        _, _ = generate_generic_env_test_run(
             os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_broken_3.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
@@ -63,7 +63,7 @@ def test_input_validation(generate_generic_env_test_reqs):
 
         # error thrown because choose_high_value_nodes_furthest_away_from_entry is True and
         # the high value nodes is manually provided
-        _, _ = generate_generic_env_test_reqs(
+        _, _ = generate_generic_env_test_run(
             os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
@@ -72,7 +72,7 @@ def test_input_validation(generate_generic_env_test_reqs):
         )
 
         # error thrown because there are more high value nodes than there are nodes in the network
-        _, _ = generate_generic_env_test_reqs(
+        _, _ = generate_generic_env_test_run(
             os.path.join(TEST_CONFIG_PATH_OLD, "too_many_high_value_nodes.yaml"),
             n_nodes=23,
             net_creator_type="mesh",
@@ -80,9 +80,9 @@ def test_input_validation(generate_generic_env_test_reqs):
         )
 
 
-def test_network_interface(generate_generic_env_test_reqs):
+def test_network_interface(generate_generic_env_test_run):
     """Test the network interface class and associated methods work as intended."""
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "everything_guaranteed.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
@@ -144,11 +144,11 @@ def test_network_interface(generate_generic_env_test_reqs):
         env.reset()
 
 
-def test_natural_spreading(generate_generic_env_test_reqs):
+def test_natural_spreading(generate_generic_env_test_run):
     """Test the natural spreading simulation mechanic works as intended."""
     # generate an env
     n_nodes = 100
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "spreading_config.yaml"),
         net_creator_type="mesh",
         n_nodes=n_nodes,
@@ -168,9 +168,9 @@ def test_natural_spreading(generate_generic_env_test_reqs):
 
 
 # check to make sure than when an env is reset all of the proper values are reset too
-def test_env_reset(generate_generic_env_test_reqs):
+def test_env_reset(generate_generic_env_test_run):
     """Test environment resets clean up properly."""
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
@@ -216,10 +216,10 @@ def test_env_reset(generate_generic_env_test_reqs):
             assert env.network_interface.detected_attacks == []
 
 
-def test_new_high_value_node(generate_generic_env_test_reqs):
+def test_new_high_value_node(generate_generic_env_test_run):
     """Test the high value node gaol mechanic - focus on selection."""
     # check that a new high value node is being chosen
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "new_high_value_node.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
@@ -249,9 +249,9 @@ def test_new_high_value_node(generate_generic_env_test_reqs):
         assert np.isclose(i, target_count, atol=(target_count * TOLERANCE))
 
 
-def test_high_value_node_passed_into_network_interface(generate_generic_env_test_reqs):
+def test_high_value_node_passed_into_network_interface(generate_generic_env_test_run):
     """Test the high value node gaol mechanic - manually passed to ."""
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "high_value_node_provided.yaml"),
         net_creator_type="mesh",
         n_nodes=30,
@@ -288,10 +288,10 @@ def test_high_value_node_passed_into_network_interface(generate_generic_env_test
     " arguments to randrange() have been deprecated since Python 3.10 and "
     "will be removed in a subsequent version'"
 )
-def test_high_value_node_and_entry_nodes_matching(generate_generic_env_test_reqs):
+def test_high_value_node_and_entry_nodes_matching(generate_generic_env_test_run):
     """Test the high value node gaol mechanic - manually passed to ."""
     with warnings.catch_warnings(record=True) as w:
-        env: GenericNetworkEnv = generate_generic_env_test_reqs(
+        env: GenericNetworkEnv = generate_generic_env_test_run(
             os.path.join(TEST_CONFIG_PATH_OLD, "high_value_node_provided.yaml"),
             net_creator_type="mesh",
             n_nodes=30,
@@ -330,9 +330,9 @@ def test_high_value_node_and_entry_nodes_matching(generate_generic_env_test_reqs
         )
 
 
-def test_new_entry_nodes(generate_generic_env_test_reqs):
+def test_new_entry_nodes(generate_generic_env_test_run):
     """Test the selection of entry nodes and validate they are correct."""
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "new_entry_nodes.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
@@ -363,10 +363,10 @@ def test_new_entry_nodes(generate_generic_env_test_reqs):
         assert np.isclose(i, target_count, atol=(target_count * TOLERANCE))
 
 
-def test_new_vulnerabilities(generate_generic_env_test_reqs):
+def test_new_vulnerabilities(generate_generic_env_test_run):
     """Test that new vulnerabilities are chosen at each reset if activated within configuration."""
     # check that new vulnerabilities are being chosen (randomly)
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "new_high_value_node.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
@@ -481,7 +481,7 @@ class RandomGen:
     ],
 )
 def test_generic_env(
-    generate_generic_env_test_reqs,
+    generate_generic_env_test_run,
     path: str,
     creator_type: str,
     num_nodes: int,
@@ -505,7 +505,7 @@ def test_generic_env(
     wins = 0
     deceptive_counter = 0
 
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         path, creator_type, num_nodes, entry_nodes=["0", "1", "2"]
     )
 
