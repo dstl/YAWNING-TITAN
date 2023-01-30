@@ -278,8 +278,10 @@ class Network(ConfigGroup, DocMetaDataObject):
 
         if json_serializable:
             config_dict["matrix"] = config_dict["matrix"].tolist()
-        if self.doc_metadata is not None:
-            config_dict["_doc_metadata"] = self.doc_metadata.to_dict()
+            if self.doc_metadata is not None:
+                config_dict["_doc_metadata"] = self.doc_metadata.to_dict(
+                    include_none=True
+                )
 
         return config_dict
 
