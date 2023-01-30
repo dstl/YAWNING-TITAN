@@ -1,4 +1,4 @@
-"""Test the main :class:`` class."""
+"""Test the main :class: `yawning_titan.networks.network_db.NetworkDB`."""
 import os
 from unittest.mock import patch
 
