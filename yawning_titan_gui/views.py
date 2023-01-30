@@ -195,6 +195,39 @@ class DocsView(OnLoadView):
         return render(request, "docs.html", {"sidebar": default_sidebar})
 
 
+class RunView(View):
+    """Django page template for Yawning Titan Run class."""
+
+    def get(self, request, *args, **kwargs):
+        """
+        Handle page get requests.
+
+        :param request: the Django page `request` object containing the html data for `game_modes.html` and the server GET / POST request bodies.
+        """
+        return render(
+            request,
+            "run.html",
+            {
+                "sidebar": default_sidebar,
+                "game_modes": [
+                    *unfinished_game_modes,
+                    *[
+                        {
+                            "filename": path.name,
+                            "name": path.stem,
+                            "description": f"description {i}",
+                            "protected": path.stem in protected_game_modes,
+                            "complete": check_game_mode(path),
+                        }
+                        for i, path in enumerate(
+                            get_game_mode_file_paths(valid_only=False)
+                        )
+                    ],
+                ],
+            },
+        )
+
+
 class GameModesView(View):
     """Django page template for game mode management."""
 
@@ -394,6 +427,7 @@ def config_file_manager(request) -> JsonResponse:
         return JsonResponse({"load": load})
     return JsonResponse({"message:": "FAILED"}, status=400)
 
+
 class NodeEditor(View):
     """
     Django representation of node_editor.html.
@@ -402,17 +436,14 @@ class NodeEditor(View):
     """
 
     def get(self, request, *args, **kwargs):
-        """
+        """Handle page get requests.
+
         Args:
             request: A Django `request` object that contains the data passed from
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        return render(
-            request,
-            "node_editor.html",
-            {"sidebar": default_sidebar}
-        )
+        return render(request, "node_editor.html", {"sidebar": default_sidebar})
 
     def post(self, request, *args, **kwargs):
         """Handle page post requests.
@@ -422,11 +453,6 @@ class NodeEditor(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-
         print(request.body)
 
-        return render(
-            request,
-            "node_editor.html",
-            {"sidebar": default_sidebar}
-        )
+        return render(request, "node_editor.html", {"sidebar": default_sidebar})
