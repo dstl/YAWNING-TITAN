@@ -286,7 +286,7 @@ class NetworkDB:
             uuid = network["_doc_metadata"]["uuid"]
             name = network["_doc_metadata"]["name"]
 
-            # Get the matching network from the  networks db
+            # Get the matching network from the networks db
             db_network = self.get(uuid)
 
             # If the network doesn't match the default, or it doesn't exist,
@@ -298,7 +298,6 @@ class NetworkDB:
                 )
             else:
                 reset = True
-
             if reset:
                 self._db.db.upsert(network, DocMetadataSchema.UUID == uuid)
                 _LOGGER.info(
@@ -336,7 +335,7 @@ def default_18_node_network() -> Network:
     """
     The standard 18-node network found in the Ridley, A. (2017) research paper.
 
-    .. seealso:: https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9
+    .. seealso:: https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9
 
     :return: An instance of :class:`~yawning_titan.networks.network.Network`.
     """
