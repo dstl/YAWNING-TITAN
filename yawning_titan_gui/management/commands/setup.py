@@ -4,14 +4,16 @@ from pathlib import Path
 from django.core.management.base import BaseCommand
 
 from yawning_titan import _YT_ROOT_DIR
+from yawning_titan_gui import DEFAULT_GAME_MODE
 
 
 class Command(BaseCommand):
     """
     Command for setting up directories necessary for yawning titan operation with front end.
 
-    Examples:
-        >>> python manage.py setup
+    :Example:
+
+    >>> python manage.py setup
     """
 
     help = "Copy yawning_titan gui dependencies to `DATA_DIR`"
@@ -20,18 +22,17 @@ class Command(BaseCommand):
         """Method that is fired on execution of the command in the terminal."""
         print("Running setup...")
 
-        from yawning_titan import DATA_DIR, GAME_MODES_DIR
-        from yawning_titan_gui import _YT_GUI_ROOT_DIR, DEFAULT_GAME_MODE
+        from yawning_titan import GAME_MODES_DIR
+        from yawning_titan_gui import _YT_GUI_ROOT_DIR, STATIC_DIR
 
         # Creates the static ui files copy in the data directory
         shutil.copytree(
             (_YT_GUI_ROOT_DIR / "static").as_posix(),
-            DATA_DIR.as_posix(),
+            STATIC_DIR.as_posix(),
             dirs_exist_ok=True,
         )
-        shutil.copyfile(
-            (
-                _YT_ROOT_DIR / "config/_package_data/game_modes" / DEFAULT_GAME_MODE
-            ).as_posix(),
-            (GAME_MODES_DIR / Path(DEFAULT_GAME_MODE).name).as_posix(),
+        shutil.copytree(
+            (_YT_ROOT_DIR / "config/_package_data/game_modes").as_posix(),
+            GAME_MODES_DIR.as_posix(),
+            dirs_exist_ok=True,
         )
