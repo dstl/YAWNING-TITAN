@@ -1,0 +1,142 @@
+# This file contains an example config for the generic network environment.
+
+red:
+  agent_attack:
+    ignores_defences: "changed"
+    always_succeeds: "changed"
+    skill:
+      use: "changed"
+      value: "changed"
+    attack_from:
+      only_main_red_node: "changed"
+      any_red_node: "changed"
+  action_set:
+    spread:
+      use: "changed"
+      likelihood: "changed"
+      chance: "changed"
+    random_infect:
+      use: "changed"
+      likelihood: "changed"
+      chance: "changed"
+    move:
+      use: "changed"
+      likelihood: "changed"
+    basic_attack:
+      use: "changed"
+      likelihood: "changed"
+    do_nothing:
+      use: "changed"
+      likelihood: "changed"
+    zero_day:
+      use: "changed"
+      start_amount: "changed"
+      days_required: "changed"
+  natural_spreading:
+    capable: "changed"
+    chance:
+      to_connected_node: "changed"
+      to_unconnected_node: "changed"
+  target_mechanism:
+    random: "changed"
+    prioritise_connected_nodes: "changed"
+    prioritise_unconnected_nodes: "changed"
+    prioritise_vulnerable_nodes: "changed"
+    prioritise_resilient_nodes: "changed"
+    target_specific_node:
+      target: "changed"
+      always_choose_shortest_distance: "changed"
+
+blue:
+  action_set:
+    reduce_vulnerability: "changed"
+    restore_node: "changed"
+    scan: "changed"
+    isolate_node: "changed"
+    reconnect_node: "changed"
+    do_nothing: "changed"
+    make_node_safe:
+      use: "changed"
+      increases_vulnerability: "changed"
+      gives_random_vulnerability: "changed"
+      vulnerability_change: "changed"
+    deceptive_nodes:
+      use: "changed"
+      max_number: "changed"
+      new_node_on_relocate: "changed"
+  intrusion_discovery_chance:
+    immediate:
+      standard_node: "changed"
+      deceptive_node: "changed"
+    on_scan:
+      standard_node: "changed"
+      deceptive_node: "changed"
+  attack_discovery:
+    failed_attacks:
+      use: "changed"
+      chance:
+        standard_node: "changed"
+        deceptive_node: "changed"
+    succeeded_attacks_known_compromise:
+      use: "changed"
+      chance:
+        standard_node: "changed"
+        deceptive_node: "changed"
+    succeeded_attacks_unknown_compromise:
+      use: "changed"
+      chance:
+        standard_node: "changed"
+        deceptive_node: "changed"
+
+game_rules:
+  grace_period_length: "changed"
+  max_steps: "changed"
+  network_compatibility:
+    node_count:
+      restrict: False
+      min: "changed"
+      max:
+    entry_node_count:
+      restrict: False
+      min:
+      max:
+    high_value_node_count:
+      restrict: False
+      min:
+      max:
+  blue_loss_condition:
+    all_nodes_lost: "changed"
+    high_value_node_lost: "changed"
+    target_node_lost: "changed"
+    n_percent_nodes_lost:
+      use: "changed"
+      value: "changed"
+
+blue_can_observe:
+  compromised_status: "changed"
+  vulnerabilities: "changed"
+  node_connections: "changed"
+  average_vulnerability: "changed"
+  graph_connectivity: "changed"
+  attacking_nodes: "changed"
+  attacked_nodes: "changed"
+  special_nodes: "changed"
+  red_agent_skill: "changed"
+
+
+on_reset:
+  randomise_vulnerabilities: "changed"
+  choose_new_high_value_nodes: "changed"
+  choose_new_entry_nodes: "changed"
+
+rewards:
+  for_loss: "changed"
+  for_reaching_max_steps: "changed"
+  end_rewards_are_multiplied_by_end_state: "changed"
+  reduce_negative_rewards_for_closer_fails: "changed"
+  function: "changed"
+
+
+miscellaneous:
+  output_timestep_data_to_json: "changed"
+  random_seed: "changed"
