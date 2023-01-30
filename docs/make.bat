@@ -1,5 +1,7 @@
 @ECHO OFF
 
+setlocal EnableDelayedExpansion
+
 pushd %~dp0
 
 REM Command file for Sphinx documentation
@@ -9,6 +11,8 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
+
+set AUTOSUMMARYDIR="%cd%\source\_autosummary\"
 
 %SPHINXBUILD% >NUL 2>NUL
 if errorlevel 9009 (
@@ -25,11 +29,30 @@ if errorlevel 9009 (
 
 if "%1" == "" goto help
 
+REM delete autosummary if it exists
+
+IF EXIST %AUTOSUMMARYDIR% (
+    echo deleting %AUTOSUMMARYDIR%
+    RMDIR %AUTOSUMMARYDIR% /s /q
+)
+
+REM print the YT licenses
+set YTLICENSEBUILD=pip-licenses --format=rst --with-urls
+set YTDEPS="%cd%\source\yt-dependencies.rst"
+
+%YTLICENSEBUILD% --output-file=%YTDEPS%
+
 %SPHINXBUILD% -M %1 %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
 goto end
 
 :help
 %SPHINXBUILD% -M help %SOURCEDIR% %BUILDDIR% %SPHINXOPTS% %O%
+
+:clean
+IF EXIST %AUTOSUMMARYDIR% (
+    echo deleting %AUTOSUMMARYDIR%
+    RMDIR %AUTOSUMMARYDIR% /s /q
+)
 
 :end
 popd

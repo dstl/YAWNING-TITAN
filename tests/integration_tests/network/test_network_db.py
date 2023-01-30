@@ -40,7 +40,6 @@ def test_reset_default_networks():
         db = NetworkDB()
 
         configs = db.all()
-        print("CONFIGS", configs)
 
         config = configs[0]
 
