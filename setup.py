@@ -182,6 +182,7 @@ setup(
             "pip-licenses==4.0.2",
             "pre-commit==2.20.0",
             "pytest==7.2.0",
+            "pytest-django==4.5.2",
             "pytest-cov==4.0.0",
             "pytest-flake8==1.1.1",
             "sphinx==5.3.0",

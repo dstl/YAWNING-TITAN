@@ -22,7 +22,7 @@ from yawning_titan.agents.fixed_red import FixedRedAgent
 from yawning_titan.agents.nsa_red import NSARed
 from yawning_titan.agents.simple_blue import SimpleBlue
 from yawning_titan.agents.sinewave_red import SineWaveRedAgent
-from yawning_titan.config.game_config.game_mode_config import GameModeConfig
+from yawning_titan.config.game_config.game_mode import GameMode
 from yawning_titan.config.game_modes import default_game_mode_path
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
@@ -72,7 +72,7 @@ class YawningTitanRun:
     def __init__(
         self,
         network: Optional[Network] = None,
-        game_mode: Optional[GameModeConfig] = None,
+        game_mode: Optional[GameMode] = None,
         red_agent_class=RedInterface,
         blue_agent_class=BlueInterface,
         print_metrics: bool = False,
@@ -140,10 +140,13 @@ class YawningTitanRun:
         # Set the game_mode using the game_mode arg if one was passed,
         # otherwise use the game mode
         if game_mode:
-            self.game_mode: GameModeConfig = game_mode
+            self.game_mode: GameMode = game_mode
         else:
             # TODO: Replace with the updated retrieval method from TinyDB once implemented.
-            self.game_mode = GameModeConfig.create_from_yaml(default_game_mode_path())
+            game_mode = GameMode()
+            game_mode.set_from_yaml(default_game_mode_path())
+            self.game_mode = game_mode
+
         self._red_agent_class = red_agent_class
         self._blue_agent_class = blue_agent_class
 
@@ -224,7 +227,7 @@ class YawningTitanRun:
 
         :raise AttributeError: When new=False and ppo_zip_path hasn't been provided.
         """
-        if new and not ppo_zip_path:
+        if not new and not ppo_zip_path:
             msg = "Performing setup when new=False requires ppo_zip_path as the path of a saved ppo.zip file."
             try:
                 raise AttributeError(msg)
@@ -452,8 +455,14 @@ class YawningTitanRun:
                 args = yaml.safe_load(file)
 
             if args.keys() == YawningTitanRun(auto=False)._args_dict().keys():
-                args["network"] = Network.create(args["network"])
-                args["game_mode"] = GameModeConfig.create(args["game_mode"])
+                game_mode = GameMode()
+                game_mode.set_from_dict(args["game_mode"])
+
+                network = Network()
+                network.set_from_dict(args["network"])
+
+                args["network"] = network
+                args["game_mode"] = game_mode
                 args["red_agent_class"] = cls._get_agent_class_from_str(
                     args["red_agent_class"]
                 )
