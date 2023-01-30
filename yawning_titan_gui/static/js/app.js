@@ -40,7 +40,7 @@ $(document).ready(function(){
 
     // add range setter input field
     $("input[type='range']").wrap("<div class=form-range></div>");
-    $(".form-range").append("<input type='number' class='range-setter'>");
+    $(".form-range").append("<input type='number' class='range-setter form-control'>");
 
     // constrain range setter input field
     $(".range-setter").each(function(){
