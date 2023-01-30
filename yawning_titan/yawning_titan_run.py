@@ -28,6 +28,7 @@ from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
+from yawning_titan.exceptions import YawningTitanRunError
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import default_18_node_network
 
@@ -367,21 +368,7 @@ class YawningTitanRun:
                 f"trained. Call .train() on the instance of {self.__class__.__name__} to train the agent."
             )
 
-    def export(self) -> str:
-        """
-        Export the YawningTitanRun as a zip.
-
-        The contents of output_dir is archived to the agents_dir exported dir.
-
-        Included is an INVENTORY file that contains all files and their sizes. This is used for file verification when
-        an exported YawningTitanRun is imported.
-
-        :return: The exported filepath as a str.
-        """
-        self.logger.debug(f"YT run  {self.uuid}: Performing export.")
-        self.save()
-
-        # TODO: Refactor out INVENTORY file creation into a private method
+    def _build_inventory_file(self):
         # Walk the output_dir to build an inventory file
         inventory_path = os.path.join(self.output_dir, "INVENTORY")
         if os.path.isfile(inventory_path):
@@ -405,6 +392,22 @@ class YawningTitanRun:
                             f"YT run  {self.uuid}: File added to inventory: {dir_path}."
                         )
         self.logger.debug(f"YT run  {self.uuid}: Finished building INVENTORY file.")
+
+    def export(self) -> str:
+        """
+        Export the YawningTitanRun as a zip.
+
+        The contents of output_dir is archived to the agents_dir exported dir.
+
+        Included is an INVENTORY file that contains all files and their sizes. This is used for file verification when
+        an exported YawningTitanRun is imported.
+
+        :return: The exported filepath as a str.
+        """
+        self.logger.debug(f"YT run  {self.uuid}: Performing export.")
+        self.save()
+
+        self._build_inventory_file()
 
         # Make a zip archive of the output dir
         exported_root = pathlib.Path(os.path.join(AGENTS_DIR, "exported"))
@@ -474,6 +477,8 @@ class YawningTitanRun:
         """
         Load and return a saved YawningTitanRun.
 
+        YawningTitanRun's that have auto=True will not be automatically ran on load.
+
         :param path: A saved YawningTitanRun path.
         :return: An instance of YawningTitanRun.
         """
@@ -521,15 +526,22 @@ class YawningTitanRun:
         return True
 
     @classmethod
-    def import_from_export(cls, exported_zip_file_path: str) -> YawningTitanRun:
+    def import_from_export(
+        cls, exported_zip_file_path: str, overwrite_existing: bool = False
+    ) -> YawningTitanRun:
         """
         Import and return an exported YawningTitanRun.
 
+        YawningTitanRun's that have auto=True will not be automatically ran on import.
+
         :param exported_zip_file_path: The path of an exported YawningTitanRun.
+        :param overwrite_existing: If True, if the uuid of the imported agent already exists in the trainer agents dir
+            it is overwritten.
         :return: The imported instance of YawningTitanRun.
 
-        :raise ValueError: When the INVENTORY file fails its verification.
+        :raise YawningTitanRunError: When the INVENTORY file fails its verification.
         """
+        _LOGGER.debug(f"Importing exported agent from {exported_zip_file_path}")
         # Unzip into trained agents folder
         unzip_path = pathlib.Path(
             os.path.join(
@@ -544,7 +556,12 @@ class YawningTitanRun:
         if not verified:
             # TODO: Update the error type raised to a custom type.
             # TODO: Log a critical log message.
-            raise AttributeError("failed.")
+            msg = f"Failed to verify the contents while importing YawningTitanRun from {exported_zip_file_path}."
+            try:
+                raise YawningTitanRunError(msg)
+            except YawningTitanRunError as e:
+                _LOGGER.critical(e)
+                raise e
 
         # Rename unzip_dir using the UUID
         with open(os.path.join(unzip_path, "UUID")) as file:
@@ -552,9 +569,17 @@ class YawningTitanRun:
         new_unzip_path = pathlib.Path(
             os.path.join(AGENTS_DIR, "trained", str(datetime.now().date()), uuid)
         )
-        # TODO: Check if improted YawningTitanRun uuid already exists in the trained agents. Add param to allow
-        #  overwrite.
-        os.rename(unzip_path, new_unzip_path)
+        if not os.path.isdir(new_unzip_path):
+            os.rename(unzip_path, new_unzip_path)
+        else:
+            # Has already been imported or was created on this machine
+            if overwrite_existing:
+                # Overwrite
+                shutil.rmtree(new_unzip_path)
+                os.rename(unzip_path, new_unzip_path)
+                _LOGGER.debug(
+                    f"Existing YawningTitanRun overwritten at {new_unzip_path}."
+                )
 
         # Pass new_unzip_path to .load and return
         return cls.load(str(new_unzip_path))
