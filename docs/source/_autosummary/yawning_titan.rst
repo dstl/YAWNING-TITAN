@@ -56,3 +56,4 @@ yawning\_titan
    yawning_titan.integrations
    yawning_titan.networks
    yawning_titan.notebooks
+   yawning_titan.yawning_titan_run
