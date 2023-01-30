@@ -132,7 +132,7 @@ class GameModeDB:
         """
         Get all :class:`~yawning_titan.config.game_config.game_mode.GameMode` from the game mode DB.
 
-        :return: A :py:class:`list` of :class:~yawning_titan.config.game_config.game_mode.GameMode`.
+        :return: A :class:`list` of :class:`~yawning_titan.config.game_config.game_mode.GameMode`.
         """
         return [self._doc_to_game_mode(doc) for doc in self._db.all()]
 
@@ -271,7 +271,7 @@ class GameModeDB:
         self._db.db.clear_cache()
         game_mode_root = Path(__file__).parent.resolve()
         default_game_mode_path = os.path.join(
-            game_mode_root, "_package_data", "game_mode.json"
+            game_mode_root, "_package_data", "game_modes.json"
         )
 
         # Load the default db file into TinyDB

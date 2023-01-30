@@ -82,7 +82,7 @@ class GameMode(ConfigGroup, DocMetaDataObject):
         config_dict = super().to_dict(
             values_only=values_only, include_none=include_none
         )
-
-        config_dict["_doc_metadata"] = self.doc_metadata.to_dict()
+        if json_serializable and self.doc_metadata is not None:
+            config_dict["_doc_metadata"] = self.doc_metadata.to_dict(include_none=True)
 
         return config_dict

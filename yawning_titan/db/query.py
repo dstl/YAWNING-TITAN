@@ -192,9 +192,13 @@ class YawningTitanQuery(Query):
         """
 
         def test_compatible_with(val: dict, n: Network, include_null):
-            if not isinstance(val, dict) or not all(
-                k in val
-                for k in ["entry_node_count", "high_value_node_count", "node_count"]
+            if (
+                not isinstance(val, dict)
+                or not isinstance(n, Network)
+                or not all(
+                    k in val
+                    for k in ["entry_node_count", "high_value_node_count", "node_count"]
+                )
             ):
                 return False
             mapper = {

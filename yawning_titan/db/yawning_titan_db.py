@@ -311,7 +311,6 @@ class YawningTitanDB:
             an attempt to remove a locked doc is made.
         """
         doc = self.db.search(DocMetadataSchema.UUID == uuid)
-        print("")
         if doc:
             if len(doc) > 1:
                 msg = (
