@@ -50,6 +50,17 @@ then press "Start E2E Testing"
 - navigate to the root of the network editor project
 - `yarn build`
 
+### Updating the Network Editor dependencies
+Every time a new package is added or `yarn install` (or `yarn`) is run, the post install script will be run.
+
+This should automatically update the network-editor-dependencies.csv which is used by Sphinx to build the docs.
+To update the docs locally, rebuild the docs:
+- navigate to the docs directory (YAWNING-TITAN/docs)
+
+Windows: `.\make.bat html`
+
+Linux: `make html`
+
 ### Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
