@@ -13,6 +13,7 @@ from __future__ import annotations
 import os.path
 from datetime import datetime
 from logging import getLogger
+from pathlib import Path
 from typing import Final, List, Mapping, Optional, Union
 
 from tinydb import TinyDB
@@ -29,9 +30,12 @@ _LOGGER = getLogger(__name__)
 class YawningTitanDB:
     """An :py:class:`~abc.ABC` that implements and extends the :class:`~tinydb.database.TinyDB` query functions."""
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, root: Optional[Path] = None):
         self._name: Final[str] = name
-        self._path = DB_DIR / f"{self._name}.json"
+        if root is not None:
+            self._path = root / f"{self._name}.json"
+        else:
+            self._path = DB_DIR / f"{self._name}.json"
 
         if not self._db_file_exist():
             _LOGGER.info(f"New TinyDB .json file created: {self._path}")

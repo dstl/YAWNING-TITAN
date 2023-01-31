@@ -5,8 +5,8 @@ from datetime import datetime
 from typing import Dict, Final, Optional, Union
 from uuid import uuid4
 
-from yawning_titan.config.game_config import _LOGGER
 from yawning_titan.db.query import YawningTitanQuery
+from yawning_titan.game_modes.components import _LOGGER
 
 
 class DocMetaDataObject:

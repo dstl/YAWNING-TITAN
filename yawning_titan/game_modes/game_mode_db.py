@@ -12,7 +12,7 @@ from tinydb.table import Document
 
 from yawning_titan.config import _LIB_CONFIG_ROOT_PATH
 from yawning_titan.db.doc_metadata import DocMetadata, DocMetadataSchema
-from yawning_titan.db.query import YawningTitanQuery
+from yawning_titan.db.query import CompatibilityQuery, YawningTitanQuery
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
 from yawning_titan.game_modes.game_mode import GameMode
 
@@ -28,7 +28,7 @@ class GameModeSchema:
     Fields are defined using the :class:`~yawning_titan.db.query.YawningTitanQuery` class
     so that schema paths can be used directly within :func:`tinydb.table.Table.search`
     function calls. All fields are mapped to a property in the
-    :class:~yawning_titan.config.game_config.game_mode.GameMode` class.
+    :class:~`yawning_titan.game_modes.game_mode.GameMode` class.
 
     :Example:
 
@@ -38,21 +38,24 @@ class GameModeSchema:
     """
 
     NETWORK_NODES: Final[
-        YawningTitanQuery
-    ] = YawningTitanQuery().game_rules.network_compatibility.node_count
-    """Mapped to :attr:`~yawning_titan.config.game_config.game_mode.GameMode.game_rules.network_compatibility.node_count`."""
+        CompatibilityQuery
+    ] = CompatibilityQuery().game_rules.network_compatibility.node_count
+    """Mapped to :attr:`~yawning_titan.game_modes.game_mode.GameMode.game_rules.network_compatibility.node_count`."""
     ENTRY_NODES: Final[
-        YawningTitanQuery
-    ] = YawningTitanQuery().game_rules.network_compatibility.entry_node_count
-    """Mapped to :attr:`~yawning_titan.config.game_config.game_mode.GameMode.game_rules.network_compatibility.entry_node_count``."""
+        CompatibilityQuery
+    ] = CompatibilityQuery().game_rules.network_compatibility.entry_node_count
+    """Mapped to :attr:`~yawning_titan.game_modes.game_mode.GameMode.game_rules.network_compatibility.entry_node_count``."""
     HIGH_VALUE_NODES: Final[
-        YawningTitanQuery
-    ] = YawningTitanQuery().game_rules.network_compatibility.high_value_node_count
-    """Mapped to :attr:`~yawning_titan.config.game_config.game_mode.GameMode.game_rules.network_compatibility.high_value_node_count`."""
+        CompatibilityQuery
+    ] = CompatibilityQuery().game_rules.network_compatibility.high_value_node_count
+    """Mapped to :attr:`~yawning_titan.game_modes.game_mode.GameMode.game_rules.network_compatibility.high_value_node_count`."""
     NETWORK_COMPATIBILITY: Final[
-        YawningTitanQuery
-    ] = YawningTitanQuery().game_rules.network_compatibility
-    """Mapped to :attr:`~yawning_titan.config.game_config.game_mode.GameMode.game_rules.network_compatibility`."""
+        CompatibilityQuery
+    ] = CompatibilityQuery().game_rules.network_compatibility
+    """Mapped to :attr:`~yawning_titan.game_modes.game_mode.GameMode.game_rules.network_compatibility`."""
+
+    CONFIGURATION: Final[YawningTitanQuery] = YawningTitanQuery()
+    """Use this to access the full schema of the database structured in the same nested format as :class:~`yawning_titan.game_modes.game_mode.GameMode`."""
 
 
 class GameModeDB:
@@ -90,10 +93,10 @@ class GameModeDB:
         """Convert the document.
 
         Converts a :class:`tinydb.table.Document` from the :class:`~yawning_titan.config.game_modes.GameModeDB` to an instance
-        of :class:~yawning_titan.config.game_config.game_mode.GameMode`.
+        of :class:~yawning_titan.game_modes.game_mode.GameMode`.
 
         :param doc: A :class:`tinydb.table.Document`.
-        :return: The doc as a :class:`~yawning_titan.config.game_config.game_mode.GameMode`.
+        :return: The doc as a :class:`~yawning_titan.game_modes.game_mode.GameMode`.
         """
         doc["_doc_metadata"] = DocMetadata(**doc["_doc_metadata"])
         game_mode: GameMode = GameMode()
@@ -108,16 +111,16 @@ class GameModeDB:
         author: Optional[str] = None,
     ) -> GameMode:
         """
-        Insert a :class:`~yawning_titan.config.game_config.game_mode.GameMode` into the DB as ``.json``.
+        Insert a :class:`~yawning_titan.game_modes.game_mode.GameMode` into the DB as ``.json``.
 
-        :param game_mode: An instance of :class:`~yawning_titan.config.game_config.game_mode.GameMode`
+        :param game_mode: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`
             :class:`~yawning_titan.db.doc_metadata.DocMetadata`.
             :class:`~yawning_titan.db.doc_metadata.DocMetadata`.
             :class:`~yawning_titan.db.doc_metadata.DocMetadata`.
         :param name: The config name.
         :param description: The config description.
         :param author: The config author.
-        :return: The inserted :class:`~yawning_titan.config.game_config.game_mode.GameMode`.
+        :return: The inserted :class:`~yawning_titan.game_modes.game_mode.GameMode`.
         """
         game_mode.doc_metadata.update(name, description, author)
         self._db.insert(
@@ -130,9 +133,9 @@ class GameModeDB:
 
     def all(self) -> List[GameMode]:
         """
-        Get all :class:`~yawning_titan.config.game_config.game_mode.GameMode` from the game mode DB.
+        Get all :class:`~yawning_titan.game_modes.game_mode.GameMode` from the game mode DB.
 
-        :return: A :class:`list` of :class:`~yawning_titan.config.game_config.game_mode.GameMode`.
+        :return: A :class:`list` of :class:`~yawning_titan.game_modes.game_mode.GameMode`.
         """
         return [self._doc_to_game_mode(doc) for doc in self._db.all()]
 
@@ -142,7 +145,7 @@ class GameModeDB:
 
         :param uuid: A target document uuid.
         :return: The game_mode config document as an instance of
-            :class:~yawning_titan.config.game_config.game_mode.GameMode` if the uuid exists,
+            :class:~yawning_titan.game_modes.game_mode.GameMode` if the uuid exists,
             otherwise :class:`None`.
         """
         # self._db.db.clear_cache()
@@ -152,10 +155,10 @@ class GameModeDB:
 
     def search(self, query: YawningTitanQuery) -> List[GameMode]:
         """
-        Searches the :class:`~yawning_titan.config.game_config.game_mode.GameMode` with a :class:`GameModeSchema` query.
+        Searches the :class:`~yawning_titan.game_modes.game_mode.GameMode` with a :class:`GameModeSchema` query.
 
         :param query: A :class:`~yawning_titan.db.query.YawningTitanQuery`.
-        :return: A :class:`list` of :class:`~yawning_titan.config.game_config.game_mode.GameMode`.
+        :return: A :class:`list` of :class:`~yawning_titan.game_modes.game_mode.GameMode`.
         """
         game_mode_configs = []
         for doc in self._db.search(query):
@@ -185,13 +188,13 @@ class GameModeDB:
         author: Optional[str] = None,
     ) -> GameMode:
         """
-        Update a :class:`~yawning_titan.config.game_config.game_mode.GameMode`. in the db.
+        Update a :class:`~yawning_titan.game_modes.game_mode.GameMode`. in the db.
 
-        :param game_mode: An instance of :class:`~yawning_titan.config.game_config.game_mode.GameMode`.
+        :param game_mode: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`.
         :param name: The config name.
         :param description: The config description.
         :param author: The config author.
-        :return: The updated :class:`~yawning_titan.config.game_config.game_mode.GameMode`.
+        :return: The updated :class:`~yawning_titan.game_modes.game_mode.GameMode`.
         """
         # Update the configs metadata
         game_mode.doc_metadata.update(name, description, author)
@@ -217,13 +220,13 @@ class GameModeDB:
         author: Optional[str] = None,
     ) -> GameMode:
         """
-        Upsert a :class:`~yawning_titan.config.game_config.game_mode.GameMode`. in the db.
+        Upsert a :class:`~yawning_titan.game_modes.game_mode.GameMode`. in the db.
 
-        :param game_mode: An instance of :class:`~yawning_titan.config.game_config.game_mode.GameMode`.
+        :param game_mode: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`.
         :param name: The config name.
         :param description: The config description.
         :param author: The config author.
-        :return: The upserted :class:`~yawning_titan.config.game_config.game_mode.GameMode`.
+        :return: The upserted :class:`~yawning_titan.game_modes.game_mode.GameMode`.
         """
         game_mode.doc_metadata.update(name, description, author)
         doc = self._db.upsert(
@@ -242,19 +245,19 @@ class GameModeDB:
 
     def remove(self, game_mode: GameMode) -> List[str]:
         """
-        Remove a :class:`~yawning_titan.config.game_config.game_mode.GameMode`. from the db.
+        Remove a :class:`~yawning_titan.game_modes.game_mode.GameMode`. from the db.
 
-        :param game_mode: An instance of :class:`~yawning_titan.config.game_config.game_mode.GameMode`.
-        :return: The uuid of the removed :class:`~yawning_titan.config.game_config.game_mode.GameMode`.
+        :param game_mode: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`.
+        :return: The uuid of the removed :class:`~yawning_titan.game_modes.game_mode.GameMode`.
         """
         self._db.remove(game_mode.doc_metadata.uuid)
 
     def remove_by_cond(self, cond: QueryInstance) -> List[str]:
         """
-        Remove :class:`~yawning_titan.config.game_config.game_mode.GameMode`. from the db that match the query.
+        Remove :class:`~yawning_titan.game_modes.game_mode.GameMode`. from the db that match the query.
 
         :param cond: A :class:`~yawning_titan.db.query.YawningTitanQuery`.
-        :return: The list of uuids of the removed :class:`~yawning_titan.config.game_config.game_mode.GameMode`.
+        :return: The list of uuids of the removed :class:`~yawning_titan.game_modes.game_mode.GameMode`.
         """
         return self._db.remove_by_cond(cond)
 
@@ -336,5 +339,14 @@ class GameModeDB:
             directory = _LIB_CONFIG_ROOT_PATH / "_package_data" / "game_modes"
         for game_mode_path in directory.iterdir():
             game_mode = GameMode()
-            game_mode.set_from_yaml(game_mode_path)
-            self.insert(game_mode)
+            game_mode.set_from_yaml(game_mode_path, infer_legacy=True)
+            self.insert(game_mode, name=game_mode_path.stem)
+
+    def default_game_mode() -> GameMode:
+        """
+        The default Yawning Titan game mode.
+
+        :return: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`.
+        """
+        with GameModeDB() as db:
+            return db.get("bac2cb9d-b24b-426c-88a5-5edd0c2de413")
