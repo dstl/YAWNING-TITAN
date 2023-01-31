@@ -8,9 +8,9 @@ from yawning_titan.config.environment.game_rules_config import GameRules
 from yawning_titan.config.environment.observation_space_config import ObservationSpace
 from yawning_titan.config.environment.reset_config import Reset
 from yawning_titan.config.environment.rewards_config import Rewards
-from yawning_titan.config.game_config.miscellaneous_config import Miscellaneous
 from yawning_titan.config.toolbox.core import ConfigGroup
 from yawning_titan.db.doc_metadata import DocMetadata, DocMetaDataObject
+from yawning_titan.game_modes.components.miscellaneous_config import Miscellaneous
 
 # --- Tier 0 groups
 

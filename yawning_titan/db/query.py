@@ -10,11 +10,87 @@ if TYPE_CHECKING:
     from yawning_titan.networks.network import Network
 
 
+class CompatibilityQuery(Query):
+    """
+    The :class:`~yawning_titan.db.query.YawningTitanQuery` class extends :class:`tinydb.queries.Query`.
+
+    Extended to provide common pre-defined test functions that call :func:`tinydb.queries.Query.test`, These functions
+    are specific to the compatibility of :class: `~yawning_titan.game_modes.game_mode.GameMode`
+    and :class: `~yawning_titan.networks.network.Network` objects.
+    """
+
+    def works_with(self, n: int, include_null: Optional[bool] = True) -> QueryInstance:
+        """Tests the game mode can work with a network with the parameter with a value of ``n``.
+
+        Fields whose value is either unrestricted or where ``n`` is in the specified range are returned in the search.
+
+        :Example:
+
+        >>> from yawning_titan.game_modes.game_mode_db import GameModeDB
+        >>> from yawning_titan.db.query import YawningTitanQuery
+        >>> db = GameModeDB()
+        >>> db.search(YawningTitanQuery.ENTRY_NODES.works_with(18)))
+
+        :param n: The target value of a field as an int.
+        :param include_null: Whether to include fields where part of the range is unbounded.
+        :return: ``True`` if it does exist, otherwise ``False``.
+        """
+
+        def test_works_with(val, n, include_null):
+            return check_element(val, n, include_null)
+
+        return self.test(test_works_with, n, include_null)
+
+    def compatible_with(self, n, include_null: Optional[bool] = True) -> QueryInstance:
+        """Tests the game mode can work with a specified network ``n``.
+
+        Fields where all network parameter restrictions are satisfied or unrestricted are returned in the search.
+
+
+        :Example:
+
+        >>> from yawning_titan.game_modes.game_mode_db import GameModeDB
+        >>> from yawning_titan.db.query import YawningTitanQuery
+        >>> db = GameModeDB()
+        >>> db.search(YawningTitanQuery.GAME_MODE.compatible_with(network)))
+
+        :param n: The target value of a field as a Network.
+        :param include_null: Whether to include fields where part of the range is unbounded.
+        :return: ``True`` if it does exist, otherwise ``False``.
+        """
+
+        def test_compatible_with(val: dict, n: Network, include_null):
+            if (
+                not isinstance(val, dict)
+                or not isinstance(n, Network)
+                or not all(
+                    k in val
+                    for k in ["entry_node_count", "high_value_node_count", "node_count"]
+                )
+            ):
+                return False
+            mapper = {
+                "entry_node_count": len(n.entry_nodes.nodes)
+                if n.entry_nodes.nodes
+                else n.entry_nodes.random_placement.count,
+                "high_value_node_count": len(n.high_value_nodes.nodes)
+                if n.high_value_nodes.nodes
+                else n.high_value_nodes.random_placement.count,
+                "node_count": len(n.matrix),
+            }
+            results = [
+                check_element(e, mapper[k], include_null) for k, e in val.items()
+            ]
+            return all(results)
+
+        return self.test(test_compatible_with, n, include_null)
+
+
 class YawningTitanQuery(Query):
     """
     The :class:`~yawning_titan.db.query.YawningTitanQuery` class extends :class:`tinydb.queries.Query`.
 
-    Extended to provide common pre-defined test functions that call :func:`tinydb.queries.Query.test`, rather that
+    Extended to provide common pre-defined test functions that call :func:`tinydb.queries.Query.test`, rather than
     forcing the user to build a function/lambda function each time and pass it to test.
     """
 
@@ -150,72 +226,6 @@ class YawningTitanQuery(Query):
                 return False
 
         return self.test(test_len, i)
-
-    def works_with(self, n: int, include_null: Optional[bool] = True) -> QueryInstance:
-        """Tests the game mode can work with a network with the parameter with a value of ``n``.
-
-        Fields whose value is either unrestricted or where ``n`` is in the specified range are returned in the search.
-
-        :Example:
-
-        >>> from yawning_titan.game_modes.game_mode_db import GameModeDB
-        >>> from yawning_titan.db.query import YawningTitanQuery
-        >>> db = GameModeDB()
-        >>> db.search(YawningTitanQuery.ENTRY_NODES.works_with(18)))
-
-        :param n: The target value of a field as an int.
-        :param include_null: Whether to include fields where part of the range is unbounded.
-        :return: ``True`` if it does exist, otherwise ``False``.
-        """
-
-        def test_works_with(val, n, include_null):
-            return check_element(val, n, include_null)
-
-        return self.test(test_works_with, n, include_null)
-
-    def compatible_with(self, n, include_null: Optional[bool] = True) -> QueryInstance:
-        """Tests the game mode can work with a specified network ``n``.
-
-        Fields where all network parameter restrictions are satisfied or unrestricted are returned in the search.
-
-
-        :Example:
-
-        >>> from yawning_titan.game_modes.game_mode_db import GameModeDB
-        >>> from yawning_titan.db.query import YawningTitanQuery
-        >>> db = GameModeDB()
-        >>> db.search(YawningTitanQuery.GAME_MODE.compatible_with(network)))
-
-        :param n: The target value of a field as a Network.
-        :param include_null: Whether to include fields where part of the range is unbounded.
-        :return: ``True`` if it does exist, otherwise ``False``.
-        """
-
-        def test_compatible_with(val: dict, n: Network, include_null):
-            if (
-                not isinstance(val, dict)
-                or not isinstance(n, Network)
-                or not all(
-                    k in val
-                    for k in ["entry_node_count", "high_value_node_count", "node_count"]
-                )
-            ):
-                return False
-            mapper = {
-                "entry_node_count": len(n.entry_nodes.nodes)
-                if n.entry_nodes.nodes
-                else n.entry_nodes.random_placement.count,
-                "high_value_node_count": len(n.high_value_nodes.nodes)
-                if n.high_value_nodes.nodes
-                else n.high_value_nodes.random_placement.count,
-                "node_count": len(n.matrix),
-            }
-            results = [
-                check_element(e, mapper[k], include_null) for k, e in val.items()
-            ]
-            return all(results)
-
-        return self.test(test_compatible_with, n, include_null)
 
 
 def check_element(el_dict, n, include_null):

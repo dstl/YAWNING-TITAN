@@ -22,13 +22,13 @@ from yawning_titan.agents.fixed_red import FixedRedAgent
 from yawning_titan.agents.nsa_red import NSARed
 from yawning_titan.agents.simple_blue import SimpleBlue
 from yawning_titan.agents.sinewave_red import SineWaveRedAgent
-from yawning_titan.config.game_config.game_mode_config import GameModeConfig
-from yawning_titan.config.game_modes import default_game_mode_path
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.exceptions import YawningTitanRunError
+from yawning_titan.game_modes.game_mode import GameMode
+from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import default_18_node_network
 
@@ -72,7 +72,7 @@ class YawningTitanRun:
     def __init__(
         self,
         network: Optional[Network] = None,
-        game_mode: Optional[GameModeConfig] = None,
+        game_mode: Optional[GameMode] = None,
         red_agent_class=RedInterface,
         blue_agent_class=BlueInterface,
         print_metrics: bool = False,
@@ -96,14 +96,14 @@ class YawningTitanRun:
         # TODO: Add proper Sphinx mapping for classes/methods.
 
         :param network: An instance of ``Network``.
-        :param game_mode: An instance of ``GameModeConfig``.
+        :param game_mode: An instance of ``GameMode``.
         :param red_agent_class: The agent/action set class used for the red agent.
         :param blue_agent_class: The agent/action set class used for the blue agent.
         :param print_metrics: Print the metrics if True. Default value = True.
         :param show_metrics_every: Prints the metrics every ``show_metrics_every`` time steps. Default value = 10.
         :param collect_additional_per_ts_data: Collects additional per-timestep data if True.Default value = False.
         :param eval_freq: Evaluate the agent every ``eval_freq`` call of the callback. Default value = 10,000.
-        :param total_timesteps: The number of samples (env steps) to train on. Default value = 200000.
+        :param total_timesteps: The number of samples (env steps) to train on. Default value = 200,000.
         :param training_runs: The number of times the agent is trained.
         :param n_eval_episodes: The number of episodes to evaluate the agent. Default value = 1.
         :param deterministic: Whether the evaluation should use stochastic or deterministic actions. Default value =
@@ -140,10 +140,10 @@ class YawningTitanRun:
         # Set the game_mode using the game_mode arg if one was passed,
         # otherwise use the game mode
         if game_mode:
-            self.game_mode: GameModeConfig = game_mode
+            self.game_mode: GameMode = game_mode
         else:
-            # TODO: Replace with the updated retrieval method from TinyDB once implemented.
-            self.game_mode = GameModeConfig.create_from_yaml(default_game_mode_path())
+            self.game_mode = GameModeDB().default_game_mode()
+
         self._red_agent_class = red_agent_class
         self._blue_agent_class = blue_agent_class
 
@@ -176,7 +176,7 @@ class YawningTitanRun:
         return {
             "uuid": self.uuid,
             "network": self.network.to_dict(json_serializable=True),
-            "game_mode": self.game_mode.to_dict(key_upper=True),
+            "game_mode": self.game_mode.to_dict(json_serializable=True),
             "red_agent_class": self._red_agent_class.__name__,
             "blue_agent_class": self._blue_agent_class.__name__,
             "print_metrics": self.print_metrics,
@@ -452,8 +452,14 @@ class YawningTitanRun:
                 args = yaml.safe_load(file)
 
             if args.keys() == YawningTitanRun(auto=False)._args_dict().keys():
-                args["network"] = Network.create(args["network"])
-                args["game_mode"] = GameModeConfig.create(args["game_mode"])
+                network = Network()
+                network.set_from_dict(args["network"])
+                args["network"] = network
+
+                game_mode = GameMode()
+                game_mode.set_from_dict(args["network"])
+                args["game_mode"] = game_mode
+
                 args["red_agent_class"] = cls._get_agent_class_from_str(
                     args["red_agent_class"]
                 )
@@ -554,8 +560,6 @@ class YawningTitanRun:
         # Verify the contents
         verified = cls._verify_import_export_zip_file(unzip_path)
         if not verified:
-            # TODO: Update the error type raised to a custom type.
-            # TODO: Log a critical log message.
             msg = f"Failed to verify the contents while importing YawningTitanRun from {exported_zip_file_path}."
             try:
                 raise YawningTitanRunError(msg)

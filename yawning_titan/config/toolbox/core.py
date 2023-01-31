@@ -6,11 +6,11 @@ from typing import Any, Dict, Hashable, List, Optional, Union
 
 import yaml
 
-from yawning_titan.config.game_config import _LOGGER
 from yawning_titan.exceptions import (
     ConfigGroupValidationError,
     ConfigItemValidationError,
 )
+from yawning_titan.game_modes.components import _LOGGER
 
 yaml.Dumper.ignore_aliases = lambda *args: True
 
