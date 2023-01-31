@@ -28,7 +28,7 @@ from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.exceptions import YawningTitanRunError
 from yawning_titan.game_modes.game_mode import GameMode
-from yawning_titan.game_modes.game_mode_db import GameModeDB
+from yawning_titan.game_modes.game_mode_db import default_game_mode
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import default_18_node_network
 
@@ -142,7 +142,7 @@ class YawningTitanRun:
         if game_mode:
             self.game_mode: GameMode = game_mode
         else:
-            self.game_mode = GameModeDB().default_game_mode()
+            self.game_mode = default_game_mode()
 
         self._red_agent_class = red_agent_class
         self._blue_agent_class = blue_agent_class

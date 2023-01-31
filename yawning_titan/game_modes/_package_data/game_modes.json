@@ -181,7 +181,7 @@
             "name":"dcbo_config",
             "description":null,
             "author":null,
-            "locked":false
+            "locked":true
          }
       },
       "2":{
@@ -315,19 +315,19 @@
             },
             "network_compatibility":{
                "node_count":{
-                  "restrict":false,
-                  "min":null,
-                  "max":null
+                  "restrict":true,
+                  "min":1,
+                  "max": null
                },
                "entry_node_count":{
-                  "restrict":false,
-                  "min":null,
-                  "max":null
+                  "restrict":true,
+                  "min":0,
+                  "max":5
                },
                "high_value_node_count":{
-                  "restrict":false,
-                  "min":null,
-                  "max":null
+                  "restrict":true,
+                  "min":2,
+                  "max":5
                }
             }
          },
@@ -365,7 +365,7 @@
             "name":"default_game_mode",
             "description":null,
             "author":null,
-            "locked":false
+            "locked":true
          }
       },
       "3":{
@@ -549,7 +549,7 @@
             "name":"default_new_game_mode",
             "description":null,
             "author":null,
-            "locked":false
+            "locked":true
          }
       },
       "4":{
@@ -733,7 +733,7 @@
             "name":"everything_off_config",
             "description":null,
             "author":null,
-            "locked":false
+            "locked":true
          }
       },
       "5":{
@@ -917,7 +917,7 @@
             "name":"low_skill_red_with_random_infection_perfect_detection",
             "description":null,
             "author":null,
-            "locked":false
+            "locked":true
          }
       },
       "6":{
@@ -1101,7 +1101,7 @@
             "name":"multiple_high_value_targets",
             "description":null,
             "author":null,
-            "locked":false
+            "locked":true
          }
       }
    }

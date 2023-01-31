@@ -11,8 +11,14 @@ from tinydb.queries import QueryInstance
 from tinydb.table import Document
 
 from yawning_titan.config import _LIB_CONFIG_ROOT_PATH
+from yawning_titan.db.compatibility_query import (
+    EntryNodeCompatibilityQuery,
+    HighValueNodeCompatibilityQuery,
+    NetworkCompatibilityQuery,
+    NetworkNodeCompatibilityQuery,
+)
 from yawning_titan.db.doc_metadata import DocMetadata, DocMetadataSchema
-from yawning_titan.db.query import CompatibilityQuery, YawningTitanQuery
+from yawning_titan.db.query import YawningTitanQuery
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
 from yawning_titan.game_modes.game_mode import GameMode
 
@@ -38,20 +44,25 @@ class GameModeSchema:
     """
 
     NETWORK_NODES: Final[
-        CompatibilityQuery
-    ] = CompatibilityQuery().game_rules.network_compatibility.node_count
+        NetworkNodeCompatibilityQuery
+    ] = NetworkNodeCompatibilityQuery().game_rules.network_compatibility.node_count
     """Mapped to :attr:`~yawning_titan.game_modes.game_mode.GameMode.game_rules.network_compatibility.node_count`."""
+
     ENTRY_NODES: Final[
-        CompatibilityQuery
-    ] = CompatibilityQuery().game_rules.network_compatibility.entry_node_count
+        EntryNodeCompatibilityQuery
+    ] = EntryNodeCompatibilityQuery().game_rules.network_compatibility.entry_node_count
     """Mapped to :attr:`~yawning_titan.game_modes.game_mode.GameMode.game_rules.network_compatibility.entry_node_count``."""
+
     HIGH_VALUE_NODES: Final[
-        CompatibilityQuery
-    ] = CompatibilityQuery().game_rules.network_compatibility.high_value_node_count
+        HighValueNodeCompatibilityQuery
+    ] = (
+        HighValueNodeCompatibilityQuery().game_rules.network_compatibility.high_value_node_count
+    )
     """Mapped to :attr:`~yawning_titan.game_modes.game_mode.GameMode.game_rules.network_compatibility.high_value_node_count`."""
+
     NETWORK_COMPATIBILITY: Final[
-        CompatibilityQuery
-    ] = CompatibilityQuery().game_rules.network_compatibility
+        NetworkCompatibilityQuery
+    ] = NetworkCompatibilityQuery().game_rules.network_compatibility
     """Mapped to :attr:`~yawning_titan.game_modes.game_mode.GameMode.game_rules.network_compatibility`."""
 
     CONFIGURATION: Final[YawningTitanQuery] = YawningTitanQuery()
@@ -342,11 +353,12 @@ class GameModeDB:
             game_mode.set_from_yaml(game_mode_path, infer_legacy=True)
             self.insert(game_mode, name=game_mode_path.stem)
 
-    def default_game_mode() -> GameMode:
-        """
-        The default Yawning Titan game mode.
 
-        :return: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`.
-        """
-        with GameModeDB() as db:
-            return db.get("bac2cb9d-b24b-426c-88a5-5edd0c2de413")
+def default_game_mode() -> GameMode:
+    """
+    The default Yawning Titan game mode.
+
+    :return: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`.
+    """
+    with GameModeDB() as db:
+        return db.get("900a704f-6271-4994-ade7-40b74d3199b1")

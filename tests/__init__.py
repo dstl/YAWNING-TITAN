@@ -35,5 +35,7 @@ TEST_BASE_NEW_CONFIG_PATH = Path(
 
 
 class TestGameModeDB(GameModeDB):
+    """An subclass of :class: `~yawning_titan.game_modes.game_mode_db.GameModeDB` to point to the test GameMode data."""
+
     def __init__(self):
         self._db = YawningTitanDB("test_game_modes", root=TEST_CONFIG_PATH_OLD.parent)
