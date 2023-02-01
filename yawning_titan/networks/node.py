@@ -24,11 +24,20 @@ class Node:
         self.name: str = name
         self._high_value_node: bool = high_value_node
         self._entry_node: bool = entry_node
-        self.vulnerability = vulnerability
+        self._vulnerability = vulnerability
         self._x_pos: float = x_pos
         self._y_pos: float = y_pos
         self._classes = classes
         self._set_classes()
+
+        # Default node attributes
+        self.vulnerability_score = vulnerability
+        self.true_compromised_status = 0
+        self.blue_view_compromised_status = 0
+        self.node_position = 0
+        self.deceptive_node = False
+        self.blue_knows_intrusion = False
+        self.isolated = False
 
     def _set_classes(self):
         if self.high_value_node and self._entry_node:
@@ -40,6 +49,10 @@ class Node:
                 self._classes = "entry_node"
             else:
                 self._classes = "standard_node"
+
+    def set_vulnerability(self, x):
+        self._vulnerability = x
+        self.vulnerability_score = x
 
     @property
     def uuid(self) -> str:
