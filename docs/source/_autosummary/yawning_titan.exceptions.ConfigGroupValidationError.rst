@@ -1,6 +1,0 @@
-yawning\_titan.exceptions.ConfigGroupValidationError
-====================================================
-
-.. currentmodule:: yawning_titan.exceptions
-
-.. autoexception:: ConfigGroupValidationError

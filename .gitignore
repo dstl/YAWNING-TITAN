@@ -17,6 +17,10 @@ notebooks/.ipynb_checkpoints
 .coverage
 *.csv
 
+# generated RST files for documentation
+**/source/_autosummary/
+docs/source/yt-dependencies.rst
+
 # Remove tensorboard logs starting with ppo-
 ppo-*/
 **.pkl
