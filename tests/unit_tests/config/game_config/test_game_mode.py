@@ -196,3 +196,28 @@ def test_everything_changed_game_mode_from_legacy():
     d["red"]["target_mechanism"]["target_specific_node"].pop("use")
 
     assert d == config_dict
+
+
+def test_create_from_factory():
+    """Test that a game mode created from the class factory function is the same as that set after instantiation."""
+    path = TEST_CONFIG_PATH_OLD / "everything_changed.yaml"
+    game_mode = GameMode()
+    game_mode.set_from_yaml(path.as_posix(), legacy=True)
+
+    assert game_mode == GameMode.create_from_yaml(path.as_posix(), legacy=True)
+
+
+def test_infer_legacy():
+    """Test that a game mode created from a legacy format will be correctly populated if legacy is not explicitly set."""
+    path = TEST_CONFIG_PATH_OLD / "everything_changed.yaml"
+
+    with open(path) as f:
+        config_dict = yaml.safe_load(f)
+
+    comparison = GameMode.create_from_yaml(path.as_posix(), legacy=True)
+
+    game_mode_from_yaml = GameMode.create_from_yaml(path.as_posix(), infer_legacy=True)
+    game_mode_from_dict = GameMode.create(config_dict, infer_legacy=True)
+
+    assert game_mode_from_yaml == comparison
+    assert game_mode_from_dict == comparison
