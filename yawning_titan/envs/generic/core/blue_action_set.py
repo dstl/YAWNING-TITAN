@@ -187,7 +187,7 @@ class BlueActionSet:
             A pair of nodes that the deceptive node was placed between (or None if no action performed)
         """
         # Get the nodes that are connected via the input edge
-        nodes = self.network_interface.edge_map[int(edge)]
+        nodes = self.network_interface.edge_map[edge]
         node_name = self.network_interface.add_deceptive_node(nodes[0], nodes[1])
         if node_name is False:
             return "do_nothing", None
