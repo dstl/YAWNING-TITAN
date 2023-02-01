@@ -17,6 +17,7 @@ from numpy.random import choice
 
 from yawning_titan.config.game_config.game_mode_config import GameModeConfig
 from yawning_titan.networks.network import Network
+from yawning_titan.networks.node import Node
 
 _LOGGER = getLogger(__name__)
 
@@ -297,7 +298,7 @@ class NetworkInterface:
         """
         return self.current_network_variables[node]["true_compromised_status"]
 
-    def get_single_node_blue_view(self, node: str) -> int:
+    def get_single_node_blue_view(self, node: Node) -> int:
         """
         Get the current state of a node (safe or compromised).
 
@@ -308,6 +309,7 @@ class NetworkInterface:
             0: safe, 1: compromised
 
         """
+        node.blue_view_compromised_status
         return self.current_network_variables[node]["blue_view_compromised_status"]
 
     def get_single_node_vulnerability(self, node: str) -> int:

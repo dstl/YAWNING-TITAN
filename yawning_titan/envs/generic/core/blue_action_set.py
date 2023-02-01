@@ -2,6 +2,7 @@ import random
 from typing import List, Tuple, Union
 
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
+from yawning_titan.networks.node import Node
 
 """
 A collection of methods that a blue agent could use. This includes multiple ways to defend a network by saving nodes or
@@ -22,7 +23,7 @@ class BlueActionSet:
         """
         self.network_interface = network_interface
 
-    def reduce_node_vulnerability(self, node: str) -> Tuple[str, str]:
+    def reduce_node_vulnerability(self, node: Node) -> Tuple[str, Node]:
         """
         Reduce the vulnerability of the target node.
 
@@ -30,28 +31,24 @@ class BlueActionSet:
         configuration file:
             - BLUE: node_vulnerability_min
 
-        Args:
-            node: the node to reduce the vulnerability of
+        :param node: The node to reduce the vulnerability of as an instance of ``Node``.
 
-        Returns:
-            The name of the action taken ("reduce_vulnerability")
-            The node the action was taken on
+        :returns: The name of the action taken ("reduce_vulnerability") and the ``Node`` the action was taken on.
         """
-        node = str(node)
+        node: Node = node
         # gets the current vulnerability
-        current_vulnerability = self.network_interface.get_single_node_vulnerability(
-            node
-        )
+        current_vulnerability = node.vulnerability_score
+
         # updates the vulnerability of the node
-        new = current_vulnerability - 0.2
+        new_vulnerability_score = current_vulnerability - 0.2
         if (
-            new
+            new_vulnerability_score
             < self.network_interface.game_mode.game_rules.node_vulnerability_lower_bound
         ):
-            new = (
+            new_vulnerability_score = (
                 self.network_interface.game_mode.game_rules.node_vulnerability_lower_bound
             )
-        self.network_interface.update_single_node_vulnerability(node, new)
+        node.vulnerability_score = new_vulnerability_score
         return "reduce_vulnerability", node
 
     def restore_node(self, node: str) -> Tuple[str, str]:
