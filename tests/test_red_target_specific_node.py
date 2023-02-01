@@ -40,4 +40,4 @@ def test_target_specific_node(basic_2_agent_loop: ActionLoop):
         )
         target_nodes.update(x)
 
-    assert all(node in nodes_on_path for node in target_nodes)
+    assert all([node in nodes_on_path for node in target_nodes])
