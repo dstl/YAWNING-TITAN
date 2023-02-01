@@ -1,8 +1,7 @@
 import os
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
-import numpy as np
 import pytest
 import yaml
 from yaml import SafeLoader
@@ -13,6 +12,7 @@ from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.networks import network_creator
 from yawning_titan.networks.network import Network
+from yawning_titan.networks.network_db import default_18_node_network
 from yawning_titan.yawning_titan_run import YawningTitanRun
 
 
@@ -52,59 +52,7 @@ def temp_config_from_base(tmpdir_factory) -> str:
 
 
 @pytest.fixture
-def init_test_run():
-    """Return a `YawningTitanRun`."""
-
-    def _init_test_run(
-        settings_path: str,
-        adj_matrix: np.array,
-        positions,
-        entry_nodes: List[str],
-        high_value_nodes: List[str],
-    ) -> YawningTitanRun:
-        """
-        Generate the test GenericEnv() and number of actions for the blue agent.
-
-        Args:
-            settings_path: A path to the environment settings file
-            adj_matrix: the adjacency matrix used for the network to defend.
-            positions: x and y co-ordinates to plot the graph in 2D space
-            entry_nodes: list of strings that dictate which nodes are entry nodes
-            high_value_nodes: list of strings that dictate which nodes are high value nodes
-
-        Returns:
-            env: An OpenAI gym environment
-        """
-        with open(settings_path) as f:
-            config_dict = yaml.safe_load(f)
-
-        network = Network(
-            matrix=adj_matrix,
-            positions=positions,
-            entry_nodes=entry_nodes,
-            high_value_nodes=high_value_nodes,
-        )
-        network.set_from_dict(config_dict["GAME_RULES"], legacy=True)
-
-        game_mode = GameMode()
-        game_mode.set_from_dict(config_dict, legacy=True)
-
-        yt_run = YawningTitanRun(
-            network=network,
-            game_mode=game_mode,
-            collect_additional_per_ts_data=True,
-            auto=False,
-            total_timesteps=1000,
-            eval_freq=1000,
-        )
-        yt_run.setup()
-        return yt_run
-
-    return _init_test_run
-
-
-@pytest.fixture
-def generate_generic_env_test_run(init_test_run):
+def generate_generic_env_test_run():
     """Return a `GenericNetworkEnv`."""
 
     def _generate_generic_env_test_run(
@@ -131,6 +79,12 @@ def generate_generic_env_test_run(init_test_run):
             env: An OpenAI gym environment
 
         """
+        with open(settings_path) as f:
+            config_dict = yaml.safe_load(f)
+
+        game_mode = GameMode()
+        game_mode.set_from_dict(config_dict, legacy=True)
+
         valid_net_creator_types = ["18node", "mesh"]
         if net_creator_type not in valid_net_creator_types:
             raise ValueError(
@@ -138,15 +92,31 @@ def generate_generic_env_test_run(init_test_run):
             )
 
         if net_creator_type == "18node":
-            adj_matrix, node_positions = network_creator.create_18_node_network()
+            network = default_18_node_network()
+
         if net_creator_type == "mesh":
             adj_matrix, node_positions = network_creator.create_mesh(
                 size=n_nodes, connectivity=connectivity
             )
+            network = Network(
+                matrix=adj_matrix,
+                positions=node_positions,
+                entry_nodes=entry_nodes,
+                high_value_nodes=high_value_nodes,
+            )
 
-        yt_run: YawningTitanRun = init_test_run(
-            settings_path, adj_matrix, node_positions, entry_nodes, high_value_nodes
+        network.set_from_dict(config_dict["GAME_RULES"], legacy=True)
+
+        yt_run = YawningTitanRun(
+            network=network,
+            game_mode=game_mode,
+            collect_additional_per_ts_data=True,
+            auto=False,
+            total_timesteps=1000,
+            eval_freq=1000,
         )
+        yt_run.setup()
+
         if env_only:
             return yt_run.env
 
