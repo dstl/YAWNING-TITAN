@@ -17,6 +17,8 @@ from yawning_titan.networks.node import Node
 
 _LOGGER = getLogger(__name__)
 
+# --- Tier 0 groups
+
 
 class RandomHighValueNodePreference(Enum):
     """Preference of how the random high value nodes are placed."""

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import copy
 import functools
 import itertools
@@ -12,10 +14,9 @@ from typing import Dict, List, Tuple, Union
 
 import networkx as nx
 import numpy as np
-import pandas as pd
 from numpy.random import choice
 
-from yawning_titan.config.game_config.game_mode_config import GameModeConfig
+from yawning_titan.config.game_config.game_mode import GameMode
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.node import Node
 
@@ -25,7 +26,7 @@ _LOGGER = getLogger(__name__)
 class NetworkInterface:
     """The primary interface between both red and blue agents and the underlying environment."""
 
-    def __init__(self, game_mode: GameModeConfig, network: Network):
+    def __init__(self, game_mode: GameMode, network: Network):
         """
         Initialise the Network Interface and initialises all the necessary components.
 
@@ -41,16 +42,15 @@ class NetworkInterface:
         """
         # opens the fle the user has specified to be the location of the game_mode
 
-        self.game_mode = game_mode
-        self.network = network
-
-        self.random_seed = self.game_mode.miscellaneous.random_seed
+        self.game_mode: GameMode = game_mode
+        self.network: Network = network
+        self.random_seed = self.game_mode.miscellaneous.random_seed.value
 
         number_of_nodes = len(self.network.nodes)
 
         # check if high value nodes were provided
         if self.network.high_value_nodes:
-            self.high_value_nodes = self.network.high_value_nodes
+            self.high_value_nodes = self.network.high_value_nodes.nodes
 
         # nodes = [str(i) for i in range(number_of_nodes)]
         # df = pd.DataFrame(self.network.matrix, index=nodes, columns=nodes)
@@ -83,7 +83,7 @@ class NetworkInterface:
 
         # initialise the network variables
         for node in self.network.nodes:
-            positions = [node_obj.x_pos, node_obj.y_pos]
+            positions = [node.x_pos, node.y_pos]
             # vulnerability scores
             self.initial_network_variables[node][
                 "vulnerability_score"
@@ -108,7 +108,9 @@ class NetworkInterface:
 
         # initialises the deceptive nodes and their names and amount
         self.deceptive_nodes = []
-        for i in range(0, self.game_mode.blue.max_number_deceptive_nodes):
+        for i in range(
+            0, self.game_mode.blue.action_set.deceptive_nodes.max_number.value
+        ):
             name = "d" + str(i)
             self.deceptive_nodes.append(name)
         # a pointer to to point to the current deceptive node (when a new node is added but the max is reached the
@@ -221,7 +223,7 @@ class NetworkInterface:
         Returns:
             The target node if it exists
         """
-        return self.game_mode.red.red_target_node
+        return self.game_mode.red.target_mechanism.target_specific_node.target.value
 
     def get_total_num_nodes(self) -> int:
         """
@@ -535,7 +537,7 @@ class NetworkInterface:
     def get_number_unused_deceptive_nodes(self):
         """Get the current number of unused deceptive nodes."""
         return (
-            self.game_mode.blue.max_number_deceptive_nodes
+            self.game_mode.blue.action_set.deceptive_nodes.max_number.value
             - self.current_deceptive_nodes
         )
 
@@ -555,14 +557,14 @@ class NetworkInterface:
 
         # Gets the adj matrix for the current graph
         node_connections = []
-        if self.game_mode.observation_space.node_connections:
+        if self.game_mode.blue_can_observe.node_connections.value:
             node_connections = self.adj_matrix
             # pads the array to account for any missing deceptive nodes that may not have been placed yet
             node_connections = np.pad(node_connections, (0, open_spaces), "constant")
 
         # Gets the current safe/compromised status of all of the nodes
         compromised_state = []
-        if self.game_mode.observation_space.compromised_status:
+        if self.game_mode.blue_can_observe.compromised_status.value:
             compromised_state = np.asarray(
                 list(
                     self.get_attributes_from_key(
@@ -573,7 +575,7 @@ class NetworkInterface:
             compromised_state = np.pad(compromised_state, (0, open_spaces), "constant")
         # Gets the vulnerability score of all of the nodes
         vulnerabilities = []
-        if self.game_mode.observation_space.vulnerabilities:
+        if self.game_mode.blue_can_observe.vulnerabilities.value:
             vulnerabilities = np.asarray(
                 list(self.get_attributes_from_key("vulnerability_score").values())
             )
@@ -581,21 +583,21 @@ class NetworkInterface:
 
         # Gets the average vulnerability of all the nodes
         avg_vuln = []
-        if self.game_mode.observation_space.average_vulnerability:
+        if self.game_mode.blue_can_observe.average_vulnerability.value:
             all_vuln = self.get_attributes_from_key("vulnerability_score").values()
             avg_vuln = [sum(all_vuln) / len(all_vuln)]
 
         # Gets the connectivity of the graph, closer to 1 means more edges per node
         connectivity = []
-        if self.game_mode.observation_space.graph_connectivity:
+        if self.game_mode.blue_can_observe.graph_connectivity.value:
             connectivity = [self.connectivity]
 
         # Gets the attacks that the blue agent detected
         attacking_nodes = []
         attacked_nodes = []
         if (
-            self.game_mode.observation_space.attacking_nodes
-            or self.game_mode.observation_space.attacked_nodes
+            self.game_mode.blue_can_observe.attacking_nodes.value
+            or self.game_mode.blue_can_observe.attacked_nodes.value
         ):
             attacking = {name: 0 for name in self.get_nodes()}
             attacked = {name: 0 for name in self.get_nodes()}
@@ -605,11 +607,11 @@ class NetworkInterface:
                     attacking[i[0]] = 1
                 # extract the node that was attacked
                 attacked[i[1]] = 1
-            if self.game_mode.observation_space.attacking_nodes:
+            if self.game_mode.blue_can_observe.attacking_nodes.value:
                 # attacking nodes
                 attacking_nodes = list(attacking.values())
                 attacking_nodes = np.pad(attacking_nodes, (0, open_spaces), "constant")
-            if self.game_mode.observation_space.attacked_nodes:
+            if self.game_mode.blue_can_observe.attacked_nodes.value:
                 # nodes attacked
                 attacked_nodes = list(attacked.values())
                 attacked_nodes = np.pad(attacked_nodes, (0, open_spaces), "constant")
@@ -619,7 +621,7 @@ class NetworkInterface:
         nodes = []
         target_nodes = []
 
-        if self.game_mode.observation_space.special_nodes:
+        if self.game_mode.blue_can_observe.special_nodes.value:
             # gets the entry nodes
             entry_nodes = {name: 0 for name in self.get_nodes()}
             for i in self.entry_nodes:
@@ -627,14 +629,14 @@ class NetworkInterface:
             entry_nodes = list(entry_nodes.values())
             entry_nodes = np.pad(entry_nodes, (0, open_spaces), "constant")
 
-            if self.game_mode.game_rules.lose_when_target_node_lost:
+            if self.game_mode.game_rules.blue_loss_condition.target_node_lost.value:
                 # gets the target node
                 target_nodes = {name: 0 for name in self.get_nodes()}
                 target_nodes[self.get_target_node()] = 1
                 target_nodes = list(target_nodes.values())
                 target_nodes = np.pad(target_nodes, (0, open_spaces), "constant")
 
-            if self.game_mode.game_rules.lose_when_high_value_node_lost:
+            if self.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value:
                 # gets the high value node nodes
                 nodes = {name: 0 for name in self.get_nodes()}
 
@@ -647,8 +649,8 @@ class NetworkInterface:
 
         # gets the skill of the red agent
         skill = []
-        if self.game_mode.observation_space.red_agent_skill:
-            skill = [self.game_mode.red.red_skill]
+        if self.game_mode.blue_can_observe.red_agent_skill.value:
+            skill = [self.game_mode.red.agent_attack.skill.value.value]
 
         # combines all of the env observations together to create the observation that the blue agent gets
         obs = np.concatenate(
@@ -690,28 +692,28 @@ class NetworkInterface:
 
         # calculate the size of the observation space
         # the size depends on what observations are turned on/off in the config file
-        if self.game_mode.observation_space.node_connections:
+        if self.game_mode.blue_can_observe.node_connections.value:
             observation_size += node_connections
-        if self.game_mode.observation_space.compromised_status:
+        if self.game_mode.blue_can_observe.compromised_status.value:
             observation_size += max_number_of_nodes
-        if self.game_mode.observation_space.vulnerabilities:
+        if self.game_mode.blue_can_observe.vulnerabilities.value:
             observation_size += max_number_of_nodes
-        if self.game_mode.observation_space.average_vulnerability:
+        if self.game_mode.blue_can_observe.average_vulnerability.value:
             observation_size += 1
-        if self.game_mode.observation_space.graph_connectivity:
+        if self.game_mode.blue_can_observe.graph_connectivity.value:
             observation_size += 1
-        if self.game_mode.observation_space.attacking_nodes:
+        if self.game_mode.blue_can_observe.attacking_nodes.value:
             observation_size += max_number_of_nodes
-        if self.game_mode.observation_space.attacked_nodes:
+        if self.game_mode.blue_can_observe.attacked_nodes.value:
             observation_size += max_number_of_nodes
-        if self.game_mode.observation_space.special_nodes:
+        if self.game_mode.blue_can_observe.special_nodes.value:
             observation_size += max_number_of_nodes
-            if self.game_mode.game_rules.lose_when_target_node_lost:
+            if self.game_mode.game_rules.blue_loss_condition.target_node_lost.value:
                 observation_size += max_number_of_nodes
-            if self.game_mode.game_rules.lose_when_high_value_node_lost:
+            if self.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value:
                 observation_size += max_number_of_nodes
 
-        if self.game_mode.observation_space.red_agent_skill:
+        if self.game_mode.blue_can_observe.red_agent_skill.value:
             observation_size += 1
 
         return observation_size
@@ -736,8 +738,8 @@ class NetworkInterface:
         self.entry_node_weights = [
             1 / self.get_number_of_nodes() for _ in range(self.get_number_of_nodes())
         ]
-        if self.network.entry_nodes is None:
-            if self.game_mode.game_rules.choose_entry_nodes_randomly:
+        if self.network.entry_nodes.nodes is None:
+            if self.network.entry_nodes.random_placement.use.value:
                 try:
                     node_dict = nx.algorithms.centrality.eigenvector_centrality(
                         self.current_graph, max_iter=500
@@ -747,11 +749,11 @@ class NetworkInterface:
                 weights = list(node_dict.values())
                 all_nodes = list(node_dict.keys())
 
-                if (
-                    self.game_mode.game_rules.choose_high_value_nodes_furthest_away_from_entry
-                ):
+                if self.network.entry_nodes.random_placement.place_close_to_edge.value:
                     weights = list(map(lambda x: (1 / x) ** 4, weights))
-                elif self.game_mode.game_rules.prefer_central_nodes_for_entry_nodes:
+                elif (
+                    self.network.entry_nodes.random_placement.place_close_to_center.value
+                ):
                     weights = list(map(lambda x: x**4, weights))
                 else:
                     weights = [1] * len(all_nodes)
@@ -760,19 +762,19 @@ class NetworkInterface:
                 self.entry_node_weights = weights_normal
                 entry_nodes = choice(
                     all_nodes,
-                    self.game_mode.game_rules.number_of_entry_nodes,
+                    self.network.entry_nodes.random_placement.count.value,
                     replace=False,
                     p=weights_normal,
                 )
 
             else:
                 entry_nodes = []
-                for i in range(self.game_mode.game_rules.number_of_entry_nodes):
+                for i in range(self.network.entry_nodes.random_placement.count.value):
                     entry_nodes.append(nodes[i])
 
             self.entry_nodes = entry_nodes
         else:
-            self.entry_nodes = self.network.entry_nodes
+            self.entry_nodes = self.network.entry_nodes.nodes
 
     def set_high_value_nodes(self):
         """
@@ -787,12 +789,12 @@ class NetworkInterface:
             Otherwise:
                 HVNs are set to an empty list.
         """
-        if self.network.high_value_nodes:
+        if self.network.high_value_nodes.nodes:
             # if high value nodes were provided, use them
-            self.high_value_nodes = self.network.high_value_nodes
+            self.high_value_nodes = self.network.high_value_nodes.nodes
         else:
             # if no high value nodes set, set up the possible high value node list
-            if self.game_mode.game_rules.lose_when_high_value_node_lost:
+            if self.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value:
                 # number of possible high value nodes calculated by seeing how many nodes there are minus the entry
                 # nodes, then only having 15% of the nodes left over to be high value nodes.
                 number_possible_high_value = math.ceil(
@@ -802,7 +804,7 @@ class NetworkInterface:
                 # print warning that the number of high value nodes exceed the above preferably this would be handled
                 # elsewhere i.e. configuration.
                 if (
-                    self.game_mode.game_rules.number_of_high_value_nodes
+                    self.network.high_value_nodes.random_placement.count.value
                     > number_possible_high_value
                 ):
                     msg = (
@@ -813,21 +815,19 @@ class NetworkInterface:
                     number_of_high_value_nodes = number_possible_high_value
                 else:
                     number_of_high_value_nodes = (
-                        self.game_mode.game_rules.number_of_high_value_nodes
+                        self.network.high_value_nodes.random_placement.count.value
                     )
 
                 self.possible_high_value_nodes = []
                 # chooses a random node to be the high value node
-                if (
-                    self.game_mode.game_rules.choose_high_value_nodes_placement_at_random
-                ):
+                if self.network.high_value_nodes.random_placement.use.value:
                     nodes = [str(i) for i in range(len(self.network.matrix))]
                     self.possible_high_value_nodes = list(
                         set(nodes).difference(set(self.entry_nodes))
                     )
                 # Choose the node that is the furthest away from the entry points as the high value node
                 if (
-                    self.game_mode.game_rules.choose_high_value_nodes_furthest_away_from_entry
+                    self.network.high_value_nodes.random_placement.place_far_from_entry.value
                 ):
                     # gets all the paths between nodes
                     paths = []
@@ -936,7 +936,7 @@ class NetworkInterface:
                     # chance of seeing the attack if the attack succeeded
                     if (
                         100
-                        * self.game_mode.blue.chance_to_discover_succeeded_attack_deceptive_node
+                        * self.game_mode.blue.attack_discovery.succeeded_attacks_known_compromise.chance.deceptive_node.value
                         > random.randint(0, 99)
                     ):
                         self.detected_attacks.append([i, j])
@@ -944,16 +944,17 @@ class NetworkInterface:
                     # chance of seeing the attack if the attack fails
                     if (
                         100
-                        * self.game_mode.blue.chance_to_discover_failed_attack_deceptive_node
+                        * self.game_mode.blue.attack_discovery.failed_attacks.chance.deceptive_node.value
                         > random.randint(0, 99)
                     ):
                         self.detected_attacks.append([i, j])
             else:
                 # If the attack did not succeed
                 if k is False:
-                    if self.game_mode.blue.can_discover_failed_attacks:
+                    if self.game_mode.blue.attack_discovery.failed_attacks.use.value:
                         if (
-                            100 * self.game_mode.blue.chance_to_discover_failed_attack
+                            100
+                            * self.game_mode.blue.attack_discovery.failed_attacks.chance.standard_node.value
                             > random.randint(0, 99)
                         ):
                             # Adds the attack to the list of current attacks for this turn
@@ -967,21 +968,21 @@ class NetworkInterface:
                         == 1
                     ):
                         if (
-                            self.game_mode.blue.can_discover_succeeded_attacks_if_compromise_is_discovered
+                            self.game_mode.blue.attack_discovery.succeeded_attacks_known_compromise.use.value
                         ):
                             if (
-                                self.game_mode.blue.chance_to_discover_succeeded_attack_compromise_known
+                                self.game_mode.blue.attack_discovery.succeeded_attacks_known_compromise.chance.standard_node.value
                                 > random.randint(0, 99)
                             ):
                                 self.detected_attacks.append([i, j])
                     else:
                         # If the attack succeeded but blue did not detect it
                         if (
-                            self.game_mode.blue.chance_to_discover_succeeded_attack_compromise_not_known
+                            self.game_mode.blue.attack_discovery.succeeded_attacks_unknown_compromise.use.value
                         ):
                             if (
                                 100
-                                * self.game_mode.blue.chance_to_discover_succeeded_attack_compromise_not_known
+                                * self.game_mode.blue.attack_discovery.succeeded_attacks_unknown_compromise.chance.standard_node.value
                                 > random.randint(0, 99)
                             ):
                                 self.detected_attacks.append([i, j])
@@ -1034,20 +1035,21 @@ class NetworkInterface:
         # updates the stored adj matrix
         self.adj_matrix = nx.to_numpy_array(self.current_graph)
 
-        if self.game_mode.reset.choose_new_entry_nodes_on_reset:
+        if self.game_mode.on_reset.choose_new_entry_nodes.value:
             # change the entry nodes to a number of new random entry nodes using the pre-made wights
             entry_nodes = choice(
                 self.get_nodes(),
-                self.game_mode.game_rules.number_of_entry_nodes,
+                self.network.entry_nodes.random_placement.count.value,
                 replace=False,
                 p=self.entry_node_weights,
             )
             self.entry_nodes = entry_nodes
 
         # set high value nodes
-        self.set_high_value_nodes()
+        if self.game_mode.on_reset.choose_new_high_value_nodes.value:
+            self.set_high_value_nodes()
 
-        if self.game_mode.reset.randomise_vulnerabilities_on_reset:
+        if self.game_mode.on_reset.randomise_vulnerabilities.value:
             # change all of the node vulnerabilities to new random values
             vulnerabilities = self.generate_vulnerabilities()
 
@@ -1181,7 +1183,9 @@ class NetworkInterface:
                 }
                 self.initial_deceptive_vulnerabilities[node_name] = new_vulnerability
             # updates all of the nodes attributes if the setting is True
-            if self.game_mode.blue.relocating_deceptive_nodes_generates_a_new_node:
+            if (
+                self.game_mode.blue.action_set.deceptive_nodes.new_node_on_relocate.value
+            ):
                 self.current_network_variables[node_name] = {
                     "vulnerability_score": new_vulnerability,
                     "true_compromised_status": 0,
@@ -1364,7 +1368,8 @@ class NetworkInterface:
         if true_state == 1:
             if (
                 random.randint(0, 99)
-                < self.game_mode.blue.chance_to_immediately_discover_intrusion * 100
+                < self.game_mode.blue.intrusion_discovery_chance.immediate.standard_node.value
+                * 100
                 or node in self.deceptive_nodes
             ):
                 self.current_network_variables[node][
@@ -1413,7 +1418,8 @@ class NetworkInterface:
             if true_state == 1:
                 if (
                     random.randint(0, 99)
-                    < self.game_mode.blue.chance_to_discover_intrusion_on_scan * 100
+                    < self.game_mode.blue.intrusion_discovery_chance.on_scan.standard_node.value
+                    * 100
                     or self.current_network_variables[node]["deceptive_node"]
                 ):
                     self.current_network_variables[node]["blue_knows_intrusion"] = True
