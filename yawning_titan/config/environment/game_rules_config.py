@@ -1,234 +1,163 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any, Dict
+from typing import Optional
 
-from yawning_titan.config.game_config.config_abc import ConfigABC
-from yawning_titan.envs.generic.helpers.environment_input_validation import (
-    check_type,
-    check_within_range,
-)
+from yawning_titan.config.toolbox.core import ConfigGroup, ConfigGroupValidation
+from yawning_titan.config.toolbox.groups.core import RestrictRangeGroup, UseValueGroup
+from yawning_titan.config.toolbox.groups.validation import AnyUsedGroup
+from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
+from yawning_titan.config.toolbox.item_types.int_item import IntItem, IntProperties
+from yawning_titan.exceptions import ConfigGroupValidationError
+
+# --- Tier 0 groups
 
 
-@dataclass()
-class GameRulesConfig(ConfigABC):
-    """Class that validates and stores Game Rules Configuration."""
+class NetworkCompatibilityGroup(ConfigGroup):
+    """A set of optional restrictions that collectively constrain the types of network a game mode can be used upon."""
 
-    _node_vulnerability_lower_bound: float
-    _node_vulnerability_upper_bound: float
-    _max_steps: int
-    _lose_when_all_nodes_lost: bool
-    _lose_when_n_percent_of_nodes_lost: bool
-    _percentage_of_nodes_compromised_equals_loss: float
-    _lose_when_high_value_node_lost: bool
-    _lose_when_target_node_lost: bool
-    _grace_period_length: int
-
-    # region Getters
-
-    @property
-    def node_vulnerability_lower_bound(self) -> float:
-        """A lower vulnerability means that a node is less likely to be compromised."""
-        return self._node_vulnerability_lower_bound
-
-    @property
-    def node_vulnerability_upper_bound(self) -> float:
-        """A higher vulnerability means that a node is more vulnerable."""
-        return self._node_vulnerability_upper_bound
-
-    @property
-    def max_steps(self) -> int:
-        """The max steps that a game can go on for. If the blue agent reaches this they win."""
-        return self._max_steps
-
-    @property
-    def lose_when_all_nodes_lost(self) -> bool:
-        """The blue agent loses if all the nodes become compromised."""
-        return self._lose_when_all_nodes_lost
-
-    @property
-    def lose_when_n_percent_of_nodes_lost(self) -> bool:
-        """The blue agent loses if n% of the nodes become compromised."""
-        return self._lose_when_n_percent_of_nodes_lost
-
-    @property
-    def percentage_of_nodes_compromised_equals_loss(self) -> float:
-        """The percentage of nodes that need to be lost for blue to lose."""
-        return self._percentage_of_nodes_compromised_equals_loss
-
-    @property
-    def lose_when_high_value_node_lost(self) -> bool:
-        """Blue loses if a special 'high value' target is lost (a node picked in the environment)."""
-        return self._lose_when_high_value_node_lost
-
-    @property
-    def lose_when_target_node_lost(self) -> bool:
-        """Blue loses if the target node is lost (a node picked in the environment)."""
-        return self._lose_when_target_node_lost
-
-    @property
-    def grace_period_length(self) -> int:
-        """
-        The length of a grace period at the start of the game.
-
-        During this time the red agent cannot act. This gives the blue agent a chance to "prepare" (A length of 0
-        means that there is no grace period).
-        """
-        return self._grace_period_length
-
-    # endregion
-
-    # region Setters
-    @node_vulnerability_lower_bound.setter
-    def node_vulnerability_lower_bound(self, value):
-        self._node_vulnerability_lower_bound = value
-
-    @node_vulnerability_upper_bound.setter
-    def node_vulnerability_upper_bound(self, value):
-        self._node_vulnerability_upper_bound = value
-
-    @max_steps.setter
-    def max_steps(self, value):
-        self._max_steps = value
-
-    @lose_when_all_nodes_lost.setter
-    def lose_when_all_nodes_lost(self, value):
-        self._lose_when_all_nodes_lost = value
-
-    @lose_when_n_percent_of_nodes_lost.setter
-    def lose_when_n_percent_of_nodes_lost(self, value):
-        self._lose_when_n_percent_of_nodes_lost = value
-
-    @percentage_of_nodes_compromised_equals_loss.setter
-    def percentage_of_nodes_compromised_equals_loss(self, value):
-        self._percentage_of_nodes_compromised_equals_loss = value
-
-    @lose_when_high_value_node_lost.setter
-    def lose_when_high_value_node_lost(self, value):
-        self._lose_when_high_value_node_lost = value
-
-    @lose_when_target_node_lost.setter
-    def lose_when_target_node_lost(self, value):
-        self._lose_when_target_node_lost = value
-
-    @grace_period_length.setter
-    def grace_period_length(self, value):
-        self._grace_period_length = value
-
-    # endregion
-
-    @classmethod
-    def create(cls, config_dict: Dict[str, Any]) -> GameRulesConfig:
-        """
-        Creates an instance of `GameRulesConfig` after calling `.validate`.
-
-        Args:
-            config_dict: A config dict with the required key/values pairs.
-        """
-        cls.validate(config_dict)
-
-        game_rule_config = GameRulesConfig(
-            _node_vulnerability_lower_bound=config_dict["node_vulnerability_min"],
-            _node_vulnerability_upper_bound=config_dict["node_vulnerability_max"],
-            _max_steps=config_dict["max_steps"],
-            _lose_when_all_nodes_lost=config_dict["lose_when_all_nodes_lost"],
-            _lose_when_n_percent_of_nodes_lost=config_dict[
-                "lose_when_n_percent_of_nodes_lost"
-            ],
-            _percentage_of_nodes_compromised_equals_loss=config_dict[
-                "percentage_of_nodes_compromised_equals_loss"
-            ],
-            _lose_when_high_value_node_lost=config_dict[
-                "lose_when_high_value_node_lost"
-            ],
-            _lose_when_target_node_lost=config_dict["lose_when_target_node_lost"],
-            _grace_period_length=config_dict["grace_period_length"],
+    def __init__(
+        self,
+        doc: Optional[str] = None,
+        node_count: Optional[RestrictRangeGroup] = None,
+        entry_node_count: Optional[RestrictRangeGroup] = None,
+        high_value_node_count: Optional[RestrictRangeGroup] = None,
+    ):
+        self.node_count = (
+            node_count
+            if node_count
+            else RestrictRangeGroup(
+                doc="Restrict the game mode to only work with network works within a range of node counts"
+            )
+        )
+        self.entry_node_count = (
+            entry_node_count
+            if entry_node_count
+            else RestrictRangeGroup(
+                doc="Restrict the game mode to only work with network works within a range of entry_node_count counts"
+            )
+        )
+        self.high_value_node_count = (
+            high_value_node_count
+            if high_value_node_count
+            else RestrictRangeGroup(
+                doc="Restrict the game mode to only work with network works within a range of high_value_node_count counts"
+            )
         )
 
-        return game_rule_config
+        self.node_count.min.alias = "min_number_of_network_nodes"
+        super().__init__(doc)
 
-    @classmethod
-    def validate(cls, config_dict: dict):
-        """
-        Validates the game rules config dict.
 
-        :param: config_dict: A config dict with the required key/values pairs.
-        """
-        # data is int or float
-        for name in [
-            "node_vulnerability_min",
-            "node_vulnerability_max",
-            "percentage_of_nodes_compromised_equals_loss",
-        ]:
-            check_type(config_dict, name, [float, int])
-        # data s between 0 and 1 inclusive
-        for name in [
-            "node_vulnerability_min",
-            "node_vulnerability_max",
-        ]:
-            check_within_range(config_dict, name, 0, 1, True, True)
+class BlueLossConditionGroup(AnyUsedGroup):
+    """The state of the network that must be reached for the red agent to win the game."""
 
-        if (
-            config_dict["node_vulnerability_min"]
-            > config_dict["node_vulnerability_max"]
-        ):
-            raise ValueError(
-                "'node_vulnerability_min', 'node_vulnerability_max' -> The lower bound for the node "
-                "vulnerabilities should be less than the upper bound "
+    def __init__(
+        self,
+        doc: Optional[str] = None,
+        all_nodes_lost: Optional[bool] = False,
+        high_value_node_lost: Optional[bool] = False,
+        target_node_lost: Optional[bool] = False,
+        n_percent_nodes_lost: Optional[UseValueGroup] = None,
+    ):
+        self.all_nodes_lost: BoolItem = BoolItem(
+            value=all_nodes_lost,
+            doc="The blue agent loses if all the nodes become compromised",
+            properties=BoolProperties(allow_null=True, default=False),
+            alias="lose_when_all_nodes_lost",
+        )
+        self.high_value_node_lost: BoolItem = BoolItem(
+            value=high_value_node_lost,
+            doc="Blue loses if a special node designated as 'high value' is lost",
+            properties=BoolProperties(allow_null=True, default=False),
+            alias="lose_when_high_value_node_lost",
+        )
+        self.target_node_lost: BoolItem = BoolItem(
+            value=target_node_lost,
+            doc="Blue loses if a target node it lost",
+            properties=BoolProperties(allow_null=True, default=False),
+            alias="lose_when_target_node_lost",
+        )
+        self.n_percent_nodes_lost: UseValueGroup = (
+            n_percent_nodes_lost
+            if n_percent_nodes_lost
+            else UseValueGroup(
+                doc="The percentage of nodes that need to be lost for blue to lose",
             )
-        check_type(config_dict, "max_steps", [int])
-        check_type(config_dict, "number_of_entry_nodes", [int])
-        check_type(config_dict, "grace_period_length", [int])
-        check_type(config_dict, "min_number_of_network_nodes", [int])
-        check_type(config_dict, "number_of_high_value_nodes", [int])
-        # make sure high value nodes is not more than the number of minimum number of nodes in network
-        check_within_range(
-            config_dict,
-            "number_of_high_value_nodes",
-            0,
-            config_dict["min_number_of_network_nodes"],
-            True,
-            True,
         )
 
-        check_within_range(config_dict, "grace_period_length", 0, 100, True, True)
-        check_within_range(config_dict, "max_steps", 0, 10000000, False, True)
-        # make sure entry nodes is not more than the number of minimum number of nodes in network
-
-        # data is boolean
-        for name in [
-            "lose_when_all_nodes_lost",
-            "lose_when_n_percent_of_nodes_lost",
-            "lose_when_high_value_node_lost",
-            "lose_when_target_node_lost",
-        ]:
-            check_type(config_dict, name, [bool])
-
-        check_within_range(
-            config_dict,
-            "percentage_of_nodes_compromised_equals_loss",
-            0,
-            1,
-            False,
-            False,
+        self.n_percent_nodes_lost.value.alias = (
+            "percentage_of_nodes_compromised_equals_loss"
         )
+        self.n_percent_nodes_lost.use.alias = "lose_when_n_percent_of_nodes_lost"
+        super().__init__(doc)
 
-        if (
-            (not config_dict["lose_when_all_nodes_lost"])
-            and (not config_dict["lose_when_n_percent_of_nodes_lost"])
-            and (not config_dict["lose_when_high_value_node_lost"])
-            and (not config_dict["lose_when_target_node_lost"])
-        ):
-            raise ValueError(
-                "'lose_when_target_node_lost', 'lose_when_all_nodes_lost', 'lose_when_n_percent_of_nodes_lost', "
-                "'lose_when_high_value_node_lost' -> At least one loose condition must be turned on "
-                # noqa
+
+# --- Tier 1 groups ---
+
+
+class GameRules(ConfigGroup):
+    """The overall rules of the game mode."""
+
+    def __init__(
+        self,
+        doc: Optional[str] = None,
+        grace_period_length: Optional[int] = 0,
+        max_steps: Optional[int] = 0,
+        blue_loss_condition: Optional[BlueLossConditionGroup] = None,
+        network_compatibility: Optional[NetworkCompatibilityGroup] = None,
+    ):
+        self.grace_period_length = IntItem(
+            value=grace_period_length,
+            doc=(
+                "The length of a grace period at the start of the game. During this time the red agent cannot act. "
+                "This gives the blue agent a chance to 'prepare' (A length of 0 means that there is no grace period)"
+            ),
+            properties=IntProperties(
+                allow_null=False,
+                default=0,
+                min_val=0,
+                max_val=100,
+                inclusive_min=True,
+                inclusive_max=True,
+            ),
+            alias="grace_period_length",
+        )
+        self.max_steps = IntItem(
+            value=max_steps,
+            doc="The max steps that a game can go on for. If the blue agent reaches this they win",
+            properties=IntProperties(
+                allow_null=False,
+                default=1,
+                min_val=1,
+                max_val=10_000_000,
+                inclusive_min=True,
+                inclusive_max=True,
+            ),
+            alias="max_steps",
+        )
+        self.blue_loss_condition: BlueLossConditionGroup = (
+            blue_loss_condition
+            if blue_loss_condition
+            else BlueLossConditionGroup(
+                doc="The state of the network that must be reached for the red agent to win the game.",
             )
-
-        if config_dict["lose_when_high_value_node_lost"]:
-            pass
-
-        if config_dict["grace_period_length"] > config_dict["max_steps"]:
-            raise ValueError(
-                "'grace_period_length', 'max_steps' -> The grace period cannot be the entire length of the game"
+        )
+        self.network_compatibility: NetworkCompatibilityGroup = (
+            network_compatibility
+            if network_compatibility
+            else NetworkCompatibilityGroup(
+                doc="The range of networks the game mode can be played upon"
             )
+        )
+        super().__init__(doc)
+
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        super().validate()
+        try:
+            if self.grace_period_length.value > self.max_steps.value:
+                msg = "The grace period cannot be the entire length of the game"
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        return self.validation

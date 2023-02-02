@@ -1,6 +1,0 @@
-yawning\_titan.networks.network\_creator.create\_mesh
-=====================================================
-
-.. currentmodule:: yawning_titan.networks.network_creator
-
-.. autofunction:: create_mesh

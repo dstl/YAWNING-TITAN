@@ -14,7 +14,7 @@ from yawning_titan.db.query import YawningTitanQuery
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
 from yawning_titan.networks.network import Network
 
-__all__ = ["NetworkDB", "NetworkSchema"]
+__all__ = ["NetworkDB", "NetworkSchema", "default_18_node_network"]
 
 _LOGGER = getLogger(__name__)
 
@@ -295,7 +295,6 @@ class NetworkDB:
                 reset = db_network.to_dict() != network
             else:
                 reset = True
-
             if reset:
                 self._db.db.upsert(network, DocMetadataSchema.UUID == uuid)
                 _LOGGER.info(
@@ -333,7 +332,7 @@ def default_18_node_network() -> Network:
     """
     The standard 18-node network found in the Ridley, A. (2017) research paper.
 
-    .. seealso:: https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9
+    .. seealso:: https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9
 
     :return: An instance of :class:`~yawning_titan.networks.network.Network`.
     """

@@ -1,9 +1,10 @@
 venv/
-YTFrontEnd/
 .idea/
+.vscode/
 *.egg-info
 dist/
 build/
+yawning_titan_gui/network_editor/node_modules
 logs/*
 !logs/.gitkeep
 *__pycache__
@@ -15,6 +16,10 @@ notebooks/.ipynb_checkpoints
 *.ipynb_checkpoints
 .coverage
 *.csv
+
+# generated RST files for documentation
+**/source/_autosummary/
+docs/source/yt-dependencies.rst
 
 # Remove tensorboard logs starting with ppo-
 ppo-*/

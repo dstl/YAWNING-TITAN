@@ -27,41 +27,41 @@ class RedInterface(RedActionSet):
         probabilities_set = []
         action_number = 0
         # Goes through the actions that the red agent can perform
-        if self.network_interface.game_mode.red.red_uses_spread_action:
+        if self.network_interface.game_mode.red.action_set.spread.use.value:
             # If the action is enabled in the settings files then add to list of possible actions
             self.action_dict[action_number] = self.spread
             action_set.append(action_number)
             # also gets the weight for the action (likelihood action is performed) from the settings file
             probabilities_set.append(
-                self.network_interface.game_mode.red.spread_action_likelihood
+                self.network_interface.game_mode.red.action_set.spread.likelihood.value
             )
             action_number += 1
-        if self.network_interface.game_mode.red.red_uses_random_infect_action:
+        if self.network_interface.game_mode.red.action_set.random_infect.use.value:
             self.action_dict[action_number] = self.intrude
             action_set.append(action_number)
             probabilities_set.append(
-                self.network_interface.game_mode.red.random_infect_action_likelihood
+                self.network_interface.game_mode.red.action_set.random_infect.likelihood.value
             )
             action_number += 1
-        if self.network_interface.game_mode.red.red_uses_basic_attack_action:
+        if self.network_interface.game_mode.red.action_set.basic_attack.use.value:
             self.action_dict[action_number] = self.basic_attack
             action_set.append(action_number)
             probabilities_set.append(
-                self.network_interface.game_mode.red.basic_attack_action_likelihood
+                self.network_interface.game_mode.red.action_set.basic_attack.likelihood.value
             )
             action_number += 1
-        if self.network_interface.game_mode.red.red_uses_do_nothing_action:
+        if self.network_interface.game_mode.red.action_set.do_nothing.use.value:
             self.action_dict[action_number] = self.do_nothing
             action_set.append(action_number)
             probabilities_set.append(
-                self.network_interface.game_mode.red.do_nothing_action_likelihood
+                self.network_interface.game_mode.red.action_set.do_nothing.likelihood.value
             )
             action_number += 1
-        if self.network_interface.game_mode.red.red_uses_move_action:
+        if self.network_interface.game_mode.red.action_set.move.use.value:
             self.action_dict[action_number] = self.random_move
             action_set.append(action_number)
             probabilities_set.append(
-                self.network_interface.game_mode.red.move_action_likelihood
+                self.network_interface.game_mode.red.action_set.move.likelihood.value
             )
             action_number += 1
 
@@ -84,13 +84,13 @@ class RedInterface(RedActionSet):
         current_turn_attack_info = {}
         action_count = 0
 
-        if self.network_interface.game_mode.red.red_can_naturally_spread:
+        if self.network_interface.game_mode.red.natural_spreading.capable.value:
             current_turn_attack_info[action_count] = self.natural_spread()
             action_count += 1
 
         zd = False
         # tries to use a zero day attack if it is enabled (not in the main dictionary as it tries it every turn)
-        if self.network_interface.game_mode.red.red_uses_zero_day_action:
+        if self.network_interface.game_mode.red.action_set.zero_day.use.value:
             inter = self.zero_day_attack()
             if True in inter["Successes"]:
                 current_turn_attack_info[action_count] = inter
@@ -112,7 +112,7 @@ class RedInterface(RedActionSet):
                 current_turn_attack_info[action_count] = self.random_move()
                 action_count += 1
         # increments the day for the zero day
-        if self.network_interface.game_mode.red.red_uses_zero_day_action:
+        if self.network_interface.game_mode.red.action_set.zero_day.use.value:
             self.increment_day()
 
         all_attacking = [
