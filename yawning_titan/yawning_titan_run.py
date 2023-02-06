@@ -103,7 +103,7 @@ class YawningTitanRun:
         :param show_metrics_every: Prints the metrics every ``show_metrics_every`` time steps. Default value = 10.
         :param collect_additional_per_ts_data: Collects additional per-timestep data if True.Default value = False.
         :param eval_freq: Evaluate the agent every ``eval_freq`` call of the callback. Default value = 10,000.
-        :param total_timesteps: The number of samples (env steps) to train on. Default value = 200,000.
+        :param total_timesteps: The number of samples (env steps) to train on. Default value = 200000.
         :param training_runs: The number of times the agent is trained.
         :param n_eval_episodes: The number of episodes to evaluate the agent. Default value = 1.
         :param deterministic: Whether the evaluation should use stochastic or deterministic actions. Default value =
@@ -452,14 +452,8 @@ class YawningTitanRun:
                 args = yaml.safe_load(file)
 
             if args.keys() == YawningTitanRun(auto=False)._args_dict().keys():
-                network = Network()
-                network.set_from_dict(args["network"])
-                args["network"] = network
-
-                game_mode = GameMode()
-                game_mode.set_from_dict(args["network"])
-                args["game_mode"] = game_mode
-
+                args["network"] = Network.create(args["network"])
+                args["game_mode"] = GameMode.create(args["game_mode"])
                 args["red_agent_class"] = cls._get_agent_class_from_str(
                     args["red_agent_class"]
                 )
