@@ -42,4 +42,8 @@ testem.log
 Thumbs.db
 
 # Cypress
-**/videos/
+**/cypress/videos/
+**/cypress/screenshots/
+
+# Grouped licenses for network editor
+**/license-report.csv
