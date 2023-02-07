@@ -57,7 +57,7 @@ from gym import spaces
 from yawning_titan.agents.nsa_red import NSARed
 from yawning_titan.envs.generic.helpers.graph2plot import CustomEnvGraph
 from yawning_titan.envs.specific.core.nsa_node_collection import NodeCollection
-from yawning_titan.networks.network_creator import create_18_node_network
+from yawning_titan.networks.network_db import default_18_node_network
 
 logger = logging.getLogger(__name__)
 
@@ -77,7 +77,7 @@ class NodeEnv(gym.Env):
         spread_vs_random_intrusion: float = 0.5,
         punish_for_isolate: bool = False,
         reward_method: int = 1,
-        network: Tuple[np.array, dict] = create_18_node_network(),
+        network: Tuple[np.array, dict] = default_18_node_network(),
     ):
         super(NodeEnv, self).__init__()
 
