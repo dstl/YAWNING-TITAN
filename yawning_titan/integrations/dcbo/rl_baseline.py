@@ -16,9 +16,10 @@ from __future__ import annotations
 from stable_baselines3 import PPO
 
 from yawning_titan.agents.sinewave_red import SineWaveRedAgent
-from yawning_titan.config.game_config.game_mode import GameMode
 from yawning_titan.config.game_modes import dcbo_game_mode_path
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
+from yawning_titan.game_modes.game_mode import GameMode
+from yawning_titan.game_modes.game_modes import dcbo_game_mode_path
 from yawning_titan.networks import network_creator
 from yawning_titan.networks.network import Network
 from yawning_titan.yawning_titan_run import YawningTitanRun
@@ -66,7 +67,6 @@ def generate(
     """
     matrix, positions = network_creator.dcbo_base_network()
     network = Network(matrix=matrix, positions=positions)
-    network.set_from_yaml(dcbo_game_mode_path(), legacy=True)
 
     game_mode = GameMode()
     game_mode.set_from_yaml(dcbo_game_mode_path(), legacy=True)

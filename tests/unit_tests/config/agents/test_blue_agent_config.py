@@ -4,14 +4,14 @@ from tests.unit_tests.config import (
     get_default_config_dict,
     get_default_config_dict_legacy,
 )
-from yawning_titan.config.agents.blue_agent_config import (
+from yawning_titan.exceptions import ConfigGroupValidationError
+from yawning_titan.game_modes.components.blue_agent import (
     Blue,
     BlueActionSetGroup,
     BlueIntrusionDiscoveryGroup,
     DeceptiveNodeGroup,
     MakeNodeSafeGroup,
 )
-from yawning_titan.exceptions import ConfigGroupValidationError
 
 
 @pytest.fixture
