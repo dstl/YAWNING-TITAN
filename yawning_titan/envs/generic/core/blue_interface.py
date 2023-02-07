@@ -109,7 +109,6 @@ class BlueInterface(BlueActionSet):
             action = action - self.deceptive_actions
             # global actions
             if action < self.number_global_action:
-
                 blue_action, blue_node = self.global_action_dict[action]()
             else:
                 # standard actions

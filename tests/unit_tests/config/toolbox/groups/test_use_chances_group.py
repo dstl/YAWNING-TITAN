@@ -1,6 +1,6 @@
 import pytest
 
-from yawning_titan.config.toolbox.groups.core import ChanceGroup, UseChancesGroup
+from yawning_titan.config.toolbox.groups.core import NodeChanceGroup, UseChancesGroup
 from yawning_titan.exceptions import (
     ConfigGroupValidationError,
     ConfigItemValidationError,
@@ -20,7 +20,7 @@ def test_chance_group_not_used():
 def test_chance_group_valid_used():
     """Test the UseChancesGroup when used and valid."""
     alc = UseChancesGroup(
-        use=True, chance=ChanceGroup(standard_node=0.5, deceptive_node=0.6)
+        use=True, chance=NodeChanceGroup(standard_node=0.5, deceptive_node=0.6)
     )
 
     assert alc.validation.passed
@@ -31,7 +31,7 @@ def test_chance_group_valid_used():
 def test_chance_group_fail_used_item_fail():
     """Tests UseChancesGroup when the group validation passes but an item fails the group."""
     alc = UseChancesGroup(
-        use="F", chance=ChanceGroup(standard_node=0.5, deceptive_node=0.6)
+        use="F", chance=NodeChanceGroup(standard_node=0.5, deceptive_node=0.6)
     )
 
     assert alc.validation.group_passed
@@ -44,7 +44,7 @@ def test_chance_group_fail_used_item_fail():
 def test_chance_group_fail_used_group_fail():
     """Tests UseChancesGroup when the group validation fails but item validation passes."""
     alc = UseChancesGroup(
-        use=True, chance=ChanceGroup(standard_node=0.5, deceptive_node=0.5)
+        use=True, chance=NodeChanceGroup(standard_node=0.5, deceptive_node=0.5)
     )
     assert not alc.validation.passed
     assert alc.validation.elements_passed

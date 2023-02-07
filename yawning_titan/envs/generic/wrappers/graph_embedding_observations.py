@@ -64,7 +64,6 @@ class FeatherGraphEmbedObservation(ObservationWrapper):
             A newly formatted environment observation
         """
         if self.latest_adj_matrix is None:
-
             self.latest_adj_matrix = self.env.network_interface.get_current_adj_matrix()
             self.latest_graph_embedding = self.make_embedding()
 
@@ -72,7 +71,6 @@ class FeatherGraphEmbedObservation(ObservationWrapper):
             self.env.network_interface.get_current_adj_matrix().all()
             != self.latest_adj_matrix.all()
         ):
-
             self.latest_adj_matrix = self.env.network_interface.get_current_adj_matrix()
             self.latest_graph_embedding = self.make_embedding()
 

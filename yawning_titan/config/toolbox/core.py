@@ -2,15 +2,15 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Hashable, List, Optional, Union
 
 import yaml
 
-from yawning_titan.config.game_config import _LOGGER
 from yawning_titan.exceptions import (
     ConfigGroupValidationError,
     ConfigItemValidationError,
 )
+from yawning_titan.game_modes.components import _LOGGER
 
 yaml.Dumper.ignore_aliases = lambda *args: True
 
@@ -82,10 +82,11 @@ class ConfigBase(ABC):
         element_hash = [v.stringify() for v in self.get_config_elements().values()]
         element_hash.extend(
             [
-                tuple(v) if type(v) in [list, dict, set] else v
+                tuple(v) if isinstance(v, (list, dict, set)) else v
                 for v in self.get_non_config_elements().values()
             ]
         )
+        element_hash = [v for v in element_hash if isinstance(v, Hashable)]
         tuple_hash = tuple(element_hash)
         return hash(tuple_hash)
 
@@ -392,6 +393,7 @@ class ConfigItem:
         self,
         as_key_val_pair: Optional[bool] = False,
         values_only: Optional[bool] = False,
+        include_none: Optional[bool] = True,
     ) -> dict:
         """
         Return the ConfigItem as a dict.
@@ -400,6 +402,8 @@ class ConfigItem:
             a key/value pair, the key being the class name.
         :return: The ConfigItem as a dict.
         """
+        if not include_none and self.value is None:
+            return None
         if values_only:
             return self.value
         d = {"value": self.value}
@@ -479,7 +483,12 @@ class ConfigGroup(ConfigBase, ABC):
         for k, element in self.get_config_elements().items():
             self.validation.add_element_validation(k, element.validate())
 
-    def to_dict(self, values_only: Optional[bool] = False, legacy: bool = False):
+    def to_dict(
+        self,
+        values_only: Optional[bool] = False,
+        legacy: Optional[bool] = False,
+        include_none: Optional[bool] = True,
+    ):
         """
         Return the ConfigGroup as a dict.
 
@@ -494,11 +503,12 @@ class ConfigGroup(ConfigBase, ABC):
 
         attr_dict = {"doc": self.doc} if self.doc is not None else {}
         # attr_dict = self.get_non_config_elements()
-        element_dict = {
-            k: e.to_dict(values_only=values_only)
-            for k, e in self.get_config_elements().items()
-            if not k.startswith("_")
-        }
+
+        element_dict = {}
+        for k, e in self.get_config_elements().items():
+            d = e.to_dict(values_only=values_only, include_none=include_none)
+            if not k.startswith("_") and (include_none or d is not None):
+                element_dict[k] = d
 
         if values_only:
             return element_dict
