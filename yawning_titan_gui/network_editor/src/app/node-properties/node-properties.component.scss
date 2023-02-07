@@ -1,0 +1,95 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.node-properties-container {
+  display: flex;
+  flex: 1;
+}
+
+.mat-mdc-card {
+  height: 100%;
+}
+
+.mat-mdc-card-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-mdc-card-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-top: 30px;
+  overflow: hidden;
+
+  .node-properties-form {
+    flex: 1;
+    overflow-y: auto;
+
+    .mat-mdc-form-field {
+      display: flex;
+      flex: 1;
+    }
+
+    .mat-mdc-slide-toggle {
+      display: flex;
+      flex: 1;
+      padding: 10px 18px;
+    }
+
+    .node-properties-vulnerability-container {
+      display: flex;
+      flex-direction: column;
+
+      .node-properties-vulnerability-label-container {
+        display: flex;
+        flex-direction: row;
+        margin-left: 12px;
+      }
+
+      .mat-mdc-slider {
+        margin: 0 24px;
+        margin-bottom: 15px;
+      }
+
+      .node-properties-vulnerability-label {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+      }
+
+      .node-properties-vulnerability-value {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        padding-left: 20px;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .node-properties-action-buttons {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+    justify-content: flex-end;
+
+    button {
+      margin: 0 10px;
+    }
+  }
+}
+
+// hide toggle icons
+::ng-deep .node-properties-form .mdc-switch__icons {
+  display: none;
+}
+
+// toggle padding
+::ng-deep .node-properties-form .mat-mdc-slide-toggle label {
+  padding-left: 20px;
+}
