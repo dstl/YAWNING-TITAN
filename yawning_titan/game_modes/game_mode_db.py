@@ -38,7 +38,7 @@ class GameModeSchema:
 
     :Example:
 
-    >>> from yawning_titan.config.game_mode_db import GameModeDB, GameModeSchema
+    >>> from yawning_titan.game_modes.game_mode_db import GameModeDB, GameModeSchema
     >>> db = GameModeDB()
     >>> game_modes = db.search(GameModeSchema.NODE_COUNT.min(18))
     """
@@ -79,7 +79,7 @@ class GameModeDB:
 
         .. code:: python
 
-            >>> from yawning_titan.config.game_mode_db import GameModeDB, GameModeSchema
+            >>> from yawning_titan.game_modes.game_mode_db import GameModeDB, GameModeSchema
             >>> db = GameModeDB()
 
     - Search for all game modes that work with a minimum of 18 nodes in the game_mode:
@@ -304,7 +304,9 @@ class GameModeDB:
             # perform an upsert.
             if db_game_mode:
                 reset = (
-                    db_game_mode.to_dict(json_serializable=True, include_none=False)
+                    db_game_mode.to_dict(
+                        json_serializable=True, include_none=True, values_only=True
+                    )
                     != game_mode
                 )
             else:

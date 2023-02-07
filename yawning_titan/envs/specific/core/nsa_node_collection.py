@@ -11,7 +11,6 @@ class NodeCollection:
     """Class representing a collection of nodes for the 18-node Ridley Environment."""
 
     def __init__(self, network: Tuple[np.array, dict], chance_to_spread_during_patch):
-
         self.adj_matrix = network[0]
         self.pos_dic = network[1]
         self.nodes = []

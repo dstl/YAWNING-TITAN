@@ -96,7 +96,6 @@ class RandomEntryNodeGroup(RandomNodePlacementGroup):
         place_close_to_edge: Optional[bool] = False,
         place_close_to_center: Optional[bool] = False,
     ):
-
         self.place_close_to_edge = BoolItem(
             value=place_close_to_edge,
             doc="Choose nodes closer to the edge of the network.",

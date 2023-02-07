@@ -229,7 +229,6 @@ class CustomEnvGraph:
         # Some environments may have special custom nodes that they want to add
         if len(special_nodes) > 0:
             for _, node_info in special_nodes.items():
-
                 # only insert if the legend is not in the list yet
                 if not repeat_check(node_info, legend_objects):
                     # Inserts the object into the legends at position 3. This is because it looks better if there are any

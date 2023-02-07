@@ -13,7 +13,7 @@ from tinydb.table import Document
 
 from yawning_titan.db.doc_metadata import DocMetadata, DocMetadataSchema
 from yawning_titan.db.query import YawningTitanQuery
-from yawning_titan.db.yawning_titan_db import YawningTitanDB
+from yawning_titan.db.yawning_titan_db import YawningTitanDB, YawningTitanDBSchema
 from yawning_titan.networks.network import Network
 
 __all__ = ["NetworkDB", "NetworkSchema", "default_18_node_network"]
@@ -21,7 +21,7 @@ __all__ = ["NetworkDB", "NetworkSchema", "default_18_node_network"]
 _LOGGER = getLogger(__name__)
 
 
-class NetworkSchema:
+class NetworkSchema(YawningTitanDBSchema):
     """
     A schema-like class that defines the network DB fields.
 

@@ -11,6 +11,7 @@ locked files (system defaults) cannot be updated or removed.
 from __future__ import annotations
 
 import os.path
+from abc import ABC
 from datetime import datetime
 from logging import getLogger
 from pathlib import Path
@@ -25,6 +26,12 @@ from yawning_titan.db.doc_metadata import DocMetadata, DocMetadataSchema
 from yawning_titan.exceptions import YawningTitanDBCriticalError, YawningTitanDBError
 
 _LOGGER = getLogger(__name__)
+
+
+class YawningTitanDBSchema(ABC):
+    """YawningTitanDBSchema ABC that is implemented by all schema classes."""
+
+    pass
 
 
 class YawningTitanDB:
