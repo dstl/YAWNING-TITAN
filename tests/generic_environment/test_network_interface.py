@@ -16,7 +16,9 @@ def test_network_interface(generate_generic_env_test_reqs):
         node = env.network_interface.current_graph.get_node_from_uuid(
             node.uuid
         )  # reset node reference as network graph has been reset
-        node_name_lookup = env.network_interface.current_graph.get_nodes_by_name()
+        node_name_lookup = env.network_interface.current_graph.get_nodes(
+            key_by_name=True
+        )
         assert env.network_interface.adj_matrix.all() == 0
         assert (
             env.network_interface.current_graph.get_nodes(filter_true_compromised=True)
