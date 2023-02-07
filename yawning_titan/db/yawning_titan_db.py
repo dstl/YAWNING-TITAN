@@ -95,7 +95,7 @@ class YawningTitanDB:
     @classmethod
     def _update_doc_updated_at_datetime(cls, doc: Mapping) -> Mapping:
         """
-        Set the created_at field in doc_metadata to the current datetime in iso format.
+        Set the created_at field in _doc_metadata to the current datetime in iso format.
 
         :param doc: A doc.
         :return: The updated doc.

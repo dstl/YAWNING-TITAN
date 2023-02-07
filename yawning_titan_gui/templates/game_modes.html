@@ -11,33 +11,10 @@
 </script>
 {% endblock %}
 
-<<<<<<< HEAD
 {% block items %}
     {% for game_mode in game_modes %}
         {% include 'elements/el_game_mode.html' with game_mode=game_mode %}
     {% endfor %}
-=======
-{% block main %}
-<div id="center-container" class="stretch clear">
-    <div id="search-container">
-        <div class="input-group rounded">
-            <input id="filter-game-modes" type="search" class="form-control rounded" placeholder="Filter" aria-label="Search" aria-describedby="search-addon" />
-            <span class="input-group-text border-0" id="search-addon">
-                <i class="bi bi-search"></i>
-            </span>
-            <!-- TODO: add advanced filtered search from db -->
-        </div>
-    </div>
-    <div id="game-modes">
-        {% for game_mode_filename, game_mode_info in game_modes.items %}
-            {% include 'elements/el_game_mode.html' with game_mode_info=game_mode_info game_mode_filename=game_mode_filename %}
-        {% endfor %}
-    </div>
-</div>
-<div id="bottom-buttons">
-    <button id="create-game-mode" class="btn btn-primary">Create game mode</button>
-</div>
->>>>>>> AIDT-154-feedback-on-yt-install-exe
 {% endblock %}
 
 {% block bottom-buttons %}

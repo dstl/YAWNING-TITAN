@@ -124,23 +124,18 @@ class NetworksView(View):
         :param: request: the Django page `request` object containing the html data for `networks.html` and the server GET / POST request bodies.
         """
         networks = NetworkManager.network_db.all()
-        print(networks[0].high_value_nodes.nodes)
         range_bound_items = [
             {
                 "name": "entry_nodes",
                 "min": min(
                     [
-                        len(network.entry_nodes.nodes)
-                        if network.entry_nodes.nodes
-                        else None
+                        len(network.entry_nodes) if network.entry_nodes else None
                         for network in networks
                     ]
                 ),
                 "max": max(
                     [
-                        len(network.entry_nodes.nodes)
-                        if network.entry_nodes.nodes
-                        else None
+                        len(network.entry_nodes) if network.entry_nodes else None
                         for network in networks
                     ]
                 ),
@@ -149,16 +144,16 @@ class NetworksView(View):
                 "name": "high_value_nodes",
                 "min": min(
                     [
-                        len(network.high_value_nodes.nodes)
-                        if network.high_value_nodes.nodes
+                        len(network.high_value_nodes)
+                        if network.high_value_nodes
                         else None
                         for network in networks
                     ]
                 ),
                 "max": max(
                     [
-                        len(network.high_value_nodes.nodes)
-                        if network.high_value_nodes.nodes
+                        len(network.high_value_nodes)
+                        if network.high_value_nodes
                         else None
                         for network in networks
                     ]
@@ -166,8 +161,8 @@ class NetworksView(View):
             },
             {
                 "name": "network_nodes",
-                "min": min([len(network.matrix[0]) for network in networks]),
-                "max": max([len(network.matrix[0]) for network in networks]),
+                "min": min([len(network.nodes) for network in networks]),
+                "max": max([len(network.nodes) for network in networks]),
             },
         ]
         return render(
