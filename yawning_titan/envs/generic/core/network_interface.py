@@ -27,15 +27,8 @@ class NetworkInterface:
         """
         Initialise the Network Interface and initialises all the necessary components.
 
-        Args:
-            matrix: An adjacency matrix containing the connections between nodes in the network.
-            positions: A dictionary containing the positions of the nodes in the network (when displayed as a graph).
-            game_mode_path: The file path that locates the game_mode page. If no path is supplied then the default
-                game_mode page is used.
-            entry_nodes: A list of nodes that act as gateways or doors in the network for the red agent. While the red
-                agent does not start in the network, they can access the network at these nodes.
-            vulnerabilities: A dictionary containing the vulnerabilities of the nodes.
-            high_value_nodes: A name of a node that when taken means the red agent instantly wins.
+        :param game_mode: the :class:`~yawning_titan.game_modes.game_mode.GameMode` that defines the abilities of the agents.
+        :param network: the :class:`~yawning_titan.networks.network.Network` that defines the network within which the agents act.
         """
         # opens the fle the user has specified to be the location of the game_mode
 
