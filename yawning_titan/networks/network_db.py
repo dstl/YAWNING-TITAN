@@ -326,3 +326,17 @@ def default_18_node_network() -> Network:
     """
     with NetworkDB() as db:
         return db.get("b3cd9dfd-b178-415d-93f0-c9e279b3c511")
+
+
+def dcbo_base_network() -> Network:
+    """
+    Creates the same network used to generated DCBO data.
+
+    .. node::
+        This function replaces the network that was defined in
+        `yawning_titan/integrations/dcbo/base_net.txt`.
+
+    :return: An instance of :class:`~yawning_titan.networks.network.Network`.
+    """
+    with NetworkDB() as db:
+        return db.get("47cb9f49-b53d-44f8-9a7b-3d74cf2ec1b0")

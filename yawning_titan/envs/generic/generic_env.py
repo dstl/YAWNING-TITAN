@@ -422,48 +422,36 @@ class GenericNetworkEnv(gym.Env):
             self.graph_plotter = CustomEnvGraph()
 
         # gets the networkx object
-        true_compromised_nodes = self.network_interface.current_graph.get_nodes(
-            filter_true_compromised=True
-        )
+
         # compromised nodes is a dictionary of all the compromised nodes with a 1 if the compromise is known or a 0 if
         # not
-        comp = {n.uuid: n.blue_knows_intrusion for n in true_compromised_nodes}
         # gets information about the current state from the network interface
-        safe = self.network_interface.current_graph.get_nodes(filter_true_safe=True)
         main_graph = self.network_interface.current_graph
-        main_graph_pos = self.network_interface.get_all_node_positions()
         if show_only_blue_view:
             attacks = self.network_interface.detected_attacks
         else:
             attacks = self.network_interface.true_attacks
         reward = round(self.current_reward, 2)
-        special_nodes = {}
-        if (
-            self.network_interface.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value
-        ):
-            # iterate through the high value nodes
-            for node in self.network_interface.current_graph.high_value_nodes:
-                special_nodes[node] = {
-                    "description": "high value node",
-                    "colour": "#da2fed",
-                }
+        # if (
+        #     self.network_interface.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value
+        # ):
+        # iterate through the high value nodes
+        # for node in self.network_interface.current_graph.high_value_nodes:
+        #     special_nodes[node] = {
+        #         "description": "high value node",
+        #         "colour": "#da2fed",
+        #     }
 
         # sends the current information to a graph plotter to display the information visually
         self.graph_plotter.render(
-            self.current_duration,
-            main_graph,
-            main_graph_pos,
-            comp,
-            safe,
-            attacks,
-            reward,
-            self.network_interface.get_red_location,
-            self.network_interface.get_all_vulnerabilities(),
-            self.made_safe_nodes,
-            "RL blue agent vs probabilistic red in a generic network environment",
-            special_nodes=special_nodes,
-            entrance_nodes=self.network_interface.current_graph.entry_nodes,
-            target_node=self.network_interface.game_mode.red.target_mechanism.target_specific_node.target.value,
+            current_step=self.current_duration,
+            g=main_graph,
+            attacked_nodes=attacks,
+            current_time_step_reward=reward,
+            # self.network_interface.red_current_location,
+            made_safe_nodes=self.made_safe_nodes,
+            target_node=self.network_interface.get_target_node(),
+            # "RL blue agent vs probabilistic red in a generic network environment",
             show_only_blue_view=show_only_blue_view,
             show_node_names=show_node_names,
         )

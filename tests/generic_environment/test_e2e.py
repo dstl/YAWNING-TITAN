@@ -153,7 +153,7 @@ def test_generic_env_e2e(
     random_action_generator = RandomGen(env.BLUE.get_number_of_actions())
 
     prev_high_value = None
-    for i in range(timesteps):
+    for _ in range(timesteps):
         current_chosen_action = random_action_generator.get_action()
         obs, rew, done, episode = env.step(current_chosen_action)
 
@@ -202,7 +202,6 @@ def test_generic_env_e2e(
                 raise AssertionError("Missing red action:" + action["Action"])
 
         if done:
-            print("=" * 150)
             counts = check_when_done(env, counts)
             env.reset()
         else:

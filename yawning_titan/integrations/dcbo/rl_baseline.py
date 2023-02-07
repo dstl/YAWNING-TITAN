@@ -19,8 +19,7 @@ from yawning_titan.agents.sinewave_red import SineWaveRedAgent
 from yawning_titan.config.game_config.game_mode import GameMode
 from yawning_titan.config.game_modes import dcbo_game_mode_path
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
-from yawning_titan.networks import network_creator
-from yawning_titan.networks.network import Network
+from yawning_titan.networks.network_db import dcbo_base_network
 from yawning_titan.yawning_titan_run import YawningTitanRun
 
 
@@ -64,10 +63,8 @@ def generate(
     :return: A trained agent as an instance of
         :class:`stable_baselines3.ppo.ppo.PPO`.
     """
-    matrix, positions = network_creator.dcbo_base_network()
-
     yt_run = YawningTitanRun(
-        network=Network(matrix=matrix, positions=positions),
+        network=dcbo_base_network(),
         game_mode=GameMode.create_from_yaml(dcbo_game_mode_path()),
         red_agent_class=SineWaveRedAgent,
         blue_agent_class=BlueInterface,

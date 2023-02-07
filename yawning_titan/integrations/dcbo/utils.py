@@ -13,6 +13,7 @@ from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.integrations.dcbo.dcbo_agent import DCBOAgent
 from yawning_titan.networks import network_creator
 from yawning_titan.networks.network import Network
+from yawning_titan.networks.network_db import dcbo_base_network
 
 _LOGGER = getLogger(__name__)
 
@@ -27,14 +28,12 @@ def create_env(use_same_net: bool = False) -> GenericNetworkEnv:
     :returns: A YAWNING TITAN OpenAI Gym environment.
 
     """
-    game_mode = GameMode()
-    game_mode.set_from_yaml(dcbo_game_mode_path(), legacy=True)
+    game_mode = GameMode.create_from_yaml(dcbo_game_mode_path(), legacy=True)
 
     if use_same_net:
-        matrix, positions = network_creator.dcbo_base_network()
-        network = Network(matrix=matrix, positions=positions)
+        network = dcbo_base_network()
     else:
-        matrix, positions = network_creator.create_mesh(size=10)
+        matrix, positions = network_creator.get_mesh_matrix_and_positions(size=10)
         network = Network(matrix=matrix, positions=positions)
 
     network_interface = NetworkInterface(game_mode, network)
