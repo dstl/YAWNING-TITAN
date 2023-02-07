@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Final, Optional
+from typing import Final, List, Optional
 from uuid import uuid4
 
 
@@ -34,7 +34,6 @@ class Node:
         self.vulnerability_score = vulnerability
         self.true_compromised_status = 0
         self.blue_view_compromised_status = 0
-        self.node_position = 0
         self.deceptive_node = False
         self.blue_knows_intrusion = False
         self.isolated = False
@@ -53,6 +52,16 @@ class Node:
                 self._classes = "entry_node"
             else:
                 self._classes = "standard_node"
+
+    @property
+    def node_position(self) -> List[float]:
+        """The nodes position as a list [x,y]."""
+        return [self.x_pos, self.y_pos]
+
+    @node_position.setter
+    def node_position(self, pos: List[float]):
+        self.x_pos = pos[0]
+        self.y_pos = pos[1]
 
     @property
     def vulnerability(self) -> float:

@@ -1,17 +1,12 @@
 import math
 import random
-import warnings
 from itertools import combinations, groupby
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Tuple, Union
 
 import networkx as nx
 import numpy as np
 
-from yawning_titan.networks.network import (
-    Network,
-    RandomEntryNodePreference,
-    RandomHighValueNodePreference,
-)
+from yawning_titan.networks.network import Network
 from yawning_titan.networks.node import Node
 
 
@@ -59,242 +54,127 @@ def generate_node_positions(adj_matrix: np.array) -> dict:
     return positions
 
 
-def create_network(
-    config_dict: Dict[str, Any],
-    adj_matrix: Optional[np.ndarray] = None,
-    positions: Optional[Dict[str, List[int]]] = None,
-    vulnerabilities: Optional[Dict[str, float]] = None,
-    high_value_node_names: Optional[List[str]] = None,
-    entry_node_names: Optional[List[str]] = None,
-    legacy: Optional[bool] = False,
-    infer_legacy: Optional[bool] = True,
-) -> Network:
-    """Create an instance of :class: `~yawning_titan.networks.network.Network` from a dictionary.
-
-    If the dictionary is in legacy format then perform preprocessing, otherwise utilise the :method:
-    `~yawning_titan.networks.network.Network.create` method.
-    """
-    set_random_vulnerabilities = False
-    if infer_legacy:
-        legacy = True if "GAME_RULES" in config_dict else False
-
-    if legacy:
-        entry_node_placement_preference = RandomEntryNodePreference.NONE
-        if config_dict["GAME_RULES"]["prefer_central_nodes_for_entry_nodes"]:
-            entry_node_placement_preference = RandomEntryNodePreference.CENTRAL
-        elif config_dict["GAME_RULES"]["prefer_edge_nodes_for_entry_nodes"]:
-            entry_node_placement_preference = RandomEntryNodePreference.EDGE
-
-        high_value_node_placement_preference = RandomHighValueNodePreference.NONE
-        if config_dict["GAME_RULES"][
-            "choose_high_value_nodes_furthest_away_from_entry"
-        ]:
-            high_value_node_placement_preference = (
-                RandomHighValueNodePreference.FURTHEST_AWAY_FROM_ENTRY
-            )
-
-        if vulnerabilities is None:
-            set_random_vulnerabilities = True
-
-        network = Network(
-            set_random_vulnerabilities=set_random_vulnerabilities,
-            set_random_entry_nodes=config_dict["GAME_RULES"][
-                "choose_entry_nodes_randomly"
-            ],
-            random_entry_node_preference=entry_node_placement_preference,
-            num_of_random_entry_nodes=config_dict["GAME_RULES"][
-                "number_of_entry_nodes"
-            ],
-            set_random_high_value_nodes=config_dict["GAME_RULES"][
-                "choose_high_value_nodes_placement_at_random"
-            ],
-            random_high_value_node_preference=high_value_node_placement_preference,
-            num_of_random_high_value_nodes=config_dict["GAME_RULES"][
-                "number_of_high_value_nodes"
-            ],
-            node_vulnerability_lower_bound=config_dict["GAME_RULES"][
-                "node_vulnerability_lower_bound"
-            ],
-            node_vulnerability_upper_bound=config_dict["GAME_RULES"][
-                "node_vulnerability_upper_bound"
-            ],
-        )
-        add_network_elements_from_matrix_and_positions(network, adj_matrix, positions)
-
-        # Entry nodes must be set before high value nodes
-        if entry_node_names is None:
-            network.reset_random_entry_nodes()
-        else:
-            if any(
-                config_dict["GAME_RULES"][x]
-                for x in [
-                    "choose_entry_nodes_randomly",
-                    "prefer_edge_nodes_for_entry_nodes",
-                    "prefer_central_nodes_for_entry_nodes",
-                ]
-            ):
-                warnings.warn(
-                    UserWarning(
-                        "High value node names have been specified therefore settings for random high value nodes will be ignored."
-                    )
-                )
-            for node_name in entry_node_names:
-                node = network.get_node_from_name(node_name)
-                node.entry_node = True
-                network._check_intersect(node)
-
-        if high_value_node_names is None:
-            network.reset_random_high_value_nodes()
-        else:
-            if any(
-                config_dict["GAME_RULES"][x]
-                for x in [
-                    "choose_high_value_nodes_placement_at_random",
-                    "choose_high_value_nodes_furthest_away_from_entry",
-                ]
-            ):
-                warnings.warn(
-                    UserWarning(
-                        "High value node names have been specified therefore settings for random high value nodes will be ignored."
-                    )
-                )
-            for node_name in high_value_node_names:
-                node = network.get_node_from_name(node_name)
-                node.high_value_node = True
-                network._check_intersect(node)
-
-        if network.set_random_vulnerabilities:
-            network.reset_random_vulnerabilities()
-        else:
-            for node in network.nodes:
-                node.vulnerability = vulnerabilities[node.name]
-
-    else:
-        network = Network.create(network_dict=config_dict)
-
-    return network
-
-
-def add_network_elements_from_matrix_and_positions(
-    network: Network, adj_matrix: np.ndarray, positions: Dict[str, List[int]]
+def get_network_from_matrix_and_positions(
+    adj_matrix: np.ndarray,
+    positions: Dict[str, List[int]],
 ):
-    """Add nodes and edges to a network from a numpy matrix and a dictionary of positions."""
+    """Get nodes and edges from a numpy matrix and a dictionary of positions."""
+    network = Network()
     edges = []
     # Create all Nodes
     nodes: Dict[Any, Node] = {i: Node(name=str(i)) for i in range(len(adj_matrix))}
     for y_i, y_node in enumerate(adj_matrix):
         # Retrieve the Node and add to the Network
-        network.add_node(nodes[y_i])
-
-        # Retrieve the positions and set on the Node
+        network.add_node(nodes[y_i])  # Retrieve the positions and set on the Node
         if str(y_i) in positions.keys():
             x, y = positions[str(y_i)]
             nodes[y_i].x_pos = x
-            nodes[y_i].y_pos = y
-
-        # If the edge hasn't already been added, add it
-        for x_i, x_node in enumerate(y_node):
-            if x_node == 1:
-                edge = tuple(sorted([y_i, x_i]))
-                if edge not in edges:
-                    network.add_edge(nodes[edge[0]], nodes[edge[1]])
-
-
-def get_18_node_network_mesh() -> Network:
-    """
-    Create the standard 18 node network found in the Ridley 2017 research paper.
-
-    Returns:
-        The adjacency matrix that represents the network
-        A dictionary of positions of the nodes
-    """
-    adj_matrix = np.asarray(
-        [
-            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        ]
-    )
-    positions = {
-        "0": [1, 7],
-        "1": [2, 7],
-        "2": [3, 7],
-        "3": [4, 7],
-        "4": [5, 7],
-        "5": [3, 6],
-        "6": [1, 4],
-        "7": [3, 4],
-        "8": [4, 4],
-        "9": [6, 5],
-        "10": [6, 4],
-        "11": [6, 3],
-        "12": [3, 2],
-        "13": [1, 1],
-        "14": [2, 1],
-        "15": [3, 1],
-        "16": [4, 1],
-        "17": [5, 1],
-    }
-    return adj_matrix, positions
+            nodes[y_i].y_pos = y  # If the edge hasn't already been added, add it
+    for x_i, x_node in enumerate(y_node):
+        if x_node == 1:
+            edge = tuple(sorted([y_i, x_i]))
+            if edge not in edges:
+                network.add_edge(nodes[edge[0]], nodes[edge[1]])
+    return network
 
 
-def dcbo_base_network() -> Tuple[np.array, dict]:
-    """
-    Creates the same network used to generated DCBO data.
+# def default_18_node_network() -> Network:
+#     """
+#     Create the standard 18 node network found in the Ridley 2017 research paper.
 
-    :returns: The adjacency matrix that represents the network and a dictionary
-        of positions of the nodes.
+#     Returns:
+#         The adjacency matrix that represents the network
+#         A dictionary of positions of the nodes
+#     """
+#     adj_matrix = np.asarray(
+#         [
+#             [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#             [1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
+#             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+#             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+#         ]
+#     )
+#     positions = {
+#         "0": [1, 7],
+#         "1": [2, 7],
+#         "2": [3, 7],
+#         "3": [4, 7],
+#         "4": [5, 7],
+#         "5": [3, 6],
+#         "6": [1, 4],
+#         "7": [3, 4],
+#         "8": [4, 4],
+#         "9": [6, 5],
+#         "10": [6, 4],
+#         "11": [6, 3],
+#         "12": [3, 2],
+#         "13": [1, 1],
+#         "14": [2, 1],
+#         "15": [3, 1],
+#         "16": [4, 1],
+#         "17": [5, 1],
+#     }
+#     return get_network_from_matrix_and_positions(adj_matrix, positions)
 
-    .. node::
-        This function replaces the network that was defined in
-        `yawning_titan/integrations/dcbo/base_net.txt`.
 
-    .. versionadded:: 1.0.1
+# def dcbo_base_network() -> Network:
+#     """
+#     Creates the same network used to generated DCBO data.
 
-    """
-    matrix = [
-        [0, 1, 1, 0, 1, 0, 1, 1, 1, 1],
-        [1, 0, 0, 1, 1, 0, 0, 0, 1, 1],
-        [1, 0, 0, 1, 0, 1, 1, 0, 1, 1],
-        [0, 1, 1, 0, 0, 0, 1, 1, 0, 1],
-        [1, 1, 0, 0, 0, 1, 1, 0, 0, 1],
-        [0, 0, 1, 0, 1, 0, 0, 0, 0, 0],
-        [1, 0, 1, 1, 1, 0, 0, 0, 1, 0],
-        [1, 0, 0, 1, 0, 0, 0, 0, 1, 1],
-        [1, 1, 1, 0, 0, 0, 1, 1, 0, 1],
-        [1, 1, 1, 1, 1, 0, 0, 1, 1, 0],
-    ]
-    positions = {
-        "0": [3.0, 8.0],
-        "1": [2.0, 9.0],
-        "2": [9.0, 2.0],
-        "3": [7.0, 4.0],
-        "4": [0.0, 3.0],
-        "5": [10.0, 6.0],
-        "6": [6.0, 1.0],
-        "7": [9.0, 4.0],
-        "8": [7.0, 2.0],
-        "9": [3.0, 6.0],
-    }
-    return matrix, positions
+#     :returns: The adjacency matrix that represents the network and a dictionary
+#         of positions of the nodes.
+
+#     .. node::
+#         This function replaces the network that was defined in
+#         `yawning_titan/integrations/dcbo/base_net.txt`.
+
+#     .. versionadded:: 1.0.1
+
+#     """
+#     adj_matrix = [
+#         [0, 1, 1, 0, 1, 0, 1, 1, 1, 1],
+#         [1, 0, 0, 1, 1, 0, 0, 0, 1, 1],
+#         [1, 0, 0, 1, 0, 1, 1, 0, 1, 1],
+#         [0, 1, 1, 0, 0, 0, 1, 1, 0, 1],
+#         [1, 1, 0, 0, 0, 1, 1, 0, 0, 1],
+#         [0, 0, 1, 0, 1, 0, 0, 0, 0, 0],
+#         [1, 0, 1, 1, 1, 0, 0, 0, 1, 0],
+#         [1, 0, 0, 1, 0, 0, 0, 0, 1, 1],
+#         [1, 1, 1, 0, 0, 0, 1, 1, 0, 1],
+#         [1, 1, 1, 1, 1, 0, 0, 1, 1, 0],
+#     ]
+#     positions = {
+#         "0": [3.0, 8.0],
+#         "1": [2.0, 9.0],
+#         "2": [9.0, 2.0],
+#         "3": [7.0, 4.0],
+#         "4": [0.0, 3.0],
+#         "5": [10.0, 6.0],
+#         "6": [6.0, 1.0],
+#         "7": [9.0, 4.0],
+#         "8": [7.0, 2.0],
+#         "9": [3.0, 6.0],
+#     }
+#     return get_network_from_matrix_and_positions(adj_matrix, positions)
 
 
-def create_mesh(size: int = 100, connectivity: float = 0.7) -> Tuple[np.array, dict]:
+def get_mesh_matrix_and_positions(
+    size: int = 100, connectivity: float = 0.7
+) -> Tuple[np.array, dict]:
     """
     Create a mesh node environment.
 
@@ -319,7 +199,7 @@ def create_mesh(size: int = 100, connectivity: float = 0.7) -> Tuple[np.array, d
     return adj_matrix, positions
 
 
-def create_star(
+def get_star_matrix_and_positions(
     first_layer_size: int = 8, group_size: int = 5, group_connectivity: float = 0.5
 ) -> Tuple[np.array, dict]:
     """
@@ -359,7 +239,7 @@ def create_star(
     return adj_matrix, positions
 
 
-def create_p2p(
+def get_p2p_matrix_and_positions(
     group_size: int = 5,
     inter_group_connectivity: float = 0.1,
     group_connectivity: int = 1,
@@ -417,7 +297,7 @@ def create_p2p(
     return adj_matrix, positions
 
 
-def create_ring(
+def get_ring_matrix_and_positions(
     break_probability: float = 0.3, ring_size: int = 60
 ) -> Tuple[np.array, dict]:
     """
@@ -480,7 +360,7 @@ def custom_network() -> Union[Tuple[np.array, dict], Tuple[None, None]]:
 
     positions = generate_node_positions(adj_matrix)
 
-    return adj_matrix, positions
+    return get_network_from_matrix_and_positions(adj_matrix, positions)
 
 
 def gnp_random_connected_graph(
@@ -519,4 +399,4 @@ def gnp_random_connected_graph(
     adj_matrix = nx.to_numpy_array(graph)
     positions = generate_node_positions(adj_matrix)
 
-    return adj_matrix, positions
+    return get_network_from_matrix_and_positions(adj_matrix, positions)

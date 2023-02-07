@@ -52,7 +52,7 @@ class Network(nx.Graph):
         random_high_value_node_preference: RandomHighValueNodePreference = RandomHighValueNodePreference.NONE,
         num_of_random_high_value_nodes: int = 0,
         set_random_vulnerabilities: bool = False,
-        node_vulnerability_lower_bound: float = 0,
+        node_vulnerability_lower_bound: float = 0.01,
         node_vulnerability_upper_bound: float = 1,
         doc_metadata: Optional[DocMetadata] = None,
         **kwargs,
@@ -113,7 +113,9 @@ class Network(nx.Graph):
     @node_vulnerability_lower_bound.setter
     def node_vulnerability_lower_bound(self, x: float):
         if x is None or x <= 0:
-            raise ValueError("Node vulnerability lower bound must be above 0.")
+            msg = "Node vulnerability lower bound must be above 0."
+            _LOGGER.error(msg, exc_info=True)
+            raise ValueError(msg)
         self._node_vulnerability_lower_bound = x
 
     @doc_metadata.setter

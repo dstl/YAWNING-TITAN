@@ -1,6 +1,6 @@
 import pytest
 
-from yawning_titan.networks import network_creator
+from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import default_18_node_network
 
 
@@ -44,9 +44,8 @@ def test_reset_entry_nodes_randomly():
     assert len(network.entry_nodes) == 18
 
 
-def test_create_network_from_legacy_manual_vulnerability_setting():
+def test_create_network_from_legacy_manual_vulnerability_setting(create_test_network):
     """Test manually setting vulnerability."""
-    adj_matrix, node_positions = network_creator.create_mesh(size=3, connectivity=0.7)
     vulnerabilities = {"0": 0.5, "1": 0.5, "2": 0.5}
 
     network_legacy_config = {
@@ -64,20 +63,17 @@ def test_create_network_from_legacy_manual_vulnerability_setting():
     }
 
     # Ensure that warning is raised when Entry nodes and HVN's intersect
-    network = network_creator.create_network(
-        legacy=True,
-        config_dict=network_legacy_config,
-        adj_matrix=adj_matrix,
-        positions=node_positions,
+    network: Network = create_test_network(
+        legacy_config_dict=network_legacy_config,
+        n_nodes=3,
+        connectivity=0.7,
         vulnerabilities=vulnerabilities,
     )
     assert all(n.vulnerability == 0.5 for n in network.nodes)
 
 
-def test_create_network_from_legacy_random_vulnerability():
+def test_create_network_from_legacy_random_vulnerability(create_test_network):
     """Test manually setting vulnerability."""
-    adj_matrix, node_positions = network_creator.create_mesh(size=3, connectivity=0.7)
-
     network_legacy_config = {
         "GAME_RULES": {
             "choose_entry_nodes_randomly": True,
@@ -93,19 +89,14 @@ def test_create_network_from_legacy_random_vulnerability():
     }
 
     # Ensure that warning is raised when Entry nodes and HVN's intersect
-    network = network_creator.create_network(
-        legacy=True,
-        config_dict=network_legacy_config,
-        adj_matrix=adj_matrix,
-        positions=node_positions,
+    network = create_test_network(
+        legacy_config_dict=network_legacy_config, n_nodes=3, connectivity=0.7
     )
     assert all(n.vulnerability > 0 and n.vulnerability_score > 0 for n in network.nodes)
 
 
-def test_create_network_vulnerability_out_of_range():
+def test_create_network_vulnerability_out_of_range(create_test_network):
     """Test that the lower bound of node vulnerability cannot be less than or equal to 0."""
-    adj_matrix, node_positions = network_creator.create_mesh(size=3, connectivity=0.7)
-
     network_legacy_config = {
         "GAME_RULES": {
             "choose_entry_nodes_randomly": True,
@@ -122,15 +113,12 @@ def test_create_network_vulnerability_out_of_range():
 
     with pytest.raises(ValueError):
         # Ensure that error is raised when out of range
-        network_creator.create_network(
-            legacy=True,
-            config_dict=network_legacy_config,
-            adj_matrix=adj_matrix,
-            positions=node_positions,
+        create_test_network(
+            legacy_config_dict=network_legacy_config, n_nodes=3, connectivity=0.7
         )
 
 
-def test_create_network_from_legacy_manual_special_node_setting():
+def test_create_network_from_legacy_manual_special_node_setting(create_test_network):
     """Test that creating a network from a legacy configuration can have its special nodes set manually."""
     network_legacy_config = {
         "GAME_RULES": {
@@ -146,8 +134,6 @@ def test_create_network_from_legacy_manual_special_node_setting():
         }
     }
 
-    adj_matrix, node_positions = network_creator.create_mesh(size=25, connectivity=0.7)
-
     # Ensure that warning is raised when Entry nodes and HVN's intersect
     with pytest.warns(
         UserWarning,
@@ -155,11 +141,10 @@ def test_create_network_from_legacy_manual_special_node_setting():
         "'2', and may cause the training to end "
         "prematurely.",
     ):
-        network = network_creator.create_network(
-            legacy=True,
-            config_dict=network_legacy_config,
-            adj_matrix=adj_matrix,
-            positions=node_positions,
+        network: Network = create_test_network(
+            legacy_config_dict=network_legacy_config,
+            n_nodes=25,
+            connectivity=0.7,
             high_value_node_names=["0", "1", "2"],
             entry_node_names=["2", "5", "6"],
         )

@@ -173,20 +173,22 @@ class NetworkInterface:
         """
         return nx.to_dict_of_dicts(self.current_graph)
 
-    def get_attributes_from_key(self, key: str) -> dict:
+    def get_attributes_from_key(self, key: str, key_by_uuid: bool = True) -> dict:
         """
         Take in a key and return a dictionary.
 
         The keys are the names of the nodes and the values are the attribute values that are stored for
         that node under the specified key
 
-        Args:
-            key: The name of the attribute to extract
+        :param key: The name of the attribute to extract
+        :param key_by_uuid: Use the nodes uuid attribute as the key if True otherwise use the node object itself.
 
         Returns:
             A dictionary of attributes
         """
-        return {n.uuid: getattr(n, key) for n in self.current_graph.get_nodes()}
+        if key_by_uuid:
+            return {n.uuid: getattr(n, key) for n in self.current_graph.get_nodes()}
+        return {n: getattr(n, key) for n in self.current_graph.get_nodes()}
 
     def get_all_vulnerabilities(self) -> dict:
         """Get a dictionary of vulnerability scores."""
@@ -206,7 +208,7 @@ class NetworkInterface:
 
     def get_all_node_positions(self) -> dict:
         """Get a dictionary of node positions."""
-        return self.get_attributes_from_key("node_position")
+        return self.get_attributes_from_key("node_position", key_by_uuid=False)
 
     def get_number_unused_deceptive_nodes(self):
         """Get the current number of unused deceptive nodes."""
@@ -651,7 +653,7 @@ class NetworkInterface:
                 )
                 deceptive_node.true_compromised_status = 0
                 deceptive_node.blue_view_compromised_status = 0
-                deceptive_node.node_position = 0
+                deceptive_node.node_position = [0, 0]
                 deceptive_node.deceptive_node = True
                 deceptive_node.blue_knows_intrusion = False
                 deceptive_node.isolated = False
@@ -701,7 +703,7 @@ class NetworkInterface:
         graph.remove_node(node)
 
     def __insert_node_between(
-        self, new_node: Node, node1: Node, node2: Node, graph: nx.Graph
+        self, new_node: Node, node1: Node, node2: Node, graph: Network
     ) -> None:
         """
         Insert a node in between two nodes.
