@@ -22,8 +22,6 @@ from yawning_titan.agents.fixed_red import FixedRedAgent
 from yawning_titan.agents.nsa_red import NSARed
 from yawning_titan.agents.simple_blue import SimpleBlue
 from yawning_titan.agents.sinewave_red import SineWaveRedAgent
-from yawning_titan.game_modes.game_mode import GameMode
-from yawning_titan.config.game_modes import default_game_mode_path
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
