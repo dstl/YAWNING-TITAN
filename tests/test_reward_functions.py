@@ -93,14 +93,26 @@ def test_standard_rewards(generate_generic_env_test_reqs):
         "3": 0.5,
         "4": 0.5,
     }
-    reward_args["end_isolation"] = {"0": True, "1": False, "2": False, "3": False, "4": False}
+    reward_args["end_isolation"] = {
+        "0": True,
+        "1": False,
+        "2": False,
+        "3": False,
+        "4": False,
+    }
 
     reward = reward_functions.standard_rewards(reward_args)
 
     assert round(reward, 4) == -0.0769
 
     # check that isolating a node punishment applies per node
-    reward_args["end_isolation"] = {"0": True, "1": True, "2": False, "3": False, "4": False}
+    reward_args["end_isolation"] = {
+        "0": True,
+        "1": True,
+        "2": False,
+        "3": False,
+        "4": False,
+    }
 
     reward = reward_functions.standard_rewards(reward_args)
 

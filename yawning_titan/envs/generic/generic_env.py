@@ -232,7 +232,6 @@ class GenericNetworkEnv(gym.Env):
         if (
             self.network_interface.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value
         ):
-
             # check if a high value node was compromised
             compromised_hvn = False
             for hvn in self.network_interface.current_graph.high_value_nodes:
@@ -363,7 +362,6 @@ class GenericNetworkEnv(gym.Env):
                 self.current_duration
                 == self.network_interface.game_mode.game_rules.max_steps.value
             ):
-
                 self.current_game_stats = {
                     "Winner": "blue",
                     "Duration": self.current_duration,
