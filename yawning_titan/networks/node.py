@@ -39,6 +39,10 @@ class Node:
         self.blue_knows_intrusion = False
         self.isolated = False
 
+    def reset_vulnerability(self):
+        """Resets the nodes current `vulnerability_score` to the original `vulnerability`."""
+        self.vulnerability_score = self.vulnerability
+
     def _set_classes(self):
         if self.high_value_node and self._entry_node:
             self._classes = "high_value_entry_node"
@@ -50,7 +54,13 @@ class Node:
             else:
                 self._classes = "standard_node"
 
-    def set_vulnerability(self, x):
+    @property
+    def vulnerability(self) -> float:
+        """The nodes initial vulnerability."""
+        return self._vulnerability
+
+    @vulnerability.setter
+    def vulnerability(self, x):
         self._vulnerability = x
         self.vulnerability_score = x
 
@@ -129,9 +139,14 @@ class Node:
         )
 
     def __hash__(self):
-        return hash((self._uuid, self.name, self._high_value_node, self._entry_node))
+        return hash((self._uuid))
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
             return hash(self) == hash(other)
         return False
+
+    def __lt__(self, other: Node):
+        if isinstance(other, Node):
+            return self.uuid < other.uuid
+        return self.uuid < other
