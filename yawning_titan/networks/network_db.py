@@ -110,7 +110,7 @@ class NetworkDB:
         :return: The inserted :class:`~yawning_titan.networks.network.Network`.
         """
         network.doc_metadata.update(name, description, author)
-        self._db.insert(network.to_json())
+        self._db.insert(network.to_dict(json_serializable=True))
 
         return network
 

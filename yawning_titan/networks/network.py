@@ -199,10 +199,6 @@ class Network(nx.Graph):
                 return node
         return None
 
-    def get_nodes_by_name(self) -> Dict[str, Node]:
-        """Return all nodes as a dictionary keyed by name."""
-        return {n.name: n for n in self.nodes}
-
     def _generate_random_vulnerability(self) -> float:
         """
         Generate a single random vulnerability value from the lower and upper bounds.
@@ -427,17 +423,6 @@ class Network(nx.Graph):
                 for k, v in d["edges"].items()
             }
             d["_doc_metadata"] = d["_doc_metadata"].to_dict()
-        return d
-
-    def to_json(self):
-        """Create a json formatted dictionary to represent the :class: `Network` in a database."""
-        d = self.to_dict()
-        d["nodes"] = {k.uuid: k.to_dict() for k in d["nodes"].keys()}
-        d["edges"] = {
-            k.uuid: {node.uuid: attrs for node, attrs in v.items()}
-            for k, v in d["edges"].items()
-        }
-        d["_doc_metadata"] = d["_doc_metadata"].to_dict()
         return d
 
     @classmethod
