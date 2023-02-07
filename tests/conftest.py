@@ -6,10 +6,10 @@ import pytest
 import yaml
 from yaml import SafeLoader
 
-from yawning_titan.config.game_config.game_mode import GameMode
-from yawning_titan.config.game_modes import default_game_mode_path
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
+from yawning_titan.game_modes.game_mode import GameMode
+from yawning_titan.game_modes.game_modes import default_game_mode_path
 from yawning_titan.networks import network_creator
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import default_18_node_network

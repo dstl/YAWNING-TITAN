@@ -6,12 +6,12 @@ from stable_baselines3.common.env_checker import check_env
 from stable_baselines3.common.env_util import is_wrapped
 
 from tests import TEST_CONFIG_PATH_OLD
-from yawning_titan.config.game_modes import (
-    low_skill_red_with_random_infection_perfect_detection_path,
-)
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.envs.generic.wrappers.graph_embedding_observations import (
     FeatherGraphEmbedObservation,
+)
+from yawning_titan.game_modes.game_modes import (
+    low_skill_red_with_random_infection_perfect_detection_path,
 )
 
 
