@@ -18,12 +18,12 @@ from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.ppo import MlpPolicy as PPOMlp
 
 from yawning_titan.agents.sinewave_red import SineWaveRedAgent
-from yawning_titan.config.game_config.game_mode import GameMode
-from yawning_titan.config.game_modes import default_game_mode_path
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
+from yawning_titan.game_modes.game_mode import GameMode
+from yawning_titan.game_modes.game_modes import default_game_mode_path
 from yawning_titan.networks import network_creator
 from yawning_titan.networks.network import Network
 
