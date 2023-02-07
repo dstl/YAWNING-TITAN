@@ -13,7 +13,7 @@ from typing import Dict, List, Tuple, Union
 import networkx as nx
 import numpy as np
 
-from yawning_titan.config.game_config.game_mode import GameMode
+from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.node import Node
 

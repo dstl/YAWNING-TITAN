@@ -11,7 +11,7 @@ from tinydb.queries import QueryInstance
 
 from yawning_titan.db.doc_metadata import DocMetadataSchema
 from yawning_titan.db.query import YawningTitanQuery
-from yawning_titan.db.yawning_titan_db import YawningTitanDB
+from yawning_titan.db.yawning_titan_db import YawningTitanDB, YawningTitanDBSchema
 from yawning_titan.networks.network import Network
 
 __all__ = ["NetworkDB", "NetworkSchema", "default_18_node_network"]
@@ -19,7 +19,7 @@ __all__ = ["NetworkDB", "NetworkSchema", "default_18_node_network"]
 _LOGGER = getLogger(__name__)
 
 
-class NetworkSchema:
+class NetworkSchema(YawningTitanDBSchema):
     """
     A schema-like class that defines the network DB fields.
 
@@ -110,7 +110,7 @@ class NetworkDB:
         :return: The inserted :class:`~yawning_titan.networks.network.Network`.
         """
         network.doc_metadata.update(name, description, author)
-        self._db.insert(network.to_dict())
+        self._db.insert(network.to_json())
 
         return network
 
@@ -118,7 +118,7 @@ class NetworkDB:
         """
         Get all :class:`~yawning_titan.networks.network.Network` from the network DB.
 
-        :return: A :py:classs:`list` of :class:`~yawning_titan.networks.network.Network`.
+        :return: A :class:`list` of :class:`~yawning_titan.networks.network.Network`.
         """
         return [Network.create(doc) for doc in self._db.all()]
 
@@ -141,7 +141,7 @@ class NetworkDB:
         Searches the :class:`~yawning_titan.networks.network.Network` with a :class:`NetworkSchema` query.
 
         :param query: A :class:`~yawning_titan.db.query.YawningTitanQuery`.
-        :return: A :py:class:`list` of :class:`~yawning_titan.networks.network.Network`.
+        :return: A :class:`list` of :class:`~yawning_titan.networks.network.Network`.
         """
         network_configs = []
         for doc in self._db.search(query):
@@ -320,7 +320,7 @@ def default_18_node_network() -> Network:
     """
     The standard 18-node network found in the Ridley, A. (2017) research paper.
 
-    .. seealso:: https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9
+    .. see also:: https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9
 
     :return: An instance of :class:`~yawning_titan.networks.network.Network`.
     """

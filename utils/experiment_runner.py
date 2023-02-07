@@ -132,7 +132,6 @@ if __name__ == "__main__":
     )
 
     if args.algo_backend == "sb3":
-
         env = init_env(args.env, experiment_id)
 
         # Initialising Agents
@@ -163,7 +162,6 @@ if __name__ == "__main__":
                 agent.save(f"./logs/agents/{filename}")
 
     if args.algo_backend == "rllib":
-
         training_env = "four-node-def-v0"
         register_env(training_env, lambda config: FourNodeDef())
 

@@ -22,13 +22,13 @@ from yawning_titan.agents.fixed_red import FixedRedAgent
 from yawning_titan.agents.nsa_red import NSARed
 from yawning_titan.agents.simple_blue import SimpleBlue
 from yawning_titan.agents.sinewave_red import SineWaveRedAgent
-from yawning_titan.config.game_config.game_mode import GameMode
-from yawning_titan.config.game_modes import default_game_mode_path
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.exceptions import YawningTitanRunError
+from yawning_titan.game_modes.game_mode import GameMode
+from yawning_titan.game_modes.game_mode_db import default_game_mode
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import default_18_node_network
 
@@ -96,7 +96,7 @@ class YawningTitanRun:
         # TODO: Add proper Sphinx mapping for classes/methods.
 
         :param network: An instance of ``Network``.
-        :param game_mode: An instance of ``GameModeConfig``.
+        :param game_mode: An instance of ``GameMode``.
         :param red_agent_class: The agent/action set class used for the red agent.
         :param blue_agent_class: The agent/action set class used for the blue agent.
         :param print_metrics: Print the metrics if True. Default value = True.
@@ -142,10 +142,7 @@ class YawningTitanRun:
         if game_mode:
             self.game_mode: GameMode = game_mode
         else:
-            # TODO: Replace with the updated retrieval method from TinyDB once implemented.
-            self.game_mode = GameMode.create_from_yaml(
-                default_game_mode_path(), legacy=True
-            )
+            self.game_mode = default_game_mode()
 
         self._red_agent_class = red_agent_class
         self._blue_agent_class = blue_agent_class
@@ -179,7 +176,7 @@ class YawningTitanRun:
         return {
             "uuid": self.uuid,
             "network": self.network.to_dict(json_serializable=True),
-            "game_mode": self.game_mode.to_dict(),
+            "game_mode": self.game_mode.to_dict(json_serializable=True),
             "red_agent_class": self._red_agent_class.__name__,
             "blue_agent_class": self._blue_agent_class.__name__,
             "print_metrics": self.print_metrics,
@@ -557,8 +554,6 @@ class YawningTitanRun:
         # Verify the contents
         verified = cls._verify_import_export_zip_file(unzip_path)
         if not verified:
-            # TODO: Update the error type raised to a custom type.
-            # TODO: Log a critical log message.
             msg = f"Failed to verify the contents while importing YawningTitanRun from {exported_zip_file_path}."
             try:
                 raise YawningTitanRunError(msg)

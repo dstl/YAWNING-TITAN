@@ -189,10 +189,12 @@ setup(
     },
     package_data={
         "yawning_titan": [
-            "config/_package_data/logging_config.yaml",
-            "config/_package_data/game_modes/default_game_mode.yaml",
-            "config/_package_data/game_modes/dcbo_config.yaml",
-            "config/_package_data/game_modes/low_skill_red_with_random_infection_perfect_detection.yaml",
+            "game_modes/_package_data/dcbo_config.yaml",
+            "game_modes/_package_data/default_game_mode.yaml",
+            "game_modes/_package_data/default_new_game_mode.yaml",
+            "game_modes/_package_data/game_modes.json",
+            "game_modes/_package_data/low_skill_red_with_random_infection_perfect_detection.yaml",
+            "game_modes/_package_data/multiple_high_value_targets.yaml",
             "notebooks/_package_data/sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb",
             "notebooks/_package_data/sb3/Using an Evaluation Callback to monitor progress during training.ipynb",
             "notebooks/_package_data/Creating and playing as a Keyboard Agent.ipynb",
