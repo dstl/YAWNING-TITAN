@@ -13,7 +13,7 @@ from yawning_titan.config.toolbox.item_types.float_item import (
     FloatProperties,
 )
 from yawning_titan.config.toolbox.item_types.int_item import IntItem, IntProperties
-from yawning_titan.db.doc_metadata import DocMetadata
+from yawning_titan.db.doc_metadata import DocMetadata, DocMetaDataObject
 from yawning_titan.exceptions import ConfigGroupValidationError
 
 _LOGGER = getLogger(__name__)
@@ -95,7 +95,6 @@ class RandomEntryNodeGroup(RandomNodePlacementGroup):
         place_close_to_edge: Optional[bool] = False,
         place_close_to_center: Optional[bool] = False,
     ):
-
         self.place_close_to_edge = BoolItem(
             value=place_close_to_edge,
             doc="Choose nodes closer to the edge of the network.",
@@ -181,7 +180,7 @@ class NodeGroup(ConfigGroup):
         return self.validation
 
 
-class Network(ConfigGroup):
+class Network(ConfigGroup, DocMetaDataObject):
     """A set of optional restrictions that collectively constrain the types of network a game mode can be used upon."""
 
     def __init__(
@@ -245,40 +244,27 @@ class Network(ConfigGroup):
 
         super().__init__(doc)
 
-    @property
-    def doc_metadata(self) -> DocMetadata:
-        """The configs document metadata."""
-        return self._doc_metadata
-
-    @doc_metadata.setter
-    def doc_metadata(self, doc_metadata: DocMetadata):
-        if self._doc_metadata is None:
-            self._doc_metadata = doc_metadata
-        else:
-            msg = "Cannot set doc_metadata as it has already been set."
-            _LOGGER.error(msg)
-
     def to_dict(
         self,
         json_serializable: bool = False,
         include_none: bool = True,
         values_only: bool = False,
-    ) -> Dict:
+    ) -> dict:
         """
-        Serialize the :class:`~yawning_titan.networks.network.Network` as a :py:class:`dict`.
+        Serialize the :class:`~yawning_titan.networks.network.Network` as a :class:`dict`.
 
         :param json_serializable: If ``True``, the :attr:`~yawning_titan.networks.network.Network`
             "d numpy array is converted to a list."
         :param include_none: Determines whether to include empty fields in the dict. Has a default
             value of ``True``.
-        :return: The :class:`~yawning_titan.networks.network.Network` as a :py:class:`dict`.
+        :return: The :class:`~yawning_titan.networks.network.Network` as a :class:`dict`.
         """
         if json_serializable:
             values_only = True
 
         config_dict = super().to_dict(
-            values_only=values_only
-        )  # include_none=include_none,
+            values_only=values_only, include_none=include_none
+        )
 
         config_dict["matrix"] = self.matrix
         config_dict["positions"] = self.positions
@@ -290,8 +276,10 @@ class Network(ConfigGroup):
 
         if json_serializable:
             config_dict["matrix"] = config_dict["matrix"].tolist()
-        if self.doc_metadata is not None:
-            config_dict["_doc_metadata"] = self.doc_metadata.to_dict()
+            if self.doc_metadata is not None:
+                config_dict["_doc_metadata"] = self.doc_metadata.to_dict(
+                    include_none=True
+                )
 
         return config_dict
 
