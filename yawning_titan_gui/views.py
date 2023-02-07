@@ -484,7 +484,7 @@ def update_config(request: HttpRequest) -> JsonResponse:
     Update the :attribute: `edited_forms` dictionary with the current state of the config and check for errors.
 
     Check the current contents of the :class:`ConfigForm <yawning_titan_gui.forms.ConfigForm>` are valid
-    using the criteria defined in the appropriate section of the :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>`
+    using the criteria defined in the appropriate section of the :class:`GameModeConfig <yawning_titan.game_modes.game_mode _config.GameModeConfig>`
 
     :param request:  here the django_request object will be specifically loaded with
         `section_name`,`game_mode_filename`parameters.

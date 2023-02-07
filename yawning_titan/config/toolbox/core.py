@@ -6,11 +6,11 @@ from typing import Any, Dict, Hashable, List, Optional, Union
 
 import yaml
 
-from yawning_titan.config.game_config import _LOGGER
 from yawning_titan.exceptions import (
     ConfigGroupValidationError,
     ConfigItemValidationError,
 )
+from yawning_titan.game_modes.components import _LOGGER
 
 yaml.Dumper.ignore_aliases = lambda *args: True
 
@@ -394,6 +394,7 @@ class ConfigItem:
         self,
         as_key_val_pair: Optional[bool] = False,
         values_only: Optional[bool] = False,
+        include_none: Optional[bool] = True,
     ) -> dict:
         """
         Return the ConfigItem as a dict.
@@ -402,6 +403,8 @@ class ConfigItem:
             a key/value pair, the key being the class name.
         :return: The ConfigItem as a dict.
         """
+        if not include_none and self.value is None:
+            return None
         if values_only:
             return self.value
         d = {"value": self.value}
@@ -481,7 +484,12 @@ class ConfigGroup(ConfigBase, ABC):
         for k, element in self.get_config_elements().items():
             self.validation.add_element_validation(k, element.validate())
 
-    def to_dict(self, values_only: Optional[bool] = False, legacy: bool = False):
+    def to_dict(
+        self,
+        values_only: Optional[bool] = False,
+        legacy: Optional[bool] = False,
+        include_none: Optional[bool] = True,
+    ):
         """
         Return the ConfigGroup as a dict.
 
@@ -496,11 +504,12 @@ class ConfigGroup(ConfigBase, ABC):
 
         attr_dict = {"doc": self.doc} if self.doc is not None else {}
         # attr_dict = self.get_non_config_elements()
-        element_dict = {
-            k: e.to_dict(values_only=values_only)
-            for k, e in self.get_config_elements().items()
-            if not k.startswith("_")
-        }
+
+        element_dict = {}
+        for k, e in self.get_config_elements().items():
+            d = e.to_dict(values_only=values_only, include_none=include_none)
+            if not k.startswith("_") and (include_none or d is not None):
+                element_dict[k] = d
 
         if values_only:
             return element_dict
@@ -540,28 +549,40 @@ class ConfigGroup(ConfigBase, ABC):
     def set_from_dict(
         self,
         config_dict: dict,
-        root: bool = True,
         legacy: bool = False,
-        legacy_lookup: dict = None,
+        infer_legacy: bool = False,
+        **kwargs,
     ):
         """
         Set the values of all :class: `ConfigGroup` or :class:`ConfigItem` elements.
 
         :param config_dict: A dictionary representing values of all config elements.
-        :param root: Whether the element is a base level element or not.
-            if the element is a root then it should validate all of its descendants.
         :param legacy: Whether to use the alias names for config elements to construct the config from a legacy dictionary.
-        :param legacy_lookup: The current flattened dictionary representation of the class by its legacy keys.
+        :param infer_legacy: Attempt to recognise if a config is of a legacy type.
+
+        kwargs can contain 2 parameters:
+            - root: Whether the element is a base level element or not.
+                if the element is a root then it should validate all of its descendants.
+            - legacy_lookup: The current flattened dictionary representation of the class by its legacy keys.
         """
+        _root = kwargs.get("root", True)
+        _legacy_lookup = kwargs.get("legacy_lookup")
+
+        if infer_legacy:
+            legacy = (
+                True
+                if all(k in config_dict for k in ["RED", "BLUE", "OBSERVATION_SPACE"])
+                else False
+            )
         if legacy:
-            if legacy_lookup is None:
-                legacy_lookup = self.to_legacy_dict()
+            if _legacy_lookup is None:
+                _legacy_lookup = self.to_legacy_dict()
 
             for element_name, v in config_dict.items():
-                element: ConfigItem = legacy_lookup.get(element_name)
+                element: ConfigItem = _legacy_lookup.get(element_name)
                 if isinstance(v, dict):
                     self.set_from_dict(
-                        v, legacy=True, root=False, legacy_lookup=legacy_lookup
+                        v, legacy=True, root=False, _legacy_lookup=_legacy_lookup
                     )
                 if element is not None:
                     element.set_value(v)
@@ -574,7 +595,7 @@ class ConfigGroup(ConfigBase, ABC):
                     element.set_value(v)
                 else:
                     setattr(self, element_name, v)
-        if root:
+        if _root:
             self.validate()
 
     def set_from_yaml(
@@ -594,10 +615,4 @@ class ConfigGroup(ConfigBase, ABC):
             msg = f"Configuration file does not exist: {file_path}"
             _LOGGER.critical(msg, exc_info=True)
             raise e
-        if infer_legacy:
-            legacy = (
-                True
-                if all(k in config_dict for k in ["RED", "BLUE", "OBSERVATION_SPACE"])
-                else False
-            )
-        self.set_from_dict(config_dict, legacy=legacy)
+        self.set_from_dict(config_dict, legacy=legacy, infer_legacy=infer_legacy)
