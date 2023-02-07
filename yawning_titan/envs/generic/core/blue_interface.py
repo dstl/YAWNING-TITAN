@@ -2,6 +2,7 @@ from typing import Tuple
 
 from yawning_titan.envs.generic.core.blue_action_set import BlueActionSet
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
+from yawning_titan.networks.node import Node
 
 
 class BlueInterface(BlueActionSet):
@@ -41,7 +42,7 @@ class BlueInterface(BlueActionSet):
         # deceptive actions -> since the number of edges is not equal to the number of nodes this has to be done
         # separately
         if self.network_interface.game_mode.blue.action_set.deceptive_nodes.use.value:
-            self.deceptive_actions = self.network_interface.get_number_base_edges()
+            self.deceptive_actions = self.network_interface.base_graph.number_of_edges()
 
         # global actions (don't apply to a single node)
         self.global_action_dict = {}
@@ -57,7 +58,7 @@ class BlueInterface(BlueActionSet):
         self.number_of_actions = action_number
         self.number_global_action = global_action_number
 
-    def perform_action(self, action: int) -> Tuple[str, str]:
+    def perform_action(self, action: int) -> Tuple[str, Node]:
         """
         Perform an action within the environment.
 
@@ -114,11 +115,21 @@ class BlueInterface(BlueActionSet):
             else:
                 # standard actions
                 action = action - self.number_global_action
-                action_node = int(action / self.number_of_actions)
-                if action_node >= self.network_interface.get_number_of_nodes():
+                action_node_number = int(action / self.number_of_actions)
+
+                if (
+                    action_node_number
+                    >= self.network_interface.current_graph.number_of_nodes()
+                ):
                     blue_action, blue_node = self.do_nothing()
                 else:
-                    action_node = self.network_interface.get_nodes()[action_node]
+                    node_name_dict = self.network_interface.current_graph.get_nodes(
+                        key_by_name=True
+                    )
+
+                    action_node = sorted(list(node_name_dict.values()))[
+                        action_node_number
+                    ]
                     action_taken = int(action % self.number_of_actions)
 
                     blue_action, blue_node = self.action_dict[action_taken](action_node)

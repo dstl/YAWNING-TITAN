@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from yawning_titan import APP_IMAGES_DIR, IMAGES_DIR
+from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 
 class ActionLoop:
@@ -28,7 +29,7 @@ class ActionLoop:
             filename: The save name for the action lop
             episode_count: The number of episodes to go through
         """
-        self.env = env
+        self.env: GenericNetworkEnv = env
         self.agent = agent
         self.filename = filename
         self.episode_count = episode_count

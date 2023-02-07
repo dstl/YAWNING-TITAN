@@ -190,11 +190,20 @@ def test_punish_bad_actions(generate_generic_env_test_reqs):
     reward = reward_functions.punish_bad_actions(reward_args)
 
     assert round(reward, 4) == -1
+
     reward_args["blue_action"] = "add_deceptive_node"
     s = [env.network_interface.current_deceptive_nodes, 0, 0]
-    env.network_interface.add_deceptive_node("1", "2")
+
+    node_1 = env.network_interface.current_graph.get_node_from_name("1")
+    node_2 = env.network_interface.current_graph.get_node_from_name("2")
+    node_3 = env.network_interface.current_graph.get_node_from_name("3")
+    node_4 = env.network_interface.current_graph.get_node_from_name("4")
+
+    env.network_interface.add_deceptive_node(
+        node_1, node_2
+    )  # this wont work as need to be Node instance
     s[1] = env.network_interface.current_deceptive_nodes
-    env.network_interface.add_deceptive_node("3", "4")
+    env.network_interface.add_deceptive_node(node_3, node_4)
     s[2] = env.network_interface.current_deceptive_nodes
 
     reward = reward_functions.punish_bad_actions(reward_args)

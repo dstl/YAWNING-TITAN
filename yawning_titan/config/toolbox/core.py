@@ -285,7 +285,7 @@ class ConfigGroupValidation(ConfigValidationBase):
         if self.passed:
             d = {}
         else:
-            d = {"group": self.fail_reasons}
+            d = {"group": self.fail_reasons if self.fail_reasons else "None"}
         for e, validation in self.element_validation.items():
             if isinstance(validation, ConfigGroupValidation) and (
                 not validation.group_passed or not validation.passed

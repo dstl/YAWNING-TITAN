@@ -143,7 +143,10 @@ class YawningTitanRun:
             self.game_mode: GameMode = game_mode
         else:
             # TODO: Replace with the updated retrieval method from TinyDB once implemented.
-            self.game_mode = GameMode.create_from_yaml(default_game_mode_path())
+            self.game_mode = GameMode.create_from_yaml(
+                default_game_mode_path(), legacy=True
+            )
+
         self._red_agent_class = red_agent_class
         self._blue_agent_class = blue_agent_class
 
@@ -176,7 +179,7 @@ class YawningTitanRun:
         return {
             "uuid": self.uuid,
             "network": self.network.to_dict(json_serializable=True),
-            "game_mode": self.game_mode.to_dict(key_upper=True),
+            "game_mode": self.game_mode.to_dict(),
             "red_agent_class": self._red_agent_class.__name__,
             "blue_agent_class": self._blue_agent_class.__name__,
             "print_metrics": self.print_metrics,
@@ -224,7 +227,7 @@ class YawningTitanRun:
 
         :raise AttributeError: When new=False and ppo_zip_path hasn't been provided.
         """
-        if new and not ppo_zip_path:
+        if not new and not ppo_zip_path:
             msg = "Performing setup when new=False requires ppo_zip_path as the path of a saved ppo.zip file."
             try:
                 raise AttributeError(msg)

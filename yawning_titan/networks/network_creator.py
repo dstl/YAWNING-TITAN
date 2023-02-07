@@ -1,12 +1,17 @@
 import math
 import random
+import warnings
 from itertools import combinations, groupby
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import networkx as nx
 import numpy as np
 
-from yawning_titan.networks.network import Network
+from yawning_titan.networks.network import (
+    Network,
+    RandomEntryNodePreference,
+    RandomHighValueNodePreference,
+)
 from yawning_titan.networks.node import Node
 
 
@@ -54,10 +59,126 @@ def generate_node_positions(adj_matrix: np.array) -> dict:
     return positions
 
 
-def get_network_from_matrix_and_positions(
-    adj_matrix: np.ndarray, positions: Dict[str, List[int]]
+def create_network(
+    config_dict: Dict[str, Any],
+    adj_matrix: Optional[np.ndarray] = None,
+    positions: Optional[Dict[str, List[int]]] = None,
+    vulnerabilities: Optional[Dict[str, float]] = None,
+    high_value_node_names: Optional[List[str]] = None,
+    entry_node_names: Optional[List[str]] = None,
+    legacy: Optional[bool] = False,
+    infer_legacy: Optional[bool] = True,
+) -> Network:
+    """Create an instance of :class: `~yawning_titan.networks.network.Network` from a dictionary.
+
+    If the dictionary is in legacy format then perform preprocessing, otherwise utilise the :method:
+    `~yawning_titan.networks.network.Network.create` method.
+    """
+    set_random_vulnerabilities = False
+    if infer_legacy:
+        legacy = True if "GAME_RULES" in config_dict else False
+
+    if legacy:
+        entry_node_placement_preference = RandomEntryNodePreference.NONE
+        if config_dict["GAME_RULES"]["prefer_central_nodes_for_entry_nodes"]:
+            entry_node_placement_preference = RandomEntryNodePreference.CENTRAL
+        elif config_dict["GAME_RULES"]["prefer_edge_nodes_for_entry_nodes"]:
+            entry_node_placement_preference = RandomEntryNodePreference.EDGE
+
+        high_value_node_placement_preference = RandomHighValueNodePreference.NONE
+        if config_dict["GAME_RULES"][
+            "choose_high_value_nodes_furthest_away_from_entry"
+        ]:
+            high_value_node_placement_preference = (
+                RandomHighValueNodePreference.FURTHEST_AWAY_FROM_ENTRY
+            )
+
+        if vulnerabilities is None:
+            set_random_vulnerabilities = True
+
+        network = Network(
+            set_random_vulnerabilities=set_random_vulnerabilities,
+            set_random_entry_nodes=config_dict["GAME_RULES"][
+                "choose_entry_nodes_randomly"
+            ],
+            random_entry_node_preference=entry_node_placement_preference,
+            num_of_random_entry_nodes=config_dict["GAME_RULES"][
+                "number_of_entry_nodes"
+            ],
+            set_random_high_value_nodes=config_dict["GAME_RULES"][
+                "choose_high_value_nodes_placement_at_random"
+            ],
+            random_high_value_node_preference=high_value_node_placement_preference,
+            num_of_random_high_value_nodes=config_dict["GAME_RULES"][
+                "number_of_high_value_nodes"
+            ],
+            node_vulnerability_lower_bound=config_dict["GAME_RULES"][
+                "node_vulnerability_lower_bound"
+            ],
+            node_vulnerability_upper_bound=config_dict["GAME_RULES"][
+                "node_vulnerability_upper_bound"
+            ],
+        )
+        add_network_elements_from_matrix_and_positions(network, adj_matrix, positions)
+
+        # Entry nodes must be set before high value nodes
+        if entry_node_names is None:
+            network.reset_random_entry_nodes()
+        else:
+            if any(
+                config_dict["GAME_RULES"][x]
+                for x in [
+                    "choose_entry_nodes_randomly",
+                    "prefer_edge_nodes_for_entry_nodes",
+                    "prefer_central_nodes_for_entry_nodes",
+                ]
+            ):
+                warnings.warn(
+                    UserWarning(
+                        "High value node names have been specified therefore settings for random high value nodes will be ignored."
+                    )
+                )
+            for node_name in entry_node_names:
+                node = network.get_node_from_name(node_name)
+                node.entry_node = True
+                network._check_intersect(node)
+
+        if high_value_node_names is None:
+            network.reset_random_high_value_nodes()
+        else:
+            if any(
+                config_dict["GAME_RULES"][x]
+                for x in [
+                    "choose_high_value_nodes_placement_at_random",
+                    "choose_high_value_nodes_furthest_away_from_entry",
+                ]
+            ):
+                warnings.warn(
+                    UserWarning(
+                        "High value node names have been specified therefore settings for random high value nodes will be ignored."
+                    )
+                )
+            for node_name in high_value_node_names:
+                node = network.get_node_from_name(node_name)
+                node.high_value_node = True
+                network._check_intersect(node)
+
+        if network.set_random_vulnerabilities:
+            network.reset_random_vulnerabilities()
+        else:
+            for node in network.nodes:
+                node.vulnerability = vulnerabilities[node.name]
+
+    else:
+        network = Network.create(network_dict=config_dict)
+
+    return network
+
+
+def add_network_elements_from_matrix_and_positions(
+    network: Network, adj_matrix: np.ndarray, positions: Dict[str, List[int]]
 ):
-    network = Network()
+    """Add nodes and edges to a network from a numpy matrix and a dictionary of positions."""
     edges = []
     # Create all Nodes
     nodes: Dict[Any, Node] = {i: Node(name=str(i)) for i in range(len(adj_matrix))}
@@ -78,10 +199,8 @@ def get_network_from_matrix_and_positions(
                 if edge not in edges:
                     network.add_edge(nodes[edge[0]], nodes[edge[1]])
 
-    return network
 
-
-def create_18_node_network() -> Network:
+def get_18_node_network_mesh() -> Network:
     """
     Create the standard 18 node network found in the Ridley 2017 research paper.
 
@@ -131,7 +250,7 @@ def create_18_node_network() -> Network:
         "16": [4, 1],
         "17": [5, 1],
     }
-    return get_network_from_matrix_and_positions(adj_matrix, positions)
+    return adj_matrix, positions
 
 
 def dcbo_base_network() -> Tuple[np.array, dict]:

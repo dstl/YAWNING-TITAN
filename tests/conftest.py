@@ -1,8 +1,7 @@
 import os
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
-import numpy as np
 import pytest
 import yaml
 from stable_baselines3 import PPO
@@ -20,7 +19,6 @@ from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.networks import network_creator
-from yawning_titan.networks.network import Network
 
 
 @pytest.fixture
@@ -58,61 +56,8 @@ def temp_config_from_base(tmpdir_factory) -> str:
     return _temp_config_from_base
 
 
-@pytest.fixture
-def init_test_env():
-    """Return a `GenericNetworkEnv`."""
-
-    def _init_test_env(
-        settings_path: str,
-        adj_matrix: np.array,
-        positions,
-        entry_nodes: List[str],
-        high_value_nodes: List[str],
-    ) -> GenericNetworkEnv:
-        """
-        Generate the test GenericEnv() and number of actions for the blue agent.
-
-        Args:
-            settings_path: A path to the environment settings file
-            adj_matrix: the adjacency matrix used for the network to defend.
-            positions: x and y co-ordinates to plot the graph in 2D space
-            entry_nodes: list of strings that dictate which nodes are entry nodes
-            high_value_nodes: list of strings that dictate which nodes are high value nodes
-
-        Returns:
-            env: An OpenAI gym environment
-        """
-        with open(settings_path) as f:
-            config_dict = yaml.safe_load(f)
-
-        network = Network(
-            matrix=adj_matrix,
-            positions=positions,
-            entry_nodes=entry_nodes,
-            high_value_nodes=high_value_nodes,
-        )
-        network.set_from_dict(config_dict["GAME_RULES"], legacy=True)
-
-        game_mode = GameMode()
-        game_mode.set_from_dict(config_dict, legacy=True)
-
-        network_interface = NetworkInterface(game_mode=game_mode, network=network)
-
-        red = RedInterface(network_interface)
-        blue = BlueInterface(network_interface)
-
-        env = GenericNetworkEnv(red, blue, network_interface)
-
-        check_env(env, warn=True)
-        env.reset()
-
-        return env
-
-    return _init_test_env
-
-
-@pytest.fixture
-def generate_generic_env_test_reqs(init_test_env):
+@pytest.fixture(scope="session")
+def generate_generic_env_test_reqs():
     """Return a `GenericNetworkEnv`."""
 
     def _generate_generic_env_test_reqs(
@@ -139,21 +84,43 @@ def generate_generic_env_test_reqs(init_test_env):
 
         """
         valid_net_creator_types = ["18node", "mesh"]
+        with open(settings_path) as f:
+            config_dict = yaml.safe_load(f)
+
+        game_mode = GameMode.create(dict=config_dict, legacy=True, raise_errors=True)
+
         if net_creator_type not in valid_net_creator_types:
             raise ValueError(
                 f"net_creator_type is {net_creator_type}, Must be 18_node or mesh"
             )
 
         if net_creator_type == "18node":
-            adj_matrix, node_positions = network_creator.create_18_node_network()
-        if net_creator_type == "mesh":
+            adj_matrix, node_positions = network_creator.get_18_node_network_mesh()
+
+        elif net_creator_type == "mesh":
             adj_matrix, node_positions = network_creator.create_mesh(
                 size=n_nodes, connectivity=connectivity
             )
-
-        env = init_test_env(
-            settings_path, adj_matrix, node_positions, entry_nodes, high_value_nodes
+        network = network_creator.create_network(
+            config_dict=config_dict,
+            adj_matrix=adj_matrix,
+            positions=node_positions,
+            entry_node_names=entry_nodes,
+            high_value_node_names=high_value_nodes,
+            legacy=True,
         )
+
+        # TODO: update the following temp setter for vulnerability range
+
+        network_interface = NetworkInterface(game_mode=game_mode, network=network)
+
+        red = RedInterface(network_interface)
+        blue = BlueInterface(network_interface)
+
+        env = GenericNetworkEnv(red, blue, network_interface)
+
+        check_env(env, warn=False)
+        env.reset()
 
         return env
 
@@ -189,7 +156,7 @@ def basic_2_agent_loop(
         )
 
         agent = PPO(
-            PPOMlp, env, verbose=1, seed=env.network_interface.random_seed.value
+            PPOMlp, env, verbose=1, seed=env.network_interface.random_seed
         )  # TODO: allow PPO to inherit environment random_seed. Monkey patch additional feature?
 
         agent.learn(total_timesteps=1000, n_eval_episodes=100, callback=eval_callback)
