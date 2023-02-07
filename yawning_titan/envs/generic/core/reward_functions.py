@@ -81,13 +81,18 @@ def standard_rewards(args: dict) -> float:
         "restore_node": 1,
         "make_node_safe": 0.5,
         "scan": 0,
-        "isolate": 10,
+        "isolate": 1,
         "connect": 0,
         "do_nothing": -0.5,
         "add_deceptive_node": 8,
     }
 
-    reward = -action_cost[blue_action]
+    # prevent isolate reward from being duplicated
+    reward = -action_cost[blue_action] if blue_action != "isolate" else 0
+
+    # punish agent for every node it has isolated
+    reward += -action_cost["isolate"] * sum(end_isolation.values())
+
     # calculating number of red nodes before and after the blue agents turn
     initial_cumulative_states = sum(start_state.values())
     final_cumulative_states = sum(end_state.values())
