@@ -1,3 +1,5 @@
+import ast
+from io import StringIO
 import json
 
 import numpy as np
@@ -131,13 +133,13 @@ class NetworksView(View):
                 "name": "entry_nodes",
                 "min": min(
                     [
-                        len(network.entry_nodes) if network.entry_nodes else None
+                        len(network.entry_nodes) if network.entry_nodes else 0
                         for network in networks
                     ]
                 ),
                 "max": max(
                     [
-                        len(network.entry_nodes) if network.entry_nodes else None
+                        len(network.entry_nodes) if network.entry_nodes else 0
                         for network in networks
                     ]
                 ),
@@ -148,7 +150,7 @@ class NetworksView(View):
                     [
                         len(network.high_value_nodes)
                         if network.high_value_nodes
-                        else None
+                        else 0
                         for network in networks
                     ]
                 ),
@@ -156,7 +158,7 @@ class NetworksView(View):
                     [
                         len(network.high_value_nodes)
                         if network.high_value_nodes
-                        else None
+                        else 0
                         for network in networks
                     ]
                 ),
@@ -229,8 +231,12 @@ class NodeEditor(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        network = Network.create(request.body.decode('utf-8'))
-        network_db.update(network)
+        body = request.body.decode('utf-8')
+        io = StringIO(body)
+        dict_n = json.load(io)
+        #network = Network.create(dict_n)
+        print("N",dict_n)
+        #network_db.update(network)
         return render(
             request,
             "node_editor.html",
