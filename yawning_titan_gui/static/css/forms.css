@@ -1,3 +1,7 @@
+#section-controls{
+    justify-content: space-between;
+}
+
 .form-label{
     color: var(--text-superlight);
 }
@@ -24,9 +28,17 @@
 }
 
 /* config form elements */
+.error-list{
+    color: red
+}
+.form-control{
+    padding: 0;
+    text-align: center;
+}
 .form-container{
     display: flex;
     flex-direction: column;
+    align-items: center;
     flex: 1;
     min-height: 0;
     max-height: 100%;
