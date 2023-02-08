@@ -191,6 +191,7 @@ def generate_generic_env_test_reqs(create_test_network):
         connectivity: float = 0.7,
         entry_nodes=None,
         high_value_nodes=None,
+        raise_errors: bool = True,
     ) -> GenericNetworkEnv:
         """
         Generate test environment requirements.
@@ -211,7 +212,9 @@ def generate_generic_env_test_reqs(create_test_network):
         with open(settings_path) as f:
             config_dict = yaml.safe_load(f)
 
-        game_mode = GameMode.create(dict=config_dict, legacy=True, raise_errors=True)
+        game_mode = GameMode.create(
+            dict=config_dict, legacy=True, raise_errors=raise_errors
+        )
 
         if net_creator_type not in valid_net_creator_types:
             raise ValueError(
@@ -257,6 +260,7 @@ def basic_2_agent_loop(
         high_value_nodes=None,
         num_episodes=1,
         custom_settings=None,
+        raise_errors=True,
     ) -> ActionLoop:
         """Use parameterized settings to return a configured ActionLoop."""
         if custom_settings is not None:
@@ -267,6 +271,7 @@ def basic_2_agent_loop(
             net_creator_type="18node",
             entry_nodes=entry_nodes,
             high_value_nodes=high_value_nodes,
+            raise_errors=raise_errors,
         )
 
         eval_callback = EvalCallback(

@@ -80,9 +80,8 @@ class GameMode(ConfigGroup, DocMetaDataObject):
 
         :return: An instance of :class: `GameMode`.
         """
-        game_mode = GameMode.create_from_yaml(
-            yaml, legacy=legacy, infer_legacy=infer_legacy
-        )
+        game_mode = GameMode()
+        game_mode.set_from_yaml(yaml, legacy=legacy, infer_legacy=infer_legacy)
         return game_mode
 
     @classmethod
@@ -102,7 +101,8 @@ class GameMode(ConfigGroup, DocMetaDataObject):
 
         :return: An instance of :class: `GameMode`.
         """
-        game_mode = GameMode.create(dict, legacy=legacy, infer_legacy=infer_legacy)
+        game_mode = GameMode()
+        game_mode.set_from_dict(dict, legacy=legacy, infer_legacy=infer_legacy)
         if raise_errors and not game_mode.validation.passed:
             raise ValueError(game_mode.validation.log())
         return game_mode
