@@ -98,7 +98,7 @@ class DeceptiveNodeGroup(ConfigGroup):
             doc="The max number of deceptive nodes that blue can place.",
             alias="max_number_deceptive_nodes",
             properties=IntProperties(
-                allow_null=True, default=1, min_val=1, inclusive_min=True
+                allow_null=True, default=1, min_val=0, inclusive_min=True
             ),
         )
         self.new_node_on_relocate: BoolItem = BoolItem(
