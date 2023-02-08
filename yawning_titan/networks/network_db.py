@@ -267,7 +267,6 @@ class NetworkDB:
         # Iterate over all default networks, and force an update in the
         # main NetworkDB by uuid.
         for network in default_db.all():
-            print("NETWORK", network)
             uuid = network["_doc_metadata"]["uuid"]
             name = network["_doc_metadata"]["name"]
 
@@ -284,7 +283,6 @@ class NetworkDB:
             else:
                 reset = True
             if reset:
-                print("RESETTING")
                 self._db.db.upsert(network, DocMetadataSchema.UUID == uuid)
                 _LOGGER.info(
                     f"Reset default network '{name}' in the "
