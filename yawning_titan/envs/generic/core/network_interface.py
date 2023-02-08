@@ -339,7 +339,6 @@ class NetworkInterface:
             axis=None,
             dtype=np.float32,
         )
-
         return obs
 
     def get_observation_size_base(self, with_feather: bool) -> int:

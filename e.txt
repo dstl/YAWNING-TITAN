@@ -1,0 +1,50 @@
+============================= test session starts =============================
+platform win32 -- Python 3.9.13, pytest-7.2.0, pluggy-1.0.0
+rootdir: D:\Pycharm projects\YAWNING-TITAN, configfile: pytest.ini, testpaths: tests
+plugins: django-4.5.2, typeguard-2.13.3, anyio-3.6.2
+collected 47 items / 46 deselected / 1 selected
+run-last-failure: rerun previous 1 failure (skipped 35 files)
+
+tests\test_reward_functions.py ADJ [[0. 1. 1. 1. 1.]
+ [1. 0. 1. 1. 1.]
+ [1. 1. 0. 1. 1.]
+ [1. 1. 1. 0. 1.]
+ [1. 1. 1. 1. 0.]]
+CALLLED WITH NODE 1 4
+ADDING NODE 1 4
+GJG 1
+CALLLED WITH NODE 0 3
+ADDING NODE 0 3
+GJG 2
+CALLLED WITH NODE 2 4
+ADDING NODE 2 4
+GJG 2
+CALLLED WITH NODE 1 2
+ADDING NODE 1 2
+GJG 2
+-- {'set_random_entry_nodes': True, 'random_entry_node_preference': 'NONE', 'num_of_random_entry_nodes': 3, 'set_random_high_value_nodes': False, 'random_high_value_node_preference': 'FURTHEST_AWAY_FROM_ENTRY', 'num_of_random_high_value_nodes': 1, 'set_random_vulnerabilities': True, 'node_vulnerability_lower_bound': 0.2, 'node_vulnerability_upper_bound': 0.8, 'nodes': {'828ddf46-c7eb-4a6f-9836-6fc564605db5': {'uuid': '828ddf46-c7eb-4a6f-9836-6fc564605db5', 'name': '0', 'high_value_node': False, 'entry_node': True, 'vulnerability': 0.35410612031444166, 'classes': 'entry_node', 'x_pos': 9, 'y_pos': 17}, '2894d3d8-001e-41c6-8c46-2cc277035d36': {'uuid': '2894d3d8-001e-41c6-8c46-2cc277035d36', 'name': '1', 'high_value_node': False, 'entry_node': True, 'vulnerability': 0.694795812790367, 'classes': 'entry_node', 'x_pos': 2, 'y_pos': 13}, '76ebb9bc-c00b-4f4d-8b34-845927989455': {'uuid': '76ebb9bc-c00b-4f4d-8b34-845927989455', 'name': '2', 'high_value_node': False, 'entry_node': True, 'vulnerability': 0.38609444602431586, 'classes': 'entry_node', 'x_pos': 19, 'y_pos': 15}, 'b59b3618-4055-4784-8c3b-ed483ea998d1': {'uuid': 'b59b3618-4055-4784-8c3b-ed483ea998d1', 'name': '3', 'high_value_node': True, 'entry_node': False, 'vulnerability': 0.23257359583748133, 'classes': 'high_value_node', 'x_pos': 5, 'y_pos': 1}, '4ac7fd86-fab1-4f53-8a22-be11aa89fd7c': {'uuid': '4ac7fd86-fab1-4f53-8a22-be11aa89fd7c', 'name': '4', 'high_value_node': False, 'entry_node': False, 'vulnerability': 0.2836040730484886, 'classes': 'standard_node', 'x_pos': 10, 'y_pos': 7}}, 'edges': {'828ddf46-c7eb-4a6f-9836-6fc564605db5': {'2894d3d8-001e-41c6-8c46-2cc277035d36': {}, '76ebb9bc-c00b-4f4d-8b34-845927989455': {}, 'b59b3618-4055-4784-8c3b-ed483ea998d1': {}, '4ac7fd86-fab1-4f53-8a22-be11aa89fd7c': {}}, '2894d3d8-001e-41c6-8c46-2cc277035d36': {'828ddf46-c7eb-4a6f-9836-6fc564605db5': {}, '76ebb9bc-c00b-4f4d-8b34-845927989455': {}, 'b59b3618-4055-4784-8c3b-ed483ea998d1': {}, '4ac7fd86-fab1-4f53-8a22-be11aa89fd7c': {}}, '76ebb9bc-c00b-4f4d-8b34-845927989455': {'828ddf46-c7eb-4a6f-9836-6fc564605db5': {}, '2894d3d8-001e-41c6-8c46-2cc277035d36': {}, 'b59b3618-4055-4784-8c3b-ed483ea998d1': {}, '4ac7fd86-fab1-4f53-8a22-be11aa89fd7c': {}}, 'b59b3618-4055-4784-8c3b-ed483ea998d1': {'828ddf46-c7eb-4a6f-9836-6fc564605db5': {}, '2894d3d8-001e-41c6-8c46-2cc277035d36': {}, '76ebb9bc-c00b-4f4d-8b34-845927989455': {}, '4ac7fd86-fab1-4f53-8a22-be11aa89fd7c': {}}, '4ac7fd86-fab1-4f53-8a22-be11aa89fd7c': {'828ddf46-c7eb-4a6f-9836-6fc564605db5': {}, '2894d3d8-001e-41c6-8c46-2cc277035d36': {}, '76ebb9bc-c00b-4f4d-8b34-845927989455': {}, 'b59b3618-4055-4784-8c3b-ed483ea998d1': {}}}, '_doc_metadata': {'uuid': '7336c728-a7f1-4b07-95f1-240be590abc8', 'created_at': '2023-02-08T17:31:14.383500', 'locked': False}}
+CALLLED WITH NODE 1 2
+ADDING NODE 1 2
+GJG 1
+CALLLED WITH NODE 3 4
+ADDING NODE 3 4
+GJG 2
+TTTT 2 True
+.
+
+============================== warnings summary ===============================
+.venv\lib\site-packages\gensim-4.2.0-py3.9-win-amd64.egg\gensim\matutils.py:22
+  d:\Pycharm projects\YAWNING-TITAN\.venv\lib\site-packages\gensim-4.2.0-py3.9-win-amd64.egg\gensim\matutils.py:22: DeprecationWarning: Please use `triu` from the `scipy.linalg` namespace, the `scipy.linalg.special_matrices` namespace is deprecated.
+    from scipy.linalg.special_matrices import triu
+
+tests/test_reward_functions.py::test_punish_bad_actions
+  D:\Pycharm projects\YAWNING-TITAN\tests\conftest.py:107: UserWarning: High value node names have been specified therefore settings for random high value nodes will be ignored.
+    warnings.warn(
+
+tests/test_reward_functions.py::test_punish_bad_actions
+  D:\Pycharm projects\YAWNING-TITAN\yawning_titan\networks\network.py:378: DeprecationWarning: Sampling from a set deprecated
+  since Python 3.9 and will be removed in a subsequent version.
+    high_value_nodes = sample(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================ 1 passed, 46 deselected, 3 warnings in 0.91s =================

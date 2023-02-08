@@ -144,6 +144,8 @@ class YawningTitanRun:
         else:
             self.game_mode = default_game_mode()
 
+        print(yaml.dump(self.game_mode.to_dict(values_only=True)))
+
         self._red_agent_class = red_agent_class
         self._blue_agent_class = blue_agent_class
 
