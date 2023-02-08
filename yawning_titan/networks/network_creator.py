@@ -1,7 +1,7 @@
 import math
 import random
 from itertools import combinations, groupby
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any, Dict, List, Tuple
 
 import networkx as nx
 import numpy as np
@@ -70,106 +70,12 @@ def get_network_from_matrix_and_positions(
             x, y = positions[str(y_i)]
             nodes[y_i].x_pos = x
             nodes[y_i].y_pos = y  # If the edge hasn't already been added, add it
-    for x_i, x_node in enumerate(y_node):
-        if x_node == 1:
-            edge = tuple(sorted([y_i, x_i]))
-            if edge not in edges:
-                network.add_edge(nodes[edge[0]], nodes[edge[1]])
+        for x_i, x_node in enumerate(y_node):
+            if x_node == 1:
+                edge = tuple(sorted([y_i, x_i]))
+                if edge not in edges:
+                    network.add_edge(nodes[edge[0]], nodes[edge[1]])
     return network
-
-
-# def default_18_node_network() -> Network:
-#     """
-#     Create the standard 18 node network found in the Ridley 2017 research paper.
-
-#     Returns:
-#         The adjacency matrix that represents the network
-#         A dictionary of positions of the nodes
-#     """
-#     adj_matrix = np.asarray(
-#         [
-#             [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#             [1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1],
-#             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-#             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-#         ]
-#     )
-#     positions = {
-#         "0": [1, 7],
-#         "1": [2, 7],
-#         "2": [3, 7],
-#         "3": [4, 7],
-#         "4": [5, 7],
-#         "5": [3, 6],
-#         "6": [1, 4],
-#         "7": [3, 4],
-#         "8": [4, 4],
-#         "9": [6, 5],
-#         "10": [6, 4],
-#         "11": [6, 3],
-#         "12": [3, 2],
-#         "13": [1, 1],
-#         "14": [2, 1],
-#         "15": [3, 1],
-#         "16": [4, 1],
-#         "17": [5, 1],
-#     }
-#     return get_network_from_matrix_and_positions(adj_matrix, positions)
-
-
-# def dcbo_base_network() -> Network:
-#     """
-#     Creates the same network used to generated DCBO data.
-
-#     :returns: The adjacency matrix that represents the network and a dictionary
-#         of positions of the nodes.
-
-#     .. node::
-#         This function replaces the network that was defined in
-#         `yawning_titan/integrations/dcbo/base_net.txt`.
-
-#     .. versionadded:: 1.0.1
-
-#     """
-#     adj_matrix = [
-#         [0, 1, 1, 0, 1, 0, 1, 1, 1, 1],
-#         [1, 0, 0, 1, 1, 0, 0, 0, 1, 1],
-#         [1, 0, 0, 1, 0, 1, 1, 0, 1, 1],
-#         [0, 1, 1, 0, 0, 0, 1, 1, 0, 1],
-#         [1, 1, 0, 0, 0, 1, 1, 0, 0, 1],
-#         [0, 0, 1, 0, 1, 0, 0, 0, 0, 0],
-#         [1, 0, 1, 1, 1, 0, 0, 0, 1, 0],
-#         [1, 0, 0, 1, 0, 0, 0, 0, 1, 1],
-#         [1, 1, 1, 0, 0, 0, 1, 1, 0, 1],
-#         [1, 1, 1, 1, 1, 0, 0, 1, 1, 0],
-#     ]
-#     positions = {
-#         "0": [3.0, 8.0],
-#         "1": [2.0, 9.0],
-#         "2": [9.0, 2.0],
-#         "3": [7.0, 4.0],
-#         "4": [0.0, 3.0],
-#         "5": [10.0, 6.0],
-#         "6": [6.0, 1.0],
-#         "7": [9.0, 4.0],
-#         "8": [7.0, 2.0],
-#         "9": [3.0, 6.0],
-#     }
-#     return get_network_from_matrix_and_positions(adj_matrix, positions)
 
 
 def get_mesh_matrix_and_positions(
@@ -195,7 +101,6 @@ def get_mesh_matrix_and_positions(
                 adj_matrix[j][i] = 1
 
     positions = generate_node_positions(adj_matrix)
-
     return adj_matrix, positions
 
 
@@ -327,7 +232,7 @@ def get_ring_matrix_and_positions(
     return adj_matrix, positions
 
 
-def custom_network() -> Union[Tuple[np.array, dict], Tuple[None, None]]:
+def custom_network() -> Network:
     """
     Create custom network through user interaction.
 
@@ -363,9 +268,7 @@ def custom_network() -> Union[Tuple[np.array, dict], Tuple[None, None]]:
     return get_network_from_matrix_and_positions(adj_matrix, positions)
 
 
-def gnp_random_connected_graph(
-    n_nodes: int, probability_of_edge: float
-) -> Union[Tuple[np.array, dict], None]:
+def gnp_random_connected_graph(n_nodes: int, probability_of_edge: float) -> Network:
     """
     Create a randomly connected graph but with the guarntee that each node will have at least one connection.
 

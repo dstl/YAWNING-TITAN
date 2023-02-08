@@ -7,9 +7,10 @@ from collections import Counter
 from enum import Enum
 from logging import getLogger
 from random import sample
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import networkx as nx
+import numpy
 from numpy.random import choice
 
 from yawning_titan.db.doc_metadata import DocMetadata
@@ -374,6 +375,12 @@ class Network(nx.Graph):
                 set(possible_high_value_nodes).difference(self.entry_nodes)
             )
         # randomly pick unique nodes from a list of possible high value nodes
+
+        if (
+            possible_high_value_nodes is None
+        ):  # If there are none possible then try again
+            self.reset_random_high_value_nodes()
+
         high_value_nodes = sample(
             set(possible_high_value_nodes),
             number_of_high_value_nodes,
@@ -424,6 +431,10 @@ class Network(nx.Graph):
             }
             d["_doc_metadata"] = d["_doc_metadata"].to_dict()
         return d
+
+    def to_adj_matrix_and_positions(self) -> Tuple[numpy.array, Dict[str, List[float]]]:
+        """Represent the network by its adjacency matrix and a dictionary of node names to positions."""
+        return nx.to_numpy_array(self), {n.name: n.node_position for n in self.nodes}
 
     @classmethod
     def create(cls, network_dict: dict) -> Network:
