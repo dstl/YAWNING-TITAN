@@ -8,8 +8,10 @@ from django.views import View
 
 from yawning_titan.db.doc_metadata import DocMetadata
 from yawning_titan.networks.network import Network
+from yawning_titan.networks.network_db import NetworkDB
 from yawning_titan_gui.forms import ConfigForm, GameModeFormManager, GameModeSection
 from yawning_titan_gui.helpers import GameModeManager, NetworkManager
+from django.views.decorators.csrf import csrf_exempt
 
 GameModeManager.load_game_modes(
     info_only=True
@@ -33,7 +35,7 @@ default_toolbar = {
 }
 
 protected_game_mode_filenames = ["base_config.yaml"]
-
+network_db = NetworkDB()
 
 class HomeView(View):
     """Django page template for landing page."""
@@ -200,8 +202,7 @@ class NodeEditor(View):
 
     implements 'get' and 'post' methods to handle page requests.
     """
-
-    def get(self, request, *args, **kwargs):
+    def get(self, request:HttpRequest, network_id:str, *args, **kwargs):
         """Handle page get requests.
 
         Args:
@@ -209,6 +210,7 @@ class NodeEditor(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
+       
         return render(
             request,
             "node_editor.html",
@@ -216,64 +218,19 @@ class NodeEditor(View):
                 "sidebar": default_sidebar,
                 "toolbar": default_toolbar,
                 "network_json": json.dumps(
-                    {
-                        "nodes": {
-                            "test1": {
-                                "uuid": "test1",
-                                "name": "test1",
-                                "high_value_node": False,
-                                "entry_node": False,
-                                "vulnerability": 0.6,
-                                "classes": "standard_node",
-                                "x_pos": 1,
-                                "y_pos": 7,
-                            },
-                            "test2": {
-                                "uuid": "test2",
-                                "name": "test2",
-                                "high_value_node": False,
-                                "entry_node": False,
-                                "vulnerability": 0.79,
-                                "classes": "standard_node",
-                                "x_pos": 3,
-                                "y_pos": 6,
-                            },
-                            "test3": {
-                                "uuid": "test3",
-                                "name": "test3",
-                                "high_value_node": False,
-                                "entry_node": False,
-                                "vulnerability": 0.3,
-                                "classes": "standard_node",
-                                "x_pos": 2,
-                                "y_pos": 7,
-                            },
-                        },
-                        "edges": {
-                            "test1": {"test2": {}, "test3": {}},
-                            "test2": {"test1": {}},
-                            "test3": {"test1": {}},
-                        },
-                        "_doc_metadata": {
-                            "uuid": "test-network",
-                            "created_at": "2022-12-08T14:56:42.891677",
-                            "name": "test-network",
-                            "description": "end to end test network",
-                            "author": "Czar",
-                            "locked": True,
-                        },
-                    }
+                    network_db.get(network_id).to_dict(json_serializable=True)
                 ),
             },
         )
-
-    def post(self, request, *args, **kwargs):
+    def post(self, request:HttpRequest, *args, **kwargs):
         """Handle page post requests.
 
         :param request: A Django `request` object that contains the data passed from
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
+        network = Network.create(request.body.decode('utf-8'))
+        network_db.update(network)
         return render(
             request,
             "node_editor.html",
@@ -486,7 +443,7 @@ def update_config(request: HttpRequest) -> JsonResponse:
 
     :return: response object containing error if config is invalid or redirect parameters if valid
     """
-    if request.method == "POST":
+    if request.method == "POST":        
         game_mode_filename = request.POST.get("_game_mode_filename")
         operation = request.POST.get("_operation")
         if operation == "save":

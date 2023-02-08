@@ -318,6 +318,7 @@ class GameModeFormManager:
         # cls.verify(game_mode_filename=game_mode_filename, section_name=section_name)
         section = cls.game_modes[game_mode_filename][section_name]
         section.forms[form_id] = section.form_classes[form_id](data=data)
+        print("GKG",section.forms[form_id])
         section.forms[form_id].update_and_check()
         section.config_class.validate()
         return section

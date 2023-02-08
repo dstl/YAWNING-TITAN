@@ -11,14 +11,15 @@
 <script src="{% static 'dist/runtime.js' %}" type="module"></script>
 <script src="{% static 'dist/polyfills.js' %}" type="module"></script>
 <script src="{% static 'dist/main.js' %}" type="module"></script>
+<script src="{% static 'js/network_editor.js' %}"></script>
 
 <script type="text/javascript">
+    const network = `{{network_json | safe}}`;
     const handler = {
         set(obj, prop, value) {
             // listen to NETWORK property changes
             if (prop === 'NETWORK') {
                 // trigger a window event to mark that the value was changed
-                console.log("TESTING",value);
                 document.dispatchEvent(new CustomEvent('networkUpdate', {detail: value}));
             }
 
@@ -36,8 +37,12 @@
     */
 
     // set the proxy.NETWORK with the django JSON string
+    function set_network(){
+        proxy.NETWORK = network;
+    }
     $(window).on("load",function(){
-        proxy.NETWORK = `{{network_json | safe}}`;
+        setTimeout(set_network,600) //TODO: remove this when cytoscape checks onload
+        
     });
 
 </script>
