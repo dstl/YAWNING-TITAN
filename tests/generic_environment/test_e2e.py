@@ -120,7 +120,7 @@ class RandomGen:
     ],
 )
 def test_generic_env_e2e(
-    generate_generic_run_test_reqs,
+    generate_generic_env_test_run,
     settings_path: str,
     creator_type: str,
     num_nodes: int,
@@ -144,7 +144,7 @@ def test_generic_env_e2e(
         "scan_used": False,
     }
 
-    env: GenericNetworkEnv = generate_generic_run_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         settings_path, creator_type, num_nodes, entry_nodes=["0", "1", "2"]
     )
 

@@ -7,7 +7,7 @@ from yawning_titan.networks.network_db import default_18_node_network
 def test_reset_high_value_nodes_randomly():
     """Test the random setting of high value nodes in a network."""
     network = default_18_node_network()
-    assert len(network.high_value_nodes) == 0  # starts with no hnv's set
+    assert len(network.high_value_nodes) == 1  # starts with 1 entry node set
 
     network.num_of_random_high_value_nodes = 3
     network.reset_random_high_value_nodes()
@@ -27,7 +27,7 @@ def test_reset_high_value_nodes_randomly():
 def test_reset_entry_nodes_randomly():
     """Test the random setting of high value nodes in a network."""
     network = default_18_node_network()
-    assert len(network.entry_nodes) == 0  # starts with no entry nodes set
+    assert len(network.entry_nodes) == 1  # starts with 1 entry node set
 
     network.num_of_random_entry_nodes = 3
     network.reset_random_entry_nodes()

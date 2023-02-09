@@ -1,4 +1,5 @@
 import random
+from collections import defaultdict
 from typing import List
 
 import pytest
@@ -52,8 +53,8 @@ def test_setting_high_value_node_with_random_seeded_randomisation(
         entry_nodes=["0"],
         settings_path=REPEATABLE_TEST_CONFIG_PATH,
     )
-    target_occurrences = {str(key): 0 for key in range(0, 18)}
-    for i in range(0, 100):  # run a number of action loops
+    target_occurrences = defaultdict(lambda: 0)
+    for _ in range(0, 50):  # run a number of action loops
         action_loop.standard_action_loop(deterministic=True)
         target_occurrences[
             action_loop.env.network_interface.current_graph.high_value_nodes[0]

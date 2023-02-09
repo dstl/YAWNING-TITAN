@@ -15,10 +15,10 @@ from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
     " arguments to randrange() have been deprecated since Python 3.10 and "
     "will be removed in a subsequent version'"
 )
-def test_high_value_node_and_entry_nodes_matching(generate_generic_run_test_reqs):
+def test_high_value_node_and_entry_nodes_matching(generate_generic_env_test_run):
     """Test the high value node gaol mechanic - manually passed to ."""
     with warnings.catch_warnings(record=True) as w:
-        env: GenericNetworkEnv = generate_generic_run_test_reqs(
+        env: GenericNetworkEnv = generate_generic_env_test_run(
             os.path.join(TEST_CONFIG_PATH_OLD, "high_value_node_provided.yaml"),
             net_creator_type="mesh",
             n_nodes=30,

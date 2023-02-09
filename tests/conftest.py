@@ -174,10 +174,10 @@ def temp_config_from_base(tmpdir_factory) -> str:
 
 
 @pytest.fixture(scope="session")
-def generate_generic_run_test_reqs(create_test_network):
+def generate_generic_env_test_run(create_test_network):
     """Return a `GenericNetworkEnv`."""
 
-    def _generate_generic_run_test_reqs(
+    def _generate_generic_env_test_run(
         settings_path: Optional[str] = default_game_mode_path(),
         net_creator_type="mesh",
         n_nodes: int = 10,
@@ -186,6 +186,7 @@ def generate_generic_run_test_reqs(create_test_network):
         high_value_nodes=None,
         env_only: bool = True,
         raise_errors: bool = True,
+        deterministic: bool = False,
     ) -> GenericNetworkEnv:
         """
         Generate test environment requirements.
@@ -223,6 +224,10 @@ def generate_generic_run_test_reqs(create_test_network):
 
         if net_creator_type == "18node":
             network = default_18_node_network()
+            if entry_nodes:
+                network.set_entry_nodes(entry_nodes)
+            if high_value_nodes:
+                network.set_high_value_nodes(high_value_nodes)
 
         elif net_creator_type == "mesh":
             network = create_test_network(
@@ -240,6 +245,7 @@ def generate_generic_run_test_reqs(create_test_network):
             auto=False,
             total_timesteps=1000,
             eval_freq=1000,
+            deterministic=deterministic,
         )
         yt_run.setup()
 
@@ -250,7 +256,7 @@ def generate_generic_run_test_reqs(create_test_network):
         yt_run.evaluate()
         return yt_run
 
-    return _generate_generic_run_test_reqs
+    return _generate_generic_env_test_run
 
 
 @pytest.fixture
@@ -266,6 +272,7 @@ def basic_2_agent_loop(
         num_episodes=1,
         custom_settings=None,
         raise_errors=True,
+        deterministic=False,
     ) -> ActionLoop:
         """Use parameterized settings to return a configured ActionLoop."""
         if custom_settings is not None:
@@ -278,6 +285,7 @@ def basic_2_agent_loop(
             high_value_nodes=high_value_nodes,
             raise_errors=raise_errors,
             env_only=False,
+            deterministic=deterministic,
         )
 
         return ActionLoop(yt_run.env, yt_run.agent, episode_count=num_episodes)

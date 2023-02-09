@@ -9,9 +9,9 @@ from tests.generic_environment import N_TIME_STEPS_LONG, TOLERANCE
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 
-def test_new_entry_nodes(generate_generic_run_test_reqs):
+def test_new_entry_nodes(generate_generic_env_test_run):
     """Test the selection of entry nodes and validate they are correct."""
-    env: GenericNetworkEnv = generate_generic_run_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "new_entry_nodes.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
