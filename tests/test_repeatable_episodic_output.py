@@ -18,8 +18,8 @@ custom_random_setting_1 = {"MISCELLANEOUS": {"random_seed": random.randint(1, 10
     [
         (2, ["0"], ["12"], custom_random_setting_1),
         (2, ["0"], ["12"], None),
-        (random.randint(50, 300), ["0"], ["12"], None),
-        (random.randint(50, 300), ["0"], None, None),
+        (random.randint(10, 50), ["0"], ["12"], None),
+        (random.randint(10, 50), ["0"], None, None),
         (1, None, None, None),
     ],
 )
@@ -56,7 +56,7 @@ def test_setting_high_value_node_with_random_seeded_randomisation(
     for i in range(0, 100):  # run a number of action loops
         action_loop.standard_action_loop(deterministic=True)
         target_occurrences[
-            action_loop.env.network_interface.get_high_value_nodes()[0]
+            action_loop.env.network_interface.current_graph.high_value_nodes[0]
         ] += 1
 
     high_value_nodes = list(n for n in target_occurrences.values() if n > 0)

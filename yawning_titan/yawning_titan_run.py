@@ -136,6 +136,7 @@ class YawningTitanRun:
             self.network: Network = network
         else:
             self.network = default_18_node_network()
+            self.network.reset_random_vulnerabilities()
 
         # Set the game_mode using the game_mode arg if one was passed,
         # otherwise use the game mode

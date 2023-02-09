@@ -1,94 +1,153 @@
-import warnings
-
-import numpy as np
 import pytest
 
-from yawning_titan.exceptions import ConfigGroupValidationError
-from yawning_titan.networks import network_creator
-from yawning_titan.networks.network import (
-    Network,
-    NodeGroup,
-    NodeVulnerabilityGroup,
-    RandomEntryNodeGroup,
-    RandomNodePlacementGroup,
-)
+from yawning_titan.networks.network import Network
+from yawning_titan.networks.network_db import default_18_node_network
 
 
-@pytest.fixture
-def node_group():
-    """A test group of nodes."""
-    node_placement = RandomEntryNodeGroup(
-        use=True, count=2, place_close_to_center=False, place_close_to_edge=True
+def test_reset_high_value_nodes_randomly():
+    """Test the random setting of high value nodes in a network."""
+    network = default_18_node_network()
+    assert len(network.high_value_nodes) == 0  # starts with no hnv's set
+
+    network.num_of_random_high_value_nodes = 3
+    network.reset_random_high_value_nodes()
+    assert len(network.high_value_nodes) == 3
+
+    # resetting hvn's overwrites the set of hvn's
+    network.num_of_random_high_value_nodes = 1
+    network.reset_random_high_value_nodes()
+    assert len(network.high_value_nodes) == 1
+
+    # setting too many hvn's overwrites the set number of hvn's to 15% num nodes
+    network.num_of_random_high_value_nodes = 18
+    network.reset_random_high_value_nodes()
+    assert len(network.high_value_nodes) == 3
+
+
+def test_reset_entry_nodes_randomly():
+    """Test the random setting of high value nodes in a network."""
+    network = default_18_node_network()
+    assert len(network.entry_nodes) == 0  # starts with no entry nodes set
+
+    network.num_of_random_entry_nodes = 3
+    network.reset_random_entry_nodes()
+    assert len(network.entry_nodes) == 3
+
+    # resetting entry nodes overwrites the set of entry nodes
+    network.num_of_random_entry_nodes = 1
+    network.reset_random_entry_nodes()
+    assert len(network.entry_nodes) == 1
+
+    # setting too many entry nodes has no effect
+    network.num_of_random_entry_nodes = 18
+    network.reset_random_entry_nodes()
+    assert len(network.entry_nodes) == 18
+
+
+def test_create_network_from_legacy_manual_vulnerability_setting(create_test_network):
+    """Test manually setting vulnerability."""
+    vulnerabilities = {"0": 0.5, "1": 0.5, "2": 0.5}
+
+    network_legacy_config = {
+        "GAME_RULES": {
+            "choose_entry_nodes_randomly": True,
+            "choose_high_value_nodes_placement_at_random": True,
+            "number_of_entry_nodes": 1,
+            "number_of_high_value_nodes": 1,
+            "node_vulnerability_lower_bound": 0.1,
+            "node_vulnerability_upper_bound": 1,
+            "prefer_central_nodes_for_entry_nodes": False,
+            "prefer_edge_nodes_for_entry_nodes": False,
+            "choose_high_value_nodes_furthest_away_from_entry": False,
+        }
+    }
+
+    # Ensure that warning is raised when Entry nodes and HVN's intersect
+    network: Network = create_test_network(
+        legacy_config_dict=network_legacy_config,
+        n_nodes=3,
+        connectivity=0.7,
+        vulnerabilities=vulnerabilities,
     )
-    node_group = NodeGroup(random_placement=node_placement)
-    return node_group
+    assert all(n.vulnerability == 0.5 for n in network.nodes)
 
 
-def test_config_properties():
-    """Tests creation of `Network`."""
-    matrix, node_positions = network_creator.create_18_node_network()
-    network = Network(
-        matrix=matrix,
-        positions=node_positions,
-        entry_nodes=["0"],
-        high_value_nodes=["1"],
+def test_create_network_from_legacy_random_vulnerability(create_test_network):
+    """Test manually setting vulnerability."""
+    network_legacy_config = {
+        "GAME_RULES": {
+            "choose_entry_nodes_randomly": True,
+            "choose_high_value_nodes_placement_at_random": True,
+            "number_of_entry_nodes": 1,
+            "number_of_high_value_nodes": 1,
+            "node_vulnerability_lower_bound": 0.1,
+            "node_vulnerability_upper_bound": 1,
+            "prefer_central_nodes_for_entry_nodes": False,
+            "prefer_edge_nodes_for_entry_nodes": False,
+            "choose_high_value_nodes_furthest_away_from_entry": False,
+        }
+    }
+
+    # Ensure that warning is raised when Entry nodes and HVN's intersect
+    network = create_test_network(
+        legacy_config_dict=network_legacy_config, n_nodes=3, connectivity=0.7
     )
-
-    assert np.array_equal(network.matrix, matrix) is True
-    assert network.positions == node_positions
-    assert network.entry_nodes.nodes[0] == "0"
-    assert network.high_value_nodes.nodes[0] == "1"
+    assert all(n.vulnerability > 0 and n.vulnerability_score > 0 for n in network.nodes)
 
 
-def test_entry_node_placement_valid_input():
-    """Tests validation of :class: `~yawning_titan.networks.new_network.RandomNodePlacementGroup`."""
-    node_placement = RandomNodePlacementGroup(use=True, count=2)
-    assert node_placement.validation.passed
-    assert node_placement.validation.group_passed
+def test_create_network_vulnerability_out_of_range(create_test_network):
+    """Test that the lower bound of node vulnerability cannot be less than or equal to 0."""
+    network_legacy_config = {
+        "GAME_RULES": {
+            "choose_entry_nodes_randomly": True,
+            "choose_high_value_nodes_placement_at_random": True,
+            "number_of_entry_nodes": 1,
+            "number_of_high_value_nodes": 1,
+            "node_vulnerability_lower_bound": 0,
+            "node_vulnerability_upper_bound": 1,
+            "prefer_central_nodes_for_entry_nodes": False,
+            "prefer_edge_nodes_for_entry_nodes": False,
+            "choose_high_value_nodes_furthest_away_from_entry": False,
+        }
+    }
 
-
-def test_node_group_erroneous_entry_node_placement(node_group: NodeGroup):
-    """Tests validation of :class: `~yawning_titan.networks.new_network.NodeGroup`."""
-    node_group.random_placement.place_close_to_center.value = True
-    node_group.random_placement.place_close_to_edge.value = True
-
-    node_group.validate()
-
-    assert not node_group.validation.passed
-    assert node_group.validation.elements_passed
-    assert (
-        "2 methods of choosing node placement have been selected but only 1 can be used"
-        in node_group.validation.fail_reasons
-    )
-    with pytest.raises(ConfigGroupValidationError):
-        raise node_group.validation.fail_exceptions[0]
-
-
-def test_node_vulnerability_group_float_value():
-    """Tests validation of :class: `~yawning_titan.networks.new_network.NodeVulnerabilityGroup`."""
-    node_vulnerability = NodeVulnerabilityGroup(restrict=True, min=1.2, max=2.4)
-    assert node_vulnerability.validation.passed
-    assert node_vulnerability.validation.group_passed
-
-
-@pytest.mark.skip(
-    reason="Assertion fails due to the emergence of a new warning: 'non-integer"
-    " arguments to randrange() have been deprecated since Python 3.10 and "
-    "will be removed in a subsequent version'"
-)
-def test_hvn_entry_node_matching():
-    """Tests when high value node is also an entry node."""
-    with warnings.catch_warnings(record=True) as w:
-        matrix, node_positions = network_creator.create_18_node_network()
-        Network(
-            matrix=matrix,
-            positions=node_positions,
-            entry_nodes=["0"],
-            high_value_nodes=["0"],
+    with pytest.raises(ValueError):
+        # Ensure that error is raised when out of range
+        create_test_network(
+            legacy_config_dict=network_legacy_config, n_nodes=3, connectivity=0.7
         )
 
-        # check that a warning was raised that the entry nodes and high value nodes intersect
-        assert (
-            str(w[0].message.args[0])
-            == "Provided entry nodes and high value nodes intersect and may cause the training to prematurely end."
+
+def test_create_network_from_legacy_manual_special_node_setting(create_test_network):
+    """Test that creating a network from a legacy configuration can have its special nodes set manually."""
+    network_legacy_config = {
+        "GAME_RULES": {
+            "choose_entry_nodes_randomly": False,
+            "choose_high_value_nodes_placement_at_random": False,
+            "number_of_entry_nodes": 1,
+            "number_of_high_value_nodes": 1,
+            "node_vulnerability_lower_bound": 0.1,
+            "node_vulnerability_upper_bound": 1,
+            "prefer_central_nodes_for_entry_nodes": False,
+            "prefer_edge_nodes_for_entry_nodes": False,
+            "choose_high_value_nodes_furthest_away_from_entry": False,
+        }
+    }
+
+    # Ensure that warning is raised when Entry nodes and HVN's intersect
+    with pytest.warns(
+        UserWarning,
+        match="Entry nodes and high value nodes intersect at node "
+        "'2', and may cause the training to end "
+        "prematurely.",
+    ):
+        network: Network = create_test_network(
+            legacy_config_dict=network_legacy_config,
+            n_nodes=25,
+            connectivity=0.7,
+            high_value_node_names=["0", "1", "2"],
+            entry_node_names=["2", "5", "6"],
         )
+
+    assert set([n.name for n in network.high_value_nodes]) == set(["0", "1", "2"])
+    assert set([n.name for n in network.entry_nodes]) == set(["2", "5", "6"])

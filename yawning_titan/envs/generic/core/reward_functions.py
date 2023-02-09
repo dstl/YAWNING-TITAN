@@ -111,13 +111,17 @@ def standard_rewards(args: dict) -> float:
     if initial_cumulative_states > final_cumulative_states:
         reward += REMOVE_RED_POINTS[
             round(
-                100 * final_cumulative_states / network_interface.get_number_of_nodes()
+                100
+                * final_cumulative_states
+                / network_interface.current_graph.number_of_nodes()
             )
         ]
 
     # punish agent for doing nothing if there are large numbers or red controlled nodes in the environment
     if blue_action != "make_node_safe" and blue_action != "restore_node":
-        amount = final_cumulative_states / network_interface.get_number_of_nodes()
+        amount = (
+            final_cumulative_states / network_interface.current_graph.number_of_nodes()
+        )
         if amount > 0.3:
             reward = reward - amount + 0.3
 
@@ -220,7 +224,7 @@ def experimental_rewards(args: dict) -> float:
                 round(
                     100
                     * final_cumulative_states
-                    / network_interface.get_number_of_nodes()
+                    / network_interface.current_graph.number_of_nodes()
                 )
             ]
         elif initial_cumulative_states > final_cumulative_states:
@@ -372,6 +376,11 @@ def punish_bad_actions(args: dict) -> float:
 
     # punish for relocating deceptive nodes (after it has already been placed)
     if blue_action == "add_deceptive_node":
+        print(
+            "TTTT",
+            network_interface.current_deceptive_nodes,
+            network_interface.reached_max_deceptive_nodes,
+        )
         if network_interface.reached_max_deceptive_nodes:
             reward = reward - 5
 

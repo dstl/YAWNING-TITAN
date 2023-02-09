@@ -1,4 +1,5 @@
 """Test the main :class:`` class."""
+import copy
 import os
 from unittest.mock import patch
 
@@ -25,8 +26,8 @@ def test_delete_default_network_delete_fails():
     """Test attempted deletion of locked network fails."""
     with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
         db = NetworkDB()
+        db.rebuild_db()
         config = db.search(DocMetadataSchema.LOCKED == True)[0]
-
         with pytest.raises(YawningTitanDBError):
             db.remove(config)
 
@@ -35,26 +36,28 @@ def test_delete_default_network_delete_fails():
 
 @pytest.mark.integration_test
 def test_reset_default_networks():
-    """Test attempted deletion of locked network fails."""
+    """Test resetting network to default removes modifications."""
     with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
         db = NetworkDB()
-
+        db.rebuild_db()
         configs = db.all()
+        configs_copy = copy.deepcopy(configs)
 
         config = configs[0]
 
         # Update the object locally
-        config.entry_nodes.nodes = ["1"]
+        config.set_random_entry_nodes = False
 
         # Hack an update to the locked network in the db
         db._db.db.update(
             config.to_dict(json_serializable=True),
             DocMetadataSchema.UUID == config.doc_metadata.uuid,
         )
+
         # Perform the default network reset
         db.reset_default_networks_in_db()
 
-        expected = [config.to_dict(json_serializable=True) for config in configs]
+        expected = [config.to_dict(json_serializable=True) for config in configs_copy]
         actual = [config.to_dict(json_serializable=True) for config in db.all()]
 
         assert expected == actual

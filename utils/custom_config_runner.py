@@ -27,8 +27,7 @@ from yawning_titan.game_modes.game_modes import default_game_mode_path
 from yawning_titan.networks import network_creator
 from yawning_titan.networks.network import Network
 
-game_mode = GameMode()
-game_mode.set_from_yaml(default_game_mode_path())
+game_mode = GameMode.create_from_yaml(default_game_mode_path())
 
 matrix, positions = network_creator.gnp_random_connected_graph(
     n_nodes=15, probability_of_edge=0.02

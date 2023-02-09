@@ -1,0 +1,1750 @@
+============================= test session starts =============================
+platform win32 -- Python 3.9.13, pytest-7.2.0, pluggy-1.0.0
+rootdir: D:\Pycharm projects\YAWNING-TITAN, configfile: pytest.ini, testpaths: tests
+plugins: django-4.5.2, typeguard-2.13.3, anyio-3.6.2
+collected 229 items / 228 deselected / 1 selected
+
+tests\test_yawning_titan_run.py GAME MODE blue:
+  action_set:
+    deceptive_nodes:
+      max_number: 2
+      new_node_on_relocate: true
+      use: false
+    do_nothing: false
+    isolate_node: false
+    make_node_safe:
+      gives_random_vulnerability: false
+      increases_vulnerability: false
+      use: true
+      vulnerability_change: 0.4
+    reconnect_node: false
+    reduce_vulnerability: true
+    restore_node: false
+    scan: false
+  attack_discovery:
+    failed_attacks:
+      chance:
+        deceptive_node: 1
+        standard_node: 1
+      use: true
+    succeeded_attacks_known_compromise:
+      chance:
+        deceptive_node: 1
+        standard_node: 1
+      use: true
+    succeeded_attacks_unknown_compromise:
+      chance:
+        deceptive_node: 1
+        standard_node: 1
+      use: true
+  intrusion_discovery_chance:
+    immediate:
+      deceptive_node: 1
+      standard_node: 0.5
+    on_scan:
+      deceptive_node: 1
+      standard_node: 1
+blue_can_observe:
+  attacked_nodes: true
+  attacking_nodes: true
+  average_vulnerability: true
+  compromised_status: true
+  graph_connectivity: true
+  node_connections: true
+  red_agent_skill: true
+  special_nodes: true
+  vulnerabilities: true
+game_rules:
+  blue_loss_condition:
+    all_nodes_lost: false
+    high_value_node_lost: true
+    n_percent_nodes_lost:
+      use: false
+      value: 0.8
+    target_node_lost: false
+  grace_period_length: 0
+  max_steps: 1000
+  network_compatibility:
+    entry_node_count:
+      max: 5
+      min: 0
+      restrict: true
+    high_value_node_count:
+      max: 5
+      min: 0
+      restrict: true
+    node_count:
+      max: 18
+      min: 1
+      restrict: true
+miscellaneous:
+  output_timestep_data_to_json: false
+  random_seed: null
+on_reset:
+  choose_new_entry_nodes: false
+  choose_new_high_value_nodes: true
+  randomise_vulnerabilities: false
+red:
+  action_set:
+    basic_attack:
+      likelihood: 2
+      use: true
+    do_nothing:
+      likelihood: 1
+      use: true
+    move:
+      likelihood: 1
+      use: false
+    random_infect:
+      chance: 0.1
+      likelihood: 1
+      use: false
+    spread:
+      chance: 0.1
+      likelihood: 1
+      use: false
+    zero_day:
+      days_required: 4
+      start_amount: 1
+      use: true
+  agent_attack:
+    always_succeeds: false
+    attack_from:
+      any_red_node: true
+      only_main_red_node: false
+    ignores_defences: false
+    skill:
+      use: true
+      value: 0.5
+  natural_spreading:
+    capable: false
+    chance:
+      to_connected_node: 0.05
+      to_unconnected_node: 0
+  target_mechanism:
+    prioritise_connected_nodes: false
+    prioritise_resilient_nodes: false
+    prioritise_unconnected_nodes: false
+    prioritise_vulnerable_nodes: false
+    random: true
+    target_specific_node:
+      always_choose_shortest_distance: true
+      target: null
+      use: false
+rewards:
+  end_rewards_are_multiplied_by_end_state: true
+  for_loss: -100
+  for_reaching_max_steps: 100
+  function: standard_rewards
+  reduce_negative_rewards_for_closer_fails: true
+
+NETWORK _doc_metadata: !!python/object:yawning_titan.db.doc_metadata.DocMetadata
+  _author: dstl/YAWNING-TITAN
+  _created_at: '2022-12-08T14:56:42.891677'
+  _description: The standard 18-node network found in the Ridley, A. (2017) research
+    paper (https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9).
+  _locked: true
+  _name: Default 18-node network.
+  _updated_at: null
+  _uuid: b3cd9dfd-b178-415d-93f0-c9e279b3c511
+edges:
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 00c9f604-83c4-4da9-a71d-9d8376d95253
+    _vulnerability: 0.5645806235345864
+    _x_pos: 1
+    _y_pos: 7
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '0'
+    true_compromised_status: 0
+    vulnerability_score: 0.5645806235345864
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: a467a90a-b26b-4a89-a6c5-950e29d196c8
+      _vulnerability: 0.4821093284573317
+      _x_pos: 3
+      _y_pos: 6
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '5'
+      true_compromised_status: 0
+      vulnerability_score: 0.4821093284573317
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 0803dca1-0443-4bb5-b53d-9e47c6777481
+    _vulnerability: 0.862010640834518
+    _x_pos: 4
+    _y_pos: 4
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '8'
+    true_compromised_status: 0
+    vulnerability_score: 0.862010640834518
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: 421d4c55-3d5d-4b35-90dc-1dd6bdcc2f81
+      _vulnerability: 0.5044230207663721
+      _x_pos: 6
+      _y_pos: 3
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '11'
+      true_compromised_status: 0
+      vulnerability_score: 0.5044230207663721
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: high_value_node
+      _entry_node: false
+      _high_value_node: true
+      _uuid: 4e9c6a59-5871-4af5-8a65-7fe3d9083209
+      _vulnerability: 0.52502714407406
+      _x_pos: 6
+      _y_pos: 5
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '9'
+      true_compromised_status: 0
+      vulnerability_score: 0.52502714407406
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: d4b490d1-1699-49b2-95e2-ae69164253ab
+      _vulnerability: 0.19398077208545245
+      _x_pos: 6
+      _y_pos: 4
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '10'
+      true_compromised_status: 0
+      vulnerability_score: 0.19398077208545245
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: f4f54864-23dc-4bb6-8e3f-2a257fcac81a
+      _vulnerability: 0.6182689903496564
+      _x_pos: 3
+      _y_pos: 4
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '7'
+      true_compromised_status: 0
+      vulnerability_score: 0.6182689903496564
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 0994dfe6-03aa-4774-b993-b8eba84ca5dd
+    _vulnerability: 0.5129563388187646
+    _x_pos: 5
+    _y_pos: 1
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '17'
+    true_compromised_status: 0
+    vulnerability_score: 0.5129563388187646
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: entry_node
+      _entry_node: true
+      _high_value_node: false
+      _uuid: a9ddcf15-09ea-484d-aaa2-1040d6fb9abb
+      _vulnerability: 0.3911589753563136
+      _x_pos: 3
+      _y_pos: 2
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '12'
+      true_compromised_status: 0
+      vulnerability_score: 0.3911589753563136
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 0f6b5c11-ac0b-4e29-9385-d749a213bbf4
+    _vulnerability: 0.2953959686840018
+    _x_pos: 1
+    _y_pos: 1
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '13'
+    true_compromised_status: 0
+    vulnerability_score: 0.2953959686840018
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: entry_node
+      _entry_node: true
+      _high_value_node: false
+      _uuid: a9ddcf15-09ea-484d-aaa2-1040d6fb9abb
+      _vulnerability: 0.3911589753563136
+      _x_pos: 3
+      _y_pos: 2
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '12'
+      true_compromised_status: 0
+      vulnerability_score: 0.3911589753563136
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 240355b1-bb1d-4f8c-b59b-5ce72bf1fd6a
+    _vulnerability: 0.8399372656430163
+    _x_pos: 4
+    _y_pos: 7
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '3'
+    true_compromised_status: 0
+    vulnerability_score: 0.8399372656430163
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: a467a90a-b26b-4a89-a6c5-950e29d196c8
+      _vulnerability: 0.4821093284573317
+      _x_pos: 3
+      _y_pos: 6
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '5'
+      true_compromised_status: 0
+      vulnerability_score: 0.4821093284573317
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 421d4c55-3d5d-4b35-90dc-1dd6bdcc2f81
+    _vulnerability: 0.5044230207663721
+    _x_pos: 6
+    _y_pos: 3
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '11'
+    true_compromised_status: 0
+    vulnerability_score: 0.5044230207663721
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: 0803dca1-0443-4bb5-b53d-9e47c6777481
+      _vulnerability: 0.862010640834518
+      _x_pos: 4
+      _y_pos: 4
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '8'
+      true_compromised_status: 0
+      vulnerability_score: 0.862010640834518
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: high_value_node
+    _entry_node: false
+    _high_value_node: true
+    _uuid: 4e9c6a59-5871-4af5-8a65-7fe3d9083209
+    _vulnerability: 0.52502714407406
+    _x_pos: 6
+    _y_pos: 5
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '9'
+    true_compromised_status: 0
+    vulnerability_score: 0.52502714407406
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: 0803dca1-0443-4bb5-b53d-9e47c6777481
+      _vulnerability: 0.862010640834518
+      _x_pos: 4
+      _y_pos: 4
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '8'
+      true_compromised_status: 0
+      vulnerability_score: 0.862010640834518
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 684c42a5-19ce-4520-933c-09cdd1060084
+    _vulnerability: 0.1499496975585847
+    _x_pos: 5
+    _y_pos: 7
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '4'
+    true_compromised_status: 0
+    vulnerability_score: 0.1499496975585847
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: a467a90a-b26b-4a89-a6c5-950e29d196c8
+      _vulnerability: 0.4821093284573317
+      _x_pos: 3
+      _y_pos: 6
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '5'
+      true_compromised_status: 0
+      vulnerability_score: 0.4821093284573317
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 9f6c135b-f22d-4513-bb2c-d290eb60cc9e
+    _vulnerability: 0.16587301345124242
+    _x_pos: 2
+    _y_pos: 7
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '1'
+    true_compromised_status: 0
+    vulnerability_score: 0.16587301345124242
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: a467a90a-b26b-4a89-a6c5-950e29d196c8
+      _vulnerability: 0.4821093284573317
+      _x_pos: 3
+      _y_pos: 6
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '5'
+      true_compromised_status: 0
+      vulnerability_score: 0.4821093284573317
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: a467a90a-b26b-4a89-a6c5-950e29d196c8
+    _vulnerability: 0.4821093284573317
+    _x_pos: 3
+    _y_pos: 6
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '5'
+    true_compromised_status: 0
+    vulnerability_score: 0.4821093284573317
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: 00c9f604-83c4-4da9-a71d-9d8376d95253
+      _vulnerability: 0.5645806235345864
+      _x_pos: 1
+      _y_pos: 7
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '0'
+      true_compromised_status: 0
+      vulnerability_score: 0.5645806235345864
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: 240355b1-bb1d-4f8c-b59b-5ce72bf1fd6a
+      _vulnerability: 0.8399372656430163
+      _x_pos: 4
+      _y_pos: 7
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '3'
+      true_compromised_status: 0
+      vulnerability_score: 0.8399372656430163
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: 684c42a5-19ce-4520-933c-09cdd1060084
+      _vulnerability: 0.1499496975585847
+      _x_pos: 5
+      _y_pos: 7
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '4'
+      true_compromised_status: 0
+      vulnerability_score: 0.1499496975585847
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: 9f6c135b-f22d-4513-bb2c-d290eb60cc9e
+      _vulnerability: 0.16587301345124242
+      _x_pos: 2
+      _y_pos: 7
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '1'
+      true_compromised_status: 0
+      vulnerability_score: 0.16587301345124242
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: f4f54864-23dc-4bb6-8e3f-2a257fcac81a
+      _vulnerability: 0.6182689903496564
+      _x_pos: 3
+      _y_pos: 4
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '7'
+      true_compromised_status: 0
+      vulnerability_score: 0.6182689903496564
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: fbafbdbe-3922-43ec-b9da-f62b0ae1b2f9
+      _vulnerability: 0.21427394432059726
+      _x_pos: 3
+      _y_pos: 7
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '2'
+      true_compromised_status: 0
+      vulnerability_score: 0.21427394432059726
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: entry_node
+    _entry_node: true
+    _high_value_node: false
+    _uuid: a9ddcf15-09ea-484d-aaa2-1040d6fb9abb
+    _vulnerability: 0.3911589753563136
+    _x_pos: 3
+    _y_pos: 2
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '12'
+    true_compromised_status: 0
+    vulnerability_score: 0.3911589753563136
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: 0994dfe6-03aa-4774-b993-b8eba84ca5dd
+      _vulnerability: 0.5129563388187646
+      _x_pos: 5
+      _y_pos: 1
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '17'
+      true_compromised_status: 0
+      vulnerability_score: 0.5129563388187646
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: 0f6b5c11-ac0b-4e29-9385-d749a213bbf4
+      _vulnerability: 0.2953959686840018
+      _x_pos: 1
+      _y_pos: 1
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '13'
+      true_compromised_status: 0
+      vulnerability_score: 0.2953959686840018
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: caa1a3b2-2f59-4c8c-bd75-c5fa2ffb1fa8
+      _vulnerability: 0.5437990455467653
+      _x_pos: 4
+      _y_pos: 1
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '16'
+      true_compromised_status: 0
+      vulnerability_score: 0.5437990455467653
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: e4ce7d15-c081-46ab-945d-792ea16d5a60
+      _vulnerability: 0.3213066163542949
+      _x_pos: 3
+      _y_pos: 1
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '15'
+      true_compromised_status: 0
+      vulnerability_score: 0.3213066163542949
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: ee655347-9c43-4d77-baf7-d35b9457331d
+      _vulnerability: 0.9150144546098867
+      _x_pos: 2
+      _y_pos: 1
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '14'
+      true_compromised_status: 0
+      vulnerability_score: 0.9150144546098867
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: f4f54864-23dc-4bb6-8e3f-2a257fcac81a
+      _vulnerability: 0.6182689903496564
+      _x_pos: 3
+      _y_pos: 4
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '7'
+      true_compromised_status: 0
+      vulnerability_score: 0.6182689903496564
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: caa1a3b2-2f59-4c8c-bd75-c5fa2ffb1fa8
+    _vulnerability: 0.5437990455467653
+    _x_pos: 4
+    _y_pos: 1
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '16'
+    true_compromised_status: 0
+    vulnerability_score: 0.5437990455467653
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: entry_node
+      _entry_node: true
+      _high_value_node: false
+      _uuid: a9ddcf15-09ea-484d-aaa2-1040d6fb9abb
+      _vulnerability: 0.3911589753563136
+      _x_pos: 3
+      _y_pos: 2
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '12'
+      true_compromised_status: 0
+      vulnerability_score: 0.3911589753563136
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: d4b490d1-1699-49b2-95e2-ae69164253ab
+    _vulnerability: 0.19398077208545245
+    _x_pos: 6
+    _y_pos: 4
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '10'
+    true_compromised_status: 0
+    vulnerability_score: 0.19398077208545245
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: 0803dca1-0443-4bb5-b53d-9e47c6777481
+      _vulnerability: 0.862010640834518
+      _x_pos: 4
+      _y_pos: 4
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '8'
+      true_compromised_status: 0
+      vulnerability_score: 0.862010640834518
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: d9a97d82-5d35-4d87-a5e3-eb88d860ee76
+    _vulnerability: 0.28336620439550064
+    _x_pos: 1
+    _y_pos: 4
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '6'
+    true_compromised_status: 0
+    vulnerability_score: 0.28336620439550064
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: f4f54864-23dc-4bb6-8e3f-2a257fcac81a
+      _vulnerability: 0.6182689903496564
+      _x_pos: 3
+      _y_pos: 4
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '7'
+      true_compromised_status: 0
+      vulnerability_score: 0.6182689903496564
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: e4ce7d15-c081-46ab-945d-792ea16d5a60
+    _vulnerability: 0.3213066163542949
+    _x_pos: 3
+    _y_pos: 1
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '15'
+    true_compromised_status: 0
+    vulnerability_score: 0.3213066163542949
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: entry_node
+      _entry_node: true
+      _high_value_node: false
+      _uuid: a9ddcf15-09ea-484d-aaa2-1040d6fb9abb
+      _vulnerability: 0.3911589753563136
+      _x_pos: 3
+      _y_pos: 2
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '12'
+      true_compromised_status: 0
+      vulnerability_score: 0.3911589753563136
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: ee655347-9c43-4d77-baf7-d35b9457331d
+    _vulnerability: 0.9150144546098867
+    _x_pos: 2
+    _y_pos: 1
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '14'
+    true_compromised_status: 0
+    vulnerability_score: 0.9150144546098867
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: entry_node
+      _entry_node: true
+      _high_value_node: false
+      _uuid: a9ddcf15-09ea-484d-aaa2-1040d6fb9abb
+      _vulnerability: 0.3911589753563136
+      _x_pos: 3
+      _y_pos: 2
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '12'
+      true_compromised_status: 0
+      vulnerability_score: 0.3911589753563136
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: f4f54864-23dc-4bb6-8e3f-2a257fcac81a
+    _vulnerability: 0.6182689903496564
+    _x_pos: 3
+    _y_pos: 4
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '7'
+    true_compromised_status: 0
+    vulnerability_score: 0.6182689903496564
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: 0803dca1-0443-4bb5-b53d-9e47c6777481
+      _vulnerability: 0.862010640834518
+      _x_pos: 4
+      _y_pos: 4
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '8'
+      true_compromised_status: 0
+      vulnerability_score: 0.862010640834518
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: a467a90a-b26b-4a89-a6c5-950e29d196c8
+      _vulnerability: 0.4821093284573317
+      _x_pos: 3
+      _y_pos: 6
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '5'
+      true_compromised_status: 0
+      vulnerability_score: 0.4821093284573317
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: entry_node
+      _entry_node: true
+      _high_value_node: false
+      _uuid: a9ddcf15-09ea-484d-aaa2-1040d6fb9abb
+      _vulnerability: 0.3911589753563136
+      _x_pos: 3
+      _y_pos: 2
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '12'
+      true_compromised_status: 0
+      vulnerability_score: 0.3911589753563136
+    : {}
+    ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: d9a97d82-5d35-4d87-a5e3-eb88d860ee76
+      _vulnerability: 0.28336620439550064
+      _x_pos: 1
+      _y_pos: 4
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '6'
+      true_compromised_status: 0
+      vulnerability_score: 0.28336620439550064
+    : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: fbafbdbe-3922-43ec-b9da-f62b0ae1b2f9
+    _vulnerability: 0.21427394432059726
+    _x_pos: 3
+    _y_pos: 7
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '2'
+    true_compromised_status: 0
+    vulnerability_score: 0.21427394432059726
+  : ? !!python/object:yawning_titan.networks.node.Node
+      _classes: standard_node
+      _entry_node: false
+      _high_value_node: false
+      _uuid: a467a90a-b26b-4a89-a6c5-950e29d196c8
+      _vulnerability: 0.4821093284573317
+      _x_pos: 3
+      _y_pos: 6
+      blue_knows_intrusion: false
+      blue_view_compromised_status: 0
+      deceptive_node: false
+      isolated: false
+      name: '5'
+      true_compromised_status: 0
+      vulnerability_score: 0.4821093284573317
+    : {}
+node_vulnerability_lower_bound: 0.1
+node_vulnerability_upper_bound: 1
+nodes:
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 00c9f604-83c4-4da9-a71d-9d8376d95253
+    _vulnerability: 0.5645806235345864
+    _x_pos: 1
+    _y_pos: 7
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '0'
+    true_compromised_status: 0
+    vulnerability_score: 0.5645806235345864
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 0803dca1-0443-4bb5-b53d-9e47c6777481
+    _vulnerability: 0.862010640834518
+    _x_pos: 4
+    _y_pos: 4
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '8'
+    true_compromised_status: 0
+    vulnerability_score: 0.862010640834518
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 0994dfe6-03aa-4774-b993-b8eba84ca5dd
+    _vulnerability: 0.5129563388187646
+    _x_pos: 5
+    _y_pos: 1
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '17'
+    true_compromised_status: 0
+    vulnerability_score: 0.5129563388187646
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 0f6b5c11-ac0b-4e29-9385-d749a213bbf4
+    _vulnerability: 0.2953959686840018
+    _x_pos: 1
+    _y_pos: 1
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '13'
+    true_compromised_status: 0
+    vulnerability_score: 0.2953959686840018
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 240355b1-bb1d-4f8c-b59b-5ce72bf1fd6a
+    _vulnerability: 0.8399372656430163
+    _x_pos: 4
+    _y_pos: 7
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '3'
+    true_compromised_status: 0
+    vulnerability_score: 0.8399372656430163
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 421d4c55-3d5d-4b35-90dc-1dd6bdcc2f81
+    _vulnerability: 0.5044230207663721
+    _x_pos: 6
+    _y_pos: 3
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '11'
+    true_compromised_status: 0
+    vulnerability_score: 0.5044230207663721
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: high_value_node
+    _entry_node: false
+    _high_value_node: true
+    _uuid: 4e9c6a59-5871-4af5-8a65-7fe3d9083209
+    _vulnerability: 0.52502714407406
+    _x_pos: 6
+    _y_pos: 5
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '9'
+    true_compromised_status: 0
+    vulnerability_score: 0.52502714407406
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 684c42a5-19ce-4520-933c-09cdd1060084
+    _vulnerability: 0.1499496975585847
+    _x_pos: 5
+    _y_pos: 7
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '4'
+    true_compromised_status: 0
+    vulnerability_score: 0.1499496975585847
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: 9f6c135b-f22d-4513-bb2c-d290eb60cc9e
+    _vulnerability: 0.16587301345124242
+    _x_pos: 2
+    _y_pos: 7
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '1'
+    true_compromised_status: 0
+    vulnerability_score: 0.16587301345124242
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: a467a90a-b26b-4a89-a6c5-950e29d196c8
+    _vulnerability: 0.4821093284573317
+    _x_pos: 3
+    _y_pos: 6
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '5'
+    true_compromised_status: 0
+    vulnerability_score: 0.4821093284573317
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: entry_node
+    _entry_node: true
+    _high_value_node: false
+    _uuid: a9ddcf15-09ea-484d-aaa2-1040d6fb9abb
+    _vulnerability: 0.3911589753563136
+    _x_pos: 3
+    _y_pos: 2
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '12'
+    true_compromised_status: 0
+    vulnerability_score: 0.3911589753563136
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: caa1a3b2-2f59-4c8c-bd75-c5fa2ffb1fa8
+    _vulnerability: 0.5437990455467653
+    _x_pos: 4
+    _y_pos: 1
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '16'
+    true_compromised_status: 0
+    vulnerability_score: 0.5437990455467653
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: d4b490d1-1699-49b2-95e2-ae69164253ab
+    _vulnerability: 0.19398077208545245
+    _x_pos: 6
+    _y_pos: 4
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '10'
+    true_compromised_status: 0
+    vulnerability_score: 0.19398077208545245
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: d9a97d82-5d35-4d87-a5e3-eb88d860ee76
+    _vulnerability: 0.28336620439550064
+    _x_pos: 1
+    _y_pos: 4
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '6'
+    true_compromised_status: 0
+    vulnerability_score: 0.28336620439550064
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: e4ce7d15-c081-46ab-945d-792ea16d5a60
+    _vulnerability: 0.3213066163542949
+    _x_pos: 3
+    _y_pos: 1
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '15'
+    true_compromised_status: 0
+    vulnerability_score: 0.3213066163542949
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: ee655347-9c43-4d77-baf7-d35b9457331d
+    _vulnerability: 0.9150144546098867
+    _x_pos: 2
+    _y_pos: 1
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '14'
+    true_compromised_status: 0
+    vulnerability_score: 0.9150144546098867
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: f4f54864-23dc-4bb6-8e3f-2a257fcac81a
+    _vulnerability: 0.6182689903496564
+    _x_pos: 3
+    _y_pos: 4
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '7'
+    true_compromised_status: 0
+    vulnerability_score: 0.6182689903496564
+  : {}
+  ? !!python/object:yawning_titan.networks.node.Node
+    _classes: standard_node
+    _entry_node: false
+    _high_value_node: false
+    _uuid: fbafbdbe-3922-43ec-b9da-f62b0ae1b2f9
+    _vulnerability: 0.21427394432059726
+    _x_pos: 3
+    _y_pos: 7
+    blue_knows_intrusion: false
+    blue_view_compromised_status: 0
+    deceptive_node: false
+    isolated: false
+    name: '2'
+    true_compromised_status: 0
+    vulnerability_score: 0.21427394432059726
+  : {}
+num_of_random_entry_nodes: 1
+num_of_random_high_value_nodes: 1
+random_entry_node_preference: NONE
+random_high_value_node_preference: NONE
+set_random_entry_nodes: true
+set_random_high_value_nodes: true
+set_random_vulnerabilities: true
+
+ENODES [Node(uuid='a9ddcf15-09ea-484d-aaa2-1040d6fb9abb', name='12', high_value_node=False, entry_node=True, vulnerability=0.3911589753563136, x_pos=3, y_pos=2)]
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 0 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 0 V 0.2953959686840018
+N 14 TC 0 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.5437990455467653
+N 17 TC 0 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 0 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 0 V 0.2953959686840018
+N 14 TC 0 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.5437990455467653
+N 17 TC 0 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 0 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 0 V 0.2953959686840018
+N 14 TC 0 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.5437990455467653
+N 17 TC 0 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 0 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 0 V 0.1
+N 14 TC 0 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.5437990455467653
+N 17 TC 0 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 0 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 0 V 0.1
+N 14 TC 0 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.5437990455467653
+N 17 TC 0 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 0 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 0 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.5437990455467653
+N 17 TC 0 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 0 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 0 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.5437990455467653
+N 17 TC 0 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 0 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 0 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.5437990455467653
+N 17 TC 0 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 0 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 0 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.34379904554676527
+N 17 TC 0 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 0 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.34379904554676527
+N 17 TC 0 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.34379904554676527
+N 17 TC 0 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.14379904554676526
+N 17 TC 0 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.1
+N 17 TC 0 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.1
+N 17 TC 1 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 0 V 0.1
+N 17 TC 1 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 0 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 1 V 0.1
+N 17 TC 1 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 1 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 1 V 0.1
+N 17 TC 1 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 0 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 1 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 1 V 0.1
+N 17 TC 1 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 1 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 0 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 1 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 1 V 0.1
+N 17 TC 1 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 1 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 1 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 1 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 0 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 1 V 0.1
+N 17 TC 1 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 1 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 1 V 0.8399372656430163
+N 4 TC 0 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 1 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 1 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 1 V 0.1
+N 17 TC 1 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 1 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 1 V 0.8399372656430163
+N 4 TC 1 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 1 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 1 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 1 V 0.1
+N 17 TC 1 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 1 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 1 V 0.8399372656430163
+N 4 TC 1 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 0 V 0.28336620439550064
+N 8 TC 1 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 1 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 1 V 0.1
+N 17 TC 1 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 1 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 1 V 0.8399372656430163
+N 4 TC 1 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 1 V 0.28336620439550064
+N 8 TC 1 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 1 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 1 V 0.1
+N 17 TC 1 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 1 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 0 V 0.21427394432059726
+N 3 TC 1 V 0.8399372656430163
+N 4 TC 1 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 1 V 0.28336620439550064
+N 8 TC 1 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 1 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 1 V 0.1
+N 17 TC 1 V 0.5129563388187646
+N 0 TC 0 V 0.5645806235345864
+N 5 TC 1 V 0.4821093284573317
+N 1 TC 0 V 0.1
+N 2 TC 1 V 0.21427394432059726
+N 3 TC 1 V 0.8399372656430163
+N 4 TC 1 V 0.1499496975585847
+N 7 TC 1 V 0.6182689903496564
+N 6 TC 1 V 0.28336620439550064
+N 8 TC 1 V 0.862010640834518
+N 12 TC 1 V 0.3911589753563136
+N 9 TC 0 V 0.52502714407406
+N 10 TC 0 V 0.19398077208545245
+N 11 TC 1 V 0.5044230207663721
+N 13 TC 1 V 0.1
+N 14 TC 1 V 0.9150144546098867
+N 15 TC 0 V 0.3213066163542949
+N 16 TC 1 V 0.1
+N 17 TC 1 V 0.5129563388187646
+.
+
+============================== warnings summary ===============================
+.venv\lib\site-packages\gensim-4.2.0-py3.9-win-amd64.egg\gensim\matutils.py:22
+  d:\Pycharm projects\YAWNING-TITAN\.venv\lib\site-packages\gensim-4.2.0-py3.9-win-amd64.egg\gensim\matutils.py:22: DeprecationWarning: Please use `triu` from the `scipy.linalg` namespace, the `scipy.linalg.special_matrices` namespace is deprecated.
+    from scipy.linalg.special_matrices import triu
+
+tests/test_yawning_titan_run.py: 70 warnings
+  D:\Pycharm projects\YAWNING-TITAN\yawning_titan\networks\network.py:384: DeprecationWarning: Sampling from a set deprecated
+  since Python 3.9 and will be removed in a subsequent version.
+    high_value_nodes = sample(
+
+tests/test_yawning_titan_run.py::test_rendering_an_action_loop
+  d:\Pycharm projects\YAWNING-TITAN\.venv\lib\site-packages\stable_baselines3-1.6.2-py3.9.egg\stable_baselines3\common\evaluation.py:65: UserWarning: Evaluation environment is not wrapped with a ``Monitor`` wrapper. This may result in reporting modified episode lengths and rewards, if other wrappers happen to modify these. Consider wrapping environment first with ``Monitor`` wrapper.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============== 1 passed, 228 deselected, 72 warnings in 20.16s ===============

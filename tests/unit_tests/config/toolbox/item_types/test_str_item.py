@@ -31,7 +31,6 @@ def test_bool_properties_validation(allow_null, options, test_val, passed, fail_
     str_properties = StrProperties(allow_null=allow_null, options=options)
 
     validation = str_properties.validate(test_val)
-    print(validation)
     assert validation.passed == passed
     if not validation.passed:
         assert type(validation.fail_exceptions[0]) == ConfigItemValidationError
