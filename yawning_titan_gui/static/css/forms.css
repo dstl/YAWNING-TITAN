@@ -33,7 +33,7 @@
 }
 .form-control{
     padding: 0;
-    text-align: center;
+    padding-left: var(--increment);
 }
 .form-container{
     display: flex;

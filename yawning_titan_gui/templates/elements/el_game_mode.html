@@ -7,8 +7,8 @@
         <div class="icon create-from">
             <i class="bi bi-clipboard"></i>
         </div>
-        {% if not game_mode.protected %}
-        <a class="icon" href="{% url 'game mode config' game_mode_filename=filename %}">
+        {% if not game_mode.locked %}
+        <a class="icon" href="{% url 'game mode config' game_mode_id=game_mode.uuid %}">
             <i class="bi bi-pencil"></i>
         </a>
         <div class="icon delete">
@@ -16,7 +16,7 @@
         </div>
         <input class="form-check-input icon" type="checkbox" value="">
         {% else %}
-        <a class="icon" href="{% url 'game mode config' game_mode_filename=filename %}">
+        <a class="icon" href="{% url 'game mode config' game_mode_id=game_mode.uuid %}">
             <i class="bi bi-eye"></i>
         </a>
         {% endif %}

@@ -12,8 +12,8 @@
 {% endblock %}
 
 {% block items %}
-    {% for filename, game_mode in game_modes.items %}
-        {% include 'elements/el_game_mode.html' with game_mode=game_mode filename=filename %}
+    {% for game_mode in game_modes %}
+        {% include 'elements/el_game_mode.html' with game_mode=game_mode %}
     {% endfor %}
 {% endblock %}
 

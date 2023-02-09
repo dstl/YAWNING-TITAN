@@ -1,23 +1,17 @@
-import ast
-from io import StringIO
 import json
+from io import StringIO
 
-import numpy as np
 from django.http import Http404, HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
 
 from yawning_titan.db.doc_metadata import DocMetadata
+from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB
-from yawning_titan_gui.forms import ConfigForm, GameModeFormManager, GameModeSection
+from yawning_titan_gui.forms import GameModeFormManager, GameModeSection
 from yawning_titan_gui.helpers import GameModeManager, NetworkManager
-from django.views.decorators.csrf import csrf_exempt
-
-GameModeManager.load_game_modes(
-    info_only=True
-)  # pull all game modes from GAME_MODES_DIR
 
 default_sidebar = {
     "Documentation": ["Getting started", "Tutorials", "How to configure", "Code"],
@@ -36,8 +30,9 @@ default_toolbar = {
     "run-view": {"icon": "bi-play", "title": "Run game"},
 }
 
-protected_game_mode_filenames = ["base_config.yaml"]
+protected_game_mode_ids = ["base_config.yaml"]
 network_db = NetworkDB()
+
 
 class HomeView(View):
     """Django page template for landing page."""
@@ -114,7 +109,10 @@ class GameModesView(View):
         return render(
             request,
             "game_modes.html",
-            {"sidebar": default_sidebar, "game_modes": GameModeManager.game_modes},
+            {
+                "sidebar": default_sidebar,
+                "game_modes": GameModeManager.get_game_mode_data(),
+            },
         )
 
 
@@ -148,17 +146,13 @@ class NetworksView(View):
                 "name": "high_value_nodes",
                 "min": min(
                     [
-                        len(network.high_value_nodes)
-                        if network.high_value_nodes
-                        else 0
+                        len(network.high_value_nodes) if network.high_value_nodes else 0
                         for network in networks
                     ]
                 ),
                 "max": max(
                     [
-                        len(network.high_value_nodes)
-                        if network.high_value_nodes
-                        else 0
+                        len(network.high_value_nodes) if network.high_value_nodes else 0
                         for network in networks
                     ]
                 ),
@@ -204,7 +198,8 @@ class NodeEditor(View):
 
     implements 'get' and 'post' methods to handle page requests.
     """
-    def get(self, request:HttpRequest, network_id:str, *args, **kwargs):
+
+    def get(self, request: HttpRequest, network_id: str, *args, **kwargs):
         """Handle page get requests.
 
         Args:
@@ -212,7 +207,6 @@ class NodeEditor(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-       
         return render(
             request,
             "node_editor.html",
@@ -224,19 +218,20 @@ class NodeEditor(View):
                 ),
             },
         )
-    def post(self, request:HttpRequest, *args, **kwargs):
+
+    def post(self, request: HttpRequest, *args, **kwargs):
         """Handle page post requests.
 
         :param request: A Django `request` object that contains the data passed from
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        body = request.body.decode('utf-8')
+        body = request.body.decode("utf-8")
         io = StringIO(body)
         dict_n = json.load(io)
-        #network = Network.create(dict_n)
-        print("N",dict_n)
-        #network_db.update(network)
+        # network = Network.create(dict_n)
+        print("N", dict_n)
+        # network_db.update(network)
         return render(
             request,
             "node_editor.html",
@@ -251,7 +246,7 @@ class GameModeConfigView(View):
         self,
         request: HttpRequest,
         *args,
-        game_mode_filename: str = None,
+        game_mode_id: str = None,
         section_name: str = None,
         **kwargs,
     ):
@@ -259,29 +254,27 @@ class GameModeConfigView(View):
         Handle page get requests.
 
         :param request: the Django page `request` object containing the html data for `game_mode_config.html` and the server GET / POST request bodies.
-        :param game_mode_filename: a game mode filename passed within the page url parameters
+        :param game_mode_id: a game mode filename passed within the page url parameters
         :param section_name: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
 
         :return: Html string representing an instance of the`GameModeConfigView`
         """
-        if game_mode_filename is None:
+        if game_mode_id is None:
             raise (
                 Http404(
-                    f"Can't find game mode section {section_name} in game mode {game_mode_filename}"
+                    f"Can't find game mode section {section_name} in game mode {game_mode_id}"
                 )
             )
 
-        section: GameModeSection = GameModeFormManager.get_section(
-            game_mode_filename, section_name
-        )
-
-        return self.render_page(request, section, game_mode_filename)
+        form = GameModeFormManager.get_or_create_form(game_mode_id)
+        section = form.get_section(section_name)
+        return self.render_page(request, section, game_mode_id)
 
     def post(
         self,
         request: HttpRequest,
         *args,
-        game_mode_filename: str = None,
+        game_mode_id: str = None,
         section_name: str = None,
         **kwargs,
     ):
@@ -289,62 +282,58 @@ class GameModeConfigView(View):
         Handle page post requests.
 
         :param request: the Django page `request` object containing the html data for `game_mode_config.html` and the server GET / POST request bodies.
-        :param game_mode_filename: a game mode filename passed within the page url parameters
+        :param game_mode_id: a game mode filename passed within the page url parameters
         :param section_name: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
 
         :return: Html string representing an instance of the`GameModeConfigView`
         """
-        section: GameModeSection = GameModeFormManager.get_section(
-            game_mode_filename, section_name
-        )
-        game_mode_sections = GameModeFormManager.get_or_create_instance(
-            game_mode_filename
-        )
+        game_mode_form = GameModeFormManager.get_or_create_form(game_mode_id)
+        section = game_mode_form.get_section(section_name)
 
         if section.config_class.validation.passed:
-            if section_name == list(game_mode_sections.keys())[
-                -1
-            ] and GameModeFormManager.check_game_mode_complete(game_mode_filename):
-                GameModeFormManager.save_as_game_mode(game_mode_filename)
+            if (
+                section_name == game_mode_form.last_section.name
+                and game_mode_form.game_mode.validation.passed
+            ):
+                GameModeFormManager.save_as_game_mode(game_mode_form)
                 return redirect("Manage game modes")
             return redirect(
                 "game mode config",
-                game_mode_filename,
-                GameModeFormManager.get_next_section_name(
-                    game_mode_filename, section_name
-                ),
+                game_mode_id,
+                game_mode_form.get_next_section_name(section_name),
             )
-        return self.render_page(request, section, game_mode_filename)
+        return self.render_page(request, section, game_mode_id)
 
     def render_page(
         self,
         request: HttpRequest,
-        section: ConfigForm,
-        game_mode_filename: str,
+        section: GameModeSection,
+        game_mode_id: str,
     ):
         """
         Process pythonic tags in game_mode_config.html and return formatted page.
 
         :param request: the Django page `request` object containing the html data and the server GET / POST request bodies.
-        :param game_mode_filename: a game mode filename passed within the page url parameters
+        :param game_mode_id: a game mode filename passed within the page url parameters
         :param section_name: the section of the config file the page was displaying; one of (red,blue,game_rules,observation_space,rewards,reset,miscellaneous)
         :param error_message: an optional error message string to be displayed in the `#error-message` html element
 
         :return: Html string representing an instance of the`GameModeConfigView`
         """
+        print("SEC", section)
         return render(
             request,
             "game_mode_config.html",
             {
-                "sections": GameModeFormManager.get_or_create_instance(
-                    game_mode_filename
-                ),
+                "sections": GameModeFormManager.get_or_create_form(
+                    game_mode_id
+                ).sections,
                 "section": section,
                 "current_section_name": section.name,
                 "last": False,
                 "sidebar": default_sidebar,
-                "game_mode_filename": game_mode_filename,
-                "protected": game_mode_filename in protected_game_mode_filenames,
+                "game_mode_id": game_mode_id,
+                "protected": game_mode_id in protected_game_mode_ids,
             },
         )
 
@@ -376,15 +365,16 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
         # item_id = item_ids[0] if item_ids else None
 
         def create_game_mode():
-            GameModeManager.create_game_mode(f"{item_name}.yaml")
+            game_mode = GameMode()
+            GameModeManager.db.insert(game_mode=game_mode, name=item_name)
             return reverse(
                 "game mode config",
-                kwargs={"game_mode_filename": f"{item_name}.yaml"},
+                kwargs={"game_mode_id": game_mode.doc_metadata.uuid},
             )
 
         def create_network():
             network = NetworkManager.network_db.insert(
-                network=Network(matrix=np.asarray([]), positions=[]), name=item_name
+                network=Network(), name=item_name
             )
             return reverse(
                 "node editor",
@@ -392,7 +382,8 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
             )
 
         def delete_game_mode():
-            GameModeManager.delete_game_mode(f"{item_name}.yaml")
+            for id in item_ids:
+                GameModeManager.db.remove(GameModeManager.db.get(id))
             return "reload"
 
         def delete_network():
@@ -401,12 +392,15 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
             return "reload"
 
         def create_game_mode_from():
-            GameModeManager.create_game_mode_from(
-                f"{request.POST.get('source_game_mode')}.yaml", f"{item_name}.yaml"
-            )
+            game_mode = GameModeManager.db.get(request.POST.get("source_item_id"))
+            meta = game_mode.doc_metadata.to_dict()
+            meta["uuid"] = None
+            meta["locked"] = False
+            game_mode._doc_metadata = DocMetadata(**meta)
+            GameModeManager.db.insert(game_mode=game_mode, name=item_name)
             return reverse(
                 "game mode config",
-                kwargs={"game_mode_filename": f"{item_name}.yaml"},
+                kwargs={"game_mode_id": f"{item_name}.yaml"},
             )
 
         def create_network_from():
@@ -416,7 +410,10 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
             meta["locked"] = False
             network._doc_metadata = DocMetadata(**meta)
             NetworkManager.network_db.insert(network=network, name=item_name)
-            return "reload"
+            return reverse(
+                "node editor",
+                kwargs={"network_id": network.doc_metadata.uuid},
+            )
 
         operations = {
             "game mode": {
@@ -444,22 +441,23 @@ def update_config(request: HttpRequest) -> JsonResponse:
     Check the current contents of the :class:`ConfigForm <yawning_titan_gui.forms.ConfigForm>` are valid
     using the criteria defined in the appropriate section of the :class:`GameModeConfig <yawning_titan.game_modes.game_mode _config.GameModeConfig>`
 
-    :param request:  here the django_request object will be specifically loaded with
-        `section_name`,`game_mode_filename`parameters.
+    :param request: here the django_request object will be specifically loaded with
+        `section_name`,`game_mode_id`parameters.
 
     :return: response object containing error if config is invalid or redirect parameters if valid
     """
-    if request.method == "POST":        
-        game_mode_filename = request.POST.get("_game_mode_filename")
+    if request.method == "POST":
+        game_mode_id = request.POST.get("_game_mode_id")
         operation = request.POST.get("_operation")
+        game_mode_form = GameModeFormManager.get_or_create_form(game_mode_id)
         if operation == "save":
-            GameModeFormManager.save_as_game_mode(game_mode_filename)
+            GameModeFormManager.save_as_game_mode(game_mode_form)
             return JsonResponse({"message": "saved"})
         elif operation == "update":
             section_name = request.POST.get("_section_name")
             form_id = int(request.POST.get("_form_id"))
-            section: GameModeSection = GameModeFormManager.update_section(
-                game_mode_filename, section_name, form_id, request.POST
+            section = game_mode_form.update_section(
+                section_name=section_name, form_id=form_id, data=request.POST
             )
             if section.config_class.validation.passed:
                 return JsonResponse({"message": "updated"})

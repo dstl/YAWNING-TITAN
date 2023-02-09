@@ -23,12 +23,12 @@ urlpatterns = [
         name="game mode config",
     ),
     path(
-        "game_mode_config/<str:game_mode_filename>/",
+        "game_mode_config/<str:game_mode_id>/",
         GameModeConfigView.as_view(),
         name="game mode config",
     ),
     path(
-        "game_mode_config/<str:game_mode_filename>/<str:section_name>/",
+        "game_mode_config/<str:game_mode_id>/<str:section_name>/",
         GameModeConfigView.as_view(),
         name="game mode config",
     ),
