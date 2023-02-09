@@ -364,3 +364,13 @@ def default_game_mode() -> GameMode:
     """
     with GameModeDB() as db:
         return db.get("900a704f-6271-4994-ade7-40b74d3199b1")
+
+
+def dcbo_game_mode() -> GameMode:
+    """
+    The DCBO game mode.
+
+    :return: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`.
+    """
+    with GameModeDB() as db:
+        return db.get("bac2cb9d-b24b-426c-88a5-5edd0c2de4131")

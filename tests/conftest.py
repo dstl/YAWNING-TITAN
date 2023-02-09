@@ -1,6 +1,7 @@
 import os
+import warnings
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 import pytest
 import yaml
@@ -11,9 +12,130 @@ from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.game_modes.game_modes import default_game_mode_path
 from yawning_titan.networks import network_creator
-from yawning_titan.networks.network import Network
+from yawning_titan.networks.network import (
+    Network,
+    RandomEntryNodePreference,
+    RandomHighValueNodePreference,
+)
 from yawning_titan.networks.network_db import default_18_node_network
 from yawning_titan.yawning_titan_run import YawningTitanRun
+
+
+@pytest.fixture(scope="session")
+def create_test_network() -> Network:
+    """Create an instance of :class: `~yawning_titan.networks.network.Network` from a dictionary.
+
+    If the dictionary is in legacy format then perform preprocessing, otherwise utilise the :method:
+    `~yawning_titan.networks.network.Network.create` method.
+    """
+
+    def _create_test_network(
+        legacy_config_dict: Dict[str, Any],
+        n_nodes: int = 18,
+        connectivity: float = 0.7,
+        vulnerabilities: Optional[Dict[str, float]] = None,
+        high_value_node_names: Optional[List[str]] = None,
+        entry_node_names: Optional[List[str]] = None,
+    ) -> Network:
+        adj_matrix, positions = network_creator.get_mesh_matrix_and_positions(
+            size=n_nodes, connectivity=connectivity
+        )
+        set_random_vulnerabilities = False
+
+        entry_node_placement_preference = RandomEntryNodePreference.NONE
+        if legacy_config_dict["GAME_RULES"]["prefer_central_nodes_for_entry_nodes"]:
+            entry_node_placement_preference = RandomEntryNodePreference.CENTRAL
+        elif legacy_config_dict["GAME_RULES"]["prefer_edge_nodes_for_entry_nodes"]:
+            entry_node_placement_preference = RandomEntryNodePreference.EDGE
+
+        high_value_node_placement_preference = RandomHighValueNodePreference.NONE
+        if legacy_config_dict["GAME_RULES"][
+            "choose_high_value_nodes_furthest_away_from_entry"
+        ]:
+            high_value_node_placement_preference = (
+                RandomHighValueNodePreference.FURTHEST_AWAY_FROM_ENTRY
+            )
+
+        if vulnerabilities is None:
+            set_random_vulnerabilities = True
+
+        network = network_creator.get_network_from_matrix_and_positions(
+            adj_matrix=adj_matrix, positions=positions
+        )
+
+        network.set_random_vulnerabilities = set_random_vulnerabilities
+        network.set_random_entry_nodes = legacy_config_dict["GAME_RULES"][
+            "choose_entry_nodes_randomly"
+        ]
+        network.random_entry_node_preference = entry_node_placement_preference
+        network.num_of_random_entry_nodes = legacy_config_dict["GAME_RULES"][
+            "number_of_entry_nodes"
+        ]
+        network.set_random_high_value_nodes = legacy_config_dict["GAME_RULES"][
+            "choose_high_value_nodes_placement_at_random"
+        ]
+        network.random_high_value_node_preference = high_value_node_placement_preference
+        network.num_of_random_high_value_nodes = legacy_config_dict["GAME_RULES"][
+            "number_of_high_value_nodes"
+        ]
+        network.node_vulnerability_lower_bound = legacy_config_dict["GAME_RULES"][
+            "node_vulnerability_lower_bound"
+        ]
+        network.node_vulnerability_upper_bound = legacy_config_dict["GAME_RULES"][
+            "node_vulnerability_upper_bound"
+        ]
+
+        # Entry nodes must be set before high value nodes
+        if entry_node_names is None:
+            network.reset_random_entry_nodes()
+        else:
+            if any(
+                legacy_config_dict["GAME_RULES"][x]
+                for x in [
+                    "choose_entry_nodes_randomly",
+                    "prefer_edge_nodes_for_entry_nodes",
+                    "prefer_central_nodes_for_entry_nodes",
+                ]
+            ):
+                warnings.warn(
+                    UserWarning(
+                        "High value node names have been specified therefore settings for random high value nodes will be ignored."
+                    )
+                )
+            for node_name in entry_node_names:
+                node = network.get_node_from_name(node_name)
+                node.entry_node = True
+                network._check_intersect(node)
+
+        if high_value_node_names is None:
+            network.reset_random_high_value_nodes()
+        else:
+            if any(
+                legacy_config_dict["GAME_RULES"][x]
+                for x in [
+                    "choose_high_value_nodes_placement_at_random",
+                    "choose_high_value_nodes_furthest_away_from_entry",
+                ]
+            ):
+                warnings.warn(
+                    UserWarning(
+                        "High value node names have been specified therefore settings for random high value nodes will be ignored."
+                    )
+                )
+            for node_name in high_value_node_names:
+                node = network.get_node_from_name(node_name)
+                node.high_value_node = True
+                network._check_intersect(node)
+
+        if network.set_random_vulnerabilities:
+            network.reset_random_vulnerabilities()
+        else:
+            for node in network.nodes:
+                node.vulnerability = vulnerabilities[node.name]
+
+        return network
+
+    return _create_test_network
 
 
 @pytest.fixture
@@ -51,11 +173,11 @@ def temp_config_from_base(tmpdir_factory) -> str:
     return _temp_config_from_base
 
 
-@pytest.fixture
-def generate_generic_env_test_run():
+@pytest.fixture(scope="session")
+def generate_generic_run_test_reqs(create_test_network):
     """Return a `GenericNetworkEnv`."""
 
-    def _generate_generic_env_test_run(
+    def _generate_generic_run_test_reqs(
         settings_path: Optional[str] = default_game_mode_path(),
         net_creator_type="mesh",
         n_nodes: int = 10,
@@ -63,6 +185,7 @@ def generate_generic_env_test_run():
         entry_nodes=None,
         high_value_nodes=None,
         env_only: bool = True,
+        raise_errors: bool = True,
     ) -> GenericNetworkEnv:
         """
         Generate test environment requirements.
@@ -86,6 +209,13 @@ def generate_generic_env_test_run():
         game_mode.set_from_dict(config_dict, legacy=True)
 
         valid_net_creator_types = ["18node", "mesh"]
+        with open(settings_path) as f:
+            config_dict = yaml.safe_load(f)
+
+        game_mode = GameMode.create(
+            dict=config_dict, legacy=True, raise_errors=raise_errors
+        )
+
         if net_creator_type not in valid_net_creator_types:
             raise ValueError(
                 f"net_creator_type is {net_creator_type}, Must be 18_node or mesh"
@@ -94,18 +224,14 @@ def generate_generic_env_test_run():
         if net_creator_type == "18node":
             network = default_18_node_network()
 
-        if net_creator_type == "mesh":
-            adj_matrix, node_positions = network_creator.create_mesh(
-                size=n_nodes, connectivity=connectivity
+        elif net_creator_type == "mesh":
+            network = create_test_network(
+                legacy_config_dict=config_dict,
+                n_nodes=n_nodes,
+                connectivity=connectivity,
+                entry_node_names=entry_nodes,
+                high_value_node_names=high_value_nodes,
             )
-            network = Network(
-                matrix=adj_matrix,
-                positions=node_positions,
-                entry_nodes=entry_nodes,
-                high_value_nodes=high_value_nodes,
-            )
-
-        network.set_from_dict(config_dict["GAME_RULES"], legacy=True)
 
         yt_run = YawningTitanRun(
             network=network,
@@ -124,7 +250,7 @@ def generate_generic_env_test_run():
         yt_run.evaluate()
         return yt_run
 
-    return _generate_generic_env_test_run
+    return _generate_generic_run_test_reqs
 
 
 @pytest.fixture
@@ -139,6 +265,7 @@ def basic_2_agent_loop(
         high_value_nodes=None,
         num_episodes=1,
         custom_settings=None,
+        raise_errors=True,
     ) -> ActionLoop:
         """Use parameterized settings to return a configured ActionLoop."""
         if custom_settings is not None:
@@ -149,6 +276,7 @@ def basic_2_agent_loop(
             net_creator_type="18node",
             entry_nodes=entry_nodes,
             high_value_nodes=high_value_nodes,
+            raise_errors=raise_errors,
             env_only=False,
         )
 

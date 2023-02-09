@@ -25,7 +25,7 @@ def test_setting_target_without_using():
 
     assert not target.validation.group_passed
     assert (
-        "Red is set to target 2, if the target is set to a specific node then the element must have `used` set to True"
+        "Red is set to target 2, if the red agent is set to a specific node then the element must have `used` set to True"
         in target.validation.fail_reasons
     )
 
