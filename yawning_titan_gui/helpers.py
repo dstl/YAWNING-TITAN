@@ -4,6 +4,7 @@ from typing import Any, Dict, List
 
 from yawning_titan import GAME_MODES_DIR
 from yawning_titan.game_modes.game_mode import GameMode
+from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network_db import NetworkDB, NetworkSchema
 
 
@@ -70,6 +71,20 @@ class NetworkManager:
 
 
 class GameModeManager:
+    """TBC."""
+
+    db: GameModeDB = GameModeDB()
+
+    @classmethod
+    def get_game_mode_data(cls):
+        """TBC."""
+        return [
+            {**g.doc_metadata.to_dict(), "complete": g.validation.passed}
+            for g in cls.db.all()
+        ]
+
+
+class gg:
     """Handle all interfacing with Yawning Titan game modes in :attribute: `root_dir` and their info for the GUI session."""
 
     game_modes: Dict[str, Dict[str, Any]] = {}
