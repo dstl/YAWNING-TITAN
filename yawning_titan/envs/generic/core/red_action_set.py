@@ -166,7 +166,7 @@ class RedActionSet:
             # If the red agent cannot attack anything then return False showing that the attack has failed
             return False, False
         if sum(weights) == 0:
-            for counter, i in enumerate(weights):
+            for counter, _ in enumerate(weights):
                 weights[counter] = 1
         weights_normal = [float(i) / sum(weights) for i in weights]
         # Chooses a target with some being more likely than others
@@ -222,7 +222,6 @@ class RedActionSet:
                 The new red location
                 The old red location
         """
-        print("RANDOM MOVE")
         if self.network_interface.red_current_location is None:
             # If the central red agent is not in the environment then it will enter through the entry points
             connected = list(

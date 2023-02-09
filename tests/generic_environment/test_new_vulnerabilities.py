@@ -8,10 +8,10 @@ from tests.generic_environment import N_TIME_STEPS
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 
-def test_new_vulnerabilities(generate_generic_run_test_reqs):
+def test_new_vulnerabilities(generate_generic_env_test_run):
     """Test that new vulnerabilities are chosen at each reset if activated within configuration."""
     # check that new vulnerabilities are being chosen (randomly)
-    env: GenericNetworkEnv = generate_generic_run_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "new_high_value_node.yaml"),
         net_creator_type="mesh",
         n_nodes=15,

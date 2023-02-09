@@ -14,6 +14,7 @@ import numpy
 from numpy.random import choice
 
 from yawning_titan.db.doc_metadata import DocMetadata
+from yawning_titan.exceptions import NetworkError
 from yawning_titan.networks.node import Node
 
 _LOGGER = getLogger(__name__)
@@ -107,6 +108,15 @@ class Network(nx.Graph):
         return self._node_vulnerability_lower_bound
 
     @property
+    def num_possible_high_value_nodes(self) -> int:
+        """Maximum number of allowed high value nodes in the network.
+
+        Number of possible high value nodes calculated by seeing how many nodes there are minus the entry
+        nodes, then only having 15% of the nodes left over to be high value nodes.
+        """
+        return math.ceil((len(self.nodes) - len(self.entry_nodes) + 1) * 0.15)
+
+    @property
     def doc_metadata(self) -> DocMetadata:
         """The configs document metadata."""
         return self._doc_metadata
@@ -126,6 +136,43 @@ class Network(nx.Graph):
         else:
             msg = "Cannot set _doc_metadata as it has already been set."
             _LOGGER.error(msg)
+
+    def add_node(self, node_for_adding: Node, **kwargs):
+        """
+        Add a node to the network.
+
+        Extend the `add_node` method of the superclass.
+
+        if the `node_for_adding` is a special node then check that there are no intersections between hvn and entry_node's.
+        """
+        if node_for_adding not in self.nodes:
+            super().add_node(node_for_adding, **kwargs)
+            if node_for_adding.entry_node or node_for_adding.high_value_node:
+                self._check_intersect(node_for_adding)
+
+    def remove_node(self, n: Node):
+        """
+        Remove a node from the network.
+
+        Extend the `remove_node` method of the superclass.
+        """
+        super().remove_node(n)
+
+    def add_edge(self, u_of_edge: Node, v_of_edge: Node, **kwargs):
+        """
+        Add an edge between 2 nodes in the network.
+
+        Extend the `add_edge` method of the superclass.
+        """
+        super().add_edge(u_of_edge, v_of_edge, **kwargs)
+
+    def remove_edge(self, u: Node, v: Node):
+        """
+        Remove an edge between 2 nodes in the network.
+
+        Extend the `remove_edge` method of the superclass.
+        """
+        super().remove_edge(u, v)
 
     def get_nodes(
         self,
@@ -227,42 +274,35 @@ class Network(nx.Graph):
                         )
                     )
 
-    def add_node(self, node_for_adding: Node, **kwargs):
-        """
-        Add a node to the network.
+    def set_entry_nodes(self, names: List[str] = None, ids: List[str] = None):
+        """Manually set entry nodes in the network after instantiation."""
+        names = names if names else []
+        ids = ids if ids else []
+        for node in self.nodes:
+            if node.name in names or node.uuid in ids:
+                node.entry_node = True
+            else:
+                node.entry_node = False  # reset entry node designations
 
-        Extend the `add_node` method of the superclass.
+            self._check_intersect(node)
 
-        if the `node_for_adding` is a special node then check that there are no intersections between hvn and entry_node's.
-        """
-        if node_for_adding not in self.nodes:
-            super().add_node(node_for_adding, **kwargs)
-            if node_for_adding.entry_node or node_for_adding.high_value_node:
-                self._check_intersect(node_for_adding)
+    def set_high_value_nodes(self, names: List[str] = None, ids: List[str] = None):
+        """Manually set high value nodes in the network after instantiation."""
+        names = names if names else []
+        ids = ids if ids else []
+        potential_hvns = [n for n in self.nodes if n.name in names or n.uuid in ids]
 
-    def remove_node(self, n: Node):
-        """
-        Remove a node from the network.
+        if len(names) + len(ids) > self.num_possible_high_value_nodes:
+            warnings.warn(UserWarning(""))
+            potential_hvns = potential_hvns[: self.num_possible_high_value_nodes]
 
-        Extend the `remove_node` method of the superclass.
-        """
-        super().remove_node(n)
+        for node in self.nodes:
+            if node in potential_hvns:
+                node.high_value_node = True
+            else:
+                node.high_value_node = False  # reset high value node designations
 
-    def add_edge(self, u_of_edge: Node, v_of_edge: Node, **kwargs):
-        """
-        Add an edge between 2 nodes in the network.
-
-        Extend the `add_edge` method of the superclass.
-        """
-        super().add_edge(u_of_edge, v_of_edge, **kwargs)
-
-    def remove_edge(self, u: Node, v: Node):
-        """
-        Remove an edge between 2 nodes in the network.
-
-        Extend the `remove_edge` method of the superclass.
-        """
-        super().remove_edge(u, v)
+            self._check_intersect(node)
 
     def reset_random_entry_nodes(self):
         """
@@ -316,29 +356,27 @@ class Network(nx.Graph):
             Otherwise:
                 HVNs are set to an empty list.
         """
-        # if no high value nodes set, set up the possible high value node list
+        if not self.entry_nodes:
+            msg = "Cannot set random high value nodes before setting entry nodes."
+            _LOGGER.error(msg, exc_info=True)
+            raise NetworkError(msg)
 
-        # number of possible high value nodes calculated by seeing how many nodes there are minus the entry
-        # nodes, then only having 15% of the nodes left over to be high value nodes.
-        number_possible_high_value = math.ceil(
-            (len(self.nodes) - len(self.entry_nodes) + 1) * 0.15
-        )
         # print warning that the number of high value nodes exceed the above preferably this would be handled
         # elsewhere i.e. configuration.
-        if self.num_of_random_high_value_nodes > number_possible_high_value:
+        if self.num_of_random_high_value_nodes > self.num_possible_high_value_nodes:
             msg = (
                 f"The configured number of high value nodes exceed the allowable number in the given "
-                f"networks. {str(number_possible_high_value)} high value nodes will be created."
+                f"networks. {str(self.num_possible_high_value_nodes)} high value nodes will be created."
             )
             warnings.warn(UserWarning(msg))
-            number_of_high_value_nodes = number_possible_high_value
+            number_of_high_value_nodes = self.num_possible_high_value_nodes
         elif self.num_of_random_high_value_nodes <= 0:
             msg = (
                 f"The configured number of high value nodes, {self.num_of_random_high_value_nodes}, "
-                f"must be greater than 0. {str(number_possible_high_value)} high value nodes will be created."
+                f"must be greater than 0. {str(self.num_possible_high_value_nodes)} high value nodes will be created."
             )
             warnings.warn(UserWarning(msg))
-            number_of_high_value_nodes = number_possible_high_value
+            number_of_high_value_nodes = self.num_possible_high_value_nodes
         else:
             number_of_high_value_nodes = self.num_of_random_high_value_nodes
 
@@ -365,7 +403,7 @@ class Network(nx.Graph):
                 counters.update(itemset.keys())
             # averages the distances to find the node that is, on average, the furthest away
             result = {x: float(sums[x]) / counters[x] for x in sums.keys()}
-            for _ in range(number_possible_high_value):
+            for _ in range(self.num_possible_high_value_nodes):
                 current = max(result, key=result.get)
                 possible_high_value_nodes.append(current)
                 result.pop(current)
@@ -380,6 +418,14 @@ class Network(nx.Graph):
             possible_high_value_nodes is None
         ):  # If there are none possible then try again
             self.reset_random_high_value_nodes()
+
+        if len(possible_high_value_nodes) < number_of_high_value_nodes:
+            number_of_high_value_nodes = len(possible_high_value_nodes)
+            msg = (
+                f"The configured number of high value nodes, {self.num_of_random_high_value_nodes}, "
+                f"cannot be created with the chosen method. Instead {str(self.num_possible_high_value_nodes)} high value nodes will be created."
+            )
+            warnings.warn(UserWarning(msg))
 
         high_value_nodes = sample(
             set(possible_high_value_nodes),
@@ -474,6 +520,6 @@ class Network(nx.Graph):
             network.reset_random_high_value_nodes()
 
         if network.set_random_vulnerabilities:
-            network.set_random_vulnerabilities()
+            network.reset_random_vulnerabilities()
 
         return network

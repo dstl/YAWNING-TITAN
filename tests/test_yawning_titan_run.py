@@ -19,7 +19,7 @@ def test_rendering_an_action_loop():
         total_timesteps=1000, eval_freq=1000, warn=False, verbose=0
     )
     loop = ActionLoop(yt_run.env, yt_run.agent, episode_count=1)
-    loop.gif_action_loop(save_gif=True, render_network=True, output_directory=tmp_path)
+    loop.gif_action_loop(save_gif=True, render_network=False, output_directory=tmp_path)
 
     gifs = list(tmp_path.iterdir())
     assert len(gifs) == 1

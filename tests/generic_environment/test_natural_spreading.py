@@ -7,11 +7,11 @@ from tests.generic_environment import N_TIME_STEPS
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 
-def test_natural_spreading(generate_generic_run_test_reqs):
+def test_natural_spreading(generate_generic_env_test_run):
     """Test the natural spreading simulation mechanic works as intended."""
     # generate an env
     n_nodes = 100
-    env: GenericNetworkEnv = generate_generic_run_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "spreading_config.yaml"),
         net_creator_type="mesh",
         n_nodes=n_nodes,
