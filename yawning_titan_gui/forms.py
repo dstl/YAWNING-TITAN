@@ -18,6 +18,116 @@ class RangeInput(widgets.NumberInput):
     input_type = "range"
 
 
+class NetworkCreatorForm(django_forms.Form):
+    """"""
+
+    def __init__(
+        self,
+        *args,
+        **kwargs,
+    ):
+        super(NetworkCreatorForm, self).__init__(*args, **kwargs)
+
+        types = {
+            "Mesh": {
+                "float": [
+                    {
+                        "label": "connectivity",
+                        "description": "The number of nodes to include in the network",
+                    }
+                ],
+                "int": [
+                    {
+                        "label": "size",
+                        "description": "The amount of connections between the nodes. (smaller values mean the connections or more sparse).",
+                    }
+                ],
+            },
+            "Star": {
+                "float": [
+                    {
+                        "label": "group_connectivity",
+                        "description": "The amount of connections between the groups. (smaller values mean the connections or more sparse).",
+                    }
+                ],
+                "int": [
+                    {
+                        "label": "first_layer_size",
+                        "description": "The number of nodes to include in the first layer",
+                    },
+                    {
+                        "label": "group_size",
+                        "description": "The number of nodes to include in the groups",
+                    },
+                ],
+            },
+            "P2P": {
+                "float": [
+                    {
+                        "label": "inter_group_connectivity",
+                        "description": "The amount of connections between the groups. (smaller values mean the connections or more sparse).",
+                    },
+                    {
+                        "label": "group_connectivity",
+                        "description": "The amount of connections within the groups. (smaller values mean the connections or more sparse).",
+                    },
+                ],
+                "int": [
+                    {
+                        "label": "group_size",
+                        "description": "The number of nodes to include in the groups",
+                    }
+                ],
+            },
+            "Ring": {
+                "float": [
+                    {
+                        "label": "break_probability",
+                        "description": "The likelihood of a break in the connections of the ring.",
+                    }
+                ],
+                "int": [
+                    {
+                        "label": "ring_size",
+                        "description": "The number of nodes to include in the ring",
+                    }
+                ],
+            },
+        }
+
+        field_elements = {}
+        print("K", [t for t in types.keys()])
+        field_elements["type"] = django_forms.ChoiceField(
+            widget=django_forms.Select(attrs={"class": "form-control"}),
+            choices=((t, t) for t in types.keys()),
+            required=True,
+            help_text="The type of network to create",
+            label="Type",
+        )
+
+        for name, items in types.items():
+            for float_item in items["float"]:
+                field_elements[float_item["label"]] = django_forms.FloatField(
+                    widget=RangeInput(
+                        attrs={"class": "form-control " + name, "step": "0.01"}
+                    ),
+                    required=False,
+                    help_text=float_item["description"],
+                    min_value=0,
+                    max_value=1,
+                    label=float_item["label"],
+                )
+            for float_item in items["int"]:
+                field_elements[float_item["label"]] = django_forms.IntegerField(
+                    widget=widgets.NumberInput(attrs={"class": "form-control " + name}),
+                    required=False,
+                    help_text=float_item["description"],
+                    label=float_item["label"],
+                )
+        super(NetworkCreatorForm, self).__init__(*args, **kwargs)
+        self.fields: Dict[str, django_forms.Field] = field_elements
+
+
 class ConfigForm(django_forms.Form):
     """
     Base class for represent yawning_titan config classes as html forms.

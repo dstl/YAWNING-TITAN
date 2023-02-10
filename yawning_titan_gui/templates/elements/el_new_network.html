@@ -1,0 +1,12 @@
+<div id={{id}} class="dialogue-center hidden">
+    <h3 class="header">{{header}}</h3>
+    <p class="message">{{message}}</p>
+    {% if input_prompt is not None %}
+    <input id="#dialogue-center-input" type="text" placeholder="{{input_prompt}}">
+    {% endif %}
+    <div class="el-row">
+        <button class="btn cancel">Cancel</button>
+        <a id="create-template" class="btn btn-primary" href="{% url 'network creator' %}">Template network</a>
+        <button class="btn btn-primary submit">{{action_name}}</button>
+    </div>
+</div>

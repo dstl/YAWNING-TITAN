@@ -147,7 +147,7 @@ def get_star_matrix_and_positions(
 def get_p2p_matrix_and_positions(
     group_size: int = 5,
     inter_group_connectivity: float = 0.1,
-    group_connectivity: int = 1,
+    group_connectivity: float = 1,
 ) -> Tuple[np.array, dict]:
     """
     Create a two group network.
@@ -270,7 +270,7 @@ def custom_network() -> Network:
 
 def gnp_random_connected_graph(n_nodes: int, probability_of_edge: float) -> Network:
     """
-    Create a randomly connected graph but with the guarntee that each node will have at least one connection.
+    Create a randomly connected graph but with the guarantee that each node will have at least one connection.
 
     This is taken from the following stack overflow Q&A with a bit of a refactor
     for clarity

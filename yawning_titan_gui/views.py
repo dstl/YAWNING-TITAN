@@ -10,7 +10,11 @@ from yawning_titan.db.doc_metadata import DocMetadata
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB
-from yawning_titan_gui.forms import GameModeFormManager, GameModeSection
+from yawning_titan_gui.forms import (
+    GameModeFormManager,
+    GameModeSection,
+    NetworkCreatorForm,
+)
 from yawning_titan_gui.helpers import GameModeManager, NetworkManager
 
 default_sidebar = {
@@ -189,6 +193,27 @@ class NetworksView(View):
                     request.POST.get("max"),
                 )
             }
+        )
+
+
+class NetworkCreator(View):
+    """"""
+
+    def get(self, request: HttpRequest, *args, network_id: str = None, **kwargs):
+        """Handle page get requests.
+
+        Args:
+            request: A Django `request` object that contains the data passed from
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
+        """
+        return render(
+            request,
+            "network_creator.html",
+            {
+                "sidebar": default_sidebar,
+                "form": NetworkCreatorForm(),
+            },
         )
 
 
