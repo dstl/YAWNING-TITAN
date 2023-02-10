@@ -17,7 +17,7 @@ def test_new_high_value_node(generate_generic_env_test_run):
         os.path.join(TEST_CONFIG_PATH_OLD, "new_high_value_node.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
-        entry_nodes=["0", "1", "2"],
+        entry_node_names=["0", "1", "2"],
     )
     check_env(env, warn=True)
     env.reset()

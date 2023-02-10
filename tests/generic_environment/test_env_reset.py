@@ -16,7 +16,7 @@ def test_env_reset(generate_generic_env_test_run):
         os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
-        entry_nodes=["0", "1", "2"],
+        entry_node_names=["0", "1", "2"],
     )
 
     check_env(env, warn=True)
