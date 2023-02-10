@@ -376,11 +376,6 @@ def punish_bad_actions(args: dict) -> float:
 
     # punish for relocating deceptive nodes (after it has already been placed)
     if blue_action == "add_deceptive_node":
-        print(
-            "TTTT",
-            network_interface.current_deceptive_nodes,
-            network_interface.reached_max_deceptive_nodes,
-        )
         if network_interface.reached_max_deceptive_nodes:
             reward = reward - 5
 
