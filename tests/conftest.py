@@ -182,8 +182,8 @@ def generate_generic_env_test_run(create_test_network):
         net_creator_type="mesh",
         n_nodes: int = 10,
         connectivity: float = 0.7,
-        entry_nodes=None,
-        high_value_nodes=None,
+        entry_node_names=None,
+        high_value_node_names=None,
         env_only: bool = True,
         raise_errors: bool = True,
         deterministic: bool = False,
@@ -224,18 +224,18 @@ def generate_generic_env_test_run(create_test_network):
 
         if net_creator_type == "18node":
             network = default_18_node_network()
-            if entry_nodes:
-                network.set_entry_nodes(entry_nodes)
-            if high_value_nodes:
-                network.set_high_value_nodes(high_value_nodes)
+            if entry_node_names:
+                network.set_entry_nodes(names=entry_node_names)
+            if high_value_node_names:
+                network.set_high_value_nodes(names=high_value_node_names)
 
         elif net_creator_type == "mesh":
             network = create_test_network(
                 legacy_config_dict=config_dict,
                 n_nodes=n_nodes,
                 connectivity=connectivity,
-                entry_node_names=entry_nodes,
-                high_value_node_names=high_value_nodes,
+                entry_node_names=entry_node_names,
+                high_value_node_names=high_value_node_names,
             )
 
         yt_run = YawningTitanRun(
@@ -267,8 +267,8 @@ def basic_2_agent_loop(
 
     def _basic_2_agent_loop(
         settings_path: Optional[str] = default_game_mode_path(),
-        entry_nodes=None,
-        high_value_nodes=None,
+        entry_node_names=None,
+        high_value_node_names=None,
         num_episodes=1,
         custom_settings=None,
         raise_errors=True,
@@ -281,8 +281,8 @@ def basic_2_agent_loop(
         yt_run: YawningTitanRun = generate_generic_env_test_run(
             settings_path=settings_path,
             net_creator_type="18node",
-            entry_nodes=entry_nodes,
-            high_value_nodes=high_value_nodes,
+            entry_node_names=entry_node_names,
+            high_value_node_names=high_value_node_names,
             raise_errors=raise_errors,
             env_only=False,
             deterministic=deterministic,

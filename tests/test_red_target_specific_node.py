@@ -24,7 +24,7 @@ def test_target_specific_node(basic_2_agent_loop: ActionLoop):
     for _ in range(4):
         action_loop: ActionLoop = basic_2_agent_loop(
             num_episodes=1,
-            entry_nodes=["0"],
+            entry_node_names=["0"],
             settings_path=TARGET_NODE_CONFIG,
             raise_errors=False,
             deterministic=True,

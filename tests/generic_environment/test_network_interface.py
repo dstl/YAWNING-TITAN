@@ -10,7 +10,7 @@ def test_network_interface(generate_generic_env_test_run):
         os.path.join(TEST_CONFIG_PATH_OLD, "everything_guaranteed.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
-        entry_nodes=["0", "1", "2"],
+        entry_node_names=["0", "1", "2"],
     )
     for node in env.network_interface.current_graph.nodes:
         node = env.network_interface.current_graph.get_node_from_uuid(

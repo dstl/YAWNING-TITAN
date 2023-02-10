@@ -145,7 +145,7 @@ def test_generic_env_e2e(
     }
 
     env: GenericNetworkEnv = generate_generic_env_test_run(
-        settings_path, creator_type, num_nodes, entry_nodes=["0", "1", "2"]
+        settings_path, creator_type, num_nodes, entry_node_names=["0", "1", "2"]
     )
 
     env.reset()

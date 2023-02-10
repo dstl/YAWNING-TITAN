@@ -30,7 +30,7 @@ def test_wrapped_env(
     """Test that the environment get correctly wrapped with the Feather Observation Wrapper."""
     env: GenericNetworkEnv = FeatherGraphEmbedObservation(
         generate_generic_env_test_run(
-            path, creator_type, num_nodes, entry_nodes=["0", "1", "2"]
+            path, creator_type, num_nodes, entry_node_names=["0", "1", "2"]
         ),
         num_nodes,
     )
@@ -52,7 +52,7 @@ def test_obs_size(
     """Test that the observation size returned by the environment is the correct length."""
     env: GenericNetworkEnv = FeatherGraphEmbedObservation(
         generate_generic_env_test_run(
-            path, creator_type, num_nodes, entry_nodes=["0", "1", "2"]
+            path, creator_type, num_nodes, entry_node_names=["0", "1", "2"]
         ),
         num_nodes,
     )
@@ -108,7 +108,7 @@ def test_obs_range(
     """
     env: GenericNetworkEnv = FeatherGraphEmbedObservation(
         generate_generic_env_test_run(
-            path, creator_type, num_nodes, entry_nodes=["0", "1", "2"]
+            path, creator_type, num_nodes, entry_node_names=["0", "1", "2"]
         ),
         num_nodes,
     )
@@ -147,6 +147,6 @@ def test_env_check(generate_generic_env_test_run) -> None:
             str(low_skill_red_with_random_infection_perfect_detection_path()),
             "mesh",
             18,
-            entry_nodes=["0", "1", "2"],
+            entry_node_names=["0", "1", "2"],
         )
     )

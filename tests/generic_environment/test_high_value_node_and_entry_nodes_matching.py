@@ -22,7 +22,7 @@ def test_high_value_node_and_entry_nodes_matching(generate_generic_env_test_run)
             os.path.join(TEST_CONFIG_PATH_OLD, "high_value_node_provided.yaml"),
             net_creator_type="mesh",
             n_nodes=30,
-            entry_nodes=["0", "15"],
+            entry_node_names=["0", "15"],
             high_value_nodes=["15", "16"],
         )
         check_env(env, warn=True)

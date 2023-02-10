@@ -14,8 +14,10 @@ def test_default_game_mode_e2e(generate_generic_env_test_run):
     """Tests the default game mode ent-to-end."""
     runs = True
     try:
-        entry_nodes = ["0", "1", "2"]
-        env: GenericNetworkEnv = generate_generic_env_test_run(entry_nodes=entry_nodes)
+        entry_node_names = ["0", "1", "2"]
+        env: GenericNetworkEnv = generate_generic_env_test_run(
+            entry_node_names=entry_node_names
+        )
 
         check_env(env, warn=True)
 
