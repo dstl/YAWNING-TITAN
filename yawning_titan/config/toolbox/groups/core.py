@@ -85,7 +85,6 @@ class ActionLikelihoodChanceGroup(ActionLikelihoodGroup):
         :param chance: The chance of the action.
         :param doc: An optional descriptor.
         """
-        super().__init__(doc, use, likelihood)
         self.chance: FloatItem = FloatItem(
             value=chance,
             doc="The chance of the action.",
@@ -97,6 +96,7 @@ class ActionLikelihoodChanceGroup(ActionLikelihoodGroup):
                 inclusive_max=True,
             ),
         )
+        super().__init__(doc, use, likelihood)
 
     def validate(self) -> ConfigGroupValidation:
         """
