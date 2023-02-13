@@ -20,6 +20,7 @@ from yawning_titan.db.compatibility_query import (
 from yawning_titan.db.doc_metadata import DocMetadata, DocMetadataSchema
 from yawning_titan.db.query import YawningTitanQuery
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
+from yawning_titan.game_modes.components.schemas import GameModeConfigurationSchema
 from yawning_titan.game_modes.game_mode import GameMode
 
 __all__ = ["GameModeDB", "GameModeSchema"]
@@ -65,7 +66,7 @@ class GameModeSchema:
     ] = NetworkCompatibilityQuery().game_rules.network_compatibility
     """Mapped to :attr:`~yawning_titan.game_modes.game_mode.GameMode.game_rules.network_compatibility`."""
 
-    CONFIGURATION: Final[YawningTitanQuery] = YawningTitanQuery()
+    CONFIGURATION: Final[GameModeConfigurationSchema] = GameModeConfigurationSchema
     """Use this to access the full schema of the database structured in the same nested format as :class:~`yawning_titan.game_modes.game_mode.GameMode`."""
 
 
