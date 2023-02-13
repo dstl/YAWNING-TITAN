@@ -25,3 +25,4 @@ docs/source/yt-dependencies.rst
 ppo-*/
 **.pkl
 docs/_build
+docs/source/_autosummary/

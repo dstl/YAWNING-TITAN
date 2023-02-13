@@ -4,10 +4,10 @@
             "high_value_nodes": {
                 "random_placement": {
                     "place_far_from_entry": false,
-                    "count": null,
+                    "count": 0,
                     "use": false
                 },
-                "nodes": null
+                "nodes": []
             },
             "entry_nodes": {
                 "random_placement": {
@@ -21,8 +21,8 @@
             "vulnerabilities": {
                 "node_vulnerabilities": null,
                 "restrict": false,
-                "min": null,
-                "max": null
+                "min": 0,
+                "max": 1
             },
             "matrix": [
                 [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
