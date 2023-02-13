@@ -316,17 +316,17 @@
             "network_compatibility":{
                "node_count":{
                   "restrict":true,
-                  "min":1,
+                  "min":2,
                   "max": 18
                },
                "entry_node_count":{
                   "restrict":true,
-                  "min":0,
+                  "min":2,
                   "max":5
                },
                "high_value_node_count":{
                   "restrict":true,
-                  "min":0,
+                  "min":2,
                   "max":5
                }
             }
