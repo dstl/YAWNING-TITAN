@@ -45,12 +45,22 @@ $(document).ready(function(){
     // dialogue submit functions
     $("#create-dialogue .submit").click(function(){
         let item_names = [$(this).closest(".dialogue-center").find("input").first().val()];
-        manage_items("create",item_names);
+        console.log("GJG",this);
+        $(this).closest(".dialogue-center").submit(false) // check that name field has been entered
+        
+        if($(this).hasClass("custom-network")){
+            manage_items("create",item_names);
+        }else if($(this).hasClass("template-network")){
+            manage_items("template",item_names);
+        }            
+  
     });
 
     $("#create-from-dialogue .submit").click(function(){
         let item_names = [$(this).closest(".dialogue-center").find("input").first().val()];
-        manage_items("create from", item_names, selected_item_ids,{"source_item_id":selected_item_ids[0]});
+        if($(this).closest(".dialogue-center").submit(false)){ // check that name field has been entered
+            manage_items("create from", item_names, selected_item_ids,{"source_item_id":selected_item_ids[0]});     
+        }
     });
 
     $("#delete-dialogue .submit").click(function(){
@@ -77,6 +87,17 @@ function toggle_delete_all(){
         $("#delete-all").removeClass("hidden")
     }else{
         $("#delete-all").addClass("hidden")
+    }
+}
+
+function check_dialogue_filled(dialogue_el){
+    console.log("TEST",$(dialogue_el).find("input").first().val());
+    if($(dialogue_el).find("input").first().val() != null){
+        return true
+    }else{
+        // add error message
+        console.log("NOT FILLED");
+        return false
     }
 }
 

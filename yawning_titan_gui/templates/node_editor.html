@@ -3,49 +3,8 @@
 {% load tags %}
 
 {% block scripts %}
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 
-<link rel="stylesheet" href="{% static 'dist/styles.css' %}" media="print" onload="this.media='all'">
-<!-- <link rel="stylesheet" href="{% static 'dist/styles.css' %}"> -->
-
-<script src="{% static 'dist/runtime.js' %}" type="module"></script>
-<script src="{% static 'dist/polyfills.js' %}" type="module"></script>
-<script src="{% static 'dist/main.js' %}" type="module"></script>
-<script src="{% static 'js/network_editor.js' %}"></script>
-
-<script type="text/javascript">
-    const network = `{{network_json | safe}}`;
-    const handler = {
-        set(obj, prop, value) {
-            // listen to NETWORK property changes
-            if (prop === 'NETWORK') {
-                // trigger a window event to mark that the value was changed
-                document.dispatchEvent(new CustomEvent('networkUpdate', {detail: value}));
-            }
-
-            return true;
-        }
-    };
-    var proxy = new Proxy(window, handler);
-
-    /**
-     * We use a proxy instead of the standard window.NETWORK.
-     * This removes the need to poll for any changes to the
-     * network on the Django side.
-     *
-     * This also allows us to run end to end tests
-    */
-
-    // set the proxy.NETWORK with the django JSON string
-    function set_network(){
-        proxy.NETWORK = network;
-    }
-    $(window).on("load",function(){
-        setTimeout(set_network,600) //TODO: remove this when cytoscape checks onload
-        
-    });
-
-</script>
+{% include 'wrappers/node_editor_imports.html' %}
 
 {% endblock %}
 

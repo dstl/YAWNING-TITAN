@@ -68,7 +68,6 @@ class GameModeSchema:
     CONFIGURATION: Final[YawningTitanQuery] = YawningTitanQuery()
     """Use this to access the full schema of the database structured in the same nested format as :class:~`yawning_titan.game_modes.game_mode.GameMode`."""
 
-
 class GameModeDB:
     """
     The :class:`~yawning_titan.config.game_modes.GameModeDB` class extends :class:`~yawning_titan.db.YawningTitanDB`.

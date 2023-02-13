@@ -12,6 +12,7 @@
     cursor: pointer;
     box-sizing: border-box;
     border: 1px solid orange;
+    height: 5rem;
 }
 .list-item.complete{
     border: 1px solid var(--primary);

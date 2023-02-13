@@ -19,9 +19,9 @@
 {% endblock %}
 
 {% block dialogues %}
-    {% include 'elements/el_dialogue_center.html' with id='delete-dialogue' message='Are you sure you want to delete the selected network(s)?<br><br>This action cannot be undone.' action_name='Delete network' %}
-    {% include 'elements/el_new_network.html' with id='create-dialogue' header='Create new network' message='Enter a name for your new network config' action_name='Create network' input_prompt='network name...' %}
-    {% include 'elements/el_dialogue_center.html' with id='create-from-dialogue' header='Create network from' message='Enter a name for your new network config' action_name='Create network' input_prompt='network name...' %}
+    {% for dialogue_info in dialogue_boxes %}
+        {% include 'elements/el_dialogue_center_2.html' with info=dialogue_info %}
+    {% endfor %}
 {% endblock %}
 
 {% block bottom-buttons %}
