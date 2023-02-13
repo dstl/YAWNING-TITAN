@@ -40,10 +40,10 @@ def test_game_mode_configuration_query():
     with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
         db = GameModeDB()
         found = db.search(
-            GameModeSchema.CONFIGURATION.red.agent_attack.ignores_defences == False
+            GameModeSchema.CONFIGURATION.RED.AGENT_ATTACK.IGNORES_DEFENCES == False
         )
         not_found = db.search(
-            GameModeSchema.CONFIGURATION.red.agent_attack.ignores_defences == "1"
+            GameModeSchema.CONFIGURATION.RED.AGENT_ATTACK.IGNORES_DEFENCES == "1"
         )
 
         assert len(not_found) == 0
