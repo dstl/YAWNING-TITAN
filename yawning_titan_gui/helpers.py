@@ -1,9 +1,6 @@
-import shutil
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, List
 
-from yawning_titan import GAME_MODES_DIR
-from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB, NetworkSchema

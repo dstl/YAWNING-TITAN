@@ -19,7 +19,7 @@ class RangeInput(widgets.NumberInput):
 
 
 class NetworkCreatorForm(django_forms.Form):
-    """"""
+    """Form to contain the options for creating a network from a template."""
 
     def __init__(
         self,
@@ -97,7 +97,9 @@ class NetworkCreatorForm(django_forms.Form):
 
         field_elements = {}
         field_elements["type"] = django_forms.ChoiceField(
-            widget=django_forms.Select(attrs={"class": "form-control","type-selector":""}),
+            widget=django_forms.Select(
+                attrs={"class": "form-control", "type-selector": ""}
+            ),
             choices=((t, t) for t in types.keys()),
             required=True,
             help_text="The type of network to create",
