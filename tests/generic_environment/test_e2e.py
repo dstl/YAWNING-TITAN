@@ -444,6 +444,7 @@ def check_when_complete(env: GenericNetworkEnv, counts: dict, timesteps: int):
     if (
         not env.network_interface.game_mode.blue.action_set.deceptive_nodes.use.value
         and counts["scan_used"]
+        and (counts["nodes_missed_scan"] + counts["discovered_from_scanning"]) > 0
     ):
         assert (
             (
