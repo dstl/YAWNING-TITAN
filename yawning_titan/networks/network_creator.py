@@ -50,7 +50,6 @@ def generate_node_positions(adj_matrix: np.array) -> dict:
                 if value == -1:
                     value = 0
         positions[str(i)] = rand_pos
-
     return positions
 
 

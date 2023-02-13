@@ -89,6 +89,10 @@ option:hover{
 }
 
 /* specific elements */
+#back{
+    margin-right: calc(2 * var(--increment));
+    font-size: 1.5rem;
+}
 #top-nav{
     width: 100%;
     height: var(--padding);

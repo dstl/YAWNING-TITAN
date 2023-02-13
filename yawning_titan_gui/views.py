@@ -8,6 +8,7 @@ from django.views import View
 
 from yawning_titan.db.doc_metadata import DocMetadata
 from yawning_titan.game_modes.game_mode import GameMode
+from yawning_titan.networks import network_creator
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB
 from yawning_titan_gui.forms import (
@@ -167,6 +168,27 @@ class NetworksView(View):
                 "max": max([len(network.nodes) for network in networks]),
             },
         ]
+        dialogue_boxes = [
+            {
+                "id":'delete-dialogue',
+                "message":'Are you sure you want to delete the selected network(s)?<br><br>This action cannot be undone.',
+                "actions": ['Delete network']
+            },
+            {
+                "id":'create-dialogue',
+                "header":'Create new network',
+                "message":'Enter a name for your new network config',
+                "actions": ['Template network','Custom network'],
+                "input_prompt": 'Network name...',
+            },
+            {
+                "id":'create-from-dialogue',
+                "header":'Create network from',
+                "message":'Enter a name for your new network config',
+                "actions":['Create network'],
+                "input_prompt":'Network name...'
+            }
+        ]
         return render(
             request,
             "networks.html",
@@ -175,6 +197,7 @@ class NetworksView(View):
                 "toolbar": default_toolbar,
                 "networks": [network.doc_metadata for network in networks],
                 "range_bound_items": range_bound_items,
+                "dialogue_boxes":dialogue_boxes
             },
         )
 
@@ -213,9 +236,57 @@ class NetworkCreator(View):
             {
                 "sidebar": default_sidebar,
                 "form": NetworkCreatorForm(),
+                "network_json": json.dumps(NetworkManager.current_network.to_dict(json_serializable=True)),
+                "network_name": NetworkManager.current_network.doc_metadata.name,
+                "network_id": NetworkManager.current_network.doc_metadata.uuid
             },
         )
 
+    def post(self, request: HttpRequest, *args,  network_id: str = None, **kwargs):
+        """Handle page post requests.
+
+        :param request: A Django `request` object that contains the data passed from
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
+        """
+        if request.POST.get("save"):
+            if NetworkManager.current_network:
+                NetworkManager.network_db.insert(
+                    network=NetworkManager.current_network
+                )
+                print("sAVED")
+            else:
+                print("NOT SAVED")
+        else:
+            creator_type = request.POST.get("type")
+            if creator_type == "Mesh":
+                adj_matrix,positions =network_creator.get_mesh_matrix_and_positions(
+                    size=int(request.POST.get("size")),
+                    connectivity=float(request.POST.get("connectivity"))
+                )
+            elif creator_type == "Star":
+                adj_matrix,positions =network_creator.get_star_matrix_and_positions(
+                    first_layer_size=int(request.POST.get("first_layer_size")),
+                    group_size=int(request.POST.get("star_group_size")),
+                    group_connectivity=float(request.POST.get("star_group_connectivity"))
+                )
+            elif creator_type == "P2P":
+                adj_matrix,positions =network_creator.get_p2p_matrix_and_positions(
+                    inter_group_connectivity=float(request.POST.get("inter_group_connectivity")),
+                    group_size=int(request.POST.get("P2P_group_size")),
+                    group_connectivity=float(request.POST.get("P2P_group_connectivity"))
+                )
+            elif creator_type == "Ring":
+                adj_matrix,positions =network_creator.get_ring_matrix_and_positions(
+                    break_probability=float(request.POST.get("break_probability")),
+                    ring_size=int(request.POST.get("ring_size")),
+                )
+            network = network_creator.get_network_from_matrix_and_positions(adj_matrix=adj_matrix,positions=positions)
+            NetworkManager.current_network = network
+            return JsonResponse({
+                "network_json": json.dumps(network.to_dict(json_serializable=True)),
+                "network_id":network.doc_metadata.uuid
+            })
 
 class NodeEditor(View):
     """
@@ -232,6 +303,9 @@ class NodeEditor(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
+        if network_db.get(network_id):
+            NetworkManager.current_network = network_db.get(network_id)
+            
         return render(
             request,
             "node_editor.html",
@@ -239,7 +313,7 @@ class NodeEditor(View):
                 "sidebar": default_sidebar,
                 "toolbar": default_toolbar,
                 "network_json": json.dumps(
-                    network_db.get(network_id).to_dict(json_serializable=True)
+                    NetworkManager.current_network.to_dict(json_serializable=True)
                 ),
             },
         )
@@ -387,7 +461,7 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
         item_ids = request.POST.getlist("item_ids[]")
 
         item_name = item_names[0] if item_names else None
-        # item_id = item_ids[0] if item_ids else None
+        item_id = item_ids[0] if item_ids else None
 
         def create_game_mode():
             game_mode = GameMode()
@@ -404,6 +478,14 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
             return reverse(
                 "node editor",
                 kwargs={"network_id": network.doc_metadata.uuid},
+            )
+
+        def create_template_network():
+            doc = DocMetadata(name=item_name)
+            NetworkManager.current_network =Network(doc_metadata=doc)
+            return reverse(
+                "network creator",
+                kwargs={"network_id": doc.uuid},
             )
 
         def delete_game_mode():
@@ -450,8 +532,10 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
                 "create": create_network,
                 "delete": delete_network,
                 "create from": create_network_from,
+                "template": create_template_network
             },
         }
+        print("OPERATION",operation)
         try:
             return JsonResponse({"load": operations[item_type][operation]()})
         except KeyError as e:

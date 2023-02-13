@@ -11,7 +11,7 @@ RED:
   red_ignores_defences: False
   # Reds attacks always succeed
   red_always_succeeds: False
-
+        
   # The red agent will only ever be in one node however it can control any amount of nodes. Can the red agent only
   # attack from its one main node or can it attack from any node that it controls
   red_can_only_attack_from_red_agent_node: False

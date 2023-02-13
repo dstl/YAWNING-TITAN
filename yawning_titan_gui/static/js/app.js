@@ -39,7 +39,7 @@ $(document).ready(function(){
     $("input[role='switch']").wrap("<div class=form-switch></div>");
 
     // add range setter input field
-    $("input[type='range']").wrap("<div class=form-range></div>");
+    $("input[type='range'].form-range").wrap("<div class=form-range></div>");
     $(".form-range").append("<input type='number' class='range-setter form-control'>");
 
     // constrain range setter input field

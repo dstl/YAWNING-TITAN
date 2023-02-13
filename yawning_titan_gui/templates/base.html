@@ -39,7 +39,7 @@
             <a href="{% url 'home' %}" class="head">Yawning Titan Home</a>
         {% endif %}
         <div class="flex-break"></div>
-        <div id="error-message" class="{% if error_message is None %}hidden{% endif %}">{{error_message}}</div>
+        <a id="back" href="javascript:history.back()"><i class="bi bi-arrow-90deg-left"></i></a>
     </nav>
     <div id="window-container">
         <div id="toolbar">

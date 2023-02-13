@@ -46,7 +46,7 @@ class NetworkCreatorForm(django_forms.Form):
             "Star": {
                 "float": [
                     {
-                        "label": "group_connectivity",
+                        "label": "star_group_connectivity",
                         "description": "The amount of connections between the groups. (smaller values mean the connections or more sparse).",
                     }
                 ],
@@ -56,7 +56,7 @@ class NetworkCreatorForm(django_forms.Form):
                         "description": "The number of nodes to include in the first layer",
                     },
                     {
-                        "label": "group_size",
+                        "label": "star_group_size",
                         "description": "The number of nodes to include in the groups",
                     },
                 ],
@@ -68,13 +68,13 @@ class NetworkCreatorForm(django_forms.Form):
                         "description": "The amount of connections between the groups. (smaller values mean the connections or more sparse).",
                     },
                     {
-                        "label": "group_connectivity",
+                        "label": "P2P_group_connectivity",
                         "description": "The amount of connections within the groups. (smaller values mean the connections or more sparse).",
                     },
                 ],
                 "int": [
                     {
-                        "label": "group_size",
+                        "label": "P2P_group_size",
                         "description": "The number of nodes to include in the groups",
                     }
                 ],
@@ -96,9 +96,8 @@ class NetworkCreatorForm(django_forms.Form):
         }
 
         field_elements = {}
-        print("K", [t for t in types.keys()])
         field_elements["type"] = django_forms.ChoiceField(
-            widget=django_forms.Select(attrs={"class": "form-control"}),
+            widget=django_forms.Select(attrs={"class": "form-control","type-selector":""}),
             choices=((t, t) for t in types.keys()),
             required=True,
             help_text="The type of network to create",
@@ -117,12 +116,12 @@ class NetworkCreatorForm(django_forms.Form):
                     max_value=1,
                     label=float_item["label"],
                 )
-            for float_item in items["int"]:
-                field_elements[float_item["label"]] = django_forms.IntegerField(
+            for int_item in items["int"]:
+                field_elements[int_item["label"]] = django_forms.IntegerField(
                     widget=widgets.NumberInput(attrs={"class": "form-control " + name}),
                     required=False,
-                    help_text=float_item["description"],
-                    label=float_item["label"],
+                    help_text=int_item["description"],
+                    label=int_item["label"],
                 )
         super(NetworkCreatorForm, self).__init__(*args, **kwargs)
         self.fields: Dict[str, django_forms.Field] = field_elements
