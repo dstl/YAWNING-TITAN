@@ -48,7 +48,7 @@ function save_template(){
         url: window.location.href,
         data: {save:true},
         success: function(response){
-            
+
         },
         error: function(response){
         }

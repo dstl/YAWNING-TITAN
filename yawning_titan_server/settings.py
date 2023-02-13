@@ -44,7 +44,7 @@ MIDDLEWARE = [
     # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "yawning_titan_server.urls"
@@ -118,11 +118,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
 
-ALLOWED_HOSTS=["127.0.0.1",'localhost']
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 CORS_ORIGIN_ALLOW_ALL = False
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8000','http://127.0.0.1:8000']
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "http://127.0.0.1:8000"]
 CORS_ORIGIN_WHITELIST = (
-    'http://127.0.0.1*','http://localhost:8000','http://127.0.0.1:8000',"/node_editor/"
+    "http://127.0.0.1*",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "/node_editor/",
 )

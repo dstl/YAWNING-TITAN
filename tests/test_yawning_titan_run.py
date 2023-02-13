@@ -28,5 +28,6 @@ def test_rendering_an_action_loop():
     assert gifs[-1].suffix == ".gif"
     tmp_dir.cleanup()
 
+
 db = GameModeDB()
 db.rebuild_db()
