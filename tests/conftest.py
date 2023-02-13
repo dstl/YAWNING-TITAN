@@ -37,7 +37,7 @@ def create_test_network() -> Network:
         high_value_node_names: Optional[List[str]] = None,
         entry_node_names: Optional[List[str]] = None,
     ) -> Network:
-        adj_matrix, positions = network_creator.get_mesh_matrix_and_positions(
+        adj_matrix, positions = network_creator.create_mesh(
             size=n_nodes, connectivity=connectivity
         )
         set_random_vulnerabilities = False
@@ -60,7 +60,7 @@ def create_test_network() -> Network:
             set_random_vulnerabilities = True
 
         network = network_creator.get_network_from_matrix_and_positions(
-            adj_matrix=adj_matrix, positions=positions
+            matrix=adj_matrix, positions=positions
         )
 
         network.set_random_vulnerabilities = set_random_vulnerabilities
