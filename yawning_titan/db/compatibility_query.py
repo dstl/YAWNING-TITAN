@@ -73,11 +73,7 @@ class EntryNodeCompatibilityQuery(Query):
         :return: ``True`` if it does exist, otherwise ``False``.
         """
         if isinstance(n, Network):
-            n = (
-                len(n.entry_nodes.nodes)
-                if n.entry_nodes.nodes
-                else n.entry_nodes.random_placement.count.value
-            )
+            n = len(n.entry_nodes) if n.entry_nodes else n.num_of_random_entry_nodes
 
         def test_works_with(val, n, include_unbounded):
             return check_element(val, n, include_unbounded)
@@ -114,9 +110,9 @@ class HighValueNodeCompatibilityQuery(Query):
         """
         if isinstance(n, Network):
             n = (
-                len(n.high_value_nodes.nodes)
-                if n.high_value_nodes.nodes
-                else n.high_value_nodes.random_placement.count.value
+                len(n.high_value_nodes)
+                if n.high_value_nodes
+                else n.num_of_random_high_value_nodes
             )
 
         def test_works_with(val, n, include_unbounded):
@@ -153,7 +149,7 @@ class NetworkNodeCompatibilityQuery(Query):
         :return: ``True`` if it does exist, otherwise ``False``.
         """
         if isinstance(n, Network):
-            n = len(n.matrix)
+            n = len(n.nodes)
 
         def test_works_with(val, n, include_unbounded):
             return check_element(val, n, include_unbounded)
@@ -201,13 +197,13 @@ class NetworkCompatibilityQuery(Query):
             ):
                 return False
             mapper = {
-                "entry_node_count": len(n.entry_nodes.nodes)
-                if n.entry_nodes.nodes
-                else n.entry_nodes.random_placement.count.value,
-                "high_value_node_count": len(n.high_value_nodes.nodes)
-                if n.high_value_nodes.nodes
-                else n.high_value_nodes.random_placement.count.value,
-                "node_count": len(n.matrix),
+                "entry_node_count": len(n.entry_nodes)
+                if n.entry_nodes
+                else n.num_of_random_entry_nodes,
+                "high_value_node_count": len(n.high_value_nodes)
+                if n.high_value_nodes
+                else n.num_of_random_high_value_nodes,
+                "node_count": len(n.nodes),
             }
             results = [
                 check_element(e, mapper[k], include_unbounded) for k, e in val.items()
