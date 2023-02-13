@@ -539,10 +539,21 @@ class NetworkInterface:
 
         # Gets the adj matrix for the current graph
         node_connections = []
+
+        # Gets the isolation states for each node
+        isolated_state = []
         if self.game_mode.blue_can_observe.node_connections.value:
             node_connections = self.adj_matrix
             # pads the array to account for any missing deceptive nodes that may not have been placed yet
             node_connections = np.pad(node_connections, (0, open_spaces), "constant")
+
+            # array used to keep track of which nodes are being isolated
+            isolated_state = np.asarray(
+                list(self.get_attributes_from_key("isolated").values())
+            ).astype(int)
+
+            # pad array to account for deceptive nodes
+            isolated_state = np.pad(isolated_state, (0, open_spaces), "constant")
 
         # Gets the current safe/compromised status of all of the nodes
         compromised_state = []
@@ -638,6 +649,7 @@ class NetworkInterface:
         obs = np.concatenate(
             (
                 node_connections,
+                isolated_state,
                 compromised_state,
                 vulnerabilities,
                 avg_vuln,
