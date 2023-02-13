@@ -254,9 +254,6 @@ class NetworkCreator(View):
         if request.POST.get("save"):
             if NetworkManager.current_network:
                 NetworkManager.network_db.insert(network=NetworkManager.current_network)
-                print("sAVED")
-            else:
-                print("NOT SAVED")
         else:
             creator_type = request.POST.get("type")
             if creator_type == "Mesh":
