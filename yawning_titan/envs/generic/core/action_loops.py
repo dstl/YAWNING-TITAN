@@ -6,6 +6,7 @@ Serves a similar function to library helpers such as Stable Baselines 3 ``evalua
 
 import os
 from datetime import datetime
+from pathlib import Path
 from uuid import uuid4
 
 import imageio
@@ -13,6 +14,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from yawning_titan import APP_IMAGES_DIR, IMAGES_DIR
+from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 
 class ActionLoop:
@@ -28,7 +30,7 @@ class ActionLoop:
             filename: The save name for the action lop
             episode_count: The number of episodes to go through
         """
-        self.env = env
+        self.env: GenericNetworkEnv = env
         self.agent = agent
         self.filename = filename
         self.episode_count = episode_count
@@ -38,6 +40,7 @@ class ActionLoop:
         render_network=True,
         prompt_to_close=False,
         save_gif=False,
+        output_directory: Path = None,
         deterministic=True,
         *args,
         **kwargs,
@@ -99,8 +102,10 @@ class ActionLoop:
 
             if save_gif:
                 string_time = datetime.now().strftime("%d%m%Y_%H%M%S")
+                if output_directory is None:
+                    output_directory = IMAGES_DIR
                 gif_path = os.path.join(
-                    IMAGES_DIR,
+                    output_directory,
                     f"{self.filename}_{string_time}_{self.episode_count}.gif",
                 )
                 with imageio.get_writer(gif_path, mode="I") as writer:

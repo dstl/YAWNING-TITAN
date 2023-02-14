@@ -14,7 +14,7 @@ class NodeCollection:
         self.adj_matrix = network[0]
         self.pos_dic = network[1]
         self.nodes = []
-        for i in range(0, len(self.adj_matrix)):
+        for _ in range(0, len(self.adj_matrix)):
             self.nodes.append(Node())
         self.chance_to_spread_during_patch = chance_to_spread_during_patch
 

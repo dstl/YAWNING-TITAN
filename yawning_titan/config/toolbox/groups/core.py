@@ -172,7 +172,7 @@ class NodeChanceGroup(AnyNonZeroGroup):
                 default=0.5,
                 min_val=0,
                 max_val=1,
-                inclusive_min=True,
+                inclusive_min=False,
                 inclusive_max=True,
             ),
         )
@@ -184,7 +184,7 @@ class NodeChanceGroup(AnyNonZeroGroup):
                 default=0.5,
                 min_val=0,
                 max_val=1,
-                inclusive_min=True,
+                inclusive_min=False,
                 inclusive_max=True,
             ),
         )
