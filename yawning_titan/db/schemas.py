@@ -119,24 +119,24 @@ class DeceptiveNodeSchema:
 class BlueActionSetSchema:
     """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
 
-    reduce_vulnerability: Final[
+    REDUCE_VULNERABILITY: Final[
         YawningTitanQuery
     ] = YawningTitanQuery().blue.action_set.reduce_vulnerability
-    restore_node: Final[
+    RESTORE_NODE: Final[
         YawningTitanQuery
     ] = YawningTitanQuery().blue.action_set.restore_node
-    scan: Final[YawningTitanQuery] = YawningTitanQuery().blue.action_set.scan
-    isolate_node: Final[
+    SCAN: Final[YawningTitanQuery] = YawningTitanQuery().blue.action_set.scan
+    ISOLATE_NODE: Final[
         YawningTitanQuery
     ] = YawningTitanQuery().blue.action_set.isolate_node
-    reconnect_node: Final[
+    RECONNECT_NODE: Final[
         YawningTitanQuery
     ] = YawningTitanQuery().blue.action_set.reconnect_node
-    do_nothing: Final[
+    DO_NOTHING: Final[
         YawningTitanQuery
     ] = YawningTitanQuery().blue.action_set.do_nothing
-    make_node_safe: Final[MakeNodeSafeSchema] = MakeNodeSafeSchema
-    deceptive_nodes: Final[DeceptiveNodeSchema] = DeceptiveNodeSchema
+    MAKE_NODE_SAFE: Final[MakeNodeSafeSchema] = MakeNodeSafeSchema
+    DECEPTIVE_NODES: Final[DeceptiveNodeSchema] = DeceptiveNodeSchema
 
 
 class OnScanSchema:
