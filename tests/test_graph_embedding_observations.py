@@ -25,12 +25,12 @@ from yawning_titan.game_modes.game_modes import (
     ],
 )
 def test_wrapped_env(
-    generate_generic_env_test_reqs, path: str, creator_type: str, num_nodes: int
+    generate_generic_env_test_run, path: str, creator_type: str, num_nodes: int
 ) -> None:
     """Test that the environment get correctly wrapped with the Feather Observation Wrapper."""
     env: GenericNetworkEnv = FeatherGraphEmbedObservation(
-        generate_generic_env_test_reqs(
-            path, creator_type, num_nodes, entry_nodes=["0", "1", "2"]
+        generate_generic_env_test_run(
+            path, creator_type, num_nodes, entry_node_names=["0", "1", "2"]
         ),
         num_nodes,
     )
@@ -47,12 +47,12 @@ def test_wrapped_env(
     ],
 )
 def test_obs_size(
-    generate_generic_env_test_reqs, path: str, creator_type: str, num_nodes: int
+    generate_generic_env_test_run, path: str, creator_type: str, num_nodes: int
 ) -> None:
     """Test that the observation size returned by the environment is the correct length."""
     env: GenericNetworkEnv = FeatherGraphEmbedObservation(
-        generate_generic_env_test_reqs(
-            path, creator_type, num_nodes, entry_nodes=["0", "1", "2"]
+        generate_generic_env_test_run(
+            path, creator_type, num_nodes, entry_node_names=["0", "1", "2"]
         ),
         num_nodes,
     )
@@ -93,7 +93,7 @@ def test_obs_size(
     ],
 )
 def test_obs_range(
-    generate_generic_env_test_reqs,
+    generate_generic_env_test_run,
     path: str,
     creator_type: str,
     num_nodes: int,
@@ -107,8 +107,8 @@ def test_obs_range(
         - other features from the env based on input from the settings file
     """
     env: GenericNetworkEnv = FeatherGraphEmbedObservation(
-        generate_generic_env_test_reqs(
-            path, creator_type, num_nodes, entry_nodes=["0", "1", "2"]
+        generate_generic_env_test_run(
+            path, creator_type, num_nodes, entry_node_names=["0", "1", "2"]
         ),
         num_nodes,
     )
@@ -140,13 +140,13 @@ def test_obs_range(
                 assert val in [0, 1, -1]
 
 
-def test_env_check(generate_generic_env_test_reqs) -> None:
+def test_env_check(generate_generic_env_test_run) -> None:
     """Test to Stable Baselines 3 Environment checker compliance once wrapped."""
     check_env(
-        generate_generic_env_test_reqs(
+        generate_generic_env_test_run(
             str(low_skill_red_with_random_infection_perfect_detection_path()),
             "mesh",
             18,
-            entry_nodes=["0", "1", "2"],
+            entry_node_names=["0", "1", "2"],
         )
     )

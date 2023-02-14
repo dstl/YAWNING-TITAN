@@ -224,7 +224,7 @@ class YawningTitanRun:
 
         :raise AttributeError: When new=False and ppo_zip_path hasn't been provided.
         """
-        if new and not ppo_zip_path:
+        if not new and not ppo_zip_path:
             msg = "Performing setup when new=False requires ppo_zip_path as the path of a saved ppo.zip file."
             try:
                 raise AttributeError(msg)
