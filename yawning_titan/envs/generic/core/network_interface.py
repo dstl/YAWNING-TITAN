@@ -372,7 +372,9 @@ class NetworkInterface:
         # calculate the size of the observation space
         # the size depends on what observations are turned on/off in the config file
         if self.game_mode.blue_can_observe.node_connections.value:
+            # add node connections to observation size
             observation_size += node_connections
+            # add isolated nodes to observation size
             observation_size += max_number_of_nodes
         if self.game_mode.blue_can_observe.compromised_status.value:
             observation_size += max_number_of_nodes
