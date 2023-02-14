@@ -373,6 +373,7 @@ class NetworkInterface:
         # the size depends on what observations are turned on/off in the config file
         if self.game_mode.blue_can_observe.node_connections.value:
             observation_size += node_connections
+            observation_size += max_number_of_nodes
         if self.game_mode.blue_can_observe.compromised_status.value:
             observation_size += max_number_of_nodes
         if self.game_mode.blue_can_observe.vulnerabilities.value:
