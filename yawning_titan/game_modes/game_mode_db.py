@@ -19,8 +19,8 @@ from yawning_titan.db.compatibility_query import (
 )
 from yawning_titan.db.doc_metadata import DocMetadata, DocMetadataSchema
 from yawning_titan.db.query import YawningTitanQuery
+from yawning_titan.db.schemas import GameModeConfigurationSchema
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
-from yawning_titan.game_modes.components.schemas import GameModeConfigurationSchema
 from yawning_titan.game_modes.game_mode import GameMode
 
 __all__ = ["GameModeDB", "GameModeSchema"]
