@@ -69,7 +69,7 @@ class GameMode(ConfigGroup, DocMetaDataObject):
         cls,
         yaml: Optional[str] = None,
         legacy: Optional[bool] = False,
-        infer_legacy: Optional[bool] = False,
+        infer_legacy: Optional[bool] = True,
     ) -> GameMode:
         """
         Generate a formatted instance of :class: `GameMode` from stored data.
@@ -89,7 +89,8 @@ class GameMode(ConfigGroup, DocMetaDataObject):
         cls,
         dict: Optional[dict] = None,
         legacy: Optional[bool] = False,
-        infer_legacy: Optional[bool] = False,
+        infer_legacy: Optional[bool] = True,
+        raise_errors: bool = False,
     ) -> GameMode:
         """
         Generate a formatted instance of :class: `GameMode` from stored data.
@@ -102,7 +103,8 @@ class GameMode(ConfigGroup, DocMetaDataObject):
         """
         game_mode = GameMode()
         game_mode.set_from_dict(dict, legacy=legacy, infer_legacy=infer_legacy)
-
+        if raise_errors and not game_mode.validation.passed:
+            raise ValueError(game_mode.validation.log())
         return game_mode
 
     def to_dict(
