@@ -6,12 +6,10 @@ from logging import getLogger
 from pathlib import Path
 from typing import Final, List, Optional, Union
 
-import numpy as np
 from tinydb import TinyDB
 from tinydb.queries import QueryInstance
-from tinydb.table import Document
 
-from yawning_titan.db.doc_metadata import DocMetadata, DocMetadataSchema
+from yawning_titan.db.doc_metadata import DocMetadataSchema
 from yawning_titan.db.query import YawningTitanQuery
 from yawning_titan.db.yawning_titan_db import YawningTitanDB, YawningTitanDBSchema
 from yawning_titan.networks.network import Network
@@ -93,20 +91,6 @@ class NetworkDB:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._db.__exit__(exc_type, exc_val, exc_tb)
 
-    @classmethod
-    def _doc_to_network_config(cls, doc: Document):
-        """Convert the document.
-
-        Converts a :class:`tinydb.table.Document` from the :class:`~yawning_titan.db.networks.NetworkDB` to an instance
-        of :class:`~yawning_titan.networks.network.Network`.
-
-        :param doc: A :class:`tinydb.table.Document`.
-        :return: The doc as a :class:`~yawning_titan.networks.network.Network`.
-        """
-        doc["matrix"] = np.array(doc["matrix"])
-        doc["_doc_metadata"] = DocMetadata(**doc["_doc_metadata"])
-        return Network(**doc)
-
     def insert(
         self,
         network: Network,
@@ -118,20 +102,16 @@ class NetworkDB:
         Insert a :class:`~yawning_titan.networks.network.Network` into the DB as ``.json``.
 
         :param network: An instance of :class:`~yawning_titan.networks.network.Network`
-            :class:`~yawning_titan.db.doc_metadata.DocMetadata`.
-            :class:`~yawning_titan.db.doc_metadata.DocMetadata`.
-            :class:`~yawning_titan.db.doc_metadata.DocMetadata`.
+            :class:`~yawning_titan.db._doc_metadata.DocMetadata`.
+            :class:`~yawning_titan.db._doc_metadata.DocMetadata`.
+            :class:`~yawning_titan.db._doc_metadata.DocMetadata`.
         :param name: The config name.
         :param description: The config description.
         :param author: The config author.
         :return: The inserted :class:`~yawning_titan.networks.network.Network`.
         """
         network.doc_metadata.update(name, description, author)
-        self._db.insert(
-            network.to_dict(
-                json_serializable=True, include_none=False, values_only=True
-            )
-        )
+        self._db.insert(network.to_dict(json_serializable=True))
 
         return network
 
@@ -141,7 +121,7 @@ class NetworkDB:
 
         :return: A :class:`list` of :class:`~yawning_titan.networks.network.Network`.
         """
-        return [self._doc_to_network_config(doc) for doc in self._db.all()]
+        return [Network.create(doc) for doc in self._db.all()]
 
     def get(self, uuid: str) -> Union[Network, None]:
         """
@@ -155,7 +135,7 @@ class NetworkDB:
         # self._db.db.clear_cache()
         doc = self._db.get(uuid)
         if doc:
-            return self._doc_to_network_config(doc)
+            return Network.create(doc)
 
     def search(self, query: YawningTitanQuery) -> List[Network]:
         """
@@ -166,7 +146,7 @@ class NetworkDB:
         """
         network_configs = []
         for doc in self._db.search(query):
-            network_configs.append(self._doc_to_network_config(doc))
+            network_configs.append(Network.create(doc))
         return network_configs
 
     def count(self, cond: Optional[QueryInstance] = None) -> int:
@@ -204,7 +184,7 @@ class NetworkDB:
         network.doc_metadata.update(name, description, author)
         # Perform the update and retrieve the returned doc
         doc = self._db.update(
-            network.to_dict(json_serializable=True),
+            network.to_dict(),
             network.doc_metadata.uuid,
             name,
             description,
@@ -234,7 +214,7 @@ class NetworkDB:
         """
         network.doc_metadata.update(name, description, author)
         doc = self._db.upsert(
-            network.to_dict(json_serializable=True),
+            network.to_dict(),
             network.doc_metadata.uuid,
             name,
             description,
@@ -247,14 +227,14 @@ class NetworkDB:
 
         return network
 
-    def remove(self, network: Network) -> List[str]:
+    def remove(self, network: Network) -> Union[str, None]:
         """
         Remove a :class:`~yawning_titan.networks.network.Network`. from the db.
 
         :param network: An instance of :class:`~yawning_titan.networks.network.Network`.
         :return: The uuid of the removed :class:`~yawning_titan.networks.network.Network`.
         """
-        self._db.remove(network.doc_metadata.uuid)
+        return self._db.remove(network.doc_metadata.uuid)
 
     def remove_by_cond(self, cond: QueryInstance) -> List[str]:
         """
@@ -291,15 +271,15 @@ class NetworkDB:
             name = network["_doc_metadata"]["name"]
 
             # Get the matching network from the networks db
-            db_network = self.get(uuid)
+            try:
+                db_network = self.get(uuid)
+            except KeyError:
+                db_network = None
 
             # If the network doesn't match the default, or it doesn't exist,
             # perform an upsert.
             if db_network:
-                reset = (
-                    db_network.to_dict(json_serializable=True, include_none=False)
-                    != network
-                )
+                reset = db_network.to_dict() != network
             else:
                 reset = True
             if reset:
@@ -345,3 +325,17 @@ def default_18_node_network() -> Network:
     """
     with NetworkDB() as db:
         return db.get("b3cd9dfd-b178-415d-93f0-c9e279b3c511")
+
+
+def dcbo_base_network() -> Network:
+    """
+    Creates the same network used to generated DCBO data.
+
+    .. node::
+        This function replaces the network that was defined in
+        `yawning_titan/integrations/dcbo/base_net.txt`.
+
+    :return: An instance of :class:`~yawning_titan.networks.network.Network`.
+    """
+    with NetworkDB() as db:
+        return db.get("47cb9f49-b53d-44f8-9a7b-3d74cf2ec1b0")

@@ -6,7 +6,6 @@ from yawning_titan.config.toolbox.core import ConfigGroup
 from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
 from yawning_titan.config.toolbox.item_types.int_item import IntItem, IntProperties
 from yawning_titan.config.toolbox.item_types.str_item import StrItem, StrProperties
-from yawning_titan.envs.generic.core import reward_functions
 
 # --- Tier 0 groups
 
@@ -23,6 +22,8 @@ class Rewards(ConfigGroup):
         reduce_negative_rewards_for_closer_fails: Optional[bool] = False,
         function: Optional[str] = "standard_rewards",
     ):
+        from yawning_titan.envs.generic.core import reward_functions
+
         self.for_loss = IntItem(
             value=for_loss,
             doc="Rewards for the blue agent losing",
