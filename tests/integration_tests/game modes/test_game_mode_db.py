@@ -45,6 +45,7 @@ def test_game_mode_configuration_query():
         not_found = db.search(
             GameModeSchema.CONFIGURATION.RED.AGENT_ATTACK.IGNORES_DEFENCES == "1"
         )
+        GameModeSchema.CONFIGURATION.BLUE.ACTION_SET.deceptive_nodes.MAX_NUMBER
 
         assert len(not_found) == 0
         assert len(found) == len(db.all())
