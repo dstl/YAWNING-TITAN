@@ -12,6 +12,7 @@
 </script>
 {% endblock %}
 
+
 {% block items %}
     {% for network in networks %}
         {% include 'elements/el_network.html' with network=network %}
@@ -20,7 +21,7 @@
 
 {% block dialogues %}
     {% for dialogue_info in dialogue_boxes %}
-        {% include 'elements/el_dialogue_center_2.html' with info=dialogue_info %}
+        {% include 'elements/el_dialogue_center.html' with info=dialogue_info %}
     {% endfor %}
 {% endblock %}
 

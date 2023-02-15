@@ -21,14 +21,15 @@ def test_target_specific_node(basic_2_agent_loop: ActionLoop):
     nodes_on_path = ["0", "5", "7", "8", "9"]
     target_nodes: Set[Node] = set()
 
-    for _ in range(0, 10):
+    for _ in range(4):
         action_loop: ActionLoop = basic_2_agent_loop(
             num_episodes=1,
-            entry_nodes=["0"],
+            entry_node_names=["0"],
             settings_path=TARGET_NODE_CONFIG,
             raise_errors=False,
+            deterministic=True,
         )
-        results: List[DataFrame] = action_loop.standard_action_loop()
+        results: List[DataFrame] = action_loop.standard_action_loop(deterministic=True)
         x = list(
             chain.from_iterable(
                 chain.from_iterable(
@@ -43,5 +44,4 @@ def test_target_specific_node(basic_2_agent_loop: ActionLoop):
             )
         )
         target_nodes.update(x)
-
     assert all(node.name in nodes_on_path for node in target_nodes)

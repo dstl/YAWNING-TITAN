@@ -11,14 +11,14 @@ from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 # TODO: This test now tests operations handled by Network class and should therefore be moved
 
 
-def test_high_value_node_passed_into_network_interface(generate_generic_env_test_reqs):
+def test_high_value_node_passed_into_network_interface(generate_generic_env_test_run):
     """Test the high value node gaol mechanic - manually passed to."""
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "high_value_node_provided.yaml"),
         net_creator_type="mesh",
         n_nodes=30,
-        high_value_nodes=["15", "16"],
-        entry_nodes=["0", "1", "2"],
+        high_value_node_names=["15", "16"],
+        entry_node_names=["0", "1", "2"],
     )
     check_env(env, warn=True)
     env.reset()

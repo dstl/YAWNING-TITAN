@@ -199,6 +199,7 @@ setup(
             "game_modes/_package_data/game_modes.json",
             "game_modes/_package_data/low_skill_red_with_random_infection_perfect_detection.yaml",
             "game_modes/_package_data/multiple_high_value_targets.yaml",
+            "networks/_package_data/network.json",
             "notebooks/_package_data/sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb",
             "notebooks/_package_data/sb3/Using an Evaluation Callback to monitor progress during training.ipynb",
             "notebooks/_package_data/Creating and playing as a Keyboard Agent.ipynb",

@@ -39,7 +39,8 @@
             <a href="{% url 'home' %}" class="head">Yawning Titan Home</a>
         {% endif %}
         <div class="flex-break"></div>
-        <a id="back" href="javascript:history.back()"><i class="bi bi-arrow-90deg-left"></i></a>
+        {% block top-buttons %}
+        {% endblock %}
     </nav>
     <div id="window-container">
         <div id="toolbar">

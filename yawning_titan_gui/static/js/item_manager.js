@@ -44,16 +44,16 @@ $(document).ready(function(){
 
     // dialogue submit functions
     $("#create-dialogue .submit").click(function(){
-        let item_names = [$(this).closest(".dialogue-center").find("input").first().val()];
-        console.log("GJG",this);
-        $(this).closest(".dialogue-center").submit(false) // check that name field has been entered
-
-        if($(this).hasClass("custom-network")){
-            manage_items("create",item_names);
-        }else if($(this).hasClass("template-network")){
-            manage_items("template",item_names);
+        let input = $(this).closest(".dialogue-center").find("input").first(),
+            item_names = [input.val()];
+        $(this).closest(".dialogue-center").find("button[type='submit']").click();
+        if(input.val()){
+            if($(this).hasClass("custom-network")||$(this).hasClass("create")){
+                manage_items("create",item_names);
+            }else if($(this).hasClass("template-network")){
+                manage_items("template",item_names);
+            }
         }
-
     });
 
     $("#create-from-dialogue .submit").click(function(){

@@ -84,3 +84,6 @@ def generate(
         return yt_run.agent, path
     else:
         return yt_run.agent, None
+
+
+generate(total_timesteps=10000)

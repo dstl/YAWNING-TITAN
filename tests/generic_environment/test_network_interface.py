@@ -4,13 +4,13 @@ from tests import TEST_CONFIG_PATH_OLD
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 
-def test_network_interface(generate_generic_env_test_reqs):
+def test_network_interface(generate_generic_env_test_run):
     """Test the network interface class and associated methods work as intended."""
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "everything_guaranteed.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
-        entry_nodes=["0", "1", "2"],
+        entry_node_names=["0", "1", "2"],
     )
     for node in env.network_interface.current_graph.nodes:
         node = env.network_interface.current_graph.get_node_from_uuid(

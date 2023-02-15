@@ -1,11 +1,17 @@
-<div id={{id}} class="dialogue-center hidden">
-    <h3 class="header">{{header}}</h3>
-    <p class="message">{{message}}</p>
-    {% if input_prompt is not None %}
-    <input id="#dialogue-center-input" type="text" placeholder="{{input_prompt}}">
+{% load tags %}
+<form id={{dialogue_info.id}} class="dialogue-center hidden" action="">
+    <h3 class="header">{{dialogue_info.header}}</h3>
+    <p class="message">{{dialogue_info.message}}</p>
+    {% if dialogue_info.input_prompt is not None %}
+    <input id="#dialogue-center-input" type="text" placeholder="{{dialogue_info.input_prompt}}" required>
     {% endif %}
     <div class="el-row">
         <button class="btn cancel">Cancel</button>
-        <button class="btn btn-primary submit">{{action_name}}</button>
+        <div>
+            {% for action_name in dialogue_info.actions %}
+                <button type="button" class="btn btn-primary submit {{action_name|to_id}}">{{action_name}}</button>
+            {% endfor %}
+        </div>
     </div>
-</div>
+    <button type="submit" class="hidden"></button>
+</form>

@@ -1,5 +1,8 @@
 #section-controls{
-    justify-content: space-between;
+    justify-content: center;
+}
+#section-controls>*{
+    margin: var(--increment);
 }
 
 .form-label{
@@ -29,6 +32,7 @@
 
 /* config form elements */
 .error-list{
+    font-size: .75rem;
     color: red
 }
 .form-control{
@@ -88,7 +92,7 @@
 }
 .field-container{
     max-width: 400px;
-    height: 60px;
+    /* height: 60px; */
 }
 .field-container>*{
     width:100%;

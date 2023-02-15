@@ -10,10 +10,13 @@
 </script>
 {% endblock %}
 
+{% block top-buttons %}
+    <a id="back" href="{% url 'Manage networks' %}"><i class="bi bi-arrow-90deg-left"></i></a>
+{% endblock %}
+
 {% block main %}
 <header id="config-header" class="el-row">
-    <h2>Game mode file: {{ game_mode_filename }}</h2>
-    <a id="game-modes-return" href="{% url 'Manage game modes' %}"><i class="bi bi-arrow-90deg-left"></i></a>
+    <h2>Game mode: {{ game_mode_name }}</h2>
 </header>
 
 <div id="config-forms">
