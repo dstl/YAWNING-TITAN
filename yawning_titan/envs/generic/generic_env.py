@@ -430,15 +430,6 @@ class GenericNetworkEnv(gym.Env):
         else:
             attacks = self.network_interface.true_attacks
         reward = round(self.current_reward, 2)
-        # if (
-        #     self.network_interface.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value
-        # ):
-        # iterate through the high value nodes
-        # for node in self.network_interface.current_graph.high_value_nodes:
-        #     special_nodes[node] = {
-        #         "description": "high value node",
-        #         "colour": "#da2fed",
-        #     }
 
         # sends the current information to a graph plotter to display the information visually
         self.graph_plotter.render(
