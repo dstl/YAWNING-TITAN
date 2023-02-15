@@ -1,7 +1,7 @@
 from typing import Dict
 
 from tests.config_test_utils import read_yaml_file
-from yawning_titan.config.game_modes import (
+from yawning_titan.game_modes.game_modes import (
     default_game_mode_path,
     default_new_game_mode_path,
 )

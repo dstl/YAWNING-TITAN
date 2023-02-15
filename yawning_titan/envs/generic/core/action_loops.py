@@ -6,6 +6,7 @@ Serves a similar function to library helpers such as Stable Baselines 3 ``evalua
 
 import os
 from datetime import datetime
+from pathlib import Path
 from uuid import uuid4
 
 import imageio
@@ -40,6 +41,7 @@ class ActionLoop:
         prompt_to_close=False,
         save_gif=False,
         deterministic=False,
+        output_directory: Path = None,
         *args,
         **kwargs,
     ):
@@ -100,8 +102,10 @@ class ActionLoop:
 
             if save_gif:
                 string_time = datetime.now().strftime("%d%m%Y_%H%M%S")
+                if output_directory is None:
+                    output_directory = IMAGES_DIR
                 gif_path = os.path.join(
-                    IMAGES_DIR,
+                    output_directory,
                     f"{self.filename}_{string_time}_{self.episode_count}.gif",
                 )
                 with imageio.get_writer(gif_path, mode="I") as writer:

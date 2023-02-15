@@ -1,4 +1,5 @@
 """Collection of functions to help generating metrics and summary statistics for networkx graphs."""
+import copy
 import statistics as stats
 from typing import Callable, List
 
@@ -113,6 +114,13 @@ def get_graph_metric_bundle(graph: nx.Graph) -> List[List]:
     Returns:
         A list of lists containing the metrics
     """
+    # Force an update to the adjacency lookup:
+
+    edges = copy.deepcopy(graph.edges)
+    nodes = copy.deepcopy(graph.nodes)
+    graph.clear()
+    graph.update(edges=edges, nodes=nodes)
+
     funcs_to_process = [
         nx.average_degree_connectivity(graph),
         nx.closeness_centrality(graph),
