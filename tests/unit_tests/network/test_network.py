@@ -1,5 +1,6 @@
 import pytest
 
+from yawning_titan.exceptions import NetworkError
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import default_18_node_network
 
@@ -7,7 +8,7 @@ from yawning_titan.networks.network_db import default_18_node_network
 def test_reset_high_value_nodes_randomly():
     """Test the random setting of high value nodes in a network."""
     network = default_18_node_network()
-    assert len(network.high_value_nodes) == 0  # starts with no hnv's set
+    assert len(network.high_value_nodes) == 1  # starts with 1 entry node set
 
     network.num_of_random_high_value_nodes = 3
     network.reset_random_high_value_nodes()
@@ -27,7 +28,7 @@ def test_reset_high_value_nodes_randomly():
 def test_reset_entry_nodes_randomly():
     """Test the random setting of high value nodes in a network."""
     network = default_18_node_network()
-    assert len(network.entry_nodes) == 0  # starts with no entry nodes set
+    assert len(network.entry_nodes) == 1  # starts with 1 entry node set
 
     network.num_of_random_entry_nodes = 3
     network.reset_random_entry_nodes()
@@ -72,6 +73,35 @@ def test_create_network_from_legacy_manual_vulnerability_setting(create_test_net
     assert all(n.vulnerability == 0.5 for n in network.nodes)
 
 
+def test_setting_high_value_nodes_before_entry_nodes(create_test_network):
+    """Test manually setting vulnerability."""
+    network_legacy_config = {
+        "GAME_RULES": {
+            "choose_entry_nodes_randomly": True,
+            "choose_high_value_nodes_placement_at_random": True,
+            "number_of_entry_nodes": 1,
+            "number_of_high_value_nodes": 1,
+            "node_vulnerability_lower_bound": 0.1,
+            "node_vulnerability_upper_bound": 1,
+            "prefer_central_nodes_for_entry_nodes": False,
+            "prefer_edge_nodes_for_entry_nodes": False,
+            "choose_high_value_nodes_furthest_away_from_entry": False,
+        }
+    }
+
+    # Ensure that warning is raised when Entry nodes and HVN's intersect
+    network: Network = create_test_network(
+        legacy_config_dict=network_legacy_config, n_nodes=3, connectivity=0.7
+    )
+
+    # simulate no entry nodes set
+    for node in network.nodes:
+        node.entry_node = False
+
+    with pytest.raises(NetworkError):
+        network.reset_random_high_value_nodes()
+
+
 def test_create_network_from_legacy_random_vulnerability(create_test_network):
     """Test manually setting vulnerability."""
     network_legacy_config = {
@@ -89,7 +119,7 @@ def test_create_network_from_legacy_random_vulnerability(create_test_network):
     }
 
     # Ensure that warning is raised when Entry nodes and HVN's intersect
-    network = create_test_network(
+    network: Network = create_test_network(
         legacy_config_dict=network_legacy_config, n_nodes=3, connectivity=0.7
     )
     assert all(n.vulnerability > 0 and n.vulnerability_score > 0 for n in network.nodes)

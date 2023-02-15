@@ -31,11 +31,7 @@ def create_env(use_same_net: bool = False) -> GenericNetworkEnv:
     if use_same_net:
         network = dcbo_base_network()
     else:
-        matrix, positions = network_creator.get_mesh_matrix_and_positions(size=10)
-        network = network_creator.get_network_from_matrix_and_positions(
-            adj_matrix=matrix, positions=positions
-        )
-
+        network = network_creator.create_mesh(size=10)
     network_interface = NetworkInterface(game_mode, network)
 
     red = SineWaveRedAgent(network_interface)

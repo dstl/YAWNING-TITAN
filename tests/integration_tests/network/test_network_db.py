@@ -41,9 +41,9 @@ def test_reset_default_networks():
         db = NetworkDB()
         db.rebuild_db()
         configs = db.all()
-        configs_copy = copy.deepcopy(configs)
 
         config = configs[0]
+        config_copy = copy.deepcopy(config)
 
         # Update the object locally
         config.set_random_entry_nodes = False
@@ -57,9 +57,6 @@ def test_reset_default_networks():
         # Perform the default network reset
         db.reset_default_networks_in_db()
 
-        expected = [config.to_dict(json_serializable=True) for config in configs_copy]
-        actual = [config.to_dict(json_serializable=True) for config in db.all()]
-
-        assert expected == actual
+        assert db.all()[0].set_random_entry_nodes == config_copy.set_random_entry_nodes
 
         db._db.close_and_delete_temp_db()

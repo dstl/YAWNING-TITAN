@@ -412,7 +412,6 @@ class CustomEnvGraph:
             + "\nCurrent Avg vulnerability: "
             + str(round(statistics.mean([n.vulnerability_score for n in g.nodes]), 2))
         )
-        print("VULNS", [n.vulnerability_score for n in g.nodes])
         ax = plt.gca()
         ax.legend(
             handles=legend_objects,

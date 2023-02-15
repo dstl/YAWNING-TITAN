@@ -2,8 +2,6 @@ import tempfile
 from pathlib import Path
 
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
-from yawning_titan.game_modes.game_mode_db import GameModeDB
-from yawning_titan.networks.network_db import default_18_node_network
 from yawning_titan.yawning_titan_run import YawningTitanRun
 
 
@@ -18,7 +16,7 @@ def test_rendering_an_action_loop():
     tmp_path = Path(tmp_dir.name)
 
     yt_run = YawningTitanRun(
-        total_timesteps=1000, eval_freq=1000, network=default_18_node_network()
+        total_timesteps=1000, eval_freq=1000, warn=False, verbose=0
     )
     loop = ActionLoop(yt_run.env, yt_run.agent, episode_count=1)
     loop.gif_action_loop(save_gif=True, render_network=True, output_directory=tmp_path)
@@ -27,7 +25,3 @@ def test_rendering_an_action_loop():
     assert len(gifs) == 1
     assert gifs[-1].suffix == ".gif"
     tmp_dir.cleanup()
-
-
-db = GameModeDB()
-db.rebuild_db()

@@ -10,34 +10,41 @@
 
 {% endblock %}
 
+{% block top-buttons %}
+    <a id="back" href="{% url 'Manage networks' %}"><i class="bi bi-arrow-90deg-left"></i></a>
+{% endblock %}
+
 {% block main %}
 
-
 <div id="config-forms">
-    <header id="config-header" class="el-row">
+    <header id="config-header">
         <h2>Template Network</h2>
         <h3>{{network_name}}</h3>
     </header>
-    <form id="network-creator-form" class="config-form" action="" method="post">
-        {% for field in form %}
-            <div class="mb-3 active{% if field.errors %} erroneous{% endif %}">
-                <div class="info">
-                    <label for="id_{{ field.name }}" class="form-label">{{ field.label|format_text }}</label>
-                    <p class="help-text">{{field.help_text}}</p>
-                    {% if field.errors %}
-                        <ul class="error-list">
-                            {% for error in field.errors %}
-                            <li>{{ error|escape }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                </div>
-                <div class="field-container {% if protected %}disabled{% endif %}">
-                    {{ field }}
-                </div>
-            </div>
+    <div class="fields">
+        {% for form_name,form in forms.items %}
+            <form id="network-creator-form" class="config-form {{form_name}}" action="" method="post">
+                {% for field in form %}
+                    <div class="mb-3 active{% if field.errors %} erroneous{% endif %}">
+                        <div class="info">
+                            <label for="id_{{ field.name }}" class="form-label">{{ field.label|format_text }}</label>
+                            <p class="help-text">{{field.help_text}}</p>
+                            {% if field.errors %}
+                                <ul class="error-list">
+                                    {% for error in field.errors %}
+                                    <li>{{ error|escape }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        <div class="field-container {% if protected %}disabled{% endif %}">
+                            {{ field }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </form>
         {% endfor %}
-    </form>
+    </div>
     <div class="flex-break"></div>
     <button type="button" id="save" class="btn btn-primary">Save network</button>
     <a id="open-editor" class="btn btn-primary">Open in editor</a>
@@ -104,15 +111,25 @@
     #config-forms{
         display: flex;
         flex-direction: column;
-        width: 500px;
+        width: 450px;
         height: 100%;
         margin-right: var(--padding);
     }
     #config-forms>a,#config-forms>button{
         margin-bottom: var(--increment);
     }
+
     .mb-3{
         display: block;
+    }
+    .mb-3:has(.inline){
+        display: flex;
+    }
+
+    .fields{
+        min-height: 0;
+        max-height: 100%;
+        overflow-y: auto;
     }
 
     app-root{

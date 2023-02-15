@@ -166,7 +166,7 @@ class RedActionSet:
             # If the red agent cannot attack anything then return False showing that the attack has failed
             return False, False
         if sum(weights) == 0:
-            for counter, i in enumerate(weights):
+            for counter, _ in enumerate(weights):
                 weights[counter] = 1
         weights_normal = [float(i) / sum(weights) for i in weights]
         # Chooses a target with some being more likely than others
@@ -403,7 +403,7 @@ class RedActionSet:
         compromised_nodes = self.network_interface.current_graph.get_nodes(
             filter_true_compromised=True
         )
-        # print("COMPROMISED NODES: ",{node.name for node in compromised_nodes})
+
         # creates a set that is used to store all of the nodes that the red agent naturally spreads to (used to work out
         # what nodes are not easily spread to)
         set_of_spreading_nodes = set()
@@ -446,7 +446,6 @@ class RedActionSet:
 
                     attacking_nodes.append(attacking_node_map[node])
                     targets.append(node)
-        # print("SPREADING NODES: ",{node.name for node in set_of_spreading_nodes})
         if (
             self.network_interface.game_mode.red.natural_spreading.chance.to_connected_node
         ):
@@ -534,11 +533,7 @@ class RedActionSet:
                 connected_nodes = [
                     n for n in connected_nodes if n.true_compromised_status == 0
                 ]
-                # connected_nodes = [
-                #     self.network_interface.current_graph.get_node_from_uuid(n.uuid) # THIS IS HERE TO FIX AN ISSUE WITH CONNECTED NODES REFERENCING A DIFFERENT MEMORY ADDRESS
-                #     for n in connected_nodes
-                #     if n.true_compromised_status == 0
-                # ]
+
                 attacking_nodes.extend([node] * len(connected_nodes))
             for connected_node in connected_nodes:
                 nodes.append(connected_node)

@@ -74,7 +74,7 @@ class NetworkInterface:
     parameters) will return some attribute from the class
     """
 
-    def get_shortest_distances_to_target(self, nodes: List[str]) -> List[float]:
+    def get_shortest_distances_to_target(self, nodes: List[Node]) -> List[float]:
         """Get a list of the shortest distances from each node to the target."""
         # TODO: add option where only shortest distance provided
 
@@ -93,7 +93,6 @@ class NetworkInterface:
         Returns:
             The target node if it exists
         """
-        # TODO: change to uuid of a network node
         return self.current_graph.get_node_from_name(
             self.game_mode.red.target_mechanism.target_specific_node.target.value
         )
@@ -785,7 +784,6 @@ class NetworkInterface:
 
         # calculate the attack score, the higher the score the more likely the attack is to succeed
         attack_score = ((skill * skill) / (skill + defence)) * 100
-
         # check if the attack hits based on the attack score
         if guarantee or (attack_score > random.randint(0, 100)):
             node.true_compromised_status = 1

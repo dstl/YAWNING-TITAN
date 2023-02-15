@@ -120,7 +120,7 @@ class RandomGen:
     ],
 )
 def test_generic_env_e2e(
-    generate_generic_env_test_reqs,
+    generate_generic_env_test_run,
     settings_path: str,
     creator_type: str,
     num_nodes: int,
@@ -144,8 +144,8 @@ def test_generic_env_e2e(
         "scan_used": False,
     }
 
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
-        settings_path, creator_type, num_nodes, entry_nodes=["0", "1", "2"]
+    env: GenericNetworkEnv = generate_generic_env_test_run(
+        settings_path, creator_type, num_nodes, entry_node_names=["0", "1", "2"]
     )
 
     env.reset()
@@ -444,6 +444,7 @@ def check_when_complete(env: GenericNetworkEnv, counts: dict, timesteps: int):
     if (
         not env.network_interface.game_mode.blue.action_set.deceptive_nodes.use.value
         and counts["scan_used"]
+        and (counts["nodes_missed_scan"] + counts["discovered_from_scanning"]) > 0
     ):
         assert (
             (

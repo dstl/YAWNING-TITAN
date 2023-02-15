@@ -5,11 +5,6 @@ from typing import Any, Dict, List, Optional
 
 import pytest
 import yaml
-from stable_baselines3 import PPO
-from stable_baselines3.common.callbacks import EvalCallback
-from stable_baselines3.common.env_checker import check_env
-from stable_baselines3.common.monitor import Monitor
-from stable_baselines3.ppo import MlpPolicy as PPOMlp
 from yaml import SafeLoader
 
 from yawning_titan.config.toolbox.core import (
@@ -22,9 +17,6 @@ from yawning_titan.config.toolbox.item_types.float_item import FloatItem
 from yawning_titan.config.toolbox.item_types.int_item import IntItem
 from yawning_titan.config.toolbox.item_types.str_item import StrItem
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
-from yawning_titan.envs.generic.core.blue_interface import BlueInterface
-from yawning_titan.envs.generic.core.network_interface import NetworkInterface
-from yawning_titan.envs.generic.core.red_interface import RedInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.game_modes.game_modes import default_game_mode_path
@@ -35,6 +27,7 @@ from yawning_titan.networks.network import (
     RandomHighValueNodePreference,
 )
 from yawning_titan.networks.network_db import default_18_node_network
+from yawning_titan.yawning_titan_run import YawningTitanRun
 
 
 @pytest.fixture(scope="session")
@@ -53,9 +46,6 @@ def create_test_network() -> Network:
         high_value_node_names: Optional[List[str]] = None,
         entry_node_names: Optional[List[str]] = None,
     ) -> Network:
-        adj_matrix, positions = network_creator.get_mesh_matrix_and_positions(
-            size=n_nodes, connectivity=connectivity
-        )
         set_random_vulnerabilities = False
 
         entry_node_placement_preference = RandomEntryNodePreference.NONE
@@ -75,9 +65,7 @@ def create_test_network() -> Network:
         if vulnerabilities is None:
             set_random_vulnerabilities = True
 
-        network = network_creator.get_network_from_matrix_and_positions(
-            adj_matrix=adj_matrix, positions=positions
-        )
+        network = network_creator.create_mesh(size=n_nodes, connectivity=connectivity)
 
         network.set_random_vulnerabilities = set_random_vulnerabilities
         network.set_random_entry_nodes = legacy_config_dict["GAME_RULES"][
@@ -190,17 +178,19 @@ def temp_config_from_base(tmpdir_factory) -> str:
 
 
 @pytest.fixture(scope="session")
-def generate_generic_env_test_reqs(create_test_network):
+def generate_generic_env_test_run(create_test_network):
     """Return a `GenericNetworkEnv`."""
 
-    def _generate_generic_env_test_reqs(
+    def _generate_generic_env_test_run(
         settings_path: Optional[str] = default_game_mode_path(),
         net_creator_type="mesh",
         n_nodes: int = 10,
         connectivity: float = 0.7,
-        entry_nodes=None,
-        high_value_nodes=None,
+        entry_node_names=None,
+        high_value_node_names=None,
+        env_only: bool = True,
         raise_errors: bool = True,
+        deterministic: bool = False,
     ) -> GenericNetworkEnv:
         """
         Generate test environment requirements.
@@ -217,6 +207,12 @@ def generate_generic_env_test_reqs(create_test_network):
             env: An OpenAI gym environment
 
         """
+        with open(settings_path) as f:
+            config_dict = yaml.safe_load(f)
+
+        game_mode = GameMode()
+        game_mode.set_from_dict(config_dict, legacy=True)
+
         valid_net_creator_types = ["18node", "mesh"]
         with open(settings_path) as f:
             config_dict = yaml.safe_load(f)
@@ -232,68 +228,71 @@ def generate_generic_env_test_reqs(create_test_network):
 
         if net_creator_type == "18node":
             network = default_18_node_network()
+            if entry_node_names:
+                network.set_entry_nodes(names=entry_node_names)
+            if high_value_node_names:
+                network.set_high_value_nodes(names=high_value_node_names)
 
         elif net_creator_type == "mesh":
             network = create_test_network(
                 legacy_config_dict=config_dict,
                 n_nodes=n_nodes,
                 connectivity=connectivity,
-                entry_node_names=entry_nodes,
-                high_value_node_names=high_value_nodes,
+                entry_node_names=entry_node_names,
+                high_value_node_names=high_value_node_names,
             )
 
-        network_interface = NetworkInterface(game_mode=game_mode, network=network)
+        yt_run = YawningTitanRun(
+            network=network,
+            game_mode=game_mode,
+            collect_additional_per_ts_data=True,
+            auto=False,
+            total_timesteps=1000,
+            eval_freq=1000,
+            deterministic=deterministic,
+        )
+        yt_run.setup()
 
-        red = RedInterface(network_interface)
-        blue = BlueInterface(network_interface)
+        if env_only:
+            return yt_run.env
 
-        env = GenericNetworkEnv(red, blue, network_interface)
+        yt_run.train()
+        yt_run.evaluate()
+        return yt_run
 
-        check_env(env, warn=False)
-        env.reset()
-
-        return env
-
-    return _generate_generic_env_test_reqs
+    return _generate_generic_env_test_run
 
 
 @pytest.fixture
 def basic_2_agent_loop(
-    generate_generic_env_test_reqs, temp_config_from_base
+    generate_generic_env_test_run, temp_config_from_base
 ) -> ActionLoop:
     """Return a basic 2-agent `ActionLoop`."""
 
     def _basic_2_agent_loop(
         settings_path: Optional[str] = default_game_mode_path(),
-        entry_nodes=None,
-        high_value_nodes=None,
+        entry_node_names=None,
+        high_value_node_names=None,
         num_episodes=1,
         custom_settings=None,
         raise_errors=True,
+        deterministic=False,
     ) -> ActionLoop:
         """Use parameterized settings to return a configured ActionLoop."""
         if custom_settings is not None:
             settings_path = temp_config_from_base(settings_path, custom_settings)
 
-        env: GenericNetworkEnv = generate_generic_env_test_reqs(
+        yt_run: YawningTitanRun = generate_generic_env_test_run(
             settings_path=settings_path,
             net_creator_type="18node",
-            entry_nodes=entry_nodes,
-            high_value_nodes=high_value_nodes,
+            entry_node_names=entry_node_names,
+            high_value_node_names=high_value_node_names,
             raise_errors=raise_errors,
+            env_only=False,
+            deterministic=deterministic,
         )
 
-        eval_callback = EvalCallback(
-            Monitor(env), eval_freq=1000, deterministic=False, render=False
-        )
-
-        agent = PPO(
-            PPOMlp, env, verbose=1, seed=env.network_interface.random_seed
-        )  # TODO: allow PPO to inherit environment random_seed. Monkey patch additional feature?
-
-        agent.learn(total_timesteps=1000, n_eval_episodes=100, callback=eval_callback)
-
-        return ActionLoop(env, agent, episode_count=num_episodes)
+        return ActionLoop(yt_run.env, yt_run.agent, episode_count=num_episodes)
 
     return _basic_2_agent_loop
 

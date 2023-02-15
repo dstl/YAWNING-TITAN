@@ -10,14 +10,14 @@ from tests.generic_environment import N_TIME_STEPS_LONG, TOLERANCE
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 
-def test_new_high_value_node(generate_generic_env_test_reqs):
+def test_new_high_value_node(generate_generic_env_test_run):
     """Test the high value node gaol mechanic - focus on selection."""
     # check that a new high value node is being chosen
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "new_high_value_node.yaml"),
         net_creator_type="mesh",
         n_nodes=15,
-        entry_nodes=["0", "1", "2"],
+        entry_node_names=["0", "1", "2"],
     )
     check_env(env, warn=True)
     env.reset()

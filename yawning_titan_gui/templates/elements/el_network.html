@@ -9,7 +9,7 @@
             <i class="bi bi-clipboard"></i>
         </div>
         {% if not network.locked %}
-        <a class="icon" href="{% url 'node editor' network_id=network.uuid %}">
+        <a class="icon" href="{% url 'network creator' network_id=network.uuid %}">
             <i class="bi bi-pencil"></i>
         </a>
         <div class="icon delete">
@@ -17,7 +17,7 @@
         </div>
         <input class="form-check-input icon" type="checkbox" value="">
         {% else %}
-        <a class="icon" href="{% url 'node editor' network_id=network.uuid %}">
+        <a class="icon" href="{% url 'network creator' network_id=network.uuid %}">
             <i class="bi bi-eye"></i>
         </a>
         {% endif %}

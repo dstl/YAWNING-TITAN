@@ -12,9 +12,11 @@ from yawning_titan.networks import network_creator
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB
 from yawning_titan_gui.forms import (
+    GameModeForm,
     GameModeFormManager,
     GameModeSection,
-    NetworkCreatorForm,
+    NetworkTemplateForm,
+    RandomNetworkElementsForm,
 )
 from yawning_titan_gui.helpers import GameModeManager, NetworkManager
 
@@ -111,11 +113,33 @@ class GameModesView(View):
 
         :param: request: the Django page `request` object containing the html data for `game_modes.html` and the server GET / POST request bodies.
         """
+        dialogue_boxes = [
+            {
+                "id": "delete-dialogue",
+                "message": "Are you sure you want to delete the selected game modes(s)?\n\nThis action cannot be undone.",
+                "actions": ["Delete game mode"],
+            },
+            {
+                "id": "create-dialogue",
+                "header": "Create new game mode",
+                "message": "Enter a name for your new game mode",
+                "actions": ["Create"],
+                "input_prompt": "Game mode name...",
+            },
+            {
+                "id": "create-from-dialogue",
+                "header": "Create game mode from",
+                "message": "Enter a name for your new game mode",
+                "actions": ["Create game mode"],
+                "input_prompt": "Game mode name...",
+            },
+        ]
         return render(
             request,
             "game_modes.html",
             {
                 "sidebar": default_sidebar,
+                "dialogue_boxes": dialogue_boxes,
                 "game_modes": GameModeManager.get_game_mode_data(),
             },
         )
@@ -171,20 +195,20 @@ class NetworksView(View):
         dialogue_boxes = [
             {
                 "id": "delete-dialogue",
-                "message": "Are you sure you want to delete the selected network(s)?<br><br>This action cannot be undone.",
+                "message": "Are you sure you want to delete the selected network(s)?\n\nThis action cannot be undone.",
                 "actions": ["Delete network"],
             },
             {
                 "id": "create-dialogue",
                 "header": "Create new network",
-                "message": "Enter a name for your new network config",
+                "message": "Enter a name for your new network",
                 "actions": ["Template network", "Custom network"],
                 "input_prompt": "Network name...",
             },
             {
                 "id": "create-from-dialogue",
                 "header": "Create network from",
-                "message": "Enter a name for your new network config",
+                "message": "Enter a name for your new network",
                 "actions": ["Create network"],
                 "input_prompt": "Network name...",
             },
@@ -230,12 +254,19 @@ class NetworkCreator(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
+        if network_db.get(network_id):
+            NetworkManager.current_network = network_db.get(network_id)
         return render(
             request,
             "network_creator.html",
             {
                 "sidebar": default_sidebar,
-                "form": NetworkCreatorForm(),
+                "forms": {
+                    "template": NetworkTemplateForm(),
+                    "random-elements": RandomNetworkElementsForm(
+                        NetworkManager.current_network.to_dict()
+                    ),
+                },
                 "network_json": json.dumps(
                     NetworkManager.current_network.to_dict(json_serializable=True)
                 ),
@@ -257,12 +288,12 @@ class NetworkCreator(View):
         else:
             creator_type = request.POST.get("type")
             if creator_type == "Mesh":
-                adj_matrix, positions = network_creator.get_mesh_matrix_and_positions(
+                network = network_creator.create_mesh(
                     size=int(request.POST.get("size")),
                     connectivity=float(request.POST.get("connectivity")),
                 )
             elif creator_type == "Star":
-                adj_matrix, positions = network_creator.get_star_matrix_and_positions(
+                network = network_creator.create_star(
                     first_layer_size=int(request.POST.get("first_layer_size")),
                     group_size=int(request.POST.get("star_group_size")),
                     group_connectivity=float(
@@ -270,7 +301,7 @@ class NetworkCreator(View):
                     ),
                 )
             elif creator_type == "P2P":
-                adj_matrix, positions = network_creator.get_p2p_matrix_and_positions(
+                network = network_creator.create_p2p(
                     inter_group_connectivity=float(
                         request.POST.get("inter_group_connectivity")
                     ),
@@ -280,13 +311,10 @@ class NetworkCreator(View):
                     ),
                 )
             elif creator_type == "Ring":
-                adj_matrix, positions = network_creator.get_ring_matrix_and_positions(
+                network = network_creator.create_ring(
                     break_probability=float(request.POST.get("break_probability")),
                     ring_size=int(request.POST.get("ring_size")),
                 )
-            network = network_creator.get_network_from_matrix_and_positions(
-                adj_matrix=adj_matrix, positions=positions
-            )
             NetworkManager.current_network = network
             return JsonResponse(
                 {
@@ -373,9 +401,9 @@ class GameModeConfigView(View):
                 )
             )
 
-        form = GameModeFormManager.get_or_create_form(game_mode_id)
-        section = form.get_section(section_name)
-        return self.render_page(request, section, game_mode_id)
+        game_mode_form = GameModeFormManager.get_or_create_form(game_mode_id)
+        section = game_mode_form.get_section(section_name)
+        return self.render_page(request, section, game_mode_form)
 
     def post(
         self,
@@ -409,13 +437,13 @@ class GameModeConfigView(View):
                 game_mode_id,
                 game_mode_form.get_next_section_name(section_name),
             )
-        return self.render_page(request, section, game_mode_id)
+        return self.render_page(request, section, game_mode_form)
 
     def render_page(
         self,
         request: HttpRequest,
         section: GameModeSection,
-        game_mode_id: str,
+        game_mode_form: GameModeForm,
     ):
         """
         Process pythonic tags in game_mode_config.html and return formatted page.
@@ -427,20 +455,17 @@ class GameModeConfigView(View):
 
         :return: Html string representing an instance of the`GameModeConfigView`
         """
-        print("SEC", section)
         return render(
             request,
             "game_mode_config.html",
             {
-                "sections": GameModeFormManager.get_or_create_form(
-                    game_mode_id
-                ).sections,
+                "sections": game_mode_form.sections,
                 "section": section,
                 "current_section_name": section.name,
                 "last": False,
                 "sidebar": default_sidebar,
-                "game_mode_id": game_mode_id,
-                "protected": game_mode_id in protected_game_mode_ids,
+                "game_mode_name": game_mode_form.game_mode.doc_metadata.name,
+                "protected": game_mode_form.game_mode.doc_metadata.locked,
             },
         )
 
@@ -474,6 +499,13 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
         def create_game_mode():
             game_mode = GameMode()
             GameModeManager.db.insert(game_mode=game_mode, name=item_name)
+            print(
+                "ALL",
+                [
+                    (g.doc_metadata.name, g.doc_metadata.uuid)
+                    for g in GameModeManager.db.all()
+                ],
+            )
             return reverse(
                 "game mode config",
                 kwargs={"game_mode_id": game_mode.doc_metadata.uuid},
@@ -489,11 +521,12 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
             )
 
         def create_template_network():
-            doc = DocMetadata(name=item_name)
-            NetworkManager.current_network = Network(doc_metadata=doc)
+            network = NetworkManager.network_db.insert(
+                network=Network(), name=item_name
+            )
             return reverse(
                 "network creator",
-                kwargs={"network_id": doc.uuid},
+                kwargs={"network_id": network.doc_metadata.uuid},
             )
 
         def delete_game_mode():

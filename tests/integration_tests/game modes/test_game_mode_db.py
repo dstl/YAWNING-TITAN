@@ -59,20 +59,21 @@ def test_game_mode_compatibility_query_network():
 
         network = default_18_node_network()
 
-        # all are compatible as they are either unrestricted or sufficiently sized.
+        # default network is restricted to have between 2-5 entry nodes so this network will not be found
         found = db.search(GameModeSchema.ENTRY_NODES.works_with(network))
         assert len(found) == len(db.all()) - 1
 
-        # all but 1 are compatible as they are unrestricted however default game mode does not work with networks with no entry nodes.
+        # default network is restricted to have between 2-5 high value nodes so this network will not be found
         found = db.search(GameModeSchema.HIGH_VALUE_NODES.works_with(network))
         assert len(found) == len(db.all()) - 1
 
+        # default network is restricted to have between 2-18 network nodes so this network will not be found
         found = db.search(GameModeSchema.NETWORK_NODES.works_with(network))
         assert len(found) == len(db.all()) - 1
 
         # default game mode incompatible with network as high value nodes and network nodes have incompatible counts
         found = db.search(GameModeSchema.NETWORK_COMPATIBILITY.compatible_with(network))
-        assert len(found) == 0
+        assert len(found) == len(db.all()) - 1
 
         db._db.close_and_delete_temp_db()
 
@@ -84,13 +85,14 @@ def test_game_mode_compatibility_query_integer():
         db = GameModeDB()
 
         # all are compatible as they are either unrestricted or sufficiently sized.
-        found = db.search(GameModeSchema.ENTRY_NODES.works_with(1))
+        found = db.search(GameModeSchema.ENTRY_NODES.works_with(3))
         assert len(found) == len(db.all())
 
-        # all but 1 are compatible as they are unrestricted however default game mode does not work with networks with no entry nodes.
+        # default network is restricted to have between 2-5 high value nodes so this network will not be found
         found = db.search(GameModeSchema.HIGH_VALUE_NODES.works_with(0))
         assert len(found) == len(db.all()) - 1
 
+        # all are compatible as they are either unrestricted or sufficiently sized.
         found = db.search(GameModeSchema.NETWORK_NODES.works_with(18))
         assert len(found) == len(db.all()) - 1
 

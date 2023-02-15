@@ -28,7 +28,6 @@ def test_bool_properties_validation(allow_null, test_val, passed, fail_reason):
     bool_properties = BoolProperties(allow_null=allow_null)
 
     validation = bool_properties.validate(test_val)
-    print(validation)
     assert validation.passed == passed
     if not validation.passed:
         assert type(validation.fail_exceptions[0]) == ConfigItemValidationError

@@ -9,6 +9,10 @@ from yawning_titan.config.toolbox.item_types.bool_item import BoolItem
 from yawning_titan.config.toolbox.item_types.float_item import FloatItem
 from yawning_titan.config.toolbox.item_types.int_item import IntItem
 from yawning_titan.game_modes.game_mode import GameMode
+from yawning_titan.networks.network import (
+    RandomEntryNodePreference,
+    RandomHighValueNodePreference,
+)
 from yawning_titan_gui.helpers import GameModeManager, next_key
 
 
@@ -18,7 +22,7 @@ class RangeInput(widgets.NumberInput):
     input_type = "range"
 
 
-class NetworkCreatorForm(django_forms.Form):
+class NetworkTemplateForm(django_forms.Form):
     """Form to contain the options for creating a network from a template."""
 
     def __init__(
@@ -26,7 +30,7 @@ class NetworkCreatorForm(django_forms.Form):
         *args,
         **kwargs,
     ):
-        super(NetworkCreatorForm, self).__init__(*args, **kwargs)
+        super(NetworkTemplateForm, self).__init__(*args, **kwargs)
 
         types = {
             "Mesh": {
@@ -98,7 +102,7 @@ class NetworkCreatorForm(django_forms.Form):
         field_elements = {}
         field_elements["type"] = django_forms.ChoiceField(
             widget=django_forms.Select(
-                attrs={"class": "form-control", "type-selector": ""}
+                attrs={"class": "form-control ", "type-selector": ""}
             ),
             choices=((t, t) for t in types.keys()),
             required=True,
@@ -110,7 +114,7 @@ class NetworkCreatorForm(django_forms.Form):
             for float_item in items["float"]:
                 field_elements[float_item["label"]] = django_forms.FloatField(
                     widget=RangeInput(
-                        attrs={"class": "form-control " + name, "step": "0.01"}
+                        attrs={"class": "form-control" + name, "step": "0.01"}
                     ),
                     required=False,
                     help_text=float_item["description"],
@@ -125,8 +129,109 @@ class NetworkCreatorForm(django_forms.Form):
                     help_text=int_item["description"],
                     label=int_item["label"],
                 )
-        super(NetworkCreatorForm, self).__init__(*args, **kwargs)
+
+        super(NetworkTemplateForm, self).__init__(*args, **kwargs)
         self.fields: Dict[str, django_forms.Field] = field_elements
+
+
+class RandomNetworkElementsForm(django_forms.Form):
+    # Random node selection elements
+    set_random_entry_nodes = django_forms.BooleanField(
+        widget=widgets.CheckboxInput(
+            attrs={
+                "role": "switch",
+                "class": "form-check-input inline",
+                "data-toggle": "random-en",
+            }
+        ),
+        required=True,
+        help_text="Set random entry nodes",
+        label="set_random_entry_nodes",
+    )
+    num_of_random_entry_nodes = django_forms.IntegerField(
+        widget=widgets.NumberInput(attrs={"class": "form-control", "random-en": ""}),
+        required=False,
+        help_text="Number of random entry nodes",
+        label="Number of random entry nodes",
+    )
+    random_entry_node_preference = django_forms.ChoiceField(
+        widget=django_forms.Select(attrs={"class": "form-control", "random-en": ""}),
+        choices=(
+            (t.name, t.name.replace("_", " ").capitalize())
+            for t in RandomEntryNodePreference
+        ),
+        required=False,
+        help_text="The way in which random entry nodes are chosen",
+        label="Random entry node preference",
+    )
+    set_random_high_value_nodes = django_forms.BooleanField(
+        widget=widgets.CheckboxInput(
+            attrs={
+                "role": "switch",
+                "class": "form-check-input inline",
+                "data-toggle": "random-hvn",
+            }
+        ),
+        required=True,
+        help_text="Set random high value nodes",
+        label="set_random_high_value_nodes",
+    )
+    num_of_random_high_value_nodes = django_forms.IntegerField(
+        widget=widgets.NumberInput(attrs={"class": "form-control", "random-hvn": ""}),
+        required=False,
+        help_text="Number of random high value nodes",
+        label="Number of random high value nodes",
+    )
+    random_high_value_node_preference = django_forms.ChoiceField(
+        widget=django_forms.Select(attrs={"class": "form-control", "random-hvn": ""}),
+        choices=(
+            (t.name, t.name.replace("_", " ").capitalize())
+            for t in RandomHighValueNodePreference
+        ),
+        required=False,
+        help_text="The way in which random high value nodes are chosen",
+        label="Random high value node preference",
+    )
+    set_random_vulnerabilities = django_forms.BooleanField(
+        widget=widgets.CheckboxInput(
+            attrs={
+                "role": "switch",
+                "class": "form-check-input inline",
+                "data-toggle": "random-vuln",
+            }
+        ),
+        required=True,
+        help_text="Set vulnerabilities",
+        label="set_random_vulnerabilities",
+    )
+    node_vulnerability_lower_bound = django_forms.FloatField(
+        widget=RangeInput(
+            attrs={
+                "class": "form-control form-range",
+                "step": "0.01",
+                "random-vuln": "",
+            }
+        ),
+        required=False,
+        help_text="The lower bound of the possible vulnerabilities of a node",
+        min_value=0,
+        max_value=1,
+        label="node_vulnerability_lower_bound",
+    )
+    node_vulnerability_upper_bound = django_forms.FloatField(
+        widget=RangeInput(
+            attrs={
+                "class": "form-control form-range",
+                "step": "0.01",
+                "random-vuln": "",
+            }
+        ),
+        required=False,
+        help_text="The upper bound of the possible vulnerabilities of a node",
+        min_value=0,
+        max_value=1,
+        label="node_vulnerability_upper_bound",
+    )
 
 
 class ConfigForm(django_forms.Form):
@@ -409,25 +514,6 @@ class GameModeFormManager:
             form = GameModeForm(GameModeManager.db.get(game_mode_id))
             cls.game_mode_forms[game_mode_id] = form
             return form
-
-    # Checkers
-
-    # @classmethod
-    # def verify(cls, **kwargs):
-    #     """Verify that the lookup keys provided map to a value in :attribute: `GameModeFormManager.forms`."""
-    #     if (
-    #         "game_mode_id" in kwargs
-    #         and kwargs["game_mode_id"] not in cls.game_modes
-    #     ):
-    #         raise ValueError(f"{kwargs['game_mode_id']} has not been created")
-    #     if (
-    #         "section_name" in kwargs
-    #         and kwargs["section_name"]
-    #         not in cls.game_modes[kwargs["game_mode_id"]]
-    #     ):
-    #         raise ValueError(
-    #             f"{kwargs['section_name']} is not in form set for {kwargs['game_mode_id']}"
-    #         )
 
     # Setters
 

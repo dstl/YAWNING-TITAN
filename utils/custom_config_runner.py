@@ -25,14 +25,12 @@ from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.game_modes.game_modes import default_game_mode_path
 from yawning_titan.networks import network_creator
-from yawning_titan.networks.network import Network
 
 game_mode = GameMode.create_from_yaml(default_game_mode_path())
 
-matrix, positions = network_creator.gnp_random_connected_graph(
+network = network_creator.gnp_random_connected_graph(
     n_nodes=15, probability_of_edge=0.02
 )
-network = Network(matrix=matrix, positions=positions)
 
 network_interface = NetworkInterface(game_mode=game_mode, network=network)
 
