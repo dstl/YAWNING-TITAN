@@ -57,7 +57,7 @@ class KeyboardAgent:
             actions += 1
             standard_actions += 1
 
-        node_list = ["Node " + i for i in network_interface.get_nodes()]
+        node_list = ["Node " + i for i in network_interface.current_graph.get_nodes()]
         if settings.blue.action_set.reduce_vulnerability.value:
             full_action_dict["reduce_vulnerability"] = node_list
             top_level_action_mask["reduce_vulnerability"] = actions

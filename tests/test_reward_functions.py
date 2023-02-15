@@ -9,17 +9,17 @@ Used to test the built in reward functions
 """
 
 
-def test_standard_rewards(generate_generic_env_test_reqs):
+def test_standard_rewards(generate_generic_env_test_run):
     """
     Tests the standard reward function.
 
     Will raise an error if the function does not return the expected result
     """
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
         net_creator_type="mesh",
         n_nodes=5,
-        entry_nodes=["0", "1", "2"],
+        entry_node_names=["0", "1", "2"],
     )
 
     assert hasattr(reward_functions, "standard_rewards")
@@ -93,23 +93,43 @@ def test_standard_rewards(generate_generic_env_test_reqs):
         "3": 0.5,
         "4": 0.5,
     }
+    reward_args["end_isolation"] = {
+        "0": True,
+        "1": False,
+        "2": False,
+        "3": False,
+        "4": False,
+    }
 
     reward = reward_functions.standard_rewards(reward_args)
 
-    assert reward == -9.0769
+    assert round(reward, 4) == -0.0769
+
+    # check that isolating a node punishment applies per node
+    reward_args["end_isolation"] = {
+        "0": True,
+        "1": True,
+        "2": False,
+        "3": False,
+        "4": False,
+    }
+
+    reward = reward_functions.standard_rewards(reward_args)
+
+    assert round(reward, 4) == (-0.0769 - 1)
 
 
-def test_safe_gives_rewards(generate_generic_env_test_reqs):
+def test_safe_gives_rewards(generate_generic_env_test_run):
     """
     Tests the safe_nodes_give reward function.
 
     Will raise an error if the function does not return the expected result
     """
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
         net_creator_type="mesh",
         n_nodes=5,
-        entry_nodes=["0", "1", "2"],
+        entry_node_names=["0", "1", "2"],
     )
 
     assert hasattr(reward_functions, "safe_nodes_give_rewards")
@@ -142,20 +162,20 @@ def test_safe_gives_rewards(generate_generic_env_test_reqs):
     assert round(reward, 4) == 5
 
 
-def test_punish_bad_actions(generate_generic_env_test_reqs):
+def test_punish_bad_actions(generate_generic_env_test_run):
     """
     Tests the punish_bad_actions function.
 
     Will raise an error if the function does not return the expected result
     """
-    env: GenericNetworkEnv = generate_generic_env_test_reqs(
+    env: GenericNetworkEnv = generate_generic_env_test_run(
         os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
         net_creator_type="mesh",
         n_nodes=5,
         connectivity=1,
-        entry_nodes=["0", "1", "2"],
+        entry_node_names=["0", "1", "2"],
+        raise_errors=False,
     )
-
     assert hasattr(reward_functions, "punish_bad_actions")
 
     # calculates the reward from the current state of the network
@@ -190,12 +210,16 @@ def test_punish_bad_actions(generate_generic_env_test_reqs):
     reward = reward_functions.punish_bad_actions(reward_args)
 
     assert round(reward, 4) == -1
+
     reward_args["blue_action"] = "add_deceptive_node"
-    s = [env.network_interface.current_deceptive_nodes, 0, 0]
-    env.network_interface.add_deceptive_node("1", "2")
-    s[1] = env.network_interface.current_deceptive_nodes
-    env.network_interface.add_deceptive_node("3", "4")
-    s[2] = env.network_interface.current_deceptive_nodes
+
+    node_1 = env.network_interface.current_graph.get_node_from_name("1")
+    node_2 = env.network_interface.current_graph.get_node_from_name("2")
+    node_3 = env.network_interface.current_graph.get_node_from_name("3")
+    node_4 = env.network_interface.current_graph.get_node_from_name("4")
+
+    env.network_interface.add_deceptive_node(node_1, node_2)
+    env.network_interface.add_deceptive_node(node_3, node_4)
 
     reward = reward_functions.punish_bad_actions(reward_args)
 

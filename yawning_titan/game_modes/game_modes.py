@@ -8,7 +8,7 @@ import os
 import pathlib
 from pathlib import Path
 
-from yawning_titan.config import _LIB_CONFIG_ROOT_PATH
+from yawning_titan.game_modes import _GAME_MODES_ROOT_PATH
 
 
 def default_game_mode_path() -> Path:
@@ -20,9 +20,8 @@ def default_game_mode_path() -> Path:
     """
     return pathlib.Path(
         os.path.join(
-            _LIB_CONFIG_ROOT_PATH,
+            _GAME_MODES_ROOT_PATH,
             "_package_data",
-            "game_modes",
             "default_game_mode.yaml",
         )
     )
@@ -37,9 +36,8 @@ def default_new_game_mode_path() -> Path:
     """
     return pathlib.Path(
         os.path.join(
-            _LIB_CONFIG_ROOT_PATH,
+            _GAME_MODES_ROOT_PATH,
             "_package_data",
-            "game_modes",
             "default_new_game_mode.yaml",
         )
     )
@@ -55,9 +53,8 @@ def low_skill_red_with_random_infection_perfect_detection_path() -> Path:
     """
     return pathlib.Path(
         os.path.join(
-            _LIB_CONFIG_ROOT_PATH,
+            _GAME_MODES_ROOT_PATH,
             "_package_data",
-            "game_modes",
             "low_skill_red_with_random_infection_perfect_detection.yaml",
         )
     )
@@ -71,9 +68,8 @@ def dcbo_game_mode_path() -> Path:
     """
     return pathlib.Path(
         os.path.join(
-            _LIB_CONFIG_ROOT_PATH,
+            _GAME_MODES_ROOT_PATH,
             "_package_data",
-            "game_modes",
             "dcbo_config.yaml",
         )
     )
@@ -88,9 +84,8 @@ def multiple_high_value_targets_game_mode_path() -> Path:
     """
     return pathlib.Path(
         os.path.join(
-            _LIB_CONFIG_ROOT_PATH,
+            _GAME_MODES_ROOT_PATH,
             "_package_data",
-            "game_modes",
             "multiple_high_value_targets.yaml",
         )
     )
