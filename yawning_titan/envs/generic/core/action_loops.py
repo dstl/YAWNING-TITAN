@@ -40,8 +40,8 @@ class ActionLoop:
         render_network=True,
         prompt_to_close=False,
         save_gif=False,
+        deterministic=False,
         output_directory: Path = None,
-        deterministic=True,
         *args,
         **kwargs,
     ):
@@ -68,7 +68,7 @@ class ActionLoop:
             frame_names = []
             current_image = 0
 
-            while done is False:
+            while not done:
                 # gets the agents prediction for the best next action to take
                 action, _states = self.agent.predict(obs, deterministic=deterministic)
 
