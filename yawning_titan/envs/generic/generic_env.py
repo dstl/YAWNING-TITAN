@@ -247,7 +247,10 @@ class GenericNetworkEnv(gym.Env):
 
         # if self.network_interface.gr_loss_tn:
         tn = self.network_interface.get_target_node()
-        if tn is not None:
+        if (
+            tn is not None
+            and self.network_interface.game_mode.game_rules.blue_loss_condition.target_node_lost.value
+        ):
             if tn.true_compromised_status == 1:
                 # If this mode is selected then the game ends if the target node has been compromised
                 done = True

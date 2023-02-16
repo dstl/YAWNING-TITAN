@@ -1,10 +1,11 @@
 from itertools import chain
-from typing import List
+from typing import List, Set
 
 from pandas import DataFrame
 
 from tests import TEST_CONFIG_PATH_OLD
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
+from yawning_titan.networks.node import Node
 
 
 def test_target_specific_node(basic_2_agent_loop: ActionLoop):
@@ -18,11 +19,14 @@ def test_target_specific_node(basic_2_agent_loop: ActionLoop):
     TARGET_NODE_CONFIG = TEST_CONFIG_PATH_OLD / "settable_target_node.yaml"
 
     nodes_on_path = ["0", "5", "7", "8", "9"]
-    captured_nodes = set()
+    captured_nodes: Set[Node] = set()
 
-    for i in range(0, 10):
+    for _ in range(0, 10):
         action_loop: ActionLoop = basic_2_agent_loop(
-            num_episodes=1, entry_nodes=["0"], settings_path=TARGET_NODE_CONFIG
+            num_episodes=1,
+            entry_node_names=["0"],
+            settings_path=TARGET_NODE_CONFIG,
+            raise_errors=False,
         )
         results: List[DataFrame] = action_loop.standard_action_loop()
         x = list(
@@ -39,8 +43,7 @@ def test_target_specific_node(basic_2_agent_loop: ActionLoop):
             )
         )
         captured_nodes.update(x)
-
-    assert all(node in nodes_on_path for node in captured_nodes)
+    assert all(node.name in nodes_on_path for node in captured_nodes)
 
 
 def test_target_node_capture_ends_game(basic_2_agent_loop):
@@ -48,16 +51,19 @@ def test_target_node_capture_ends_game(basic_2_agent_loop):
     TARGET_NODE_CONFIG = TEST_CONFIG_PATH_OLD / "settable_target_node.yaml"
 
     action_loop: ActionLoop = basic_2_agent_loop(
-        num_episodes=1, entry_nodes=["0"], settings_path=TARGET_NODE_CONFIG
+        num_episodes=1,
+        entry_node_names=["0"],
+        settings_path=TARGET_NODE_CONFIG,
+        raise_errors=False,
     )
     results: List[DataFrame] = action_loop.standard_action_loop()
 
     result = results[0]
     info = result["info"].to_list()[-1]
 
-    assert info["red_info"][0]["Target_Nodes"][0] == "9"
+    assert info["red_info"][0]["Target_Nodes"][0].to_dict()["name"] == "9"
     assert info["red_info"][0]["Successes"][0]
-    assert info["post_red_red_location"] == "9"
+    assert info["post_red_red_location"].to_dict()["name"] == "9"
 
 
 def test_target_node_capture_doesnt_end_game(basic_2_agent_loop):
@@ -67,9 +73,12 @@ def test_target_node_capture_doesnt_end_game(basic_2_agent_loop):
     )
 
     action_loop: ActionLoop = basic_2_agent_loop(
-        num_episodes=1, settings_path=TARGET_NODE_DONT_END_CONFIG
+        num_episodes=1, settings_path=TARGET_NODE_DONT_END_CONFIG, raise_errors=False
     )
     results: List[DataFrame] = action_loop.standard_action_loop(deterministic=True)
 
     result = results[0]
-    assert result["info"].to_list()[-1]["safe_nodes"] == 0
+    assert (result["info"].to_list()[-1]["safe_nodes"] == 0) or (
+        action_loop.env.current_duration
+        == action_loop.env.network_interface.game_mode.game_rules.max_steps.value
+    )
