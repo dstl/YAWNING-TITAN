@@ -4,7 +4,7 @@ from tests.unit_tests.config import (
     get_default_config_dict,
     get_default_config_dict_legacy,
 )
-from yawning_titan.config.environment.observation_space_config import ObservationSpace
+from yawning_titan.game_modes.components.observation_space import ObservationSpace
 
 
 @pytest.fixture

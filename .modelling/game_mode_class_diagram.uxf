@@ -1406,7 +1406,7 @@ bg=BLACK</panel_attributes>
       <w>225</w>
       <h>198</h>
     </coordinates>
-    <panel_attributes>ChanceGroup
+    <panel_attributes>NodeChanceGroup
 --
 bg=YELLOW</panel_attributes>
     <additional_attributes/>
