@@ -31,7 +31,7 @@ def test_game_modes_view_post(client: Client):
 
 
 class TestGameModeManagerView:
-    """Test processes executed through requests to the 'Manage game modes' and 'file manager' endpoints."""
+    """Test processes executed through requests to the 'Manage game modes' and 'db manager' endpoints."""
 
     def setup_class(self):
         """Setup a test :class: `~yawning_titan_gui.helpers.GameModeManager`."""
@@ -43,7 +43,7 @@ class TestGameModeManagerView:
             dirs_exist_ok=True,
         )
         GameModeManager.load_game_modes(info_only=True)
-        self.url = reverse("file manager")
+        self.url = reverse("db manager")
 
     def teardown_class(self):
         """Reset the :class: `~yawning_titan_gui.helpers.GameModeManager`."""
@@ -68,7 +68,7 @@ class TestGameModeManagerView:
         assert game_mode_filename in GameModeManager.game_modes
 
     def test_get(self, client: Client):
-        """Test that the `file manager` view cannot accept get requests."""
+        """Test that the `db manager` view cannot accept get requests."""
         response = client.get(self.url)
         assert response.status_code == 400
 

@@ -1,7 +1,7 @@
 :root{
     --primary: #00A86B;
     --primary-light: #A8E4A0;
-    --superlight: #bababa;
+    --superlight: #636363;
     --light: #323233;
     --mid: #252526;
     --dark: #1e1e1e;
@@ -9,6 +9,7 @@
     --text-superlight: #fff;
     --text-light: #999;
     --text-mid: #888;
+    --text-dark: #000000;
 
     --increment: 5px;
     --padding: 50px;
@@ -261,15 +262,24 @@ option:hover{
 }
 
 /* toolbar */
-#toolbar>.stage>i:last-child{
+.toolbar-button>i:last-child{
     display: none;
     color: var(--primary);
 }
-#toolbar>.stage>i:first-child,#toolbar>.stage.complete>i:last-child{
+.toolbar-button>i:first-child,#toolbar>.toolbar-button.active>i:last-child{
     display: block;
 }
-#toolbar>.stage.complete>i:first-child{
+.toolbar-button.active>i:first-child{
     display: none;
+}
+.toolbar-button{
+    background: none;
+    border: none;
+    padding: var(--increment);
+    margin-right: calc((-1*var(--increment))-1);
+}
+.toolbar-button.active{
+    background-color: var(--dark);
 }
 
 /* accordion */
@@ -337,7 +347,7 @@ option:hover{
     color: var(--text-light);
 }
 .description{
-    color: var(--text-dark);
+    color: var(--text-mid);
 }
 
 /* layout helpers */

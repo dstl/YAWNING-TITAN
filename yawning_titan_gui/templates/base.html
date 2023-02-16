@@ -45,10 +45,10 @@
     <div id="window-container">
         <div id="toolbar">
             {% for id, el in toolbar.items %}
-                <div id="{{id}}" class="stage" data-toggle="tooltip" data-placement="right" title="{{el.title}}">
+                <button id="{{id}}-icon" class="toolbar-button {{id}}" data-toggle="tooltip" data-placement="right" title="{{el.title}}">
                     <i class="bi {{el.icon}}"></i>
                     <i class="bi {{el.icon}}-fill"></i>
-                </div>
+                </button>
             {% endfor %}
         </div>
         <div id="window">

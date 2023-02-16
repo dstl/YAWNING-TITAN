@@ -11,7 +11,9 @@
 
 <script type="text/javascript">
     const NETWORK = `{{network_json | safe}}`;
+    const NETWORK_ID = "{{network_id}}";
     const EDITOR_URL = "{% url 'node editor' %}";
+    const UPDATE_URL = "{% url 'update network' %}";
     const handler = {
         set(obj, prop, value) {
             // listen to NETWORK property changes

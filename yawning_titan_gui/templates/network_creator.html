@@ -8,6 +8,10 @@
 
     <script src="{% static 'js/network_creator.js' %}"></script>
 
+    <script type="text/javascript">
+        const UPDATE_URL = "{% url 'update network' %}";
+    </script>
+
 {% endblock %}
 
 {% block top-buttons %}
@@ -21,31 +25,9 @@
         <h2>Template Network</h2>
         <h3>{{network_name}}</h3>
     </header>
-    <div class="fields">
-        {% for form_name,form in forms.items %}
-            <form id="network-creator-form" class="config-form {{form_name}}" action="" method="post">
-                {% for field in form %}
-                    <div class="mb-3 active{% if field.errors %} erroneous{% endif %}">
-                        <div class="info">
-                            <label for="id_{{ field.name }}" class="form-label">{{ field.label|format_text }}</label>
-                            <p class="help-text">{{field.help_text}}</p>
-                            {% if field.errors %}
-                                <ul class="error-list">
-                                    {% for error in field.errors %}
-                                    <li>{{ error|escape }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </div>
-                        <div class="field-container {% if protected %}disabled{% endif %}">
-                            {{ field }}
-                        </div>
-                    </div>
-                {% endfor %}
-            </form>
-        {% endfor %}
+    <div class="form-container">
+        {% include 'elements/el_form.html' with form=form form_name='template' %}
     </div>
-    <div class="flex-break"></div>
     <button type="button" id="save" class="btn btn-primary">Save network</button>
     <a id="open-editor" class="btn btn-primary">Open in editor</a>
 </div>
@@ -126,10 +108,11 @@
         display: flex;
     }
 
-    .fields{
+    .form-container{
         min-height: 0;
         max-height: 100%;
         overflow-y: auto;
+        flex: 1;
     }
 
     app-root{

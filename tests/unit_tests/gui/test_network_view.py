@@ -14,21 +14,21 @@ from yawning_titan_gui.helpers import NetworkManager
 
 
 class TestNetworkView:
-    """Test processes executed through requests to the 'Manage game modes' and 'file manager' endpoints."""
+    """Test processes executed through requests to the 'Manage game modes' and 'db manager' endpoints."""
 
     # test filtering where no high value nodes exist on a network!
 
     def setup_class(self):
         """Setup the components required to test the management of yawning titan networks."""
         with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
-            NetworkManager.network_db = NetworkDB()
+            NetworkManager.db = NetworkDB()
 
-        self.management_url = reverse("file manager")
+        self.management_url = reverse("db manager")
         self.url = reverse("Manage networks")
 
     def teardown_class(self):
         """Reset the components required to test the management of yawning titan networks."""
-        NetworkManager.network_db._db.close_and_delete_temp_db()
+        NetworkManager.db._db.close_and_delete_temp_db()
 
     def assert_correct_response_and_network(
         self, network_name: str, load: str, response: HttpResponse
@@ -39,7 +39,7 @@ class TestNetworkView:
         - The correct game mode config url is returned
         - The game mode exists in the :class: `~yawning_titan.networks.network_db.NetworkDB`
         """
-        network = NetworkManager.network_db.all()[-1]
+        network = NetworkManager.db.all()[-1]
         if load == "next":
             load = reverse(
                 "node editor",
@@ -60,12 +60,12 @@ class TestNetworkView:
         """
         ids = []
         for i in range(n):
-            network = NetworkManager.network_db.get(source_network_id)
+            network = NetworkManager.db.get(source_network_id)
             meta = network.doc_metadata.to_dict()
             meta["uuid"] = None
             meta["locked"] = False
             network._doc_metadata = DocMetadata(**meta)
-            NetworkManager.network_db.insert(network=network, name="temp")
+            NetworkManager.db.insert(network=network, name="temp")
             ids.append(network.doc_metadata.uuid)
         return ids
 
@@ -96,7 +96,7 @@ class TestNetworkView:
     def test_create_from(self, client: Client):
         """Test the function that processes gui requests to :method: `~yawning_titan_gui.helpers.GameModeManager.create_game_mode_from`."""
         network_name = "test2"
-        source_network = NetworkManager.network_db.all()[0]
+        source_network = NetworkManager.db.all()[0]
         response = client.post(
             self.management_url,
             {
@@ -107,22 +107,22 @@ class TestNetworkView:
             },
         )
         self.assert_correct_response_and_network(network_name, "reload", response)
-        assert NetworkManager.network_db.all()[-1] == source_network
+        assert NetworkManager.db.all()[-1] == source_network
 
     def test_delete_single(self, client: Client):
         """Test that a request to delete a single network results in the network associated with the parsed id to be removed from the database."""
-        network = NetworkManager.network_db.all()[0]
+        network = NetworkManager.db.all()[0]
         id = self.create_temp_networks(network.doc_metadata.uuid, 1)[0]
         response = client.post(
             self.management_url,
             {"item_type": "network", "operation": "delete", "item_ids[]": [id]},
         )
         assert response.status_code == 200
-        assert NetworkManager.network_db.get(id) is None
+        assert NetworkManager.db.get(id) is None
 
     def test_delete_multiple(self, client: Client):
         """Test that a request to delete multiple networks results in all the networks associated with the parsed ids to be removed from the database."""
-        network = NetworkManager.network_db.all()[0]
+        network = NetworkManager.db.all()[0]
         ids = self.create_temp_networks(network.doc_metadata.uuid, 5)
         response = client.post(
             self.management_url,
@@ -130,4 +130,4 @@ class TestNetworkView:
         )
         assert response.status_code == 200
         for id in ids:
-            assert NetworkManager.network_db.get(id) is None
+            assert NetworkManager.db.get(id) is None
