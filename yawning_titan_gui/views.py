@@ -10,14 +10,12 @@ from yawning_titan.db.doc_metadata import DocMetadata
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.networks import network_creator
 from yawning_titan.networks.network import Network
-from yawning_titan.networks.network_db import NetworkDB
-from yawning_titan_gui.forms import (
+from yawning_titan_gui.forms.game_mode_forms import (
     GameModeForm,
     GameModeFormManager,
-    GameModeSection,
-    NetworkTemplateForm,
-    RandomNetworkElementsForm,
+    GameModeSection
 )
+from yawning_titan_gui.forms.netowork_forms import NetworkForm, NetworkFormManager, NetworkTemplateForm
 from yawning_titan_gui.helpers import GameModeManager, NetworkManager
 
 default_sidebar = {
@@ -31,14 +29,13 @@ default_sidebar = {
 }
 
 default_toolbar = {
-    "game-mode-set": {"icon": "bi-gear", "title": "Game mode config"},
-    "network-set": {"icon": "bi-diagram-2", "title": "Network config"},
-    "run-config-set": {"icon": "bi-collection-play", "title": "Run config"},
-    "run-view": {"icon": "bi-play", "title": "Run game"},
+    "random-elements": {"icon": "bi-gear", "title": "Set random elements"},
+    "network-nodes": {"icon": "bi-diagram-2", "title": "Network nodes"},
+    # "run-config-set": {"icon": "bi-collection-play", "title": "Run config"},
+    # "run-view": {"icon": "bi-play", "title": "Run game"},
 }
 
 protected_game_mode_ids = ["base_config.yaml"]
-network_db = NetworkDB()
 
 
 class HomeView(View):
@@ -154,7 +151,7 @@ class NetworksView(View):
 
         :param: request: the Django page `request` object containing the html data for `networks.html` and the server GET / POST request bodies.
         """
-        networks = NetworkManager.network_db.all()
+        networks = NetworkManager.db.all()
         range_bound_items = [
             {
                 "name": "entry_nodes",
@@ -246,7 +243,7 @@ class NetworksView(View):
 class NetworkCreator(View):
     """Django page for creating a network from a template."""
 
-    def get(self, request: HttpRequest, *args, network_id: str = None, **kwargs):
+    def get(self, request: HttpRequest, *args, template:int=0, network_id: str = None, **kwargs):
         """Handle page get requests.
 
         Args:
@@ -254,28 +251,23 @@ class NetworkCreator(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        if network_db.get(network_id):
-            NetworkManager.current_network = network_db.get(network_id)
+        network = NetworkManager.db.get(network_id)
         return render(
             request,
             "network_creator.html",
             {
                 "sidebar": default_sidebar,
-                "forms": {
-                    "template": NetworkTemplateForm(),
-                    "random-elements": RandomNetworkElementsForm(
-                        NetworkManager.current_network.to_dict()
-                    ),
-                },
+                "form": NetworkTemplateForm(),
+                # "random_elements_form": NetworkFormManager.get_or_create_form(network_id),
                 "network_json": json.dumps(
-                    NetworkManager.current_network.to_dict(json_serializable=True)
+                    network.to_dict(json_serializable=True)
                 ),
-                "network_name": NetworkManager.current_network.doc_metadata.name,
-                "network_id": NetworkManager.current_network.doc_metadata.uuid,
+                "network_name": network.doc_metadata.name,
+                "network_id": network.doc_metadata.uuid,
             },
         )
 
-    def post(self, request: HttpRequest, *args, network_id: str = None, **kwargs):
+    def post(self, request: HttpRequest, *args, template:int=0, network_id: str = None, **kwargs):
         """Handle page post requests.
 
         :param request: A Django `request` object that contains the data passed from
@@ -283,8 +275,9 @@ class NetworkCreator(View):
             object is accessed.
         """
         if request.POST.get("save"):
-            if NetworkManager.current_network:
-                NetworkManager.network_db.insert(network=NetworkManager.current_network)
+            # if NetworkManager.current_network:
+            #     NetworkManager.db.insert(network=NetworkManager.current_network)
+            pass
         else:
             creator_type = request.POST.get("type")
             if creator_type == "Mesh":
@@ -315,7 +308,12 @@ class NetworkCreator(View):
                     break_probability=float(request.POST.get("break_probability")),
                     ring_size=int(request.POST.get("ring_size")),
                 )
-            NetworkManager.current_network = network
+            current_network = NetworkManager.db.get(network_id)            
+            network._doc_metadata = current_network.doc_metadata # copy the metadata from the old to the new network instance
+            print("CN",network.doc_metadata.to_dict())
+            NetworkManager.db.update(network=network)
+            network_form = NetworkFormManager.get_or_create_form(network_id)
+            network_form.network = network
             return JsonResponse(
                 {
                     "network_json": json.dumps(network.to_dict(json_serializable=True)),
@@ -339,22 +337,21 @@ class NodeEditor(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        if network_db.get(network_id):
-            NetworkManager.current_network = network_db.get(network_id)
-
         return render(
             request,
             "node_editor.html",
             {
                 "sidebar": default_sidebar,
+                "form": NetworkFormManager.get_or_create_form(network_id),
                 "toolbar": default_toolbar,
+                "network_id": network_id,
                 "network_json": json.dumps(
-                    NetworkManager.current_network.to_dict(json_serializable=True)
+                    NetworkManager.db.get(network_id).to_dict(json_serializable=True)
                 ),
             },
         )
 
-    def post(self, request: HttpRequest, *args, **kwargs):
+    def post(self, request: HttpRequest, network_id: str, *args, **kwargs):
         """Handle page post requests.
 
         :param request: A Django `request` object that contains the data passed from
@@ -363,9 +360,10 @@ class NodeEditor(View):
         """
         body = request.body.decode("utf-8")
         io = StringIO(body)
-        dict_n = json.load(io)
-        # network = Network.create(dict_n)
-        print("N", dict_n)
+        dict_n:dict = json.load(io)
+        network = NetworkManager.db.get(network_id)
+        network.set_from_dict()
+        print("N", dict_n.keys())
         # network_db.update(network)
         return render(
             request,
@@ -470,7 +468,7 @@ class GameModeConfigView(View):
         )
 
 
-def config_file_manager(request: HttpRequest) -> JsonResponse:
+def db_manager(request: HttpRequest) -> JsonResponse:
     """
     Create, edit, delete config yaml files.
 
@@ -499,20 +497,13 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
         def create_game_mode():
             game_mode = GameMode()
             GameModeManager.db.insert(game_mode=game_mode, name=item_name)
-            print(
-                "ALL",
-                [
-                    (g.doc_metadata.name, g.doc_metadata.uuid)
-                    for g in GameModeManager.db.all()
-                ],
-            )
             return reverse(
                 "game mode config",
                 kwargs={"game_mode_id": game_mode.doc_metadata.uuid},
             )
 
         def create_network():
-            network = NetworkManager.network_db.insert(
+            network = NetworkManager.db.insert(
                 network=Network(), name=item_name
             )
             return reverse(
@@ -521,9 +512,11 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
             )
 
         def create_template_network():
-            network = NetworkManager.network_db.insert(
+            network = NetworkManager.db.insert(
                 network=Network(), name=item_name
             )
+            NetworkManager.current_network = network
+            print("N",[n.doc_metadata.uuid for n in NetworkManager.db.all()])
             return reverse(
                 "network creator",
                 kwargs={"network_id": network.doc_metadata.uuid},
@@ -536,7 +529,7 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
 
         def delete_network():
             for id in item_ids:
-                NetworkManager.network_db.remove(NetworkManager.network_db.get(id))
+                NetworkManager.db.remove(NetworkManager.db.get(id))
             return "reload"
 
         def create_game_mode_from():
@@ -552,12 +545,12 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
             )
 
         def create_network_from():
-            network = NetworkManager.network_db.get(request.POST.get("source_item_id"))
+            network = NetworkManager.db.get(request.POST.get("source_item_id"))
             meta = network.doc_metadata.to_dict()
             meta["uuid"] = None
             meta["locked"] = False
             network._doc_metadata = DocMetadata(**meta)
-            NetworkManager.network_db.insert(network=network, name=item_name)
+            NetworkManager.db.insert(network=network, name=item_name)
             return reverse(
                 "node editor",
                 kwargs={"network_id": network.doc_metadata.uuid},
@@ -576,15 +569,14 @@ def config_file_manager(request: HttpRequest) -> JsonResponse:
                 "template": create_template_network,
             },
         }
-        print("OPERATION", operation)
+        print("OPERATION", operation, "ids",item_ids,"item type",item_type)
         try:
             return JsonResponse({"load": operations[item_type][operation]()})
         except KeyError as e:
             return JsonResponse({"message:": str(e)}, status=400)
     return JsonResponse({"message:": "FAILED"}, status=400)
 
-
-def update_config(request: HttpRequest) -> JsonResponse:
+def update_game_mode(request: HttpRequest) -> JsonResponse:
     """
     Update the :attribute: `edited_forms` dictionary with the current state of the config and check for errors.
 
@@ -616,3 +608,12 @@ def update_config(request: HttpRequest) -> JsonResponse:
                     {"errors": json.dumps(section.get_form_errors())}, status=400
                 )
     return JsonResponse({"message": "Invalid operation"})
+
+def update_network(request: HttpRequest) -> JsonResponse:
+    """"""
+    if request.method == "POST":
+        print("POSTED",request.POST)
+        # network_form = NetworkFormManager.get_or_create_form(request.POST.get("_network_id"))
+        # print("HFH",network_form.network.to_dict())
+        network_form = NetworkFormManager.update_network(request.POST.get("_network_id"),request.POST)
+        print("DICT",network_form.network.to_dict())

@@ -9,7 +9,7 @@ from yawning_titan.networks.network_db import NetworkDB, NetworkSchema
 class NetworkManager:
     """Handle all interfacing with Yawning Titan networks in :attribute: `network_db` and their info for the GUI session."""
 
-    network_db: NetworkDB = NetworkDB()
+    db: NetworkDB = NetworkDB()
     current_network: Network = None
 
     @classmethod

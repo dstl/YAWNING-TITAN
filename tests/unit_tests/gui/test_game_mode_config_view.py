@@ -9,7 +9,7 @@ from django.urls import reverse
 
 from yawning_titan import GAME_MODES_DIR
 from yawning_titan.config import _LIB_CONFIG_ROOT_PATH
-from yawning_titan_gui.forms import GameModeFormManager
+from yawning_titan_gui.forms.game_mode_forms import GameModeFormManager
 from yawning_titan_gui.helpers import GameModeManager
 
 

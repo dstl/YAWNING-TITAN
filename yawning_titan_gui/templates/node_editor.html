@@ -14,6 +14,9 @@
 
 {% block main %}
 <app-root></app-root>
+<div id="random-elements" class="form-container">
+  {% include 'elements/el_form.html' with form=form form_name='random-elements' %}
+</div>
 {% endblock %}
 
 {% block style %}
@@ -27,6 +30,18 @@
 
     #main{
         padding: 0 !important;
+        position: relative;
+    }
+
+    #random-elements{
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      padding: var(--increment);
+      width: 350px;
+      height: 100%;
+      z-index: 99999;
+      background-color: var(--superlight);
     }
 
     app-root{
@@ -62,6 +77,19 @@
       padding: 0;
       display: flex;
       font-family: Arial, Helvetica, sans-serif
+    }
+
+    .mb-3{
+        display: block;
+    }
+    .mb-3:has(.inline){
+        display: flex;
+    }
+    .field-container:has(.form-switch){
+      max-width: 100px;
+    }
+    .help-text{
+      color: var(--text-dark);
     }
 </style>
 {% endblock %}

@@ -89,7 +89,7 @@ function save_game_mode(){
     config.append('_operation',"save");
     $.ajax({
         type: "POST",
-        url: window.location.origin + "/update_config/",
+        url: window.location.origin + "/update_game_mode/",
         data: config,
         processData: false,
         contentType: false,
@@ -108,7 +108,7 @@ function submit_form(form_element){
     config.append('_operation',"update");
     $.ajax({
         type: "POST",
-        url: window.location.origin + "/update_config/",
+        url: window.location.origin + "/update_game_mode/",
         data: config,
         processData: false,
         contentType: false,

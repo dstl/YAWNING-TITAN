@@ -9,8 +9,9 @@ from yawning_titan_gui.views import (
     NetworkCreator,
     NetworksView,
     NodeEditor,
-    config_file_manager,
-    update_config,
+    db_manager,
+    update_game_mode,
+    update_network
 )
 
 urlpatterns = [
@@ -41,8 +42,9 @@ urlpatterns = [
     ),
     path("node_editor/", NodeEditor.as_view(), name="node editor"),
     path("node_editor/<str:network_id>", NodeEditor.as_view(), name="node editor"),
-    path("manage_files/", config_file_manager, name="file manager"),
-    path("update_config/", update_config, name="update config"),
+    path("manage_db/", db_manager, name="db manager"),
+    path("update_game_mode/", update_game_mode, name="update config"),
+    path("update_network/", update_network, name="update network"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

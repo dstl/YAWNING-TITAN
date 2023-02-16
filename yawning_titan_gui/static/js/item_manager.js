@@ -56,6 +56,8 @@ $(document).ready(function(){
         }
     });
 
+    $("#create-dialogue").submit(false);
+
     $("#create-from-dialogue .submit").click(function(){
         let item_names = [$(this).closest(".dialogue-center").find("input").first().val()];
         if($(this).closest(".dialogue-center").submit(false)){ // check that name field has been entered
@@ -91,7 +93,6 @@ function toggle_delete_all(){
 }
 
 function check_dialogue_filled(dialogue_el){
-    console.log("TEST",$(dialogue_el).find("input").first().val());
     if($(dialogue_el).find("input").first().val() != null){
         return true
     }else{
@@ -114,6 +115,9 @@ function manage_items(operation,item_names=[],item_ids=[],additional_data={}){
             }else{
                 location.href = response.load
             }
+        },
+        error: function(response){
+            console.log(response)
         }
     });
 }

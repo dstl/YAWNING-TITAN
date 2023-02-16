@@ -26,6 +26,15 @@ $(window).on('load', function(){
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
 
+    //activate first toolbar button
+    $(".toolbar-button:first-child").addClass("active");
+
+    //handle toolbar clicks
+    $(".toolbar-button").click(function(){
+        $(".toolbar-button").removeClass("active");
+        $(this).addClass("active");
+    });
+
     $('#sandwich-icon').click(function(){
 		$(this).toggleClass('open');
         $($(this).data("sidebar")).toggleClass('open');

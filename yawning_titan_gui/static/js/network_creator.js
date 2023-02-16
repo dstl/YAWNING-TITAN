@@ -14,21 +14,15 @@ $(document).ready(function(){
             }
         });
         if (update){
-            load_template($("#network-creator-form"));
+            load_template($("#template-form"))
         }
+    });
+    $(".random-elements  .form-control").on("change",function(){        
+        update_network($("#random-elements-form"))
     });
     $("#save").click(function(){
         save_template()
     });
-
-    $(".random-elements .form-check-input").on("change",function(){
-        if($(this).is(":checked")){
-            $(`.random-elements .mb-3:has(.form-control[${$(this).data("toggle")}])`).show();
-        }else{
-            $(`.random-elements .mb-3:has(.form-control[${$(this).data("toggle")}])`).hide();
-        }
-    });
-    $(".random-elements .form-check-input").trigger("change"); // Trigger an initial change call on page ready to hide/show elements.
 });
 
 function load_template(form_element){
@@ -45,8 +39,6 @@ function load_template(form_element){
         success: function(response){
             proxy.NETWORK = response.network_json;
             $("#open-editor").attr("href",EDITOR_URL + response.network_id);
-        },
-        error: function(response){
         }
     });
 }
@@ -55,11 +47,6 @@ function save_template(){
     $.ajax({
         type: "POST",
         url: window.location.href,
-        data: {save:true},
-        success: function(response){
-
-        },
-        error: function(response){
-        }
+        data: {save:true}
     });
 }

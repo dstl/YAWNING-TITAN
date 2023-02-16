@@ -134,7 +134,7 @@ class NetworkDB:
             otherwise :py:class:`None`.
         """
         # self._db.db.clear_cache()
-        doc = self._db.get(uuid)
+        doc = self._db.get(str(uuid))
         if doc:
             return Network.create(doc)
 
@@ -185,7 +185,7 @@ class NetworkDB:
         network.doc_metadata.update(name, description, author)
         # Perform the update and retrieve the returned doc
         doc = self._db.update(
-            network.to_dict(),
+            network.to_dict(json_serializable=True),
             network.doc_metadata.uuid,
             name,
             description,
