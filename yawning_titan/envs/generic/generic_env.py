@@ -311,7 +311,7 @@ class GenericNetworkEnv(gym.Env):
                     self.network_interface.game_mode.rewards.end_rewards_are_multiplied_by_end_state.value
                 ):
                     reward = (
-                        self.network_interface.game_mode.rewards.end_rewards_are_multiplied_by_end_state.value
+                        self.network_interface.game_mode.rewards.for_reaching_max_steps.value
                         * (
                             len(
                                 self.network_interface.current_graph.get_nodes(
