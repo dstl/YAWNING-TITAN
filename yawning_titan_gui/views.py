@@ -337,17 +337,16 @@ class NodeEditor(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
+        network_form = NetworkFormManager.get_or_create_form(network_id)
         return render(
             request,
             "node_editor.html",
             {
                 "sidebar": default_sidebar,
-                "form": NetworkFormManager.get_or_create_form(network_id),
+                "form": network_form,
                 "toolbar": default_toolbar,
                 "network_id": network_id,
-                "network_json": json.dumps(
-                    NetworkManager.db.get(network_id).to_dict(json_serializable=True)
-                ),
+                "network_json": json.dumps(network_form.network.to_dict(json_serializable=True)),
             },
         )
 
@@ -361,9 +360,9 @@ class NodeEditor(View):
         body = request.body.decode("utf-8")
         io = StringIO(body)
         dict_n:dict = json.load(io)
-        network = NetworkManager.db.get(network_id)
-        network.set_from_dict()
-        print("N", dict_n.keys())
+        network_form = NetworkFormManager.update_network(network_id,dict_n)
+        
+        print("N", network_form.network.to_dict())
         # network_db.update(network)
         return render(
             request,
