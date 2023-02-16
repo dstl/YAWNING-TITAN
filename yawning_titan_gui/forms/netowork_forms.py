@@ -1,5 +1,5 @@
 
-from typing import Dict
+from typing import Dict, Union
 
 from django import forms as django_forms
 from django.forms import widgets
@@ -293,7 +293,7 @@ class NetworkFormManager:
         return network_form.network
 
     @classmethod
-    def update_network(cls, network_id: str, data:QueryDict) -> NetworkForm:
+    def update_network(cls, network_id: str, data:Union[dict,QueryDict]) -> NetworkForm:
         """"""
         network = NetworkManager.db.get(network_id)
         form = NetworkForm(network=network,data=data)
