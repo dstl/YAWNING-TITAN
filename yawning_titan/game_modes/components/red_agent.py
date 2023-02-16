@@ -165,7 +165,7 @@ class TargetNodeGroup(ConfigGroup):
         super().validate()
         try:
             if self.target.value and not self.use.value:
-                msg = f"Red is set to target {self.target.value}, if the target is set to a specific node then the element must have `used` set to True"
+                msg = f"Red is set to target {self.target.value}, if the red agent is set to a specific node then the element must have `used` set to True"
                 raise ConfigGroupValidationError(msg)
         except ConfigGroupValidationError as e:
             self.validation.add_validation(msg, e)

@@ -11,8 +11,10 @@ locked files (system defaults) cannot be updated or removed.
 from __future__ import annotations
 
 import os.path
+from abc import ABC
 from datetime import datetime
 from logging import getLogger
+from pathlib import Path
 from typing import Final, List, Mapping, Optional, Union
 
 from tinydb import TinyDB
@@ -26,12 +28,21 @@ from yawning_titan.exceptions import YawningTitanDBCriticalError, YawningTitanDB
 _LOGGER = getLogger(__name__)
 
 
+class YawningTitanDBSchema(ABC):
+    """YawningTitanDBSchema ABC that is implemented by all schema classes."""
+
+    pass
+
+
 class YawningTitanDB:
     """An :py:class:`~abc.ABC` that implements and extends the :class:`~tinydb.database.TinyDB` query functions."""
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, root: Optional[Path] = None):
         self._name: Final[str] = name
-        self._path = DB_DIR / f"{self._name}.json"
+        if root is not None:
+            self._path = root / f"{self._name}.json"
+        else:
+            self._path = DB_DIR / f"{self._name}.json"
 
         if not self._db_file_exist():
             _LOGGER.info(f"New TinyDB .json file created: {self._path}")
@@ -84,7 +95,7 @@ class YawningTitanDB:
     @classmethod
     def _update_doc_updated_at_datetime(cls, doc: Mapping) -> Mapping:
         """
-        Set the created_at field in doc_metadata to the current datetime in iso format.
+        Set the created_at field in _doc_metadata to the current datetime in iso format.
 
         :param doc: A doc.
         :return: The updated doc.
@@ -311,7 +322,6 @@ class YawningTitanDB:
             an attempt to remove a locked doc is made.
         """
         doc = self.db.search(DocMetadataSchema.UUID == uuid)
-        print("")
         if doc:
             if len(doc) > 1:
                 msg = (

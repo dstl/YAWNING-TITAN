@@ -7,9 +7,10 @@ All of the methods interact with the network interface to affect the environment
 """
 import copy
 import random
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Set, Tuple, Union
 
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
+from yawning_titan.networks.node import Node
 
 
 class RedActionSet:
@@ -54,7 +55,7 @@ class RedActionSet:
         )
         self.zero_day_current_day = 0
 
-    def choose_target_node(self) -> Union[Tuple[str, str], Tuple[bool, bool]]:
+    def choose_target_node(self) -> Union[Tuple[Node, Node], Tuple[bool, bool]]:
         """
         Choose a target node.
 
@@ -63,40 +64,40 @@ class RedActionSet:
             The node attacking the target node (False if no possible nodes to attack)
         """
         # creates a set of nodes that the red agent could attack
-        possible_to_attack = set()
+        possible_to_attack: Set[Node] = set()
         original_node = {}
         if (
             self.network_interface.game_mode.red.agent_attack.attack_from.any_red_node.value
         ):
-            nodes = self.network_interface.get_nodes(filter_true_compromised=True)
+            nodes = self.network_interface.current_graph.get_nodes(
+                filter_true_compromised=True
+            )
             # runs through the connected nodes and adds the safe nodes to a set of possible nodes to attack
             for node in nodes:
                 # If red can attack from any compromised node
                 connected = self.network_interface.get_current_connected_nodes(node)
                 for connected_node in connected:
-                    if (
-                        self.network_interface.get_single_node_state(connected_node)
-                        == 0
-                    ):
+                    if connected_node.true_compromised_status == 0:
                         original_node[connected_node] = node
                         possible_to_attack.add(connected_node)
         elif (
             self.network_interface.game_mode.red.agent_attack.attack_from.only_main_red_node.value
         ):
             # If red can only attack from the central red node
-            red_location = self.network_interface.get_red_location()
-            if red_location is not None:
+            if self.network_interface.red_current_location is not None:
                 connected = self.network_interface.get_current_connected_nodes(
-                    red_location
+                    self.network_interface.red_current_location
                 )
                 for node in connected:
-                    if self.network_interface.get_single_node_state(node) == 0:
-                        original_node[node] = self.network_interface.get_red_location()
+                    if node.true_compromised_status == 0:
+                        original_node[
+                            node
+                        ] = self.network_interface.red_current_location
                         possible_to_attack.add(node)
         # also adds entry nodes into the set of possible nodes. This is the red agents entrance into the network
-        entry_nodes = self.network_interface.get_entry_nodes()
-        for node in entry_nodes:
-            if self.network_interface.get_single_node_state(node) == 0:
+
+        for node in self.network_interface.current_graph.entry_nodes:
+            if node.true_compromised_status == 0:
                 possible_to_attack.add(node)
                 original_node[node] = None
 
@@ -105,9 +106,8 @@ class RedActionSet:
         weights = []
         # red can prioritise nodes based on some different parameters chosen in the settings menu
         if self.network_interface.game_mode.red.target_mechanism.random.value:
-            for _ in possible_to_attack:
-                # equal weighting for all nodes
-                weights.append(1)
+            # equal weighting for all nodes
+            weights = [1] * len(possible_to_attack)
         elif (
             self.network_interface.game_mode.red.target_mechanism.prioritise_connected_nodes.value
         ):
@@ -132,17 +132,13 @@ class RedActionSet:
         ):
             for node in possible_to_attack:
                 # higher vulnerability means a higher weight
-                weights.append(
-                    self.network_interface.get_single_node_vulnerability(node)
-                )
+                weights.append(1 / node.vulnerability_score)
         elif (
             self.network_interface.game_mode.red.target_mechanism.prioritise_resilient_nodes.value
         ):
             for node in possible_to_attack:
                 # higher vulnerability means a lower weight
-                weights.append(
-                    1 / self.network_interface.get_single_node_vulnerability(node)
-                )
+                weights.append(1 / node.vulnerability_score)
         elif (
             self.network_interface.game_mode.red.target_mechanism.target_specific_node.use.value
             or self.network_interface.game_mode.red.target_mechanism.target_specific_node.target.value
@@ -170,7 +166,7 @@ class RedActionSet:
             # If the red agent cannot attack anything then return False showing that the attack has failed
             return False, False
         if sum(weights) == 0:
-            for counter, i in enumerate(weights):
+            for counter, _ in enumerate(weights):
                 weights[counter] = 1
         weights_normal = [float(i) / sum(weights) for i in weights]
         # Chooses a target with some being more likely than others
@@ -226,11 +222,15 @@ class RedActionSet:
                 The new red location
                 The old red location
         """
-        if self.network_interface.get_red_location() is None:
+        if self.network_interface.red_current_location is None:
             # If the central red agent is not in the environment then it will enter through the entry points
             connected = list(
-                set(self.network_interface.get_entry_nodes()).intersection(
-                    set(self.network_interface.get_nodes(filter_true_compromised=True))
+                set(self.network_interface.current_graph.entry_nodes).intersection(
+                    set(
+                        self.network_interface.current_graph.get_nodes(
+                            filter_true_compromised=True
+                        )
+                    )
                 )
             )
         else:
@@ -238,22 +238,26 @@ class RedActionSet:
             connected = list(
                 set(
                     self.network_interface.get_current_connected_nodes(
-                        self.network_interface.get_red_location()
+                        self.network_interface.red_current_location
                     )
                 ).intersection(
-                    set(self.network_interface.get_nodes(filter_true_compromised=True))
+                    set(
+                        self.network_interface.current_graph.get_nodes(
+                            filter_true_compromised=True
+                        )
+                    )
                 )
             )
         # gets the current location and copies it. This is for logging purposes to ensure that the red agent moves
         # correctly
-        pre = copy.deepcopy(self.network_interface.get_red_location())
+        pre = copy.deepcopy(self.network_interface.red_current_location)
         if len(connected) != 0:
             direction = random.choices(population=connected, k=1)[0]
-            self.network_interface.update_red_location(direction)
+            self.network_interface.red_current_location = direction
             return {
                 "Action": "random_move",
                 "Attacking_Nodes": [pre],
-                "Target_Nodes": [self.network_interface.get_red_location()],
+                "Target_Nodes": [self.network_interface.red_current_location],
                 "Successes": [True],
             }
 
@@ -304,14 +308,14 @@ class RedActionSet:
             self.zero_day_amount -= 1
             self.network_interface.attack_node(target, guarantee=True)
             # Moves the red agent to the attacked location
-            if self.network_interface.get_red_location() is None:
+            if self.network_interface.red_current_location is None:
                 # moves the red agent into the network if it is not currently
-                if target in self.network_interface.get_entry_nodes():
-                    self.network_interface.update_red_location(target)
+                if target in self.network_interface.current_graph.entry_nodes:
+                    self.network_interface.red_current_location = target
             elif target in self.network_interface.get_current_connected_nodes(
-                self.network_interface.get_red_location()
+                self.network_interface.red_current_location
             ):
-                self.network_interface.update_red_location(target)
+                self.network_interface.red_current_location = target
             return {
                 "Action": "zero_day",
                 "Attacking_Nodes": [attacking_node],
@@ -346,7 +350,6 @@ class RedActionSet:
                 "Target_Nodes": [],
                 "Successes": [False],
             }
-
         attack_status = self.network_interface.attack_node(
             target,
             skill=self.skill,
@@ -358,13 +361,13 @@ class RedActionSet:
         )
         if attack_status:
             # update the location of the red agent if applicable
-            if self.network_interface.get_red_location() is None:
-                if target in self.network_interface.get_entry_nodes():
-                    self.network_interface.update_red_location(target)
+            if self.network_interface.red_current_location is None:
+                if target in self.network_interface.current_graph.entry_nodes:
+                    self.network_interface.red_current_location = target
             elif target in self.network_interface.get_current_connected_nodes(
-                self.network_interface.get_red_location()
+                self.network_interface.red_current_location
             ):
-                self.network_interface.update_red_location(target)
+                self.network_interface.red_current_location = target
             return {
                 "Action": "basic_attack",
                 "Attacking_Nodes": [attacking_node],
@@ -397,7 +400,7 @@ class RedActionSet:
         attacking_nodes = []
 
         # gets a list of all the compromised nodes
-        compromised_nodes = self.network_interface.get_nodes(
+        compromised_nodes = self.network_interface.current_graph.get_nodes(
             filter_true_compromised=True
         )
 
@@ -410,7 +413,7 @@ class RedActionSet:
             for node in self.network_interface.get_current_connected_nodes(
                 compromised_node
             ):
-                if self.network_interface.get_single_node_state(node) == 0:
+                if node.true_compromised_status == 0:
                     # add the current node to the set of nodes connected to a compromised node
                     set_of_spreading_nodes.add(node)
                     attacking_node_map[node] = compromised_node
@@ -443,13 +446,12 @@ class RedActionSet:
 
                     attacking_nodes.append(attacking_node_map[node])
                     targets.append(node)
-
         if (
             self.network_interface.game_mode.red.natural_spreading.chance.to_connected_node
         ):
             # Calculate the list of nodes that are not connected to a compromised node
             nodes_not_connected_to_red = (
-                set(self.network_interface.get_nodes())
+                set(self.network_interface.current_graph.get_nodes())
                 .difference(set(compromised_nodes))
                 .difference(set_of_spreading_nodes)
             )
@@ -505,13 +507,13 @@ class RedActionSet:
         if (
             self.network_interface.game_mode.red.agent_attack.attack_from.any_red_node.value
         ):
-            compromised_nodes = self.network_interface.get_nodes(
+            compromised_nodes = self.network_interface.current_graph.get_nodes(
                 filter_true_compromised=True
             )
         if (
             self.network_interface.game_mode.red.agent_attack.attack_from.only_main_red_node.value
         ):
-            compromised_nodes = [self.network_interface.get_red_location()]
+            compromised_nodes = [self.network_interface.red_current_location]
         nodes = []
         # store the location the attack originated from
         attacking_nodes = []
@@ -519,11 +521,9 @@ class RedActionSet:
         for node in compromised_nodes:
             if node is None:
                 # If red does not control any nodes then the entry nodes are used
-                connected_nodes = self.network_interface.get_entry_nodes()
+                connected_nodes = self.network_interface.current_graph.entry_nodes
                 connected_nodes = [
-                    con_node
-                    for con_node in connected_nodes
-                    if self.network_interface.get_single_node_state(con_node) == 0
+                    n for n in connected_nodes if n.true_compromised_status == 0
                 ]
                 attacking_nodes.extend([None] * len(connected_nodes))
             else:
@@ -531,10 +531,9 @@ class RedActionSet:
                     node
                 )
                 connected_nodes = [
-                    con_node
-                    for con_node in connected_nodes
-                    if self.network_interface.get_single_node_state(con_node) == 0
+                    n for n in connected_nodes if n.true_compromised_status == 0
                 ]
+
                 attacking_nodes.extend([node] * len(connected_nodes))
             for connected_node in connected_nodes:
                 nodes.append(connected_node)
@@ -549,8 +548,8 @@ class RedActionSet:
                 )
                 if attack_status:
                     # If the attack succeeds
-                    if node == self.network_interface.get_red_location():
-                        self.network_interface.update_red_location(connected_node)
+                    if node == self.network_interface.red_current_location:
+                        self.network_interface.red_current_location = connected_node
                     # Since spread can attack multiple nodes in one go the agent remembers the success of each of the
                     # attacks in a list
                     success.append(True)
@@ -578,7 +577,9 @@ class RedActionSet:
             A list of the attacking nodes
         """
         # gets the nodes that are currently safe
-        safe_nodes = self.network_interface.get_nodes(filter_true_safe=True)
+        safe_nodes = self.network_interface.current_graph.get_nodes(
+            filter_true_safe=True
+        )
         success = []
         nodes = []
         attacking_nodes = []
