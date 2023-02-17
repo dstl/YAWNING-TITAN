@@ -1,0 +1,16 @@
+<div class="node-colour-key-container">
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Node Colour Key
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="node-colour-key-list">
+        <app-node-colour-key-item *ngFor="let key of colourKeyList()" [label]="key.selector" [style]="key.style"></app-node-colour-key-item>
+      </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
