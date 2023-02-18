@@ -1,6 +1,7 @@
 $(document).ready(function(){
-    $("#random-elements  .form-control").on("change",function(){        
-        update_network($("#random-elements-form"))
+    $("#random-elements-form .form-check-input, #random-elements-form .form-control").on("change",function(){
+        console.log("UPDATING...");
+        update_network($("#random-elements-form"));
     });
 
     $("#random-elements .form-check-input").on("change",function(){
@@ -12,7 +13,7 @@ $(document).ready(function(){
     });
     $("#random-elements .form-check-input").trigger("change"); // Trigger an initial change call on page ready to hide/show elements.
 
-    //Open\close randome elements menu
+    //Open\close random elements menu
     $(".toolbar-button").click(function(){
         $(this).addClass("active");
         if($(this).hasClass("random-elements")){
@@ -37,6 +38,7 @@ function update_network(form_element){
         cache: false,
         dataType: "json",
         success: function(response){
+            console.log(response.message)
         }
     });
 }

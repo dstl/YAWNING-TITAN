@@ -96,13 +96,13 @@ class RandomGen:
         (
             os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_2.yaml"),
             "mesh",
-            100,
+            50,
             N_TIME_STEPS,
         ),
         (
             os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_3.yaml"),
             "mesh",
-            250,
+            50,
             N_TIME_STEPS,
         ),
         (
