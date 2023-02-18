@@ -13,9 +13,13 @@ from yawning_titan.networks.network import Network
 from yawning_titan_gui.forms.game_mode_forms import (
     GameModeForm,
     GameModeFormManager,
-    GameModeSection
+    GameModeSection,
 )
-from yawning_titan_gui.forms.netowork_forms import NetworkForm, NetworkFormManager, NetworkTemplateForm
+from yawning_titan_gui.forms.netowork_forms import (
+    NetworkForm,
+    NetworkFormManager,
+    NetworkTemplateForm,
+)
 from yawning_titan_gui.helpers import GameModeManager, NetworkManager
 
 default_sidebar = {
@@ -152,6 +156,7 @@ class NetworksView(View):
         :param: request: the Django page `request` object containing the html data for `networks.html` and the server GET / POST request bodies.
         """
         networks = NetworkManager.db.all()
+        print("LEN", len(networks))
         range_bound_items = [
             {
                 "name": "entry_nodes",
@@ -243,7 +248,14 @@ class NetworksView(View):
 class NetworkCreator(View):
     """Django page for creating a network from a template."""
 
-    def get(self, request: HttpRequest, *args, template:int=0, network_id: str = None, **kwargs):
+    def get(
+        self,
+        request: HttpRequest,
+        *args,
+        template: int = 0,
+        network_id: str = None,
+        **kwargs,
+    ):
         """Handle page get requests.
 
         Args:
@@ -259,15 +271,20 @@ class NetworkCreator(View):
                 "sidebar": default_sidebar,
                 "form": NetworkTemplateForm(),
                 # "random_elements_form": NetworkFormManager.get_or_create_form(network_id),
-                "network_json": json.dumps(
-                    network.to_dict(json_serializable=True)
-                ),
+                "network_json": json.dumps(network.to_dict(json_serializable=True)),
                 "network_name": network.doc_metadata.name,
                 "network_id": network.doc_metadata.uuid,
             },
         )
 
-    def post(self, request: HttpRequest, *args, template:int=0, network_id: str = None, **kwargs):
+    def post(
+        self,
+        request: HttpRequest,
+        *args,
+        template: int = 0,
+        network_id: str = None,
+        **kwargs,
+    ):
         """Handle page post requests.
 
         :param request: A Django `request` object that contains the data passed from
@@ -308,9 +325,10 @@ class NetworkCreator(View):
                     break_probability=float(request.POST.get("break_probability")),
                     ring_size=int(request.POST.get("ring_size")),
                 )
-            current_network = NetworkManager.db.get(network_id)            
-            network._doc_metadata = current_network.doc_metadata # copy the metadata from the old to the new network instance
-            print("CN",network.doc_metadata.to_dict())
+            current_network = NetworkManager.db.get(network_id)
+            network._doc_metadata = (
+                current_network.doc_metadata
+            )  # copy the metadata from the old to the new network instance
             NetworkManager.db.update(network=network)
             network_form = NetworkFormManager.get_or_create_form(network_id)
             network_form.network = network
@@ -329,7 +347,7 @@ class NodeEditor(View):
     implements 'get' and 'post' methods to handle page requests.
     """
 
-    def get(self, request: HttpRequest, network_id: str, *args, **kwargs):
+    def get(self, request: HttpRequest, *args, network_id: str = None, **kwargs):
         """Handle page get requests.
 
         Args:
@@ -346,11 +364,13 @@ class NodeEditor(View):
                 "form": network_form,
                 "toolbar": default_toolbar,
                 "network_id": network_id,
-                "network_json": json.dumps(network_form.network.to_dict(json_serializable=True)),
+                "network_json": json.dumps(
+                    network_form.network.to_dict(json_serializable=True)
+                ),
             },
         )
 
-    def post(self, request: HttpRequest, network_id: str, *args, **kwargs):
+    def post(self, request: HttpRequest, *args, network_id: str = None, **kwargs):
         """Handle page post requests.
 
         :param request: A Django `request` object that contains the data passed from
@@ -359,16 +379,20 @@ class NodeEditor(View):
         """
         body = request.body.decode("utf-8")
         io = StringIO(body)
-        dict_n:dict = json.load(io)
-        network_form = NetworkFormManager.update_network(network_id,dict_n)
-        
+        dict_n: dict = json.load(io)
+
+        # find network id as not passed
+        network_id = dict_n["_doc_metadata"]["uuid"]
+
+        print("ID=", network_id)
+        network_form = NetworkFormManager.update_network_elements(network_id, dict_n)
+
         print("N", network_form.network.to_dict())
-        # network_db.update(network)
-        return render(
-            request,
-            "node_editor.html",
-            {"sidebar": default_sidebar, "toolbar": default_toolbar},
-        )
+        # return render(
+        #     request,
+        #     "node_editor.html",
+        #     {"sidebar": default_sidebar, "toolbar": default_toolbar},
+        # )
 
 
 class GameModeConfigView(View):
@@ -502,20 +526,14 @@ def db_manager(request: HttpRequest) -> JsonResponse:
             )
 
         def create_network():
-            network = NetworkManager.db.insert(
-                network=Network(), name=item_name
-            )
+            network = NetworkManager.db.insert(network=Network(), name=item_name)
             return reverse(
                 "node editor",
                 kwargs={"network_id": network.doc_metadata.uuid},
             )
 
         def create_template_network():
-            network = NetworkManager.db.insert(
-                network=Network(), name=item_name
-            )
-            NetworkManager.current_network = network
-            print("N",[n.doc_metadata.uuid for n in NetworkManager.db.all()])
+            network = NetworkManager.db.insert(network=Network(), name=item_name)
             return reverse(
                 "network creator",
                 kwargs={"network_id": network.doc_metadata.uuid},
@@ -568,12 +586,13 @@ def db_manager(request: HttpRequest) -> JsonResponse:
                 "template": create_template_network,
             },
         }
-        print("OPERATION", operation, "ids",item_ids,"item type",item_type)
+        print("OPERATION", operation, "ids", item_ids, "item type", item_type)
         try:
             return JsonResponse({"load": operations[item_type][operation]()})
         except KeyError as e:
             return JsonResponse({"message:": str(e)}, status=400)
     return JsonResponse({"message:": "FAILED"}, status=400)
+
 
 def update_game_mode(request: HttpRequest) -> JsonResponse:
     """
@@ -608,11 +627,16 @@ def update_game_mode(request: HttpRequest) -> JsonResponse:
                 )
     return JsonResponse({"message": "Invalid operation"})
 
+
 def update_network(request: HttpRequest) -> JsonResponse:
     """"""
     if request.method == "POST":
-        print("POSTED",request.POST)
+        print("=" * 150)
+        # print("POSTED",request.POST)
         # network_form = NetworkFormManager.get_or_create_form(request.POST.get("_network_id"))
         # print("HFH",network_form.network.to_dict())
-        network_form = NetworkFormManager.update_network(request.POST.get("_network_id"),request.POST)
-        print("DICT",network_form.network.to_dict())
+        network_form = NetworkFormManager.update_network_attributes(
+            request.POST.get("_network_id"), request.POST
+        )
+        # print("DICT",network_form.network.to_dict())
+        return JsonResponse({"message": "saved"})

@@ -247,7 +247,10 @@ class GenericNetworkEnv(gym.Env):
 
         # if self.network_interface.gr_loss_tn:
         tn = self.network_interface.get_target_node()
-        if tn is not None:
+        if (
+            tn is not None
+            and self.network_interface.game_mode.game_rules.blue_loss_condition.target_node_lost.value
+        ):
             if tn.true_compromised_status == 1:
                 # If this mode is selected then the game ends if the target node has been compromised
                 done = True
@@ -311,7 +314,7 @@ class GenericNetworkEnv(gym.Env):
                     self.network_interface.game_mode.rewards.end_rewards_are_multiplied_by_end_state.value
                 ):
                     reward = (
-                        self.network_interface.game_mode.rewards.end_rewards_are_multiplied_by_end_state.value
+                        self.network_interface.game_mode.rewards.for_reaching_max_steps.value
                         * (
                             len(
                                 self.network_interface.current_graph.get_nodes(
@@ -430,15 +433,6 @@ class GenericNetworkEnv(gym.Env):
         else:
             attacks = self.network_interface.true_attacks
         reward = round(self.current_reward, 2)
-        # if (
-        #     self.network_interface.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value
-        # ):
-        # iterate through the high value nodes
-        # for node in self.network_interface.current_graph.high_value_nodes:
-        #     special_nodes[node] = {
-        #         "description": "high value node",
-        #         "colour": "#da2fed",
-        #     }
 
         # sends the current information to a graph plotter to display the information visually
         self.graph_plotter.render(

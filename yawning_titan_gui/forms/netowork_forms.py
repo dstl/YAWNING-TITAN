@@ -1,4 +1,3 @@
-
 from typing import Dict, Union
 
 from django import forms as django_forms
@@ -13,6 +12,7 @@ from yawning_titan.networks.network import (
 from yawning_titan.networks.network_db import NetworkDB
 from yawning_titan_gui.forms import RangeInput
 from yawning_titan_gui.helpers import NetworkManager
+
 
 class NetworkTemplateForm(django_forms.Form):
     """Form to contain the options for creating a network from a template."""
@@ -106,7 +106,7 @@ class NetworkTemplateForm(django_forms.Form):
             for float_item in items["float"]:
                 field_elements[float_item["label"]] = django_forms.FloatField(
                     widget=RangeInput(
-                        attrs={"class": "form-control" + name, "step": "0.01"}
+                        attrs={"class": "form-control " + name, "step": "0.01"}
                     ),
                     required=False,
                     help_text=float_item["description"],
@@ -224,23 +224,26 @@ class NetworkForm(django_forms.Form):
         max_value=1,
         label="node_vulnerability_upper_bound",
     )
+
     def __init__(
         self,
         network: Network,
         *args,
         **kwargs,
-    ): 
+    ):
         self.name = network.doc_metadata.name
         self.network = network
-        super(NetworkForm, self).__init__(*args,**kwargs)
+        super(NetworkForm, self).__init__(*args, **kwargs)
 
         if self.is_bound:
+            print("TRYING TO SET FORM NETWORK")
             self.is_valid()
-            print("DATA",self.cleaned_data)
             try:
                 self.network.set_from_dict(self.cleaned_data)
             except Exception as e:
-                print("EXCC",e)
+                print("EXCC", e)
+                self.add_error(None, str(e))
+                print("ERRORS", self.errors)
 
 
 class NetworkFormManager:
@@ -256,7 +259,7 @@ class NetworkFormManager:
     # Getters
 
     @classmethod
-    def get_or_create_form(cls, network_id:str) -> NetworkForm:
+    def get_or_create_form(cls, network_id: str) -> NetworkForm:
         """
         Get or create the form for the current :param:`network_id`.
 
@@ -270,6 +273,7 @@ class NetworkFormManager:
             return cls.network_forms[network_id]
         else:
             network = NetworkManager.db.get(network_id)
+            print("NETWORK = ", network.doc_metadata.to_dict())
             form = NetworkForm(network)
             cls.network_forms[network_id] = form
             return form
@@ -293,9 +297,31 @@ class NetworkFormManager:
         return network_form.network
 
     @classmethod
-    def update_network(cls, network_id: str, data:Union[dict,QueryDict]) -> NetworkForm:
+    def update_network_attributes(cls, network_id: str, data: QueryDict) -> NetworkForm:
         """"""
+        print("ALL1", [n.doc_metadata.uuid for n in NetworkManager.db.all()])
         network = NetworkManager.db.get(network_id)
-        form = NetworkForm(network=network,data=data)
+        print("CHECK...", network_id, type(network_id))
+
+        print("BU", network.doc_metadata.to_dict())
+        form = NetworkForm(
+            network=network, data=data
+        )  # create a new network form an update with the new data
+        print("ERRORS2", form.errors)
+        if form.is_valid():
+            print("UPDATING ATTRS")
+            NetworkManager.db.update(form.network)  # update the network in the database
+        else:
+            print("UPDATE FAILED")
         cls.network_forms[network_id] = form
+        print("ALL2", [n.doc_metadata.uuid for n in NetworkManager.db.all()])
+        print("DICT", NetworkManager.db.get(network_id).to_dict())
+        return form
+
+    @classmethod
+    def update_network_elements(cls, network_id: str, data: dict) -> NetworkForm:
+        """"""
+        form = cls.get_or_create_form(network_id)
+        form.network.set_from_dict(config_dict=data)
+        NetworkManager.db.update(form.network)  # update the network in the database
         return form

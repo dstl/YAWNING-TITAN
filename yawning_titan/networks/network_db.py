@@ -110,7 +110,6 @@ class NetworkDB:
         :param author: The config author.
         :return: The inserted :class:`~yawning_titan.networks.network.Network`.
         """
-        print(network.doc_metadata)
         network.doc_metadata.update(name, description, author)
         self._db.insert(network.to_dict(json_serializable=True))
 
@@ -134,7 +133,7 @@ class NetworkDB:
             otherwise :py:class:`None`.
         """
         # self._db.db.clear_cache()
-        doc = self._db.get(str(uuid))
+        doc = self._db.get(uuid)
         if doc:
             return Network.create(doc)
 
