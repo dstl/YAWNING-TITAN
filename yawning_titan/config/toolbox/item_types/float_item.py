@@ -87,7 +87,7 @@ class FloatItem(ConfigItem):
 
     def __init__(
         self,
-        value: bool,
+        value: float,
         doc: Optional[str] = None,
         alias: Optional[str] = None,
         depends_on: Optional[List[str]] = None,

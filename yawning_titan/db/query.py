@@ -1,4 +1,6 @@
 """The :mod:`~yawning_titan.db.query` module provides a Yawning-Titan extension to :class:`tinydb.queries.Query`."""
+from __future__ import annotations
+
 from tinydb import Query
 from tinydb.queries import QueryInstance
 
@@ -7,7 +9,7 @@ class YawningTitanQuery(Query):
     """
     The :class:`~yawning_titan.db.query.YawningTitanQuery` class extends :class:`tinydb.queries.Query`.
 
-    Extended to provide common pre-defined test functions that call :func:`tinydb.queries.Query.test`, rather that
+    Extended to provide common pre-defined test functions that call :func:`tinydb.queries.Query.test`, rather than
     forcing the user to build a function/lambda function each time and pass it to test.
     """
 
