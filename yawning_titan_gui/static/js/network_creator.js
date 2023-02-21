@@ -7,17 +7,11 @@ $(document).ready(function(){
         $(`.template  .mb-3:has(.${$(this).val()})`).show();
     });
     $(".template  .form-control").on("change",function(){
-        let update = true;
-        $(".template ."+$("select[type-selector]").val()).each(function(){
-            if($(this).val() == null){
-                update = false
-            }
-        });
-        if (update){
+        if (check_form_filled(".template ."+$("select[type-selector]").val())){
             load_template($("#template-form"))
         }
     });
-    $(".random-elements  .form-control").on("change",function(){        
+    $(".random-elements  .form-control").on("change",function(){
         update_network($("#random-elements-form"))
     });
     $("#save").click(function(){

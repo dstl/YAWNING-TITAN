@@ -39,7 +39,11 @@ class TestNetworkView:
         - The correct game mode config url is returned
         - The game mode exists in the :class: `~yawning_titan.networks.network_db.NetworkDB`
         """
-        network = NetworkManager.db.all()[-1]
+        networks = [
+            g for g in NetworkManager.db.all() if g.doc_metadata.name == network_name
+        ]
+        network = networks[0]
+        assert len(networks) > 0
         if load == "next":
             load = reverse(
                 "node editor",
@@ -49,6 +53,7 @@ class TestNetworkView:
         assert response.status_code == 200
         assert response.content == json.dumps({"load": load}).encode("utf-8")
         assert network.doc_metadata.name == network_name
+        return network
 
     def create_temp_networks(self, source_network_id: str, n: int = 1) -> List[str]:
         """Create a number of temporary networks as copies of an existing network.
@@ -106,8 +111,14 @@ class TestNetworkView:
                 "item_names[]": [network_name],
             },
         )
-        self.assert_correct_response_and_network(network_name, "reload", response)
-        assert NetworkManager.db.all()[-1] == source_network
+        network = self.assert_correct_response_and_network(
+            network_name, "next", response
+        )
+        network_dict = network.to_dict()
+        network_dict.pop("_doc_metadata")
+        source_network_dict = source_network.to_dict()
+        source_network_dict.pop("_doc_metadata")
+        assert network_dict == source_network_dict
 
     def test_delete_single(self, client: Client):
         """Test that a request to delete a single network results in the network associated with the parsed id to be removed from the database."""

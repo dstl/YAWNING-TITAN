@@ -79,7 +79,6 @@ class ConfigBase(ABC):
 
     def __hash__(self) -> int:
         """Generate a unique hash for the class."""
-        print("HASHING")
         element_hash = [v.stringify() for v in self.get_config_elements().values()]
         element_hash.extend(
             [

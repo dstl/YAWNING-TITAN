@@ -1,8 +1,5 @@
 $(document).ready(function(){
-    $("#random-elements-form .form-check-input, #random-elements-form .form-control").on("change",function(){
-        console.log("UPDATING...");
-        update_network($("#random-elements-form"));
-    });
+    console.log("READY");
 
     $("#random-elements .form-check-input").on("change",function(){
         if($(this).is(":checked")){
@@ -24,6 +21,13 @@ $(document).ready(function(){
     })
 });
 
+$(window).on("load",function(){
+    $("#random-elements-form .form-check-input, #random-elements-form .form-control").on("change",function(){
+        console.log("UPDATING");
+        update_network($("#random-elements-form"));
+    });
+
+});
 
 
 function update_network(form_element){
@@ -38,7 +42,8 @@ function update_network(form_element){
         cache: false,
         dataType: "json",
         success: function(response){
-            console.log(response.message)
+            console.log("UPDATED");
+            proxy.NETWORK = response.network_json;
         }
     });
 }

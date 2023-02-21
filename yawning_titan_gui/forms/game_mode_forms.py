@@ -191,22 +191,26 @@ class GameModeForm:
                 section=self.game_mode.red, form_name="red", icon="bi-lightning"
             ),
             "blue": GameModeSection(
-                section=self.game_mode.red, form_name="red", icon="bi-shield"
+                section=self.game_mode.red, form_name="blue", icon="bi-shield"
             ),
             "game_rules": GameModeSection(
-                section=self.game_mode.red, form_name="red", icon="bi-clipboard"
+                section=self.game_mode.red, form_name="game_rules", icon="bi-clipboard"
             ),
             "blue_can_observe": GameModeSection(
-                section=self.game_mode.red, form_name="red", icon="bi-binoculars"
+                section=self.game_mode.red,
+                form_name="blue_can_observe",
+                icon="bi-binoculars",
             ),
             "rewards": GameModeSection(
-                section=self.game_mode.red, form_name="red", icon="bi-star"
+                section=self.game_mode.red, form_name="rewards", icon="bi-star"
             ),
             "on_reset": GameModeSection(
-                section=self.game_mode.red, form_name="red", icon="bi-arrow-clockwise"
+                section=self.game_mode.red,
+                form_name="on_reset",
+                icon="bi-arrow-clockwise",
             ),
             "miscellaneous": GameModeSection(
-                section=self.game_mode.red, form_name="red", icon="bi-brush"
+                section=self.game_mode.red, form_name="miscellaneous", icon="bi-brush"
             ),
         }
 
@@ -247,8 +251,8 @@ class GameModeForm:
         """
         section = self.get_section(section_name)
         section.forms[form_id] = section.form_classes[form_id](data=data)
-        #section.forms[form_id].update_and_check()
-        # section.config_class.validate()
+        # section.forms[form_id].update_and_check()
+        section.config_class.validate()
         return section
 
     @property
@@ -305,9 +309,12 @@ class GameModeFormManager:
 
         :return: a valid instance of :class: `~yawning_titan.game_modes.game_mode _config.GameModeConfig`
         """
-        if GameModeManager.db.get(game_mode_form.game_mode):
+        if GameModeManager.db.get(game_mode_form.game_mode.doc_metadata.uuid):
             # TODO add description to params
-            GameModeManager.db.update(game_mode=game_mode_form.game_mode)
+            if not GameModeManager.db.get(
+                game_mode_form.game_mode.doc_metadata.uuid
+            ).doc_metadata.locked:
+                GameModeManager.db.update(game_mode=game_mode_form.game_mode)
         else:
             GameModeManager.db.insert(game_mode=game_mode_form.game_mode)
         return game_mode_form.game_mode
