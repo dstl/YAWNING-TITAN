@@ -1,83 +1,8 @@
 from pathlib import Path
-from typing import Optional
 
 import pytest
 
-from yawning_titan.config.toolbox.core import ConfigGroup, ConfigGroupValidation
-from yawning_titan.config.toolbox.item_types.bool_item import BoolItem
-from yawning_titan.config.toolbox.item_types.float_item import FloatItem
-from yawning_titan.config.toolbox.item_types.int_item import IntItem
-from yawning_titan.config.toolbox.item_types.str_item import StrItem
-from yawning_titan.exceptions import ConfigGroupValidationError
-
-
-class Group(ConfigGroup):
-    """Basic implementation of a :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
-
-    def __init__(self, doc: Optional[str] = None):
-        self.a: BoolItem = BoolItem(value=False, alias="legacy_a")
-        self.b: FloatItem = FloatItem(value=1, alias="legacy_b")
-        self.c: StrItem = StrItem(value="test", alias="legacy_c")
-        super().__init__(doc)
-
-
-class GroupTier1(ConfigGroup):
-    """Basic implementation of a nested :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
-
-    def __init__(self, doc: Optional[str] = None):
-        self.bool: BoolItem = BoolItem(value=False)
-        self.float: FloatItem = FloatItem(value=1)
-        super().__init__(doc)
-
-    def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
-        super().validate()
-        try:
-            if self.bool.value and self.float.value > 1:
-                msg = "test error tier 1"
-                raise ConfigGroupValidationError(msg)
-        except ConfigGroupValidationError as e:
-            self.validation.add_validation(msg, e)
-        try:
-            if self.bool.value and self.float.value < 0:
-                msg = "test error tier 1 b"
-                raise ConfigGroupValidationError(msg)
-        except ConfigGroupValidationError as e:
-            self.validation.add_validation(msg, e)
-        return self.validation
-
-
-class GroupTier2(ConfigGroup):
-    """Basic implementation of a nested :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
-
-    def __init__(self, doc: Optional[str] = None):
-        self.bool: BoolItem = BoolItem(value=False)
-        self.int: IntItem = IntItem(value=1)
-        self.tier_1: GroupTier1 = GroupTier1()
-        super().__init__(doc)
-
-    def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
-        super().validate()
-        try:
-            if self.bool.value and self.int.value != 1:
-                msg = "test error tier 2"
-                raise ConfigGroupValidationError(msg)
-        except ConfigGroupValidationError as e:
-            self.validation.add_validation(msg, e)
-        return self.validation
-
-
-@pytest.fixture
-def test_group():
-    """A test instance of :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
-    return Group()
-
-
-@pytest.fixture
-def multi_tier_test_group():
-    """A nested test instance of :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
-    return GroupTier2()
+from tests.conftest import Group, GroupTier2
 
 
 @pytest.mark.unit_test
@@ -91,6 +16,13 @@ def test_to_dict(test_group: Group):
         "b": {"value": 1, "properties": {}},
         "c": {"value": "test", "properties": {}},
     }
+
+
+@pytest.mark.unit_test
+def test_set_config_item_to_value(test_group: Group):
+    """Test the to_dict method produces a dictionary with the values as set."""
+    test_group.a = "test"
+    assert test_group.a.value == "test"
 
 
 @pytest.mark.unit_test

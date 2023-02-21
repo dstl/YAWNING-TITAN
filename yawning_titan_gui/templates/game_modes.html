@@ -22,8 +22,8 @@
         </div>
     </div>
     <div id="game-modes">
-        {% for game_mode in game_modes %}
-            {% include 'elements/el_game_mode.html' with game_mode=game_mode %}
+        {% for game_mode_filename, game_mode_info in game_modes.items %}
+            {% include 'elements/el_game_mode.html' with game_mode_info=game_mode_info game_mode_filename=game_mode_filename %}
         {% endfor %}
     </div>
 </div>

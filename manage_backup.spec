@@ -29,7 +29,6 @@ a = Analysis(
         (".venv/Lib/site-packages/stable_baselines3-1.6.2-py3.9.egg/stable_baselines3/version.txt","stable_baselines3"),
         ("yawning_titan/config/_package_data/logging_config.yaml","yawning_titan/config/_package_data"),
         ("yawning_titan/config/_package_data/game_modes/default_game_mode.yaml","yawning_titan/config/_package_data/game_modes"),
-        ("yawning_titan/config/_package_data/game_modes/everything_off_config.yaml","yawning_titan/config/_package_data/game_modes"),
         ("yawning_titan/config/_package_data/game_modes/low_skill_red_with_random_infection_perfect_detection.yaml","yawning_titan/config/_package_data/game_modes")
     ],
     hiddenimports=[],
