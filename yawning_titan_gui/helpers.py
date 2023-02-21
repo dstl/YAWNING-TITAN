@@ -22,9 +22,7 @@ class NetworkManager:
         """
         return [
             network.doc_metadata.uuid
-            for network in cls.network_db.search(
-                NetworkSchema.ENTRY_NODES.len_bt(min, max)
-            )
+            for network in cls.db.search(NetworkSchema.ENTRY_NODES.len_bt(min, max))
         ]
 
     @classmethod
@@ -37,7 +35,7 @@ class NetworkManager:
         """
         return [
             network.doc_metadata.uuid
-            for network in cls.network_db.search(
+            for network in cls.db.search(
                 NetworkSchema.HIGH_VALUE_NODES.len_bt(min, max)
             )
         ]
@@ -52,7 +50,7 @@ class NetworkManager:
         """
         return [
             network.doc_metadata.uuid
-            for network in cls.network_db.search(NetworkSchema.MATRIX.len_bt(min, max))
+            for network in cls.db.search(NetworkSchema.MATRIX.len_bt(min, max))
         ]
 
     @classmethod
@@ -65,6 +63,7 @@ class NetworkManager:
         """
         attr = f"filter_{attribute}"
         if not hasattr(cls, attr):
+            print("OOPS")
             return None
         return getattr(cls, attr)(min, max)
 
