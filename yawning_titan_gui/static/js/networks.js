@@ -74,6 +74,9 @@ function filter_networks(attribute,min,max){
                 "advanced"
             );
             item_filter.update_elements();
+        },
+        error: function(response){
+            console.log(response.error)
         }
     });
 }

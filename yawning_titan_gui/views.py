@@ -65,7 +65,7 @@ class HomeView(View):
         return render(
             request,
             "home.html",
-            {"sidebar": default_sidebar, "toolbar": default_toolbar},
+            {"sidebar": default_sidebar},
         )
 
 
@@ -87,7 +87,7 @@ class DocsView(View):
         return render(
             request,
             "docs.html",
-            {"sidebar": default_sidebar, "toolbar": default_toolbar},
+            {"sidebar": default_sidebar},
         )
 
     def post(self, request: HttpRequest, *args, **kwargs):
@@ -100,7 +100,7 @@ class DocsView(View):
         return render(
             request,
             "docs.html",
-            {"sidebar": default_sidebar, "toolbar": default_toolbar},
+            {"sidebar": default_sidebar},
         )
 
 
@@ -218,7 +218,6 @@ class NetworksView(View):
             "networks.html",
             {
                 "sidebar": default_sidebar,
-                "toolbar": default_toolbar,
                 "networks": [network.doc_metadata for network in networks],
                 "range_bound_items": range_bound_items,
                 "dialogue_boxes": dialogue_boxes,
@@ -232,15 +231,18 @@ class NetworksView(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        return JsonResponse(
-            {
-                "ids": NetworkManager.filter(
-                    request.POST.get("attribute"),
-                    request.POST.get("min"),
-                    request.POST.get("max"),
-                )
-            }
-        )
+        if request.method == "POST":
+            print("POSTED", request.POST)
+            return JsonResponse(
+                {
+                    "ids": NetworkManager.filter(
+                        request.POST.get("attribute"),
+                        request.POST.get("min"),
+                        request.POST.get("max"),
+                    )
+                }
+            )
+        return JsonResponse({"message": "error"}, status=400)
 
 
 class NetworkCreator(View):
