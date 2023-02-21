@@ -287,7 +287,6 @@ class Network(nx.Graph):
         :param remove_existing_edges: Whether to remove existing edges
         :param remove_existing_nodes: Whether to remove existing nodes
         """
-        print("SETTING FROM DICT", config_dict["_doc_metadata"])
         if clear_special_nodes:
             self.clear_special_nodes()
 
@@ -310,7 +309,6 @@ class Network(nx.Graph):
                 nodes_dict=config_dict.pop("nodes"),
                 remove_existing=remove_existing_nodes,
             )
-
         if "edges" in config_dict:
             self.add_edges_from_dict(
                 edges_dict=config_dict.pop("edges"),
@@ -331,7 +329,7 @@ class Network(nx.Graph):
             self.reset_random_vulnerabilities()
 
     def clear_special_nodes(self):
-        """Remove all special node designations"""
+        """Remove all special node designations."""
         for node in self.entry_nodes:
             node.entry_node = False
         for node in self.high_value_nodes:

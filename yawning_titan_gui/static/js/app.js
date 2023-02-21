@@ -3,6 +3,16 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
+function check_form_filled(selector){
+    let update = true;
+    $(selector).each(function(){
+        if($(this).val() == null){
+            update = false
+        }
+    });
+    return update
+}
+
 function update_tooltip(selector,replace,replace_with){
     $(selector).attr('data-bs-original-title',$(selector).data("bs-original-title").replace(replace,replace_with));
 }

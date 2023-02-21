@@ -1,4 +1,4 @@
-from typing import Dict, Union
+from typing import Dict
 
 from django import forms as django_forms
 from django.forms import widgets
@@ -9,7 +9,6 @@ from yawning_titan.networks.network import (
     RandomEntryNodePreference,
     RandomHighValueNodePreference,
 )
-from yawning_titan.networks.network_db import NetworkDB
 from yawning_titan_gui.forms import RangeInput
 from yawning_titan_gui.helpers import NetworkManager
 
@@ -127,6 +126,8 @@ class NetworkTemplateForm(django_forms.Form):
 
 
 class NetworkForm(django_forms.Form):
+    """Django form representation of a :class:`~yawning_titan.networks.network.Network`."""
+
     # Random node selection elements
     set_random_entry_nodes = django_forms.BooleanField(
         widget=widgets.CheckboxInput(
@@ -229,21 +230,21 @@ class NetworkForm(django_forms.Form):
         self,
         network: Network,
         *args,
+        data=None,
         **kwargs,
     ):
         self.name = network.doc_metadata.name
         self.network = network
-        super(NetworkForm, self).__init__(*args, **kwargs)
+        if data is None:
+            data = network.to_dict()
+        super(NetworkForm, self).__init__(*args, data=data, **kwargs)
 
         if self.is_bound:
-            print("TRYING TO SET FORM NETWORK")
             self.is_valid()
             try:
                 self.network.set_from_dict(self.cleaned_data)
             except Exception as e:
-                print("EXCC", e)
                 self.add_error(None, str(e))
-                print("ERRORS", self.errors)
 
 
 class NetworkFormManager:
@@ -273,7 +274,6 @@ class NetworkFormManager:
             return cls.network_forms[network_id]
         else:
             network = NetworkManager.db.get(network_id)
-            print("NETWORK = ", network.doc_metadata.to_dict())
             form = NetworkForm(network)
             cls.network_forms[network_id] = form
             return form
@@ -298,29 +298,29 @@ class NetworkFormManager:
 
     @classmethod
     def update_network_attributes(cls, network_id: str, data: QueryDict) -> NetworkForm:
-        """"""
-        print("ALL1", [n.doc_metadata.uuid for n in NetworkManager.db.all()])
-        network = NetworkManager.db.get(network_id)
-        print("CHECK...", network_id, type(network_id))
+        """Set the attributes of a network to reflect updates in the GUI.
 
-        print("BU", network.doc_metadata.to_dict())
+        :param network_id: The uuid of a network in the database.
+        :param data: The posted form data from the GUI containing details of the network attributes.
+        """
+        network = NetworkManager.db.get(network_id)
         form = NetworkForm(
             network=network, data=data
         )  # create a new network form an update with the new data
-        print("ERRORS2", form.errors)
         if form.is_valid():
-            print("UPDATING ATTRS")
             NetworkManager.db.update(form.network)  # update the network in the database
-        else:
-            print("UPDATE FAILED")
         cls.network_forms[network_id] = form
-        print("ALL2", [n.doc_metadata.uuid for n in NetworkManager.db.all()])
-        print("DICT", NetworkManager.db.get(network_id).to_dict())
+
         return form
 
     @classmethod
     def update_network_elements(cls, network_id: str, data: dict) -> NetworkForm:
-        """"""
+        """Set the elements of a network to reflect updates in the GUI.
+
+        :param network_id: The uuid of a network in the database.
+        :param data: The python dictionary object containing a full representation of a network
+            including nodes and edges.
+        """
         form = cls.get_or_create_form(network_id)
         form.network.set_from_dict(config_dict=data)
         NetworkManager.db.update(form.network)  # update the network in the database

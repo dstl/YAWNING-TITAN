@@ -16,7 +16,6 @@ from yawning_titan_gui.forms.game_mode_forms import (
     GameModeSection,
 )
 from yawning_titan_gui.forms.netowork_forms import (
-    NetworkForm,
     NetworkFormManager,
     NetworkTemplateForm,
 )
@@ -156,7 +155,6 @@ class NetworksView(View):
         :param: request: the Django page `request` object containing the html data for `networks.html` and the server GET / POST request bodies.
         """
         networks = NetworkManager.db.all()
-        print("LEN", len(networks))
         range_bound_items = [
             {
                 "name": "entry_nodes",
@@ -252,7 +250,6 @@ class NetworkCreator(View):
         self,
         request: HttpRequest,
         *args,
-        template: int = 0,
         network_id: str = None,
         **kwargs,
     ):
@@ -281,7 +278,6 @@ class NetworkCreator(View):
         self,
         request: HttpRequest,
         *args,
-        template: int = 0,
         network_id: str = None,
         **kwargs,
     ):
@@ -384,15 +380,8 @@ class NodeEditor(View):
         # find network id as not passed
         network_id = dict_n["_doc_metadata"]["uuid"]
 
-        print("ID=", network_id)
-        network_form = NetworkFormManager.update_network_elements(network_id, dict_n)
-
-        print("N", network_form.network.to_dict())
-        # return render(
-        #     request,
-        #     "node_editor.html",
-        #     {"sidebar": default_sidebar, "toolbar": default_toolbar},
-        # )
+        NetworkFormManager.update_network_elements(network_id, dict_n)
+        return JsonResponse({"message": "success"})
 
 
 class GameModeConfigView(View):
@@ -558,7 +547,7 @@ def db_manager(request: HttpRequest) -> JsonResponse:
             GameModeManager.db.insert(game_mode=game_mode, name=item_name)
             return reverse(
                 "game mode config",
-                kwargs={"game_mode_id": f"{item_name}.yaml"},
+                kwargs={"game_mode_id": game_mode.doc_metadata.uuid},
             )
 
         def create_network_from():
@@ -586,7 +575,6 @@ def db_manager(request: HttpRequest) -> JsonResponse:
                 "template": create_template_network,
             },
         }
-        print("OPERATION", operation, "ids", item_ids, "item type", item_type)
         try:
             return JsonResponse({"load": operations[item_type][operation]()})
         except KeyError as e:
@@ -599,10 +587,10 @@ def update_game_mode(request: HttpRequest) -> JsonResponse:
     Update the :attribute: `edited_forms` dictionary with the current state of the config and check for errors.
 
     Check the current contents of the :class:`ConfigForm <yawning_titan_gui.forms.ConfigForm>` are valid
-    using the criteria defined in the appropriate section of the :class:`GameModeConfig <yawning_titan.game_modes.game_mode _config.GameModeConfig>`
+    using the criteria defined in the appropriate section of the :class:`~yawning_titan.game_modes.game_mode.GameMode`
 
     :param request: here the django_request object will be specifically loaded with
-        `section_name`,`game_mode_id`parameters.
+        `section_name`,`game_mode_id`parameters as well as the form data.
 
     :return: response object containing error if config is invalid or redirect parameters if valid
     """
@@ -629,14 +617,26 @@ def update_game_mode(request: HttpRequest) -> JsonResponse:
 
 
 def update_network(request: HttpRequest) -> JsonResponse:
-    """"""
+    """
+    Update the :class: `~yawning_titan_gui.forms.network_forms.NetworkForm` with the given `_network_id`.
+
+    Use the data packaged within the POST request to update the value of :class: `~yawning_titan.networks.network.Network` associated
+    with the network form.
+
+    :param request: here the django_request object will be specifically loaded with
+        `_network_id` parameter as well as the form data.
+
+    :return: response object containing error if config is invalid or a json representation of a network if valid.
+    """
     if request.method == "POST":
-        print("=" * 150)
-        # print("POSTED",request.POST)
-        # network_form = NetworkFormManager.get_or_create_form(request.POST.get("_network_id"))
-        # print("HFH",network_form.network.to_dict())
         network_form = NetworkFormManager.update_network_attributes(
             request.POST.get("_network_id"), request.POST
         )
-        # print("DICT",network_form.network.to_dict())
-        return JsonResponse({"message": "saved"})
+        return JsonResponse(
+            {
+                "network_json": json.dumps(
+                    network_form.network.to_dict(json_serializable=True)
+                )
+            }
+        )
+    return JsonResponse({"message": "Invalid operation"})
