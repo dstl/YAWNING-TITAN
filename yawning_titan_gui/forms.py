@@ -3,11 +3,11 @@ from typing import Any, Dict, List
 from django import forms as django_forms
 from django.forms import widgets
 
-from yawning_titan.config.game_config.game_mode import GameMode
 from yawning_titan.config.toolbox.core import ConfigGroup, ConfigItem
 from yawning_titan.config.toolbox.item_types.bool_item import BoolItem
 from yawning_titan.config.toolbox.item_types.float_item import FloatItem
 from yawning_titan.config.toolbox.item_types.int_item import IntItem
+from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan_gui.helpers import GameModeManager, next_key
 
 
@@ -41,7 +41,6 @@ class ConfigForm(django_forms.Form):
         *args,
         **kwargs,
     ):
-
         self.config_class: ConfigGroup = config_class
         self.group_errors = None
         self.name = name
@@ -80,7 +79,7 @@ class ConfigForm(django_forms.Form):
 
 class GameModeSection:
     """
-    A representation of a section of a :class: `~yawning_titan.config.game_config.game_mode.GameMode`.
+    A representation of a section of a :class: `~yawning_titan.game_modes.game_mode.GameMode`.
 
     Each group within the section has its items converted into a django form element and is assigned
     an icon string representing a bootstrap icon.
@@ -185,7 +184,7 @@ class GameModeSection:
 
 class GameModeFormManager:
     """
-    Create and manage sets of forms for a given :class: `~yawning_titan.config.game_config.game_mode.GameMode`.
+    Create and manage sets of forms for a given :class: `~yawning_titan.game_modes.game_mode.GameMode`.
 
     allows for game modes to be constructed dynamically from the GUI.
     """
@@ -224,7 +223,7 @@ class GameModeFormManager:
         :class: `~yawning_titan.config.toolbox.core.ConfigGroup`
 
         :param game_mode_filename: the file name and extension of the current game mode
-        :return: a dictionary representation of the sections of the :class: `~yawning_titan.config.game_config.game_mode.GameMode`
+        :return: a dictionary representation of the sections of the :class: `~yawning_titan.game_modes.game_mode.GameMode`
         """
         if game_mode_filename in cls.game_modes:
             return cls.game_modes[game_mode_filename]
@@ -330,7 +329,7 @@ class GameModeFormManager:
 
         :param game_mode_forms: dictionary containing django form objects representing sections of the config.
 
-        :return: a valid instance of :class: `~yawning_titan.config.game_config.game_mode_config.GameModeConfig`
+        :return: a valid instance of :class: `~yawning_titan.game_modes.game_mode_config.GameModeConfig`
         """
         game_mode = GameModeManager.get_game_mode(game_mode_filename)
         sections = cls.get_or_create_instance(game_mode_filename)
