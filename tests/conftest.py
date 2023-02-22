@@ -298,7 +298,6 @@ class Group(ConfigGroup):
     """Basic implementation of a :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
 
     def __init__(self, doc: Optional[str] = None):
-        print("GROUP")
         self.a: BoolItem = BoolItem(value=False, alias="legacy_a")
         self.b: FloatItem = FloatItem(value=1, alias="legacy_b")
         self.c: StrItem = StrItem(value="test", alias="legacy_c")
