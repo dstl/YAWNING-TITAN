@@ -5,7 +5,12 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
 
-from yawning_titan_gui.forms import ConfigForm, GameModeFormManager, GameModeSection, RunForm
+from yawning_titan_gui.forms import (
+    ConfigForm,
+    GameModeFormManager,
+    GameModeSection,
+    RunForm,
+)
 from yawning_titan_gui.helpers import GameModeManager
 
 GameModeManager.load_game_modes(
@@ -75,6 +80,7 @@ class DocsView(View):
         """
         return render(request, "docs.html", {"sidebar": default_sidebar})
 
+
 class RunView(View):
     """Django page template for Yawning Titan Run class."""
 
@@ -85,13 +91,15 @@ class RunView(View):
         :param request: the Django page `request` object containing the html data for `run.html` and the server GET / POST request bodies.
         """
         form = RunForm()
-        print("FORM",form,type(form))
         return render(
             request,
             "run.html",
-            {"form":form, "sidebar": default_sidebar, "game_modes": GameModeManager.get_game_modes(valid_only=True)},
+            {
+                "form": form,
+                "sidebar": default_sidebar,
+                "game_modes": GameModeManager.get_game_modes(valid_only=True),
+            },
         )
-
 
 
 class NodeEditor(View):
@@ -290,7 +298,7 @@ def update_config(request: HttpRequest) -> JsonResponse:
     Update the :attribute: `edited_forms` dictionary with the current state of the config and check for errors.
 
     Check the current contents of the :class:`ConfigForm <yawning_titan_gui.forms.ConfigForm>` are valid
-    using the criteria defined in the appropriate section of the :class:`GameModeConfig <yawning_titan.config.game_config.game_mode_config.GameModeConfig>`
+    using the criteria defined in the appropriate section of the :class:`GameModeConfig <yawning_titan.game_modes.game_mode_config.GameModeConfig>`
 
     :param request:  here the django_request object will be specifically loaded with
         `section_name`,`game_mode_filename`parameters.
