@@ -44,3 +44,6 @@ Thumbs.db
 # Cypress
 **/cypress/videos/
 **/cypress/screenshots/
+
+# Grouped licenses for network editor
+**/license-report.csv
