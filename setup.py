@@ -146,7 +146,7 @@ setup(
     maintainer="Defence Science and Technology Laboratory UK",
     maintainer_email="oss@dstl.gov.uk",
     url="https://github.com/dstl/YAWNING-TITAN",
-    description="An abstract, flexible and configurable cyber security " "simulation",
+    description="An abstract, flexible and configurable cyber security simulation",
     python_requires=">=3.8, <3.11",
     version="1.0.1",
     license="MIT License",
@@ -171,7 +171,7 @@ setup(
         "tinydb==4.7.0",
         "tensorboard==2.11.0",
         "tinydb==4.7.0",
-        "torch==1.12.1",
+        "torch==1.13.1",
         "typing-extensions==4.4.0",
     ],
     extras_require={
