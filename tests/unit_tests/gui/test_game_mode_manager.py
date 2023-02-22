@@ -7,7 +7,7 @@ from unittest import mock
 import pytest
 
 from yawning_titan import GAME_MODES_DIR
-from yawning_titan.config import _LIB_CONFIG_ROOT_PATH
+from yawning_titan.game_modes import _GAME_MODES_ROOT_PATH
 from yawning_titan_gui.helpers import GameModeManager
 
 
@@ -19,7 +19,7 @@ class TestGameModeManager:
         self.temp_dir = tempfile.TemporaryDirectory()
         GameModeManager.root_dir = Path(self.temp_dir.name)
         shutil.copytree(
-            os.path.join(_LIB_CONFIG_ROOT_PATH, "_package_data", "game_modes"),
+            os.path.join(_GAME_MODES_ROOT_PATH, "_package_data"),
             self.temp_dir.name,
             dirs_exist_ok=True,
         )
