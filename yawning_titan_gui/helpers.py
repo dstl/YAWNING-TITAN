@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 from yawning_titan import GAME_MODES_DIR
-from yawning_titan.config.game_config.game_mode import GameMode
+from yawning_titan.game_modes.game_mode import GameMode
 
 
 class GameModeManager:
@@ -63,10 +63,10 @@ class GameModeManager:
     @classmethod
     def get_game_mode(cls, game_mode_filename: str) -> GameMode:
         """
-        Get an instance of :class: `~yawning_titan.config.game_config.game_mode_config.GameModeConfig` corresponding to the :param: `game_mode_filename`.
+        Get an instance of :class: `~yawning_titan.game_modes.game_mode_config.GameModeConfig` corresponding to the :param: `game_mode_filename`.
 
-        :param game_mode_filename: a file name and extension of a `~yawning_titan.config.game_config.game_mode_config.GameModeConfig`
-        :return: the instance of `~yawning_titan.config.game_config.game_mode_config.GameModeConfig` populated with the data from :param: `game_mode_filename`
+        :param game_mode_filename: a file name and extension of a `~yawning_titan.game_modes.game_mode_config.GameModeConfig`
+        :return: the instance of `~yawning_titan.game_modes.game_mode_config.GameModeConfig` populated with the data from :param: `game_mode_filename`
         """
         if game_mode_filename not in cls.game_modes:
             cls.load_game_mode(
@@ -81,15 +81,15 @@ class GameModeManager:
         return cls.game_modes[game_mode_filename]["config_class"]
 
     @classmethod
-    def get_game_modes(cls, valid_only:bool=False) -> Dict[str, Dict[str, Any]]:
-        """_summary_
+    def get_game_modes(cls, valid_only: bool = False) -> Dict[str, Dict[str, Any]]:
+        """a.
 
         :param valid_only: Return only complete game modes.
         :return: A filtered dict of available game mode filenames to info.
         """
         if not valid_only:
             return cls.game_modes
-        return {k:v for k,v in cls.game_modes.items() if v["complete"]}
+        return {k: v for k, v in cls.game_modes.items() if v["complete"]}
 
     # Checkers
 

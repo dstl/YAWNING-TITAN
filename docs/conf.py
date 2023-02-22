@@ -46,7 +46,7 @@ extensions = [
     "sphinx.ext.autosummary",  # Create neat summary tables for modules/classes/methods etc
     "sphinx.ext.intersphinx",  # Link to other project's documentation (see mapping below)
     "sphinx.ext.viewcode",  # Add a link to the Python source code for classes, functions etc.
-    "sphinx.ext.todo"
+    "sphinx.ext.todo",
 ]
 
 # Mappings for sphinx.ext.intersphinx. Projects have to have Sphinx-generated doc! (.inv file)
@@ -66,6 +66,7 @@ html_show_sourcelink = (
 )
 autodoc_inherit_docstrings = True  # If no docstring, inherit from base class
 set_type_checking_flag = True  # Enable 'expensive' imports for sphinx_autodoc_typehints
+autodoc_typehints = "none"
 add_module_names = True  # Remove namespaces from class/method signatures
 napoleon_google_docstring = True
 todo_include_todos = True

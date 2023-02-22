@@ -12,6 +12,7 @@
 
 {% block main %}
 <div id="grid-container" class="stretch clear">
+
     <div class="grid-item">
         <div id="search-container">
             <div class="input-group rounded">
@@ -19,7 +20,6 @@
                 <span class="input-group-text border-0" id="search-addon">
                     <i class="bi bi-search"></i>
                 </span>
-                <!-- TODO: add advanced filtered search from db -->
             </div>
         </div>
         <div id="game-modes">
@@ -40,7 +40,6 @@
                 <span class="input-group-text border-0" id="search-addon">
                     <i class="bi bi-search"></i>
                 </span>
-                <!-- TODO: add advanced filtered search from db -->
             </div>
         </div>
         <div id="networks">
@@ -89,12 +88,15 @@
 <style>
     #grid-container{
         display: flex;
+        flex-wrap: wrap;
         flex-direction: row;
         justify-content: space-around;
         height: 100%;
         width: 100%;
+        overflow-y: auto;
     }
     .grid-item{
+        min-width: 450px;
         width: 30%;
         margin: calc(2 * var(--increment));
         border: 1px solid white;

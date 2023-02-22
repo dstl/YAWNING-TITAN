@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional, Union
 
 from yawning_titan.config.toolbox.core import ConfigGroup, ConfigGroupValidation
-from yawning_titan.config.toolbox.groups.core import ChanceGroup, UseChancesGroup
+from yawning_titan.config.toolbox.groups.core import NodeChanceGroup, UseChancesGroup
 from yawning_titan.config.toolbox.groups.validation import AnyUsedGroup
 from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
 from yawning_titan.config.toolbox.item_types.float_item import (
@@ -98,7 +98,7 @@ class DeceptiveNodeGroup(ConfigGroup):
             doc="The max number of deceptive nodes that blue can place.",
             alias="max_number_deceptive_nodes",
             properties=IntProperties(
-                allow_null=True, default=1, min_val=1, inclusive_min=True
+                allow_null=True, default=1, min_val=0, inclusive_min=True
             ),
         )
         self.new_node_on_relocate: BoolItem = BoolItem(
@@ -223,7 +223,7 @@ class BlueIntrusionDiscoveryGroup(ConfigGroup):
         on_scan_standard_node: Optional[Union[int, float]] = None,
         on_scan_deceptive_node: Optional[Union[int, float]] = None,
     ):
-        self.immediate = ChanceGroup(
+        self.immediate = NodeChanceGroup(
             standard_node=immediate_standard_node,
             deceptive_node=immediate_deceptive_node,
         )
@@ -236,7 +236,7 @@ class BlueIntrusionDiscoveryGroup(ConfigGroup):
         )
         self.immediate.deceptive_node.doc = "Chance for blue to discover a deceptive node that red has compromised the instant it is compromised."
 
-        self.on_scan = ChanceGroup(
+        self.on_scan = NodeChanceGroup(
             standard_node=on_scan_standard_node, deceptive_node=on_scan_deceptive_node
         )
 

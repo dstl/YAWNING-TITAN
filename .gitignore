@@ -25,6 +25,3 @@ docs/source/yt-dependencies.rst
 ppo-*/
 **.pkl
 docs/_build
-
-# dist file
-**/dist/
