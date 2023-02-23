@@ -6,12 +6,11 @@ from yawning_titan_gui.views import (
     GameModeConfigView,
     GameModesView,
     HomeView,
-    NetworkCreator,
     NetworksView,
     NodeEditor,
     db_manager,
     update_game_mode,
-    update_network
+    update_network,
 )
 
 urlpatterns = [
@@ -19,12 +18,6 @@ urlpatterns = [
     path("docs/", DocsView.as_view(), name="docs"),
     path("game_modes/", GameModesView.as_view(), name="Manage game modes"),
     path("networks/", NetworksView.as_view(), name="Manage networks"),
-    path("network_creator", NetworkCreator.as_view(), name="network creator"),
-    path(
-        "network_creator/<str:network_id>/",
-        NetworkCreator.as_view(),
-        name="network creator",
-    ),
     path(
         "game_mode_config/",
         GameModeConfigView.as_view(),
