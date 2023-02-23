@@ -8,7 +8,7 @@
       </mat-expansion-panel-header>
 
       <div class="node-colour-key-list">
-        <app-node-colour-key-item *ngFor="let key of colourKeyList()" [label]="key.selector" [style]="key.style"></app-node-colour-key-item>
+        <app-node-colour-key-item *ngFor="let key of colourKeyList()" [label]="key?.label" [style]="key?.cytoscapeStyleSheet?.style"></app-node-colour-key-item>
       </div>
 
     </mat-expansion-panel>

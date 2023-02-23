@@ -5,13 +5,13 @@ import { Network } from '../../../app/network-class/network';
 import { NetworkJson, Node } from '../../../app/network-class/network-interfaces';
 import { v4 as uuid } from 'uuid';
 
-import { ElementType } from '../cytoscape/graph-objects';
-import { CYTOSCAPE_STYLE } from 'src/app/app.tokens';
+import { ElementType, NodeColourKey } from '../cytoscape/graph-objects';
+import { NODE_KEY_CONFIG } from 'src/app/app.tokens';
 
 @Injectable()
 export class CytoscapeService {
 
-  constructor(@Inject(CYTOSCAPE_STYLE) private style: cytoscape.Stylesheet[]) { }
+  constructor(@Inject(NODE_KEY_CONFIG) private nodeKey: NodeColourKey[]) { }
 
   private nodeCount = 0;
 
@@ -146,7 +146,7 @@ export class CytoscapeService {
     this.cy = cytoscape({
       container: this.renderElement, // container to render in
       elements: [],
-      style: this.style
+      style: this.nodeKey.map(key => key.cytoscapeStyleSheet)
     });
 
     cytoscape.warnings(false);
