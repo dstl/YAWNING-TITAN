@@ -15,7 +15,7 @@ export class NetworkViewComponent implements AfterViewInit {
   constructor(
     private cytoscapeService: CytoscapeService,
     private importService: ImportService
-  ) { }
+  ) {}
 
   ngAfterViewInit() {
     // set the element to render to
@@ -39,7 +39,7 @@ export class NetworkViewComponent implements AfterViewInit {
     if(!event || event?.detail == this.curNetworkJsonString) {
       return;
     }
-
+    console.log("LOADING...",event);
     this.curNetworkJsonString = event?.detail;
     this.importService.loadNetworkFromWindow(event?.detail);
   }

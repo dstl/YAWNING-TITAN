@@ -7,14 +7,17 @@ import pytest
 import yaml
 from yaml import SafeLoader
 
-from yawning_titan.config.toolbox.core import ConfigGroup, ConfigGroupValidation
+from yawning_titan.config.toolbox.core import (
+    ConfigGroup,
+    ConfigGroupValidation,
+    ConfigGroupValidationError,
+)
 from yawning_titan.config.toolbox.item_types.bool_item import BoolItem
 from yawning_titan.config.toolbox.item_types.float_item import FloatItem
 from yawning_titan.config.toolbox.item_types.int_item import IntItem
 from yawning_titan.config.toolbox.item_types.str_item import StrItem
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
-from yawning_titan.exceptions import ConfigGroupValidationError
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.game_modes.game_modes import default_game_mode_path
 from yawning_titan.networks import network_creator
@@ -298,7 +301,6 @@ class Group(ConfigGroup):
     """Basic implementation of a :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
 
     def __init__(self, doc: Optional[str] = None):
-        print("GROUP")
         self.a: BoolItem = BoolItem(value=False, alias="legacy_a")
         self.b: FloatItem = FloatItem(value=1, alias="legacy_b")
         self.c: StrItem = StrItem(value="test", alias="legacy_c")

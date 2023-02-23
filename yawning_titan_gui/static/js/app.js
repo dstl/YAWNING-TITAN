@@ -3,6 +3,16 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
+function check_form_filled(selector){
+    let update = true;
+    $(selector).each(function(){
+        if($(this).val() == null){
+            update = false
+        }
+    });
+    return update
+}
+
 function update_tooltip(selector,replace,replace_with){
     $(selector).attr('data-bs-original-title',$(selector).data("bs-original-title").replace(replace,replace_with));
 }
@@ -26,6 +36,15 @@ $(window).on('load', function(){
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
 
+    //activate first toolbar button
+    $(".toolbar-button:first-child").addClass("active");
+
+    //handle toolbar clicks
+    $(".toolbar-button").click(function(){
+        $(".toolbar-button").removeClass("active");
+        $(this).addClass("active");
+    });
+
     $('#sandwich-icon').click(function(){
 		$(this).toggleClass('open');
         $($(this).data("sidebar")).toggleClass('open');
@@ -39,7 +58,7 @@ $(document).ready(function(){
     $("input[role='switch']").wrap("<div class=form-switch></div>");
 
     // add range setter input field
-    $("input[type='range']").wrap("<div class=form-range></div>");
+    $("input[type='range'].form-range").wrap("<div class=form-range></div>");
     $(".form-range").append("<input type='number' class='range-setter form-control'>");
 
     // constrain range setter input field
@@ -67,3 +86,22 @@ $(document).ready(function(){
         }
     });
 });
+
+class Filter{
+    constructor(){
+        this.hidden = {};
+    }
+    update_elements(){
+        $(".list-item").removeClass("hidden");
+        // console.log("TESTING 123",this.hidden);
+        for (const [group,elements] of Object.entries(this.hidden)){
+            elements.each(function(){
+                $(this).addClass("hidden")
+            })
+        }
+    }
+    set(elements,group){
+        this.hidden[group] = elements
+    }
+}
+const item_filter = new Filter();

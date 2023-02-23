@@ -208,7 +208,7 @@ class FiveNodeDef(gym.Env):
 
     def _is_done(self):
         """
-        Determine if an epsiode is completed.
+        Determine if an episode is completed.
 
         There are two terminal states.
 

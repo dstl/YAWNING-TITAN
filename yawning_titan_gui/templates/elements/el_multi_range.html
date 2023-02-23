@@ -1,0 +1,16 @@
+<p>{{settings.name}}</p>
+<div class="multi-range" data-attribute-name="{{settings.name}}">
+    <input class="range-setter left" type="number" value="0" min="0" max="{{settings.max}}">
+    <div class="slider slider-distance">
+        <div class="slider-container">
+            <div class="inverse-left" style="width:70%;"></div>
+            <div class="inverse-right" style="width:70%;"></div>
+            <div class="range" style="left:30%;right:40%;"></div>
+            <span class="thumb" style="left:30%;"></span>
+            <span class="thumb" style="left:60%;"></span>
+        </div>
+        <input class="multi-range-input left" type="range" tabindex="0" value="0" max="{{settings.max}}" min="0" step="1" />
+        <input class="multi-range-input right" type="range" tabindex="0" value="{{settings.max}}" max="{{settings.max}}" min="0" step="1"/>
+    </div>
+    <input class="range-setter right" type="number" value="{{settings.max}}" min="0" max="{{settings.max}}">
+</div>
