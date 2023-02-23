@@ -214,7 +214,6 @@ class GameModeConfigView(View):
         """
         game_mode_form = GameModeFormManager.get_or_create_form(game_mode_id)
         section = game_mode_form.get_section(section_name)
-
         if section.config_class.validation.passed:
             if (
                 section_name == game_mode_form.last_section.name
