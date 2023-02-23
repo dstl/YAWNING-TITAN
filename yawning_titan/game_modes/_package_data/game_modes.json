@@ -251,7 +251,7 @@
             "action_set":{
                "reduce_vulnerability":true,
                "restore_node":false,
-               "scan":false,
+               "scan":true,
                "isolate_node":false,
                "reconnect_node":false,
                "do_nothing":false,
