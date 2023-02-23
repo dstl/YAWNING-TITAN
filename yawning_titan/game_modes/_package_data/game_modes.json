@@ -6,52 +6,52 @@
                "ignores_defences":false,
                "always_succeeds":false,
                "skill":{
-                  "use":true,
-                  "value":0.8
+                  "use":false,
+                  "value":null
                },
                "attack_from":{
                   "only_main_red_node":false,
-                  "any_red_node":true
+                  "any_red_node":false
                }
             },
             "action_set":{
                "spread":{
-                  "chance":0.1,
                   "use":false,
-                  "likelihood":1
+                  "likelihood":null,
+                  "chance":null
                },
                "random_infect":{
-                  "chance":0.1,
                   "use":false,
-                  "likelihood":1
+                  "likelihood":null,
+                  "chance":null
                },
                "move":{
                   "use":false,
-                  "likelihood":1
+                  "likelihood":null
                },
                "basic_attack":{
-                  "use":true,
-                  "likelihood":1
+                  "use":false,
+                  "likelihood":null
                },
                "do_nothing":{
                   "use":false,
-                  "likelihood":1
+                  "likelihood":null
                },
                "zero_day":{
                   "use":false,
-                  "start_amount":1,
-                  "days_required":4
+                  "start_amount":0,
+                  "days_required":0
                }
             },
             "natural_spreading":{
                "capable":false,
                "chance":{
-                  "to_connected_node":0.1,
-                  "to_unconnected_node":0.1
+                  "to_connected_node":0,
+                  "to_unconnected_node":0
                }
             },
             "target_mechanism":{
-               "random":true,
+               "random":false,
                "prioritise_connected_nodes":false,
                "prioritise_unconnected_nodes":false,
                "prioritise_vulnerable_nodes":false,
@@ -59,80 +59,80 @@
                "target_specific_node":{
                   "use":false,
                   "target":null,
-                  "always_choose_shortest_distance":true
+                  "always_choose_shortest_distance":false
                }
             }
          },
          "blue":{
             "action_set":{
                "reduce_vulnerability":false,
-               "restore_node":true,
+               "restore_node":false,
                "scan":false,
-               "isolate_node":true,
-               "reconnect_node":true,
+               "isolate_node":false,
+               "reconnect_node":false,
                "do_nothing":false,
                "make_node_safe":{
                   "use":false,
                   "increases_vulnerability":false,
-                  "gives_random_vulnerability":true,
-                  "vulnerability_change":0.4
+                  "gives_random_vulnerability":false,
+                  "vulnerability_change":null
                },
                "deceptive_nodes":{
                   "use":false,
-                  "max_number":2,
-                  "new_node_on_relocate":true
+                  "max_number":1,
+                  "new_node_on_relocate":false
                }
             },
             "intrusion_discovery_chance":{
                "immediate":{
-                  "standard_node":1,
-                  "deceptive_node":1
+                  "standard_node":0.5,
+                  "deceptive_node":0.5
                },
                "on_scan":{
-                  "standard_node":1,
-                  "deceptive_node":1
+                  "standard_node":0.5,
+                  "deceptive_node":0.5
                }
             },
             "attack_discovery":{
                "failed_attacks":{
-                  "use":true,
+                  "use":false,
                   "chance":{
-                     "standard_node":1,
-                     "deceptive_node":1
+                     "standard_node":0.5,
+                     "deceptive_node":0.5
                   }
                },
                "succeeded_attacks_known_compromise":{
-                  "use":true,
+                  "use":false,
                   "chance":{
-                     "standard_node":1,
-                     "deceptive_node":1
+                     "standard_node":0.5,
+                     "deceptive_node":0.5
                   }
                },
                "succeeded_attacks_unknown_compromise":{
-                  "use":true,
+                  "use":false,
                   "chance":{
-                     "standard_node":1,
-                     "deceptive_node":1
+                     "standard_node":0.5,
+                     "deceptive_node":0.5
                   }
                }
             }
          },
          "game_rules":{
             "grace_period_length":0,
-            "max_steps":25,
+            "max_steps":0,
             "blue_loss_condition":{
                "all_nodes_lost":false,
-               "high_value_node_lost":true,
+               "high_value_node_lost":false,
                "target_node_lost":false,
                "n_percent_nodes_lost":{
                   "use":false,
-                  "value":0.8
+                  "value":null
                }
             },
             "network_compatibility":{
                "node_count":{
                   "restrict":false,
-                  "min":6,
+                  "min":null,
                   "max":null
                },
                "entry_node_count":{
@@ -148,27 +148,27 @@
             }
          },
          "blue_can_observe":{
-            "compromised_status":true,
-            "vulnerabilities":true,
-            "node_connections":true,
+            "compromised_status":false,
+            "vulnerabilities":false,
+            "node_connections":false,
             "average_vulnerability":false,
             "graph_connectivity":false,
-            "attacking_nodes":true,
-            "attacked_nodes":true,
-            "special_nodes":true,
-            "red_agent_skill":true
+            "attacking_nodes":false,
+            "attacked_nodes":false,
+            "special_nodes":false,
+            "red_agent_skill":false
          },
          "on_reset":{
             "randomise_vulnerabilities":false,
-            "choose_new_high_value_nodes":true,
-            "choose_new_entry_nodes":true
+            "choose_new_high_value_nodes":false,
+            "choose_new_entry_nodes":false
          },
          "rewards":{
             "for_loss":0,
             "for_reaching_max_steps":0,
             "end_rewards_are_multiplied_by_end_state":false,
             "reduce_negative_rewards_for_closer_fails":false,
-            "function":"dcbo_cost_func"
+            "function":"standard_rewards"
          },
          "miscellaneous":{
             "random_seed":null,
@@ -200,14 +200,14 @@
             },
             "action_set":{
                "spread":{
-                  "chance":0.1,
                   "use":false,
-                  "likelihood":1
+                  "likelihood":1,
+                  "chance":0.1
                },
                "random_infect":{
-                  "chance":0.1,
                   "use":false,
-                  "likelihood":1
+                  "likelihood":1,
+                  "chance":0.1
                },
                "move":{
                   "use":false,
@@ -228,7 +228,7 @@
                }
             },
             "natural_spreading":{
-               "capable":true,
+               "capable":false,
                "chance":{
                   "to_connected_node":0.05,
                   "to_unconnected_node":0
@@ -249,9 +249,9 @@
          },
          "blue":{
             "action_set":{
-               "reduce_vulnerability":false,
-               "restore_node":true,
-               "scan":true,
+               "reduce_vulnerability":true,
+               "restore_node":false,
+               "scan":false,
                "isolate_node":false,
                "reconnect_node":false,
                "do_nothing":false,
@@ -335,7 +335,7 @@
             "compromised_status":true,
             "vulnerabilities":true,
             "node_connections":true,
-            "average_vulnerability":false,
+            "average_vulnerability":true,
             "graph_connectivity":true,
             "attacking_nodes":true,
             "attacked_nodes":true,
@@ -345,7 +345,7 @@
          "on_reset":{
             "randomise_vulnerabilities":false,
             "choose_new_high_value_nodes":true,
-            "choose_new_entry_nodes":true
+            "choose_new_entry_nodes":false
          },
          "rewards":{
             "for_loss":-100,
@@ -558,52 +558,52 @@
                "ignores_defences":false,
                "always_succeeds":false,
                "skill":{
-                  "use":true,
-                  "value":0.5
+                  "use":false,
+                  "value":null
                },
                "attack_from":{
-                  "only_main_red_node":true,
+                  "only_main_red_node":false,
                   "any_red_node":false
                }
             },
             "action_set":{
                "spread":{
-                  "chance":0.1,
                   "use":false,
-                  "likelihood":1
+                  "likelihood":null,
+                  "chance":null
                },
                "random_infect":{
-                  "chance":0.1,
                   "use":false,
-                  "likelihood":1
+                  "likelihood":null,
+                  "chance":null
                },
                "move":{
                   "use":false,
-                  "likelihood":1
+                  "likelihood":null
                },
                "basic_attack":{
-                  "use":true,
-                  "likelihood":1
+                  "use":false,
+                  "likelihood":null
                },
                "do_nothing":{
                   "use":false,
-                  "likelihood":10
+                  "likelihood":null
                },
                "zero_day":{
-                  "use":true,
-                  "start_amount":1,
-                  "days_required":10
+                  "use":false,
+                  "start_amount":0,
+                  "days_required":0
                }
             },
             "natural_spreading":{
                "capable":false,
                "chance":{
-                  "to_connected_node":0.01,
-                  "to_unconnected_node":0.005
+                  "to_connected_node":0,
+                  "to_unconnected_node":0
                }
             },
             "target_mechanism":{
-               "random":true,
+               "random":false,
                "prioritise_connected_nodes":false,
                "prioritise_unconnected_nodes":false,
                "prioritise_vulnerable_nodes":false,
@@ -611,80 +611,80 @@
                "target_specific_node":{
                   "use":false,
                   "target":null,
-                  "always_choose_shortest_distance":true
+                  "always_choose_shortest_distance":false
                }
             }
          },
          "blue":{
             "action_set":{
-               "reduce_vulnerability":true,
-               "restore_node":true,
+               "reduce_vulnerability":false,
+               "restore_node":false,
                "scan":false,
                "isolate_node":false,
                "reconnect_node":false,
-               "do_nothing":true,
+               "do_nothing":false,
                "make_node_safe":{
                   "use":false,
                   "increases_vulnerability":false,
                   "gives_random_vulnerability":false,
-                  "vulnerability_change":0.4
+                  "vulnerability_change":null
                },
                "deceptive_nodes":{
                   "use":false,
-                  "max_number":0,
-                  "new_node_on_relocate":true
+                  "max_number":1,
+                  "new_node_on_relocate":false
                }
             },
             "intrusion_discovery_chance":{
                "immediate":{
-                  "standard_node":1,
-                  "deceptive_node":1
+                  "standard_node":0.5,
+                  "deceptive_node":0.5
                },
                "on_scan":{
-                  "standard_node":0.7,
-                  "deceptive_node":1
+                  "standard_node":0.5,
+                  "deceptive_node":0.5
                }
             },
             "attack_discovery":{
                "failed_attacks":{
-                  "use":true,
+                  "use":false,
                   "chance":{
                      "standard_node":0.5,
-                     "deceptive_node":1
+                     "deceptive_node":0.5
                   }
                },
                "succeeded_attacks_known_compromise":{
-                  "use":true,
+                  "use":false,
                   "chance":{
-                     "standard_node":0.3,
-                     "deceptive_node":1
+                     "standard_node":0.5,
+                     "deceptive_node":0.5
                   }
                },
                "succeeded_attacks_unknown_compromise":{
-                  "use":true,
+                  "use":false,
                   "chance":{
-                     "standard_node":0.1,
-                     "deceptive_node":1
+                     "standard_node":0.5,
+                     "deceptive_node":0.5
                   }
                }
             }
          },
          "game_rules":{
             "grace_period_length":0,
-            "max_steps":1000,
+            "max_steps":0,
             "blue_loss_condition":{
                "all_nodes_lost":false,
-               "high_value_node_lost":true,
+               "high_value_node_lost":false,
                "target_node_lost":false,
                "n_percent_nodes_lost":{
                   "use":false,
-                  "value":0.8
+                  "value":null
                }
             },
             "network_compatibility":{
                "node_count":{
                   "restrict":false,
-                  "min":18,
+                  "min":null,
                   "max":null
                },
                "entry_node_count":{
@@ -700,27 +700,27 @@
             }
          },
          "blue_can_observe":{
-            "compromised_status":true,
-            "vulnerabilities":true,
-            "node_connections":true,
+            "compromised_status":false,
+            "vulnerabilities":false,
+            "node_connections":false,
             "average_vulnerability":false,
-            "graph_connectivity":true,
-            "attacking_nodes":true,
-            "attacked_nodes":true,
+            "graph_connectivity":false,
+            "attacking_nodes":false,
+            "attacked_nodes":false,
             "special_nodes":false,
-            "red_agent_skill":true
+            "red_agent_skill":false
          },
          "on_reset":{
             "randomise_vulnerabilities":false,
             "choose_new_high_value_nodes":false,
-            "choose_new_entry_nodes":true
+            "choose_new_entry_nodes":false
          },
          "rewards":{
-            "for_loss":-100,
-            "for_reaching_max_steps":100,
-            "end_rewards_are_multiplied_by_end_state":true,
-            "reduce_negative_rewards_for_closer_fails":true,
-            "function":"num_nodes_safe"
+            "for_loss":0,
+            "for_reaching_max_steps":0,
+            "end_rewards_are_multiplied_by_end_state":false,
+            "reduce_negative_rewards_for_closer_fails":false,
+            "function":"standard_rewards"
          },
          "miscellaneous":{
             "random_seed":null,
@@ -742,52 +742,52 @@
                "ignores_defences":false,
                "always_succeeds":false,
                "skill":{
-                  "use":true,
-                  "value":0.5
+                  "use":false,
+                  "value":null
                },
                "attack_from":{
                   "only_main_red_node":false,
-                  "any_red_node":true
+                  "any_red_node":false
                }
             },
             "action_set":{
                "spread":{
-                  "chance":0.1,
                   "use":false,
-                  "likelihood":1
+                  "likelihood":null,
+                  "chance":null
                },
                "random_infect":{
-                  "chance":0.1,
                   "use":false,
-                  "likelihood":1
+                  "likelihood":null,
+                  "chance":null
                },
                "move":{
                   "use":false,
-                  "likelihood":1
+                  "likelihood":null
                },
                "basic_attack":{
-                  "use":true,
-                  "likelihood":2
+                  "use":false,
+                  "likelihood":null
                },
                "do_nothing":{
-                  "use":true,
-                  "likelihood":1
+                  "use":false,
+                  "likelihood":null
                },
                "zero_day":{
-                  "use":true,
-                  "start_amount":1,
-                  "days_required":4
+                  "use":false,
+                  "start_amount":0,
+                  "days_required":0
                }
             },
             "natural_spreading":{
-               "capable":true,
+               "capable":false,
                "chance":{
-                  "to_connected_node":0.05,
+                  "to_connected_node":0,
                   "to_unconnected_node":0
                }
             },
             "target_mechanism":{
-               "random":true,
+               "random":false,
                "prioritise_connected_nodes":false,
                "prioritise_unconnected_nodes":false,
                "prioritise_vulnerable_nodes":false,
@@ -795,80 +795,80 @@
                "target_specific_node":{
                   "use":false,
                   "target":null,
-                  "always_choose_shortest_distance":true
+                  "always_choose_shortest_distance":false
                }
             }
          },
          "blue":{
             "action_set":{
                "reduce_vulnerability":false,
-               "restore_node":true,
-               "scan":true,
+               "restore_node":false,
+               "scan":false,
                "isolate_node":false,
                "reconnect_node":false,
                "do_nothing":false,
                "make_node_safe":{
-                  "use":true,
+                  "use":false,
                   "increases_vulnerability":false,
                   "gives_random_vulnerability":false,
-                  "vulnerability_change":0.4
+                  "vulnerability_change":null
                },
                "deceptive_nodes":{
                   "use":false,
-                  "max_number":2,
-                  "new_node_on_relocate":true
+                  "max_number":1,
+                  "new_node_on_relocate":false
                }
             },
             "intrusion_discovery_chance":{
                "immediate":{
                   "standard_node":0.5,
-                  "deceptive_node":1
+                  "deceptive_node":0.5
                },
                "on_scan":{
-                  "standard_node":1,
-                  "deceptive_node":1
+                  "standard_node":0.5,
+                  "deceptive_node":0.5
                }
             },
             "attack_discovery":{
                "failed_attacks":{
-                  "use":true,
+                  "use":false,
                   "chance":{
-                     "standard_node":1,
-                     "deceptive_node":1
+                     "standard_node":0.5,
+                     "deceptive_node":0.5
                   }
                },
                "succeeded_attacks_known_compromise":{
-                  "use":true,
+                  "use":false,
                   "chance":{
-                     "standard_node":1,
-                     "deceptive_node":1
+                     "standard_node":0.5,
+                     "deceptive_node":0.5
                   }
                },
                "succeeded_attacks_unknown_compromise":{
-                  "use":true,
+                  "use":false,
                   "chance":{
-                     "standard_node":1,
-                     "deceptive_node":1
+                     "standard_node":0.5,
+                     "deceptive_node":0.5
                   }
                }
             }
          },
          "game_rules":{
             "grace_period_length":0,
-            "max_steps":1000,
+            "max_steps":0,
             "blue_loss_condition":{
                "all_nodes_lost":false,
-               "high_value_node_lost":true,
+               "high_value_node_lost":false,
                "target_node_lost":false,
                "n_percent_nodes_lost":{
                   "use":false,
-                  "value":0.8
+                  "value":null
                }
             },
             "network_compatibility":{
                "node_count":{
                   "restrict":false,
-                  "min":18,
+                  "min":null,
                   "max":null
                },
                "entry_node_count":{
@@ -884,26 +884,26 @@
             }
          },
          "blue_can_observe":{
-            "compromised_status":true,
-            "vulnerabilities":true,
-            "node_connections":true,
+            "compromised_status":false,
+            "vulnerabilities":false,
+            "node_connections":false,
             "average_vulnerability":false,
-            "graph_connectivity":true,
-            "attacking_nodes":true,
-            "attacked_nodes":true,
-            "special_nodes":true,
-            "red_agent_skill":true
+            "graph_connectivity":false,
+            "attacking_nodes":false,
+            "attacked_nodes":false,
+            "special_nodes":false,
+            "red_agent_skill":false
          },
          "on_reset":{
             "randomise_vulnerabilities":false,
-            "choose_new_high_value_nodes":true,
-            "choose_new_entry_nodes":true
+            "choose_new_high_value_nodes":false,
+            "choose_new_entry_nodes":false
          },
          "rewards":{
-            "for_loss":-100,
-            "for_reaching_max_steps":100,
-            "end_rewards_are_multiplied_by_end_state":true,
-            "reduce_negative_rewards_for_closer_fails":true,
+            "for_loss":0,
+            "for_reaching_max_steps":0,
+            "end_rewards_are_multiplied_by_end_state":false,
+            "reduce_negative_rewards_for_closer_fails":false,
             "function":"standard_rewards"
          },
          "miscellaneous":{
