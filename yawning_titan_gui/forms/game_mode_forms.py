@@ -75,7 +75,7 @@ class ConfigForm(django_forms.Form):
 
 class GameModeSection:
     """
-    A representation of a section of a :class: `~yawning_titan.game_modes.game_mode .GameMode`.
+    A representation of a section of a :class: `~yawning_titan.game_modes.game_mode.GameMode`.
 
     Each group within the section has its items converted into a django form element and is assigned
     an icon string representing a bootstrap icon.
@@ -268,7 +268,7 @@ class GameModeForm:
 
 class GameModeFormManager:
     """
-    Create and manage sets of forms for a given :class: `~yawning_titan.game_modes.game_mode .GameMode`.
+    Create and manage sets of forms for a given :class: `~yawning_titan.game_modes.game_mode.GameMode`.
 
     allows for game modes to be constructed dynamically from the GUI.
     """
@@ -288,8 +288,8 @@ class GameModeFormManager:
         Set the status of the game mode sections based upon whether they pass the validation rules in their corresponding
         :class: `~yawning_titan.config.toolbox.core.ConfigGroup`
 
-        :param game_mode_id: the file name and extension of the current game mode
-        :return: a dictionary representation of the sections of the :class: `~yawning_titan.game_modes.game_mode .GameMode`
+        :param game_mode_filename: the file name and extension of the current game mode
+        :return: a dictionary representation of the sections of the :class: `~yawning_titan.game_modes.game_mode.GameMode`
         """
         if game_mode_id in cls.game_mode_forms:
             return cls.game_mode_forms[game_mode_id]
@@ -307,7 +307,7 @@ class GameModeFormManager:
 
         :param game_mode_forms: dictionary containing django form objects representing sections of the config.
 
-        :return: a valid instance of :class: `~yawning_titan.game_modes.game_mode _config.GameModeConfig`
+        :return: a valid instance of :class: `~yawning_titan.game_modes.game_mode.GameMode`
         """
         if GameModeManager.db.get(game_mode_form.game_mode.doc_metadata.uuid):
             # TODO add description to params
