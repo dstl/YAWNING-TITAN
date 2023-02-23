@@ -34,7 +34,7 @@ def to_id(value: str):
     >>>{{'my object a'|to_id}}
     >>>my-object-a
     """
-    return value.replace(" ", "-")
+    return value.replace(" ", "-").lower()
 
 
 @register.filter

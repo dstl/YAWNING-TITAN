@@ -6,10 +6,13 @@ from yawning_titan_gui.views import (
     GameModeConfigView,
     GameModesView,
     HomeView,
+    NetworkCreator,
+    NetworksView,
     NodeEditor,
     RunView,
-    config_file_manager,
-    update_config,
+    db_manager,
+    update_game_mode,
+    update_network,
 )
 
 urlpatterns = [
@@ -17,24 +20,33 @@ urlpatterns = [
     path("docs/", DocsView.as_view(), name="docs"),
     path("run/", RunView.as_view(), name="run"),
     path("game_modes/", GameModesView.as_view(), name="Manage game modes"),
+    path("networks/", NetworksView.as_view(), name="Manage networks"),
+    path("network_creator", NetworkCreator.as_view(), name="network creator"),
+    path(
+        "network_creator/<str:network_id>/",
+        NetworkCreator.as_view(),
+        name="network creator",
+    ),
     path(
         "game_mode_config/",
         GameModeConfigView.as_view(),
         name="game mode config",
     ),
     path(
-        "game_mode_config/<str:game_mode_filename>/",
+        "game_mode_config/<str:game_mode_id>/",
         GameModeConfigView.as_view(),
         name="game mode config",
     ),
     path(
-        "game_mode_config/<str:game_mode_filename>/<str:section_name>/",
+        "game_mode_config/<str:game_mode_id>/<str:section_name>/",
         GameModeConfigView.as_view(),
         name="game mode config",
     ),
     path("node_editor/", NodeEditor.as_view(), name="node editor"),
-    path("manage_files/", config_file_manager, name="file manager"),
-    path("update_config/", update_config, name="update config"),
+    path("node_editor/<str:network_id>", NodeEditor.as_view(), name="node editor"),
+    path("manage_db/", db_manager, name="db manager"),
+    path("update_game_mode/", update_game_mode, name="update config"),
+    path("update_network/", update_network, name="update network"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

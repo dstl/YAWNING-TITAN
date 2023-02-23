@@ -1,7 +1,7 @@
 from django import forms as django_forms
 
 from tests.conftest import Group, GroupTier2
-from yawning_titan_gui.forms import GameModeSection
+from yawning_titan_gui.forms.game_mode_forms import GameModeSection
 
 
 def test_config_class_instance_persisted(test_group: Group):

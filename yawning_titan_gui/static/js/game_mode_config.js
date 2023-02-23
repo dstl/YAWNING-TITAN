@@ -72,7 +72,7 @@ $(document).ready(function(){
     });
 
     $(".config-form").change(function(){
-        submit_form(this,"update")
+        submit_form(this);
     });
 
     $("#config-form-icons>.icon").click(function(){
@@ -89,7 +89,7 @@ function save_game_mode(){
     config.append('_operation',"save");
     $.ajax({
         type: "POST",
-        url: window.location.origin + "/update_config/",
+        url: window.location.origin + "/update_game_mode/",
         data: config,
         processData: false,
         contentType: false,
@@ -108,13 +108,14 @@ function submit_form(form_element){
     config.append('_operation',"update");
     $.ajax({
         type: "POST",
-        url: window.location.origin + "/update_config/",
+        url: window.location.origin + "/update_game_mode/",
         data: config,
         processData: false,
         contentType: false,
         cache: false,
         dataType: "json",
         success: function(response){
+            $(".error-list",form_element).empty()
         },
         error: function(response){
             let errors = response.responseJSON.errors;
