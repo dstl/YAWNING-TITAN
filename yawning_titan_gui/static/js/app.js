@@ -93,7 +93,6 @@ class Filter{
     }
     update_elements(){
         $(".list-item").removeClass("hidden");
-        // console.log("TESTING 123",this.hidden);
         for (const [group,elements] of Object.entries(this.hidden)){
             elements.each(function(){
                 $(this).addClass("hidden")

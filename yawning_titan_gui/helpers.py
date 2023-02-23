@@ -63,7 +63,6 @@ class NetworkManager:
         """
         attr = f"filter_{attribute}"
         if not hasattr(cls, attr):
-            print("OOPS")
             return None
         return getattr(cls, attr)(min, max)
 

@@ -97,7 +97,6 @@ function check_dialogue_filled(dialogue_el){
         return true
     }else{
         // add error message
-        console.log("NOT FILLED");
         return false
     }
 }
