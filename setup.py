@@ -199,6 +199,7 @@ setup(
             "notebooks/_package_data/sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb",
             "notebooks/_package_data/sb3/Using an Evaluation Callback to monitor progress during training.ipynb",
             "notebooks/_package_data/Creating and playing as a Keyboard Agent.ipynb",
+            "notebooks/_package_data/sb3/YawningTitanRun Example.ipynb",
         ]
     },
     include_package_data=True,
