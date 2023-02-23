@@ -9,7 +9,7 @@ describe('CanvasControlComponent', () => {
   let fixture: ComponentFixture<CanvasControlComponent>;
 
   const stubCytoscapeService = {
-
+    resetView: () => { }
   }
 
   beforeEach(async () => {
@@ -31,5 +31,13 @@ describe('CanvasControlComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('METHOD: resetView', () => {
+    it('should call resetView in cytoscapeService', () => {
+      const spy = spyOn(component['cytoscapeService'], 'resetView');
+      component.resetView();
+      expect(spy).toHaveBeenCalled();
+    });
   });
 });
