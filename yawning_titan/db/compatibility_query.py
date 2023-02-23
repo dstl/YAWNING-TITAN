@@ -74,7 +74,6 @@ class EntryNodeCompatibilityQuery(Query):
         """
         if isinstance(n, Network):
             n = len(n.entry_nodes) if n.entry_nodes else n.num_of_random_entry_nodes
-            print("N=", n)
 
         def test_works_with(val, n, include_unbounded):
             return check_element(val, n, include_unbounded)

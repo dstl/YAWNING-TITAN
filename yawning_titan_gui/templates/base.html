@@ -4,12 +4,8 @@
 <head>
     <link rel="icon" type="image/x-icon" href="{% static 'ytlogo.ico' %}">
     <link rel="stylesheet" href="{% static 'lib/bootstrap-icons.css' %}">
-
-<<<<<<< HEAD
-
-=======
->>>>>>> dev-gui
     <link rel="stylesheet" href="{% static 'lib/bootstrap.min.css' %}">
+
     <script src="{% static 'lib/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'lib/jquery.js' %}"></script>
 
@@ -19,12 +15,18 @@
 
     <script src="{% static 'js/app.js' %}"></script>
 
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/multi-range.css' %}">
+    <link rel="stylesheet" href="{% static 'css/list-item.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sandwich-icon.css' %}">
+
     {% block scripts %}
 
     {% endblock %}
 </head>
 <body class="preload">
-    <nav id="view-selector">
+    <nav id="top-nav">
         <div id="sandwich-icon" data-sidebar="#sidebar-left">
             <span></span>
             <span></span>
@@ -37,26 +39,17 @@
             <a href="{% url 'home' %}" class="head">Yawning Titan Home</a>
         {% endif %}
         <div class="flex-break"></div>
-        <div id="error-message" class="{% if error_message is None %}hidden{% endif %}">{{error_message}}</div>
+        {% block top-buttons %}
+        {% endblock %}
     </nav>
     <div id="window-container">
         <div id="toolbar">
-            <div id="game-mode-set" class="stage" data-toggle="tooltip" data-placement="right" title="Game mode config incomplete">
-                <i class="bi bi-gear"></i>
-                <i class="bi bi-gear-fill"></i>
-            </div>
-            <div class="stage" data-toggle="tooltip" data-placement="right" title="Network config incomplete">
-                <i class="bi bi-diagram-2"></i>
-                <i class="bi bi-diagram-2-fill"></i>
-            </div>
-            <div class="stage" data-toggle="tooltip" data-placement="right" title="Run config incomplete">
-                <i class="bi bi-collection-play"></i>
-                <i class="bi bi-collection-play-fill"></i>
-            </div>
-            <div class="stage" data-toggle="tooltip" data-placement="right" title="Run game">
-                <i class="bi bi-play"></i>
-                <i class="bi bi-play-fill"></i>
-            </div>
+            {% for id, el in toolbar.items %}
+                <button id="{{id}}-icon" class="toolbar-button {{id}}" data-toggle="tooltip" data-placement="right" title="{{el.title}}">
+                    <i class="bi {{el.icon}}"></i>
+                    <i class="bi {{el.icon}}-fill"></i>
+                </button>
+            {% endfor %}
         </div>
         <div id="window">
             <div id="sidebar-left">
@@ -96,436 +89,6 @@
     </div>
     <script> </script>
 </body>
-<style>
-    :root{
-        --primary: #00A86B;
-        --primary-light: #A8E4A0;
-        --superlight: #bababa;
-        --light: #323233;
-        --mid: #252526;
-        --dark: #1e1e1e;
-
-        --text-superlight: #fff;
-        --text-light: #999;
-        --text-mid: #888;
-        --text-dark: rgb(87, 87, 87);
-
-        --increment: 5px;
-        --padding: 50px;
-    }
-
-    /* scrollbar styling */
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background-color: var(--mid);
-        -webkit-border-radius: 10px;
-        border-radius: 10px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        -webkit-border-radius: 10px;
-        border-radius: 10px;
-        background: var(--text-light);
-    }
-
-    /* base elements */
-    body{
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        background-color: var(--light);
-        color: #666;
-        line-height: auto;
-        position: relative;
-    }
-    h2{
-        color: var(--text-light);
-    }
-    a,button,div,form { /* linkable elements */
-        color: var(--text-mid);
-        box-sizing: border-box;
-    }
-
-    /* input elements */
-    input:checked{
-        background-color: var(--primary) !important;
-    }
-    input[type="checkbox"]:focus:checked{
-        background-color: var(--primary) !important;
-    }
-    input:focus{
-        background-color: var(--dark) !important;
-        color: var(--text-light) !important;
-    }
-    input[type='search']{
-        background-color: var(--mid);
-        color: var(--text-light);
-    }
-    input[type='search']:focus{
-        background-color: var(--mid);
-        color: var(--text-light);
-    }
-    input[type='search'].rounded{
-        border-top-right-radius:0 !important;
-        border-bottom-right-radius:0 !important;
-    }
-    option:hover{
-        background-color: var(--primary-light);
-    }
-
-    /* specific elements */
-    #error-message{
-        background-color: var(--bs-danger);
-        padding: var(--increment);
-        border-radius: var(--increment);
-        color: var(--text-superlight);
-        margin-right: var(--increment);
-    }
-
-    #view-selector{
-        width: 100%;
-        height: var(--padding);
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        background-color: var(--light);
-        border-bottom: 1px solid var(--text-mid);
-    }
-    #toolbar{
-        width: var(--padding);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: var(--light);
-        border-right: 1px solid var(--text-mid);
-    }
-    #toolbar>*{
-        font-size: 2rem;
-        margin-top: calc(var(--increment)*3);
-        margin-bottom: calc(var(--increment)*3);
-        color: var(--text-light);
-    }
-    #window-container{
-        flex: 1;
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-    }
-    #window{
-        flex: 1;
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        min-height: 0;
-        max-height: calc(100vh - var(--padding));
-        overflow: hidden;
-    }
-    #main{
-        padding: 0 !important;
-        position: relative;
-        flex: 1;
-        height: 100%;
-        padding: var(--padding);
-        background-color: var(--mid);
-    }
-    #sidebar-left{
-        width: 700px;
-        height: 100%;
-        display: flex;
-        background-color: var(--mid);
-        transition: all 0.8s ease;
-        margin-left: -700px;
-        /* transform: translate(-700px, 0); */
-    }
-    #sidebar-left.open{
-        margin-left: 0px;
-    }
-    #main{
-        position: relative;
-        flex: 1;
-        display: flex;
-        height: 100%;
-    }
-    #center-container{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        padding: 30px;
-        background-color: var(--mid);
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        border: 1px solid var(--text-light);
-        border-radius: .25rem;
-        transform: translate(-50%, -50%);
-    }
-    #center-container.small{
-        width: 500px;
-        height: 500px;
-    }
-    #center-container.stretch{
-        width: 1000px;
-        min-height: 60%;
-        max-height: 100%;
-    }
-
-    /* base classes */
-    .icon{
-        border-radius: 50%;
-        background-color: var(--light);
-        margin-left: var(--increment);
-        padding: .5rem;
-        cursor: pointer;
-    }
-    .icon:hover{
-        background-color: var(--superlight);
-        color: var(--primary-light);
-    }
-    .form-label{
-        color: var(--text-superlight);
-    }
-    .form-switch{
-        text-align: center;
-    }
-    .form-range{
-        display: flex;
-        flex-direction: row;
-    }
-    .form-range>.range-setter{
-        width: 50px;
-        margin-left: var(--increment);
-        -moz-appearance: textfield;
-        padding: .1rem;
-    }
-    .form-range>.range-setter::-webkit-inner-spin-button,.form-range>.range-setter::-webkit-outer-spin-button{
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    /* dialogue boxes */
-    #mask{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        height: 100%;
-        width: 100%;
-        transform: translate(-50%,-50%);
-    }
-    .dialogue-center{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 500px;
-        height: 500px;
-        padding: calc(2*var(--increment));
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        background-color: var(--dark);
-        border-radius: .5rem;
-        transform: translate(-50%,-50%);
-        color: var(--text-superlight);
-    }
-    .dialogue-center>p{
-        color: var(--text-mid);
-    }
-    .dialogue-center>input{
-        margin-bottom: var(--padding);
-        background-color: var(--mid);
-        border: none;
-    }
-    .dialogue-center>h3{
-        color: var(--text-superlight);
-    }
-
-    /* toolbar */
-    #toolbar>.stage>i:last-child{
-        display: none;
-        color: var(--primary);
-    }
-    #toolbar>.stage>i:first-child{
-        display: block;
-    }
-    #toolbar>.stage.complete>i:last-child{
-        display: block;
-    }
-    #toolbar>.stage.complete>i:first-child{
-        display: none;
-    }
-
-    /* text styling */
-    .head{
-        font-size: 2.25rem;
-        font-weight: 500;
-        color: var(--primary);
-        text-decoration: none;
-        margin-bottom: .25rem;
-    }
-    .head:hover{
-        color: var(--primary);
-    }
-
-    /* accordion */
-    .accordion{
-        width:100%;
-        max-height: 100%;
-        margin: var(--increment);
-    }
-    .accordion-item,.accordion-header,.accordion-button{
-        background-color: var(--light);
-        color: var(--text-light);
-        border: none;
-    }
-    .accordion-button:not(.collapsed){
-        background-color: var(--primary);
-        color: var(--text-superlight);
-    }
-    .accordion-button.collapsed::after {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23888'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-    }
-    .accordion-body{
-        background-color: var(--mid);
-    }
-
-    /* style helpers */
-    .hidden{
-        display: none !important;
-    }
-    .disabled{
-        pointer-events: none;
-    }
-    .clear{
-        background-color: transparent !important;
-        border: none !important;
-    }
-    .blur{
-        filter: blur(5px);
-    }
-    .preload * {
-        -webkit-transition: none !important;
-        -moz-transition: none !important;
-        -ms-transition: none !important;
-        -o-transition: none !important;
-    }
-    .btn-primary{
-        background-color: var(--primary);
-        border-color: var(--primary);
-        color: var(--text-superlight) !important;
-    }
-    .btn{
-        color: var(--text-light);
-    }
-
-    /* layout helpers */
-    .list{
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-    .list>a{
-        text-decoration: none;
-        color: var(--text-mid);
-        cursor: pointer;
-        font-size: 1rem;
-        height: 2rem;
-    }
-    .list>a:hover{
-        border-bottom: 1px solid var(--text-mid);
-        color: var(--primary-light);
-    }
-    .el-row{
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .flex-break{
-        flex:1;
-    }
-
-    /* animated sandwich */
-    #sandwich-icon{
-        width: 30px;
-        height: 22px;
-        margin-left: var(--increment);
-        margin-right: var(--increment);
-        position: relative;
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-        -webkit-transition: .5s ease-in-out;
-        -moz-transition: .5s ease-in-out;
-        -o-transition: .5s ease-in-out;
-        transition: .5s ease-in-out;
-        cursor: pointer;
-    }
-
-    #sandwich-icon>span{
-        display: block;
-        position: absolute;
-        height: 4px;
-        width: 100%;
-        background: var(--text-mid);
-        border-radius: 9px;
-        opacity: 1;
-        left: 0;
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-        -webkit-transition: .25s ease-in-out;
-        -moz-transition: .25s ease-in-out;
-        -o-transition: .25s ease-in-out;
-        transition: .25s ease-in-out;
-        }
-
-
-    #sandwich-icon span:nth-child(1) {
-        top: 0px;
-    }
-
-    #sandwich-icon span:nth-child(2),#sandwich-icon span:nth-child(3) {
-        top: 9px;
-    }
-
-    #sandwich-icon span:nth-child(4) {
-        top: 18px;
-    }
-
-    #sandwich-icon.open span:nth-child(1) {
-        top: 9px;
-        width: 0%;
-        left: 50%;
-    }
-
-    #sandwich-icon.open span:nth-child(2) {
-        -webkit-transform: rotate(45deg);
-        -moz-transform: rotate(45deg);
-        -o-transform: rotate(45deg);
-        transform: rotate(45deg);
-    }
-
-    #sandwich-icon.open span:nth-child(3) {
-        -webkit-transform: rotate(-45deg);
-        -moz-transform: rotate(-45deg);
-        -o-transform: rotate(-45deg);
-        transform: rotate(-45deg);
-    }
-
-    #sandwich-icon.open span:nth-child(4) {
-        top: 9px;
-        width: 0%;
-        left: 50%;
-    }
-</style>
 
 {% block style %}
 {% endblock %}
