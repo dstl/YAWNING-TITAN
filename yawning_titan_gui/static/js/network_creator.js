@@ -2,7 +2,6 @@ $(document).ready(function(){
     $(".template .mb-3:not(:first-child)").hide();
     $(`.template .mb-3:has(.${$("select").val()})`).show();
     $("select[type-selector]").on("change",function(){
-        console.log($(this).val());
         $(".template  .mb-3:not(:first-child)").hide();
         $(`.template  .mb-3:has(.${$(this).val()})`).show();
     });
