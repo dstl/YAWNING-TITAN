@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { DJANGO_SAVE_URL } from 'src/app/app.tokens';
 import { Node } from '../../../app/network-class/network-interfaces';
@@ -37,14 +37,9 @@ export class ControlsComponent {
    * Sends a post request to the django backend to save the file
    */
   saveNetwork(): void {
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
-    let options = {headers: headers};
     this.http.post(
       this.saveUrl,
-      this.cytoscapeService.getNetworkJson(),
-      {responseType: 'text'}
+      this.cytoscapeService.getNetworkJson()
     ).subscribe()
   }
 
