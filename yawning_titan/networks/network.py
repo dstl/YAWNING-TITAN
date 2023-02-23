@@ -274,6 +274,67 @@ class Network(nx.Graph):
                         )
                     )
 
+    def set_from_dict(
+        self,
+        config_dict: dict,
+        remove_existing_edges: bool = False,
+        remove_existing_nodes: bool = False,
+        clear_special_nodes: bool = True,
+    ):
+        """Set the values of existing network attributes from those contained in a dictionary.
+
+        :param config_dict: A dictionary of network attribute name value pairs
+        :param remove_existing_edges: Whether to remove existing edges
+        :param remove_existing_nodes: Whether to remove existing nodes
+        """
+        if clear_special_nodes:
+            self.clear_special_nodes()
+
+        if "_doc_metadata" in config_dict:
+            config_dict["_doc_metadata"] = DocMetadata(
+                **config_dict.pop("_doc_metadata")
+            )
+        if "random_entry_node_preference" in config_dict:
+            config_dict["random_entry_node_preference"] = RandomEntryNodePreference[
+                config_dict["random_entry_node_preference"]
+            ]
+        if "random_high_value_node_preference" in config_dict:
+            config_dict[
+                "random_high_value_node_preference"
+            ] = RandomHighValueNodePreference[
+                config_dict["random_high_value_node_preference"]
+            ]
+        if "nodes" in config_dict:
+            self.add_nodes_from_dict(
+                nodes_dict=config_dict.pop("nodes"),
+                remove_existing=remove_existing_nodes,
+            )
+        if "edges" in config_dict:
+            self.add_edges_from_dict(
+                edges_dict=config_dict.pop("edges"),
+                remove_existing=remove_existing_edges,
+            )
+
+        for k, v in config_dict.items():
+            if hasattr(self, k):
+                setattr(self, k, v)
+
+        if self.set_random_entry_nodes:
+            self.reset_random_entry_nodes()
+
+        if self.set_random_high_value_nodes:
+            self.reset_random_high_value_nodes()
+
+        if self.set_random_vulnerabilities:
+            self.reset_random_vulnerabilities()
+
+    def clear_special_nodes(self):
+        """Remove all special node designations."""
+        for node in self.entry_nodes:
+            node.entry_node = False
+        for node in self.high_value_nodes:
+            node.high_value_node = False
+
     def set_entry_nodes(self, names: List[str] = None, ids: List[str] = None):
         """Manually set entry nodes in the network after instantiation."""
         names = names if names else []
@@ -303,6 +364,37 @@ class Network(nx.Graph):
                 node.high_value_node = False  # reset high value node designations
 
             self._check_intersect(node)
+
+    def add_nodes_from_dict(self, nodes_dict: Dict[str, dict], remove_existing=False):
+        """Add nodes to the graph with properties defined from a dictionary.
+
+        :param nodes_dict: a dictionary of node uuids to properties
+        :param remove_existing: a boolean to indicate whether to remove existing nodes
+        """
+        if remove_existing:
+            for n in self.nodes:
+                self.remove_node(n)
+        for uuid, attrs in nodes_dict.items():
+            self.add_node(Node(**attrs))
+
+    def add_edges_from_dict(self, edges_dict: Dict[str, dict], remove_existing=False):
+        """Add edges to the graph with properties defined from a dictionary.
+
+        :param edges_dict: a dictionary of edge uuids to properties
+        :param remove_existing: a boolean to indicate whether to remove existing edges
+        """
+        edge_tuples = []
+        if remove_existing:
+            for e in self.edges:
+                self.remove_edge(e)
+        for uuid_u, edges in edges_dict.items():
+            for uuid_v in edges.keys():
+                edge_tuple = tuple(sorted([uuid_u, uuid_v]))
+                if edge_tuple not in edge_tuples:
+                    edge_tuples.append(edge_tuple)
+                    node_u = self.get_node_from_uuid(edge_tuple[0])
+                    node_v = self.get_node_from_uuid(edge_tuple[1])
+                    self.add_edge(node_u, node_v)
 
     def reset_random_entry_nodes(self):
         """
@@ -490,36 +582,6 @@ class Network(nx.Graph):
         :param network_dict: a dictionary describing a :class:`Network`
         :return: An instance of :class: `Network`.
         """
-        network_dict["doc_metadata"] = DocMetadata(**network_dict.pop("_doc_metadata"))
-        network_dict["random_entry_node_preference"] = RandomEntryNodePreference[
-            network_dict["random_entry_node_preference"]
-        ]
-        network_dict[
-            "random_high_value_node_preference"
-        ] = RandomHighValueNodePreference[
-            network_dict["random_high_value_node_preference"]
-        ]
-        network = Network(**network_dict)
-        for uuid, attrs in network_dict["nodes"].items():
-            network.add_node(Node(**attrs))
-
-        edge_tuples = []
-        for uuid_u, edges in network_dict["edges"].items():
-            for uuid_v in edges.keys():
-                edge_tuple = tuple(sorted([uuid_u, uuid_v]))
-                if edge_tuple not in edge_tuples:
-                    edge_tuples.append(edge_tuple)
-                    node_u = network.get_node_from_uuid(edge_tuple[0])
-                    node_v = network.get_node_from_uuid(edge_tuple[1])
-                    network.add_edge(node_u, node_v)
-
-        if network.set_random_entry_nodes:
-            network.reset_random_entry_nodes()
-
-        if network.set_random_high_value_nodes:
-            network.reset_random_high_value_nodes()
-
-        if network.set_random_vulnerabilities:
-            network.reset_random_vulnerabilities()
-
+        network = Network()
+        network.set_from_dict(network_dict)
         return network

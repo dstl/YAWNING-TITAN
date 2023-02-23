@@ -122,6 +122,8 @@ class GameMode(ConfigGroup, DocMetaDataObject):
             value of ``True``.
         :return: The :class:`~yawning_titan.networks.network.Network` as a :class:`dict`.
         """
+        if json_serializable:
+            values_only = True
         config_dict = super().to_dict(
             values_only=values_only, include_none=include_none
         )
