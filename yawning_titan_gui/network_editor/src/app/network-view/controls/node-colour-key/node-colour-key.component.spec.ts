@@ -30,4 +30,21 @@ describe('NodeColourKeyComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('METHOD: colourKeyList', () => {
+    it('should return an empty array if there are no node keys to display', () => {
+      component['nodeKey'] = null;
+      expect(component.colourKeyList()).toEqual([]);
+    });
+
+    it('should return a list of items to display', () => {
+      const expected = { label: 'label', cytoscapeStyleSheet: {} }
+      component['nodeKey'] = [
+        { label: 'remove', noKeyDisplay: true, cytoscapeStyleSheet: {} },
+        expected
+      ]
+
+      expect(component.colourKeyList()).toEqual([expected]);
+    });
+  });
 });
