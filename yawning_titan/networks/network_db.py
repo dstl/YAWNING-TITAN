@@ -83,7 +83,8 @@ class NetworkDB:
 
     def __init__(self):
         self._db = YawningTitanDB("networks")
-        self.reset_default_networks_in_db()
+        if self.count() == 0:
+            self.reset_default_networks_in_db()
 
     def __enter__(self) -> NetworkDB:
         return NetworkDB()
@@ -184,7 +185,7 @@ class NetworkDB:
         network.doc_metadata.update(name, description, author)
         # Perform the update and retrieve the returned doc
         doc = self._db.update(
-            network.to_dict(),
+            network.to_dict(json_serializable=True),
             network.doc_metadata.uuid,
             name,
             description,
@@ -266,9 +267,9 @@ class NetworkDB:
 
         # Iterate over all default networks, and force an update in the
         # main NetworkDB by uuid.
-        for network in default_db.all():
-            uuid = network["_doc_metadata"]["uuid"]
-            name = network["_doc_metadata"]["name"]
+        for package_data_network in default_db.all():
+            uuid = package_data_network["_doc_metadata"]["uuid"]
+            name = package_data_network["_doc_metadata"]["name"]
 
             # Get the matching network from the networks db
             try:
@@ -279,11 +280,15 @@ class NetworkDB:
             # If the network doesn't match the default, or it doesn't exist,
             # perform an upsert.
             if db_network:
-                reset = db_network.to_dict() != network
+                print(package_data_network)
+                print(db_network.to_dict(json_serializable=True))
+                reset = (
+                    db_network.to_dict(json_serializable=True) != package_data_network
+                )
             else:
                 reset = True
             if reset:
-                self._db.db.upsert(network, DocMetadataSchema.UUID == uuid)
+                self._db.db.upsert(package_data_network, DocMetadataSchema.UUID == uuid)
                 _LOGGER.info(
                     f"Reset default network '{name}' in the "
                     f"{self._db.name} db with uuid='{uuid}'."

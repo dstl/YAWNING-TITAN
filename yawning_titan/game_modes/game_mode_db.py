@@ -255,14 +255,14 @@ class GameModeDB:
 
         return game_mode
 
-    def remove(self, game_mode: GameMode) -> List[str]:
+    def remove(self, game_mode: GameMode) -> Union[str, None]:
         """
         Remove a :class:`~yawning_titan.game_modes.game_mode.GameMode`. from the db.
 
         :param game_mode: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`.
         :return: The uuid of the removed :class:`~yawning_titan.game_modes.game_mode.GameMode`.
         """
-        self._db.remove(game_mode.doc_metadata.uuid)
+        return self._db.remove(game_mode.doc_metadata.uuid)
 
     def remove_by_cond(self, cond: QueryInstance) -> List[str]:
         """
