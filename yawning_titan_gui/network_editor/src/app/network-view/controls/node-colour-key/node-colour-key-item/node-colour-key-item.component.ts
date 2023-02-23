@@ -19,7 +19,7 @@ export class NodeColourKeyItemComponent implements OnInit {
   }
 
   private setNodeStyle(el: HTMLElement, nodeStyle: cytoscape.Css.Node | cytoscape.Css.Edge | cytoscape.Css.Core) {
-    if (!el) {
+    if (!el || !nodeStyle) {
       return;
     }
 
@@ -33,6 +33,12 @@ export class NodeColourKeyItemComponent implements OnInit {
       el.style.backgroundColor = nodeStyle['background-color'];
     }
 
-    console.log(nodeStyle)
+    // apply background image if exists
+    if (nodeStyle['background-image']) {
+      el.style.backgroundImage = `url(${window.location.origin}/${nodeStyle['background-image']})`;
+      el.style.backgroundSize = '80% 80%';
+      el.style.backgroundRepeat = 'no-repeat';
+      el.style.backgroundPosition = 'center center';
+    }
   }
 }

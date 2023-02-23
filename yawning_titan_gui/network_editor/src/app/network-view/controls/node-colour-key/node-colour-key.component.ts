@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import * as cytoscape from 'cytoscape';
-import { CYTOSCAPE_STYLE } from 'src/app/app.tokens';
+import { NODE_KEY_CONFIG } from 'src/app/app.tokens';
 
 @Component({
   selector: 'app-node-colour-key',
@@ -8,9 +7,11 @@ import { CYTOSCAPE_STYLE } from 'src/app/app.tokens';
   styleUrls: ['./node-colour-key.component.scss']
 })
 export class NodeColourKeyComponent {
-  constructor(@Inject(CYTOSCAPE_STYLE) private styles) {}
+  constructor(@Inject(NODE_KEY_CONFIG) private nodeKey) { }
 
   colourKeyList(): any[] {
-    return this.styles;
+    // only display ones that are configured to be shown on the key
+    return this.nodeKey && Array.isArray(this.nodeKey) ?
+      this.nodeKey.filter(key => !key.noKeyDisplay) : [];
   }
 }
