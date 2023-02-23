@@ -155,7 +155,7 @@ setup(
         "dm-tree==0.1.7",
         "gym==0.21.0",
         "imageio==2.9.0",
-        "jupyter==1.0.0",
+        "jupyterlab==3.6.1",
         "karateclub==1.3.0",
         "matplotlib==3.6.2",
         "networkx==2.5.1",
