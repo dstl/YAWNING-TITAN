@@ -1,4 +1,5 @@
 import json
+from io import StringIO
 
 from django.http import Http404, HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
@@ -7,12 +8,14 @@ from django.views import View
 
 from yawning_titan.db.doc_metadata import DocMetadata
 from yawning_titan.game_modes.game_mode import GameMode
+from yawning_titan.networks.network import Network
 from yawning_titan_gui.forms.game_mode_forms import (
     GameModeForm,
     GameModeFormManager,
     GameModeSection,
 )
-from yawning_titan_gui.helpers import GameModeManager
+from yawning_titan_gui.forms.netowork_forms import NetworkFormManager
+from yawning_titan_gui.helpers import GameModeManager, NetworkManager
 
 default_sidebar = {
     "Documentation": ["Getting started", "Tutorials", "How to configure", "Code"],
@@ -137,6 +140,105 @@ class GameModesView(View):
         )
 
 
+class NetworksView(View):
+    """Django page template for network management."""
+
+    def get(self, request: HttpRequest, *args, **kwargs):
+        """
+        Handle page get requests.
+
+        :param: request: the Django page `request` object containing the html data for `networks.html` and the server GET / POST request bodies.
+        """
+        networks = NetworkManager.db.all()
+        range_bound_items = [
+            {
+                "name": "entry_nodes",
+                "min": min(
+                    [
+                        len(network.entry_nodes) if network.entry_nodes else 0
+                        for network in networks
+                    ]
+                ),
+                "max": max(
+                    [
+                        len(network.entry_nodes) if network.entry_nodes else 0
+                        for network in networks
+                    ]
+                ),
+            },
+            {
+                "name": "high_value_nodes",
+                "min": min(
+                    [
+                        len(network.high_value_nodes) if network.high_value_nodes else 0
+                        for network in networks
+                    ]
+                ),
+                "max": max(
+                    [
+                        len(network.high_value_nodes) if network.high_value_nodes else 0
+                        for network in networks
+                    ]
+                ),
+            },
+            {
+                "name": "network_nodes",
+                "min": min([len(network.nodes) for network in networks]),
+                "max": max([len(network.nodes) for network in networks]),
+            },
+        ]
+        dialogue_boxes = [
+            {
+                "id": "delete-dialogue",
+                "message": "Are you sure you want to delete the selected network(s)?\n\nThis action cannot be undone.",
+                "actions": ["Delete network"],
+            },
+            {
+                "id": "create-dialogue",
+                "header": "Create new network",
+                "message": "Enter a name for your new network",
+                "actions": ["Template network", "Custom network"],
+                "input_prompt": "Network name...",
+            },
+            {
+                "id": "create-from-dialogue",
+                "header": "Create network from",
+                "message": "Enter a name for your new network",
+                "actions": ["Create network"],
+                "input_prompt": "Network name...",
+            },
+        ]
+        return render(
+            request,
+            "networks.html",
+            {
+                "sidebar": default_sidebar,
+                "networks": [network.doc_metadata for network in networks],
+                "range_bound_items": range_bound_items,
+                "dialogue_boxes": dialogue_boxes,
+            },
+        )
+
+    def post(self, request: HttpRequest, *args, **kwargs):
+        """Handle page get requests.
+
+        :param request: A Django `request` object that contains the data passed from
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
+        """
+        if request.method == "POST":
+            return JsonResponse(
+                {
+                    "ids": NetworkManager.filter(
+                        request.POST.get("attribute"),
+                        request.POST.get("min"),
+                        request.POST.get("max"),
+                    )
+                }
+            )
+        return JsonResponse({"message": "error"}, status=400)
+
+
 class NodeEditor(View):
     """
     Django representation of node_editor.html.
@@ -152,7 +254,20 @@ class NodeEditor(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        return render(request, "node_editor.html", {"sidebar": default_sidebar})
+        network_form = NetworkFormManager.get_or_create_form(network_id)
+        return render(
+            request,
+            "node_editor.html",
+            {
+                "sidebar": default_sidebar,
+                "form": network_form,
+                "toolbar": default_toolbar,
+                "network_id": network_id,
+                "network_json": json.dumps(
+                    network_form.network.to_dict(json_serializable=True)
+                ),
+            },
+        )
 
     def post(self, request: HttpRequest, *args, network_id: str = None, **kwargs):
         """Handle page post requests.
@@ -161,6 +276,14 @@ class NodeEditor(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
+        body = request.body.decode("utf-8")
+        io = StringIO(body)
+        dict_n: dict = json.load(io)
+
+        # find network id as not passed
+        network_id = dict_n["_doc_metadata"]["uuid"]
+
+        NetworkFormManager.update_network_elements(network_id, dict_n)
         return JsonResponse({"message": "success"})
 
 
@@ -293,9 +416,28 @@ def db_manager(request: HttpRequest) -> JsonResponse:
                 kwargs={"game_mode_id": game_mode.doc_metadata.uuid},
             )
 
+        def create_network():
+            network = NetworkManager.db.insert(network=Network(), name=item_name)
+            return reverse(
+                "node editor",
+                kwargs={"network_id": network.doc_metadata.uuid},
+            )
+
+        def create_template_network():
+            network = NetworkManager.db.insert(network=Network(), name=item_name)
+            return reverse(
+                "network creator",
+                kwargs={"network_id": network.doc_metadata.uuid},
+            )
+
         def delete_game_mode():
             for id in item_ids:
                 GameModeManager.db.remove(GameModeManager.db.get(id))
+            return "reload"
+
+        def delete_network():
+            for id in item_ids:
+                NetworkManager.db.remove(NetworkManager.db.get(id))
             return "reload"
 
         def create_game_mode_from():
@@ -310,11 +452,29 @@ def db_manager(request: HttpRequest) -> JsonResponse:
                 kwargs={"game_mode_id": game_mode.doc_metadata.uuid},
             )
 
+        def create_network_from():
+            network = NetworkManager.db.get(request.POST.get("source_item_id"))
+            meta = network.doc_metadata.to_dict()
+            meta["uuid"] = None
+            meta["locked"] = False
+            network._doc_metadata = DocMetadata(**meta)
+            NetworkManager.db.insert(network=network, name=item_name)
+            return reverse(
+                "node editor",
+                kwargs={"network_id": network.doc_metadata.uuid},
+            )
+
         operations = {
             "game mode": {
                 "create": create_game_mode,
                 "delete": delete_game_mode,
                 "create from": create_game_mode_from,
+            },
+            "network": {
+                "create": create_network,
+                "delete": delete_network,
+                "create from": create_network_from,
+                "template": create_template_network,
             },
         }
         try:
@@ -355,4 +515,30 @@ def update_game_mode(request: HttpRequest) -> JsonResponse:
                 return JsonResponse(
                     {"errors": json.dumps(section.get_form_errors())}, status=400
                 )
+    return JsonResponse({"message": "Invalid operation"})
+
+
+def update_network(request: HttpRequest) -> JsonResponse:
+    """
+    Update the :class: `~yawning_titan_gui.forms.network_forms.NetworkForm` with the given `_network_id`.
+
+    Use the data packaged within the POST request to update the value of :class: `~yawning_titan.networks.network.Network` associated
+    with the network form.
+
+    :param request: here the django_request object will be specifically loaded with
+        `_network_id` parameter as well as the form data.
+
+    :return: response object containing error if config is invalid or a json representation of a network if valid.
+    """
+    if request.method == "POST":
+        network_form = NetworkFormManager.update_network_attributes(
+            request.POST.get("_network_id"), request.POST
+        )
+        return JsonResponse(
+            {
+                "network_json": json.dumps(
+                    network_form.network.to_dict(json_serializable=True)
+                )
+            }
+        )
     return JsonResponse({"message": "Invalid operation"})
