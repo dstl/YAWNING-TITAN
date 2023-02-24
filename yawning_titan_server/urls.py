@@ -11,7 +11,7 @@ from yawning_titan_gui.views import (
     NodeEditor,
     db_manager,
     update_game_mode,
-    update_network
+    update_network,
 )
 
 urlpatterns = [
