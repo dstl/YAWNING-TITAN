@@ -11,6 +11,7 @@
     box-shadow: rgba(181, 181, 181, 0.15) 1.95px 1.95px 2.6px;
     cursor: pointer;
     box-sizing: border-box;
+<<<<<<< HEAD
     height: 5rem;
     border: 1px solid var(--text-light);
 }
@@ -18,6 +19,12 @@
     border: 1px solid orange;
 }
 .list-item.valid{
+=======
+    border: 1px solid orange;
+    height: 5rem;
+}
+.list-item.complete{
+>>>>>>> origin/dev-gui
     border: 1px solid var(--primary);
 }
 .list-item:hover .icon:has(.bi-check-lg),.list-item.selected .icon:has(.bi-check-lg){

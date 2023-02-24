@@ -13,23 +13,6 @@ from yawning_titan.game_modes.game_mode_db import GameModeDB, default_game_mode
 from yawning_titan_gui.helpers import GameModeManager
 
 
-def test_game_modes_view_get(client: Client):
-    """Test that the Manage game modes view can accept GET requests."""
-    url = reverse("Manage game modes")
-    response = client.get(url)
-    assert response.status_code == 200
-
-
-def test_game_modes_view_post(client: Client):
-    """Test that the Manage game modes view cannot accept POST requests.
-
-    Status 405 represents not allowed request method.
-    """
-    url = reverse("Manage game modes")
-    response = client.post(url)
-    assert response.status_code == 405
-
-
 class TestGameModeManagerView:
     """Test processes executed through requests to the 'Manage game modes' and 'db manager' endpoints."""
 
@@ -40,7 +23,8 @@ class TestGameModeManagerView:
 
         _default_game_mode = default_game_mode()
         self.default_game_mode_id = _default_game_mode.doc_metadata.uuid
-        self.url = reverse("db manager")
+        self.url = reverse("Manage game modes")
+        self.management_url = reverse("db manager")
 
     def teardown_class(self):
         """Reset the components required to test the management of yawning titan networks."""
@@ -69,14 +53,27 @@ class TestGameModeManagerView:
 
     def test_get(self, client: Client):
         """Test that the `db manager` view cannot accept get requests."""
-        response = client.get(self.url)
+        response = client.get(self.management_url)
         assert response.status_code == 400
+
+    def test_game_modes_view_get(self, client: Client):
+        """Test that the Manage game modes view can accept GET requests."""
+        response = client.get(self.url)
+        assert response.status_code == 200
+
+    def test_game_modes_view_post(self, client: Client):
+        """Test that the Manage game modes view cannot accept POST requests.
+
+        Status 405 represents not allowed request method.
+        """
+        response = client.post(self.url)
+        assert response.status_code == 405
 
     def test_post_invalid_operation(self, client: Client):
         """Test the function that processes gui requests when given an invalid operation."""
         game_mode_name = "test1"
         response = client.post(
-            self.url, {"game_mode_name": game_mode_name, "operation": "foo"}
+            self.management_url, {"game_mode_name": game_mode_name, "operation": "foo"}
         )
         assert response.status_code == 400
 
@@ -84,7 +81,7 @@ class TestGameModeManagerView:
         """Test the function that processes gui requests to :method: `~yawning_titan_gui.helpers.GameModeManager.create_game_mode`."""
         game_mode_name = "test2"
         response = client.post(
-            self.url,
+            self.management_url,
             {
                 "item_names[]": [game_mode_name],
                 "operation": "create",
@@ -97,7 +94,7 @@ class TestGameModeManagerView:
         """Test the function that processes gui requests to :method: `~yawning_titan_gui.helpers.GameModeManager.create_game_mode_from`."""
         game_mode_name = "test"
         response = client.post(
-            self.url,
+            self.management_url,
             {
                 "operation": "create from",
                 "item_names[]": [game_mode_name],
@@ -115,7 +112,7 @@ class TestGameModeManagerView:
         game_mode = GameMode(doc=doc)
         GameModeManager.db.insert(game_mode)
         response = client.post(
-            self.url,
+            self.management_url,
             {
                 "item_ids[]": [game_mode.doc_metadata.uuid],
                 "item_names": [game_mode_name],
