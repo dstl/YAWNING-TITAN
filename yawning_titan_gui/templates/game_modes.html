@@ -1,128 +1,29 @@
-{% extends "base.html" %}
+{% extends "item-manager.html" %}
 {% load static %}
 {% load tags %}
 <!-- <!DOCTYPE html> -->
 
 {% block scripts %}
-<script src="{% static 'js/game_mode.js' %}"></script>
+<script src="{% static 'js/item_manager.js' %}"></script>
 <script type="text/javascript">
-    const FILE_MANAGER_URL = "{% url 'db manager' %}"
+    const FILE_MANAGER_URL = "{% url 'db manager' %}";
+    const FILE_TYPE = "game mode";
 </script>
 {% endblock %}
 
-{% block main %}
-<div id="center-container" class="stretch clear">
-    <div id="search-container">
-        <div class="input-group rounded">
-            <input id="filter-game-modes" type="search" class="form-control rounded" placeholder="Filter" aria-label="Search" aria-describedby="search-addon" />
-            <span class="input-group-text border-0" id="search-addon">
-                <i class="bi bi-search"></i>
-            </span>
-            <!-- TODO: add advanced filtered search from db -->
-        </div>
-    </div>
-    <div id="game-modes">
-        {% for game_mode_filename, game_mode_info in game_modes.items %}
-            {% include 'elements/el_game_mode.html' with game_mode_info=game_mode_info game_mode_filename=game_mode_filename %}
-        {% endfor %}
-    </div>
-</div>
-<div id="bottom-buttons">
-    <button id="create-game-mode" class="btn btn-primary">Create game mode</button>
-</div>
+{% block items %}
+    {% for game_mode in game_modes %}
+        {% include 'elements/el_game_mode.html' with game_mode=game_mode %}
+    {% endfor %}
 {% endblock %}
+
+{% block bottom-buttons %}
+<button id="create" class="btn btn-primary">New game mode</button>
+{% endblock %}
+
 
 {% block dialogues %}
-    {% include 'elements/el_dialogue_center.html' with id='delete-dialogue' message='Are you sure you want to delete this game mode?<br>This action cannot be undone.' action_name='Delete game mode' %}
-    {% include 'elements/el_dialogue_center.html' with id='create-dialogue' header='Create new game mode' message='Enter a name for your new game mode config' action_name='Create game mode' input_prompt='game mode name...' %}
-    {% include 'elements/el_dialogue_center.html' with id='create-from-dialogue' header='Create game mode from' message='Enter a name for your new game mode config' action_name='Create game mode' input_prompt='game mode name...' %}
-{% endblock %}
-
-{% block style %}
-<style>
-    #bottom-buttons{
-        position: fixed;
-        bottom: var(--padding);
-        left: var(--padding);
-        width: calc(100% - 100px);
-        padding: var(--increment);
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-        align-items: center;
-    }
-
-    /* Search */
-    #search-container{
-        padding-bottom: calc(var(--increment) * 3);
-        border-bottom: 1px solid var(--text-mid);
-        margin-bottom: calc(var(--increment) * 2);
-    }
-    #search-container span{
-        background-color: var(--primary);
-        color: var(--text-superlight);
-    }
-
-    /* Game mode elements */
-    .game-mode{
-        margin: calc(var(--increment) * 2);
-        padding: calc(var(--increment) * 2);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-radius: .5rem;
-        background-color: var(--mid);
-        box-shadow: rgba(181, 181, 181, 0.15) 1.95px 1.95px 2.6px;
-        cursor: pointer;
-        box-sizing: border-box;
-        border: 1px solid orange;
-    }
-    .game-mode.complete{
-        border: 1px solid var(--primary);
-    }
-    .game-mode:hover .icon:has(.bi-check-lg),.game-mode.selected .icon:has(.bi-check-lg){
-        background-color: var(--text-mid);
-    }
-    .game-mode:hover .bi-check-lg,.game-mode.selected .bi-check-lg{
-        color: lawngreen;
-    }
-    .game-mode .icon:hover>.bi-trash3{
-        color: red;
-    }
-    .game-mode .icon:hover>.bi-pencil{
-        color: lawngreen;
-    }
-    .game-mode>.icons{
-        height: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-    }
-    .game-mode>.contents{
-        min-width: 0;
-        max-width: 100%;
-        margin-right: var(--increment);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: flex-start;
-    }
-    .game-mode>.contents>*{
-        min-width: 0;
-        max-width: 100%;
-        padding: 0;
-        margin: 0;
-        vertical-align: middle;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    .game-mode .subhead{
-        color: var(--text-light);
-    }
-    .game-mode .description{
-        color: var(--text-dark);
-    }
-</style>
+    {% for dialogue_info in dialogue_boxes %}
+        {% include 'elements/el_dialogue_center.html' with info=dialogue_info %}
+    {% endfor %}
 {% endblock %}

@@ -164,6 +164,7 @@ class GameModeDB:
         doc = self._db.get(uuid)
         if doc:
             return self._doc_to_game_mode(doc)
+        return None
 
     def search(self, query: YawningTitanQuery) -> List[GameMode]:
         """
