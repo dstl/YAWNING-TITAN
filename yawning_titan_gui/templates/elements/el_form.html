@@ -1,0 +1,22 @@
+{% load static %}
+{% load tags %}
+<form id="{{form_name}}-form" class="config-form {{form_name}}" action="" method="post">
+    {% for field in form %}
+        <div class="mb-3 active{% if field.errors %} erroneous{% endif %}">
+            <div class="info">
+                <label for="id_{{ field.name }}" class="form-label">{{ field.label|format_text }}</label>
+                <p class="help-text">{{field.help_text}}</p>
+                {% if field.errors %}
+                    <ul class="error-list">
+                        {% for error in field.errors %}
+                        <li>{{ error|escape }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div class="field-container {% if protected %}disabled{% endif %}">
+                {{ field }}
+            </div>
+        </div>
+    {% endfor %}
+</form>

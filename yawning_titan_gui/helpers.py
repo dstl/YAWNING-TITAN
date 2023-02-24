@@ -1,7 +1,70 @@
 from pathlib import Path
-from typing import Any
+from typing import Any, List
 
 from yawning_titan.game_modes.game_mode_db import GameModeDB
+from yawning_titan.networks.network import Network
+from yawning_titan.networks.network_db import NetworkDB, NetworkSchema
+
+
+class NetworkManager:
+    """Handle all interfacing with Yawning Titan networks in :attribute: `network_db` and their info for the GUI session."""
+
+    db: NetworkDB = NetworkDB()
+    current_network: Network = None
+
+    @classmethod
+    def filter_entry_nodes(cls, min, max) -> List[str]:
+        """
+        Generate a list of ``uuids`` corresponding to networks that have a number of entry nodes within ``min`` <= x <= ``max``.
+
+        :param min: the minimum value (inclusive)
+        :param max: the maximum value (inclusive)
+        """
+        return [
+            network.doc_metadata.uuid
+            for network in cls.db.search(NetworkSchema.ENTRY_NODES.len_bt(min, max))
+        ]
+
+    @classmethod
+    def filter_high_value_nodes(cls, min, max) -> List[str]:
+        """
+        Generate a list of ``uuids`` corresponding to networks that have a number of high value nodes within ``min`` <= x <= ``max``.
+
+        :param min: the minimum value (inclusive)
+        :param max: the maximum value (inclusive)
+        """
+        return [
+            network.doc_metadata.uuid
+            for network in cls.db.search(
+                NetworkSchema.HIGH_VALUE_NODES.len_bt(min, max)
+            )
+        ]
+
+    @classmethod
+    def filter_network_nodes(cls, min, max) -> List[str]:
+        """
+        Generate a list of ``uuids`` corresponding to networks that have a number of nodes within ``min`` <= x <= ``max``.
+
+        :param min: the minimum value (inclusive)
+        :param max: the maximum value (inclusive)
+        """
+        return [
+            network.doc_metadata.uuid
+            for network in cls.db.search(NetworkSchema.MATRIX.len_bt(min, max))
+        ]
+
+    @classmethod
+    def filter(cls, attribute: str, min, max) -> List[str]:
+        """Call the filter method for the appropriate attribute.
+
+        :param attribute: the string name of a network attribute to filter
+        :param min: the minimum value of the attribute (inclusive)
+        :param max: the maximum value of the attribute (inclusive)
+        """
+        attr = f"filter_{attribute}"
+        if not hasattr(cls, attr):
+            return None
+        return getattr(cls, attr)(min, max)
 
 
 class GameModeManager:
