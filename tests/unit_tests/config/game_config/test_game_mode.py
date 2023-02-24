@@ -187,8 +187,6 @@ def test_everything_changed_game_mode_from_legacy():
     d = game_mode.to_dict(values_only=True)
 
     d["red"]["target_mechanism"]["target_specific_node"].pop("use")
-    print("CC", yaml.dump(d))
-    print("DD", yaml.dump(config_dict))
     assert d == config_dict
 
 

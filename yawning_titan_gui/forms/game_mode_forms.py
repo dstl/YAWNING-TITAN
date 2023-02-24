@@ -303,11 +303,15 @@ class GameModeFormManager:
     @classmethod
     def save_as_game_mode(cls, game_mode_form: GameModeForm) -> GameMode:
         """
-        Create a complete config yaml file from a dictionary of form sections.
+                Create a complete config yaml file from a dictionary of form sections.
 
-        :param game_mode_forms: dictionary containing django form objects representing sections of the config.
+                :param game_mode_forms: dictionary containing django form objects representing sections of the config.
 
-        :return: a valid instance of :class: `~yawning_titan.game_modes.game_mode _config.GameModeConfig`
+        <<<<<<< HEAD
+                :return: a valid instance of :class: `~yawning_titan.game_modes.game_mode _config.GameModeConfig`
+        =======
+                :return: a valid instance of :class: `~yawning_titan.game_modes.game_mode.GameMode`
+        >>>>>>> origin/dev-gui
         """
         if GameModeManager.db.get(game_mode_form.game_mode.doc_metadata.uuid):
             # TODO add description to params
