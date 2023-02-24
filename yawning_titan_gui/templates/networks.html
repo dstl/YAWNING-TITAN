@@ -1,0 +1,42 @@
+{% extends "item-manager.html" %}
+{% load static %}
+{% load tags %}
+<!-- <!DOCTYPE html> -->
+
+{% block scripts %}
+<script src="{% static 'js/item_manager.js' %}"></script>
+<script src="{% static 'js/networks.js' %}"></script>
+<script type="text/javascript">
+    const FILE_MANAGER_URL = "{% url 'db manager' %}";
+    const FILE_TYPE = "network";
+</script>
+{% endblock %}
+
+
+{% block items %}
+    {% for network in networks %}
+        {% include 'elements/el_network.html' with network=network %}
+    {% endfor %}
+{% endblock %}
+
+{% block dialogues %}
+    {% for dialogue_info in dialogue_boxes %}
+        {% include 'elements/el_dialogue_center.html' with info=dialogue_info %}
+    {% endfor %}
+{% endblock %}
+
+{% block bottom-buttons %}
+<button id="delete-all" class="btn btn-primary">Delete selected</button>
+<button id="create" class="btn btn-primary">New network</button>
+{% endblock %}
+
+{% block style %}
+<style>
+    #main .accordion-item,#main .accordion-header,#main .accordion-header *{
+        background-color: transparent !important;
+    }
+    .list-item{
+        border-color: var(--text-light);
+    }
+</style>
+{% endblock %}
