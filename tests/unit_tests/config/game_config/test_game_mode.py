@@ -10,21 +10,20 @@ from tests.unit_tests.config import (
     get_default_config_dict,
     get_default_config_dict_legacy,
 )
-from yawning_titan.config.agents.blue_agent_config import Blue
-from yawning_titan.config.agents.red_agent_config import Red
-from yawning_titan.config.environment.game_rules_config import GameRules
-from yawning_titan.config.environment.observation_space_config import ObservationSpace
-from yawning_titan.config.environment.reset_config import Reset
-from yawning_titan.config.environment.rewards_config import Rewards
-from yawning_titan.config.game_config.game_mode import GameMode
-from yawning_titan.config.game_config.miscellaneous_config import Miscellaneous
+from yawning_titan.game_modes.components.blue_agent import Blue
+from yawning_titan.game_modes.components.game_rules import GameRules
+from yawning_titan.game_modes.components.miscellaneous import Miscellaneous
+from yawning_titan.game_modes.components.observation_space import ObservationSpace
+from yawning_titan.game_modes.components.red_agent import Red
+from yawning_titan.game_modes.components.reset import Reset
+from yawning_titan.game_modes.components.rewards import Rewards
+from yawning_titan.game_modes.game_mode import GameMode
 
 
 @pytest.fixture
 def default_game_mode() -> GameMode:
     """Create a game mode instance using the default config."""
-    game_mode = GameMode()
-    game_mode.set_from_dict(get_default_config_dict())
+    game_mode = GameMode.create(get_default_config_dict())
     return game_mode
 
 
@@ -151,13 +150,10 @@ def test_read_created_yaml(tmp_path_factory):
         os.path.join(tmp_path_factory.mktemp("yawning-titan"), f"{uuid4()}.yaml")
     ).as_posix()
 
-    game_mode: GameMode = GameMode()
-    game_mode.set_from_dict(config_dict)
+    game_mode: GameMode = GameMode.create(config_dict)
     game_mode.to_yaml(config_path)
 
-    new_game_mode: GameMode = GameMode()
-
-    new_game_mode.set_from_yaml(config_path)
+    new_game_mode: GameMode = GameMode.create_from_yaml(config_path)
 
     assert new_game_mode.to_dict(values_only=True) == config_dict
 
@@ -165,7 +161,7 @@ def test_read_created_yaml(tmp_path_factory):
 def test_invalid_path():
     """Test attempting to create a `GameModeConfig` from an invalid filepath."""
     with pytest.raises(FileNotFoundError) as err_info:
-        GameMode().set_from_yaml("fake_test_path")
+        GameMode.create_from_yaml("fake_test_path")
 
     # assert that the error message is as expected
     assert err_info.value.args[1] == "No such file or directory"
@@ -173,9 +169,7 @@ def test_invalid_path():
 
 def test_default_game_mode_from_legacy(default_game_mode: GameMode):
     """Create a game mode instance using the default config file."""
-    game_mode = GameMode()
-
-    game_mode.set_from_dict(get_default_config_dict_legacy(), legacy=True)
+    game_mode = GameMode.create(get_default_config_dict_legacy(), legacy=True)
 
     assert game_mode == default_game_mode
     assert game_mode.to_dict() == default_game_mode.to_dict()
@@ -186,14 +180,35 @@ def test_everything_changed_game_mode_from_legacy():
     with open(TEST_CONFIG_PATH_NEW / "everything_changed.yaml") as f:
         config_dict = yaml.safe_load(f)
 
-    game_mode = GameMode()
-    game_mode.set_from_yaml(
+    game_mode = GameMode.create_from_yaml(
         (TEST_CONFIG_PATH_OLD / "everything_changed.yaml").as_posix(), legacy=True
     )
 
     d = game_mode.to_dict(values_only=True)
 
     d["red"]["target_mechanism"]["target_specific_node"].pop("use")
-    print("CC", yaml.dump(d))
-    print("DD", yaml.dump(config_dict))
     assert d == config_dict
+
+
+def test_create_from_factory():
+    """Test that a game mode created from the class factory function is the same as that set after instantiation."""
+    path = TEST_CONFIG_PATH_OLD / "everything_changed.yaml"
+    game_mode = GameMode.create_from_yaml(path.as_posix(), legacy=True)
+
+    assert game_mode == GameMode.create_from_yaml(path.as_posix(), legacy=True)
+
+
+def test_infer_legacy():
+    """Test that a game mode created from a legacy format will be correctly populated if legacy is not explicitly set."""
+    path = TEST_CONFIG_PATH_OLD / "everything_changed.yaml"
+
+    with open(path) as f:
+        config_dict = yaml.safe_load(f)
+
+    comparison = GameMode.create_from_yaml(path.as_posix(), legacy=True)
+
+    game_mode_from_yaml = GameMode.create_from_yaml(path.as_posix(), infer_legacy=True)
+    game_mode_from_dict = GameMode.create(config_dict, infer_legacy=True)
+
+    assert game_mode_from_yaml == comparison
+    assert game_mode_from_dict == comparison

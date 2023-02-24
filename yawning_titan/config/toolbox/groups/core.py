@@ -14,7 +14,7 @@ from yawning_titan.exceptions import ConfigGroupValidationError
 
 
 class ActionLikelihoodGroup(ConfigGroup):
-    """:class: `~yawning_titan.config.toolbox.base.core.ConfigGroup to represent an action, likelihood common config group."""
+    """Group to represent an action, likelihood common config group."""
 
     def __init__(
         self,
@@ -69,7 +69,7 @@ class ActionLikelihoodGroup(ConfigGroup):
 
 
 class ActionLikelihoodChanceGroup(ActionLikelihoodGroup):
-    """:class: `~yawning_titan.config.toolbox.base.core.ConfigGroup to represent an action, likelihood, and chance common config group."""
+    """Group to represent an action, likelihood, and chance common config group."""
 
     def __init__(
         self,
@@ -85,8 +85,6 @@ class ActionLikelihoodChanceGroup(ActionLikelihoodGroup):
         :param chance: The chance of the action.
         :param doc: An optional descriptor.
         """
-        self.use = None
-        self.likelihood = None
         self.chance: FloatItem = FloatItem(
             value=chance,
             doc="The chance of the action.",
@@ -115,7 +113,6 @@ class ActionLikelihoodChanceGroup(ActionLikelihoodGroup):
         super().validate()
 
         if self.use.value is True:
-
             try:
                 if self.chance.value is None:
                     msg = "Chance cannot be null when use=True"
@@ -127,7 +124,7 @@ class ActionLikelihoodChanceGroup(ActionLikelihoodGroup):
 
 
 class UseValueGroup(ConfigGroup):
-    """:class:`~yawning_titan.config.toolbox.base.core.ConfigGroup` of values that collectively describe whether an item is used and if so what value to use with."""
+    """Group of values that collectively describe whether an item is used and if so what value to use with."""
 
     def __init__(
         self, doc: Optional[str] = None, use: bool = False, value: float = None
@@ -158,8 +155,8 @@ class UseValueGroup(ConfigGroup):
         super().__init__(doc)
 
 
-class ChanceGroup(AnyNonZeroGroup):
-    """:class:`~yawning_titan.config.toolbox.base.core.ConfigGroup` to indicate chances of success for different node types."""
+class NodeChanceGroup(AnyNonZeroGroup):
+    """Group to indicate chances of success for different node types."""
 
     def __init__(
         self,
@@ -175,7 +172,7 @@ class ChanceGroup(AnyNonZeroGroup):
                 default=0.5,
                 min_val=0,
                 max_val=1,
-                inclusive_min=True,
+                inclusive_min=False,
                 inclusive_max=True,
             ),
         )
@@ -187,7 +184,7 @@ class ChanceGroup(AnyNonZeroGroup):
                 default=0.5,
                 min_val=0,
                 max_val=1,
-                inclusive_min=True,
+                inclusive_min=False,
                 inclusive_max=True,
             ),
         )
@@ -195,23 +192,23 @@ class ChanceGroup(AnyNonZeroGroup):
 
 
 class UseChancesGroup(ConfigGroup):
-    """:class:`~yawning_titan.config.toolbox.base.core.ConfigGroup` to indicate whether an element is used and its associated chance of success for different node types."""
+    """Group to indicate whether an element is used and its associated chance of success for different node types."""
 
     def __init__(
         self,
         doc: Optional[str] = None,
         use: Optional[bool] = False,
-        chance: ChanceGroup = None,
+        chance: NodeChanceGroup = None,
     ):
         self.use: BoolItem = BoolItem(
             doc="Whether the element is used",
             value=use,
             properties=BoolProperties(allow_null=True, default=False),
         )
-        self.chance: ChanceGroup = (
+        self.chance: NodeChanceGroup = (
             chance
             if chance
-            else ChanceGroup(doc="The chance(s) of the result occurring.")
+            else NodeChanceGroup(doc="The chance(s) of the result occurring.")
         )
         super().__init__(doc)
 

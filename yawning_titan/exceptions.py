@@ -37,3 +37,7 @@ class YawningTitanRunError(ValueError):
     """An error has occurred during the instantiation of the YawningTitanRun class."""
 
     pass
+
+
+class NetworkError(ValueError):
+    """An error has occurred in the construction to the Network."""

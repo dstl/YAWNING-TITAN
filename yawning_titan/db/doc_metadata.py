@@ -6,6 +6,24 @@ from typing import Dict, Final, Optional, Union
 from uuid import uuid4
 
 from yawning_titan.db.query import YawningTitanQuery
+from yawning_titan.game_modes.components import _LOGGER
+
+
+class DocMetaDataObject:
+    """A base class for managing access to the ``doc_metadata`` attribute."""
+
+    @property
+    def doc_metadata(self) -> DocMetadata:
+        """The configs document metadata."""
+        return self._doc_metadata
+
+    @doc_metadata.setter
+    def doc_metadata(self, doc_metadata: DocMetadata):
+        if self._doc_metadata is None:
+            self._doc_metadata = doc_metadata
+        else:
+            msg = "Cannot set doc_metadata as it has already been set."
+            _LOGGER.error(msg)
 
 
 @dataclass()
@@ -144,6 +162,11 @@ class DocMetadata:
         if not include_none:
             return {k: v for k, v in doc_dict.items() if v is not None}
         return doc_dict
+
+    def __str__(self):
+        if self.name:
+            return self.name
+        return self.uuid
 
     def __repr__(self):
         repr_str = f"{self.__class__.__name__}("

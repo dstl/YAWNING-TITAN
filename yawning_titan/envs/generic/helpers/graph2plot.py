@@ -3,8 +3,10 @@ import statistics
 from typing import Dict, List
 
 import matplotlib.pyplot as plt
-import networkx
 from matplotlib.lines import Line2D
+
+from yawning_titan.networks.network import Network
+from yawning_titan.networks.node import Node
 
 
 def repeat_check(node: Dict, legend_list: List[Line2D]):
@@ -57,20 +59,20 @@ class CustomEnvGraph:
     def render(
         self,
         current_step: int,
-        g: networkx.Graph,
-        pos: dict,
-        compromised_nodes: dict,
-        uncompromised_nodes: list,
-        attacks: list,
+        g: Network,
+        # pos: dict,
+        # compromised_nodes: dict,
+        # uncompromised_nodes: list,
+        attacked_nodes: List[List[Node]],
         current_time_step_reward: float,
-        red_previous_node,
-        vulnerability_dict: dict,
+        # red_previous_node,
+        # vulnerability_dict: dict,
         made_safe_nodes: list,
-        title: str,
-        special_nodes: dict = None,
-        entrance_nodes: list = None,
+        # title: str,
+        # special_nodes: dict = None,
+        # entrance_nodes: list = None,
         show_only_blue_view: bool = False,
-        target_node: str = None,
+        target_node: Node = None,
         show_node_names: bool = False,
     ):
         """
@@ -82,7 +84,7 @@ class CustomEnvGraph:
             pos: a dictionary that contains the points and their positions
             compromised_nodes: a dictionary of all the compromised nodes and a boolean value if blue can see the intrusion or not
             uncompromised_nodes: a list of all the uncompromised nodes
-            attacks: a list of the nodes where an attack is happening
+            attacked_nodes: a list of the nodes where an attack is happening
                 (infected node, target node)
             current_time_step_reward: the current total reward
             red_previous_node: CURRENTLY NOT USED
@@ -95,11 +97,15 @@ class CustomEnvGraph:
             show_node_names: Show the names of nodes
         """
         # If no value for  entrance nodes is passed in then it is set to an empty list
-        if entrance_nodes is None:
-            entrance_nodes = []
-        if special_nodes is None:
-            special_nodes = {}
+
         self.vis_ax.clear()
+
+        special_node_info = {
+            "high_value_node": {
+                "description": "high value node",
+                "colour": "#da2fed",
+            }
+        }
 
         # Creates a list that contains the details for the legend
         legend_objects = [
@@ -170,8 +176,8 @@ class CustomEnvGraph:
             )
             # plots the target node
             plt.scatter(
-                [pos[str(target_node)][0]],
-                [pos[str(target_node)][1]],
+                [target_node.x_pos],
+                [target_node.y_pos],
                 color="#2c195e",
                 s=324,
                 zorder=8,
@@ -227,9 +233,8 @@ class CustomEnvGraph:
                 )
             )
         # Some environments may have special custom nodes that they want to add
-        if len(special_nodes) > 0:
-            for _, node_info in special_nodes.items():
-
+        if len(special_node_info) > 0:
+            for node_info in special_node_info.values():
                 # only insert if the legend is not in the list yet
                 if not repeat_check(node_info, legend_objects):
                     # Inserts the object into the legends at position 3. This is because it looks better if there are any
@@ -248,7 +253,7 @@ class CustomEnvGraph:
                     )
 
         # If entrance nodes are used then they are added to the legend
-        if entrance_nodes is not None:
+        if g.entry_nodes:
             legend_objects.append(
                 Line2D(
                     [0],
@@ -263,8 +268,8 @@ class CustomEnvGraph:
         # plots all of the edges in the graph
         for edge in g.edges:
             plt.plot(
-                [pos[edge[0]][0], pos[edge[1]][0]],
-                [pos[edge[0]][1], pos[edge[1]][1]],
+                [edge[0].x_pos, edge[1].x_pos],
+                [edge[0].y_pos, edge[1].y_pos],
                 color="grey",
                 zorder=1,
             )
@@ -272,13 +277,13 @@ class CustomEnvGraph:
         # plots all of the current turns attacks
         red_nodes_x = []
         red_nodes_y = []
-        for attack in attacks:
-            red_nodes_x.append(pos[attack[1]][0])
-            red_nodes_y.append(pos[attack[1]][1])
-            if attack[0] is not None:
+        for node_set in attacked_nodes:
+            red_nodes_x.append(node_set[1].x_pos)
+            red_nodes_y.append(node_set[1].y_pos)
+            if node_set[0] is not None:
                 plt.plot(
-                    [pos[attack[0]][0], pos[attack[1]][0]],
-                    [pos[attack[0]][1], pos[attack[1]][1]],
+                    [node_set[0].x_pos, node_set[1].x_pos],
+                    [node_set[0].y_pos, node_set[1].y_pos],
                     color="red",
                     zorder=2,
                 )
@@ -312,52 +317,52 @@ class CustomEnvGraph:
         special_colour = []
         made_safe_x = []
         made_safe_y = []
-        for i in g.nodes():
-            max_x = max(max_x, pos[i][0])
-            max_y = max(max_y, pos[i][1])
-            min_x = min(min_x, pos[i][0])
-            min_y = min(min_y, pos[i][1])
-            if i in made_safe_nodes:
+        for n in g.get_nodes():
+            max_x = max(max_x, n.x_pos)
+            max_y = max(max_y, n.y_pos)
+            min_x = min(min_x, n.x_pos)
+            min_y = min(min_y, n.y_pos)
+            if n in made_safe_nodes:
                 # get the locations of nodes that have been made safe
-                made_safe_x.append(pos[i][0])
-                made_safe_y.append(pos[i][1])
-            elif i in special_nodes:
+                made_safe_x.append(n.x_pos)
+                made_safe_y.append(n.y_pos)
+            elif n.high_value_node:
                 # get the locations of special nodes
-                special_x.append(pos[i][0])
-                special_y.append(pos[i][1])
-                special_colour.append(special_nodes[i]["colour"])
-            elif i in compromised_nodes.keys():
-                if compromised_nodes[i]:
+                special_x.append(n.x_pos)
+                special_y.append(n.y_pos)
+                special_colour.append(special_node_info["high_value_node"]["colour"])
+            elif n.true_compromised_status == 1:
+                if n.blue_knows_intrusion:
                     # get the locations of compromised nodes (unknown)
-                    comp_x.append(pos[i][0])
-                    comp_y.append(pos[i][1])
+                    comp_x.append(n.x_pos)
+                    comp_y.append(n.y_pos)
                     if not show_only_blue_view:
                         # get the locations of compromised nodes (known)
-                        known_comp_x.append(pos[i][0])
-                        known_comp_y.append(pos[i][1])
+                        known_comp_x.append(n.x_pos)
+                        known_comp_y.append(n.y_pos)
                 else:
                     if not show_only_blue_view:
-                        comp_x.append(pos[i][0])
-                        comp_y.append(pos[i][1])
-                        unknown_comp_x.append(pos[i][0])
-                        unknown_comp_y.append(pos[i][1])
+                        comp_x.append(n.x_pos)
+                        comp_y.append(n.y_pos)
+                        unknown_comp_x.append(n.x_pos)
+                        unknown_comp_y.append(n.y_pos)
                     else:
                         # get the location of the safe nodes
-                        vuln = vulnerability_dict[i]
+                        vuln = n.vulnerability_score
                         index = 5 - math.floor(vuln * (len(green_shades) - 1))
                         safe_colours.append(green_shades[index])
-                        safe_x.append(pos[i][0])
-                        safe_y.append(pos[i][1])
-            elif i in uncompromised_nodes:
+                        safe_x.append(n.x_pos)
+                        safe_y.append(n.y_pos)
+            elif n.true_compromised_status == 0:
                 # get the locations of safe nodes
-                vuln = vulnerability_dict[i]
+                vuln = n.vulnerability_score
                 index = 5 - math.floor(vuln * (len(green_shades) - 1))
                 safe_colours.append(green_shades[index])
-                safe_x.append(pos[i][0])
-                safe_y.append(pos[i][1])
+                safe_x.append(n.x_pos)
+                safe_y.append(n.y_pos)
             else:
-                void_x.append(pos[i][0])
-                void_y.append(pos[i][1])
+                void_x.append(n.x_pos)
+                void_y.append(n.y_pos)
 
         # plots any nodes that have no features
         plt.scatter(void_x, void_y, color="grey", s=300, zorder=1)
@@ -377,10 +382,10 @@ class CustomEnvGraph:
         # plots any special nodes for the env
         plt.scatter(special_x, special_y, color=special_colour, s=324, zorder=6)
         # plot the entrance nodes
-        for node in entrance_nodes:
+        for node in g.entry_nodes:
             plt.scatter(
-                [pos[node][0]],
-                [pos[node][1]],
+                [node.x_pos],
+                [node.y_pos],
                 color="black",
                 zorder=11,
                 s=121,
@@ -389,8 +394,8 @@ class CustomEnvGraph:
         if show_node_names:
             for node in g.nodes:
                 plt.text(
-                    pos[node][0] + 0.1,
-                    pos[node][1] + 0.1,
+                    node.x_pos + 0.1,
+                    node.y_pos + 0.1,
                     node,
                     color="red",
                     fontsize=12,
@@ -405,9 +410,8 @@ class CustomEnvGraph:
             + "\nReward for current time step: "
             + str(current_time_step_reward)
             + "\nCurrent Avg vulnerability: "
-            + str(round(statistics.mean(vulnerability_dict.values()), 2))
+            + str(round(statistics.mean([n.vulnerability_score for n in g.nodes]), 2))
         )
-
         ax = plt.gca()
         ax.legend(
             handles=legend_objects,

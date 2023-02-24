@@ -81,13 +81,18 @@ def standard_rewards(args: dict) -> float:
         "restore_node": 1,
         "make_node_safe": 0.5,
         "scan": 0,
-        "isolate": 10,
+        "isolate": 1,
         "connect": 0,
         "do_nothing": -0.5,
         "add_deceptive_node": 8,
     }
 
-    reward = -action_cost[blue_action]
+    # prevent isolate reward from being duplicated
+    reward = -action_cost[blue_action] if blue_action != "isolate" else 0
+
+    # punish agent for every node it has isolated
+    reward += -action_cost["isolate"] * sum(end_isolation.values())
+
     # calculating number of red nodes before and after the blue agents turn
     initial_cumulative_states = sum(start_state.values())
     final_cumulative_states = sum(end_state.values())
@@ -106,13 +111,17 @@ def standard_rewards(args: dict) -> float:
     if initial_cumulative_states > final_cumulative_states:
         reward += REMOVE_RED_POINTS[
             round(
-                100 * final_cumulative_states / network_interface.get_number_of_nodes()
+                100
+                * final_cumulative_states
+                / network_interface.current_graph.number_of_nodes()
             )
         ]
 
     # punish agent for doing nothing if there are large numbers or red controlled nodes in the environment
     if blue_action != "make_node_safe" and blue_action != "restore_node":
-        amount = final_cumulative_states / network_interface.get_number_of_nodes()
+        amount = (
+            final_cumulative_states / network_interface.current_graph.number_of_nodes()
+        )
         if amount > 0.3:
             reward = reward - amount + 0.3
 
@@ -215,7 +224,7 @@ def experimental_rewards(args: dict) -> float:
                 round(
                     100
                     * final_cumulative_states
-                    / network_interface.get_number_of_nodes()
+                    / network_interface.current_graph.number_of_nodes()
                 )
             ]
         elif initial_cumulative_states > final_cumulative_states:

@@ -28,8 +28,8 @@ describe('Django integration', () => {
   //     });
   //   });
 
-  //   // nodes should be visible on the list
-  //   cy.get('.node-list-item').should('be.visible');
+    // nodes should be visible on the list
+    // cy.get('app-controls').should('be.visible');
 
   //   // press the save button
   //   cy.get('.save-button').click();
