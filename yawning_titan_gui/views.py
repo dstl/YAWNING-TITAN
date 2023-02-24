@@ -15,7 +15,7 @@ from yawning_titan_gui.forms.game_mode_forms import (
     GameModeFormManager,
     GameModeSection,
 )
-from yawning_titan_gui.forms.netowork_forms import (
+from yawning_titan_gui.forms.network_forms import (
     NetworkFormManager,
     NetworkTemplateForm,
 )
@@ -25,7 +25,6 @@ default_sidebar = {
     "Documentation": ["Getting started", "Tutorials", "How to configure", "Code"],
     "Configuration": [
         "Manage game modes",
-        "Manage networks",
     ],
     "Training runs": ["Setup a training run", "View completed runs"],
     "About": ["Contributors", "Report bug", "FAQ"],
@@ -436,7 +435,6 @@ class GameModeConfigView(View):
         """
         game_mode_form = GameModeFormManager.get_or_create_form(game_mode_id)
         section = game_mode_form.get_section(section_name)
-
         if section.config_class.validation.passed:
             if (
                 section_name == game_mode_form.last_section.name
