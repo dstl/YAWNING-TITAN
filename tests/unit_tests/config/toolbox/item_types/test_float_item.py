@@ -51,7 +51,6 @@ def test_float_properties_validation(
     )
 
     validation = float_properties.validate(test_val)
-    print(validation)
     assert validation.passed == passed
     if not validation.passed:
         assert type(validation.fail_exceptions[0]) == ConfigItemValidationError
