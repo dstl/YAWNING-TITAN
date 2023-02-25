@@ -9,7 +9,7 @@ from tests.mock_and_patch.yawning_titan_db_patch import yawning_titan_db_init_pa
 from yawning_titan.db.doc_metadata import DocMetadataSchema
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
 from yawning_titan.exceptions import YawningTitanDBError
-from yawning_titan.networks.network_db import NetworkDB
+from yawning_titan.networks.network_db import NetworkDB, NetworkSchema
 
 
 @pytest.mark.integration_test
@@ -59,4 +59,16 @@ def test_reset_default_networks():
 
         assert db.all()[0].set_random_entry_nodes == config_copy.set_random_entry_nodes
 
+        db._db.close_and_delete_temp_db()
+
+
+@pytest.mark.integration_test
+def test_network_schema():
+    """Test querying the network DB using NetworkSchema."""
+    with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
+        db = NetworkDB()
+        db.rebuild_db()
+        results = db.search(NetworkSchema.SET_RANDOM_ENTRY_NODES == True)
+        assert len(results) == 1
+        assert results[0].doc_metadata.uuid == "b3cd9dfd-b178-415d-93f0-c9e279b3c511"
         db._db.close_and_delete_temp_db()

@@ -32,19 +32,36 @@ class NetworkSchema(YawningTitanDBSchema):
 
     >>> from yawning_titan.networks.network_db import NetworkDB, NetworkSchema
     >>> db = NetworkDB()
-    >>> network_configs = db.search(NetworkSchema.MATRIX.len_le(18))
+    >>> network_configs = db.search(NetworkSchema.SET_RANDOM_ENTRY_NODES == True)
     """
 
-    MATRIX: Final[YawningTitanQuery] = YawningTitanQuery().matrix
-    """Mapped to :attr:`yawning_titan.networks.network.Network.matrix`."""
-    POSITIONS: Final[YawningTitanQuery] = YawningTitanQuery().positions
-    """Mapped to :attr:`yawning_titan.networks.network.Network.positions`."""
-    ENTRY_NODES: Final[YawningTitanQuery] = YawningTitanQuery().entry_nodes
-    """Mapped to :attr:`yawning_titan.networks.network.Network.entry_nodes`."""
-    VULNERABILITIES: Final[YawningTitanQuery] = YawningTitanQuery().vulnerabilities
-    """Mapped to :attr:`yawning_titan.networks.network.Network.vulnerabilities`."""
-    HIGH_VALUE_NODES: Final[YawningTitanQuery] = YawningTitanQuery().high_value_nodes
-    """Mapped to :attr:`yawning_titan.networks.network.Network.high_value_nodes`."""
+    SET_RANDOM_ENTRY_NODES: Final[
+        YawningTitanQuery
+    ] = YawningTitanQuery().set_random_entry_nodes
+    RANDOM_ENTRY_NODE_PREFERENCE: Final[
+        YawningTitanQuery
+    ] = YawningTitanQuery().random_entry_node_preference
+    NUM_OF_RANDOM_ENTRY_NODES: Final[
+        YawningTitanQuery
+    ] = YawningTitanQuery().num_of_random_entry_nodes
+    SET_RANDOM_HIGH_VALUE_NODES: Final[
+        YawningTitanQuery
+    ] = YawningTitanQuery().set_random_high_value_nodes
+    RANDOM_HIGH_VALUE_NODE_PREFERENCE: Final[
+        YawningTitanQuery
+    ] = YawningTitanQuery().random_high_value_node_preference
+    NUM_OF_RANDOM_HIGH_VALUE_NODES: Final[
+        YawningTitanQuery
+    ] = YawningTitanQuery().num_of_random_high_value_nodes
+    SET_RANDOM_VULNERABILITIES: Final[
+        YawningTitanQuery
+    ] = YawningTitanQuery().set_random_vulnerabilities
+    NODE_VULNERABILITY_LOWER_BOUND: Final[
+        YawningTitanQuery
+    ] = YawningTitanQuery().node_vulnerability_lower_bound
+    NODE_VULNERABILITY_UPPER_BOUND: Final[
+        YawningTitanQuery
+    ] = YawningTitanQuery().node_vulnerability_upper_bound
 
 
 class NetworkDB:
@@ -60,24 +77,11 @@ class NetworkDB:
             >>> from yawning_titan.networks.network_db import NetworkDB, NetworkSchema
             >>> db = NetworkDB()
 
-    - Search for all network configs that have "1" as an entry node:
+    - Search for all network that have set_random_entry_nodes == True.
 
         .. code:: python
 
-            >>> db.search(NetworkSchema.ENTRY_NODES.all(["1"]))
-
-    - Search for all network configs that have "1" as both an entry node and a high value node:
-
-        .. code:: python
-
-            >>> query = (NetworkSchema.ENTRY_NODES.all(["1"])) and (NetworkSchema.HIGH_VALUE_NODES.all(["1"]))
-            >>> db.search(query)
-
-    - Search for all network configs that have at least 3 high value nodes
-
-            .. code:: python
-
-            >>> db.search(NetworkSchema.ENTRY_NODES.len_ge(3))
+            >>> db.search(NetworkSchema.SET_RANDOM_ENTRY_NODES == True)
 
     """
 
@@ -123,6 +127,15 @@ class NetworkDB:
         :return: A :class:`list` of :class:`~yawning_titan.networks.network.Network`.
         """
         return [Network.create(doc) for doc in self._db.all()]
+
+    def show(self, verbose=False):
+        """
+        Show details of all entries in the db.
+
+        :param verbose: If True, all doc metadata details are shown,
+            otherwise just the name is shown.
+        """
+        self._db.show(verbose)
 
     def get(self, uuid: str) -> Union[Network, None]:
         """
