@@ -266,7 +266,7 @@
       },
       "_doc_metadata": {
         "uuid": "b3cd9dfd-b178-415d-93f0-c9e279b3c511",
-        "name": "Default 18-node network.",
+        "name": "Default 18-node network",
         "description": "The standard 18-node network found in the Ridley, A. (2017) research paper (https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9).",
         "author": "dstl/YAWNING-TITAN",
         "locked": true,
@@ -453,7 +453,7 @@
       },
       "_doc_metadata":{
         "uuid":"47cb9f49-b53d-44f8-9a7b-3d74cf2ec1b0",
-        "name": "Dcbo base network.",
+        "name": "Dcbo base network",
         "description": "the same network used to generated DCBO data.",
         "author": "dstl/YAWNING-TITAN",
         "locked": true,

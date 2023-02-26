@@ -14,7 +14,7 @@ class YawningTitanQuery(Query):
     """
 
     def __init__(self):
-        super(YawningTitanQuery, self).__init__()
+        super().__init__()
 
     def len_eq(self, i: int) -> QueryInstance:
         """Tests the length of a field. This could be the length of a string or an array field.
