@@ -19,6 +19,88 @@ __all__ = ["NetworkDB", "NetworkSchema", "default_18_node_network"]
 _LOGGER = getLogger(__name__)
 
 
+class NetworkQuery(YawningTitanQuery):
+    def __int__(self):
+        super().__init__()
+
+    @staticmethod
+    def num_of_nodes(n: int) -> YawningTitanQuery:
+        """Returns all Networks with n number of nodes.
+
+        :Example:
+
+        >>> from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
+        >>> db = NetworkDB()
+        >>> networks = db.search(NetworkQuery.num_of_nodes(18))
+
+        :param n: The target number of nodes in a Network.
+        :return: A list of Networks.
+        """
+        return YawningTitanQuery()["nodes"].len_eq(n)
+
+    def _num_of_entry_nodes(self, n):
+        """Helper function for num_of_entry_nodes."""
+
+        def test_len(val, i):
+            try:
+                nodes = []
+                for node in val.items():
+                    if node[1]["entry_node"]:
+                        nodes.append(node)
+                return len(nodes) == i
+            except TypeError:
+                return False
+
+        return self.test(test_len, n)
+
+    @staticmethod
+    def num_of_entry_nodes(n: int) -> YawningTitanQuery:
+        """
+        Returns all Networks with n number of entry nodes.
+
+        :Example:
+
+        >>> from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
+        >>> db = NetworkDB()
+        >>> networks = db.search(NetworkQuery.num_of_entry_nodes(3))
+
+        :param n: The target number of entry nodes.
+        :return: A List of Nodes.
+        """
+        return NetworkQuery().nodes._num_of_entry_nodes(n)
+
+    def _num_of_high_value_nodes(self, n):
+        """Helper function for num_of_high_value_nodes."""
+
+        def test_len(val, i):
+            try:
+                nodes = []
+                for node in val.items():
+                    if node[1]["high_value_node"]:
+                        nodes.append(node)
+                return len(nodes) == i
+            except TypeError:
+                return False
+
+        return self.test(test_len, n)
+
+    @staticmethod
+    def num_of_high_value_nodes(n: int) -> YawningTitanQuery:
+        """
+        Returns all Networks with n number of high_value nodes.
+
+        :Example:
+
+        >>> from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
+        >>> db = NetworkDB()
+        >>> networks = db.search(NetworkQuery.num_of_high_value_nodes(3))
+
+        :param n: The target number of high_value nodes.
+        :return: A List of Nodes.
+        """
+        return NetworkQuery().nodes._num_of_high_value_nodes(n)
+
+
 class NetworkSchema(YawningTitanDBSchema):
     """
     A schema-like class that defines the network DB fields.
@@ -87,8 +169,7 @@ class NetworkDB:
 
     def __init__(self):
         self._db = YawningTitanDB("networks")
-        if self.count() == 0:
-            self.reset_default_networks_in_db()
+        self.reset_default_networks_in_db()
 
     def __enter__(self) -> NetworkDB:
         return NetworkDB()
@@ -198,7 +279,7 @@ class NetworkDB:
         network.doc_metadata.update(name, description, author)
         # Perform the update and retrieve the returned doc
         doc = self._db.update(
-            network.to_dict(),
+            network.to_dict(json_serializable=True),
             network.doc_metadata.uuid,
             name,
             description,
@@ -228,7 +309,7 @@ class NetworkDB:
         """
         network.doc_metadata.update(name, description, author)
         doc = self._db.upsert(
-            network.to_dict(),
+            network.to_dict(json_serializable=True),
             network.doc_metadata.uuid,
             name,
             description,
@@ -259,7 +340,7 @@ class NetworkDB:
         """
         return self._db.remove_by_cond(cond)
 
-    def reset_default_networks_in_db(self):
+    def reset_default_networks_in_db(self, force=False):
         """
         Reset the default network in the db.
 
@@ -267,6 +348,9 @@ class NetworkDB:
         `yawning_titan/networks/_package_data/network.json` db file into TinyDB,
         then iterating over all docs and forcing an update of each one in the main
         networks db from its uuid if they do not match.
+
+        :param force: Forces a reset without checking for equality when
+            True. Has a default value of False.
         """
         # Obtain the path to the default db file in package data
         self._db.db.clear_cache()
@@ -292,12 +376,8 @@ class NetworkDB:
 
             # If the network doesn't match the default, or it doesn't exist,
             # perform an upsert.
-            if db_network:
-                print(package_data_network)
-                print(db_network.to_dict(json_serializable=True))
-                reset = (
-                    db_network.to_dict(json_serializable=True) != package_data_network
-                )
+            if not force and db_network:
+                reset = False
             else:
                 reset = True
             if reset:
