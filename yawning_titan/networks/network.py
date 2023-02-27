@@ -529,6 +529,9 @@ class Network(nx.Graph):
             return self.doc_metadata.uuid == other.doc_metadata.uuid
         return False
 
+    def __hash__(self):
+        return hash(self.doc_metadata.uuid)
+
     def __repr__(self):
         name = self.doc_metadata.name
         if name:
