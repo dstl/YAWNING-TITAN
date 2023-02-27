@@ -176,12 +176,12 @@
          },
          "_doc_metadata":{
             "uuid":"bac2cb9d-b24b-426c-88a5-5edd0c2de413",
-            "created_at":"2023-01-30T23:07:02.111508",
             "updated_at":null,
             "name":"DCBO Agent Config",
             "description":"A game mode used to define a DCBO (Dynamic causal Bayesian optimization) agent.",
             "author":"dstl/YAWNING-TITAN",
-            "locked":true
+            "locked":true,
+            "created_at":"2023-01-30T23:07:02.111508"
          }
       },
       "2":{
@@ -360,12 +360,12 @@
          },
          "_doc_metadata":{
             "uuid":"900a704f-6271-4994-ade7-40b74d3199b1",
-            "created_at":"2023-01-30T23:07:02.147507",
             "updated_at":null,
             "name":"Default Game Mode",
             "description": "The Yawning-Titan default game mode.",
             "author":"dstl/YAWNING-TITAN",
-            "locked":true
+            "locked":true,
+            "created_at":"2023-01-30T23:07:02.147507"
          }
       },
       "3":{
@@ -544,12 +544,12 @@
          },
          "_doc_metadata":{
             "uuid":"53070376-cda6-4f0c-9a29-485034a8e44f",
-            "created_at":"2023-01-30T23:07:02.198506",
             "updated_at":null,
             "name":"everything_off_config",
             "description":null,
             "author":null,
-            "locked":true
+            "locked":true,
+            "created_at":"2023-01-30T23:07:02.198506"
          }
       },
       "4":{
@@ -728,12 +728,12 @@
          },
          "_doc_metadata":{
             "uuid":"3ccd9988-8781-4c3e-9c75-44cc987ae6af",
-            "created_at":"2023-01-30T23:07:02.220506",
             "updated_at":null,
             "name":"Low skill red with_ random infection perfect detection.",
             "description":null,
             "author":"dstl/YAWNING-TITAN",
-            "locked":true
+            "locked":true,
+            "created_at":"2023-01-30T23:07:02.220506"
          }
       },
       "5":{
@@ -912,12 +912,12 @@
          },
          "_doc_metadata":{
             "uuid":"7e257ed0-a3ef-4c36-a257-594f74dd3350",
-            "created_at":"2023-01-30T23:07:02.240021",
             "updated_at":null,
             "name":"multiple_high_value_targets",
             "description":null,
             "author":null,
-            "locked":true
+            "locked":true,
+            "created_at":"2023-01-30T23:07:02.240021"
          }
       }
    }

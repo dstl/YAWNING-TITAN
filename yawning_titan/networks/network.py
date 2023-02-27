@@ -582,3 +582,27 @@ class Network(nx.Graph):
         network = Network()
         network.set_from_dict(network_dict)
         return network
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.doc_metadata.uuid == other.doc_metadata.uuid
+        return False
+
+    def __hash__(self):
+        return hash(self.doc_metadata.uuid)
+
+    def __repr__(self):
+        name = self.doc_metadata.name
+        if name:
+            name = f"'{name}'"
+        author = self.doc_metadata.author
+        if author:
+            author = f"'{author}'"
+        return (
+            f"Network("
+            f"name={name}, "
+            f"author={author}, "
+            f"locked={self.doc_metadata.locked}, "
+            f"uuid='{self.doc_metadata.uuid}'"
+            ")"
+        )
