@@ -414,11 +414,11 @@ class YawningTitanRun:
         exported_root.mkdir(parents=True, exist_ok=True)
         export_path = os.path.join(exported_root, f"EXPORTED_YT_RUN_{self.uuid}")
         self.logger.debug(
-            f"YT run  {self.uuid}: Making a zip archive of {self.output_dir} and writing to {export_path}."
+            f"YT run  {self.uuid}: Making a zip archive of {self.output_dir} and writing to {export_path}.zip."
         )
         shutil.make_archive(export_path, "zip", self.output_dir)
         self.logger.debug(f"YT run  {self.uuid}: Export completed.")
-        return export_path
+        return f"{export_path}.zip"
 
     # TODO: Remove once proper AgentClass sub-classes have been created and mapped as a function in the main module.
     @classmethod

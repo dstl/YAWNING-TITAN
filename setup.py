@@ -155,7 +155,7 @@ setup(
         "dm-tree==0.1.7",
         "gym==0.21.0",
         "imageio==2.9.0",
-        "jupyter==1.0.0",
+        "jupyterlab==3.6.1",
         "karateclub==1.3.0",
         "matplotlib==3.6.2",
         "networkx==2.5.1",
@@ -203,7 +203,8 @@ setup(
             "notebooks/_package_data/sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb",
             "notebooks/_package_data/sb3/Using an Evaluation Callback to monitor progress during training.ipynb",
             "notebooks/_package_data/Creating and playing as a Keyboard Agent.ipynb",
-            "notebooks/_package_data/sb3/YawningTitanRun Example.ipynb",
+            "notebooks/_package_data/YawningTitanRun Example.ipynb",
+            "notebooks/_package_data/Using the Network DB.ipynb",
         ]
     },
     include_package_data=True,
