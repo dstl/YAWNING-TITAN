@@ -249,13 +249,8 @@
          },
          "blue":{
             "action_set":{
-<<<<<<< HEAD
-               "reduce_vulnerability":false,
-               "restore_node":true,
-=======
                "reduce_vulnerability":true,
                "restore_node":false,
->>>>>>> origin/dev-gui
                "scan":true,
                "isolate_node":false,
                "reconnect_node":false,

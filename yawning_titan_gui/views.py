@@ -1,7 +1,10 @@
 import io
 import json
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr
 from io import StringIO
+import logging
+import multiprocessing
+import sys
 
 from django.http import Http404, HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
@@ -136,17 +139,27 @@ class RunView(View):
         form = RunForm(request.POST)
         if form.is_valid():
             print("DATA", form.cleaned_data)
-            args = form.cleaned_data
-            if args["network"] is not None:
-                args["network"] = NetworkManager.db.get(args["network"])
-            if args["game_mode"] is not None:
-                args["game_mode"] = GameModeManager.db.get(args["game_mode"])
-            f = io.StringIO()
-            with redirect_stdout(f):
-                run = YawningTitanRun(**args)
-                print("OUT", type(f.getvalue()), f.getvalue())
-                return JsonResponse({"stdout": f.getvalue()})
+            fkwargs = form.cleaned_data
+            if fkwargs["network"] is not None:
+                fkwargs["network"] = NetworkManager.db.get(fkwargs["network"])
+            if fkwargs["game_mode"] is not None:
+                fkwargs["game_mode"] = GameModeManager.db.get(fkwargs["game_mode"])
+            process = multiprocessing.Process(target=run_yt, kwargs=(fkwargs))
+            process.start()
+            return JsonResponse({"stdout": sys.stderr})
         return JsonResponse({"message": "error"}, status=400)
+
+stderr = StringIO()
+
+def run_yt(*args,**kwargs): # TODO: Move
+    with redirect_stderr(stderr):
+        YawningTitanRun(**kwargs)
+
+def get_stderr(request: HttpRequest):
+    
+    if request.method == "GET":
+        print("STDERR",stderr.getvalue())
+        return JsonResponse({"stderr":stderr.getvalue()})
 
 
 class NodeEditor(View):

@@ -15,6 +15,9 @@ $(document).ready(function(){
         data.append("network",selected["network"]);
         run(data);
     });
+    $("#stderr").click(function(){
+        stderr();
+    })
 });
 
 // wrapper for async post request for managing YT run instance
@@ -33,6 +36,19 @@ function run(data){
         },
         error: function(response){
             console.log(response.message)
+        }
+    });
+}
+
+function stderr(data){
+    $.ajax({
+        type: "GET",
+        url: STDERR_URL,
+        data: data,
+        //cache: false,
+        dataType: "json",
+        success: function(response){
+            console.log("STDERR",response.stderr);
         }
     });
 }
