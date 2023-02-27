@@ -9,7 +9,7 @@ describe('CytoscapeService', () => {
   let service: CytoscapeService;
 
   beforeEach(() => {
-    service = new CytoscapeService();
+    service = new CytoscapeService(null);
 
     service['_network'] = new Network();
   });

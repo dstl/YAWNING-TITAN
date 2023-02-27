@@ -1,14 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import * as cytoscape from 'cytoscape';
 import { Observable, Subject } from 'rxjs';
 import { Network } from '../../../app/network-class/network';
 import { NetworkJson, Node } from '../../../app/network-class/network-interfaces';
 import { v4 as uuid } from 'uuid';
 
-import { ElementType } from '../cytoscape/graph-objects';
+import { ElementType, NodeColourKey } from '../cytoscape/graph-objects';
+import { NODE_KEY_CONFIG } from 'src/app/app.tokens';
 
 @Injectable()
 export class CytoscapeService {
+
+  constructor(@Inject(NODE_KEY_CONFIG) private nodeKey: NodeColourKey[]) { }
 
   private nodeCount = 0;
 
@@ -22,40 +25,6 @@ export class CytoscapeService {
 
   // html element where the graph is rendered
   private renderElement: HTMLElement | undefined;
-
-  private defaultNodeStyle = {
-    'label': 'data(name)',
-    'background-color': '#f0f0f0',
-    'border-color': '#909090',
-    'border-width': 1,
-    'color': '#fff',
-    'line-color': '#909090'
-  };
-
-  private highlightedNodeStyle = {
-    'label': 'data(name)',
-    'background-color': '#009eff',
-    'border-color': '#005e97',
-    'border-width': 1,
-    'line-color': '#009eff'
-  }
-
-  // the stylesheet for the graph
-  private style: cytoscape.Stylesheet[] = [
-    {
-      selector: 'node',
-      style: this.defaultNodeStyle
-    },
-    {
-      selector: 'edge',
-      style: {
-        'width': 3,
-        'line-color': '#505050',
-        'target-arrow-color': '#ccc',
-        'curve-style': 'bezier'
-      }
-    }
-  ]
 
   // id of the current selected node
   private selectedElement: { id: string, type: ElementType };
@@ -177,7 +146,7 @@ export class CytoscapeService {
     this.cy = cytoscape({
       container: this.renderElement, // container to render in
       elements: [],
-      style: this.style
+      style: this.nodeKey.map(key => key.cytoscapeStyleSheet)
     });
 
     cytoscape.warnings(false);
@@ -323,11 +292,6 @@ export class CytoscapeService {
    * @param elementId
    */
   private setSelectedItem(evt: cytoscape.EventObject) {
-    // if there is an existing selected item, restore its style
-    if (this.selectedElement) {
-      this.cy.getElementById(this.selectedElement.id).style(this.defaultNodeStyle)
-    }
-
     // check if an element was clicked
     if (!evt || !evt.target || !evt.target.isNode || !evt.target.isEdge) {
       // clicked on background
@@ -335,9 +299,6 @@ export class CytoscapeService {
       this.selectedElementSubject.next(this.selectedElement);
       return;
     }
-
-    // highlight element
-    evt.target.style(this.highlightedNodeStyle);
 
     // set element as selected
     this.selectedElement = {
