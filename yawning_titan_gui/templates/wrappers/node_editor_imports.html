@@ -19,12 +19,22 @@
             // listen to NETWORK property changes
             if (prop === 'NETWORK') {
                 // trigger a window event to mark that the value was changed
-                document.dispatchEvent(new CustomEvent('networkUpdate', {detail: value}));
+                document.dispatchEvent(new CustomEvent('networkUpdate', { detail: value }));
+            }
+
+            // listen to NETWORK_SETTINGS property changes
+            if (prop === 'NETWORK_SETTINGS') {
+                /**
+                 * trigger a window event to mark that the network settings in
+                 * the network setting sidebar has been changed
+                 */
+                document.dispatchEvent(new CustomEvent('networkSettingsUpdate', { detail: value }));
             }
 
             return true;
         }
     };
+    window.NETWORK = NETWORK;
     var proxy = new Proxy(window, handler);
 
     /**
@@ -36,12 +46,7 @@
     */
 
     // set the proxy.NETWORK with the django JSON string
-    function set_network(){
+    function set_network() {
         proxy.NETWORK = NETWORK;
     }
-    $(window).on("load",function(){
-        setTimeout(set_network,600) //TODO: remove this when cytoscape checks onload
-
-    });
-
 </script>

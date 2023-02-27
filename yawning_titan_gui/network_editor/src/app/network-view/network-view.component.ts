@@ -22,9 +22,9 @@ export class NetworkViewComponent implements AfterViewInit {
     this.cytoscapeService.init(this.main?.nativeElement);
 
     // check if window.NETWORK has been set
-    if (window && (<any>window).NETWORK) {
-      this.curNetworkJsonString = (<any>window).NETWORK;
-      this.importService.loadNetworkFromWindow((<any>window).NETWORK);
+    if (globalThis.NETWORK) {
+      this.curNetworkJsonString = globalThis.NETWORK;
+      this.importService.loadNetworkFromWindow(globalThis.NETWORK);
     }
   }
 
@@ -42,6 +42,22 @@ export class NetworkViewComponent implements AfterViewInit {
 
     this.curNetworkJsonString = event?.detail;
     this.importService.loadNetworkFromWindow(event?.detail);
+  }
+
+
+  /**
+   * listen to the networkUpdate event
+   * @param event
+   * @returns
+   */
+  @HostListener('document:networkSettingsUpdate', ['$event'])
+  listenToNetworkSettingsChange(event: any) {
+    const val = {};
+    for (const formData of event?.detail) {
+      val[`${formData[0]}`] = formData[1];
+    }
+
+    this.importService.processNetworkSettingsChanges(val);
   }
 
   /**

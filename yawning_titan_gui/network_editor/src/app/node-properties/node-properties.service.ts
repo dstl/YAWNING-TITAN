@@ -1,18 +1,77 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, Subject } from 'rxjs';
-import { CytoscapeService } from '../services/cytoscape/cytoscape.service';
+import { NetworkSettings } from '../network-class/network-interfaces';
+import { NetworkService } from '../network-class/network.service';
+import { InteractionService } from '../services/interaction/interaction.service';
 
 @Injectable()
 export class NodePropertiesService {
+  // formgroup for the node properties
   private _nodePropertiesFormGroup: FormGroup;
-
   public nodePropertiesFormGroupSubject = new Subject<FormGroup>();
 
+  // network settings
+  private _networkSettings: NetworkSettings
+
+  // id of the current node being edited
+  private _currentElementId = '';
+
   constructor(
-    private cytoscapeService: CytoscapeService,
+    private networkService: NetworkService,
+    private interactionService: InteractionService,
     private formBuilder: FormBuilder
-  ) { }
+  ) {
+    this.networkService.networkObservable.subscribe(network => {
+      this._networkSettings = network.networkSettings;
+
+      if (!this._nodePropertiesFormGroup) {
+        return;
+      }
+
+      if (network.networkSettings.entryNode.set_random_entry_nodes) {
+        this._nodePropertiesFormGroup.get('entry_node')?.setValue(false)
+      }
+
+      if (network.networkSettings.highValueNode.set_random_high_value_nodes) {
+        this._nodePropertiesFormGroup.get('high_value_node')?.setValue(false)
+      }
+
+      if (network.networkSettings.vulnerability.set_random_vulnerabilities) {
+        this._nodePropertiesFormGroup.get('vulnerability')?.setValue(
+          network.networkSettings.vulnerability.node_vulnerability_lower_bound.toFixed(2)
+        )
+      }
+    });
+
+    this.interactionService.dragEvent.subscribe(evt => {
+      this.updateNodePositions(evt);
+    });
+  }
+
+  /**
+   * Returns true if the network sets a random entry node on reset
+   * @returns
+   */
+  public randomEntryNodesOnReset(): boolean {
+    return this._networkSettings.entryNode.set_random_entry_nodes;
+  }
+
+  /**
+   * Returns true if the network sets a random high value node on reset
+   * @returns
+   */
+  public randomHighValueNodesOnReset(): boolean {
+    return this._networkSettings.highValueNode.set_random_high_value_nodes;
+  }
+
+  /**
+   * Returns true if the network sets random node vulnerabilities on reset
+   * @returns
+   */
+  public randomVulnerabilitiesOnReset(): boolean {
+    return this._networkSettings.vulnerability.set_random_vulnerabilities;
+  }
 
   /**
    * Loads the details of the selected
@@ -20,31 +79,33 @@ export class NodePropertiesService {
    */
   public loadDetails(id: string) {
     // get the node details
-    const node = this.cytoscapeService.network.getNodeById(id);
+    const node = this.networkService.getNodeById(id);
 
     if (!node) {
       return;
     }
 
+    this._currentElementId = id;
+
     // create new form group
     this._nodePropertiesFormGroup = this.formBuilder.group({
       uuid: new FormControl({ value: node.uuid, disabled: true }),
       name: new FormControl(node.name, Validators.required),
-      vulnerability: new FormControl(node.vulnerability, Validators.required),
+      vulnerability: new FormControl(this.randomVulnerabilitiesOnReset() ?
+        this._networkSettings.vulnerability.node_vulnerability_lower_bound.toFixed(2) : node.vulnerability.toFixed(2), Validators.required),
       x_pos: new FormControl(node.x_pos, Validators.required),
       y_pos: new FormControl(node.y_pos, Validators.required),
-      high_value_node: new FormControl(node.high_value_node, Validators.required),
-      entry_node: new FormControl(node.entry_node, Validators.required),
+      // set to false and disable if random high value nodes are to be set on network
+      high_value_node: new FormControl(this.randomHighValueNodesOnReset() ? false : node.high_value_node, Validators.required),
+      entry_node: new FormControl(this.randomEntryNodesOnReset() ? false : node.entry_node, Validators.required),
     });
 
     // update form group
     this.nodePropertiesFormGroupSubject.next(this._nodePropertiesFormGroup);
 
-    this.listenToNodePositionChange();
-
     // update node on each change
     this._nodePropertiesFormGroup.valueChanges
-      .pipe(debounceTime(50))
+      .pipe(debounceTime(100))
       .subscribe(() => this.updateNodeProperties());
   }
 
@@ -58,7 +119,7 @@ export class NodePropertiesService {
     }
 
     // update
-    this.cytoscapeService.updateNode({
+    this.networkService.editNodeDetails({
       uuid: this._nodePropertiesFormGroup.get('uuid').value,
       name: this._nodePropertiesFormGroup.get('name').value,
       x_pos: Number(this._nodePropertiesFormGroup.get('x_pos').value),
@@ -70,17 +131,17 @@ export class NodePropertiesService {
   }
 
   /**
-   * Function used to listen to node repositioning via drag
-  */
-  private listenToNodePositionChange(): void {
-    this.cytoscapeService.elementDragEvent.subscribe(res => {
-      if (!(res.id === this._nodePropertiesFormGroup.get('uuid').value)) {
-        return;
-      }
-      // update x pos and y pos
-      this._nodePropertiesFormGroup.get('x_pos').setValue(res.position.x);
-      this._nodePropertiesFormGroup.get('y_pos').setValue(res.position.y);
-      this.updateNodeProperties();
-    })
+   * Update input fields with the new node
+   * @param evt
+   */
+  public updateNodePositions(val: { id: string, position: { x: number, y: number } }): void {
+    // only need to care if the node being dragged is displayed
+    if (!(val.id == this._currentElementId)) {
+      return;
+    }
+
+    // update x pos and y pos
+    this._nodePropertiesFormGroup.get('x_pos').setValue(val.position.x);
+    this._nodePropertiesFormGroup.get('y_pos').setValue(val.position.y);
   }
 }
