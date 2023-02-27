@@ -34,7 +34,7 @@
         "selector": "node[?entry_node]",
         "style": {
           "label": "data(name)",
-          "background-image": "assets/img/entry_node.svg",
+          "background-image": "{{ASSETS_PATH}}/img/entry_node.svg",
           "background-width": "50%",
           "background-height": "50%"
         }
