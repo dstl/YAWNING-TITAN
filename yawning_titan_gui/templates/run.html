@@ -7,7 +7,8 @@
 <!-- <script src="{% static 'js/game_mode.js' %}"></script> -->
 <script src="{% static 'js/run.js' %}"></script>
 <script type="text/javascript">
-    const FILE_MANAGER_URL = "{% url 'db manager' %}"
+    const FILE_MANAGER_URL = "{% url 'db manager' %}";
+    const STDERR_URL = "{% url 'stderr' %}";
 </script>
 {% endblock %}
 
@@ -70,6 +71,7 @@
                     {% endfor %}
                 </div>
                 <button type="submit" id="run" class="btn btn-primary">Run</button>
+                <button type="button" id="stderr">Stderr</button>
             </form>
         </div>
     </div>
