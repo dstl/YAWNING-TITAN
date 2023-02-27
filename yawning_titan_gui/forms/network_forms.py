@@ -105,7 +105,7 @@ class NetworkTemplateForm(django_forms.Form):
             for float_item in items["float"]:
                 field_elements[float_item["label"]] = django_forms.FloatField(
                     widget=RangeInput(
-                        attrs={"class": "form-control " + name, "step": "0.01"}
+                        attrs={"class": "form-control form-range " + name, "step": "0.01"}
                     ),
                     required=False,
                     help_text=float_item["description"],
@@ -225,6 +225,18 @@ class NetworkForm(django_forms.Form):
         max_value=1,
         label="node_vulnerability_upper_bound",
     )
+    name = django_forms.CharField(
+        widget=widgets.TextInput(attrs={"class": "form-control"}),
+        required=True,
+        help_text="The name of the network",
+        label="Name",
+    )
+    description = django_forms.CharField(
+        widget=widgets.Textarea(attrs={"rows":5,"class": "form-control"}),
+        required=False,
+        help_text="A description of the network",
+        label="Description",
+    )
 
     def __init__(
         self,
@@ -237,11 +249,15 @@ class NetworkForm(django_forms.Form):
         self.network = network
         if data is None:
             data = network.to_dict()
+            data.update(data["_doc_metadata"].to_dict())
         super(NetworkForm, self).__init__(*args, data=data, **kwargs)
 
         if self.is_bound:
             self.is_valid()
-            try:
+            data:dict = self.cleaned_data
+            self.network.doc_metadata.update(**{k:data.pop(k) for k in ["name","description"]})
+            data["_doc_metadata"] = self.network.doc_metadata.to_dict()
+            try:                
                 self.network.set_from_dict(self.cleaned_data)
             except Exception as e:
                 self.add_error(None, str(e))
