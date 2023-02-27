@@ -1,0 +1,26 @@
+:host {
+  display: flex;
+}
+
+.node-key-item-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  align-items: center;
+}
+
+.node-key-item {
+  width: 20px;
+  height: 20px;
+  border-radius: 12px;
+  border: transparent solid 2px;
+  align-items: center;
+  margin: 10px;
+}
+
+.node-key-label {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding: 5px 0px 5px 15px;
+}

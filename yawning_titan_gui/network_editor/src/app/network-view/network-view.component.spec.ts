@@ -1,6 +1,7 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { test_network } from '../../testing/test-network';
+import { NODE_KEY_CONFIG } from '../app.tokens';
 import { CytoscapeService } from '../services/cytoscape/cytoscape.service';
 import { ImportService } from '../services/export-import/import.service';
 
@@ -19,12 +20,15 @@ describe('NetworkViewComponent', () => {
     loadFile: () => { }
   }
 
+  let stubNodeKeyConfig = []
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [NetworkViewComponent],
       providers: [
         { provide: CytoscapeService, cytoscapeServiceStub },
-        { provide: ImportService, useValue: importServiceStub }
+        { provide: ImportService, useValue: importServiceStub },
+        { provide: NODE_KEY_CONFIG, useValue: stubNodeKeyConfig }
       ],
       schemas: [
         NO_ERRORS_SCHEMA
