@@ -1,13 +1,13 @@
 describe('Django integration', () => {
-  it('should open the page', () => {
-    // check if the django server is up
-    cy.visit('http://localhost:8000')
-  });
 
   it('should have the header and the network editor', () => {
+    cy.openEmptyNetwork();
+
     // check that the django hosts the node editor
     cy.get('.head').should('be.visible');
     cy.get('app-root').should('be.visible');
+
+    cy.cleanUp();
   });
 
   /**

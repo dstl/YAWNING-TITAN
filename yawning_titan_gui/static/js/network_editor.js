@@ -40,7 +40,6 @@ function update_network(form_element){
         cache: false,
         dataType: "json",
         success: function(response){
-            console.log("UPDATED");
             proxy.NETWORK = response.network_json;
         }
     });
