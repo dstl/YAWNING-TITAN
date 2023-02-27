@@ -40,24 +40,23 @@ def test_reset_default_networks():
     with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
         db = NetworkDB()
         db.rebuild_db()
-        configs = db.all()
+        networks_copy = copy.deepcopy(db.all())
 
-        config = configs[0]
-        config_copy = copy.deepcopy(config)
+        network_copy = networks_copy[0]
 
         # Update the object locally
-        config.set_random_entry_nodes = False
+        network_copy.set_random_entry_nodes = False
 
         # Hack an update to the locked network in the db
         db._db.db.update(
-            config.to_dict(json_serializable=True),
-            DocMetadataSchema.UUID == config.doc_metadata.uuid,
+            network_copy.to_dict(json_serializable=True),
+            DocMetadataSchema.UUID == network_copy.doc_metadata.uuid,
         )
 
         # Perform the default network reset
         db.reset_default_networks_in_db()
 
-        assert db.all()[0].set_random_entry_nodes == config_copy.set_random_entry_nodes
+        assert db.all() == networks_copy
 
         db._db.close_and_delete_temp_db()
 
