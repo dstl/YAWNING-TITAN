@@ -1,3 +1,9 @@
+textarea{
+    background-color: var(--light) !important;
+    border: none !important;
+    color: var(--text-light) !important;
+}
+
 #section-controls{
     justify-content: center;
 }
@@ -37,7 +43,8 @@
 }
 .form-control{
     padding: 0;
-    /* padding-left: var(--increment); */
+    margin-right: var(--increment);
+    max-width: calc(100% - .5rem);
 }
 .form-container{
     display: flex;
@@ -70,7 +77,7 @@
  .mb-3{
     display: flex;
     flex-wrap: wrap;
-    margin: 3px;
+    margin: var(--increment);
 }
 .mb-3 label{
     display: flex;

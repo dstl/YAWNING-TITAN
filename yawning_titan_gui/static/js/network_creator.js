@@ -13,9 +13,6 @@ $(document).ready(function(){
     $(".random-elements  .form-control").on("change",function(){
         update_network($("#random-elements-form"))
     });
-    $("#save").click(function(){
-        save_template()
-    });
 });
 
 function load_template(form_element){
@@ -33,13 +30,5 @@ function load_template(form_element){
             proxy.NETWORK = response.network_json;
             $("#open-editor").attr("href",EDITOR_URL + response.network_id);
         }
-    });
-}
-
-function save_template(){
-    $.ajax({
-        type: "POST",
-        url: window.location.href,
-        data: {save:true}
     });
 }
