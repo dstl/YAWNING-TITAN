@@ -9,7 +9,7 @@ from tests.mock_and_patch.yawning_titan_db_patch import yawning_titan_db_init_pa
 from yawning_titan.db.doc_metadata import DocMetadataSchema
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
 from yawning_titan.exceptions import YawningTitanDBError
-from yawning_titan.networks.network_db import NetworkDB
+from yawning_titan.networks.network_db import NetworkDB, NetworkSchema
 
 
 @pytest.mark.integration_test
@@ -40,23 +40,34 @@ def test_reset_default_networks():
     with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
         db = NetworkDB()
         db.rebuild_db()
-        configs = db.all()
+        networks_copy = copy.deepcopy(db.all())
 
-        config = configs[0]
-        config_copy = copy.deepcopy(config)
+        network_copy = networks_copy[0]
 
         # Update the object locally
-        config.set_random_entry_nodes = False
+        network_copy.set_random_entry_nodes = False
 
         # Hack an update to the locked network in the db
         db._db.db.update(
-            config.to_dict(json_serializable=True),
-            DocMetadataSchema.UUID == config.doc_metadata.uuid,
+            network_copy.to_dict(json_serializable=True),
+            DocMetadataSchema.UUID == network_copy.doc_metadata.uuid,
         )
 
         # Perform the default network reset
         db.reset_default_networks_in_db()
 
-        assert db.all()[0].set_random_entry_nodes == config_copy.set_random_entry_nodes
+        assert db.all() == networks_copy
 
+        db._db.close_and_delete_temp_db()
+
+
+@pytest.mark.integration_test
+def test_network_schema():
+    """Test querying the network DB using NetworkSchema."""
+    with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
+        db = NetworkDB()
+        db.rebuild_db()
+        results = db.search(NetworkSchema.SET_RANDOM_ENTRY_NODES == True)
+        assert len(results) == 1
+        assert results[0].doc_metadata.uuid == "b3cd9dfd-b178-415d-93f0-c9e279b3c511"
         db._db.close_and_delete_temp_db()
