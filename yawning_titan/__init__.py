@@ -37,17 +37,18 @@ User directories initialised:
 Logging configured from the root:
     Logging is configured using the `yawning_titan.config._package_data.logging_config.yaml` config file.
 """
-__version__ = "1.0.1"
-
 import logging.config
 import os
 import sys
 from pathlib import Path, PosixPath
 from typing import Final, Union
 
+import pkg_resources
 import yaml
 from gym.envs.registration import register
 from platformdirs import PlatformDirs
+
+__version__ = pkg_resources.get_distribution("yawningtitan").version
 
 register(id="five-node-def-v0", entry_point="yawning_titan.envs.specific:FiveNodeDef")
 
