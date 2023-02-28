@@ -1,8 +1,35 @@
+import os
 import sys
+from typing import List
 
 from setuptools import find_packages, setup
 from setuptools.command.develop import develop
 from setuptools.command.install import install
+
+
+def version() -> str:
+    """
+    Gets the version from the `VERSION` file.
+
+    :return: The version string.
+    """
+    with open("VERSION", "r") as file:
+        return file.readline()
+
+
+def package_data_paths() -> List[str]:
+    """
+    Get the list of package data files.
+
+    :return: A list of string paths.
+    """
+    filepaths = []
+    for root, dirs, files in os.walk("yawning_titan"):
+        if root.split(os.sep)[-1] == "_package_data":
+            for file in files:
+                file_path = os.path.join(root, file)
+                filepaths.append(file_path.split("yawning_titan")[-1][1:])
+    return filepaths
 
 
 def _create_app_dirs():
@@ -148,7 +175,7 @@ setup(
     url="https://github.com/dstl/YAWNING-TITAN",
     description="An abstract, flexible and configurable cyber security simulation",
     python_requires=">=3.8, <3.11",
-    version="1.0.1",
+    version=version(),
     license="MIT License",
     packages=find_packages(),
     install_requires=[
@@ -187,22 +214,7 @@ setup(
         ],
         "tensorflow": ["tensorflow==2.11.0"],
     },
-    package_data={
-        "yawning_titan": [
-            "game_modes/_package_data/dcbo_config.yaml",
-            "game_modes/_package_data/default_game_mode.yaml",
-            "game_modes/_package_data/default_new_game_mode.yaml",
-            "game_modes/_package_data/game_modes.json",
-            "game_modes/_package_data/low_skill_red_with_random_infection_perfect_detection.yaml",
-            "game_modes/_package_data/multiple_high_value_targets.yaml",
-            "networks/_package_data/network.json",
-            "notebooks/_package_data/sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb",
-            "notebooks/_package_data/sb3/Using an Evaluation Callback to monitor progress during training.ipynb",
-            "notebooks/_package_data/Creating and playing as a Keyboard Agent.ipynb",
-            "notebooks/_package_data/YawningTitanRun Example.ipynb",
-            "notebooks/_package_data/Using the Network DB.ipynb",
-        ]
-    },
+    package_data={"yawning_titan": package_data_paths()},
     include_package_data=True,
     cmdclass={"install": PostInstallCommand, "develop": PostDevelopCommand},
 )
