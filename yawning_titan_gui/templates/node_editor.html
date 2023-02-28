@@ -15,7 +15,9 @@
 {% block main %}
 <app-root></app-root>
 <div id="random-elements" class="form-container">
-  {% include 'elements/el_form.html' with form=form form_name='random-elements' %}
+  <form id="{{form_name}}-form" class="config-form {{form_name}}" action="" method="post">
+    {% include 'elements/el_form_fields.html' with form=form protected=protected %}
+  </form>  
 </div>
 {% endblock %}
 
@@ -40,7 +42,7 @@
       padding: var(--increment);
       width: 350px;
       height: 100%;
-      z-index: 99999;
+      z-index: 999;
       background-color: var(--superlight);
     }
 
@@ -79,12 +81,6 @@
       font-family: Arial, Helvetica, sans-serif
     }
 
-    .mb-3{
-        display: block;
-    }
-    .mb-3:has(.inline){
-        display: flex;
-    }
     .field-container:has(.form-switch){
       max-width: 100px;
     }

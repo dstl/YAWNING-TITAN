@@ -1,9 +1,13 @@
 from pathlib import Path
 from typing import Any, List
 
+from django.urls import reverse
+from yawning_titan import _YT_ROOT_DIR
+
 from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB, NetworkSchema
+from yawning_titan_server.settings import DOCS_ROOT
 
 
 class NetworkManager:
@@ -126,3 +130,43 @@ def uniquify(path: Path) -> Path:
         path = parent / f"{filename}({counter}){extension}"
         counter += 1
     return path
+
+def get_docs_sections():
+    return [p.stem for p in DOCS_ROOT.iterdir() if p.suffix == ".html"]
+
+def get_url(url_name: str,*args,**kwargs):
+    """
+    Wrapped implementation of Django's reverse url.
+
+    A lookup that returns the url by name
+    or empty string when the url does not exist.
+
+    :param url_name: The name of the url string as defined in `urls.py`.
+
+    :return: The full url string as defined in `urls.py`
+    """
+    try:
+        return reverse(url_name,args=args,kwargs=kwargs)
+    except Exception:
+        return None
+    
+def get_url_dict(name:str,href:str):
+    """return a dictionary with keys `name` and `href` to describe a url link element."""
+    return {"name":name,"href":href}
+
+def get_sidebar():
+    default_sidebar = {
+        "Documentation": [
+            get_url_dict(n,get_url('docs',section=n)) for n in get_docs_sections()
+        ],
+        "Configuration": [
+            get_url_dict(n,get_url(n)) for n in ["Manage game modes","Manage networks"] if get_url(n)
+        ],
+        "Training runs": [
+            get_url_dict(n,get_url(n))for n in  ["Setup a training run", "View completed runs"] if get_url(n)
+        ],
+        "About": [
+            get_url_dict(n,get_url(n)) for n in ["Contributors", "Report bug", "FAQ"] if get_url(n)
+        ],
+    }
+    return default_sidebar

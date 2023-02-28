@@ -200,7 +200,7 @@ class NetworkForm(django_forms.Form):
     node_vulnerability_lower_bound = django_forms.FloatField(
         widget=RangeInput(
             attrs={
-                "class": "form-control form-range",
+                "class": "form-control form-range slider-progress",
                 "step": "0.01",
                 "random-vuln": "",
             }
@@ -214,7 +214,7 @@ class NetworkForm(django_forms.Form):
     node_vulnerability_upper_bound = django_forms.FloatField(
         widget=RangeInput(
             attrs={
-                "class": "form-control form-range",
+                "class": "form-control form-range slider-progress",
                 "step": "0.01",
                 "random-vuln": "",
             }

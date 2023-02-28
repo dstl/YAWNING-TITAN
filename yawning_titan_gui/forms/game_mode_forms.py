@@ -3,13 +3,14 @@ from typing import Dict, List
 
 from django import forms as django_forms
 from django.forms import widgets
+from django.http import QueryDict
 
 from yawning_titan.config.toolbox.core import ConfigGroup, ConfigItem
 from yawning_titan.config.toolbox.item_types.bool_item import BoolItem
 from yawning_titan.config.toolbox.item_types.float_item import FloatItem
 from yawning_titan.config.toolbox.item_types.int_item import IntItem
 from yawning_titan.game_modes.game_mode import GameMode
-from yawning_titan_gui.forms import RangeInput
+from yawning_titan_gui.forms import RangeInput, create_doc_meta_form
 from yawning_titan_gui.helpers import GameModeManager, next_key
 
 
@@ -105,7 +106,7 @@ class GameModeSection:
             if isinstance(e, BoolItem):
                 el = django_forms.BooleanField(
                     widget=widgets.CheckboxInput(
-                        attrs={"role": "switch", "class": "form-check-input"}
+                        attrs={"role": "switch", "class": "inline form-check-input"}
                     ),
                     required=False,
                     help_text=e.doc,
@@ -113,7 +114,7 @@ class GameModeSection:
                 )
             elif isinstance(e, FloatItem):
                 el = django_forms.FloatField(
-                    widget=RangeInput(attrs={"class": "form-control", "step": "0.01"}),
+                    widget=RangeInput(attrs={"class": "inline form-control form-range slider-progress", "step": "0.01"}),
                     required=False,
                     help_text=e.doc,
                     min_value=e.properties.min_val,
@@ -122,14 +123,14 @@ class GameModeSection:
                 )
             elif isinstance(e, IntItem):
                 el = django_forms.IntegerField(
-                    widget=widgets.NumberInput(attrs={"class": "form-control"}),
+                    widget=widgets.NumberInput(attrs={"class": "inline form-control"}),
                     required=False,
                     help_text=e.doc,
                     label=name,
                 )
             else:
                 el = django_forms.CharField(
-                    widget=widgets.TextInput(attrs={"class": "form-control"}),
+                    widget=widgets.TextInput(attrs={"class": "inline form-control"}),
                     required=False,
                     help_text=e.doc,
                     label=name,
@@ -177,6 +178,7 @@ class GameModeSection:
             )
         }
 
+DocMetaDataForm: django_forms.Form = create_doc_meta_form("game mode")
 
 @dataclass
 class GameModeForm:
@@ -191,28 +193,29 @@ class GameModeForm:
                 section=self.game_mode.red, form_name="red", icon="bi-lightning"
             ),
             "blue": GameModeSection(
-                section=self.game_mode.red, form_name="blue", icon="bi-shield"
+                section=self.game_mode.blue, form_name="blue", icon="bi-shield"
             ),
             "game_rules": GameModeSection(
-                section=self.game_mode.red, form_name="game_rules", icon="bi-clipboard"
+                section=self.game_mode.game_rules, form_name="game_rules", icon="bi-clipboard"
             ),
             "blue_can_observe": GameModeSection(
-                section=self.game_mode.red,
+                section=self.game_mode.blue_can_observe,
                 form_name="blue_can_observe",
                 icon="bi-binoculars",
             ),
             "rewards": GameModeSection(
-                section=self.game_mode.red, form_name="rewards", icon="bi-star"
+                section=self.game_mode.rewards, form_name="rewards", icon="bi-star"
             ),
             "on_reset": GameModeSection(
-                section=self.game_mode.red,
+                section=self.game_mode.on_reset,
                 form_name="on_reset",
                 icon="bi-arrow-clockwise",
             ),
             "miscellaneous": GameModeSection(
-                section=self.game_mode.red, form_name="miscellaneous", icon="bi-brush"
+                section=self.game_mode.miscellaneous, form_name="miscellaneous", icon="bi-brush"
             ),
         }
+        self.doc_metadata_form:django_forms.Form = DocMetaDataForm(data=self.game_mode.doc_metadata.to_dict())
 
     def get_section(self, section_name: str = None) -> GameModeSection:
         """
@@ -254,6 +257,17 @@ class GameModeForm:
         # section.forms[form_id].update_and_check()
         section.config_class.validate()
         return section
+    
+    def update_doc_meta(self, data:QueryDict):
+        """Update the game modes doc metadata."""
+        print("UPDATING doc")
+        try:
+            self.doc_metadata_form = DocMetaDataForm(data=data)
+            if self.doc_metadata_form.is_valid():
+                self.game_mode.doc_metadata.update(**self.doc_metadata_form.cleaned_data)
+        except Exception as e:
+            print("OOPS",e)
+        
 
     @property
     def first_section(self) -> GameModeSection:
@@ -288,7 +302,7 @@ class GameModeFormManager:
         Set the status of the game mode sections based upon whether they pass the validation rules in their corresponding
         :class: `~yawning_titan.config.toolbox.core.ConfigGroup`
 
-        :param game_mode_filename: the file name and extension of the current game mode
+        :param game_mode_id: the file name and extension of the current game mode
         :return: a dictionary representation of the sections of the :class: `~yawning_titan.game_modes.game_mode.GameMode`
         """
         if game_mode_id in cls.game_mode_forms:

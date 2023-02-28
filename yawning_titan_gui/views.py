@@ -1,5 +1,7 @@
 import json
 from io import StringIO
+from multiprocessing import Process
+from typing import Any
 
 from django.http import Http404, HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
@@ -19,18 +21,10 @@ from yawning_titan_gui.forms.network_forms import (
     NetworkFormManager,
     NetworkTemplateForm,
 )
-from yawning_titan_gui.helpers import GameModeManager, NetworkManager
-
-default_sidebar = {
-    "Documentation": ["Getting started", "Tutorials", "How to configure", "Code"],
-    "Configuration": [
-        "Manage game modes",
-    ],
-    "Training runs": ["Setup a training run", "View completed runs"],
-    "About": ["Contributors", "Report bug", "FAQ"],
-}
+from yawning_titan_gui.helpers import GameModeManager, NetworkManager, get_sidebar
 
 default_toolbar = {
+    "home": {"icon": "bi-house-door", "title": "Home"},
     "random-elements": {"icon": "bi-gear", "title": "Set random elements"},
     "network-nodes": {"icon": "bi-diagram-2", "title": "Network nodes"},
     # "run-config-set": {"icon": "bi-collection-play", "title": "Run config"},
@@ -38,7 +32,6 @@ default_toolbar = {
 }
 
 protected_game_mode_ids = ["base_config.yaml"]
-
 
 class HomeView(View):
     """Django page template for landing page."""
@@ -64,7 +57,10 @@ class HomeView(View):
         return render(
             request,
             "home.html",
-            {"sidebar": default_sidebar},
+            {
+                "sidebar": get_sidebar(),
+                "toolbar": default_toolbar
+            },
         )
 
 
@@ -75,21 +71,22 @@ class DocsView(View):
     implements 'get' and 'post' methods to handle page requests.
     """
 
-    def get(self, request: HttpRequest, *args, **kwargs):
+    def get(self, request: HttpRequest, section:str, *args, **kwargs):
         """
         Handle page get requests.
 
         :param request: A Django `request` object that contains the data passed from
             the html page. A `request` object will always be delivered when a page
             object is accessed.
-        """
+        """        
         return render(
             request,
             "docs.html",
-            {"sidebar": default_sidebar},
+            # {"sidebar": get_sidebar(),"doc_url":f"http://localhost:8080/source/{section}.html"},
+            {"sidebar": get_sidebar(),"doc_url":reverse(f"docs {section}")},
         )
 
-    def post(self, request: HttpRequest, *args, **kwargs):
+    def post(self, request: HttpRequest, section:str, *args, **kwargs):
         """Handle page post requests.
 
         :param request: A Django `request` object that contains the data passed from
@@ -99,7 +96,7 @@ class DocsView(View):
         return render(
             request,
             "docs.html",
-            {"sidebar": default_sidebar},
+            {"sidebar": get_sidebar()},
         )
 
 
@@ -137,7 +134,7 @@ class GameModesView(View):
             request,
             "game_modes.html",
             {
-                "sidebar": default_sidebar,
+                "sidebar": get_sidebar(),
                 "dialogue_boxes": dialogue_boxes,
                 "game_modes": GameModeManager.get_game_mode_data(),
             },
@@ -216,7 +213,7 @@ class NetworksView(View):
             request,
             "networks.html",
             {
-                "sidebar": default_sidebar,
+                "sidebar": get_sidebar(),
                 "networks": [network.doc_metadata for network in networks],
                 "range_bound_items": range_bound_items,
                 "dialogue_boxes": dialogue_boxes,
@@ -265,7 +262,7 @@ class NetworkCreator(View):
             request,
             "network_creator.html",
             {
-                "sidebar": default_sidebar,
+                "sidebar": get_sidebar(),
                 "form": NetworkTemplateForm(),
                 # "random_elements_form": NetworkFormManager.get_or_create_form(network_id),
                 "network_json": json.dumps(network.to_dict(json_serializable=True)),
@@ -351,8 +348,9 @@ class NodeEditor(View):
             request,
             "node_editor.html",
             {
-                "sidebar": default_sidebar,
+                "sidebar": get_sidebar(),
                 "form": network_form,
+                "protected": network_form.network.doc_metadata.locked,
                 "toolbar": default_toolbar,
                 "network_id": network_id,
                 "network_json": json.dumps(
@@ -465,10 +463,13 @@ class GameModeConfigView(View):
             {
                 "sections": game_mode_form.sections,
                 "section": section,
+                "doc_metadata_form": game_mode_form.doc_metadata_form,
                 "current_section_name": section.name,
                 "last": False,
-                "sidebar": default_sidebar,
+                "sidebar": get_sidebar(),
                 "game_mode_name": game_mode_form.game_mode.doc_metadata.name,
+                "game_mode_id": game_mode_form.game_mode.doc_metadata.uuid,
+                "game_mode_description": game_mode_form.game_mode.doc_metadata.description if game_mode_form.game_mode.doc_metadata.description else "",
                 "protected": game_mode_form.game_mode.doc_metadata.locked,
             },
         )
@@ -482,11 +483,10 @@ def db_manager(request: HttpRequest) -> JsonResponse:
     use the information to perform the appropriate alteration to the
     game mode files contained in the `GAME_MODES_DIR`.
 
-    Args:
-        request: here the django_request object will be specifically loaded with
+    :param request: here the django_request object will be specifically loaded with
         `operation`,`game_mode_name` and optional `source_game_mode` parameters.
 
-    Returns:
+    :return:
         `JsonResponse` object with either success code 500 (generic success) or
         error code 400 (generic error) containing a message.
     """
@@ -533,11 +533,8 @@ def db_manager(request: HttpRequest) -> JsonResponse:
             return "reload"
 
         def create_game_mode_from():
-            game_mode = GameModeManager.db.get(request.POST.get("source_item_id"))
-            meta = game_mode.doc_metadata.to_dict()
-            meta["uuid"] = None
-            meta["locked"] = False
-            game_mode._doc_metadata = DocMetadata(**meta)
+            game_mode = GameModeManager.db.get(request.POST.get("source_item_id"))            
+            game_mode._doc_metadata = DocMetadata()
             GameModeManager.db.insert(game_mode=game_mode, name=item_name)
             return reverse(
                 "game mode config",
@@ -545,11 +542,8 @@ def db_manager(request: HttpRequest) -> JsonResponse:
             )
 
         def create_network_from():
-            network = NetworkManager.db.get(request.POST.get("source_item_id"))
-            meta = network.doc_metadata.to_dict()
-            meta["uuid"] = None
-            meta["locked"] = False
-            network._doc_metadata = DocMetadata(**meta)
+            network = NetworkManager.db.get(request.POST.get("source_item_id"))          
+            network._doc_metadata = DocMetadata()
             NetworkManager.db.insert(network=network, name=item_name)
             return reverse(
                 "node editor",
@@ -589,6 +583,7 @@ def update_game_mode(request: HttpRequest) -> JsonResponse:
     :return: response object containing error if config is invalid or redirect parameters if valid
     """
     if request.method == "POST":
+        print("POSTED",request.POST)
         game_mode_id = request.POST.get("_game_mode_id")
         operation = request.POST.get("_operation")
         game_mode_form = GameModeFormManager.get_or_create_form(game_mode_id)
@@ -596,8 +591,10 @@ def update_game_mode(request: HttpRequest) -> JsonResponse:
             GameModeFormManager.save_as_game_mode(game_mode_form)
             return JsonResponse({"message": "saved"})
         elif operation == "update":
-            section_name = request.POST.get("_section_name")
-            form_id = int(request.POST.get("_form_id"))
+            section_name = request.POST.get("_section_name")      
+            if section_name == "doc-meta":
+                game_mode_form.update_doc_meta(data=request.POST)
+            form_id = int(request.POST.get("_form_id"))      
             section = game_mode_form.update_section(
                 section_name=section_name, form_id=form_id, data=request.POST
             )
