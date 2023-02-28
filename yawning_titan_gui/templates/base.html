@@ -20,13 +20,15 @@
     <link rel="stylesheet" href="{% static 'css/list-item.css' %}">
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
     <link rel="stylesheet" href="{% static 'css/sandwich-icon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/form-range.css' %}">
+
 
     {% block scripts %}
 
     {% endblock %}
 </head>
 <body class="preload">
-    <nav id="top-nav">
+    <nav id="top-nav" class="border-bottom">
         <div id="sandwich-icon" data-sidebar="#sidebar-left">
             <span></span>
             <span></span>
@@ -64,7 +66,7 @@
                         <div id="{{button_name|to_id}}-links" class="accordion-collapse collapse" aria-labelledby="{{button_name|to_id}}-header" data-bs-parent="#nav-accordion">
                             <div class="accordion-body list">
                             {% for link in links %}
-                                <a class="wide" href="{{link|get_url}}">{{link}}</a>
+                                <a class="wide" href="{{link.href}}">{{link.name}}</a>
                             {% endfor %}
                             </div>
                         </div>

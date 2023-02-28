@@ -33,7 +33,8 @@ $(window).on('load', function(){
     $("body").removeClass("preload");
 });
 
-$(document).ready(function(){
+$(document).ready(function(){    
+
     $('[data-toggle="tooltip"]').tooltip();
 
     //activate first toolbar button
@@ -58,12 +59,13 @@ $(document).ready(function(){
     $("input[role='switch']").wrap("<div class=form-switch></div>");
 
     // add range setter input field
-    $("input[type='range'].form-range").wrap("<div class=form-range></div>");
-    $(".form-range").append("<input type='number' class='range-setter form-control'>");
+    $("input[type='range'].form-range").wrap("<div class='form-range-container'></div>");
+    // $("input[type='range'].form-range").wrap("<div class=form-range></div>");
+    $(".form-range-container").append("<input type='number' class='range-setter form-control'>");
 
     // constrain range setter input field
     $(".range-setter").each(function(){
-        let slider_el = $(this).closest(".form-range").children("input[type='range']").first();
+        let slider_el = $(this).closest(".form-range-container").children("input[type='range']").first();
         $(this).prop("min",slider_el.prop("min"));
         $(this).prop("max",slider_el.prop("max"));
         $(this).prop("step",slider_el.prop("step"));
@@ -77,6 +79,8 @@ $(document).ready(function(){
     $(document).on("mousemove","input[type='range']",function(){
         $(this).siblings(".range-setter").first().val($(this).val());
     });
+
+    setup_form_range();
 
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
@@ -104,3 +108,13 @@ class Filter{
     }
 }
 const item_filter = new Filter();
+
+
+function setup_form_range(){
+    for (let e of document.querySelectorAll('input[type="range"].slider-progress')) {
+        e.style.setProperty('--value', e.value);
+        e.style.setProperty('--min', e.min == '' ? '0' : e.min);
+        e.style.setProperty('--max', e.max == '' ? '100' : e.max);
+        e.addEventListener('input', () => e.style.setProperty('--value', e.value));
+      }
+}

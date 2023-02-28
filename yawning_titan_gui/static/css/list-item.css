@@ -55,3 +55,13 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+#list-items{
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
+}
+#delete-all{
+    background-color: red;
+    border: red;
+    color: var(--text-superlight);
+}

@@ -72,7 +72,11 @@ $(document).ready(function(){
     });
 
     $(".config-form").change(function(){
-        submit_form(this);
+        submit_form(this,SECTION_NAME);
+    });
+
+    $("#doc-meta-form").change(function(){
+        submit_form(this,"doc-meta");
     });
 
     $("#config-form-icons>.icon").click(function(){
@@ -85,7 +89,7 @@ $(document).ready(function(){
 
 function save_game_mode(){
     config = new FormData();
-    config.append('_game_mode_filename',game_mode_filename);
+    config.append('_game_mode_id',GAME_MODE_ID);
     config.append('_operation',"save");
     $.ajax({
         type: "POST",
@@ -100,11 +104,11 @@ function save_game_mode(){
 }
 
 // wrapper for async post request for config section form processing
-function submit_form(form_element){
+function submit_form(form_element,section_name){
     config = new FormData($(form_element)[0]);
     config.append('_form_id',$(form_element).data("id"));
     config.append('_section_name',section_name);
-    config.append('_game_mode_filename',game_mode_filename);
+    config.append('_game_mode_id',GAME_MODE_ID);
     config.append('_operation',"update");
     $.ajax({
         type: "POST",

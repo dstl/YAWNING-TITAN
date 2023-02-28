@@ -2,8 +2,13 @@
 {% load static %}
 {% load tags %}
 
+{% block top-buttons %}
+    <a id="back" href="{% url 'home' %}"><i class="bi bi-arrow-90deg-left"></i></a>
+{% endblock %}
+
+
 {% block main %}
-<iframe src="https://white-smoke-0ce674803.2.azurestaticapps.net/"></iframe>
+<iframe src="{{doc_url}}"></iframe>
 {% endblock %}
 
 {% block style %}

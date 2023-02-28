@@ -101,7 +101,6 @@ option:hover{
     align-items: center;
     justify-content: flex-start;
     background-color: var(--light);
-    border-bottom: 1px solid var(--text-mid);
 }
 #window-container{
     flex: 1;
@@ -180,7 +179,7 @@ option:hover{
 #center-container.stretch{
     width: 1000px;
     min-height: 60%;
-    max-height: 100%;
+    max-height: 90%;
 }
 #bottom-buttons{
     position: fixed;
@@ -201,7 +200,6 @@ option:hover{
 /* Search */
 #search-container{
     padding-bottom: calc(var(--increment) * 3);
-    border-bottom: 1px solid var(--text-mid);
     margin-bottom: calc(var(--increment) * 2);
 }
 #search-container span{
@@ -330,6 +328,9 @@ option:hover{
 }
 .btn{
     color: var(--text-light);
+}
+.border-bottom{
+    border-bottom: 1px solid var(--text-mid);
 }
 
 /* text styling */

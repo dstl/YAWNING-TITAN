@@ -17,9 +17,19 @@ textarea{
 .form-switch{
     text-align: center;
 }
-.form-range{
+/* .form-range{
     display: flex;
     flex-direction: row;
+} */
+.form-range-container{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+.form-range::-moz-range-progress {
+    background-color: var(--primary);
+    height: .5rem;
+    border-radius: .25rem 0%  0%  .25rem;
 }
 .form-range>.range-setter{
     width: 50px;
@@ -30,6 +40,7 @@ textarea{
     border: 1px solid var(--text-light);
     color: var(--text-light);
     border-radius: .25rem;
+    width: 3rem;
 }
 .range-setter::-webkit-inner-spin-button,.form-range>.range-setter::-webkit-outer-spin-button{
     -webkit-appearance: none;
@@ -75,9 +86,12 @@ textarea{
 
  /* form layouts */
  .mb-3{
-    display: flex;
+    display: block;
     flex-wrap: wrap;
     margin: var(--increment);
+}
+.mb-3:has(.inline){
+    display: flex;
 }
 .mb-3 label{
     display: flex;
