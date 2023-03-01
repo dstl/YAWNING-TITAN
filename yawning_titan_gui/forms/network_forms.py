@@ -9,7 +9,7 @@ from yawning_titan.networks.network import (
     RandomEntryNodePreference,
     RandomHighValueNodePreference,
 )
-from yawning_titan_gui.forms import RangeInput
+from yawning_titan_gui.forms import RangeInput, create_doc_meta_form
 from yawning_titan_gui.helpers import NetworkManager
 
 
@@ -105,7 +105,10 @@ class NetworkTemplateForm(django_forms.Form):
             for float_item in items["float"]:
                 field_elements[float_item["label"]] = django_forms.FloatField(
                     widget=RangeInput(
-                        attrs={"class": "form-control form-range " + name, "step": "0.01"}
+                        attrs={
+                            "class": "form-control form-range " + name,
+                            "step": "0.01",
+                        }
                     ),
                     required=False,
                     help_text=float_item["description"],
@@ -123,6 +126,9 @@ class NetworkTemplateForm(django_forms.Form):
 
         super(NetworkTemplateForm, self).__init__(*args, **kwargs)
         self.fields: Dict[str, django_forms.Field] = field_elements
+
+
+DocMetaDataForm: django_forms.Form = create_doc_meta_form("network")
 
 
 class NetworkForm(django_forms.Form):
@@ -225,18 +231,6 @@ class NetworkForm(django_forms.Form):
         max_value=1,
         label="node_vulnerability_upper_bound",
     )
-    name = django_forms.CharField(
-        widget=widgets.TextInput(attrs={"class": "form-control"}),
-        required=True,
-        help_text="The name of the network",
-        label="Name",
-    )
-    description = django_forms.CharField(
-        widget=widgets.Textarea(attrs={"rows":5,"class": "form-control"}),
-        required=False,
-        help_text="A description of the network",
-        label="Description",
-    )
 
     def __init__(
         self,
@@ -247,20 +241,25 @@ class NetworkForm(django_forms.Form):
     ):
         self.name = network.doc_metadata.name
         self.network = network
-        if data is None:
-            data = network.to_dict()
-            data.update(data["_doc_metadata"].to_dict())
+        self.doc_metadata_form: django_forms.Form = DocMetaDataForm(
+            data=self.network.doc_metadata.to_dict()
+        )
+
         super(NetworkForm, self).__init__(*args, data=data, **kwargs)
 
         if self.is_bound:
-            self.is_valid()
-            data:dict = self.cleaned_data
-            self.network.doc_metadata.update(**{k:data.pop(k) for k in ["name","description"]})
-            data["_doc_metadata"] = self.network.doc_metadata.to_dict()
-            try:                
-                self.network.set_from_dict(self.cleaned_data)
-            except Exception as e:
-                self.add_error(None, str(e))
+            if self.is_valid():
+                data: dict = self.cleaned_data
+                try:
+                    self.network.set_from_dict(self.cleaned_data)
+                except Exception as e:
+                    self.add_error(None, str(e))
+
+    def update_doc_meta(self, data: QueryDict):
+        """Update the game modes doc metadata."""
+        self.doc_metadata_form = DocMetaDataForm(data=data)
+        if self.doc_metadata_form.is_valid():
+            self.network.doc_metadata.update(**self.doc_metadata_form.cleaned_data)
 
 
 class NetworkFormManager:

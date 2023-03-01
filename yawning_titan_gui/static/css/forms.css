@@ -76,12 +76,19 @@ textarea{
 .config-form{
     display: flex;
     flex-direction: column;
+    margin-top: calc(var(--increment)*4);
+    margin-bottom: calc(var(--increment)*4);
     /* flex: 1; */
-
 }
 .config-form>.fields{
     overflow-y: auto;
     padding-right: var(--increment);
+}
+.config-form .info{
+    margin-right: var(--increment);
+}
+.title{
+    font-size: 1.25rem;
 }
 
  /* form layouts */
@@ -109,6 +116,7 @@ textarea{
     margin-left: var(--padding); /*calc(var(--increment)*3);*/
 }
 
+
 .help-text{
     font-size: .8rem;
     color: #888;
@@ -117,7 +125,10 @@ textarea{
 }
 .field-container{
     max-width: 400px;
-    /* height: 60px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .field-container>*{
     width:100%;

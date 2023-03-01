@@ -261,7 +261,6 @@ option:hover{
 /* toolbar */
 .toolbar-button>i:last-child{
     display: none;
-    color: var(--primary);
 }
 .toolbar-button>i:first-child,#toolbar>.toolbar-button.active>i:last-child{
     display: block;
@@ -274,9 +273,11 @@ option:hover{
     border: none;
     padding: var(--increment);
     margin-right: calc((-1*var(--increment))-1);
+    color: var(--text-superlight);
 }
 .toolbar-button.active{
     background-color: var(--dark);
+    color: var(--primary) !important;
 }
 
 /* accordion */
