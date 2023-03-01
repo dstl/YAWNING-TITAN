@@ -122,13 +122,10 @@ class BlueInterface(BlueActionSet):
                 ):
                     blue_action, blue_node = self.do_nothing()
                 else:
-                    node_name_dict = self.network_interface.current_graph.get_nodes(
-                        key_by_name=True
-                    )
+                    node_name_list = self.network_interface.current_graph.get_nodes()
 
-                    action_node = sorted(list(node_name_dict.values()))[
-                        action_node_number
-                    ]
+                    action_node = sorted(node_name_list)[action_node_number]
+
                     action_taken = int(action % self.number_of_actions)
 
                     blue_action, blue_node = self.action_dict[action_taken](action_node)
