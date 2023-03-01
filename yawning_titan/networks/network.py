@@ -184,7 +184,6 @@ class Network(nx.Graph):
         filter_non_isolated: bool = False,
         filter_deceptive: bool = False,
         filter_non_deceptive: bool = False,
-        key_by_name: bool = False,
     ) -> Union[List[Node], Dict[str, Node]]:
         """
         Get all of the nodes from the network and apply a filter(s) to extract a specific subset of the nodes.
@@ -228,10 +227,7 @@ class Network(nx.Graph):
             # Return True if deceptive node is False
             nodes = [n for n in nodes if not n.deceptive_node]
 
-        if not key_by_name:
-            return nodes
-
-        return {n.name: n for n in nodes}
+        return nodes
 
     def get_node_from_uuid(self, uuid: str) -> Union[Node, None]:
         """Return the first node that has a given uuid."""
