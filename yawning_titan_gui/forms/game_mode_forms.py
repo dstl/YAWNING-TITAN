@@ -114,7 +114,12 @@ class GameModeSection:
                 )
             elif isinstance(e, FloatItem):
                 el = django_forms.FloatField(
-                    widget=RangeInput(attrs={"class": "inline form-control form-range slider-progress", "step": "0.01"}),
+                    widget=RangeInput(
+                        attrs={
+                            "class": "inline form-control form-range slider-progress",
+                            "step": "0.01",
+                        }
+                    ),
                     required=False,
                     help_text=e.doc,
                     min_value=e.properties.min_val,
@@ -178,7 +183,9 @@ class GameModeSection:
             )
         }
 
+
 DocMetaDataForm: django_forms.Form = create_doc_meta_form("game mode")
+
 
 @dataclass
 class GameModeForm:
@@ -196,7 +203,9 @@ class GameModeForm:
                 section=self.game_mode.blue, form_name="blue", icon="bi-shield"
             ),
             "game_rules": GameModeSection(
-                section=self.game_mode.game_rules, form_name="game_rules", icon="bi-clipboard"
+                section=self.game_mode.game_rules,
+                form_name="game_rules",
+                icon="bi-clipboard",
             ),
             "blue_can_observe": GameModeSection(
                 section=self.game_mode.blue_can_observe,
@@ -212,10 +221,14 @@ class GameModeForm:
                 icon="bi-arrow-clockwise",
             ),
             "miscellaneous": GameModeSection(
-                section=self.game_mode.miscellaneous, form_name="miscellaneous", icon="bi-brush"
+                section=self.game_mode.miscellaneous,
+                form_name="miscellaneous",
+                icon="bi-brush",
             ),
         }
-        self.doc_metadata_form:django_forms.Form = DocMetaDataForm(data=self.game_mode.doc_metadata.to_dict())
+        self.doc_metadata_form: django_forms.Form = DocMetaDataForm(
+            data=self.game_mode.doc_metadata.to_dict()
+        )
 
     def get_section(self, section_name: str = None) -> GameModeSection:
         """
@@ -228,18 +241,14 @@ class GameModeForm:
             return self.first_section
         return self.sections[section_name]
 
-    def get_next_section_name(self, section_name=None) -> str:
+    def get_next_section(self, current_section: GameModeSection) -> str:
         """
-        Get a specific :param:`section` of a form for an active :param:`game_mode_id`.
+        Get the `section` of the game mode form after the current section.
 
-        :param game_mode_id: the file name and extension of the current game mode
-        :param section_name: the name of the section to get from which to retrieve the value of
-        :return: a dictionary containing status and :class:`ConfigForm` of the selected :param:`section_name`
+        :param current_section: the name of the section to get from which to retrieve the value of
+        :return: A :class: `GameModeSection`.
         """
-        if section_name is None:
-            return self.first_section
-
-        return next_key(self.sections, section_name)
+        return next_key(self.sections, current_section.name)
 
     def update_section(
         self, section_name: str, form_id: int, data: dict
@@ -257,17 +266,12 @@ class GameModeForm:
         # section.forms[form_id].update_and_check()
         section.config_class.validate()
         return section
-    
-    def update_doc_meta(self, data:QueryDict):
+
+    def update_doc_meta(self, data: QueryDict):
         """Update the game modes doc metadata."""
-        print("UPDATING doc")
-        try:
-            self.doc_metadata_form = DocMetaDataForm(data=data)
-            if self.doc_metadata_form.is_valid():
-                self.game_mode.doc_metadata.update(**self.doc_metadata_form.cleaned_data)
-        except Exception as e:
-            print("OOPS",e)
-        
+        self.doc_metadata_form = DocMetaDataForm(data=data)
+        if self.doc_metadata_form.is_valid():
+            self.game_mode.doc_metadata.update(**self.doc_metadata_form.cleaned_data)
 
     @property
     def first_section(self) -> GameModeSection:

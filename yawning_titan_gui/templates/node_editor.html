@@ -15,9 +15,12 @@
 {% block main %}
 <app-root></app-root>
 <div id="random-elements" class="form-container">
-  <form id="{{form_name}}-form" class="config-form {{form_name}}" action="" method="post">
+  <form id="doc-meta-form" data-id="doc-meta">
+      {% include 'elements/el_form_fields.html' with form=doc_metadata_form protected=False %}
+  </form>
+  <form id="random-elements-form" class="config-form">
     {% include 'elements/el_form_fields.html' with form=form protected=protected %}
-  </form>  
+  </form>
 </div>
 {% endblock %}
 

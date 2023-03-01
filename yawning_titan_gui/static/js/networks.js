@@ -57,7 +57,7 @@ function update_multi_range_left(el){
     $(children.get(0)).css("width",value+"%");
     $(children.get(2)).css("left",value+'%');
     $(children.get(3)).css("left",value+'%');
-    $(".range-setter.right",multi_range_el).val($(el).val());
+    $(".range-setter.left",multi_range_el).val($(el).val());
 }
 
 // wrapper for async post request for filtering networks by attribute

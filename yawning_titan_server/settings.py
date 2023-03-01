@@ -53,10 +53,7 @@ ROOT_URLCONF = "yawning_titan_server.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            BASE_DIR / "yawning_titan_gui/templates",
-            DOCS_ROOT
-        ],
+        "DIRS": [BASE_DIR / "yawning_titan_gui/templates", DOCS_ROOT],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -113,7 +110,7 @@ USE_TZ = True
 
 STATIC_URL = "_static/"
 STATIC_ROOT = STATIC_DIR
-STATICFILES_DIRS = [BASE_DIR / "yawning_titan_gui/static",DOCS_ROOT]
+STATICFILES_DIRS = [BASE_DIR / "yawning_titan_gui/static", DOCS_ROOT / "_static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

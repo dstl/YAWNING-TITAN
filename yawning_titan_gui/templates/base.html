@@ -35,11 +35,7 @@
             <span></span>
             <span></span>
         </div>
-        {% if request.path == '/' %}
-            <h2 class="head">Yawning Titan</h2>
-        {% else %}
-            <a href="{% url 'home' %}" class="head">Yawning Titan Home</a>
-        {% endif %}
+        <h2 class="head">Yawning Titan</h2>
         <div class="flex-break"></div>
         {% block top-buttons %}
         {% endblock %}
@@ -47,10 +43,13 @@
     <div id="window-container">
         <div id="toolbar">
             {% for id, el in toolbar.items %}
-                <button id="{{id}}-icon" class="toolbar-button {{id}}" data-toggle="tooltip" data-placement="right" title="{{el.title}}">
-                    <i class="bi {{el.icon}}"></i>
+                <a id="{{id}}-icon" class="toolbar-button {{id}} {% if el.active %}active{% endif %}" href="{{el.title|get_url}}" data-toggle="tooltip" data-placement="right" title="{{el.title}}">
+                    {% if el.active %}
                     <i class="bi {{el.icon}}-fill"></i>
-                </button>
+                    {% else %}
+                    <i class="bi {{el.icon}}"></i>
+                    {% endif %}
+                </a>
             {% endfor %}
         </div>
         <div id="window">
