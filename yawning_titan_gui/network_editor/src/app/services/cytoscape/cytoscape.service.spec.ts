@@ -1,6 +1,8 @@
+import { Node } from 'src/app/network-class/network-interfaces';
 import { Network } from '../../network-class/network';
 
 import { CytoscapeService } from './cytoscape.service';
+import { EdgeObj } from './graph-objects';
 
 describe('CytoscapeService', () => {
   let service: CytoscapeService;
@@ -13,6 +15,21 @@ describe('CytoscapeService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should emit double click events', () => {
+    service.doubleClickEvent.subscribe(() => expect(true).toBeTrue());
+    service['doubleClickSubject'].next(null);
+  });
+
+  it('should emit single click events', () => {
+    service.singleClickEvent.subscribe(() => expect(true).toBeTrue());
+    service['singleClickSubject'].next(null);
+  });
+
+  it('should emit drag events', () => {
+    service.dragEvent.subscribe(() => expect(true).toBeTrue());
+    service['dragSubject'].next(null);
   });
 
   const base = {
@@ -52,6 +69,86 @@ describe('CytoscapeService', () => {
     it('should call cy.fit to fit all the items to the viewport', () => {
       const spy = spyOn(service['cy'], 'fit');
       service.resetView();
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('METHOD: createCytoscapeNode', () => {
+    it('should add a node to the graph', () => {
+      const node: Node = {
+        uuid: 'id',
+        name: 'name',
+        x_pos: 0,
+        y_pos: 0,
+        entry_node: false,
+        high_value_node: false,
+        vulnerability: 0
+      }
+
+      const addSpy = spyOn(service['cy'], 'add').and.callFake(() => ({} as any));
+
+      service.createCytoscapeNode(node.x_pos, node.y_pos, node);
+
+      expect(addSpy).toHaveBeenCalledWith({
+        data: {
+          id: node.uuid,
+          name: node.name
+        },
+        position: { x: node.x_pos, y: node.y_pos }
+      })
+    });
+  });
+
+  describe('METHOD: removeCytoscapeNode', () => {
+    it('should delete the node and edges connected to it', () => {
+      const spy = spyOn(service['cy'], '$id').and.returnValue({
+        connectedEdges: () => {
+          return {
+            remove: () => { }
+          }
+        },
+        remove: () => { }
+      } as any);
+
+      service.removeCytoscapeNode(null);
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('METHOD: updateCytoscapeNode', () => {
+    it('should update the node properties', () => {
+      const spy = spyOn(service['cy'], '$id').and.returnValue({
+        position: () => { },
+        data: () => { }
+      } as any);
+
+      service.updateCytoscapeNode({ uuid: 'id' } as any);
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('METHOD: createCytoscapeEdge', () => {
+    it('should add the edge to the cytoscape graph', () => {
+      const spy = spyOn(service['cy'], 'add');
+
+      const edge: EdgeObj = {
+        edgeId: 'id',
+        nodeA: 'a',
+        nodeB: 'b'
+      }
+
+      service.createCytoscapeEdge(edge.edgeId, edge.nodeA, edge.nodeB);
+      expect(spy).toHaveBeenCalledWith({ data: { id: edge.edgeId, source: edge.nodeA, target: edge.nodeB } });
+    });
+  });
+
+  describe('METHOD: removeCytoscapeEdge', () => {
+    it('should remove the edge', () => {
+      const spy = spyOn(service['cy'], '$id').and.returnValue({
+        remove: () => { }
+      } as any);
+
+      service.removeCytoscapeEdge(null);
       expect(spy).toHaveBeenCalled();
     });
   });

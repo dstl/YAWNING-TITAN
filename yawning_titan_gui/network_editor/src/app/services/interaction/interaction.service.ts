@@ -50,7 +50,7 @@ export class InteractionService {
    */
   private handleDoubleClick(evt: cytoscape.EventObject): void {
     // check if a node or edge is being double clicked
-    if (Array.isArray(evt.target) || !!evt.target.length) {
+    if (!evt || Array.isArray(evt.target) || !!evt.target.length) {
       return;
     }
 
@@ -64,8 +64,8 @@ export class InteractionService {
    */
   private handleSingleClick(evt: cytoscape.EventObject): void {
     // check if target is a node
-    if (evt.target?.isNode && evt.target?.isNode()) {
-      this.handleNodeCreation(evt);
+    if (evt?.target?.isNode && evt?.target?.isNode()) {
+      this.handleEdgeCreation(evt);
     }
 
     // if target is neither node or edge, set selected to null
@@ -89,7 +89,8 @@ export class InteractionService {
    * @param evt
    * @returns
    */
-  private handleNodeCreation(evt: cytoscape.EventObject) {
+  private handleEdgeCreation(evt: cytoscape.EventObject) {
+    // check if target of previous click was a node
     if (this._selectedItem?.type == ElementType.NODE) {
       // create an edge between 2 nodes
       const res = this.networkService.addEdge({
@@ -113,6 +114,10 @@ export class InteractionService {
      * @param evt
      */
   private handleDrag(evt: cytoscape.EventObject): void {
+    if(!evt) {
+      return;
+    }
+
     const node = this.networkService.getNodeById(evt?.target?.id());
     node.x_pos = evt.target.position().x;
     node.y_pos = evt.target.position().y;

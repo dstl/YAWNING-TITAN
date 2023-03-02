@@ -85,13 +85,13 @@ export class NetworkService {
    * @returns
    */
   public addNode(x: number, y: number, node?: Node): Node {
-    this.nodeCount++;
     const result = this._network.addNode(x, y, this.nodeCount, node);
 
     // check if node was created
     if (!result) {
       return;
     }
+    this.nodeCount++;
 
     // render node
     this.cytoscapeService.createCytoscapeNode(result.x_pos, result.y_pos, result);
@@ -160,9 +160,7 @@ export class NetworkService {
    * @returns
    */
   public getNodeById(id): Node {
-    const res = this._network.getNodeById(id);
-    this._networkSubject.next(this._network);
-    return res;
+    return this._network.getNodeById(id);
   }
 
   /**

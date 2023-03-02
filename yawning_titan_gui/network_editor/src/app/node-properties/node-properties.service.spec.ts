@@ -1,14 +1,13 @@
-import { fakeAsync, tick } from '@angular/core/testing';
+import { fakeAsync, flush, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { of, Subject } from 'rxjs';
-import { Network } from '../network-class/network';
 
 import { NodePropertiesService } from './node-properties.service';
 
 describe('NodePropertiesService', () => {
   let service: NodePropertiesService;
 
-  let networkService: any = {
+  let networkServiceStub: any = {
     addNode: () => { },
     updateNode: () => { },
     editNodeDetails: () => { },
@@ -16,20 +15,55 @@ describe('NodePropertiesService', () => {
     networkObservable: new Subject()
   }
 
-  let interactionService: any = {
+  let interactionServiceStub: any = {
     dragEvent: new Subject()
   }
 
   beforeEach(() => {
     service = new NodePropertiesService(
-      networkService,
-      interactionService,
+      networkServiceStub,
+      interactionServiceStub,
       new FormBuilder()
     )
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should update input fields when the network settings are changed', () => {
+    spyOn(service['networkService'], 'getNodeById').and.returnValue({
+      uuid: 'id',
+      name: 'node',
+      x_pos: 0,
+      y_pos: 0,
+      high_value_node: true,
+      entry_node: true,
+      vulnerability: 0
+    });
+
+    service.loadDetails('id');
+
+    networkServiceStub.networkObservable.next({
+      networkSettings: {
+        entryNode: { set_random_entry_nodes: true },
+        highValueNode: { set_random_high_value_nodes: true },
+        vulnerability: {
+          set_random_vulnerabilities: true,
+          node_vulnerability_lower_bound: 0.2
+        }
+      }
+    });
+
+    expect(service['_nodePropertiesFormGroup'].get('entry_node').value).toBeFalsy();
+    expect(service['_nodePropertiesFormGroup'].get('high_value_node').value).toBeFalsy();
+    expect(service['_nodePropertiesFormGroup'].get('vulnerability').value).toBe('0.20');
+  });
+
+  it('should update node positions when drag event updates', () => {
+    const spy = spyOn(service, 'updateNodePositions').and.callFake(() => { });
+    interactionServiceStub.dragEvent.next();
+    expect(spy).toHaveBeenCalled();
   });
 
   describe('METHOD: loadDetails', () => {
@@ -104,6 +138,46 @@ describe('NodePropertiesService', () => {
 
       service.updateNodeProperties();
       expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('METHOD: updateNodePositions', () => {
+    it('should do nothing if the node being dragged is not what is displayed by the node properties', () => {
+      spyOn(service['networkService'], 'getNodeById').and.returnValue({
+        uuid: 'id',
+        name: 'node',
+        x_pos: 0,
+        y_pos: 0,
+        high_value_node: true,
+        entry_node: true,
+        vulnerability: 0
+      });
+
+      service.loadDetails('id');
+
+      service.updateNodePositions({ id: 'not this one', position: { x: 10, y: 10 } });
+
+      expect(service['_nodePropertiesFormGroup'].get('x_pos').value).toBe(0);
+      expect(service['_nodePropertiesFormGroup'].get('y_pos').value).toBe(0);
+    });
+
+    it('should update input field if the node being dragged is what is displayed by the node properties', () => {
+      spyOn(service['networkService'], 'getNodeById').and.returnValue({
+        uuid: 'id',
+        name: 'node',
+        x_pos: 0,
+        y_pos: 0,
+        high_value_node: true,
+        entry_node: true,
+        vulnerability: 0
+      });
+
+      service.loadDetails('id');
+
+      service.updateNodePositions({ id: 'id', position: { x: 10, y: 10 } });
+
+      expect(service['_nodePropertiesFormGroup'].get('x_pos').value).toBe(10);
+      expect(service['_nodePropertiesFormGroup'].get('y_pos').value).toBe(10);
     });
   });
 });
