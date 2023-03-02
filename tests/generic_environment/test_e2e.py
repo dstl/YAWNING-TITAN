@@ -1,8 +1,8 @@
 """Used to test the GenericEnv() class and the associated agent interfaces."""
-import os
 import random
 from collections import defaultdict
-from typing import Dict, List, Tuple, Union
+from typing import Dict, Final, List, Tuple, Union
+from unittest.mock import patch
 
 import networkx as nx
 import numpy as np
@@ -10,13 +10,22 @@ import pytest
 import yaml
 from yaml.loader import SafeLoader
 
-from tests import TEST_CONFIG_PATH_OLD
+from tests.mock_and_patch.game_mode_db_patch import game_mode_db_init_patch
+from tests.mock_and_patch.network_db_patch import network_db_init_patch
+from tests.mock_and_patch.yawning_titan_db_patch import (
+    yawning_titan_db_test_defaults_patch,
+)
+from yawning_titan.db.doc_metadata import DocMetadataSchema
+from yawning_titan.db.yawning_titan_db import YawningTitanDB
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
+from yawning_titan.game_modes.game_mode_db import GameModeDB
+from yawning_titan.networks.network_db import NetworkDB
 from yawning_titan.networks.node import Node
+from yawning_titan.yawning_titan_run import YawningTitanRun
 
-TOLERANCE = 0.1
-N_TIME_STEPS = 1000
-N_TIME_STEPS_LONG = 10000
+TOLERANCE: Final[float] = 0.1
+N_TIME_STEPS: Final[int] = 1000
+N_TIME_STEPS_LONG: Final[int] = 10000
 
 
 def open_config_file(settings_path: str) -> Dict:
@@ -66,66 +75,32 @@ class RandomGen:
         return chosen_action
 
 
+def test_this():
+    print("")
+    with patch.object(NetworkDB, "__init__", network_db_init_patch):
+        network_db = NetworkDB()
+        network_db.show(True)
+    print("")
+    with patch.object(GameModeDB, "__init__", game_mode_db_init_patch):
+        game_mode_db = GameModeDB()
+        game_mode_db.show(True)
+        assert True
+
+
 @pytest.mark.parametrize(
-    ("settings_path", "creator_type", "num_nodes", "timesteps"),
+    ("game_mode_name", "network_name"),
     [
-        (
-            os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
-            "18node",
-            18,
-            N_TIME_STEPS,
-        ),
-        (
-            os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
-            "mesh",
-            18,
-            N_TIME_STEPS,
-        ),
-        (
-            os.path.join(TEST_CONFIG_PATH_OLD, "base_config.yaml"),
-            "mesh",
-            50,
-            N_TIME_STEPS,
-        ),
-        (
-            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_1.yaml"),
-            "mesh",
-            50,
-            N_TIME_STEPS,
-        ),
-        (
-            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_2.yaml"),
-            "mesh",
-            50,
-            N_TIME_STEPS,
-        ),
-        (
-            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_3.yaml"),
-            "mesh",
-            50,
-            N_TIME_STEPS,
-        ),
-        (
-            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_4.yaml"),
-            "mesh",
-            5,
-            N_TIME_STEPS,
-        ),
-        (
-            os.path.join(TEST_CONFIG_PATH_OLD, "red_config_test_5.yaml"),
-            "mesh",
-            24,
-            N_TIME_STEPS,
-        ),
+        ("base_config", "18node_18"),
+        ("base_config", "mesh_18"),
+        ("base_config", "mesh_50"),
+        ("red_config_test_1", "mesh_50"),
+        ("red_config_test_2", "mesh_50"),
+        ("red_config_test_3", "mesh_50"),
+        ("red_config_test_4", "mesh_5"),
+        ("red_config_test_5", "mesh_24"),
     ],
 )
-def test_generic_env_e2e(
-    generate_generic_env_test_run,
-    settings_path: str,
-    creator_type: str,
-    num_nodes: int,
-    timesteps: int,
-):
+def test_generic_env_e2e(game_mode_name: str, network_name: str):
     """Test the generic environment end to end."""
     # Counters for later
     counts = {
@@ -143,17 +118,26 @@ def test_generic_env_e2e(
         "wins": 0,
         "scan_used": False,
     }
+    with patch.object(YawningTitanDB, "__init__", yawning_titan_db_test_defaults_patch):
+        network_db = NetworkDB()
+        game_mode_db = GameModeDB()
 
-    env: GenericNetworkEnv = generate_generic_env_test_run(
-        settings_path, creator_type, num_nodes, entry_node_names=["0", "1", "2"]
+    network = network_db.search(DocMetadataSchema.NAME == network_name)[0]
+    game_mode = game_mode_db.search(DocMetadataSchema.NAME == game_mode_name)[0]
+
+    yt_run = YawningTitanRun(
+        network=network, game_mode=game_mode, total_timesteps=N_TIME_STEPS, auto=False
     )
 
+    yt_run.setup()
+
+    env: GenericNetworkEnv = yt_run.env
     env.reset()
 
     random_action_generator = RandomGen(env.BLUE.get_number_of_actions())
 
     prev_high_value = None
-    for _ in range(timesteps):
+    for _ in range(N_TIME_STEPS):
         current_chosen_action = random_action_generator.get_action()
         obs, rew, done, episode = env.step(current_chosen_action)
 
@@ -207,7 +191,7 @@ def test_generic_env_e2e(
         else:
             check_when_not_done(env)
 
-    check_when_complete(env, counts, timesteps)
+    check_when_complete(env, counts, N_TIME_STEPS)
     env.close()
 
 
