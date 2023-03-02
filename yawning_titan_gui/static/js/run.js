@@ -20,6 +20,8 @@ $(document).ready(function(){
     })
 });
 
+let interval;
+
 // wrapper for async post request for managing YT run instance
 function run(data){
     $.ajax({
@@ -32,23 +34,28 @@ function run(data){
         dataType: "json",
         success: function(response){
             console.log(response.stdout);
-            $("#run-view").html(response.stdout);
+            let text =  $("#run-view").html(response.stdout);
+            $("#run-view").html(text+response.stdout);
+            clearInterval(interval);
         },
         error: function(response){
             console.log(response.message)
         }
     });
+    interval = setInterval(function(){
+        stderr();
+    },50);
 }
 
-function stderr(data){
+function stderr(){
     $.ajax({
         type: "GET",
         url: STDERR_URL,
-        data: data,
-        //cache: false,
+        cache: false,
         dataType: "json",
         success: function(response){
             console.log("STDERR",response.stderr);
+            $("#run-view").html(response.stderr);
         }
     });
 }
