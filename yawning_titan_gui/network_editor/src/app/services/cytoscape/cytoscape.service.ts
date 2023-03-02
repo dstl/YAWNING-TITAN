@@ -168,7 +168,7 @@ export class CytoscapeService {
    * @param node
    */
   public updateCytoscapeNode(node: Node) {
-    const cyNode = this.cy.getElementById(node.uuid);
+    const cyNode = this.cy.$id(node.uuid);
 
     // update position
     cyNode.position('x', Number(node.x_pos));

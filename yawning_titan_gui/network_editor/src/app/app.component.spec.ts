@@ -51,6 +51,14 @@ describe('AppComponent', () => {
     expect(spy).toHaveBeenCalled();
   }));
 
+  describe('METHOD: handleKeyboardEvent', () => {
+    it('should trigger the keyInput method in the interaction service', () => {
+      const spy = spyOn(component, 'handleKeyboardEvent');
+      component.handleKeyboardEvent(null);
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
   describe('METHOD: toggleNodePropertiesSidenav', () => {
     it('should do nothing if the selected element is an edge', () => {
       const openSpy = spyOn(component.sidenav, 'open');

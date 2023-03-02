@@ -54,7 +54,7 @@ export class NodePropertiesService {
    * @returns
    */
   public randomEntryNodesOnReset(): boolean {
-    return this._networkSettings.entryNode.set_random_entry_nodes;
+    return this._networkSettings?.entryNode.set_random_entry_nodes;
   }
 
   /**
@@ -62,7 +62,7 @@ export class NodePropertiesService {
    * @returns
    */
   public randomHighValueNodesOnReset(): boolean {
-    return this._networkSettings.highValueNode.set_random_high_value_nodes;
+    return this._networkSettings?.highValueNode.set_random_high_value_nodes;
   }
 
   /**
@@ -70,7 +70,7 @@ export class NodePropertiesService {
    * @returns
    */
   public randomVulnerabilitiesOnReset(): boolean {
-    return this._networkSettings.vulnerability.set_random_vulnerabilities;
+    return this._networkSettings?.vulnerability.set_random_vulnerabilities;
   }
 
   /**
@@ -136,7 +136,7 @@ export class NodePropertiesService {
    */
   public updateNodePositions(val: { id: string, position: { x: number, y: number } }): void {
     // only need to care if the node being dragged is displayed
-    if (!(val.id == this._currentElementId)) {
+    if (!val || !(val.id == this._currentElementId)) {
       return;
     }
 
