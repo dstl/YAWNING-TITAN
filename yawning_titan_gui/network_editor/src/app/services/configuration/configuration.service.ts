@@ -22,7 +22,7 @@ export class ConfigurationService {
     return this.httpClient.get(`${window.location.origin}/${location}`, {
       responseType: 'text'
     })
-      .pipe(tap(res => {
+      .pipe(tap((res: string) => {
         // replace assets with the correct path
         let replaceStr = isDevMode() ? `${window.location.origin}/assets` :
           `${window.location.origin}/static/dist/assets`;

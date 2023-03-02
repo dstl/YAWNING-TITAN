@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Network } from 'src/app/network-class/network';
 import { NetworkSettings, RandomEntryNodePreference, RandomHighValueNodePreference } from 'src/app/network-class/network-interfaces';
 import { NetworkService } from '../../network-class/network.service';
-import { CytoscapeService } from '../cytoscape/cytoscape.service';
 
 @Injectable({
   providedIn: 'root'

@@ -8,14 +8,24 @@ import { NodePropertiesService } from './node-properties.service';
 describe('NodePropertiesService', () => {
   let service: NodePropertiesService;
 
-  let cytoscapeService: any = {
-    network: new Network(),
-    elementDragEvent: new Subject(),
-    updateNode: () => { }
+  let networkService: any = {
+    addNode: () => { },
+    updateNode: () => { },
+    editNodeDetails: () => { },
+    getNodeById: () => { },
+    networkObservable: new Subject()
+  }
+
+  let interactionService: any = {
+    dragEvent: new Subject()
   }
 
   beforeEach(() => {
-    service = new NodePropertiesService(cytoscapeService, new FormBuilder())
+    service = new NodePropertiesService(
+      networkService,
+      interactionService,
+      new FormBuilder()
+    )
   });
 
   it('should be created', () => {
@@ -24,8 +34,6 @@ describe('NodePropertiesService', () => {
 
   describe('METHOD: loadDetails', () => {
     it('should do nothing if the node to be updated does not exist', fakeAsync(() => {
-      const spy = spyOn<any>(service, 'listenToNodePositionChange');
-
       const node = {
         uuid: 'id',
         name: 'name',
@@ -36,12 +44,12 @@ describe('NodePropertiesService', () => {
         vulnerability: 0
       };
 
-      service['cytoscapeService'].network.addNode(node);
+      service['networkService'].addNode(node.x_pos, node.y_pos, node);
 
       service.loadDetails('fake id');
       tick();
 
-      expect(spy).not.toHaveBeenCalled();
+      expect(service['_nodePropertiesFormGroup']).toBeUndefined();
     }));
 
     it('should update the nodeDetailsSubject with the details of the given node', fakeAsync(() => {
@@ -55,7 +63,7 @@ describe('NodePropertiesService', () => {
         vulnerability: 0
       };
 
-      service['cytoscapeService'].network.addNode(node);
+      service['networkService'].addNode(node.x_pos, node.y_pos, node);
 
       service.nodePropertiesFormGroupSubject.subscribe((res: any) => {
         expect(res.get('uuid').value).toBe(node.uuid);
@@ -73,7 +81,7 @@ describe('NodePropertiesService', () => {
 
   describe('METHOD: updateNodeProperties', () => {
     it('should not update nodes unless the form is valid', () => {
-      const spy = spyOn(service['cytoscapeService'], 'updateNode');
+      const spy = spyOn(service['networkService'], 'editNodeDetails');
 
       service['_nodePropertiesFormGroup'] = new FormBuilder().group({ test: new FormControl('', Validators.required) })
 
@@ -82,7 +90,7 @@ describe('NodePropertiesService', () => {
     });
 
     it('should update the node if the form is valid', () => {
-      const spy = spyOn(service['cytoscapeService'], 'updateNode');
+      const spy = spyOn(service['networkService'], 'editNodeDetails');
 
       service['_nodePropertiesFormGroup'] = new FormBuilder().group({
         uuid: new FormControl('id'),
@@ -97,54 +105,5 @@ describe('NodePropertiesService', () => {
       service.updateNodeProperties();
       expect(spy).toHaveBeenCalled();
     });
-  });
-
-  describe('METHOD: listenToNodePositionChange', () => {
-    it('should not update the node if a different node is being dragged', fakeAsync(() => {
-      const spy = spyOn(service, 'updateNodeProperties');
-
-      service['_nodePropertiesFormGroup'] = new FormBuilder().group({
-        uuid: new FormControl('id'),
-        name: new FormControl('name'),
-        x_pos: new FormControl(0),
-        y_pos: new FormControl(0),
-        vulnerability: new FormControl(0),
-        high_value_node: new FormControl(true),
-        entry_node: new FormControl(true),
-      });
-
-      service['listenToNodePositionChange']();
-      cytoscapeService.elementDragEvent.next({
-        id: 'diff_id',
-        position: { x: 1, y: 1 }
-      });
-      tick();
-
-      expect(spy).not.toHaveBeenCalled();
-    }));
-
-    it('should update the node if the node being dragged is the current item', fakeAsync(() => {
-      const spy = spyOn(service, 'updateNodeProperties');
-
-      service['_nodePropertiesFormGroup'] = new FormBuilder().group({
-        uuid: new FormControl('id'),
-        name: new FormControl('name'),
-        x_pos: new FormControl(0),
-        y_pos: new FormControl(0),
-        vulnerability: new FormControl(0),
-        high_value_node: new FormControl(true),
-        entry_node: new FormControl(true),
-      });
-
-      service['listenToNodePositionChange']();
-      cytoscapeService.elementDragEvent.next({
-        id: 'id',
-        position: { x: 1, y: 1 }
-      });
-
-      tick(200);
-
-      expect(spy).toHaveBeenCalled();
-    }));
   });
 });
