@@ -5,6 +5,7 @@ from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import default_18_node_network
 
 
+@pytest.mark.unit_test
 def test_reset_high_value_nodes_randomly():
     """Test the random setting of high value nodes in a network."""
     network = default_18_node_network()
@@ -25,6 +26,7 @@ def test_reset_high_value_nodes_randomly():
     assert len(network.high_value_nodes) == 3
 
 
+@pytest.mark.unit_test
 def test_reset_entry_nodes_randomly():
     """Test the random setting of high value nodes in a network."""
     network = default_18_node_network()
@@ -45,6 +47,7 @@ def test_reset_entry_nodes_randomly():
     assert len(network.entry_nodes) == 18
 
 
+@pytest.mark.unit_test
 def test_create_network_from_legacy_manual_vulnerability_setting(create_test_network):
     """Test manually setting vulnerability."""
     vulnerabilities = {"0": 0.5, "1": 0.5, "2": 0.5}
@@ -73,6 +76,7 @@ def test_create_network_from_legacy_manual_vulnerability_setting(create_test_net
     assert all(n.vulnerability == 0.5 for n in network.nodes)
 
 
+@pytest.mark.unit_test
 def test_setting_high_value_nodes_before_entry_nodes(create_test_network):
     """Test manually setting vulnerability."""
     network_legacy_config = {
@@ -102,6 +106,7 @@ def test_setting_high_value_nodes_before_entry_nodes(create_test_network):
         network.reset_random_high_value_nodes()
 
 
+@pytest.mark.unit_test
 def test_create_network_from_legacy_random_vulnerability(create_test_network):
     """Test manually setting vulnerability."""
     network_legacy_config = {
@@ -125,6 +130,7 @@ def test_create_network_from_legacy_random_vulnerability(create_test_network):
     assert all(n.vulnerability > 0 and n.vulnerability_score > 0 for n in network.nodes)
 
 
+@pytest.mark.unit_test
 def test_create_network_vulnerability_out_of_range(create_test_network):
     """Test that the lower bound of node vulnerability cannot be less than or equal to 0."""
     network_legacy_config = {
@@ -148,6 +154,7 @@ def test_create_network_vulnerability_out_of_range(create_test_network):
         )
 
 
+@pytest.mark.unit_test
 def test_create_network_from_legacy_manual_special_node_setting(create_test_network):
     """Test that creating a network from a legacy configuration can have its special nodes set manually."""
     network_legacy_config = {

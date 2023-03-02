@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Optional
 
-from yawning_titan.config.toolbox.core import ConfigGroup
-from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
-from yawning_titan.config.toolbox.item_types.int_item import IntItem, IntProperties
-from yawning_titan.config.toolbox.item_types.str_item import StrItem, StrProperties
+from yawning_titan.config.core import ConfigGroup
+from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
+from yawning_titan.config.item_types.int_item import IntItem, IntProperties
+from yawning_titan.config.item_types.str_item import StrItem, StrProperties
 
 # --- Tier 0 groups
 

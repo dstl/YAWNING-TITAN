@@ -48,7 +48,7 @@ import yaml
 from gym.envs.registration import register
 from platformdirs import PlatformDirs
 
-__version__ = pkg_resources.get_distribution("yawningtitan").version
+#__version__ = pkg_resources.get_distribution("yawningtitan").version
 
 register(id="five-node-def-v0", entry_point="yawning_titan.envs.specific:FiveNodeDef")
 

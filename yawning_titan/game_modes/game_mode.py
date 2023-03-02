@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-from yawning_titan.config.toolbox.core import ConfigGroup
+from yawning_titan.config.core import ConfigGroup
 from yawning_titan.db.doc_metadata import DocMetadata, DocMetaDataObject
 from yawning_titan.game_modes.components.blue_agent import Blue
 from yawning_titan.game_modes.components.game_rules import GameRules
