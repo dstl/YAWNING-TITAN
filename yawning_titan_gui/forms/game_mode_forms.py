@@ -263,7 +263,6 @@ class GameModeForm:
         """
         section = self.get_section(section_name)
         section.forms[form_id] = section.form_classes[form_id](data=data)
-        # section.forms[form_id].update_and_check()
         section.config_class.validate()
         return section
 

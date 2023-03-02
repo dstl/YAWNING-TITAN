@@ -65,7 +65,7 @@
                         <div id="{{button_name|to_id}}-links" class="accordion-collapse collapse" aria-labelledby="{{button_name|to_id}}-header" data-bs-parent="#nav-accordion">
                             <div class="accordion-body list">
                             {% for link in links %}
-                                <a class="wide" href="{{link.href}}">{{link.name}}</a>
+                                <a class="wide" href="{{link.href}}" target="{% if link.new_tab %}_blank{% endif %}">{{link.name}}</a>
                             {% endfor %}
                             </div>
                         </div>

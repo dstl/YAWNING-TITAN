@@ -21,16 +21,20 @@ $(document).ready(function(){
 });
 
 $(window).on("load",function(){
-    $("#random-elements-form .form-check-input, #random-elements-form .form-control").on("change",function(){
-        update_network($("#random-elements-form"));
+    $("#random-elements-form").on("change",function(){
+        update_network(this,"update");
     });
-
+    $("#doc-meta-form").on("change",function(){
+        update_network(this,"update doc meta");
+    });
 });
 
 
-function update_network(form_element){
+function update_network(form_element,operation){
     config = new FormData($(form_element)[0]);
     config.append("_network_id",NETWORK_ID);
+    config.append('_operation',operation);
+    console.log("UPDATE",NETWORK_ID,operation);
     $.ajax({
         type: "POST",
         url: UPDATE_URL,
@@ -41,7 +45,9 @@ function update_network(form_element){
         dataType: "json",
         success: function(response){
             console.log("UPDATED");
-            proxy.NETWORK = response.network_json;
+            if (response.network_json){
+                proxy.NETWORK = response.network_json;
+            }
         }
     });
 }

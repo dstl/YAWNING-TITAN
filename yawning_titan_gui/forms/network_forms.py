@@ -260,6 +260,7 @@ class NetworkForm(django_forms.Form):
         self.doc_metadata_form = DocMetaDataForm(data=data)
         if self.doc_metadata_form.is_valid():
             self.network.doc_metadata.update(**self.doc_metadata_form.cleaned_data)
+            NetworkManager.db.update(self.network)
 
 
 class NetworkFormManager:
@@ -291,6 +292,7 @@ class NetworkFormManager:
             network = NetworkManager.db.get(network_id)
             form = NetworkForm(network)
             cls.network_forms[network_id] = form
+            print("KEYS", cls.network_forms.keys())
             return form
 
     # Setters
