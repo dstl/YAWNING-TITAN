@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { Subject } from 'rxjs';
+import { NetworkService } from 'src/app/network-class/network.service';
 import { CytoscapeService } from '../cytoscape/cytoscape.service';
 
 import { InteractionService } from './interaction.service';
@@ -7,13 +9,20 @@ describe('InteractionService', () => {
   let service: InteractionService;
 
   const cytoscapeServiceStub: any = {
-    deleteItem: () => { }
+    doubleClickEvent: new Subject(),
+    singleClickEvent: new Subject(),
+    dragEvent: new Subject()
+  }
+
+  const networkServiceStub = {
+
   }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: CytoscapeService, useValue: cytoscapeServiceStub }
+        { provide: CytoscapeService, useValue: cytoscapeServiceStub },
+        { provide: NetworkService, useValue: networkServiceStub }
       ]
     });
     service = TestBed.inject(InteractionService);
@@ -63,14 +72,6 @@ describe('InteractionService', () => {
       service.setInputFocusStatus(false);
       service.keyInput({ key: 'Enter', ctrlKey: true } as any);
       expect(shiftSpy).toHaveBeenCalled();
-    });
-  });
-
-  describe('METHOD: deleteItem', () => {
-    it('should trigger cytoscape to delete the selected item', () => {
-      const spy = spyOn(service['cytoscapeService'], 'deleteItem');
-      service['deleteItem']();
-      expect(spy).toHaveBeenCalled();
     });
   });
 });

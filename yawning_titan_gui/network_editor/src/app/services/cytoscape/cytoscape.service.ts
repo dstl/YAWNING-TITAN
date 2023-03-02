@@ -15,7 +15,7 @@ export class CytoscapeService {
   ) { }
 
   // constant number for padding
-  private CYTOSCAPE_GRAPH_PADDING = 200;
+  private CYTOSCAPE_GRAPH_PADDING = 50;
 
   private cy: cytoscape.Core = cytoscape();
 

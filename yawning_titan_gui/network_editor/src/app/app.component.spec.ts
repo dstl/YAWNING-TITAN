@@ -15,7 +15,8 @@ describe('AppComponent', () => {
     selectedElementEvent: new Subject()
   }
   const stubIteractionService = {
-    keyInput: () => { }
+    keyInput: () => { },
+    selectedItem: new Subject()
   }
 
   beforeEach(async () => {
@@ -44,7 +45,7 @@ describe('AppComponent', () => {
   it('should call toggleNodePropertiesSidenav when the selectedElement is changed', fakeAsync(() => {
     const spy = spyOn<any>(component, 'toggleNodePropertiesSidenav').and.callFake(() => { });
 
-    stubCytoscapeService.selectedElementEvent.next({});
+    stubIteractionService.selectedItem.next({});
 
     tick();
     expect(spy).toHaveBeenCalled();

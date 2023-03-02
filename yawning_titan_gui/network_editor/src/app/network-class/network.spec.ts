@@ -40,7 +40,7 @@ describe('Network', () => {
         vulnerability: 0
       };
 
-      network.addNode(node);
+      network.addNode(node.x_pos, node.y_pos, 0, node);
 
       expect(network.getNodeById('id')).toEqual(node)
     });
@@ -127,37 +127,68 @@ describe('Network', () => {
     it('should not do anything if the nodes do not exist', () => {
       const network = new Network();
 
-      network.addEgde('id', 'fakeNodeA', 'fakeNodeB');
+      network.addEgde({ edgeId: 'id', nodeA: 'fakeNodeA', nodeB: 'fakeNodeB' });
 
       expect(network.edgeList.length).toBe(0);
     });
 
     it('should add edges between 2 nodes', () => {
       const network = new Network();
-      // add 2 nodes
-      network.addNode({ uuid: 'uuid1' } as any);
-      network.addNode({ uuid: 'uuid2' } as any);
 
-      network.addEgde('edgeid', 'uuid1', 'uuid2');
+      const nodeA = {
+        uuid: 'idA',
+        name: 'nameA',
+        high_value_node: false,
+        entry_node: false,
+        x_pos: 0,
+        y_pos: 0,
+        vulnerability: 0
+      };
+
+      const nodeB = {
+        uuid: 'idB',
+        name: 'nameB',
+        high_value_node: false,
+        entry_node: false,
+        x_pos: 10,
+        y_pos: 10,
+        vulnerability: 0
+      };
+
+      // add 2 nodes
+      network.addNode(nodeA.x_pos, nodeA.y_pos, 0, nodeA);
+      network.addNode(nodeB.x_pos, nodeB.y_pos, 0, nodeB);
+
+      network.addEgde({ edgeId: 'edgeid', nodeA: nodeA.uuid, nodeB: nodeB.uuid });
 
       expect(network.edgeList.length).toBe(1);
     });
   });
 
   describe('METHOD: addNode', () => {
+    const node = {
+      uuid: 'id',
+      name: 'name',
+      high_value_node: false,
+      entry_node: false,
+      x_pos: 0,
+      y_pos: 0,
+      vulnerability: 0
+    };
+
     it('should add the node if it does not exist', () => {
       const network = new Network();
-      network.addNode({ uuid: 'uuid1' } as any);
+      network.addNode(node.x_pos, node.y_pos, 0, node);
 
       expect(network.nodeList.length).toBe(1);
     });
 
     it('should not add the node if it already exists', () => {
       const network = new Network();
-      network.addNode({ uuid: 'uuid1' } as any);
+      network.addNode(node.x_pos, node.y_pos, 0, node);
       expect(network.nodeList.length).toBe(1);
 
-      network.addNode({ uuid: 'uuid1' } as any);
+      network.addNode(node.x_pos, node.y_pos, 0, node);
       expect(network.nodeList.length).toBe(1);
     });
   });
@@ -166,7 +197,7 @@ describe('Network', () => {
     it('should change nothing if the node is not found', () => {
       const network = new Network();
 
-      network.editNodeDetails('id', {
+      network.editNodeDetails({
         uuid: 'id',
         name: 'name',
         high_value_node: false,
@@ -210,24 +241,43 @@ describe('Network', () => {
       }
 
       const network = new Network();
-      network.addNode(node1);
-      network.addNode(node2);
+      network.addNode(node1.x_pos, node1.y_pos, 0, node1);
+      network.addNode(node2.x_pos, node2.y_pos, 1, node2);
       expect(network.nodeList).toEqual([node1, node2]);
 
       // update node 2
-      network.editNodeDetails('id2', update);
+      network.editNodeDetails(update);
       expect(network.nodeList).toEqual([node1, update]);
     });
   });
 
   describe('METHOD: removeEdge', () => {
     it('should remove the edge with the matching id', () => {
+      const base = {
+        name: 'name',
+        high_value_node: false,
+        entry_node: false,
+        x_pos: 0,
+        y_pos: 0,
+        vulnerability: 0
+      }
+
+      const node1 = {
+        uuid: 'id1',
+        ...base
+      }
+
+      const node2 = {
+        uuid: 'id2',
+        ...base
+      }
+
       const network = new Network();
       // add 2 nodes
-      network.addNode({ uuid: 'uuid1' } as any);
-      network.addNode({ uuid: 'uuid2' } as any);
+      network.addNode(node1.x_pos, node1.y_pos, 0, node1);
+      network.addNode(node2.x_pos, node2.y_pos, 1, node2);
 
-      network.addEgde('edgeid', 'uuid1', 'uuid2');
+      network.addEgde({ edgeId: 'edgeid', nodeA: node1.uuid, nodeB: node2.uuid });
       expect(network.edgeList.length).toBe(1);
       network.removeEdge('edgeid');
       expect(network.edgeList.length).toBe(0);
@@ -236,17 +286,36 @@ describe('Network', () => {
 
   describe('METHOD: removeNode', () => {
     it('should remove a node and any edges pointing to it', fakeAsync(() => {
+      const base = {
+        name: 'name',
+        high_value_node: false,
+        entry_node: false,
+        x_pos: 0,
+        y_pos: 0,
+        vulnerability: 0
+      }
+
+      const node1 = {
+        uuid: 'id1',
+        ...base
+      }
+
+      const node2 = {
+        uuid: 'id2',
+        ...base
+      }
+
       const network = new Network();
       // add 2 nodes
-      network.addNode({ uuid: 'uuid1' } as any);
-      network.addNode({ uuid: 'uuid2' } as any);
+      network.addNode(node1.x_pos, node1.y_pos, 0, node1);
+      network.addNode(node2.x_pos, node2.y_pos, 1, node2);
       expect(network.nodeList.length).toBe(2);
 
-      network.addEgde('edgeid', 'uuid1', 'uuid2');
+      network.addEgde({ edgeId: 'edgeid', nodeA: node1.uuid, nodeB: node2.uuid });
       expect(network.edgeList.length).toBe(1);
 
       // remove node 2
-      network.removeNode('uuid2');
+      network.removeNode('id2');
       tick();
       expect(network.nodeList.length).toBe(1);
       expect(network.edgeList.length).toBe(0);
