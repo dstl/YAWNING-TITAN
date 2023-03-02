@@ -87,7 +87,7 @@
         justify-content: space-around;
         height: 100%;
         width: 100%;
-        overflow-y: auto;
+        /* overflow-y: auto; */
     }
     .grid-item{
         min-width: 450px;
@@ -102,10 +102,15 @@
     #run-view{
         flex:1;
         width: 100%;
+        max-height: 100%;
+        min-height: 0;
+        overflow-y: auto;
     }
     #run-config-container{
         display: flex;
         flex-direction: column;
+        max-height: 100%;
+        min-height: 0;
     }
 
 

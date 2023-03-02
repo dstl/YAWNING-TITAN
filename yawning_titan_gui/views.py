@@ -4,12 +4,14 @@ from contextlib import redirect_stderr
 from io import StringIO
 import logging
 import multiprocessing
+from pathlib import Path
 import sys
 
 from django.http import Http404, HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
+from yawning_titan import LOG_FILE_PATH
 
 from yawning_titan.db.doc_metadata import DocMetadata
 from yawning_titan.game_modes.game_mode import GameMode
@@ -118,6 +120,8 @@ class RunView(View):
         :param request: the Django page `request` object containing the html data for `run.html` and the server GET / POST request bodies.
         """
         form = RunForm()
+        print("PATH",LOG_FILE_PATH)
+        
         return render(
             request,
             "run.html",
@@ -144,22 +148,37 @@ class RunView(View):
                 fkwargs["network"] = NetworkManager.db.get(fkwargs["network"])
             if fkwargs["game_mode"] is not None:
                 fkwargs["game_mode"] = GameModeManager.db.get(fkwargs["game_mode"])
-            process = multiprocessing.Process(target=run_yt, kwargs=(fkwargs))
+            process = multiprocessing.Process(target=run_yt, kwargs=(fkwargs),)
             process.start()
             return JsonResponse({"stdout": sys.stderr})
         return JsonResponse({"message": "error"}, status=400)
 
-stderr = StringIO()
+# stderr = StringIO()
+# sys.stderr = StringIO()
 
 def run_yt(*args,**kwargs): # TODO: Move
-    with redirect_stderr(stderr):
-        YawningTitanRun(**kwargs)
+    #with open('err.txt',"w") as sys.stderr:
+    #Path('spam.log').unlink()
+    logger = logging.getLogger('yr_run')
+    logger.setLevel(logging.DEBUG)
+    # create file handler which logs even debug messages
+    fh = logging.FileHandler('spam.log')
+    fh.setLevel(logging.DEBUG)
+    logger.addHandler(fh)
+    kwargs["logger"] = logger
+    YawningTitanRun(**kwargs)
+        #print("STDERR",stderr.getvalue())
 
 def get_stderr(request: HttpRequest):
     
     if request.method == "GET":
-        print("STDERR",stderr.getvalue())
-        return JsonResponse({"stderr":stderr.getvalue()})
+        with open('spam.log',"r") as f:
+            try:
+                lines = f.readlines()
+                text = "<br>".join(lines)
+                return JsonResponse({"stderr":text})
+            except Exception as e:
+                print("OOPS",e)
 
 
 class NodeEditor(View):
