@@ -155,9 +155,9 @@ def get_url(url_name: str, *args, **kwargs):
         return None
 
 
-def get_url_dict(name: str, href: str):
+def get_url_dict(name: str, href: str, new_tab: bool = False):
     """Return a dictionary with keys `name` and `href` to describe a url link element."""
-    return {"name": name, "href": href}
+    return {"name": name, "href": href, "new_tab": new_tab}
 
 
 def get_sidebar():
@@ -178,9 +178,16 @@ def get_sidebar():
             if get_url(n)
         ],
         "About": [
-            get_url_dict(n, get_url(n))
-            for n in ["Contributors", "Report bug", "FAQ"]
-            if get_url(n)
+            get_url_dict(n, href, True)
+            for n, href in zip(
+                ["Contributors", "Discussions", "Report bug", "Feature request"],
+                [
+                    "https://github.com/dstl/YAWNING-TITAN/graphs/contributors",
+                    "https://github.com/dstl/YAWNING-TITAN/discussions",
+                    "https://github.com/dstl/YAWNING-TITAN/issues/new?assignees=&labels=bug&template=bug_report.md&title=[BUG]",
+                    "https://github.com/dstl/YAWNING-TITAN/issues/new?assignees=&labels=feature_request&template=feature_request.md&title=[REQUEST]",
+                ],
+            )
         ],
     }
     return default_sidebar

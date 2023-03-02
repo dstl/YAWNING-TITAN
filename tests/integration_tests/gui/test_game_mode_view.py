@@ -103,6 +103,7 @@ class TestGameModeManagerView:
             },
         )
         game_mode = self.assert_correct_response_and_game_mode(game_mode_name, response)
+        assert game_mode.doc_metadata.uuid != default_game_mode().doc_metadata.uuid
         assert game_mode == default_game_mode()
 
     def test_delete(self, client: Client):

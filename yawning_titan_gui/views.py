@@ -632,14 +632,27 @@ def update_network(request: HttpRequest) -> JsonResponse:
     :return: response object containing error if config is invalid or a json representation of a network if valid.
     """
     if request.method == "POST":
-        network_form = NetworkFormManager.update_network_attributes(
-            request.POST.get("_network_id"), request.POST
-        )
-        return JsonResponse(
-            {
-                "network_json": json.dumps(
-                    network_form.network.to_dict(json_serializable=True)
+        operation = request.POST.get("_operation")
+        network_id = request.POST.get("_network_id")
+        if operation == "update":
+            try:
+                network_form = NetworkFormManager.update_network_attributes(
+                    network_id, request.POST
                 )
-            }
-        )
+            except Exception as e:
+                print("OOPS", e)
+            return JsonResponse(
+                {
+                    "network_json": json.dumps(
+                        network_form.network.to_dict(json_serializable=True)
+                    )
+                }
+            )
+        elif operation == "update doc meta":
+            try:
+                network_form = NetworkFormManager.get_or_create_form(network_id)
+                network_form.update_doc_meta(request.POST)
+            except Exception as e:
+                print("OOPS", e)
+            return JsonResponse({"network_json": None})
     return JsonResponse({"message": "Invalid operation"})
