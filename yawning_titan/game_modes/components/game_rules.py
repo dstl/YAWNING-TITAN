@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from typing import Optional
 
-from yawning_titan.config.toolbox.core import ConfigGroup, ConfigGroupValidation
-from yawning_titan.config.toolbox.groups.core import RestrictRangeGroup, UseValueGroup
-from yawning_titan.config.toolbox.groups.validation import AnyUsedGroup
-from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
-from yawning_titan.config.toolbox.item_types.int_item import IntItem, IntProperties
+from yawning_titan.config.core import ConfigGroup, ConfigGroupValidation
+from yawning_titan.config.groups.core import RestrictRangeGroup, UseValueGroup
+from yawning_titan.config.groups.validation import AnyUsedGroup
+from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
+from yawning_titan.config.item_types.int_item import IntItem, IntProperties
 from yawning_titan.exceptions import ConfigGroupValidationError
 
 # --- Tier 0 groups
@@ -152,7 +152,7 @@ class GameRules(ConfigGroup):
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
         super().validate()
         try:
             if self.grace_period_length.value > self.max_steps.value:
