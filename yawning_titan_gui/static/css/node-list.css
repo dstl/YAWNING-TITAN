@@ -1,0 +1,8 @@
+.node-list-filter-input {
+  display: flex;
+  flex: 1;
+}
+
+.node-list-container {
+  padding-top: 20px;
+}
