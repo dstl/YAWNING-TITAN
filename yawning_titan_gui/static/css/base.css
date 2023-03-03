@@ -5,6 +5,7 @@
     --light: #323233;
     --mid: #252526;
     --dark: #1e1e1e;
+    --super-dark: #000;
 
     --text-superlight: #fff;
     --text-light: #999;
@@ -153,7 +154,7 @@ option:hover{
     height: 100%;
     display: flex;
     background-color: var(--dark);
-    border-right: 1px solid var(--text-light);
+    border-right: 1px solid var(--text-light); 
     transition: all 0.8s ease;
     z-index: 1000;
 }
@@ -205,6 +206,9 @@ option:hover{
 #search-container span{
     background-color: var(--primary);
     color: var(--text-superlight);
+}
+#search-accordion{
+    margin-top: calc(var(--increment)*4);
 }
 
 /* base classes */
@@ -299,7 +303,7 @@ option:hover{
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23888'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
 }
 .accordion-body{
-    background-color: var(--light);
+    background-color: var(--dark);
 }
 
 /* style helpers */

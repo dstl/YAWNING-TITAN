@@ -1,6 +1,7 @@
 from typing import Dict
 
 from django import forms as django_forms
+from django.conf import settings
 from django.forms import widgets
 from django.http import QueryDict
 
@@ -93,7 +94,7 @@ class NetworkTemplateForm(django_forms.Form):
         field_elements = {}
         field_elements["type"] = django_forms.ChoiceField(
             widget=django_forms.Select(
-                attrs={"class": "form-control ", "type-selector": ""}
+                attrs={"class": "form-control form-select", "type-selector": ""}
             ),
             choices=((t, t) for t in types.keys()),
             required=True,
@@ -154,7 +155,7 @@ class NetworkForm(django_forms.Form):
         label="Number of random entry nodes",
     )
     random_entry_node_preference = django_forms.ChoiceField(
-        widget=django_forms.Select(attrs={"class": "form-control", "random-en": ""}),
+        widget=django_forms.Select(attrs={"class": "form-control form-select", "random-en": ""}),
         choices=(
             (t.name, t.name.replace("_", " ").capitalize())
             for t in RandomEntryNodePreference
@@ -182,7 +183,7 @@ class NetworkForm(django_forms.Form):
         label="Number of random high value nodes",
     )
     random_high_value_node_preference = django_forms.ChoiceField(
-        widget=django_forms.Select(attrs={"class": "form-control", "random-hvn": ""}),
+        widget=django_forms.Select(attrs={"class": "form-control form-select", "random-hvn": ""}),
         choices=(
             (t.name, t.name.replace("_", " ").capitalize())
             for t in RandomHighValueNodePreference
@@ -260,7 +261,8 @@ class NetworkForm(django_forms.Form):
         self.doc_metadata_form = DocMetaDataForm(data=data)
         if self.doc_metadata_form.is_valid():
             self.network.doc_metadata.update(**self.doc_metadata_form.cleaned_data)
-            NetworkManager.db.update(self.network)
+            if settings.DYNAMIC_UPDATES:
+                NetworkManager.db.update(self.network)
 
 
 class NetworkFormManager:
@@ -324,7 +326,7 @@ class NetworkFormManager:
         form = NetworkForm(
             network=network, data=data
         )  # create a new network form an update with the new data
-        if form.is_valid():
+        if form.is_valid() and settings.DYNAMIC_UPDATES:
             NetworkManager.db.update(form.network)  # update the network in the database
         cls.network_forms[network_id] = form
 
@@ -340,5 +342,6 @@ class NetworkFormManager:
         """
         form = cls.get_or_create_form(network_id)
         form.network.set_from_dict(config_dict=data)
-        NetworkManager.db.update(form.network)  # update the network in the database
+        if settings.DYNAMIC_UPDATES:
+            NetworkManager.db.update(form.network)  # update the network in the database
         return form

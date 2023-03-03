@@ -21,6 +21,9 @@ textarea{
     display: flex;
     flex-direction: row;
 } */
+.form-select{
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='white' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e")
+}
 .form-range-container{
     display: flex;
     align-items: center;
@@ -40,7 +43,7 @@ textarea{
     border: 1px solid var(--text-light);
     color: var(--text-light);
     border-radius: .25rem;
-    width: 3rem;
+    width: 4rem;
 }
 .range-setter::-webkit-inner-spin-button,.form-range>.range-setter::-webkit-outer-spin-button{
     -webkit-appearance: none;
@@ -95,6 +98,7 @@ textarea{
 
  /* form layouts */
  .mb-3{
+    position: relative;
     display: block;
     flex-wrap: wrap;
     margin: var(--increment);
@@ -103,6 +107,9 @@ textarea{
 }
 .mb-3:has(.inline){
     display: flex;
+}
+.mb-3:has(.hidden){
+    display: none;
 }
 .mb-3 label{
     display: flex;
@@ -120,6 +127,13 @@ textarea{
     margin-left: var(--padding); /*calc(var(--increment)*3);*/
 }
 
+/* search form delete */
+#search-form .mb-3 .delete{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
 
 .help-text{
     font-size: .8rem;
@@ -128,11 +142,13 @@ textarea{
     margin: 0;
 }
 .field-container{
-    max-width: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+.field-container:has(.inline){
+    max-width: 400px;
 }
 .field-container>*{
     width:100%;

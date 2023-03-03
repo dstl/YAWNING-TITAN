@@ -13,6 +13,7 @@ from yawning_titan.networks.network import Network
 from yawning_titan_gui.forms.game_mode_forms import (
     GameModeForm,
     GameModeFormManager,
+    GameModeSearchForm,
     GameModeSection,
 )
 from yawning_titan_gui.forms.network_forms import (
@@ -148,6 +149,7 @@ class GameModesView(View):
                 "toolbar": get_toolbar("Manage game modes"),
                 "dialogue_boxes": dialogue_boxes,
                 "game_modes": GameModeManager.get_game_mode_data(),
+                "search_form": GameModeSearchForm()
             },
         )
 

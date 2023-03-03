@@ -16,7 +16,7 @@
                 <i class="bi bi-search"></i>
             </span>
         </div>
-        {% if search_form %}
+        {% if range_bound_items %}
         <div id="search-accordion" class="accordion">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="advanced-search-header">
@@ -26,9 +26,9 @@
                 </h2>
                 <div id="advanced-search-items" class="accordion-collapse collapse" aria-labelledby="advanced-search-header" data-bs-parent="#search-accordion">
                     <div class="accordion-body">
-                       <form id="search-form">
-                            {% include 'elements/el_form_fields.html' with form=search_form protected=False %}
-                       </form>
+                        {% for settings in range_bound_items %}
+                            {% include 'elements/el_multi_range.html' with settings=settings %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>

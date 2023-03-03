@@ -1,7 +1,9 @@
+from collections import defaultdict
 from dataclasses import dataclass
 from typing import Dict, List
 
 from django import forms as django_forms
+from django.conf import settings
 from django.forms import widgets
 from django.http import QueryDict
 
@@ -264,6 +266,8 @@ class GameModeForm:
         section = self.get_section(section_name)
         section.forms[form_id] = section.form_classes[form_id](data=data)
         section.config_class.validate()
+        if settings.DYNAMIC_UPDATES:
+            GameModeManager.db.update(self.game_mode)
         return section
 
     def update_doc_meta(self, data: QueryDict):
@@ -271,6 +275,8 @@ class GameModeForm:
         self.doc_metadata_form = DocMetaDataForm(data=data)
         if self.doc_metadata_form.is_valid():
             self.game_mode.doc_metadata.update(**self.doc_metadata_form.cleaned_data)
+            if settings.DYNAMIC_UPDATES:
+                GameModeManager.db.update(self.game_mode)
 
     @property
     def first_section(self) -> GameModeSection:
@@ -335,3 +341,74 @@ class GameModeFormManager:
         else:
             GameModeManager.db.insert(game_mode=game_mode_form.game_mode)
         return game_mode_form.game_mode
+    
+class GameModeSearchForm(django_forms.Form):
+    def __init__(self, *args,**kwargs):
+        """"""
+        field_elements = {}
+        fields = {}
+        searchable_items = []        
+
+        game_modes = GameModeManager.db.all()
+        items = game_modes[0].to_legacy_dict()
+
+
+        for name,item in items.items():
+            if type(item.value) in [int,float]:
+                selector = {
+                    "min": min(
+                        [
+                        g.to_legacy_dict()[name].value for g in game_modes
+                        ]
+                    ),
+                    "max": max(
+                        [
+                            g.to_legacy_dict()[name].value for g in game_modes
+                        ]
+                    ),
+                }
+                if selector["min"] != selector["max"]:
+                    _type = "float"
+                    if type(item.value) == int:
+                        _type = "integer"
+                    field_elements[name] = django_forms.FloatField(
+                        widget=RangeInput(
+                            attrs={
+                                "class": f"{name} multi-range-placeholder {_type} hidden"
+                            }
+                        ),
+                        required=False,
+                        help_text=item.doc,
+                        min_value=selector["min"],
+                        max_value=selector["max"],
+                        label=name,
+                    )
+                    searchable_items.append(name)
+
+            elif type(item.value) is bool:
+                if [g.to_legacy_dict()[name].value for g in game_modes if g.to_legacy_dict()[name].value] != len(game_modes):
+                    field_elements[name] = django_forms.BooleanField(
+                        widget=widgets.CheckboxInput(
+                            attrs={"role": "switch", "class": f"{name} form-check-input hidden"}
+                        ),
+                        required=False,
+                        help_text=item.doc,
+                        label=name,
+                    )
+                    searchable_items.append(name)
+            
+        fields["elements"] = django_forms.ChoiceField(
+            widget=django_forms.Select(
+                attrs={"class": "form-control form-select inline", "restrict-selector":""}
+            ),
+            choices=((t, t) for t in searchable_items),
+            required=True,
+            help_text="The element to restrict",
+            label="Elements",
+        )
+        fields.update(field_elements)
+
+        super(GameModeSearchForm, self).__init__(*args, **kwargs)
+        # created dropdowns from grouped elements
+        self.fields: Dict[str, django_forms.Field] = fields
+ 
