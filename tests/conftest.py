@@ -24,6 +24,7 @@ from yawning_titan.networks.network import (
 )
 from yawning_titan.networks.network_db import default_18_node_network, \
     NetworkDB
+from yawning_titan.networks.node import Node
 from yawning_titan.yawning_titan_run import YawningTitanRun
 
 TOLERANCE: Final[float] = 0.1
@@ -38,11 +39,67 @@ def game_mode_db() -> GameModeDB:
         return GameModeDB()
 
 
+@pytest.fixture(scope="session")
+def network_db() -> NetworkDB:
+    """A patched NetworkDB that uses tests/_package_data/networks.json."""
+    with patch.object(NetworkDB, "__init__", network_db_init_patch):
+        return NetworkDB()
+
+
 @pytest.fixture
 def default_game_mode(game_mode_db) -> GameMode:
     """Create a game mode instance using the default config."""
     game_mode = game_mode_db.search(DocMetadataSchema.NAME == "base_config")[0]
     return game_mode
+
+
+@pytest.fixture()
+def corporate_network() -> Network:
+    """An example network with components akin to that of a basic corporate network."""
+    router_1 = Node()
+    switch_1 = Node()
+    switch_2 = Node()
+    pc_1 = Node()
+    pc_2 = Node()
+    pc_3 = Node()
+    pc_4 = Node()
+    pc_5 = Node()
+    pc_6 = Node()
+    server_1 = Node()
+    server_2 = Node()
+    network = Network(
+        set_random_entry_nodes=True,
+        num_of_random_entry_nodes=3,
+        set_random_high_value_nodes=True,
+        num_of_random_high_value_nodes=3,
+        set_random_vulnerabilities=True,
+    )
+    network.add_node(router_1)
+    network.add_node(switch_1)
+    network.add_node(switch_2)
+    network.add_node(pc_1)
+    network.add_node(pc_2)
+    network.add_node(pc_3)
+    network.add_node(pc_4)
+    network.add_node(pc_5)
+    network.add_node(pc_6)
+    network.add_node(server_1)
+    network.add_node(server_2)
+    network.add_edge(router_1, switch_1)
+    network.add_edge(switch_1, server_1)
+    network.add_edge(switch_1, pc_1)
+    network.add_edge(switch_1, pc_2)
+    network.add_edge(switch_1, pc_3)
+    network.add_edge(router_1, switch_2)
+    network.add_edge(switch_2, server_2)
+    network.add_edge(switch_2, pc_4)
+    network.add_edge(switch_2, pc_5)
+    network.add_edge(switch_2, pc_6)
+    network.reset_random_entry_nodes()
+    network.reset_random_high_value_nodes()
+    network.reset_random_vulnerabilities()
+    network.set_node_positions()
+    return network
 
 
 @pytest.fixture()
@@ -56,13 +113,6 @@ def legacy_default_game_mode_dict() -> Dict:
     filepath = TEST_PACKAGE_DATA_PATH / "legacy_default_game_mode.yaml"
     with open(filepath, "r") as file:
         return yaml.safe_load(file)
-
-
-@pytest.fixture(scope="session")
-def network_db() -> NetworkDB:
-    """A patched NetworkDB that uses tests/_package_data/networks.json."""
-    with patch.object(NetworkDB, "__init__", network_db_init_patch):
-        return NetworkDB()
 
 
 @pytest.fixture(scope="function")

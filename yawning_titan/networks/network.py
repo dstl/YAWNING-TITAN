@@ -11,6 +11,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import networkx as nx
 import numpy
+from networkx.drawing.layout import *
 from numpy.random import choice
 
 from yawning_titan.db.doc_metadata import DocMetadata
@@ -19,7 +20,43 @@ from yawning_titan.networks.node import Node
 
 _LOGGER = getLogger(__name__)
 
-# --- Tier 0 groups
+
+class NetworkLayout(Enum):
+    """
+    An enum class that maps to layout functions in network.drawing.layout.
+
+    See: https://networkx.org/documentation/stable/reference/drawing.html#module-networkx.drawing.layout
+    """
+    BIPARTITE = "bipartite"
+    CIRCULAR = "circular"
+    FRUCHTERMAN_REINGOLD = "fruchterman_reingold"
+    KAMADA_KAWAI = "kamada_kawai"
+    MULTIPARTITE = "multipartite"
+    PLANAR = "planar"
+    RANDOM = "random"
+    RESCALE = "rescale"
+    SHELL = "shell"
+    SPECTRAL = "spectral"
+    SPIRAL = "spiral"
+    SPRING = "spring"
+
+    def as_layout_func(self):
+        layout_dict = {
+            NetworkLayout.BIPARTITE: bipartite_layout,
+            NetworkLayout.CIRCULAR: circular_layout,
+            NetworkLayout.FRUCHTERMAN_REINGOLD: fruchterman_reingold_layout,
+            NetworkLayout.KAMADA_KAWAI: kamada_kawai_layout,
+            NetworkLayout.MULTIPARTITE: multipartite_layout,
+            NetworkLayout.PLANAR: planar_layout,
+            NetworkLayout.RANDOM: random_layout,
+            NetworkLayout.RESCALE: rescale_layout,
+            NetworkLayout.SHELL: shell_layout,
+            NetworkLayout.SPECTRAL: spectral_layout,
+            NetworkLayout.SPIRAL: spiral_layout,
+            NetworkLayout.SPRING: spring_layout,
+
+        }
+        return layout_dict[self]
 
 
 class RandomHighValueNodePreference(Enum):
@@ -46,18 +83,18 @@ class Network(nx.Graph):
     """A representation of a network in YawningTitan."""
 
     def __init__(
-        self,
-        set_random_entry_nodes: bool = False,
-        random_entry_node_preference: RandomEntryNodePreference = RandomEntryNodePreference.NONE,
-        num_of_random_entry_nodes: int = 0,
-        set_random_high_value_nodes: bool = False,
-        random_high_value_node_preference: RandomHighValueNodePreference = RandomHighValueNodePreference.NONE,
-        num_of_random_high_value_nodes: int = 0,
-        set_random_vulnerabilities: bool = False,
-        node_vulnerability_lower_bound: float = 0.01,
-        node_vulnerability_upper_bound: float = 1,
-        doc_metadata: Optional[DocMetadata] = None,
-        **kwargs,
+            self,
+            set_random_entry_nodes: bool = False,
+            random_entry_node_preference: RandomEntryNodePreference = RandomEntryNodePreference.NONE,
+            num_of_random_entry_nodes: int = 0,
+            set_random_high_value_nodes: bool = False,
+            random_high_value_node_preference: RandomHighValueNodePreference = RandomHighValueNodePreference.NONE,
+            num_of_random_high_value_nodes: int = 0,
+            set_random_vulnerabilities: bool = False,
+            node_vulnerability_lower_bound: float = 0.01,
+            node_vulnerability_upper_bound: float = 1,
+            doc_metadata: Optional[DocMetadata] = None,
+            **kwargs,
     ):
         """Extend networkx.Graph with a series of attributes required to represent a YawningTitan network using a series of :class: `~yawning_titan.networks.node.Node` objects."""
         super().__init__()
@@ -175,17 +212,17 @@ class Network(nx.Graph):
         super().remove_edge(u, v)
 
     def get_nodes(
-        self,
-        filter_true_compromised: bool = False,
-        filter_blue_view_compromised: bool = False,
-        filter_true_safe: bool = False,
-        filter_blue_view_safe: bool = False,
-        filter_isolated: bool = False,
-        filter_non_isolated: bool = False,
-        filter_deceptive: bool = False,
-        filter_non_deceptive: bool = False,
-        key_by_name: bool = False,
-        as_list: bool = False,
+            self,
+            filter_true_compromised: bool = False,
+            filter_blue_view_compromised: bool = False,
+            filter_true_safe: bool = False,
+            filter_blue_view_safe: bool = False,
+            filter_isolated: bool = False,
+            filter_non_isolated: bool = False,
+            filter_deceptive: bool = False,
+            filter_non_deceptive: bool = False,
+            key_by_name: bool = False,
+            as_list: bool = False,
     ) -> Union[List[Node], Dict[str, Node]]:
         """
         Get all of the nodes from the network and apply a filter(s) to extract a specific subset of the nodes.
@@ -258,14 +295,16 @@ class Network(nx.Graph):
         :returns: A single float representing a vulnerability.
         """
         return random.uniform(
-            self.node_vulnerability_lower_bound, self.node_vulnerability_upper_bound
+            self.node_vulnerability_lower_bound,
+            self.node_vulnerability_upper_bound
         )
 
     def _check_intersect(self, node: Node):
         """Check that high value nodes and entry nodes do not overlap."""
         if self.entry_nodes and self.high_value_nodes:
             uuids_intersect = [
-                n.uuid for n in set(self.entry_nodes) & set(self.high_value_nodes)
+                n.uuid for n in
+                set(self.entry_nodes) & set(self.high_value_nodes)
             ]
             if uuids_intersect:
                 if node.uuid in uuids_intersect:
@@ -278,39 +317,20 @@ class Network(nx.Graph):
                         )
                     )
 
-    def set_node_positions(self):
-        """Set the positions of the nodes in the network to be displayed on a matplotlib window."""
+    def set_node_positions(
+            self,
+            network_layout: NetworkLayout = NetworkLayout.SPRING
+    ):
+        """
+        Sets the Node positions of the current Network.
 
-        def check_if_nearby(check_position: Node, value: int) -> bool:
-            for n in self.nodes:
-                if n.x_pos - value <= check_position[0] <= n.x_pos + value:
-                    if n.y_pos - value <= check_position[1] <= n.y_pos + value:
-                        return True
-            return False
+        :param network_layout: A member of NetworkLayout. Default is
+            NetworkLayout.SPRING.
+        """
+        pos_dict = network_layout.as_layout_func()(self)
+        for node in self.nodes:
+            node.node_position = pos_dict[node]
 
-        if self.nodes and all(n.node_position == [0, 0] for n in self.nodes):
-            matrix, _ = self.to_adj_matrix_and_positions()
-            nodes = self.get_nodes(as_list=True)
-            for i in range(len(matrix)):
-                # generates a random x,y position for a node
-                rand_pos = [
-                    random.randint(0, len(matrix) * 4),
-                    random.randint(0, len(matrix) * 4),
-                ]
-                fails = 0
-                value = 5
-                while check_if_nearby(rand_pos, value):
-                    # if that position has already been used then generate a new point
-                    rand_pos = [
-                        random.randint(0, len(matrix) * 4),
-                        random.randint(0, len(matrix) * 4),
-                    ]
-                    fails += 1
-                    if fails % 10 == 0:
-                        value -= 1
-                        if value == -1:
-                            value = 0
-                nodes[i].node_position = rand_pos
 
     def set_entry_nodes(self, names: List[str] = None, ids: List[str] = None):
         """Manually set entry nodes in the network after instantiation."""
@@ -324,15 +344,18 @@ class Network(nx.Graph):
 
             self._check_intersect(node)
 
-    def set_high_value_nodes(self, names: List[str] = None, ids: List[str] = None):
+    def set_high_value_nodes(self, names: List[str] = None,
+                             ids: List[str] = None):
         """Manually set high value nodes in the network after instantiation."""
         names = names if names else []
         ids = ids if ids else []
-        potential_hvns = [n for n in self.nodes if n.name in names or n.uuid in ids]
+        potential_hvns = [n for n in self.nodes if
+                          n.name in names or n.uuid in ids]
 
         if len(names) + len(ids) > self.num_possible_high_value_nodes:
             warnings.warn(UserWarning(""))
-            potential_hvns = potential_hvns[: self.num_possible_high_value_nodes]
+            potential_hvns = potential_hvns[
+                             : self.num_possible_high_value_nodes]
 
         for node in self.nodes:
             if node in potential_hvns:
@@ -361,7 +384,7 @@ class Network(nx.Graph):
         if self.random_entry_node_preference == RandomEntryNodePreference.EDGE:
             weights = list(map(lambda x: (1 / x) ** 4, weights))
         elif self.random_entry_node_preference == RandomEntryNodePreference.CENTRAL:
-            weights = list(map(lambda x: x**4, weights))
+            weights = list(map(lambda x: x ** 4, weights))
         elif self.random_entry_node_preference == RandomEntryNodePreference.NONE:
             weights = [1] * len(all_nodes)
 
@@ -426,8 +449,8 @@ class Network(nx.Graph):
             )
         # Choose the node that is the furthest away from the entry points as the high value node
         elif (
-            self.random_high_value_node_preference.FURTHEST_AWAY_FROM_ENTRY
-            == RandomHighValueNodePreference.FURTHEST_AWAY_FROM_ENTRY
+                self.random_high_value_node_preference.FURTHEST_AWAY_FROM_ENTRY
+                == RandomHighValueNodePreference.FURTHEST_AWAY_FROM_ENTRY
         ):
             # gets all the paths between nodes
             paths = []
@@ -453,7 +476,7 @@ class Network(nx.Graph):
         # randomly pick unique nodes from a list of possible high value nodes
 
         if (
-            possible_high_value_nodes is None
+                possible_high_value_nodes is None
         ):  # If there are none possible then try again
             self.reset_random_high_value_nodes()
 
@@ -516,9 +539,11 @@ class Network(nx.Graph):
             d["_doc_metadata"] = d["_doc_metadata"].to_dict()
         return d
 
-    def to_adj_matrix_and_positions(self) -> Tuple[numpy.array, Dict[str, List[float]]]:
+    def to_adj_matrix_and_positions(self) -> Tuple[
+        numpy.array, Dict[str, List[float]]]:
         """Represent the network by its adjacency matrix and a dictionary of node names to positions."""
-        return nx.to_numpy_array(self), {n.name: n.node_position for n in self.nodes}
+        return nx.to_numpy_array(self), {n.name: n.node_position for n in
+                                         self.nodes}
 
     @classmethod
     def create(cls, network_dict: dict) -> Network:
@@ -528,8 +553,10 @@ class Network(nx.Graph):
         :param network_dict: a dictionary describing a :class:`Network`
         :return: An instance of :class: `Network`.
         """
-        network_dict["doc_metadata"] = DocMetadata(**network_dict.pop("_doc_metadata"))
-        network_dict["random_entry_node_preference"] = RandomEntryNodePreference[
+        network_dict["doc_metadata"] = DocMetadata(
+            **network_dict.pop("_doc_metadata"))
+        network_dict["random_entry_node_preference"] = \
+        RandomEntryNodePreference[
             network_dict["random_entry_node_preference"]
         ]
         network_dict[
