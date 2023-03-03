@@ -1,46 +1,50 @@
-$(document).ready(function(){
+$(document).ready(function () {
 
-    $("#random-elements .form-check-input").on("change",function(){
-        if($(this).is(":checked")){
-            $(`#random-elements .mb-3:has(.form-control[${$(this).data("toggle")}])`).show();
-        }else{
-            $(`#random-elements .mb-3:has(.form-control[${$(this).data("toggle")}])`).hide();
+    $("#network-randomisation .form-check-input").on("change", function () {
+        if ($(this).is(":checked")) {
+            $(`#network-randomisation .mb-3:has(.form-control[${$(this).data("toggle")}])`).show();
+        } else {
+            $(`#network-randomisation .mb-3:has(.form-control[${$(this).data("toggle")}])`).hide();
         }
     });
-    $("#random-elements .form-check-input").trigger("change"); // Trigger an initial change call on page ready to hide/show elements.
+    $("#network-randomisation .form-check-input").trigger("change"); // Trigger an initial change call on page ready to hide/show elements.
 
     //Open\close random elements menu
-    $(".toolbar-button").click(function(){
-        $(this).addClass("active");
-        if($(this).hasClass("random-elements")){
-            $("#random-elements").show()
-        }else{
-            $("#random-elements").hide()
-        }
+    $(".toolbar-button").click(function () {
+        toggleToolbar($(this));
     })
 });
 
-$(window).on("load",function(){
-    $("#random-elements-form .form-check-input, #random-elements-form .form-control").on("change",function(){
-        update_network($("#random-elements-form"));
+$(window).on("load", function () {
+    $("#network-randomisation-form .form-check-input, #network-randomisation-form .form-control").on("change", function () {
+        update_network($("#network-randomisation-form"));
     });
 
 });
 
 
-function update_network(form_element){
+function update_network(form_element) {
     config = new FormData($(form_element)[0]);
-    config.append("_network_id",NETWORK_ID);
-    $.ajax({
-        type: "POST",
-        url: UPDATE_URL,
-        data: config,
-        processData: false,
-        contentType: false,
-        cache: false,
-        dataType: "json",
-        success: function(response){
-            proxy.NETWORK = response.network_json;
-        }
-    });
+    config.append("_network_id", NETWORK_ID);
+    proxy.NETWORK_SETTINGS = config;
+}
+
+function toggleToolbar(iconEl) {
+    // hide all sidebars
+    $("#network-randomisation").hide()
+    $("#node-list").hide()
+
+    // if icon clicked is network-randomisation
+    if (iconEl.hasClass("network-randomisation") && iconEl.hasClass("active")) {
+        $("#network-randomisation").show()
+    } else {
+        $("#network-randomisation").hide()
+    }
+
+    // if icon clicked is node-list
+    if (iconEl.hasClass("node-list") && iconEl.hasClass("active")) {
+        $("#node-list").show()
+    } else {
+        $("#node-list").hide()
+    }
 }

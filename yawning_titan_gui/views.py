@@ -27,8 +27,8 @@ default_sidebar = {
 }
 
 default_toolbar = {
-    "random-elements": {"icon": "bi-gear", "title": "Set random elements"},
-    "network-nodes": {"icon": "bi-diagram-2", "title": "Network nodes"},
+    "network-randomisation": {"icon": "bi-gear", "title": "Set network randomisation"},
+    "node-list": {"icon": "bi-diagram-2", "title": "Network nodes"},
     # "run-config-set": {"icon": "bi-collection-play", "title": "Run config"},
     # "run-view": {"icon": "bi-play", "title": "Run game"},
 }

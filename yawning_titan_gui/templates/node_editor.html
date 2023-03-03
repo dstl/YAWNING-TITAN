@@ -14,8 +14,19 @@
 
 {% block main %}
 <app-root></app-root>
-<div id="random-elements" class="form-container">
-  {% include 'elements/el_form.html' with form=form form_name='random-elements' %}
+<div id="network-randomisation" class="form-container">
+  <div class="toolbar-tab-title">
+    <h3>Network Randomisation</h3>
+    <p>Set the reset behaviour of the network</p>
+  </div>
+  {% include 'elements/el_form.html' with form=form form_name='network-randomisation' %}
+</div>
+<div id="node-list" class="">
+  <div class="toolbar-tab-title">
+    <h3>Node List</h3>
+    <p>View the list of nodes in the network</p>
+  </div>
+  {% include 'elements/el_node_list.html' %}
 </div>
 {% endblock %}
 
@@ -33,15 +44,17 @@
         position: relative;
     }
 
-    #random-elements{
+    #network-randomisation,
+    #node-list {
       position: absolute;
       top: 0px;
       left: 0px;
       padding: var(--increment);
       width: 350px;
       height: 100%;
-      z-index: 99999;
+      z-index: 999;
       background-color: var(--superlight);
+      display: none;
     }
 
     app-root{
@@ -90,6 +103,12 @@
     }
     .help-text{
       color: var(--text-dark);
+    }
+
+    .toolbar-tab-title {
+      margin-bottom: 30px;
+      margin-top: 10px;
+      color: var(--text-superlight);
     }
 </style>
 {% endblock %}
