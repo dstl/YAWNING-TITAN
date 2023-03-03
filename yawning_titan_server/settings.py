@@ -73,6 +73,9 @@ WSGI_APPLICATION = "yawning_titan_server.wsgi.application"
 
 DATABASES = {"default": {}}
 
+# Update the databases dynamically or only when 'Save'
+DYNAMIC_UPDATES = True
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

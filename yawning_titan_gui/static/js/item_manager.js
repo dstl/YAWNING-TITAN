@@ -82,6 +82,27 @@ $(document).ready(function(){
         e.stopPropagation();
         toggle_delete_all();
     });
+
+    // search selectors
+    $("*[restrict-selector]").on("change",function(){
+        console.log("CHANGED",$(this).val());
+        $(`.${$(this).val()}`).removeClass("hidden");
+    });
+
+    // delete icons - search elements
+    $("#search-form .mb-3:not(:first-child)").append(
+        `<div class="icon delete">
+            <i class="bi bi-trash3"></i>
+        </div>`
+    );
+    $("#search-form .delete").click(function(){
+        let container = $(this).closest(".mb-3"),
+            left_setter =  $(container).find(".range-setter.left"),
+            right_setter = $(container).find(".range-setter.right");
+        $(left_setter).val($(left_setter).attr("min"));
+        $(right_setter).val($(right_setter).attr("max"));
+        $(container).addClass("hidden");
+    });
 });
 
 function toggle_delete_all(){

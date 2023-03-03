@@ -81,6 +81,7 @@ $(document).ready(function(){
     });
 
     setup_form_range();
+    setup_form_multi_range();
 
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
@@ -116,5 +117,98 @@ function setup_form_range(){
         e.style.setProperty('--min', e.min == '' ? '0' : e.min);
         e.style.setProperty('--max', e.max == '' ? '100' : e.max);
         e.addEventListener('input', () => e.style.setProperty('--value', e.value));
-      }
+    }
+}
+
+function setup_form_multi_range(){
+    $(".multi-range-placeholder").each(function(i,el){
+        let min = $(el).attr("min"),
+            max = $(el).attr("max"),
+            step = Math.pow(10, Math.floor(Math.log10((max-min)))) / 20,
+            _class = $(el).attr("class");
+        $(el).replaceWith(
+            `
+            <div class="multi-range ${_class}">
+                <input class="range-setter left" type="number" value="${min}" min="${min}" max="${max}" step="${step}">
+                <div class="slider slider-distance">
+                    <div class="slider-container">
+                        <div class="inverse-left" style="width:70%;"></div>
+                        <div class="inverse-right" style="width:70%;"></div>
+                        <div class="range" style="left:30%;right:40%;"></div>
+                        <span class="thumb" style="left:30%;"></span>
+                        <span class="thumb" style="left:60%;"></span>
+                    </div>
+                    <input class="multi-range-input left" type="range" tabindex="0" value="${min}" max="${max}" min="${min}" step="${step}" />
+                    <input class="multi-range-input right" type="range" tabindex="0" value="${max}" max="${max}" min="${min}" step="${step}"/>
+                </div>
+                <input class="range-setter right" type="number" value="${max}" min="${min}" max="${max}" step="${step}">
+            </div>
+            `
+        );
+    });
+    $(".multi-range").removeClass("multi-range-placeholder");
+
+    // set multi range sliders on load
+    $(".multi-range-input.left").each(function(i,el){
+        update_multi_range_left(el);
+    });
+    $(".multi-range-input.right").each(function(i,el){
+        update_multi_range_right(el);
+    });
+
+    // update multi range sliders on input
+    $(".multi-range-input.left, .multi-range .range-setter.left").on('input',function(){
+        let multi_range_el = $(this).closest(".multi-range"),
+            left_slider = $(".multi-range-input.left",multi_range_el);
+        left_slider.val($(this).val()); // set the range slider value to itself if `this` is slider el otherwise set to the value of the input
+        update_multi_range_left(left_slider.get(0));
+    });
+
+    $(".multi-range-input.right, .multi-range .range-setter.right").on('input',function(){
+        let multi_range_el = $(this).closest(".multi-range"),
+            right_slider = $(".multi-range-input.right",multi_range_el);
+        right_slider.val($(this).val()); // set the range slider value to itself if `this` is slider el otherwise set to the value of the input
+        update_multi_range_right(right_slider.get(0));
+    });
+}
+
+function update_multi_range_right(el){
+    $(el).val(
+        Math.max(
+            $(el).val(),$(el).siblings(".multi-range-input").val()
+        )
+    );
+    let multi_range_el = $(el).closest(".multi-range"),
+        children = $(".slider-container",multi_range_el).children();
+        
+    if($(multi_range_el).hasClass("float")){
+        value=(100/(parseFloat(el.max)-parseFloat(el.min)))*parseFloat(el.value)-(100/(parseFloat(el.max)-parseFloat(el.min)))*parseFloat(el.min)
+    }else{
+        value=(100/(parseInt(el.max)-parseInt(el.min)))*parseInt(el.value)-(100/(parseInt(el.max)-parseInt(el.min)))*parseInt(el.min)
+    }
+
+    $(children.get(1)).css("width",(100-value)+"%");
+    $(children.get(2)).css("right",(100-value)+'%');
+    $(children.get(4)).css("left",value+'%');
+    $(".range-setter.right",multi_range_el).val($(el).val());
+}
+
+function update_multi_range_left(el){
+    $(el).val(
+        Math.min(
+            $(el).val(),$(el).siblings(".multi-range-input").val()
+        )
+    );
+    let multi_range_el = $(el).closest(".multi-range"),
+        children = $(".slider-container",multi_range_el).children();
+
+    if($(multi_range_el).hasClass("float")){
+        value=(100/(parseFloat(el.max)-parseFloat(el.min)))*parseFloat(el.value)-(100/(parseFloat(el.max)-parseFloat(el.min)))*parseFloat(el.min)
+    }else{
+        value=(100/(parseInt(el.max)-parseInt(el.min)))*parseInt(el.value)-(100/(parseInt(el.max)-parseInt(el.min)))*parseInt(el.min)
+    }     
+    $(children.get(0)).css("width",value+"%");
+    $(children.get(2)).css("left",value+'%');
+    $(children.get(3)).css("left",value+'%');
+    $(".range-setter.left",multi_range_el).val($(el).val());
 }
