@@ -185,6 +185,7 @@ class Network(nx.Graph):
         filter_deceptive: bool = False,
         filter_non_deceptive: bool = False,
         key_by_name: bool = False,
+        as_list: bool = False,
     ) -> Union[List[Node], Dict[str, Node]]:
         """
         Get all of the nodes from the network and apply a filter(s) to extract a specific subset of the nodes.
@@ -228,10 +229,13 @@ class Network(nx.Graph):
             # Return True if deceptive node is False
             nodes = [n for n in nodes if not n.deceptive_node]
 
-        if not key_by_name:
-            return nodes
+        if key_by_name:
+            return {n.name: n for n in nodes}
 
-        return {n.name: n for n in nodes}
+        if as_list:
+            return list(nodes)
+
+        return nodes
 
     def get_node_from_uuid(self, uuid: str) -> Union[Node, None]:
         """Return the first node that has a given uuid."""
@@ -273,6 +277,40 @@ class Network(nx.Graph):
                             f"prematurely."
                         )
                     )
+
+    def set_node_positions(self):
+        """Set the positions of the nodes in the network to be displayed on a matplotlib window."""
+
+        def check_if_nearby(check_position: Node, value: int) -> bool:
+            for n in self.nodes:
+                if n.x_pos - value <= check_position[0] <= n.x_pos + value:
+                    if n.y_pos - value <= check_position[1] <= n.y_pos + value:
+                        return True
+            return False
+
+        if self.nodes and all(n.node_position == [0, 0] for n in self.nodes):
+            matrix, _ = self.to_adj_matrix_and_positions()
+            nodes = self.get_nodes(as_list=True)
+            for i in range(len(matrix)):
+                # generates a random x,y position for a node
+                rand_pos = [
+                    random.randint(0, len(matrix) * 4),
+                    random.randint(0, len(matrix) * 4),
+                ]
+                fails = 0
+                value = 5
+                while check_if_nearby(rand_pos, value):
+                    # if that position has already been used then generate a new point
+                    rand_pos = [
+                        random.randint(0, len(matrix) * 4),
+                        random.randint(0, len(matrix) * 4),
+                    ]
+                    fails += 1
+                    if fails % 10 == 0:
+                        value -= 1
+                        if value == -1:
+                            value = 0
+                nodes[i].node_position = rand_pos
 
     def set_entry_nodes(self, names: List[str] = None, ids: List[str] = None):
         """Manually set entry nodes in the network after instantiation."""
@@ -502,6 +540,8 @@ class Network(nx.Graph):
         network = Network(**network_dict)
         for uuid, attrs in network_dict["nodes"].items():
             network.add_node(Node(**attrs))
+
+        network.set_node_positions()
 
         edge_tuples = []
         for uuid_u, edges in network_dict["edges"].items():
