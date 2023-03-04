@@ -164,8 +164,19 @@ class ImmediateSchema:
 class BlueIntrusionDiscoverySchema:
     """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
 
-    IMMEDIATE: ImmediateSchema
-    ON_SCAN: OnScanSchema
+    IMMEDIATE: Final[ImmediateSchema] = ImmediateSchema
+    ON_SCAN: Final[OnScanSchema] = OnScanSchema
+
+
+class FailedAttackChanceSchema:
+    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+
+    STANDARD_NODE: Final[
+        YawningTitanQuery
+    ] = YawningTitanQuery().blue.attack_discovery.failed_attacks.chance.standard_node
+    DECEPTIVE_NODE: Final[
+        YawningTitanQuery
+    ] = YawningTitanQuery().blue.attack_discovery.failed_attacks.chance.deceptive_node
 
 
 class FailedAttackSchema:
@@ -174,9 +185,22 @@ class FailedAttackSchema:
     USE: Final[
         YawningTitanQuery
     ] = YawningTitanQuery().blue.attack_discovery.failed_attacks.use
-    CHANCE: Final[
+    CHANCE: Final[FailedAttackChanceSchema] = FailedAttackChanceSchema
+
+
+class SucceededAttackKnownCompromiseChanceSchema:
+    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+
+    STANDARD_NODE: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue.attack_discovery.failed_attacks.chance
+    ] = (
+        YawningTitanQuery().blue.attack_discovery.succeeded_attacks_known_compromise.chance.standard_node
+    )
+    DECEPTIVE_NODE: Final[
+        YawningTitanQuery
+    ] = (
+        YawningTitanQuery().blue.attack_discovery.succeeded_attacks_known_compromise.chance.deceptive_node
+    )
 
 
 class SucceededAttackKnownCompromiseSchema:
@@ -186,9 +210,22 @@ class SucceededAttackKnownCompromiseSchema:
         YawningTitanQuery
     ] = YawningTitanQuery().blue.attack_discovery.succeeded_attacks_known_compromise.use
     CHANCE: Final[
+        SucceededAttackKnownCompromiseChanceSchema
+    ] = SucceededAttackKnownCompromiseChanceSchema
+
+
+class SucceededAttackUnknownCompromiseChanceSchema:
+    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+
+    STANDARD_NODE: Final[
         YawningTitanQuery
     ] = (
-        YawningTitanQuery().blue.attack_discovery.succeeded_attacks_known_compromise.chance
+        YawningTitanQuery().blue.attack_discovery.succeeded_attacks_unknown_compromise.chance.standard_node
+    )
+    DECEPTIVE_NODE: Final[
+        YawningTitanQuery
+    ] = (
+        YawningTitanQuery().blue.attack_discovery.succeeded_attacks_unknown_compromise.chance.deceptive_node
     )
 
 
@@ -201,10 +238,8 @@ class SucceededAttackUnknownCompromiseSchema:
         YawningTitanQuery().blue.attack_discovery.succeeded_attacks_unknown_compromise.use
     )
     CHANCE: Final[
-        YawningTitanQuery
-    ] = (
-        YawningTitanQuery().blue.attack_discovery.succeeded_attacks_unknown_compromise.chance
-    )
+        SucceededAttackUnknownCompromiseChanceSchema
+    ] = SucceededAttackUnknownCompromiseChanceSchema
 
 
 class BlueAttackDiscoverySchema:
