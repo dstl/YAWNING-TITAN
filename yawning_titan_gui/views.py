@@ -149,9 +149,22 @@ class GameModesView(View):
                 "toolbar": get_toolbar("Manage game modes"),
                 "dialogue_boxes": dialogue_boxes,
                 "game_modes": GameModeManager.get_game_mode_data(),
-                "search_form": GameModeSearchForm()
+                "search_form": GameModeSearchForm(),
             },
         )
+
+    def post(self, request: HttpRequest, *args, **kwargs):
+        """Handle page get requests.
+
+        :param request: A Django `request` object that contains the data passed from
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
+        """
+        search_form = GameModeSearchForm(request.POST)
+        if search_form.is_valid():
+            print("DATA", search_form.filters)
+            return JsonResponse({"message": "success"})
+        return JsonResponse({"message": search_form.errors})
 
 
 class NetworksView(View):
@@ -241,17 +254,15 @@ class NetworksView(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        if request.method == "POST":
-            return JsonResponse(
-                {
-                    "ids": NetworkManager.filter(
-                        request.POST.get("attribute"),
-                        int(request.POST.get("min")),
-                        int(request.POST.get("max")),
-                    )
-                }
-            )
-        return JsonResponse({"message": "error"}, status=400)
+        return JsonResponse(
+            {
+                "ids": NetworkManager.filter(
+                    request.POST.get("attribute"),
+                    int(request.POST.get("min")),
+                    int(request.POST.get("max")),
+                )
+            }
+        )
 
 
 class NetworkCreator(View):

@@ -125,10 +125,11 @@ function setup_form_multi_range(){
         let min = $(el).attr("min"),
             max = $(el).attr("max"),
             step = Math.pow(10, Math.floor(Math.log10((max-min)))) / 20,
-            _class = $(el).attr("class");
+            _class = $(el).attr("class"),
+            name = $(el).attr("name").replace(/(_min$)/, '');
         $(el).replaceWith(
             `
-            <div class="multi-range ${_class}">
+            <div class="multi-range ${_class}" name="${name}">
                 <input class="range-setter left" type="number" value="${min}" min="${min}" max="${max}" step="${step}">
                 <div class="slider slider-distance">
                     <div class="slider-container">
@@ -180,7 +181,7 @@ function update_multi_range_right(el){
     );
     let multi_range_el = $(el).closest(".multi-range"),
         children = $(".slider-container",multi_range_el).children();
-        
+
     if($(multi_range_el).hasClass("float")){
         value=(100/(parseFloat(el.max)-parseFloat(el.min)))*parseFloat(el.value)-(100/(parseFloat(el.max)-parseFloat(el.min)))*parseFloat(el.min)
     }else{
@@ -206,7 +207,7 @@ function update_multi_range_left(el){
         value=(100/(parseFloat(el.max)-parseFloat(el.min)))*parseFloat(el.value)-(100/(parseFloat(el.max)-parseFloat(el.min)))*parseFloat(el.min)
     }else{
         value=(100/(parseInt(el.max)-parseInt(el.min)))*parseInt(el.value)-(100/(parseInt(el.max)-parseInt(el.min)))*parseInt(el.min)
-    }     
+    }
     $(children.get(0)).css("width",value+"%");
     $(children.get(2)).css("left",value+'%');
     $(children.get(3)).css("left",value+'%');

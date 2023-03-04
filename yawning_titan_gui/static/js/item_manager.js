@@ -83,9 +83,8 @@ $(document).ready(function(){
         toggle_delete_all();
     });
 
-    // search selectors
+    // search form
     $("*[restrict-selector]").on("change",function(){
-        console.log("CHANGED",$(this).val());
         $(`.${$(this).val()}`).removeClass("hidden");
     });
 
@@ -102,6 +101,10 @@ $(document).ready(function(){
         $(left_setter).val($(left_setter).attr("min"));
         $(right_setter).val($(right_setter).attr("max"));
         $(container).addClass("hidden");
+    });
+
+    $("#search-form").change(function(){
+        filter(this)
     });
 });
 
@@ -122,6 +125,19 @@ function check_dialogue_filled(dialogue_el){
     }
 }
 
+function search_form_data(form_element){
+    let data = {};
+    $(form_element).find(".multi-range").each(function(i,el){
+        data[$(el).attr("name")+"_min"] = $(el).find(".range-setter.left").first().val();
+        data[$(el).attr("name")+"_max"] = $(el).find(".range-setter.right").first().val();
+    });
+    console.log("DATA",data);
+    $(form_element).find(":not(.multi-range)").each(function(i,el){
+        data[$(el).attr("name")] = $(el).val()
+    });
+    return data
+}
+
 // wrapper for async post request for managing config items
 function manage_items(operation,item_names=[],item_ids=[],additional_data={}){
     $.ajax({
@@ -138,6 +154,20 @@ function manage_items(operation,item_names=[],item_ids=[],additional_data={}){
         },
         error: function(response){
             console.log(response)
+        }
+    });
+}
+
+// wrapper for async post request for config section form processing
+function filter(form_element){
+    $.ajax({
+        type: "POST",
+        url: window.location.href,
+        data: search_form_data(form_element),
+        dataType: "json",
+        success: function(response){
+        },
+        error: function(response){
         }
     });
 }
