@@ -11,6 +11,7 @@ from yawning_titan.config.toolbox.item_types.float_item import (
     FloatProperties,
 )
 from yawning_titan.config.toolbox.item_types.int_item import IntItem, IntProperties
+from yawning_titan.db.schemas import GameModeConfigurationSchema
 from yawning_titan.exceptions import ConfigGroupValidationError
 
 
@@ -29,6 +30,7 @@ class MakeNodeSafeGroup(ConfigGroup):
         self.use: BoolItem = BoolItem(
             value=use,
             doc="Blue fixes a node but does not restore it to its initial state.",
+            schema=GameModeConfigurationSchema.BLUE.ACTION_SET.MAKE_NODE_SAFE.USE,
             alias="blue_uses_make_node_safe",
             properties=BoolProperties(allow_null=False, default=False),
         )
