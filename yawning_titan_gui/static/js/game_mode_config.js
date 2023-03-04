@@ -126,7 +126,6 @@ function submit_form(form_element,section_name){
             add_form_errors(JSON.parse(errors));
         }
     });
-
 }
 
 function add_form_errors(errors){

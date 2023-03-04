@@ -341,65 +341,83 @@ class GameModeFormManager:
         else:
             GameModeManager.db.insert(game_mode=game_mode_form.game_mode)
         return game_mode_form.game_mode
-    
+
+
 class GameModeSearchForm(django_forms.Form):
-    def __init__(self, *args,**kwargs):
+    def __init__(self, *args, **kwargs):
         """"""
         field_elements = {}
         fields = {}
-        searchable_items = []        
+        searchable_items = []
 
         game_modes = GameModeManager.db.all()
         items = game_modes[0].to_legacy_dict()
 
-
-        for name,item in items.items():
-            if type(item.value) in [int,float]:
-                selector = {
-                    "min": min(
-                        [
-                        g.to_legacy_dict()[name].value for g in game_modes
-                        ]
-                    ),
-                    "max": max(
-                        [
-                            g.to_legacy_dict()[name].value for g in game_modes
-                        ]
-                    ),
-                }
-                if selector["min"] != selector["max"]:
-                    _type = "float"
-                    if type(item.value) == int:
-                        _type = "integer"
-                    field_elements[name] = django_forms.FloatField(
-                        widget=RangeInput(
-                            attrs={
-                                "class": f"{name} multi-range-placeholder {_type} hidden"
-                            }
+        if game_modes:
+            for name, item in items.items():
+                if type(item.value) in [int, float]:
+                    selector = {
+                        "min": min(
+                            [g.to_legacy_dict()[name].value for g in game_modes]
                         ),
-                        required=False,
-                        help_text=item.doc,
-                        min_value=selector["min"],
-                        max_value=selector["max"],
-                        label=name,
-                    )
-                    searchable_items.append(name)
-
-            elif type(item.value) is bool:
-                if [g.to_legacy_dict()[name].value for g in game_modes if g.to_legacy_dict()[name].value] != len(game_modes):
-                    field_elements[name] = django_forms.BooleanField(
-                        widget=widgets.CheckboxInput(
-                            attrs={"role": "switch", "class": f"{name} form-check-input hidden"}
+                        "max": max(
+                            [g.to_legacy_dict()[name].value for g in game_modes]
                         ),
-                        required=False,
-                        help_text=item.doc,
-                        label=name,
-                    )
-                    searchable_items.append(name)
-            
+                    }
+                    if selector["min"] != selector["max"]:
+                        _type = "float"
+                        if type(item.value) == int:
+                            _type = "integer"
+                        field_elements[f"{name}_min"] = django_forms.FloatField(
+                            widget=RangeInput(
+                                attrs={
+                                    "class": f"{name} multi-range-placeholder {_type} hidden"
+                                }
+                            ),
+                            required=False,
+                            help_text=item.doc,
+                            min_value=selector["min"],
+                            max_value=selector["max"],
+                            initial=selector["min"],
+                            label=name,
+                        )
+                        field_elements[f"{name}_max"] = django_forms.FloatField(
+                            widget=django_forms.HiddenInput(),
+                            required=False,
+                            help_text=item.doc,
+                            min_value=selector["min"],
+                            max_value=selector["max"],
+                            initial=selector["max"],
+                            label=name,
+                        )
+                        searchable_items.append(name)
+
+                elif type(item.value) is bool:
+                    if [
+                        g.to_legacy_dict()[name].value
+                        for g in game_modes
+                        if g.to_legacy_dict()[name].value
+                    ] != len(game_modes):
+                        field_elements[name] = django_forms.BooleanField(
+                            widget=widgets.CheckboxInput(
+                                attrs={
+                                    "role": "switch",
+                                    "class": f"{name} form-check-input hidden",
+                                }
+                            ),
+                            required=False,
+                            help_text=item.doc,
+                            label=name,
+                            initial=True,
+                        )
+                        searchable_items.append(name)
+
         fields["elements"] = django_forms.ChoiceField(
             widget=django_forms.Select(
-                attrs={"class": "form-control form-select inline", "restrict-selector":""}
+                attrs={
+                    "class": "form-control form-select inline",
+                    "restrict-selector": "",
+                }
             ),
             choices=((t, t) for t in searchable_items),
             required=True,
@@ -411,4 +429,21 @@ class GameModeSearchForm(django_forms.Form):
         super(GameModeSearchForm, self).__init__(*args, **kwargs)
         # created dropdowns from grouped elements
         self.fields: Dict[str, django_forms.Field] = fields
- 
+
+    @property
+    def filters(self):
+        """"""
+        filters = {
+            n: self.cleaned_data[n] for n in self.changed_data if n != "elements"
+        }
+        cleaned_filters = {}
+        for k, v in filters.items():
+            if k.endswith(("_min", "_max")):
+                name = k.rstrip("_min").rstrip("_max")
+                cleaned_filters[name] = {
+                    "min": self.cleaned_data[f"{name}_min"],
+                    "max": self.cleaned_data[f"{name}_max"],
+                }
+            else:
+                cleaned_filters[k] = v
+        return cleaned_filters
