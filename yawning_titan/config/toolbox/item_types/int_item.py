@@ -7,6 +7,7 @@ from yawning_titan.config.toolbox.core import (
     ConfigItemValidation,
     ItemTypeProperties,
 )
+from yawning_titan.db.query import YawningTitanQuery
 from yawning_titan.exceptions import ConfigItemValidationError
 
 
@@ -120,6 +121,7 @@ class IntItem(ConfigItem):
         self,
         value: bool,
         doc: Optional[str] = None,
+        query: YawningTitanQuery = None,
         alias: Optional[str] = None,
         depends_on: Optional[List[str]] = None,
         properties: Optional[IntProperties] = None,
@@ -131,4 +133,4 @@ class IntItem(ConfigItem):
                 )
         else:
             properties = IntProperties()
-        super().__init__(value, doc, alias, depends_on, properties)
+        super().__init__(value, doc, query, alias, depends_on, properties)

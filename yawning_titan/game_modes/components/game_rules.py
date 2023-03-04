@@ -7,6 +7,7 @@ from yawning_titan.config.toolbox.groups.core import RestrictRangeGroup, UseValu
 from yawning_titan.config.toolbox.groups.validation import AnyUsedGroup
 from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
 from yawning_titan.config.toolbox.item_types.int_item import IntItem, IntProperties
+from yawning_titan.db.schemas import GameModeConfigurationSchema
 from yawning_titan.exceptions import ConfigGroupValidationError
 
 # --- Tier 0 groups
@@ -45,6 +46,28 @@ class NetworkCompatibilityGroup(ConfigGroup):
         )
 
         self.node_count.min.alias = "min_number_of_network_nodes"
+
+        self.node_count.min.query = (
+            GameModeConfigurationSchema.GAME_RULES.NETWORK_COMPATIBILITY.NODE_COUNT.MIN
+        )
+        self.node_count.max.query = (
+            GameModeConfigurationSchema.GAME_RULES.NETWORK_COMPATIBILITY.NODE_COUNT.MAX
+        )
+
+        self.high_value_node_count.min.query = (
+            GameModeConfigurationSchema.GAME_RULES.NETWORK_COMPATIBILITY.HIGH_VALUE_NODE_COUNT.MIN
+        )
+        self.high_value_node_count.max.query = (
+            GameModeConfigurationSchema.GAME_RULES.NETWORK_COMPATIBILITY.HIGH_VALUE_NODE_COUNT.MAX
+        )
+
+        self.entry_node_count.min.query = (
+            GameModeConfigurationSchema.GAME_RULES.NETWORK_COMPATIBILITY.ENTRY_NODE_COUNT.MIN
+        )
+        self.entry_node_count.max.query = (
+            GameModeConfigurationSchema.GAME_RULES.NETWORK_COMPATIBILITY.ENTRY_NODE_COUNT.MAX
+        )
+
         super().__init__(doc)
 
 
@@ -62,18 +85,21 @@ class BlueLossConditionGroup(AnyUsedGroup):
         self.all_nodes_lost: BoolItem = BoolItem(
             value=all_nodes_lost,
             doc="The blue agent loses if all the nodes become compromised",
+            query=GameModeConfigurationSchema.GAME_RULES.BLUE_LOSS_CONDITION.ALL_NODES_LOST,
             properties=BoolProperties(allow_null=True, default=False),
             alias="lose_when_all_nodes_lost",
         )
         self.high_value_node_lost: BoolItem = BoolItem(
             value=high_value_node_lost,
             doc="Blue loses if a special node designated as 'high value' is lost",
+            query=GameModeConfigurationSchema.GAME_RULES.BLUE_LOSS_CONDITION.HIGH_VALUE_NODE_LOST,
             properties=BoolProperties(allow_null=True, default=False),
             alias="lose_when_high_value_node_lost",
         )
         self.target_node_lost: BoolItem = BoolItem(
             value=target_node_lost,
             doc="Blue loses if a target node it lost",
+            query=GameModeConfigurationSchema.GAME_RULES.BLUE_LOSS_CONDITION.TARGET_NODE_LOST,
             properties=BoolProperties(allow_null=True, default=False),
             alias="lose_when_target_node_lost",
         )
@@ -88,7 +114,14 @@ class BlueLossConditionGroup(AnyUsedGroup):
         self.n_percent_nodes_lost.value.alias = (
             "percentage_of_nodes_compromised_equals_loss"
         )
+        self.n_percent_nodes_lost.value.query = (
+            GameModeConfigurationSchema.GAME_RULES.BLUE_LOSS_CONDITION.N_PERCENT_NODES_LOST.VALUE
+        )
+
         self.n_percent_nodes_lost.use.alias = "lose_when_n_percent_of_nodes_lost"
+        self.n_percent_nodes_lost.use.query = (
+            GameModeConfigurationSchema.GAME_RULES.BLUE_LOSS_CONDITION.N_PERCENT_NODES_LOST.USE
+        )
         super().__init__(doc)
 
 
@@ -112,6 +145,7 @@ class GameRules(ConfigGroup):
                 "The length of a grace period at the start of the game. During this time the red agent cannot act. "
                 "This gives the blue agent a chance to 'prepare' (A length of 0 means that there is no grace period)"
             ),
+            query=GameModeConfigurationSchema.GAME_RULES.GRACE_PERIOD_LENGTH,
             properties=IntProperties(
                 allow_null=False,
                 default=0,
@@ -125,6 +159,7 @@ class GameRules(ConfigGroup):
         self.max_steps = IntItem(
             value=max_steps,
             doc="The max steps that a game can go on for. If the blue agent reaches this they win",
+            query=GameModeConfigurationSchema.GAME_RULES.MAX_STEPS,
             properties=IntProperties(
                 allow_null=False,
                 default=1,
