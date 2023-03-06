@@ -1,8 +1,37 @@
+.node-list-tab-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 .node-list-filter-input {
   display: flex;
   flex: 1;
 }
 
 .node-list-container {
-  padding-top: 20px;
+  margin-top: 20px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.node-list-item {
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+}
+
+
+.node-list-item:hover {
+  background-color: var(--text-mid);
+  cursor: pointer;
+}
+
+.node-list-item-label {
+  display: flex;
+  flex: 1;
+  color: var(--text-superlight);
+  padding: 0 10px;
+  align-items: center;
 }

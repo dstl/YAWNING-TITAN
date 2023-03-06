@@ -9,106 +9,121 @@
 {% endblock %}
 
 {% block top-buttons %}
-  <a id="back" href="javascript:history.back()"><i class="bi bi-arrow-90deg-left"></i></a>
+<a id="back" href="javascript:history.back()"><i class="bi bi-arrow-90deg-left"></i></a>
 {% endblock %}
 
 {% block main %}
 <app-root></app-root>
 <div id="network-randomisation" class="form-container">
-  <div class="toolbar-tab-title">
-    <h3>Network Randomisation</h3>
-    <p>Set the reset behaviour of the network</p>
+  <div class="tab-content">
+    <div class="toolbar-tab-title">
+      <h3>Network Randomisation</h3>
+      <p>Set the reset behaviour of the network</p>
+    </div>
+    {% include 'elements/el_form.html' with form=form form_name='network-randomisation' %}
   </div>
-  {% include 'elements/el_form.html' with form=form form_name='network-randomisation' %}
 </div>
-<div id="node-list" class="">
-  <div class="toolbar-tab-title">
-    <h3>Node List</h3>
-    <p>View the list of nodes in the network</p>
+<div id="node-list" class="node-list">
+  <div class="tab-content">
+    <div class="toolbar-tab-title">
+      <h3>Node List</h3>
+      <p>View the list of nodes in the network</p>
+    </div>
+    {% include 'elements/el_node_list.html' %}
   </div>
-  {% include 'elements/el_node_list.html' %}
 </div>
 {% endblock %}
 
 {% block style %}
 <style>
-    @font-face {
-      font-family: 'Material Icons';
-      font-style: normal;
-      font-weight: 400;
-      src: url(https://fonts.gstatic.com/s/materialicons/v139/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
-    }
+  @font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialicons/v139/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
+  }
 
-    #main{
-        padding: 0 !important;
-        position: relative;
-    }
+  #main {
+    padding: 0 !important;
+    position: relative;
+  }
 
-    #network-randomisation,
-    #node-list {
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      padding: var(--increment);
-      width: 350px;
-      height: 100%;
-      z-index: 999;
-      background-color: var(--superlight);
-      display: none;
-    }
+  #network-randomisation,
+  #node-list {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    padding: var(--increment);
+    width: 350px;
+    height: 100%;
+    z-index: 999;
+    background-color: var(--superlight);
+    display: none;
+  }
 
-    app-root{
-        height: 100%;
-        width: 100%;
-    }
+  app-root {
+    height: 100%;
+    width: 100%;
+  }
 
-    .material-icons {
-      font-family: 'Material Icons';
-      font-weight: normal;
-      font-style: normal;
-      font-size: 24px;
-      line-height: 1;
-      letter-spacing: normal;
-      text-transform: none;
-      display: inline-block;
-      white-space: nowrap;
-      word-wrap: normal;
-      direction: ltr;
-      -webkit-font-feature-settings: 'liga';
-      -webkit-font-smoothing: antialiased;
-    }
-    html {
-      display: flex;
-      flex: 1;
-      height: 100%
-    }
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
 
-    body {
-      height: 100%;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      font-family: Arial, Helvetica, sans-serif
-    }
+  html {
+    display: flex;
+    flex: 1;
+    height: 100%
+  }
 
-    .mb-3{
-        display: block;
-    }
-    .mb-3:has(.inline){
-        display: flex;
-    }
-    .field-container:has(.form-switch){
-      max-width: 100px;
-    }
-    .help-text{
-      color: var(--text-dark);
-    }
+  body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    font-family: Arial, Helvetica, sans-serif
+  }
 
-    .toolbar-tab-title {
-      margin-bottom: 30px;
-      margin-top: 10px;
-      color: var(--text-superlight);
-    }
+  .mb-3 {
+    display: block;
+  }
+
+  .mb-3:has(.inline) {
+    display: flex;
+  }
+
+  .field-container:has(.form-switch) {
+    max-width: 100px;
+  }
+
+  .help-text {
+    color: var(--text-dark);
+  }
+
+  .toolbar-tab-title {
+    margin-bottom: 30px;
+    margin-top: 10px;
+    color: var(--text-superlight);
+    flex-shrink: 1;
+  }
+
+  .tab-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
 </style>
 {% endblock %}
