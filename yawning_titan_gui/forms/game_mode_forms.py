@@ -440,7 +440,7 @@ class GameModeSearchForm(django_forms.Form):
         cleaned_filters = {}
         for k, v in filters.items():
             if k.endswith(("_min", "_max")):
-                name = k.rstrip("_min").rstrip("_max")
+                name = k[:-4]
                 cleaned_filters[name] = {
                     "min": self.cleaned_data[f"{name}_min"],
                     "max": self.cleaned_data[f"{name}_max"],

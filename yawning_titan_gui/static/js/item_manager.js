@@ -90,7 +90,7 @@ $(document).ready(function(){
     });
 
     // delete icons - search elements
-    $("#search-form .mb-3:not(:first-child)").append(
+    $("#search-form .mb-3:not(:has(*[restrict-selector]))").append(
         `<div class="icon delete">
             <i class="bi bi-trash3"></i>
         </div>`
@@ -165,9 +165,9 @@ function hide_show_items(item_ids){
 function manage_items(operation,item_names=[],item_ids=[],additional_data={}){
     $.ajax({
         type: "POST",
-        url: FILE_MANAGER_URL,
+        url: DB_MANAGER_URL,
         dataType : "json",
-        data: Object.assign({},{"operation":operation,"item_type":FILE_TYPE,"item_ids":item_ids,"item_names":item_names},additional_data),
+        data: Object.assign({},{"operation":operation,"item_type":ITEM_TYPE,"item_ids":item_ids,"item_names":item_names},additional_data),
         success: function(response){
             if (response.load == "reload"){
                 location.reload()
@@ -183,6 +183,7 @@ function manage_items(operation,item_names=[],item_ids=[],additional_data={}){
 
 // wrapper for async post request for config section form processing
 function filter(form_element){
+    console.log("POSTING TO",window.location.href);
     $.ajax({
         type: "POST",
         url: window.location.href,
@@ -192,6 +193,7 @@ function filter(form_element){
             hide_show_items(response.item_ids)
         },
         error: function(response){
+            console.log("ERR",response.message)
         }
     });
 }

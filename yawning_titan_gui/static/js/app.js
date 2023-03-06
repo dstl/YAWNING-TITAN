@@ -37,15 +37,6 @@ $(document).ready(function(){
 
     $('[data-toggle="tooltip"]').tooltip();
 
-    //activate first toolbar button
-    // $(".toolbar-button:first-child").addClass("active");
-
-    //handle toolbar clicks
-    // $(".toolbar-button").click(function(){
-    //     $(".toolbar-button").removeClass("active");
-    //     $(this).addClass("active");
-    // });
-
     $('#sandwich-icon').click(function(){
 		$(this).toggleClass('open');
         $($(this).data("sidebar")).toggleClass('open');
@@ -73,7 +64,7 @@ $(document).ready(function(){
     })
 
     // implement cross updates between range-setter and range sliders
-    $(document).on("keyup",".range-setter",function(){
+    $(document).on("change",".range-setter",function(){
         $(this).siblings("input[type='range']").first().val($(this).val());
     });
     $(document).on("mousemove","input[type='range']",function(){
@@ -174,42 +165,42 @@ function setup_form_multi_range(){
 }
 
 function update_multi_range_right(el){
-    $(el).val(
-        Math.max(
-            $(el).val(),$(el).siblings(".multi-range-input").val()
-        )
-    );
     let multi_range_el = $(el).closest(".multi-range"),
+        value = Math.max(
+            $(el).val(),$(el).siblings(".multi-range-input").val()
+        ),
         children = $(".slider-container",multi_range_el).children();
 
-    if($(multi_range_el).hasClass("float")){
-        value=(100/(parseFloat(el.max)-parseFloat(el.min)))*parseFloat(el.value)-(100/(parseFloat(el.max)-parseFloat(el.min)))*parseFloat(el.min)
-    }else{
-        value=(100/(parseInt(el.max)-parseInt(el.min)))*parseInt(el.value)-(100/(parseInt(el.max)-parseInt(el.min)))*parseInt(el.min)
-    }
 
-    $(children.get(1)).css("width",(100-value)+"%");
-    $(children.get(2)).css("right",(100-value)+'%');
-    $(children.get(4)).css("left",value+'%');
+    if($(multi_range_el).hasClass("integer")){
+        value = Math.round(value);
+    }
+    percent = (100/(parseFloat(el.max)-parseFloat(el.min)))*value-(100/(parseFloat(el.max)-parseFloat(el.min)))*parseFloat(el.min);
+
+    $(el).val(value);
+
+    $(children.get(1)).css("width",(100-percent)+"%");
+    $(children.get(2)).css("right",(100-percent)+'%');
+    $(children.get(4)).css("left",percent+'%');
     $(".range-setter.right",multi_range_el).val($(el).val());
 }
 
 function update_multi_range_left(el){
-    $(el).val(
-        Math.min(
-            $(el).val(),$(el).siblings(".multi-range-input").val()
-        )
-    );
     let multi_range_el = $(el).closest(".multi-range"),
+        value = Math.min(
+            $(el).val(),$(el).siblings(".multi-range-input").val()
+        ),
         children = $(".slider-container",multi_range_el).children();
 
-    if($(multi_range_el).hasClass("float")){
-        value=(100/(parseFloat(el.max)-parseFloat(el.min)))*parseFloat(el.value)-(100/(parseFloat(el.max)-parseFloat(el.min)))*parseFloat(el.min)
-    }else{
-        value=(100/(parseInt(el.max)-parseInt(el.min)))*parseInt(el.value)-(100/(parseInt(el.max)-parseInt(el.min)))*parseInt(el.min)
+    if($(multi_range_el).hasClass("integer")){
+        value = Math.round(value);
     }
-    $(children.get(0)).css("width",value+"%");
-    $(children.get(2)).css("left",value+'%');
-    $(children.get(3)).css("left",value+'%');
+
+    let percent = (100/(parseFloat(el.max)-parseFloat(el.min)))*value-(100/(parseFloat(el.max)-parseFloat(el.min)))*parseFloat(el.min);
+
+    $(el).val(value);
+    $(children.get(0)).css("width",percent+"%");
+    $(children.get(2)).css("left",percent+'%');
+    $(children.get(3)).css("left",percent+'%');
     $(".range-setter.left",multi_range_el).val($(el).val());
 }
