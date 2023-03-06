@@ -15,7 +15,8 @@ describe('AppComponent', () => {
     selectedElementEvent: new Subject()
   }
   const stubIteractionService = {
-    keyInput: () => { }
+    keyInput: () => { },
+    selectedItem: new Subject()
   }
 
   beforeEach(async () => {
@@ -44,11 +45,19 @@ describe('AppComponent', () => {
   it('should call toggleNodePropertiesSidenav when the selectedElement is changed', fakeAsync(() => {
     const spy = spyOn<any>(component, 'toggleNodePropertiesSidenav').and.callFake(() => { });
 
-    stubCytoscapeService.selectedElementEvent.next({});
+    stubIteractionService.selectedItem.next({});
 
     tick();
     expect(spy).toHaveBeenCalled();
   }));
+
+  describe('METHOD: handleKeyboardEvent', () => {
+    it('should trigger the keyInput method in the interaction service', () => {
+      const spy = spyOn(component, 'handleKeyboardEvent');
+      component.handleKeyboardEvent(null);
+      expect(spy).toHaveBeenCalled();
+    });
+  });
 
   describe('METHOD: toggleNodePropertiesSidenav', () => {
     it('should do nothing if the selected element is an edge', () => {
