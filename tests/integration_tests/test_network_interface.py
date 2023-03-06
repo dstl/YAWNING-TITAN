@@ -1,9 +1,4 @@
-import os
-
 import pytest
-
-from tests import TEST_CONFIG_PATH_OLD
-from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 
 @pytest.mark.integration_test

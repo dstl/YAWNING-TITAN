@@ -1,6 +1,5 @@
 import pytest
 
-
 from yawning_titan.exceptions import ConfigGroupValidationError
 from yawning_titan.game_modes.components.blue_agent import (
     Blue,
@@ -13,13 +12,13 @@ from yawning_titan.game_modes.components.blue_agent import (
 
 @pytest.fixture
 def default_blue(default_game_mode) -> Blue:
-    """Create a blue agent using the default config."""
+    """get blue from default game mode."""
     return default_game_mode.blue
 
 
 # --- Tier 1 groups ---
 
-
+@pytest.mark.unit_test
 def test_make_node_safe_increase_and_randomise_vulnerability():
     """Tests that making node safe cannot increase and randomise vulnerability."""
     make_node_safe = MakeNodeSafeGroup()
@@ -39,6 +38,7 @@ def test_make_node_safe_increase_and_randomise_vulnerability():
         raise make_node_safe.validation.fail_exceptions[0]
 
 
+@pytest.mark.unit_test
 def test_no_max_number_deceptive_nodes():
     """Tests using deceptive nodes but there being 0 as the max number."""
     deceptive_nodes = DeceptiveNodeGroup()
@@ -60,6 +60,7 @@ def test_no_max_number_deceptive_nodes():
 # --- Tier 2 groups ---
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize(
     ("reconnect_node", "isolate_node"), ((True, False), (False, True))
 )
@@ -81,6 +82,7 @@ def test_reconnect_isolate_config(reconnect_node: bool, isolate_node: bool):
         raise action_set.validation.fail_exceptions[0]
 
 
+@pytest.mark.unit_test
 @pytest.mark.parametrize(
     ("on_scan_deceptive_node", "on_scan"), ((0.5, 0.6), (0.5, 0.5))
 )
@@ -106,6 +108,7 @@ def test_lower_chance_detecting_deceptive_node_intrusion_on_scan_fail(
         raise intrusion_discovery.validation.fail_exceptions[0]
 
 
+@pytest.mark.unit_test
 def test_lower_chance_detecting_deceptive_node_intrusion_on_scan_pass():
     """Tests that the validation passes when detection chances for deceptive and standard nodes are both 1."""
     intrusion_discovery = BlueIntrusionDiscoveryGroup()
@@ -120,6 +123,7 @@ def test_lower_chance_detecting_deceptive_node_intrusion_on_scan_pass():
 # --- Tier 3 groups ---
 
 
+@pytest.mark.unit_test
 def test_using_scan_with_assured_immediate_detection():
     """Tests that if the 'scan' action is used then an intrusion cannot be immediately detected."""
     blue = Blue()
@@ -141,6 +145,7 @@ def test_using_scan_with_assured_immediate_detection():
         raise blue.validation.fail_exceptions[0]
 
 
+@pytest.mark.unit_test
 def test_not_using_scan_without_assured_immediate_detection():
     """Tests that if the 'scan' action is not used then an intrusion must be immediately detected."""
     blue = Blue()
@@ -161,6 +166,7 @@ def test_not_using_scan_without_assured_immediate_detection():
         raise blue.validation.fail_exceptions[0]
 
 
+@pytest.mark.unit_test
 def test_default_blue_from_legacy(default_blue: Blue, legacy_default_game_mode_dict):
     """Create a blue agent using the default config file."""
     blue = Blue()

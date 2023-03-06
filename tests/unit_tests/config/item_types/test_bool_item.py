@@ -34,6 +34,7 @@ def test_bool_properties_validation(allow_null, test_val, passed, fail_reason):
         assert fail_reason in validation.fail_reasons
 
 
+@pytest.mark.unit_test
 def test_bool_item_incorrect_properties_type():
     """Tests instantiation fails with incorrect properties type."""
     with pytest.raises(TypeError):

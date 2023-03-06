@@ -1,5 +1,5 @@
 from logging import getLogger
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 from gym import spaces
 from stable_baselines3.common.env_checker import check_env
@@ -53,7 +53,7 @@ def create_env(use_same_net: bool = False) -> GenericNetworkEnv:
     return env
 
 
-def init_dcbo_agent(action_probabs: Tuple[None, List[float]]) -> DCBOAgent:
+def init_dcbo_agent(action_probabs: Optional[List[float]] = None) -> DCBOAgent:
     """
     Create a DCBOAgent object with a set of initial action probabilities.
 

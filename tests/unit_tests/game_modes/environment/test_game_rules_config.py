@@ -1,29 +1,21 @@
 import pytest
 
-from tests.unit_tests.config import (
-    get_default_config_dict,
-    get_default_config_dict_legacy,
-)
 from yawning_titan.exceptions import ConfigGroupValidationError
 from yawning_titan.game_modes.components.game_rules import GameRules
 
 
 @pytest.fixture
-def default_game_rules() -> GameRules:
-    """Create a game rules instance using the default config."""
-    game_rules = GameRules()
-    game_rules.set_from_dict(get_default_config_dict()["game_rules"])
-    return game_rules
+def default_game_rules(default_game_mode) -> GameRules:
+    """Get game_rules from default game mode."""
+    return default_game_mode.game_rules
 
 
-@pytest.fixture
-def game_rules() -> GameRules:
-    """Create a game rules instance."""
-    return GameRules()
 
 
-def test_grace_period_longer_than_game_length(game_rules: GameRules):
+@pytest.mark.unit_test
+def test_grace_period_longer_than_game_length():
     """Test that the grace period cannot exceed the length of the game."""
+    game_rules = GameRules()
     game_rules.grace_period_length.value = 100
     game_rules.max_steps.value = 50
 
@@ -39,12 +31,15 @@ def test_grace_period_longer_than_game_length(game_rules: GameRules):
         raise game_rules.validation.fail_exceptions[0]  #
 
 
+@pytest.mark.unit_test
 def test_default_game_rules_from_legacy(
-    default_game_rules: GameRules, game_rules: GameRules
+    default_game_rules: GameRules,
+        legacy_default_game_mode_dict
 ):
     """Create a game_rules instance using the default config file."""
+    game_rules = GameRules()
     game_rules.set_from_dict(
-        get_default_config_dict_legacy()["GAME_RULES"], legacy=True
+        legacy_default_game_mode_dict["GAME_RULES"], legacy=True
     )
     assert game_rules.to_dict() == default_game_rules.to_dict()
     assert game_rules == default_game_rules
