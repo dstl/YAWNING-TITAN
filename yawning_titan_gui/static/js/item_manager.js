@@ -84,6 +84,7 @@ $(document).ready(function(){
     });
 
     // search form
+
     $("*[restrict-selector]").on("change",function(){
         $(`.${$(this).val()}`).removeClass("hidden");
     });
@@ -96,11 +97,21 @@ $(document).ready(function(){
     );
     $("#search-form .delete").click(function(){
         let container = $(this).closest(".mb-3"),
-            left_setter =  $(container).find(".range-setter.left"),
-            right_setter = $(container).find(".range-setter.right");
-        $(left_setter).val($(left_setter).attr("min"));
-        $(right_setter).val($(right_setter).attr("max"));
-        $(container).addClass("hidden");
+            input;
+        if ($(container).find(".multi-range").length){
+            let left_setter =  $(container).find(".range-setter.left"),
+                right_setter = $(container).find(".range-setter.right");
+            input = $(container).find(".multi-range");
+            $(left_setter).val($(left_setter).attr("min"));
+            $(right_setter).val($(right_setter).attr("max"));
+        }else if($(container).find(".form-check-input").length){
+            input = $(container).find(".form-check-input");
+            $(input).prop("checked",false);
+        }
+
+        $(input).addClass("hidden");
+        $("*[restrict-selector] option:selected").prop("selected", false); // update selected filters
+        $("#search-form").trigger("change"); // update filters
     });
 
     $("#search-form").change(function(){
@@ -109,7 +120,7 @@ $(document).ready(function(){
 });
 
 function toggle_delete_all(){
-    if($('.form-check-input:checkbox:checked').length > 0){
+    if($('.list-item .form-check-input:checkbox:checked').length > 0){
         $("#delete-all").removeClass("hidden")
     }else{
         $("#delete-all").addClass("hidden")
@@ -131,11 +142,23 @@ function search_form_data(form_element){
         data[$(el).attr("name")+"_min"] = $(el).find(".range-setter.left").first().val();
         data[$(el).attr("name")+"_max"] = $(el).find(".range-setter.right").first().val();
     });
-    console.log("DATA",data);
-    $(form_element).find(":not(.multi-range)").each(function(i,el){
-        data[$(el).attr("name")] = $(el).val()
+    $(form_element).find(".form-check-input").each(function(i,el){
+        data[$(el).attr("name")] = $(el).is(':checked') ? "true" : "false";
+    });
+    $(form_element).find(".form-control").each(function(i,el){
+        data[$(el).attr("name")] = $(el).val();
     });
     return data
+}
+
+function hide_show_items(item_ids){
+    $(".list-item").addClass("hidden");
+    console.log("IDS",item_ids);
+    $(".list-item").each(function(i,el){
+        if(item_ids.includes($(el).data("item-id"))){
+            $(el).removeClass("hidden")
+        }
+    });
 }
 
 // wrapper for async post request for managing config items
@@ -166,6 +189,7 @@ function filter(form_element){
         data: search_form_data(form_element),
         dataType: "json",
         success: function(response){
+            hide_show_items(response.item_ids)
         },
         error: function(response){
         }

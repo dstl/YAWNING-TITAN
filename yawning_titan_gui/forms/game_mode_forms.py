@@ -1,4 +1,3 @@
-from collections import defaultdict
 from dataclasses import dataclass
 from typing import Dict, List
 
@@ -344,8 +343,10 @@ class GameModeFormManager:
 
 
 class GameModeSearchForm(django_forms.Form):
+    """A Django form object to represent the filterable components of a :class: `~yawning_titan.game_modes.game_mode.GameMode`."""
+
     def __init__(self, *args, **kwargs):
-        """"""
+        """A Django form object to represent the filterable components of a :class: `~yawning_titan.game_modes.game_mode.GameMode`."""
         field_elements = {}
         fields = {}
         searchable_items = []
@@ -402,13 +403,13 @@ class GameModeSearchForm(django_forms.Form):
                             widget=widgets.CheckboxInput(
                                 attrs={
                                     "role": "switch",
-                                    "class": f"{name} form-check-input hidden",
+                                    "class": f"{name} form-check-input inline hidden",
                                 }
                             ),
                             required=False,
                             help_text=item.doc,
                             label=name,
-                            initial=True,
+                            initial=False,
                         )
                         searchable_items.append(name)
 
@@ -432,7 +433,7 @@ class GameModeSearchForm(django_forms.Form):
 
     @property
     def filters(self):
-        """"""
+        """Generate a dictionary of ranges or values that a game mode must have to be a valid query result."""
         filters = {
             n: self.cleaned_data[n] for n in self.changed_data if n != "elements"
         }

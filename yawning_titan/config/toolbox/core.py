@@ -6,6 +6,7 @@ from typing import Any, Dict, Hashable, List, Optional, Union
 
 import yaml
 
+from yawning_titan.db.query import YawningTitanQuery
 from yawning_titan.exceptions import (
     ConfigGroupValidationError,
     ConfigItemValidationError,
@@ -364,6 +365,8 @@ class ConfigItem:
     """The items value."""
     doc: Optional[str] = None
     """The items doc."""
+    query: Optional[YawningTitanQuery] = None
+    """The items query within the database."""
     alias: str = field(default=None, repr=False)
     """The alias of the config item, i.e. its representation from the original config."""
     depends_on: List[str] = field(default_factory=list, repr=False)
