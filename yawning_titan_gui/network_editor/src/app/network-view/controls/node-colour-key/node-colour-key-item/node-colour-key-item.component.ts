@@ -18,6 +18,12 @@ export class NodeColourKeyItemComponent implements OnInit {
     this.setNodeStyle(this.el.nativeElement.querySelector('.node-key-item'), this.style)
   }
 
+  /**
+   * Set the style for the node colour key
+   * @param el
+   * @param nodeStyle
+   * @returns
+   */
   private setNodeStyle(el: HTMLElement, nodeStyle: cytoscape.Css.Node | cytoscape.Css.Edge | cytoscape.Css.Core) {
     if (!el || !nodeStyle) {
       return;
@@ -35,7 +41,7 @@ export class NodeColourKeyItemComponent implements OnInit {
 
     // apply background image if exists
     if (nodeStyle['background-image']) {
-      el.style.backgroundImage = `url(${window.location.origin}/${nodeStyle['background-image']})`;
+      el.style.backgroundImage = `url(${nodeStyle['background-image']})`;
       el.style.backgroundSize = '80% 80%';
       el.style.backgroundRepeat = 'no-repeat';
       el.style.backgroundPosition = 'center center';
