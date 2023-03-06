@@ -11,8 +11,7 @@ def test_new_vulnerabilities(create_yawning_titan_run):
     """Test that new vulnerabilities are chosen at each reset if activated within configuration."""
     # check that new vulnerabilities are being chosen (randomly)
     yt_run = create_yawning_titan_run(
-        game_mode_name="new_high_value_node",
-        network_name="mesh_15"
+        game_mode_name="new_high_value_node", network_name="mesh_15"
     )
     env = yt_run.env
     check_env(env, warn=True)

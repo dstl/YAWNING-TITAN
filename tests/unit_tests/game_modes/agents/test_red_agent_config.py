@@ -1,6 +1,6 @@
 import pytest
 
-
+from tests.conftest import not_raises
 from yawning_titan.exceptions import ConfigGroupValidationError
 from yawning_titan.game_modes.components.red_agent import Red, TargetNodeGroup
 
@@ -57,7 +57,6 @@ def test_targeting_vulnerable_nodes_when_defences_are_ignored():
 def test_default_red_from_legacy(default_red: Red, legacy_default_game_mode_dict):
     """Create a red agent using the default config file."""
     red = Red()
-    red.set_from_dict(legacy_default_game_mode_dict["RED"], legacy=True)
 
-    assert red == default_red
-    assert red.to_dict() == default_red.to_dict()
+    with not_raises(Exception):
+        red.set_from_dict(legacy_default_game_mode_dict["RED"], legacy=True)

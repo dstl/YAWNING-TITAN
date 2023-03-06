@@ -18,7 +18,7 @@ RED:
   red_can_attack_from_any_red_node: True
 
   # The red agent naturally spreads its influence every time-step
-  red_can_naturally_spread: True
+  red_can_naturally_spread: False
   # If a node is connected to a compromised node what chance does it have to become compromised every turn through natural spreading
   chance_to_spread_to_connected_node: 0.05
   # If a node is not connected to a compromised node what chance does it have to become randomly infected through natural spreading
@@ -166,13 +166,13 @@ BLUE:
 
   # CHOOSE AT LEAST ONE OF THE FOLLOWING 8 ITEMS
   # Blue picks a node and reduces the vulnerability score
-  blue_uses_reduce_vulnerability: False
+  blue_uses_reduce_vulnerability: True
   # Blue picks a node and restores everything about the node to its state at the beginning of the game
-  blue_uses_restore_node: True
+  blue_uses_restore_node: False
   # Blue fixes a node but does not restore it to its initial state
   blue_uses_make_node_safe: True
   # Blue scans all of the nodes to try and detect any red intrusions
-  blue_uses_scan: True
+  blue_uses_scan: False
   # Blue disables all of the connections to and from a node
   blue_uses_isolate_node: False
   # Blue re-connects all of the connections to and from a node

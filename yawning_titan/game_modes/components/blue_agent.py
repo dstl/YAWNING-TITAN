@@ -6,10 +6,7 @@ from yawning_titan.config.core import ConfigGroup, ConfigGroupValidation
 from yawning_titan.config.groups.core import NodeChanceGroup, UseChancesGroup
 from yawning_titan.config.groups.validation import AnyUsedGroup
 from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
-from yawning_titan.config.item_types.float_item import (
-    FloatItem,
-    FloatProperties,
-)
+from yawning_titan.config.item_types.float_item import FloatItem, FloatProperties
 from yawning_titan.config.item_types.int_item import IntItem, IntProperties
 from yawning_titan.exceptions import ConfigGroupValidationError
 
@@ -338,11 +335,11 @@ class Blue(ConfigGroup):
 
     def __init__(
         self,
-        doc: Optional[str] = None,
         action_set: Optional[BlueActionSetGroup] = None,
         intrusion_discovery_chance: Optional[BlueIntrusionDiscoveryGroup] = None,
         attack_discovery: Optional[BlueAttackDiscoveryGroup] = None,
     ):
+        doc = "The configuration of the blue agent"
         self.action_set: BlueActionSetGroup = (
             action_set
             if action_set

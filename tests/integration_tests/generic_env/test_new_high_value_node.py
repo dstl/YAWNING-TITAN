@@ -13,8 +13,7 @@ def test_new_high_value_node(create_yawning_titan_run):
     """Test the high value node gaol mechanic - focus on selection."""
     # check that a new high value node is being chosen
     yt_run = create_yawning_titan_run(
-        game_mode_name="new_high_value_node",
-        network_name="mesh_15"
+        game_mode_name="new_high_value_node", network_name="mesh_15"
     )
     env = yt_run.env
     check_env(env, warn=True)

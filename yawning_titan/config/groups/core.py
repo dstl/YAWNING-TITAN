@@ -3,10 +3,7 @@ from typing import Optional, Union
 from yawning_titan.config.core import ConfigGroup, ConfigGroupValidation
 from yawning_titan.config.groups.validation import AnyNonZeroGroup
 from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
-from yawning_titan.config.item_types.float_item import (
-    FloatItem,
-    FloatProperties,
-)
+from yawning_titan.config.item_types.float_item import FloatItem, FloatProperties
 from yawning_titan.config.item_types.int_item import IntItem, IntProperties
 from yawning_titan.exceptions import ConfigGroupValidationError
 

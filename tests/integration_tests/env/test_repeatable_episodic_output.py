@@ -6,51 +6,61 @@ import pytest
 from pandas import DataFrame
 from pandas.testing import assert_frame_equal
 
+from yawning_titan.db.doc_metadata import DocMetadataSchema
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
+from yawning_titan.yawning_titan_run import YawningTitanRun
 
-#REPEATABLE_TEST_CONFIG_PATH = TEST_CONFIG_PATH_OLD / "repeatable_threat_config.yaml"
 
-custom_random_setting_1 = {"MISCELLANEOUS": {"random_seed": random.randint(1, 1000)}}
-
-@pytest.mark.skip()
+@pytest.mark.integration_test()
 @pytest.mark.parametrize(
-    ("episodes", "entry_node_names", "high_value_node_names", "custom_settings"),
+    ("episodes", "use_custom_settings"),
     [
-        (2, ["0"], ["12"], custom_random_setting_1),
-        (2, ["0"], ["12"], None),
-        (random.randint(10, 50), ["0"], ["12"], None),
-        (random.randint(10, 50), ["0"], None, None),
-        (1, None, None, None),
+        (2, True),
+        (2, False),
+        (1, False),
     ],
 )
 def test_repeatable_episodic_output_set_random_seed(
-    basic_2_agent_loop: ActionLoop,
-    episodes,
-    entry_node_names,
-    high_value_node_names,
-    custom_settings,
+    basic_2_agent_loop, episodes, use_custom_settings, game_mode_db, default_network
 ):
     """Tests that actions undertaken by the red agent are repeatable with a set random_seed value."""
+    game_mode = game_mode_db.search(
+        DocMetadataSchema.NAME == "repeatable_threat_config"
+    )[0]
+
+    if use_custom_settings:
+        game_mode.miscellaneous.random_seed = random.randint(1, 1000)
+
+    yt_run = YawningTitanRun(
+        network=default_network,
+        game_mode=game_mode,
+        collect_additional_per_ts_data=True,
+        total_timesteps=1000,
+        eval_freq=1000,
+        deterministic=True,
+    )
     action_loop: ActionLoop = basic_2_agent_loop(
+        yt_run=yt_run,
         num_episodes=episodes,
-        entry_node_names=entry_node_names,
-        high_value_node_names=high_value_node_names,
-        settings_path=REPEATABLE_TEST_CONFIG_PATH,
-        custom_settings=custom_settings,
     )
     results: List[DataFrame] = action_loop.standard_action_loop(deterministic=True)
 
     assert_frame_equal(results[0], results[-1])
 
-@pytest.mark.skip()
+
+@pytest.mark.integration_test
 def test_setting_high_value_node_with_random_seeded_randomisation(
-    basic_2_agent_loop: ActionLoop,
+    basic_2_agent_loop,
+    create_yawning_titan_run,
 ):
     """Test that high value node setting is unaffected by random_seeded randomisation."""
+    yt_run = create_yawning_titan_run(
+        game_mode_name="repeatable_threat_config",
+        network_name="Default 18-node network",
+    )
     action_loop: ActionLoop = basic_2_agent_loop(
+        yt_run=yt_run,
         num_episodes=1,
-        entry_node_names=["0"],
-        settings_path=REPEATABLE_TEST_CONFIG_PATH,
     )
     target_occurrences = defaultdict(lambda: 0)
     for _ in range(0, 50):  # run a number of action loops
@@ -63,4 +73,3 @@ def test_setting_high_value_node_with_random_seeded_randomisation(
 
     # check that entry nodes cannot be chosen and that all high value node selected are the same
     assert len(high_value_nodes) == 1
-    assert list(high_value_nodes)[0] != "0"

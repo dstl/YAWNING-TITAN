@@ -1,10 +1,6 @@
 # -- Validation groups --
 
-from yawning_titan.config.core import (
-    ConfigGroup,
-    ConfigGroupValidation,
-    ConfigItem,
-)
+from yawning_titan.config.core import ConfigGroup, ConfigGroupValidation, ConfigItem
 from yawning_titan.config.item_types.bool_item import BoolItem
 from yawning_titan.config.item_types.float_item import FloatItem
 from yawning_titan.config.item_types.int_item import IntItem

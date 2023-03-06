@@ -15,7 +15,6 @@ class Rewards(ConfigGroup):
 
     def __init__(
         self,
-        doc: Optional[str] = None,
         for_loss: Optional[int] = 0,
         for_reaching_max_steps: Optional[int] = 0,
         end_rewards_are_multiplied_by_end_state: Optional[bool] = False,
@@ -23,6 +22,8 @@ class Rewards(ConfigGroup):
         function: Optional[str] = "standard_rewards",
     ):
         from yawning_titan.envs.generic.core import reward_functions
+
+        doc = "The rewards the blue agent gets for different game states"
 
         self.for_loss = IntItem(
             value=for_loss,

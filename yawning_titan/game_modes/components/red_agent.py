@@ -10,10 +10,7 @@ from yawning_titan.config.groups.core import (
 )
 from yawning_titan.config.groups.validation import AnyNonZeroGroup, AnyUsedGroup
 from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
-from yawning_titan.config.item_types.float_item import (
-    FloatItem,
-    FloatProperties,
-)
+from yawning_titan.config.item_types.float_item import FloatItem, FloatProperties
 from yawning_titan.config.item_types.int_item import IntItem, IntProperties
 from yawning_titan.config.item_types.str_item import StrItem, StrProperties
 from yawning_titan.exceptions import ConfigGroupValidationError
@@ -392,6 +389,7 @@ class Red(ConfigGroup):
         natural_spreading: Optional[RedNaturalSpreadingGroup] = None,
         target_mechanism: Optional[RedTargetMechanismGroup] = None,
     ):
+        doc = "The configuration of the red agent"
         self.agent_attack = (
             agent_attack
             if agent_attack

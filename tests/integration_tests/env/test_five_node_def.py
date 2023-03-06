@@ -15,18 +15,18 @@ def test_n_machines(n_machines: int) -> None:
 @pytest.mark.integration_test
 @pytest.mark.parametrize(
     (
-            "n_machines",
-            "attacker_skill",
-            "attack_success_threshold",
-            "no_compromised_machine_loss",
+        "n_machines",
+        "attacker_skill",
+        "attack_success_threshold",
+        "no_compromised_machine_loss",
     ),
     ((10, 60, 0.5, 4), (5, 40, 0.2, 4), (15, 20, 0.9, 3)),
 )
 def test_environment_init(
-        n_machines: int,
-        attacker_skill: int,
-        attack_success_threshold: float,
-        no_compromised_machine_loss: int,
+    n_machines: int,
+    attacker_skill: int,
+    attack_success_threshold: float,
+    no_compromised_machine_loss: int,
 ) -> None:
     """
     Test environment creation and value initialisation with a range of values.

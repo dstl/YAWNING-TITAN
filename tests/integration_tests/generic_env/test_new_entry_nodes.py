@@ -9,8 +9,7 @@ from stable_baselines3.common.env_checker import check_env
 def test_new_entry_nodes(create_yawning_titan_run):
     """Test the selection of entry nodes and validate they are correct."""
     yt_run = create_yawning_titan_run(
-        game_mode_name="new_entry_nodes",
-        network_name="mesh_18"
+        game_mode_name="new_entry_nodes", network_name="mesh_18"
     )
     env = yt_run.env
     check_env(env, warn=True)
@@ -30,8 +29,6 @@ def test_new_entry_nodes(create_yawning_titan_run):
     # check that entry nodes cannot be chosen
     assert len(entry_nodes.keys()) == 18
     # check that each node is roughly chosen equally
-    target_count = (
-        10000 / len(entry_nodes.values()) * 3
-    )  # num entry nodes = 3
+    target_count = 10000 / len(entry_nodes.values()) * 3  # num entry nodes = 3
     for i in entry_nodes.values():
         assert np.isclose(i, target_count, atol=(target_count * 0.1))

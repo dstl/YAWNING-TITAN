@@ -100,12 +100,12 @@ class GameRules(ConfigGroup):
 
     def __init__(
         self,
-        doc: Optional[str] = None,
         grace_period_length: Optional[int] = 0,
         max_steps: Optional[int] = 0,
         blue_loss_condition: Optional[BlueLossConditionGroup] = None,
         network_compatibility: Optional[NetworkCompatibilityGroup] = None,
     ):
+        doc = "The rules of the overall game mode"
         self.grace_period_length = IntItem(
             value=grace_period_length,
             doc=(

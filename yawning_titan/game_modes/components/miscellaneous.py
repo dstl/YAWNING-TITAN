@@ -14,10 +14,10 @@ class Miscellaneous(ConfigGroup):
 
     def __init__(
         self,
-        doc: Optional[str] = None,
         random_seed: Optional[int] = None,
         output_timestep_data_to_json: Optional[bool] = False,
     ):
+        doc = "Additional options"
         self.random_seed = IntItem(
             value=random_seed,
             doc="Seed to inform the random number generation of python and numpy thereby creating deterministic game outputs",
