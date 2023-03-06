@@ -26,6 +26,9 @@
                 </h2>
                 <div id="advanced-search-items" class="accordion-collapse collapse" aria-labelledby="advanced-search-header" data-bs-parent="#search-accordion">
                     <div class="accordion-body">
+                        <!-- {% if item_type == "game_mode" %}
+                            {% include 'elements/el_game_mode_dropdown_parent.html' with element=game_mode %}
+                        {% endif %} -->
                        <form id="search-form">
                             {% include 'elements/el_form_fields.html' with form=search_form protected=False %}
                        </form>

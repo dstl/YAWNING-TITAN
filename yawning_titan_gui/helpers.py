@@ -1,7 +1,7 @@
 from functools import reduce
 from operator import and_
 from pathlib import Path
-from typing import Any, List
+from typing import Any, Dict, List
 
 from django.urls import reverse
 
@@ -64,17 +64,21 @@ class NetworkManager:
         ]
 
     @classmethod
-    def filter(cls, attribute: str, min, max) -> List[str]:
+    def filter(cls, filters: Dict[str, dict]) -> List[str]:
         """Call the filter method for the appropriate attribute.
 
         :param attribute: the string name of a network attribute to filter
         :param min: the minimum value of the attribute (inclusive)
         :param max: the maximum value of the attribute (inclusive)
         """
-        attr = f"filter_{attribute}"
-        if not hasattr(cls, attr):
-            return None
-        return getattr(cls, attr)(min, max)
+        networks: List[set] = []
+        for k, v in filters.items():
+            attr = f"filter_{k}"
+            if hasattr(cls, attr):
+                networks.append(set(getattr(cls, attr)(v["min"], v["max"])))
+        if len(networks) == 1:
+            return list(networks[0])
+        return list(networks[0].intersection(*[networks][1:]))
 
 
 class GameModeManager:

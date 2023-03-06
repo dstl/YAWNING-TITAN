@@ -101,6 +101,7 @@ textarea{
     position: relative;
     display: block;
     flex-wrap: wrap;
+    height: 5rem;
     margin: var(--increment);
     margin-top: calc(var(--increment) * 3) !important;
     margin-bottom: calc(var(--increment) * 3) !important;
@@ -132,6 +133,11 @@ textarea{
     position: absolute;
     top: 5px;
     right: 5px;
+}
+#search-form{
+    min-height: 0;
+    max-height: 500px;
+    overflow-y: auto;
 }
 
 

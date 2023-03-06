@@ -55,6 +55,16 @@ class ConfigBase(ABC):
             if k not in self.get_config_elements() and not k.startswith("_")
         }
 
+    @property
+    def config_items(self):
+        """Property to represent the :class: `~yawning_titan.config.toolbox.core.ConfigItem` children of the group."""
+        return self.get_config_elements(ConfigItem)
+
+    @property
+    def config_groups(self):
+        """Property to represent the :class: `~yawning_titan.config.toolbox.core.ConfigGroup` children of the group."""
+        return self.get_config_elements(ConfigGroup)
+
     def stringify(self):
         """Represent the class as a string.
 

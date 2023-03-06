@@ -7,8 +7,8 @@
 <script src="{% static 'js/item_manager.js' %}"></script>
 <script src="{% static 'js/networks.js' %}"></script>
 <script type="text/javascript">
-    const FILE_MANAGER_URL = "{% url 'db manager' %}";
-    const FILE_TYPE = "network";
+    const DB_MANAGER_URL = "{% url 'db manager' %}";
+    const ITEM_TYPE = "{{item_type}}";
 </script>
 {% endblock %}
 

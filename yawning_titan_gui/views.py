@@ -1,4 +1,5 @@
 import json
+import traceback
 from io import StringIO
 
 from django.http import Http404, HttpRequest, JsonResponse
@@ -18,6 +19,7 @@ from yawning_titan_gui.forms.game_mode_forms import (
 )
 from yawning_titan_gui.forms.network_forms import (
     NetworkFormManager,
+    NetworkSearchForm,
     NetworkTemplateForm,
 )
 from yawning_titan_gui.helpers import (
@@ -147,9 +149,11 @@ class GameModesView(View):
             {
                 "sidebar": get_sidebar(),
                 "toolbar": get_toolbar("Manage game modes"),
+                "item_type": "game_mode",
                 "dialogue_boxes": dialogue_boxes,
                 "game_modes": GameModeManager.get_game_mode_data(),
                 "search_form": GameModeSearchForm(),
+                "game_mode": GameMode(),
             },
         )
 
@@ -160,15 +164,22 @@ class GameModesView(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
+        print("POSTED", request.POST)
         search_form = GameModeSearchForm(request.POST)
-        if search_form.is_valid():
-            if search_form.filters:
-                game_modes = GameModeManager.filter(search_form.filters)
-            else:
-                game_modes = GameModeManager.db.all()
-            return JsonResponse({"item_ids": [g.doc_metadata.uuid for g in game_modes]})
-
-        return JsonResponse({"message": search_form.errors})
+        try:
+            if search_form.is_valid():
+                print("FILTERS", search_form.filters)
+                if search_form.filters:
+                    game_modes = GameModeManager.filter(search_form.filters)
+                else:
+                    game_modes = GameModeManager.db.all()
+                return JsonResponse(
+                    {"item_ids": [g.doc_metadata.uuid for g in game_modes]}
+                )
+        except Exception as e:
+            print("ERR", e, traceback.print_exc())
+        print("%%", search_form.errors)
+        return JsonResponse({"message": search_form.errors}, status=500)
 
 
 class NetworksView(View):
@@ -181,43 +192,7 @@ class NetworksView(View):
         :param: request: the Django page `request` object containing the html data for `networks.html` and the server GET / POST request bodies.
         """
         networks = NetworkManager.db.all()
-        range_bound_items = [
-            {
-                "name": "entry_nodes",
-                "min": min(
-                    [
-                        len(network.entry_nodes) if network.entry_nodes else 0
-                        for network in networks
-                    ]
-                ),
-                "max": max(
-                    [
-                        len(network.entry_nodes) if network.entry_nodes else 0
-                        for network in networks
-                    ]
-                ),
-            },
-            {
-                "name": "high_value_nodes",
-                "min": min(
-                    [
-                        len(network.high_value_nodes) if network.high_value_nodes else 0
-                        for network in networks
-                    ]
-                ),
-                "max": max(
-                    [
-                        len(network.high_value_nodes) if network.high_value_nodes else 0
-                        for network in networks
-                    ]
-                ),
-            },
-            {
-                "name": "network_nodes",
-                "min": min([len(network.nodes) for network in networks]),
-                "max": max([len(network.nodes) for network in networks]),
-            },
-        ]
+
         dialogue_boxes = [
             {
                 "id": "delete-dialogue",
@@ -245,8 +220,9 @@ class NetworksView(View):
             {
                 "sidebar": get_sidebar(),
                 "toolbar": get_toolbar("Manage networks"),
+                "item_type": "network",
                 "networks": [network.doc_metadata for network in networks],
-                "range_bound_items": range_bound_items,
+                "search_form": NetworkSearchForm(),
                 "dialogue_boxes": dialogue_boxes,
             },
         )
@@ -258,15 +234,15 @@ class NetworksView(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        return JsonResponse(
-            {
-                "item_ids": NetworkManager.filter(
-                    request.POST.get("attribute"),
-                    int(request.POST.get("min")),
-                    int(request.POST.get("max")),
-                )
-            }
-        )
+        search_form = NetworkSearchForm(request.POST)
+        if search_form.is_valid():
+            if search_form.filters:
+                networks = NetworkManager.filter(search_form.filters)
+            else:
+                networks = [n.doc_metadata.uuid for n in NetworkManager.db.all()]
+            return JsonResponse({"item_ids": networks})
+
+        return JsonResponse({"message": search_form.errors})
 
 
 class NetworkCreator(View):
