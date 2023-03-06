@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CytoscapeService } from './services/cytoscape/cytoscape.service';
-import { ElementType } from './services/cytoscape/graph-objects';
+import { ElementType, SelectedGraphRef as SelectedGraphItemRef } from './services/cytoscape/graph-objects';
 import { NodePropertiesSidenavComponent } from './node-properties/node-properties-sidenav/node-properties-sidenav.component';
 import { InteractionService } from './services/interaction/interaction.service';
 import { NetworkService } from './network-class/network.service';
@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
    * @param element
    * @returns
    */
-  private toggleNodePropertiesSidenav(element: { id: string, type: ElementType }): void {
+  private toggleNodePropertiesSidenav(element: SelectedGraphItemRef): void {
     // if not a node, close sidenav
     if (element?.type !== ElementType.NODE) {
       this.sidenav.close();
