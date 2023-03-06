@@ -162,8 +162,12 @@ class GameModesView(View):
         """
         search_form = GameModeSearchForm(request.POST)
         if search_form.is_valid():
-            print("DATA", search_form.filters)
-            return JsonResponse({"message": "success"})
+            if search_form.filters:
+                game_modes = GameModeManager.filter(search_form.filters)
+            else:
+                game_modes = GameModeManager.db.all()
+            return JsonResponse({"item_ids": [g.doc_metadata.uuid for g in game_modes]})
+
         return JsonResponse({"message": search_form.errors})
 
 
@@ -256,7 +260,7 @@ class NetworksView(View):
         """
         return JsonResponse(
             {
-                "ids": NetworkManager.filter(
+                "item_ids": NetworkManager.filter(
                     request.POST.get("attribute"),
                     int(request.POST.get("min")),
                     int(request.POST.get("max")),

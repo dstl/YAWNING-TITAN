@@ -4,6 +4,7 @@ from typing import Optional
 
 from yawning_titan.config.toolbox.core import ConfigGroup
 from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
+from yawning_titan.db.schemas import GameModeConfigurationSchema
 
 # --- Tier 0 groups
 
@@ -21,18 +22,21 @@ class Reset(ConfigGroup):
         self.randomise_vulnerabilities = BoolItem(
             value=randomise_vulnerabilities,
             doc="Randomise the node vulnerabilities when the network is reset",
+            query=GameModeConfigurationSchema.ON_RESET.RANDOMISE_VULNERABILITIES,
             properties=BoolProperties(allow_null=True, default=False),
             alias="randomise_vulnerabilities_on_reset",
         )
         self.choose_new_high_value_nodes = BoolItem(
             value=choose_new_high_value_nodes,
             doc="Choose new high value nodes when the network is reset",
+            query=GameModeConfigurationSchema.ON_RESET.CHOOSE_NEW_HIGH_VALUE_NODES,
             properties=BoolProperties(allow_null=True, default=False),
             alias="choose_new_high_value_nodes_on_reset",
         )
         self.choose_new_entry_nodes = BoolItem(
             value=choose_new_entry_nodes,
             doc="Choose new entry nodes when the network is reset",
+            query=GameModeConfigurationSchema.ON_RESET.CHOOSE_NEW_HIGH_VALUE_NODES,
             properties=BoolProperties(allow_null=True, default=False),
             alias="choose_new_entry_nodes_on_reset",
         )
