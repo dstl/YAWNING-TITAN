@@ -13,11 +13,11 @@ class Reset(ConfigGroup):
 
     def __init__(
         self,
-        doc: Optional[str] = None,
         randomise_vulnerabilities: Optional[bool] = False,
         choose_new_high_value_nodes: Optional[bool] = False,
         choose_new_entry_nodes: Optional[bool] = False,
     ):
+        doc = "The changes to the network made upon reset"
         self.randomise_vulnerabilities = BoolItem(
             value=randomise_vulnerabilities,
             doc="Randomise the node vulnerabilities when the network is reset",

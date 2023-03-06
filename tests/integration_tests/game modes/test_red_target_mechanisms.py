@@ -9,8 +9,8 @@ from yawning_titan.networks.node import Node
 
 @pytest.mark.integration_test
 def test_target_specific_node(
-        basic_2_agent_loop,
-        create_yawning_titan_run,
+    basic_2_agent_loop,
+    create_yawning_titan_run,
 ):
     """
     Test target specific node.
@@ -18,10 +18,8 @@ def test_target_specific_node(
     Test to check that with no other actions available the RED agent will
     follow a prescribed path to a target node avoiding all other nodes.
     """
-
     yt_run = create_yawning_titan_run(
-        game_mode_name="settable_target_node",
-        network_name="18node_18"
+        game_mode_name="settable_target_node", network_name="Default 18-node network"
     )
 
     nodes_on_path = ["0", "5", "7", "8", "9"]
@@ -46,20 +44,18 @@ def test_target_specific_node(
         captured_nodes.update(x)
 
     captured_node_names = sorted([node.name for node in captured_nodes])
-    intersect = sorted(
-        list(set(captured_node_names).intersection(nodes_on_path)))
-    assert intersect == nodes_on_path
+
+    assert all(node in nodes_on_path for node in captured_node_names)
 
 
 @pytest.mark.integration_test
 def test_target_node_capture_ends_game(
-        basic_2_agent_loop,
-        create_yawning_titan_run,
+    basic_2_agent_loop,
+    create_yawning_titan_run,
 ):
     """Test that capturing the target node will end the game when the `lose_when_target_node_lost` option is True."""
     yt_run = create_yawning_titan_run(
-        game_mode_name="settable_target_node",
-        network_name="18node_18"
+        game_mode_name="settable_target_node", network_name="Default 18-node network"
     )
 
     action_loop = basic_2_agent_loop(yt_run)
@@ -75,22 +71,20 @@ def test_target_node_capture_ends_game(
 
 @pytest.mark.integration_test
 def test_target_node_capture_doesnt_end_game(
-        basic_2_agent_loop,
-        create_yawning_titan_run,
+    basic_2_agent_loop,
+    create_yawning_titan_run,
 ):
     """Test that capturing the target node will not end the game when the `lose_when_target_node_lost` option is False."""
-
     yt_run = create_yawning_titan_run(
         game_mode_name="settable_target_game_continue",
-        network_name="18node_18"
+        network_name="Default 18-node network",
     )
 
     action_loop = basic_2_agent_loop(yt_run)
-    results: List[DataFrame] = action_loop.standard_action_loop(
-        deterministic=True)
+    results: List[DataFrame] = action_loop.standard_action_loop(deterministic=True)
 
     result = results[0]
     assert (result["info"].to_list()[-1]["safe_nodes"] == 0) or (
-            action_loop.env.current_duration
-            == action_loop.env.network_interface.game_mode.game_rules.max_steps.value
+        action_loop.env.current_duration
+        == action_loop.env.network_interface.game_mode.game_rules.max_steps.value
     )

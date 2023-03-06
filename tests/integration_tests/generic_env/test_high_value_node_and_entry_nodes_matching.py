@@ -7,12 +7,12 @@ from stable_baselines3.common.env_checker import check_env
 from tests.conftest import N_TIME_STEPS_LONG
 
 
-@pytest.mark.integration_test
 @pytest.mark.skip(
     reason="Assertion fails due to the emergence of a new warning: 'non-integer"
     " arguments to randrange() have been deprecated since Python 3.10 and "
     "will be removed in a subsequent version'"
 )
+@pytest.mark.integration_test
 def test_high_value_node_and_entry_nodes_matching(create_yawning_titan_run):
     """
     Test the high value node gaol mechanic - manually passed to.
@@ -23,8 +23,7 @@ def test_high_value_node_and_entry_nodes_matching(create_yawning_titan_run):
     """
     with warnings.catch_warnings(record=True) as w:
         yt_run = create_yawning_titan_run(
-            game_mode_name="high_value_node_provided",
-            network_name="mesh_18"
+            game_mode_name="high_value_node_provided", network_name="mesh_18"
         )
         env = yt_run.env
         check_env(env, warn=True)

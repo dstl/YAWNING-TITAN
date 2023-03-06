@@ -29,6 +29,7 @@ def yawning_titan_db_init_patch(self, name: str):
 
 
 def yawning_titan_db_test_defaults_patch(self, name: str):
+    """Patch the YawningTitanDB so point to the tests/_package_data directory."""
     self._name: str = name
     self._path = TEST_PACKAGE_DATA_PATH / f"{self._name}.json"
 

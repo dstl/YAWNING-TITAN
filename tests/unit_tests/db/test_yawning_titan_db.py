@@ -7,14 +7,11 @@ import pytest
 from tinydb.queries import QueryInstance
 from tinydb.table import Document
 
-from tests.mock_and_patch.yawning_titan_db_patch import \
-    yawning_titan_db_init_patch
-from yawning_titan.db.doc_metadata import DocMetadata
-from yawning_titan.db.doc_metadata import DocMetadataSchema
+from tests.yawning_titan_db_patch import yawning_titan_db_init_patch
+from yawning_titan.db.doc_metadata import DocMetadata, DocMetadataSchema
 from yawning_titan.db.query import YawningTitanQuery
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
-from yawning_titan.exceptions import YawningTitanDBCriticalError, \
-    YawningTitanDBError
+from yawning_titan.exceptions import YawningTitanDBCriticalError, YawningTitanDBError
 
 
 @pytest.fixture

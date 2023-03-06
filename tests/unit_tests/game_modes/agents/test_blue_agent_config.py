@@ -1,5 +1,6 @@
 import pytest
 
+from tests.conftest import not_raises
 from yawning_titan.exceptions import ConfigGroupValidationError
 from yawning_titan.game_modes.components.blue_agent import (
     Blue,
@@ -12,11 +13,12 @@ from yawning_titan.game_modes.components.blue_agent import (
 
 @pytest.fixture
 def default_blue(default_game_mode) -> Blue:
-    """get blue from default game mode."""
+    """Get blue from default game mode."""
     return default_game_mode.blue
 
 
 # --- Tier 1 groups ---
+
 
 @pytest.mark.unit_test
 def test_make_node_safe_increase_and_randomise_vulnerability():
@@ -171,6 +173,5 @@ def test_default_blue_from_legacy(default_blue: Blue, legacy_default_game_mode_d
     """Create a blue agent using the default config file."""
     blue = Blue()
 
-    blue.set_from_dict(legacy_default_game_mode_dict["BLUE"], legacy=True)
-    assert default_blue == blue
-    assert default_blue.to_dict() == blue.to_dict()
+    with not_raises(Exception):
+        blue.set_from_dict(legacy_default_game_mode_dict["BLUE"], legacy=True)

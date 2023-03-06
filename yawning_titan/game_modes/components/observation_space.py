@@ -13,7 +13,6 @@ class ObservationSpace(AnyTrueGroup):
 
     def __init__(
         self,
-        doc: Optional[str] = None,
         compromised_status: Optional[bool] = False,
         vulnerabilities: Optional[bool] = False,
         node_connections: Optional[bool] = False,
@@ -24,6 +23,7 @@ class ObservationSpace(AnyTrueGroup):
         special_nodes: Optional[bool] = False,
         red_agent_skill: Optional[bool] = False,
     ):
+        doc = "The characteristics of the network and the red agent that the blue agent can observe"
         self.compromised_status = BoolItem(
             value=compromised_status,
             doc="The blue agent loses if all the nodes become compromised",

@@ -42,8 +42,7 @@ class RandomGen:
         chosen_action = random.choice(self.possible_actions)
         self.possible_actions.remove(chosen_action)
         if len(self.possible_actions) == 0:
-            self.possible_actions = [i for i in
-                                     range(0, self.number_of_actions)]
+            self.possible_actions = [i for i in range(0, self.number_of_actions)]
         return chosen_action
 
 
@@ -51,9 +50,9 @@ class RandomGen:
 @pytest.mark.parametrize(
     ("game_mode_name", "network_name"),
     [
-        ("base_config", "18node_18"),
-        ("base_config", "mesh_18"),
-        ("base_config", "mesh_50"),
+        ("Default Game Mode", "Default 18-node network"),
+        ("Default Game Mode", "mesh_18"),
+        ("Default Game Mode", "mesh_50"),
         ("red_config_test_1", "mesh_50"),
         ("red_config_test_2", "mesh_50"),
         ("red_config_test_3", "mesh_50"),
@@ -62,9 +61,7 @@ class RandomGen:
     ],
 )
 def test_generic_env_e2e(
-        game_mode_name: str,
-        network_name: str,
-        create_yawning_titan_run
+    game_mode_name: str, network_name: str, create_yawning_titan_run
 ):
     """Test the generic environment end to end."""
     # Counters for later
@@ -73,8 +70,7 @@ def test_generic_env_e2e(
             True: defaultdict(lambda: 0),
             False: defaultdict(lambda: 0),
         },
-        "multi_attack": {True: defaultdict(lambda: 0),
-                         False: defaultdict(lambda: 0)},
+        "multi_attack": {True: defaultdict(lambda: 0), False: defaultdict(lambda: 0)},
         "blue_action_count": defaultdict(lambda: 0),
         "discovered_from_scanning": 0,
         "discovered_immediately_counter": 0,
@@ -121,8 +117,7 @@ def test_generic_env_e2e(
         elif episode["blue_action"] in ["do_nothing", "failed"]:
             check_blue_do_nothing_or_fail_action(episode)
         else:
-            raise AssertionError(
-                "Missing blue action:" + episode["blue_action"])
+            raise AssertionError("Missing blue action:" + episode["blue_action"])
 
         # Red actions
 
@@ -132,8 +127,7 @@ def test_generic_env_e2e(
             elif action["Action"] == "zero_day":
                 counts = check_red_zero_day_action(action, episode, counts)
             elif action["Action"] in ["spread", "intrude"]:
-                counts = check_red_spread_or_intrude_action(action, episode,
-                                                            counts)
+                counts = check_red_spread_or_intrude_action(action, episode, counts)
             elif action["Action"] == "random_move":
                 check_red_random_move_action(env, action, episode)
             elif action["Action"] == "do_nothing":
@@ -154,7 +148,7 @@ def test_generic_env_e2e(
 
 
 def calculate_counts(
-        episode: Dict[str, dict], counts: Dict[str, dict], done
+    episode: Dict[str, dict], counts: Dict[str, dict], done
 ) -> Dict[str, dict]:
     """Populate the counts dictionary."""
     # used to calculate number of successes and failures for different actions
@@ -188,8 +182,7 @@ def calculate_counts(
 
 
 def check_network_characteristics(
-        done: bool, env: GenericNetworkEnv, episode: Dict,
-        prev_high_value: Node
+    done: bool, env: GenericNetworkEnv, episode: Dict, prev_high_value: Node
 ):
     """Check the attributes of the `Network` in the given episode."""
     red_info: Dict = episode["red_info"]
@@ -197,8 +190,7 @@ def check_network_characteristics(
     post_red_state: Dict[str, Node] = episode["post_red_state"]
 
     # natural spreading
-    ns = list(
-        filter(lambda x: x["Action"] == "natural_spread", red_info.values()))
+    ns = list(filter(lambda x: x["Action"] == "natural_spread", red_info.values()))
     assert len(ns) == 1 or len(ns) == 0
     if len(ns) == 1:
         ns = ns[0]
@@ -214,27 +206,26 @@ def check_network_characteristics(
     if not done:
         if not env.network_interface.current_graph.set_random_high_value_nodes:
             assert (
-                    env.network_interface.current_graph.high_value_nodes == prev_high_value
-                    or prev_high_value is None
+                env.network_interface.current_graph.high_value_nodes == prev_high_value
+                or prev_high_value is None
             )
 
     assert (
-            env.network_interface.adj_matrix.all()
-            == nx.to_numpy_array(env.network_interface.current_graph).all()
+        env.network_interface.adj_matrix.all()
+        == nx.to_numpy_array(env.network_interface.current_graph).all()
     )
     # cannot place too many deceptive nodes
     assert (
+        initial_edges
+        <= env.network_interface.base_graph.number_of_edges()
+        <= (
             initial_edges
-            <= env.network_interface.base_graph.number_of_edges()
-            <= (
-                    initial_edges
-                    + env.network_interface.game_mode.blue.action_set.deceptive_nodes.max_number.value
-            )
+            + env.network_interface.game_mode.blue.action_set.deceptive_nodes.max_number.value
+        )
     )
 
 
-def check_attacks_come_from_connected_node(env: GenericNetworkEnv,
-                                           episode: Dict):
+def check_attacks_come_from_connected_node(env: GenericNetworkEnv, episode: Dict):
     """Test that attacks come from a connected node."""
     attacks: List[List[Node]] = episode["attacks"]
     initial_state: Dict = episode["initial_state"]
@@ -248,33 +239,29 @@ def check_attacks_come_from_connected_node(env: GenericNetworkEnv,
 
     for nodes in attacks:
         assert (
-                nodes[0] is None
-                or initial_state[nodes[0].uuid] == 1
-                or nodes[0] in prev_attacks
+            nodes[0] is None
+            or initial_state[nodes[0].uuid] == 1
+            or nodes[0] in prev_attacks
         )
         assert initial_state[nodes[1].uuid] == 0
         prev_attacks.append(nodes[1])
         if blue_action != "isolate" and blue_action != "add_deceptive_node":
-            if nodes[
-                0] not in env.network_interface.get_current_connected_nodes(
+            if nodes[0] not in env.network_interface.get_current_connected_nodes(
                 nodes[1]
             ) + [None]:
                 raise AssertionError(
                     nodes,
-                    env.network_interface.get_current_connected_nodes(
-                        nodes[0]),
+                    env.network_interface.get_current_connected_nodes(nodes[0]),
                     blue_action,
                     blue_node,
                     red_info,
                 )
         elif blue_action == "isolate" and nodes[1] == blue_node:
             if nodes[0] is not None:
-                assert nodes[0] in list(
-                    nx.Graph(initial_graph).neighbors(blue_node))
+                assert nodes[0] in list(nx.Graph(initial_graph).neighbors(blue_node))
         elif blue_action == "add_deceptive_node" and nodes[1] == blue_node[0]:
             if blue_node in nx.Graph(initial_graph):
-                assert nodes[0] in list(
-                    nx.Graph(initial_graph).neighbors(blue_node[0]))
+                assert nodes[0] in list(nx.Graph(initial_graph).neighbors(blue_node[0]))
 
 
 def check_observation_space(env: GenericNetworkEnv, obs):
@@ -295,49 +282,47 @@ def check_observation_space(env: GenericNetworkEnv, obs):
 def check_when_done(env: GenericNetworkEnv, counts: dict):
     """Check that the state of the environment is correct when the game mode is done."""
     if (
-            env.current_duration > 500
-            and env.network_interface.current_graph.number_of_nodes() < 15
+        env.current_duration > 500
+        and env.network_interface.current_graph.number_of_nodes() < 15
     ):
         if (
-                env.network_interface.game_mode.blue.action_set.make_node_safe.use.value
-                or env.network_interface.game_mode.blue.action_set.restore_node.value
+            env.network_interface.game_mode.blue.action_set.make_node_safe.use.value
+            or env.network_interface.game_mode.blue.action_set.restore_node.value
         ):
             if any(
-                    n.deceptive_node
-                    for n in env.network_interface.current_graph.get_nodes()
+                n.deceptive_node
+                for n in env.network_interface.current_graph.get_nodes()
             ):
                 assert counts["deceptive_counter"] != 0
     if (
-            env.current_duration
-            != env.network_interface.game_mode.game_rules.max_steps.value
+        env.current_duration
+        != env.network_interface.game_mode.game_rules.max_steps.value
     ):
         if (
-                env.network_interface.game_mode.game_rules.blue_loss_condition.all_nodes_lost.value
+            env.network_interface.game_mode.game_rules.blue_loss_condition.all_nodes_lost.value
         ):
             assert (
+                len(
+                    env.network_interface.current_graph.get_nodes(filter_true_safe=True)
+                )
+                == 0
+            )
+        if (
+            env.network_interface.game_mode.game_rules.blue_loss_condition.n_percent_nodes_lost.use.value
+        ):
+            assert (
+                (
                     len(
                         env.network_interface.current_graph.get_nodes(
-                            filter_true_safe=True)
+                            filter_true_compromised=True
+                        )
                     )
-                    == 0
+                    / len(env.network_interface.current_graph.get_nodes())
+                )
+                >= env.network_interface.game_mode.game_rules.blue_loss_condition.n_percent_nodes_lost.value.value
             )
         if (
-                env.network_interface.game_mode.game_rules.blue_loss_condition.n_percent_nodes_lost.use.value
-        ):
-            assert (
-                    (
-                            len(
-                                env.network_interface.current_graph.get_nodes(
-                                    filter_true_compromised=True
-                                )
-                            )
-                            / len(
-                        env.network_interface.current_graph.get_nodes())
-                    )
-                    >= env.network_interface.game_mode.game_rules.blue_loss_condition.n_percent_nodes_lost.value.value
-            )
-        if (
-                env.network_interface.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value
+            env.network_interface.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value
         ):
             # the game ends when a high value node is compromised, this needs to be checked
             compromised_hvn = False
@@ -355,29 +340,28 @@ def check_when_done(env: GenericNetworkEnv, counts: dict):
 def check_when_not_done(env: GenericNetworkEnv):
     """Check that the state of the environment is correct when the game mode is not done."""
     if (
-            env.network_interface.game_mode.game_rules.blue_loss_condition.all_nodes_lost.value
+        env.network_interface.game_mode.game_rules.blue_loss_condition.all_nodes_lost.value
     ):
         assert (
-                len(env.network_interface.current_graph.get_nodes(
-                    filter_true_safe=True))
-                != 0
+            len(env.network_interface.current_graph.get_nodes(filter_true_safe=True))
+            != 0
         )
     if (
-            env.network_interface.game_mode.game_rules.blue_loss_condition.n_percent_nodes_lost.use.value
+        env.network_interface.game_mode.game_rules.blue_loss_condition.n_percent_nodes_lost.use.value
     ):
         assert (
-                (
-                        len(
-                            env.network_interface.current_graph.get_nodes(
-                                filter_true_compromised=True
-                            )
-                        )
-                        / len(env.network_interface.current_graph.get_nodes())
+            (
+                len(
+                    env.network_interface.current_graph.get_nodes(
+                        filter_true_compromised=True
+                    )
                 )
-                < env.network_interface.game_mode.game_rules.blue_loss_condition.n_percent_nodes_lost.value.value
+                / len(env.network_interface.current_graph.get_nodes())
+            )
+            < env.network_interface.game_mode.game_rules.blue_loss_condition.n_percent_nodes_lost.value.value
         )
     if (
-            env.network_interface.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value
+        env.network_interface.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value
     ):
         # the game would end if a high value node was compromised, this needs to be checked
         compromised_hvn = False
@@ -394,38 +378,36 @@ def check_when_not_done(env: GenericNetworkEnv):
 def check_when_complete(env: GenericNetworkEnv, counts: dict, timesteps: int):
     """Check that the state of the environment is correct when the game mode is complete."""
     if (
-            not env.network_interface.game_mode.blue.action_set.deceptive_nodes.use.value
-            and counts["scan_used"]
-            and (counts["nodes_missed_scan"] + counts[
-        "discovered_from_scanning"]) > 0
+        not env.network_interface.game_mode.blue.action_set.deceptive_nodes.use.value
+        and counts["scan_used"]
+        and (counts["nodes_missed_scan"] + counts["discovered_from_scanning"]) > 0
     ):
         assert (
-                (
-                        0.95
-                        * env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.standard_node.value
-                )
-                < (
-                        counts["discovered_from_scanning"]
-                        / (counts["nodes_missed_scan"] + counts[
-                    "discovered_from_scanning"])
-                )
-                < (
-                        1.05
-                        * env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.standard_node.value
-                )
+            (
+                0.95
+                * env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.standard_node.value
+            )
+            < (
+                counts["discovered_from_scanning"]
+                / (counts["nodes_missed_scan"] + counts["discovered_from_scanning"])
+            )
+            < (
+                1.05
+                * env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.standard_node.value
+            )
         )
 
     assert (
-            sum(counts["red_action_count"][True].values())
-            + sum(counts["red_action_count"][False].values())
-            == timesteps
+        sum(counts["red_action_count"][True].values())
+        + sum(counts["red_action_count"][False].values())
+        == timesteps
     )
     assert sum(counts["blue_action_count"].values()) == timesteps
 
     if "failed" in counts["blue_action_count"]:
         assert (
-                counts["number_of_resets"]
-                == counts["blue_action_count"]["failed"] + counts["wins"]
+            counts["number_of_resets"]
+            == counts["blue_action_count"]["failed"] + counts["wins"]
         )
     else:
         assert counts["wins"] == counts["number_of_resets"]
@@ -435,7 +417,7 @@ def check_when_complete(env: GenericNetworkEnv, counts: dict, timesteps: int):
 
 
 def check_blue_actions(
-        env: GenericNetworkEnv, episode: Dict, current_chosen_action: int
+    env: GenericNetworkEnv, episode: Dict, current_chosen_action: int
 ):
     """Check that the state of the environment is correct for an episode after a generic Blue agent action."""
     blue_action = episode["blue_action"]
@@ -451,8 +433,8 @@ def check_blue_actions(
         # red location (if using the red can only attack from central red node)
         if initial_red_location is None:
             assert (
-                    post_red_red_location in env.network_interface.current_graph.entry_nodes
-                    or post_red_red_location is None
+                post_red_red_location in env.network_interface.current_graph.entry_nodes
+                or post_red_red_location is None
             )
         elif post_red_red_location is None:
             assert final_red_location is None
@@ -461,16 +443,15 @@ def check_blue_actions(
                 connected = env.network_interface.get_current_connected_nodes(
                     post_red_red_location
                 )
-                connected = [n for n in connected if
-                             n.true_compromised_status == 1]
+                connected = [n for n in connected if n.true_compromised_status == 1]
                 if len(connected) == 0:
                     assert final_red_location == post_red_red_location or (
-                            (
-                                    blue_action == "restore_node"
-                                    or blue_action == "make_node_safe"
-                            )
-                            and blue_node == post_red_red_location
-                            and final_red_location is None
+                        (
+                            blue_action == "restore_node"
+                            or blue_action == "make_node_safe"
+                        )
+                        and blue_node == post_red_red_location
+                        and final_red_location is None
                     )
                 else:
                     if blue_action == "restore_node" or blue_action == "make_node_safe":
@@ -485,19 +466,18 @@ def check_blue_actions(
                 initial_red_location
             )
         if blue_action != "isolate" or (
-                blue_node != post_red_red_location and blue_node != initial_red_location
+            blue_node != post_red_red_location and blue_node != initial_red_location
         ):
             if blue_action != "add_deceptive_node":
                 assert (
-                        post_red_red_location in connected
-                        or post_red_red_location == initial_red_location
+                    post_red_red_location in connected
+                    or post_red_red_location == initial_red_location
                 )
 
         assert 0 in initial_state.values()
 
 
-def check_blue_restore_node_action(episode: Dict[str, dict],
-                                   counts: dict) -> int:
+def check_blue_restore_node_action(episode: Dict[str, dict], counts: dict) -> int:
     """Check that the state of the environment is correct for an episode where the Blue agent restores a nodes vulnerability state."""
     blue_node: Node = episode["blue_node"]
     assert episode["end_state"][blue_node.uuid] != 1
@@ -506,17 +486,14 @@ def check_blue_restore_node_action(episode: Dict[str, dict],
     return counts
 
 
-def check_blue_isolate_action(env: GenericNetworkEnv,
-                              episode: Dict[str, dict]):
+def check_blue_isolate_action(env: GenericNetworkEnv, episode: Dict[str, dict]):
     """Check that the state of the environment is correct for an episode where the Blue agent isolates a node."""
     blue_node: Node = episode["blue_node"]
-    assert len(
-        env.network_interface.get_current_connected_nodes(blue_node)) == 0
+    assert len(env.network_interface.get_current_connected_nodes(blue_node)) == 0
     assert blue_node.isolated
 
 
-def check_blue_connect_action(env: GenericNetworkEnv,
-                              episode: Dict[str, dict]):
+def check_blue_connect_action(env: GenericNetworkEnv, episode: Dict[str, dict]):
     """Check that the state of the environment is correct for an episode where the Blue agent reconnects 2 nodes."""
     blue_node: Node = episode["blue_node"]
 
@@ -525,8 +502,7 @@ def check_blue_connect_action(env: GenericNetworkEnv,
     for bn in env.network_interface.get_base_connected_nodes(blue_node):
         cn = env.network_interface.current_graph.get_node_from_uuid(bn.uuid)
         if not cn.isolated:  # check corresponding node on current graph
-            assert cn in env.network_interface.get_current_connected_nodes(
-                blue_node)
+            assert cn in env.network_interface.get_current_connected_nodes(blue_node)
         assert not blue_node.isolated
 
 
@@ -535,13 +511,13 @@ def check_blue_reduce_vulnerability_action(episode: Dict[str, dict]):
     blue_node: Node = episode["blue_node"]
     assert 0 < episode["final_vulnerabilities"][blue_node.uuid] < 1
     assert (
-            episode["final_vulnerabilities"][blue_node.uuid]
-            <= episode["final_vulnerabilities"][blue_node.uuid]
+        episode["final_vulnerabilities"][blue_node.uuid]
+        <= episode["final_vulnerabilities"][blue_node.uuid]
     )
 
 
 def check_blue_scan_action(
-        env: GenericNetworkEnv, episode: Dict[str, dict], counts: dict
+    env: GenericNetworkEnv, episode: Dict[str, dict], counts: dict
 ):
     """Check that the state of the environment is correct for an episode where the Blue agent scans."""
     counts["scan_used"] = True
@@ -550,25 +526,24 @@ def check_blue_scan_action(
             assert episode["end_blue_view"][node.uuid] == 1
 
         if (
-                episode["post_red_blue_view"][node.uuid] == 0
-                and episode["end_blue_view"][node.uuid] == 1
+            episode["post_red_blue_view"][node.uuid] == 0
+            and episode["end_blue_view"][node.uuid] == 1
         ):
             counts["discovered_from_scanning"] += 1
 
-        if episode["end_state"][node.uuid] != episode["end_blue_view"][
-            node.uuid]:
+        if episode["end_state"][node.uuid] != episode["end_blue_view"][node.uuid]:
             counts["nodes_missed_scan"] += 1
         if not node.deceptive_node:
             if (
-                    env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.standard_node.value
-                    == 1
+                env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.standard_node.value
+                == 1
             ):
                 if episode["end_state"][node.uuid] == 1:
                     assert episode["end_blue_view"][node.uuid] == 1
         else:
             if (
-                    env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.deceptive_node.value
-                    == 1
+                env.network_interface.game_mode.blue.intrusion_discovery_chance.on_scan.deceptive_node.value
+                == 1
             ):
                 if episode["end_state"][node.uuid] == 1:
                     assert episode["end_blue_view"][node.uuid] == 1
@@ -577,7 +552,7 @@ def check_blue_scan_action(
 
 
 def check_blue_add_deceptive_node_action(
-        env: GenericNetworkEnv, episode: Dict[str, dict]
+    env: GenericNetworkEnv, episode: Dict[str, dict]
 ):
     """Check that the state of the environment is correct for an episode where the Blue uses a deceptive node."""
     blue_nodes: List[Union[Node, Tuple[Node]]] = episode["blue_node"]
@@ -588,11 +563,10 @@ def check_blue_add_deceptive_node_action(
     node2 = blue_nodes[1][1]
     assert node2 not in env.network_interface.get_base_connected_nodes(node1)
     assert [
-               i
-               for i in
-               env.network_interface.get_base_connected_nodes(deceptive_node)
-               if i != node1 and i != node2
-           ] == []
+        i
+        for i in env.network_interface.get_base_connected_nodes(deceptive_node)
+        if i != node1 and i != node2
+    ] == []
     for n in env.network_interface.current_graph.get_nodes():
         if n != node1 and n != node2:
             assert deceptive_node not in env.network_interface.get_base_connected_nodes(
@@ -604,23 +578,23 @@ def check_blue_add_deceptive_node_action(
 
     if deceptive_node.uuid in episode["post_red_state"]:
         if (
-                env.network_interface.game_mode.blue.action_set.deceptive_nodes.new_node_on_relocate.value
+            env.network_interface.game_mode.blue.action_set.deceptive_nodes.new_node_on_relocate.value
         ):
             if episode["post_red_state"][deceptive_node.uuid] == 1:
                 assert episode["end_state"][deceptive_node.uuid] == 0
                 assert not deceptive_node.isolated
         else:
             assert (
-                    episode["end_state"][deceptive_node.uuid]
-                    == episode["post_red_state"][deceptive_node.uuid]
+                episode["end_state"][deceptive_node.uuid]
+                == episode["post_red_state"][deceptive_node.uuid]
             )
             assert (
-                    episode["final_vulnerabilities"][deceptive_node.uuid]
-                    == episode["post_red_vulnerabilities"][deceptive_node.uuid]
+                episode["final_vulnerabilities"][deceptive_node.uuid]
+                == episode["post_red_vulnerabilities"][deceptive_node.uuid]
             )
             assert (
-                    episode["end_blue_view"][deceptive_node.uuid]
-                    == episode["post_red_blue_view"][deceptive_node.uuid]
+                episode["end_blue_view"][deceptive_node.uuid]
+                == episode["post_red_blue_view"][deceptive_node.uuid]
             )
     else:
         assert episode["end_state"][deceptive_node.uuid] == 0
@@ -632,8 +606,7 @@ def check_blue_do_nothing_or_fail_action(episode: Dict[str, dict]):
     """Check that the state of the environment is correct for an episode where the Blue agent does nothing."""
     assert episode["post_red_state"] == episode["end_state"]
     assert episode["post_red_blue_view"] == episode["end_blue_view"]
-    assert episode["post_red_vulnerabilities"] == episode[
-        "final_vulnerabilities"]
+    assert episode["post_red_vulnerabilities"] == episode["final_vulnerabilities"]
     assert episode["post_red_red_location"] == episode["final_red_location"]
 
 
@@ -641,10 +614,10 @@ def check_blue_do_nothing_or_fail_action(episode: Dict[str, dict]):
 
 
 def check_red_basic_attack(
-        env: GenericNetworkEnv,
-        action: Dict[str, dict],
-        episode: Dict[str, dict],
-        counts: dict,
+    env: GenericNetworkEnv,
+    action: Dict[str, dict],
+    episode: Dict[str, dict],
+    counts: dict,
 ) -> int:
     """Check that the state of the environment is correct for an episode where the Red agent performs a basic attack."""
     red_success = action["Successes"]
@@ -659,53 +632,52 @@ def check_red_basic_attack(
         target_node = red_target_nodes[counter]
         attacking_node = red_attacking_node[counter]
         if (
-                env.network_interface.game_mode.red.natural_spreading.chance.to_unconnected_node.value
-                == 0
+            env.network_interface.game_mode.red.natural_spreading.chance.to_unconnected_node.value
+            == 0
         ):
             assert not target_node.isolated
         if current_success:
             if blue_action != "isolate" or (
-                    blue_action == "isolate"
-                    and blue_node != attacking_node
-                    and blue_node != target_node
+                blue_action == "isolate"
+                and blue_node != attacking_node
+                and blue_node != target_node
             ):
                 if blue_action != "add_deceptive_node" or (
-                        blue_action == "add_deceptive_node"
-                        and target_node != blue_node[0]
-                        and attacking_node != blue_node[0]
-                        and not (
-                        target_node in blue_node[1] and attacking_node in
-                        blue_node[1]
-                )
+                    blue_action == "add_deceptive_node"
+                    and target_node != blue_node[0]
+                    and attacking_node != blue_node[0]
+                    and not (
+                        target_node in blue_node[1] and attacking_node in blue_node[1]
+                    )
                 ):
                     if (
-                            target_node
-                            not in env.network_interface.current_graph.entry_nodes
+                        target_node
+                        not in env.network_interface.current_graph.entry_nodes
                     ):
                         assert red_target_nodes[
-                                   counter
-                               ] in env.network_interface.get_current_connected_nodes(
+                            counter
+                        ] in env.network_interface.get_current_connected_nodes(
                             attacking_node
                         )
             assert post_red_state[target_node.uuid] == 1
             if post_red_blue_view[target_node.uuid] == 1:
                 counts["discovered_immediately_counter"] += 1
             if (
-                    target_node.deceptive_node
-                    and env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate.deceptive_node.value
-                    == 1
+                target_node.deceptive_node
+                and env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate.deceptive_node.value
+                == 1
             ):
                 assert post_red_blue_view[target_node.uuid] == 1
             if (
-                    env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate.standard_node.value
-                    == 0
-                    and not target_node.deceptive_node
+                env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate.standard_node.value
+                == 0
+                and not target_node.deceptive_node
             ):
                 assert post_red_blue_view[target_node.uuid] == 0
             if (
-                    env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate.standard_node.value
-                    == 1
-                    and not target_node.deceptive_node
+                env.network_interface.game_mode.blue.intrusion_discovery_chance.immediate.standard_node.value
+                == 1
+                and not target_node.deceptive_node
             ):
                 assert post_red_blue_view[target_node.uuid] == 1
 
@@ -713,7 +685,7 @@ def check_red_basic_attack(
 
 
 def check_red_zero_day_action(
-        action: Dict[str, dict], episode: Dict[str, dict], counts: dict
+    action: Dict[str, dict], episode: Dict[str, dict], counts: dict
 ) -> int:
     """Check that the state of the environment is correct for an episode where the Red agent performs a zero day attack."""
     for i in action["Successes"]:
@@ -727,7 +699,7 @@ def check_red_zero_day_action(
 
 
 def check_red_spread_or_intrude_action(
-        action: Dict[str, dict], episode: Dict[str, dict], counts: dict
+    action: Dict[str, dict], episode: Dict[str, dict], counts: dict
 ) -> int:
     """Check that the state of the environment is correct for an episode where the Red agent spreads."""
     for counter, success in enumerate(action["Successes"]):
@@ -740,39 +712,36 @@ def check_red_spread_or_intrude_action(
 
 
 def check_red_random_move_action(
-        env: GenericNetworkEnv, action: Dict[str, dict],
-        episode: Dict[str, dict]
+    env: GenericNetworkEnv, action: Dict[str, dict], episode: Dict[str, dict]
 ):
     """Check that the state of the environment is correct for an episode where the Red agent moves randomly."""
     for counter, current_success in enumerate(action["Successes"]):
         target_node: Node = action["Target_Nodes"][counter]
         if current_success:
             if episode["blue_action"] != "isolate" or (
-                    episode["blue_action"] == "isolate"
-                    and episode["blue_node"] != action["Attacking_Nodes"][
-                        counter]
-                    and episode["blue_node"] != target_node
+                episode["blue_action"] == "isolate"
+                and episode["blue_node"] != action["Attacking_Nodes"][counter]
+                and episode["blue_node"] != target_node
             ):
                 if episode["blue_action"] != "add_deceptive_node" or (
-                        episode["blue_action"] == "add_deceptive_node"
-                        and target_node != episode["blue_node"][0]
-                        and action["Attacking_Nodes"][counter] !=
-                        episode["blue_node"][0]
-                        and not (
+                    episode["blue_action"] == "add_deceptive_node"
+                    and target_node != episode["blue_node"][0]
+                    and action["Attacking_Nodes"][counter] != episode["blue_node"][0]
+                    and not (
                         target_node in episode["blue_node"][1]
                         and action["Attacking_Nodes"][counter]
                         in episode["blue_node"][1]
-                )
+                    )
                 ):
                     if action["Attacking_Nodes"][counter] is None:
                         assert (
-                                target_node
-                                in env.network_interface.current_graph.entry_nodes
+                            target_node
+                            in env.network_interface.current_graph.entry_nodes
                         )
                     else:
                         assert action["Target_Nodes"][
-                                   counter
-                               ] in env.network_interface.get_current_connected_nodes(
+                            counter
+                        ] in env.network_interface.get_current_connected_nodes(
                             action["Attacking_Nodes"][counter]
                         )
 
@@ -780,24 +749,20 @@ def check_red_random_move_action(
 def check_red_do_nothing_action(episode: Dict[str, dict]):
     """Check that the state of the environment is correct for an episode where the Red agent does nothing."""
     assert episode["initial_red_location"] == episode["post_red_red_location"]
-    assert episode["initial_vulnerabilities"] == episode[
-        "post_red_vulnerabilities"]
+    assert episode["initial_vulnerabilities"] == episode["post_red_vulnerabilities"]
     if len(episode["red_info"]) == 1:
         assert episode["initial_state"] == episode["post_red_state"]
         assert episode["initial_blue_view"] == episode["post_red_blue_view"]
 
 
-def check_red_no_possible_targets(env: GenericNetworkEnv,
-                                  episode: Dict[str, dict]):
+def check_red_no_possible_targets(env: GenericNetworkEnv, episode: Dict[str, dict]):
     """Check that the state of the environment is correct for an episode where the Red agent has no possible targets."""
     if (
-            env.network_interface.game_mode.red.agent_attack.attack_from.any_red_node.value
-            and not env.network_interface.game_mode.blue.action_set.isolate_node.value
+        env.network_interface.game_mode.red.agent_attack.attack_from.any_red_node.value
+        and not env.network_interface.game_mode.blue.action_set.isolate_node.value
     ):
         assert (
-                len(env.network_interface.current_graph.get_nodes(
-                    filter_true_safe=True))
-                == 0
+            len(env.network_interface.current_graph.get_nodes(filter_true_safe=True))
+            == 0
         )
-    assert episode["initial_vulnerabilities"] == episode[
-        "post_red_vulnerabilities"]
+    assert episode["initial_vulnerabilities"] == episode["post_red_vulnerabilities"]

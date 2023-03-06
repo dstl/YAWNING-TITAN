@@ -118,7 +118,7 @@ class IntItem(ConfigItem):
 
     def __init__(
         self,
-        value: bool,
+        value: int,
         doc: Optional[str] = None,
         alias: Optional[str] = None,
         depends_on: Optional[List[str]] = None,

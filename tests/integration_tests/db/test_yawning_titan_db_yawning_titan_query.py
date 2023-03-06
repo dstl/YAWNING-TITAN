@@ -2,14 +2,9 @@
 from unittest.mock import patch
 
 import pytest
-from tests.unit_tests.db.test_yawning_titan_db import (
-    DemoDB,
-    DemoSchema,
-    demo_db_docs,
-)
 
-from tests.mock_and_patch.yawning_titan_db_patch import \
-    yawning_titan_db_init_patch
+from tests.unit_tests.db.test_yawning_titan_db import DemoDB, DemoSchema, demo_db_docs
+from tests.yawning_titan_db_patch import yawning_titan_db_init_patch
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
 
 docs = demo_db_docs  # noqa

@@ -13,8 +13,7 @@ def test_standard_rewards(create_yawning_titan_run):
     Will raise an error if the function does not return the expected result
     """
     yt_run = create_yawning_titan_run(
-        game_mode_name="base_config",
-        network_name="mesh_5"
+        game_mode_name="Default Game Mode", network_name="mesh_5"
     )
     env = yt_run.env
 
@@ -27,14 +26,10 @@ def test_standard_rewards(create_yawning_titan_run):
         "blue_node": "2",
         "start_state": {"0": 1, "1": 1, "2": 1, "3": 1, "4": 1},
         "end_state": {"0": 1, "1": 1, "2": 1, "3": 1, "4": 1},
-        "start_vulnerabilities": {"0": 0.5, "1": 0.5, "2": 0.5, "3": 0.5,
-                                  "4": 0.5},
-        "end_vulnerabilities": {"0": 0.5, "1": 0.5, "2": 0.5, "3": 0.5,
-                                "4": 0.5},
-        "start_isolation": {"0": False, "1": False, "2": False, "3": False,
-                            "4": False},
-        "end_isolation": {"0": False, "1": False, "2": False, "3": False,
-                          "4": False},
+        "start_vulnerabilities": {"0": 0.5, "1": 0.5, "2": 0.5, "3": 0.5, "4": 0.5},
+        "end_vulnerabilities": {"0": 0.5, "1": 0.5, "2": 0.5, "3": 0.5, "4": 0.5},
+        "start_isolation": {"0": False, "1": False, "2": False, "3": False, "4": False},
+        "end_isolation": {"0": False, "1": False, "2": False, "3": False, "4": False},
         "start_blue": {"0": 1, "1": 1, "2": 1, "3": 1, "4": 1},
         "end_blue": {"0": 1, "1": 1, "2": 1, "3": 1, "4": 1},
     }
@@ -127,8 +122,7 @@ def test_safe_gives_rewards(create_yawning_titan_run):
     Will raise an error if the function does not return the expected result
     """
     yt_run = create_yawning_titan_run(
-        game_mode_name="base_config",
-        network_name="mesh_5"
+        game_mode_name="Default Game Mode", network_name="mesh_5"
     )
     env = yt_run.env
 
@@ -141,10 +135,8 @@ def test_safe_gives_rewards(create_yawning_titan_run):
         "blue_node": "2",
         "start_state": {"0": 1, "1": 1, "2": 1, "3": 1, "4": 1},
         "end_state": {"0": 1, "1": 1, "2": 0, "3": 1, "4": 0},
-        "start_vulnerabilities": {"0": 0.5, "1": 0.5, "2": 0.5, "3": 0.5,
-                                  "4": 0.5},
-        "end_vulnerabilities": {"0": 0.5, "1": 0.5, "2": 0.5, "3": 0.5,
-                                "4": 0.5},
+        "start_vulnerabilities": {"0": 0.5, "1": 0.5, "2": 0.5, "3": 0.5, "4": 0.5},
+        "end_vulnerabilities": {"0": 0.5, "1": 0.5, "2": 0.5, "3": 0.5, "4": 0.5},
     }
 
     reward = reward_functions.safe_nodes_give_rewards(reward_args)
@@ -172,8 +164,7 @@ def test_punish_bad_actions(create_yawning_titan_run):
     Will raise an error if the function does not return the expected result
     """
     yt_run = create_yawning_titan_run(
-        game_mode_name="base_config",
-        network_name="mesh_5"
+        game_mode_name="Default Game Mode", network_name="mesh_5"
     )
     env = yt_run.env
     assert hasattr(reward_functions, "punish_bad_actions")
@@ -185,10 +176,8 @@ def test_punish_bad_actions(create_yawning_titan_run):
         "blue_node": "2",
         "start_state": {"0": 1, "1": 1, "2": 1, "3": 1, "4": 1},
         "end_state": {"0": 1, "1": 1, "2": 1, "3": 1, "4": 0},
-        "start_vulnerabilities": {"0": 0.5, "1": 0.5, "2": 0.5, "3": 0.5,
-                                  "4": 0.5},
-        "end_vulnerabilities": {"0": 0.5, "1": 0.5, "2": 0.5, "3": 0.5,
-                                "4": 0.5},
+        "start_vulnerabilities": {"0": 0.5, "1": 0.5, "2": 0.5, "3": 0.5, "4": 0.5},
+        "end_vulnerabilities": {"0": 0.5, "1": 0.5, "2": 0.5, "3": 0.5, "4": 0.5},
     }
 
     reward = reward_functions.punish_bad_actions(reward_args)

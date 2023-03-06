@@ -37,7 +37,7 @@ class StrProperties(ItemTypeProperties):
         if val is not None:
             try:
                 if self.options is not None and val not in self.options:
-                    msg = f"Value {val} should be one of {', '.join(map(str,self.options))}"
+                    msg = f"Value {val} should be one of {', '.join(map(str, self.options))}"
                     raise ConfigItemValidationError(msg)
             except ConfigItemValidationError as e:
                 validation.add_validation(msg, e)

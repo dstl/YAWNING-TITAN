@@ -3,6 +3,7 @@ import random
 import networkx as nx
 import pytest
 from stable_baselines3.common.env_checker import check_env
+
 from tests.conftest import N_TIME_STEPS
 
 
@@ -10,8 +11,7 @@ from tests.conftest import N_TIME_STEPS
 def test_env_reset(create_yawning_titan_run):
     """Checks that the env reset is performed properly."""
     yt_run = create_yawning_titan_run(
-        game_mode_name="base_config",
-        network_name="mesh_18"
+        game_mode_name="Default Game Mode", network_name="mesh_18"
     )
     env = yt_run.env
 

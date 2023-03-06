@@ -9,8 +9,7 @@ def test_natural_spreading(create_yawning_titan_run):
     """Test the natural spreading simulation mechanic works as intended."""
     # generate an env
     yt_run = create_yawning_titan_run(
-        game_mode_name="spreading_config",
-        network_name="mesh_50"
+        game_mode_name="spreading_config", network_name="mesh_50"
     )
     env = yt_run.env
     check_env(env, warn=True)

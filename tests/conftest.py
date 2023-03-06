@@ -1,20 +1,18 @@
-from typing import Dict, Final
-from typing import Dict, Final
+from contextlib import contextmanager
+from typing import Dict, Final, Type
 from unittest.mock import patch
 
 import pytest
 import yaml
 
 from tests import TEST_PACKAGE_DATA_PATH
-from tests.mock_and_patch.game_mode_db_patch import game_mode_db_init_patch
-from tests.mock_and_patch.network_db_patch import network_db_init_patch
+from tests.game_mode_db_patch import game_mode_db_init_patch
+from tests.network_db_patch import network_db_init_patch
 from yawning_titan.db.doc_metadata import DocMetadataSchema
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.game_modes.game_mode_db import GameModeDB
-from yawning_titan.networks.network import (
-    Network,
-)
+from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB
 from yawning_titan.networks.node import Node
 from yawning_titan.yawning_titan_run import YawningTitanRun
@@ -22,6 +20,42 @@ from yawning_titan.yawning_titan_run import YawningTitanRun
 TOLERANCE: Final[float] = 0.1
 N_TIME_STEPS: Final[int] = 1000
 N_TIME_STEPS_LONG: Final[int] = 10000
+
+
+@contextmanager
+def not_raises(expected_exception: Type[Exception]):
+    """
+    Function to test whether a function does not raise an exception.
+
+    A 'good' function test.
+
+    Example of a 'good' test:
+
+    .. code::python::
+
+        a_list = ['This is a good test']
+        with not_raises(IndexError):
+            print(a_list[0])
+
+    Example of a 'bad' test:
+
+    .. code::python::
+
+        a_list = ['This is a bad test']
+        with not_raises(IndexError):
+            print(a_list[1])
+
+    :param expected_exception: The type of Exception being tested for.
+    :raise AssertionError: When the exception is raised expectedly.
+    """
+    try:
+        yield
+
+    except expected_exception as error:
+        raise AssertionError(f"Raised exception {error} when it should not!")
+
+    except Exception as error:
+        raise AssertionError(f"An unexpected exception {error} raised.")
 
 
 @pytest.fixture(scope="session")
@@ -34,7 +68,7 @@ def game_mode_db() -> GameModeDB:
 @pytest.fixture()
 def default_game_mode(game_mode_db) -> GameMode:
     """Return the default game mode."""
-    return game_mode_db.search(DocMetadataSchema.NAME == "base_config")[0]
+    return game_mode_db.search(DocMetadataSchema.NAME == "Default Game Mode")[0]
 
 
 @pytest.fixture(scope="session")
@@ -47,7 +81,7 @@ def network_db() -> NetworkDB:
 @pytest.fixture()
 def default_network(network_db) -> Network:
     """Return the default network."""
-    network = network_db.search(DocMetadataSchema.NAME == "18node_18")[0]
+    network = network_db.search(DocMetadataSchema.NAME == "Default 18-node network")[0]
     network.set_node_positions()
     return network
 
@@ -119,15 +153,14 @@ def create_yawning_titan_run(network_db, game_mode_db):
     """Create an initialised and setup YawningTitanRun."""
 
     def _create_yawning_titan_run(
-            game_mode_name: str,
-            network_name: str,
-            timesteps: int = 1000,
-            eval_freq: int = 1000,
-            deterministic: bool = False
+        game_mode_name: str,
+        network_name: str,
+        timesteps: int = 1000,
+        eval_freq: int = 1000,
+        deterministic: bool = False,
     ) -> YawningTitanRun:
         network = network_db.search(DocMetadataSchema.NAME == network_name)[0]
-        game_mode = \
-            game_mode_db.search(DocMetadataSchema.NAME == game_mode_name)[0]
+        game_mode = game_mode_db.search(DocMetadataSchema.NAME == game_mode_name)[0]
 
         yt_run = YawningTitanRun(
             network=network,
@@ -136,7 +169,7 @@ def create_yawning_titan_run(network_db, game_mode_db):
             auto=False,
             total_timesteps=timesteps,
             eval_freq=eval_freq,
-            deterministic=deterministic
+            deterministic=deterministic,
         )
 
         yt_run.setup()
@@ -151,14 +184,15 @@ def basic_2_agent_loop(create_yawning_titan_run):
     """Return a basic 2-agent `ActionLoop`."""
 
     def _basic_2_agent_loop(
-            yt_run: YawningTitanRun = None,
-            num_episodes=1,
+        yt_run: YawningTitanRun = None,
+        num_episodes=1,
     ) -> ActionLoop:
         """Use parameterized settings to return a configured ActionLoop."""
         if not yt_run:
             yt_run = create_yawning_titan_run(
-                game_mode_name="base_config",
-                network_name="18node_18")
+                game_mode_name="Default Game Mode",
+                network_name="Default 18-node network",
+            )
 
         return ActionLoop(yt_run.env, yt_run.agent, episode_count=num_episodes)
 

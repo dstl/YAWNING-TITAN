@@ -1,5 +1,5 @@
 from logging import getLogger
-from typing import List, Tuple, Optional
+from typing import List, Optional
 
 from gym import spaces
 from stable_baselines3.common.env_checker import check_env
