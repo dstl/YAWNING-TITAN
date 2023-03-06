@@ -22,7 +22,7 @@
         <mat-label>Y Position</mat-label>
         <input matInput formControlName="y_pos" appFocusTracking>
       </mat-form-field>
-      <div class="node-properties-vulnerability-container">
+      <div class="node-properties-vulnerability-container" *ngIf="showVulnerabilitySlider()">
         <div class="node-properties-vulnerability-label-container">
           <p class="node-properties-vulnerability-label">Vulnerability</p>
           <p class="node-properties-vulnerability-value">{{vulnerabilityVal}}</p>
@@ -32,10 +32,10 @@
         </mat-slider>
       </div>
       <div class="node-properties-toggle-input-container">
-        <mat-slide-toggle color="primary" formControlName="entry_node">
+        <mat-slide-toggle color="primary" formControlName="entry_node" *ngIf="showEntryNodeToggle()">
         Entry Node
       </mat-slide-toggle>
-      <mat-slide-toggle color="primary" formControlName="high_value_node">
+      <mat-slide-toggle color="primary" formControlName="high_value_node" *ngIf="showHighValueNodeToggle()">
         High Value Node
       </mat-slide-toggle>
       </div>

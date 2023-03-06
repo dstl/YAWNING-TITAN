@@ -13,7 +13,10 @@ describe('NodePropertiesComponent', () => {
   let nodePropertiesServiceStub: any = {
     loadDetails: () => { },
     nodePropertiesFormGroupSubject: new Subject(),
-    updateNodeProperties: () => { }
+    updateNodeProperties: () => { },
+    randomVulnerabilitiesOnReset: () => { },
+    randomEntryNodesOnReset: () => { },
+    randomHighValueNodesOnReset: () => { },
   }
 
   beforeEach(async () => {
@@ -96,5 +99,29 @@ describe('NodePropertiesComponent', () => {
 
       component.closeSideNav();
     });
+  });
+
+  describe('METHOD: showVulnerabilitySlider', () => {
+    it('should return the randomVulnerabilitiesOnReset value', () => {
+      const spy = spyOn(component['nodePropertiesService'], 'randomVulnerabilitiesOnReset');
+      component.showVulnerabilitySlider();
+      expect(spy).toHaveBeenCalled();
+    })
+  });
+
+  describe('METHOD: showEntryNodeToggle', () => {
+    it('should return the randomEntryNodesOnReset value', () => {
+      const spy = spyOn(component['nodePropertiesService'], 'randomEntryNodesOnReset');
+      component.showEntryNodeToggle();
+      expect(spy).toHaveBeenCalled();
+    })
+  });
+
+  describe('METHOD: showHighValueNodeToggle', () => {
+    it('should return the randomHighValueNodesOnReset value', () => {
+      const spy = spyOn(component['nodePropertiesService'], 'randomHighValueNodesOnReset');
+      component.showHighValueNodeToggle();
+      expect(spy).toHaveBeenCalled();
+    })
   });
 });

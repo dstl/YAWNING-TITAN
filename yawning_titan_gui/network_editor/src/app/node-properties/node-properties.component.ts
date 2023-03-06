@@ -67,4 +67,28 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
   public closeSideNav(): void {
     this.close.emit();
   }
+
+  /**
+   * Show the vulnerability slider if true
+   * @returns
+   */
+  public showVulnerabilitySlider(): boolean {
+    return !this.nodePropertiesService.randomVulnerabilitiesOnReset();
+  }
+
+  /**
+   * Show the entry node toggle if true
+   * @returns
+   */
+  public showEntryNodeToggle(): boolean {
+    return !this.nodePropertiesService.randomEntryNodesOnReset();
+  }
+
+  /**
+   * Show the high value node toggle if true
+   * @returns
+   */
+  public showHighValueNodeToggle(): boolean {
+    return !this.nodePropertiesService.randomHighValueNodesOnReset();
+  }
 }

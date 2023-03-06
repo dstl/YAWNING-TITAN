@@ -31,16 +31,5 @@ $(window).on("load",function(){
 function update_network(form_element){
     config = new FormData($(form_element)[0]);
     config.append("_network_id",NETWORK_ID);
-    $.ajax({
-        type: "POST",
-        url: UPDATE_URL,
-        data: config,
-        processData: false,
-        contentType: false,
-        cache: false,
-        dataType: "json",
-        success: function(response){
-            proxy.NETWORK = response.network_json;
-        }
-    });
+    proxy.NETWORK_SETTINGS = config;
 }
