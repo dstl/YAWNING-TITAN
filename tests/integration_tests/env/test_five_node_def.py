@@ -4,6 +4,7 @@ from stable_baselines3 import PPO
 from stable_baselines3.ppo import MlpPolicy as PPOMlp
 
 
+@pytest.mark.integration_test
 @pytest.mark.parametrize("n_machines", [10, 50, 16])
 def test_n_machines(n_machines: int) -> None:
     """Test environment initialisation with a range of node sizes."""
@@ -11,20 +12,21 @@ def test_n_machines(n_machines: int) -> None:
     assert env.n_machines == n_machines
 
 
+@pytest.mark.integration_test
 @pytest.mark.parametrize(
     (
-        "n_machines",
-        "attacker_skill",
-        "attack_success_threshold",
-        "no_compromised_machine_loss",
+            "n_machines",
+            "attacker_skill",
+            "attack_success_threshold",
+            "no_compromised_machine_loss",
     ),
     ((10, 60, 0.5, 4), (5, 40, 0.2, 4), (15, 20, 0.9, 3)),
 )
 def test_environment_init(
-    n_machines: int,
-    attacker_skill: int,
-    attack_success_threshold: float,
-    no_compromised_machine_loss: int,
+        n_machines: int,
+        attacker_skill: int,
+        attack_success_threshold: float,
+        no_compromised_machine_loss: int,
 ) -> None:
     """
     Test environment creation and value initialisation with a range of values.
@@ -61,6 +63,7 @@ def test_environment_init(
     assert env.compromised_nodes is None
 
 
+@pytest.mark.integration_test
 def test_environment_reset() -> None:
     """Test environment reset and value initialisation."""
     env = gym.make("five-node-def-v0")

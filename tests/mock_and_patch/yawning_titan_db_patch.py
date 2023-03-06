@@ -1,5 +1,4 @@
 """Provides a patch to the YawningTitanDB."""
-import os.path
 import tempfile
 
 from tinydb import TinyDB

@@ -3,6 +3,7 @@ import pytest
 from stable_baselines3.common.env_checker import check_env
 
 
+@pytest.mark.integration_test
 @pytest.mark.parametrize(
     "environment", ["five-node-def-v0", "four-node-def-v0", "18-node-env-v0"]
 )

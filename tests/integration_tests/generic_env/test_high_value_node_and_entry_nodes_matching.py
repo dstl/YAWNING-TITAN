@@ -4,11 +4,7 @@ import warnings
 import pytest
 from stable_baselines3.common.env_checker import check_env
 
-from tests.conftest import create_yawning_titan_run
-from tests.generic_environment import N_TIME_STEPS_LONG
-
-# Dummy line to 'use' demo_db_docs so flake8 doesn't throw F401 or F811
-_ = create_yawning_titan_run
+from tests.conftest import N_TIME_STEPS_LONG
 
 
 @pytest.mark.integration_test

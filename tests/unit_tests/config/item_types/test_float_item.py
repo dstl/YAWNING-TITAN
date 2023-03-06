@@ -57,6 +57,7 @@ def test_float_properties_validation(
         assert validation.fail_reasons[0] == fail_reason
 
 
+@pytest.mark.unit_test
 def test_float_item_incorrect_properties_type():
     """Tests instantiation fails with incorrect properties type."""
     with pytest.raises(TypeError):

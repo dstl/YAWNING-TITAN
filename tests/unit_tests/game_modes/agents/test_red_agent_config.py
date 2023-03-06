@@ -1,24 +1,20 @@
 import pytest
 
-from tests.unit_tests.config import (
-    get_default_config_dict,
-    get_default_config_dict_legacy,
-)
+
 from yawning_titan.exceptions import ConfigGroupValidationError
 from yawning_titan.game_modes.components.red_agent import Red, TargetNodeGroup
 
 
 @pytest.fixture
-def default_red() -> Red:
-    """Create a red agent using the default config file."""
-    red = Red()
-    red.set_from_dict(get_default_config_dict()["red"])
-    return red
+def default_red(default_game_mode) -> Red:
+    """Get red from default game mode."""
+    return default_game_mode.red
 
 
 # -- Tier 0 groups ---
 
 
+@pytest.mark.unit_test
 def test_setting_target_without_using():
     """Test setting a target node for red but not using this target mechanism."""
     target = TargetNodeGroup(use=False, target="2")
@@ -36,6 +32,7 @@ def test_setting_target_without_using():
 # --- Tier 2 group ---
 
 
+@pytest.mark.unit_test
 def test_targeting_vulnerable_nodes_when_defences_are_ignored():
     """Test targeting vulnerable nodes while also ignoring defences."""
     red = Red()
@@ -56,10 +53,11 @@ def test_targeting_vulnerable_nodes_when_defences_are_ignored():
         raise red.validation.fail_exceptions[0]
 
 
-def test_default_red_from_legacy(default_red: Red):
+@pytest.mark.unit_test
+def test_default_red_from_legacy(default_red: Red, legacy_default_game_mode_dict):
     """Create a red agent using the default config file."""
     red = Red()
-    red.set_from_dict(get_default_config_dict_legacy()["RED"], legacy=True)
+    red.set_from_dict(legacy_default_game_mode_dict["RED"], legacy=True)
 
     assert red == default_red
     assert red.to_dict() == default_red.to_dict()

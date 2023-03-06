@@ -1,10 +1,13 @@
 import gym
+import pytest
 from stable_baselines3 import PPO
 from stable_baselines3.ppo import MlpPolicy as PPOMlp
 
 import yawning_titan  # noqa
+from tests.conftest import N_TIME_STEPS
 
 
+@pytest.mark.integration_test
 def test_default_environment_init():
     """Test the environment initialise and check default values."""
     env = gym.make("18-node-env-v0")
@@ -23,11 +26,12 @@ def test_default_environment_init():
     assert env.duration == 0
 
 
+@pytest.mark.integration_test
 def test_environment_reset():
     """Test the environment reset."""
     env = gym.make("18-node-env-v0")
     agent = PPO(PPOMlp, env, verbose=1)
-    agent.learn(total_timesteps=10000)
+    agent.learn(total_timesteps=N_TIME_STEPS)
 
     env.reset()
 

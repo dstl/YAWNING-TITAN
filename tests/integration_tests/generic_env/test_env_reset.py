@@ -3,8 +3,7 @@ import random
 import networkx as nx
 import pytest
 from stable_baselines3.common.env_checker import check_env
-
-from tests.generic_environment import N_TIME_STEPS
+from tests.conftest import N_TIME_STEPS
 
 
 @pytest.mark.integration_test
