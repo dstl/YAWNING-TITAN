@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { Node } from '../network-class/network-interfaces';
 import { NodePropertiesService } from './node-properties.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { NodePropertiesService } from './node-properties.service';
 })
 export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input('nodeId') nodeId: string = null;
+  @Input('node') node: Node = null;
 
   @Output() close = new EventEmitter();
 
@@ -40,12 +41,12 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     // do nothing if the previous value is the same that the current
-    if (changes?.nodeId?.currentValue == changes?.nodeId?.previousValue) {
+    if (changes?.node?.currentValue == changes?.node?.previousValue) {
       return;
     }
 
     // load the details of the new selected node
-    this.nodePropertiesService.loadDetails(this.nodeId);
+    this.nodePropertiesService.loadDetails(this.node);
   }
 
   ngOnDestroy(): void {
