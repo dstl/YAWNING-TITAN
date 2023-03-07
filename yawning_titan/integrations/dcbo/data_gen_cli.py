@@ -50,7 +50,6 @@ parser.add_argument(
     help="Whether or not to use the standard DCBO net or generate a random one",
 )
 
-
 args = parser.parse_args()
 
 NUMBER_OF_ENVS = args.n_envs

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-from yawning_titan.config.toolbox.core import ConfigGroup
+from yawning_titan.config.core import ConfigGroup
 from yawning_titan.db.doc_metadata import DocMetadata, DocMetaDataObject
 from yawning_titan.game_modes.components.blue_agent import Blue
 from yawning_titan.game_modes.components.game_rules import GameRules
@@ -30,36 +30,16 @@ class GameMode(ConfigGroup, DocMetaDataObject):
         miscellaneous: Miscellaneous = None,
         _doc_metadata: Optional[DocMetadata] = None,
     ):
-        self.red: Red = red if red else Red(doc="The configuration of the red agent")
-        self.blue: Blue = (
-            blue if blue else Blue(doc="The configuration of the blue agent")
-        )
-        self.game_rules: GameRules = (
-            game_rules
-            if game_rules
-            else GameRules(doc="The rules of the overall game mode")
-        )
+        self.red: Red = red if red else Red()
+        self.blue: Blue = blue if blue else Blue()
+        self.game_rules: GameRules = game_rules if game_rules else GameRules()
         self.blue_can_observe: ObservationSpace = (
-            blue_can_observe
-            if blue_can_observe
-            else ObservationSpace(
-                doc="The characteristics of the network and the red agent that the blue agent can observe"
-            )
+            blue_can_observe if blue_can_observe else ObservationSpace()
         )
-        self.on_reset: Reset = (
-            on_reset
-            if on_reset
-            else Reset(doc="The changes to the network made upon reset")
-        )
-        self.rewards: Rewards = (
-            rewards
-            if rewards
-            else Rewards(
-                doc="The rewards the blue agent gets for different game states"
-            )
-        )
+        self.on_reset: Reset = on_reset if on_reset else Reset()
+        self.rewards: Rewards = rewards if rewards else Rewards()
         self.miscellaneous: Miscellaneous = (
-            miscellaneous if miscellaneous else Miscellaneous(doc="Additional options")
+            miscellaneous if miscellaneous else Miscellaneous()
         )
         self._doc_metadata = _doc_metadata if _doc_metadata else DocMetadata()
         super().__init__(doc)

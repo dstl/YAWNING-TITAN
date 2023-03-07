@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Optional
 
-from yawning_titan.config.toolbox.groups.validation import AnyTrueGroup
-from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
+from yawning_titan.config.groups.validation import AnyTrueGroup
+from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
 
 # --- Tier 0 groups
 
@@ -13,7 +13,6 @@ class ObservationSpace(AnyTrueGroup):
 
     def __init__(
         self,
-        doc: Optional[str] = None,
         compromised_status: Optional[bool] = False,
         vulnerabilities: Optional[bool] = False,
         node_connections: Optional[bool] = False,
@@ -24,6 +23,7 @@ class ObservationSpace(AnyTrueGroup):
         special_nodes: Optional[bool] = False,
         red_agent_skill: Optional[bool] = False,
     ):
+        doc = "The characteristics of the network and the red agent that the blue agent can observe"
         self.compromised_status = BoolItem(
             value=compromised_status,
             doc="The blue agent loses if all the nodes become compromised",
