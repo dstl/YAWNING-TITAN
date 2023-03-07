@@ -13,7 +13,7 @@ from yawning_titan_gui.views import (
     db_manager,
     update_game_mode,
     update_network,
-    get_stderr
+    get_output
 )
 
 urlpatterns = [
@@ -48,7 +48,7 @@ urlpatterns = [
     path("manage_db/", db_manager, name="db manager"),
     path("update_game_mode/", update_game_mode, name="update config"),
     path("update_network/", update_network, name="update network"),
-    path("stderr/", get_stderr, name="stderr"),
+    path("output/", get_output, name="stderr"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

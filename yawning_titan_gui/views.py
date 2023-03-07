@@ -162,7 +162,7 @@ class RunView(View):
 
 
 def run_yt(*args, **kwargs):  # TODO: Move
-    # with open('err.txt',"w") as sys.stderr:
+    
     # Path('spam.log').unlink()
     logger = logging.getLogger("yr_run")
     logger.setLevel(logging.DEBUG)
@@ -171,21 +171,29 @@ def run_yt(*args, **kwargs):  # TODO: Move
     fh.setLevel(logging.DEBUG)
     logger.addHandler(fh)
     kwargs["logger"] = logger
-    YawningTitanRun(**kwargs)
-    # print("STDERR",stderr.getvalue())
+    with open('stdout.txt',"w+") as sys.stdout:
+        YawningTitanRun(**kwargs)
 
 
-def get_stderr(request: HttpRequest):
+def get_output(request: HttpRequest):
     if request.method == "GET":
+        output = {"stderr":"","stdout":""}
         with open("spam.log", "r") as f:
             try:
                 lines = f.readlines()
                 text = "<br>".join(lines)
-                return JsonResponse({"stderr": text})
+                output["stderr"] = text
             except Exception as e:
-                print("OOPS", e)
-
-
+                pass
+        with open('stdout.txt',"r") as f:
+            try:
+                lines = f.readlines()
+                text = "<br>".join(lines)
+                output["stdout"] = text
+            except Exception as e:
+                pass
+        return JsonResponse(output)
+    
 class NodeEditor(View):
     """
     Django representation of node_editor.html.
