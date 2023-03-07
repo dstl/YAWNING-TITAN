@@ -30,7 +30,7 @@ def test_target_specific_node(
 
     for _ in range(0, 10):
         action_loop: ActionLoop = basic_2_agent_loop(yt_run)
-        results: List[DataFrame] = action_loop.gif_action_loop(render_network=True)
+        results: List[DataFrame] = action_loop.standard_action_loop()
         x = list(
             chain.from_iterable(
                 chain.from_iterable(
