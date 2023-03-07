@@ -1,19 +1,20 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { CytoscapeService } from '../cytoscape/cytoscape.service';
+import { NetworkService } from '../../network-class/network.service';
 
 import { ImportService } from './import.service';
 
 describe('ImportService', () => {
   let service: ImportService;
 
-  let cytoscapeServiceStub: any = {
-    loadNetwork: () => { }
+  let networkServiceStub: any = {
+    updateNetworkSettings: () => { },
+    loadNetwork: () => { },
   }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: CytoscapeService, useValue: cytoscapeServiceStub }
+        { provide: NetworkService, useValue: networkServiceStub }
       ]
     });
     service = TestBed.inject(ImportService);
@@ -25,13 +26,13 @@ describe('ImportService', () => {
 
   describe('METHOD: loadFile', () => {
     it('should do nothing if no event to process', () => {
-      const spy = spyOn(service['cytoscapeService'], 'loadNetwork');
+      const spy = spyOn(service['networkService'], 'loadNetwork');
       service.loadFile(null);
       expect(spy).not.toHaveBeenCalled();
     });
 
     it('should throw an error if JSON is invalid', fakeAsync(() => {
-      const spy = spyOn(service['cytoscapeService'], 'loadNetwork');
+      const spy = spyOn(service['networkService'], 'loadNetwork');
       const event = [{
         text: (): any => { }
       }];
@@ -46,7 +47,7 @@ describe('ImportService', () => {
     }));
 
     it('should load a network if the JSON is valid', fakeAsync(() => {
-      const spy = spyOn(service['cytoscapeService'], 'loadNetwork');
+      const spy = spyOn(service['networkService'], 'loadNetwork');
       spyOn(JSON, 'parse').and.returnValue({})
       const event = [{
         text: (): any => { }
@@ -62,13 +63,13 @@ describe('ImportService', () => {
 
   describe('METHOD: loadNetworkFromWindow', () => {
     it('should do nothing if no event to process', () => {
-      const spy = spyOn(service['cytoscapeService'], 'loadNetwork');
+      const spy = spyOn(service['networkService'], 'loadNetwork');
       service.loadNetworkFromWindow(null);
       expect(spy).not.toHaveBeenCalled();
     });
 
     it('should throw an error if JSON is invalid', () => {
-      const spy = spyOn(service['cytoscapeService'], 'loadNetwork');
+      const spy = spyOn(service['networkService'], 'loadNetwork');
 
       expect(() => {
         service.loadNetworkFromWindow({ text: (): any => { } });
@@ -77,7 +78,7 @@ describe('ImportService', () => {
     });
 
     it('should load a network if the JSON is valid', () => {
-      const spy = spyOn(service['cytoscapeService'], 'loadNetwork');
+      const spy = spyOn(service['networkService'], 'loadNetwork');
       spyOn(JSON, 'parse').and.returnValue({});
 
       service.loadNetworkFromWindow({ text: (): any => { } });

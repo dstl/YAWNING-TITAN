@@ -143,7 +143,6 @@ option:hover{
     min-width: 0;
     max-width: 100%;
     height: 100%;
-    padding: var(--padding);
     background-color: var(--mid);
 }
 #sidebar-left{
@@ -154,7 +153,7 @@ option:hover{
     height: 100%;
     display: flex;
     background-color: var(--dark);
-    border-right: 1px solid var(--text-light); 
+    border-right: 1px solid var(--text-light);
     transition: all 0.8s ease;
     z-index: 1000;
 }

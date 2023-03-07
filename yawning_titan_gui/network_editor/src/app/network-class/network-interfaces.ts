@@ -4,20 +4,42 @@ export interface NetworkJson {
   _doc_metadata: NetworkDocMetadata,
 
   /** Network reset options **/
-  // special items to reset
+  // Entry node reset behaviour
+  set_random_entry_nodes: boolean,
+  random_entry_node_preference: RandomEntryNodePreference,
+  num_of_random_entry_nodes: number,
+
+  // High Value reset behaviour
+  set_random_high_value_nodes: boolean,
+  random_high_value_node_preference: RandomHighValueNodePreference,
+  num_of_random_high_value_nodes: number,
+
+  // Node Vulnerabilities
+  set_random_vulnerabilities: boolean,
+  node_vulnerability_lower_bound: number,
+  node_vulnerability_upper_bound: number
+}
+
+export interface NetworkSettings {
+  entryNode: EntryNodeBehaviour,
+  highValueNode: HighValueNodeBehaviour,
+  vulnerability: VulnerabilitiesBehaviour
+}
+
+export interface EntryNodeBehaviour {
   set_random_entry_nodes?: boolean,
-  set_random_high_value_nodes?: boolean,
-  set_random_vulnerabilities?: boolean,
-
-  // preference for random node settings
-  random_entry_node_placement?: RandomEntryNodePreference,
-  random_high_value_node_preference?: RandomHighValueNodePreference,
-
-  // number of special nodes
+  random_entry_node_preference?: RandomEntryNodePreference,
   num_of_random_entry_nodes?: number,
-  num_of_random_high_value_nodes?: number,
+}
 
-  // range for node vulnerabilities
+export interface HighValueNodeBehaviour {
+  set_random_high_value_nodes?: boolean,
+  random_high_value_node_preference?: RandomHighValueNodePreference,
+  num_of_random_high_value_nodes?: number,
+}
+
+export interface VulnerabilitiesBehaviour {
+  set_random_vulnerabilities?: boolean,
   node_vulnerability_lower_bound?: number,
   node_vulnerability_upper_bound?: number
 }
@@ -52,13 +74,13 @@ export interface NetworkDocMetadata {
 */
 export enum RandomEntryNodePreference {
   // Prefer central nodes
-  CENTRAL = "central",
+  CENTRAL = "CENTRAL",
 
   // Prefer edge nodes
-  EDGE = "edge",
+  EDGE = "EDGE",
 
   // No preference
-  NONE = "none"
+  NONE = "NONE"
 }
 
 /**
@@ -66,8 +88,8 @@ export enum RandomEntryNodePreference {
 */
 export enum RandomHighValueNodePreference {
   // Prefer nodes furthest away from entry nodes.
-  FURTHEST_AWAY_FROM_ENTRY = "furthest_away_from_entry",
+  FURTHEST_AWAY_FROM_ENTRY = "FURTHEST_AWAY_FROM_ENTRY",
 
   // No preference
-  NONE = "none"
+  NONE = "NONE"
 }
