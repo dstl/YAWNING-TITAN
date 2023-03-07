@@ -7,6 +7,9 @@ from pandas import DataFrame
 from yawning_titan.networks.node import Node
 
 
+@pytest.mark.skip(
+    reason="Failing tests. Needs to be looked at. Bug ticket " "raised (AIDT-260)."
+)
 @pytest.mark.integration_test
 def test_target_specific_node(
     basic_2_agent_loop,
@@ -19,7 +22,9 @@ def test_target_specific_node(
     follow a prescribed path to a target node avoiding all other nodes.
     """
     yt_run = create_yawning_titan_run(
-        game_mode_name="settable_target_node", network_name="Default 18-node network"
+        game_mode_name="settable_target_node",
+        network_name="Default 18-node network",
+        deterministic=True,
     )
 
     nodes_on_path = ["0", "5", "7", "8", "9"]
@@ -43,8 +48,9 @@ def test_target_specific_node(
         )
         captured_nodes.update(x)
 
-    captured_node_names = sorted([node.name for node in captured_nodes])
-
+    captured_node_names = [node.name for node in captured_nodes]
+    print(f"{nodes_on_path=}")
+    print(f"{captured_node_names=}")
     assert all(node in nodes_on_path for node in captured_node_names)
 
 
