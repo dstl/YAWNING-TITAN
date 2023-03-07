@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-from tests.mock_and_patch.yawning_titan_db_patch import yawning_titan_db_init_patch
+from tests.yawning_titan_db_patch import yawning_titan_db_init_patch
 from yawning_titan.db.doc_metadata import DocMetadataSchema
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
 from yawning_titan.exceptions import YawningTitanDBError

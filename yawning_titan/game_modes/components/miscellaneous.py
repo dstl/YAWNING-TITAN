@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Optional
 
-from yawning_titan.config.toolbox.core import ConfigGroup
-from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
-from yawning_titan.config.toolbox.item_types.int_item import IntItem, IntProperties
+from yawning_titan.config.core import ConfigGroup
+from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
+from yawning_titan.config.item_types.int_item import IntItem, IntProperties
 
 # --- Tier 0 groups
 
@@ -14,10 +14,10 @@ class Miscellaneous(ConfigGroup):
 
     def __init__(
         self,
-        doc: Optional[str] = None,
         random_seed: Optional[int] = None,
         output_timestep_data_to_json: Optional[bool] = False,
     ):
+        doc = "Additional options"
         self.random_seed = IntItem(
             value=random_seed,
             doc="Seed to inform the random number generation of python and numpy thereby creating deterministic game outputs",

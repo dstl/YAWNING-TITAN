@@ -36,8 +36,8 @@ def _create_app_dirs():
     """
     Handles creation of application directories and user directories.
 
-    Uses `platformdirs.PlatformDirs` and `pathlib.Path` to create the required app directories in the correct
-    locations based on the users OS.
+    Uses `platformdirs.PlatformDirs` and `pathlib.Path` to create the required
+    app directories in the correct locations based on the users OS.
     """
     import sys
     from pathlib import Path, PosixPath

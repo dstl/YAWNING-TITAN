@@ -11,6 +11,20 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import networkx as nx
 import numpy
+from networkx.drawing.layout import (
+    bipartite_layout,
+    circular_layout,
+    fruchterman_reingold_layout,
+    kamada_kawai_layout,
+    multipartite_layout,
+    planar_layout,
+    random_layout,
+    rescale_layout,
+    shell_layout,
+    spectral_layout,
+    spiral_layout,
+    spring_layout,
+)
 from numpy.random import choice
 
 from yawning_titan.db.doc_metadata import DocMetadata
@@ -19,7 +33,44 @@ from yawning_titan.networks.node import Node
 
 _LOGGER = getLogger(__name__)
 
-# --- Tier 0 groups
+
+class NetworkLayout(Enum):
+    """
+    An enum class that maps to layout functions in networkx.drawing.layout.
+
+    See: https://networkx.org/documentation/stable/reference/drawing.html#module-networkx.drawing.layout
+    """
+
+    BIPARTITE = "bipartite"
+    CIRCULAR = "circular"
+    FRUCHTERMAN_REINGOLD = "fruchterman_reingold"
+    KAMADA_KAWAI = "kamada_kawai"
+    MULTIPARTITE = "multipartite"
+    PLANAR = "planar"
+    RANDOM = "random"
+    RESCALE = "rescale"
+    SHELL = "shell"
+    SPECTRAL = "spectral"
+    SPIRAL = "spiral"
+    SPRING = "spring"
+
+    def as_layout_func(self):
+        """Maps the NetworkLayout to a function in networkx.drawing.layout."""
+        layout_dict = {
+            NetworkLayout.BIPARTITE: bipartite_layout,
+            NetworkLayout.CIRCULAR: circular_layout,
+            NetworkLayout.FRUCHTERMAN_REINGOLD: fruchterman_reingold_layout,
+            NetworkLayout.KAMADA_KAWAI: kamada_kawai_layout,
+            NetworkLayout.MULTIPARTITE: multipartite_layout,
+            NetworkLayout.PLANAR: planar_layout,
+            NetworkLayout.RANDOM: random_layout,
+            NetworkLayout.RESCALE: rescale_layout,
+            NetworkLayout.SHELL: shell_layout,
+            NetworkLayout.SPECTRAL: spectral_layout,
+            NetworkLayout.SPIRAL: spiral_layout,
+            NetworkLayout.SPRING: spring_layout,
+        }
+        return layout_dict[self]
 
 
 class RandomHighValueNodePreference(Enum):
@@ -149,6 +200,7 @@ class Network(nx.Graph):
             super().add_node(node_for_adding, **kwargs)
             if node_for_adding.entry_node or node_for_adding.high_value_node:
                 self._check_intersect(node_for_adding)
+            self.set_node_positions()
 
     def remove_node(self, n: Node):
         """
@@ -157,6 +209,7 @@ class Network(nx.Graph):
         Extend the `remove_node` method of the superclass.
         """
         super().remove_node(n)
+        self.set_node_positions()
 
     def add_edge(self, u_of_edge: Node, v_of_edge: Node, **kwargs):
         """
@@ -165,6 +218,7 @@ class Network(nx.Graph):
         Extend the `add_edge` method of the superclass.
         """
         super().add_edge(u_of_edge, v_of_edge, **kwargs)
+        self.set_node_positions()
 
     def remove_edge(self, u: Node, v: Node):
         """
@@ -278,39 +332,16 @@ class Network(nx.Graph):
                         )
                     )
 
-    def set_node_positions(self):
-        """Set the positions of the nodes in the network to be displayed on a matplotlib window."""
+    def set_node_positions(self, network_layout: NetworkLayout = NetworkLayout.SPRING):
+        """
+        Sets the Node positions of the current Network.
 
-        def check_if_nearby(check_position: Node, value: int) -> bool:
-            for n in self.nodes:
-                if n.x_pos - value <= check_position[0] <= n.x_pos + value:
-                    if n.y_pos - value <= check_position[1] <= n.y_pos + value:
-                        return True
-            return False
-
-        if self.nodes and all(n.node_position == [0, 0] for n in self.nodes):
-            matrix, _ = self.to_adj_matrix_and_positions()
-            nodes = self.get_nodes(as_list=True)
-            for i in range(len(matrix)):
-                # generates a random x,y position for a node
-                rand_pos = [
-                    random.randint(0, len(matrix) * 4),
-                    random.randint(0, len(matrix) * 4),
-                ]
-                fails = 0
-                value = 5
-                while check_if_nearby(rand_pos, value):
-                    # if that position has already been used then generate a new point
-                    rand_pos = [
-                        random.randint(0, len(matrix) * 4),
-                        random.randint(0, len(matrix) * 4),
-                    ]
-                    fails += 1
-                    if fails % 10 == 0:
-                        value -= 1
-                        if value == -1:
-                            value = 0
-                nodes[i].node_position = rand_pos
+        :param network_layout: A member of NetworkLayout. Default is
+            NetworkLayout.SPRING.
+        """
+        pos_dict = network_layout.as_layout_func()(self)
+        for node in self.nodes:
+            node.node_position = pos_dict[node]
 
     def set_entry_nodes(self, names: List[str] = None, ids: List[str] = None):
         """Manually set entry nodes in the network after instantiation."""
