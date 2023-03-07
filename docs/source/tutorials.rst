@@ -18,8 +18,12 @@ reset_default_jupyter_notebooks(overwrite_existing=True)
 
 The supplied notebooks are:
 
+* Using YawningTitanRun.ipynb
+    Demonstrates how to use the :class:`~yawning_titan.yawning_titan_run.YawningTitanRun` class.
+* Create a Network.ipynb
+    Demonstrates how to create a Network using the :class:`~yawning_titan.networks.network.Network` and :class:`~yawning_titan.networks.node.Node` classes.
 * Creating and playing as a Keyboard Agent.ipynb
-    Shows you how to create a Keyboard Agent that will allow you to be able to play the game yourself.
+    Demonstrates how to create a Keyboard Agent that will allow you to be able to play the game yourself.
 * sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb
     Shows you how to create a custom environment from the very beginning and takes you through all the way
     to training the agent and then rendering its performance at the end.
