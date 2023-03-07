@@ -331,6 +331,9 @@ option:hover{
 .btn{
     color: var(--text-light);
 }
+.btn:hover{
+    color: var(--text-superlight);
+}
 
 /* text styling */
 .head{

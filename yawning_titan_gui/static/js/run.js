@@ -17,8 +17,19 @@ $(document).ready(function(){
     });
     $("#stderr").click(function(){
         stderr();
-    })
+    });
+    $("#view-buttons button").click(function(){
+        $(".run-subsection").hide();
+        $("#view-buttons button").removeClass("selected");
+        $(this).addClass("selected");
+        $($(this).data("toggle")).show();
+    });
+
+    //setup on start
+    $("#view-buttons button:first-child").addClass("selected");
+    $(".run-subsection:first-child").show();
 });
+
 
 let interval;
 
@@ -33,9 +44,9 @@ function run(data){
         cache: false,
         dataType: "json",
         success: function(response){
-            console.log(response.stdout);
-            let text =  $("#run-view").html(response.stdout);
-            $("#run-view").html(text+response.stdout);
+            let out = $("#log-view");
+            let text =  $(out).html(response.stdout);
+            
             clearInterval(interval);
         },
         error: function(response){
@@ -43,19 +54,25 @@ function run(data){
         }
     });
     interval = setInterval(function(){
-        stderr();
-    },50);
+        get_output();
+    },100);
 }
 
-function stderr(){
+function get_output(){
     $.ajax({
         type: "GET",
-        url: STDERR_URL,
+        url: OUTPUT_URL,
         cache: false,
         dataType: "json",
         success: function(response){
-            console.log("STDERR",response.stderr);
-            $("#run-view").html(response.stderr);
+            let stderr_out = $("#log-view"),
+                stdout_out = $("#metric-view");
+
+            $(stderr_out).html(response.stderr);
+            $(stdout_out).html(response.stdout);
+            
+            $(stderr_out).scrollTop($(stderr_out).get(0).scrollHeight);
+            $(stdout_out).scrollTop($(stdout_out).get(0).scrollHeight);
         }
     });
 }
