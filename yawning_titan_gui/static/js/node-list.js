@@ -10,15 +10,31 @@ $(document).ready(function () {
   /**
    * Listen to filter inputs
    */
-  $('#node-list-filter').keyup(function () {
+  $('#node-list-filter').keyup(function (event) {
     let input = this;
     // filter node list by name
-    updateNodeList(fullNodeList, $(input).val())
+    event.stopPropagation();
+    updateNodeList(fullNodeList, $(input).val().toLowerCase().trim());
   });
 
-  $('#node-list-filter').on("search", function () {
+  $('#node-list-filter').on("search", function (event) {
     // load the full node list
+    event.stopPropagation();
     updateNodeList(fullNodeList, null);
+  });
+
+  $(document).on("click", ".node-list-item", function (event) {
+    var item = this;
+    event.stopPropagation();
+
+    document.dispatchEvent(new CustomEvent('nodeSelected', { detail: item?.id }));
+  });
+
+  $(document).on("click", ".node-delete-btn", function (event) {
+    var item = this;
+    event.stopPropagation();
+
+    document.dispatchEvent(new CustomEvent('deleteNode', { detail: item?.id }));
   });
 
   /**
@@ -79,6 +95,7 @@ $(document).ready(function () {
     // create node list button
     var nodeListDeleteIconButton = document.createElement("button");
     nodeListDeleteIconButton.classList.add("btn");
+    nodeListDeleteIconButton.classList.add("node-delete-btn");
     nodeListDeleteIconButton.id = id;
     var nodeListDeleteIcon = document.createElement("i");
     nodeListDeleteIcon.classList.add("bi");

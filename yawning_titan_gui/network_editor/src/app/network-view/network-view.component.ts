@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, Inject, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { CytoscapeService } from '../services/cytoscape/cytoscape.service';
 import { ImportService } from '../services/export-import/import.service';
+import { InteractionService } from '../services/interaction/interaction.service';
 
 @Component({
   selector: 'app-network-view',
@@ -14,7 +15,8 @@ export class NetworkViewComponent implements AfterViewInit {
 
   constructor(
     private cytoscapeService: CytoscapeService,
-    private importService: ImportService
+    private importService: ImportService,
+    private interactionService: InteractionService
   ) { }
 
   ngAfterViewInit() {
@@ -34,7 +36,7 @@ export class NetworkViewComponent implements AfterViewInit {
    * @returns
    */
   @HostListener('document:networkUpdate', ['$event'])
-  listenToNetworkChange(event: any) {
+  private listenToNetworkChange(event: any) {
     // make sure that the network is not the same as previous
     if(!event || event?.detail == this.curNetworkJsonString) {
       return;
@@ -51,20 +53,30 @@ export class NetworkViewComponent implements AfterViewInit {
    * @returns
    */
   @HostListener('document:networkSettingsUpdate', ['$event'])
-  listenToNetworkSettingsChange(event: any) {
+  private listenToNetworkSettingsChange(event: any) {
     const val = {};
     for (const formData of event?.detail) {
       val[`${formData[0]}`] = formData[1];
     }
 
-    this.importService.processNetworkSettingsChanges(val);
+    this.interactionService.processNetworkSettingsChanges(event);
+  }
+
+  @HostListener('document:nodeSelected', ['$event'])
+  private listenToSelectedNodeListItem(event: any) {
+    this.interactionService.processNodeSelected(event?.detail);
+  }
+
+  @HostListener('document:deleteNode', ['$event'])
+  private listenToNodeListItemDelete(event: any) {
+    this.interactionService.processNodeDelete(event?.detail);
   }
 
   /**
    * Load the dropped file
    * @param $event
    */
-  loadFile($event: any) {
+  public loadFile($event: any) {
     this.importService.loadFile($event);
   }
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CytoscapeService } from './services/cytoscape/cytoscape.service';
 import { ElementType, SelectedGraphRef as SelectedGraphItemRef } from './services/cytoscape/graph-objects';
 import { NodePropertiesSidenavComponent } from './node-properties/node-properties-sidenav/node-properties-sidenav.component';
 import { InteractionService } from './services/interaction/interaction.service';
@@ -20,7 +19,6 @@ export class AppComponent implements OnInit {
 
   constructor(
     private networkService: NetworkService,
-    private cytoscapeService: CytoscapeService,
     private interactionService: InteractionService
   ) { }
 
@@ -31,7 +29,7 @@ export class AppComponent implements OnInit {
     });
 
     this.networkService.networkObservable.subscribe((network: Network) => {
-      this.updateNodeList(network?.nodeList)
+      this.updateNodeList(network?.nodeList);
     })
   }
 
@@ -64,6 +62,14 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    this.sidenav.open(element.id);
+    // check if node exists
+    const node = this.networkService.getNodeById(element.id);
+
+    // do not open sidenav if node does not exist
+    if (!node) {
+      return;
+    }
+
+    this.sidenav.open(node);
   }
 }

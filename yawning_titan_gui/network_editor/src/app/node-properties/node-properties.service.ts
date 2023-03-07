@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, Subject } from 'rxjs';
-import { NetworkSettings } from '../network-class/network-interfaces';
+import { NetworkSettings, Node } from '../network-class/network-interfaces';
 import { NetworkService } from '../network-class/network.service';
 import { InteractionService } from '../services/interaction/interaction.service';
 
@@ -15,7 +15,7 @@ export class NodePropertiesService {
   private _networkSettings: NetworkSettings
 
   // id of the current node being edited
-  private _currentElementId = '';
+  private currentNode: Node = null;
 
   constructor(
     private networkService: NetworkService,
@@ -77,15 +77,12 @@ export class NodePropertiesService {
    * Loads the details of the selected
    * @param id
    */
-  public loadDetails(id: string) {
-    // get the node details
-    const node = this.networkService.getNodeById(id);
-
+  public loadDetails(node: Node) {
     if (!node) {
       return;
     }
 
-    this._currentElementId = id;
+    this.currentNode = node;
 
     // create new form group
     this._nodePropertiesFormGroup = this.formBuilder.group({
@@ -136,7 +133,7 @@ export class NodePropertiesService {
    */
   public updateNodePositions(val: { id: string, position: { x: number, y: number } }): void {
     // only need to care if the node being dragged is displayed
-    if (!val || !(val.id == this._currentElementId)) {
+    if (!val || !(val.id == this.currentNode.uuid)) {
       return;
     }
 
