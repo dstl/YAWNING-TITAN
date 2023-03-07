@@ -149,7 +149,7 @@ def legacy_default_game_mode_dict() -> Dict:
 
 
 @pytest.fixture(scope="function")
-def create_yawning_titan_run(network_db, game_mode_db):
+def create_yawning_titan_run(network_db: NetworkDB, game_mode_db: GameModeDB):
     """Create an initialised and setup YawningTitanRun."""
 
     def _create_yawning_titan_run(
