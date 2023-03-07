@@ -46,7 +46,7 @@ function run(data){
         success: function(response){
             let out = $("#log-view");
             let text =  $(out).html(response.stdout);
-            
+
             clearInterval(interval);
         },
         error: function(response){
@@ -70,7 +70,7 @@ function get_output(){
 
             $(stderr_out).html(response.stderr);
             $(stdout_out).html(response.stdout);
-            
+
             $(stderr_out).scrollTop($(stderr_out).get(0).scrollHeight);
             $(stdout_out).scrollTop($(stdout_out).get(0).scrollHeight);
         }

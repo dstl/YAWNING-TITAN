@@ -11,9 +11,9 @@ from yawning_titan_gui.views import (
     NodeEditor,
     RunView,
     db_manager,
+    get_output,
     update_game_mode,
     update_network,
-    get_output
 )
 
 urlpatterns = [
