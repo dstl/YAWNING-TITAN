@@ -20,6 +20,6 @@ import './commands'
 // require('./commands')
 
 beforeEach(() => {
-  cy.visit('http://localhost:8000/node_editor/');
+  cy.visit('http://localhost:8000/networks/');
   cy.get('.head').should('be.visible');
 });

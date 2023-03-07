@@ -9,5 +9,8 @@ const fs = require('fs');
 
 let report = fs.readFileSync('license-report.csv', { encoding: 'utf-8' }).split(/\r?\n/).slice(2).filter(line => line != '');
 
+// remove the time done line
+report = report.join('\n').replace(/\n.*$/, '');
+
 // output to file
-fs.writeFileSync('../../docs/source/network-editor-dependencies.csv', `${'Name,Version,License,URL'+'\n'}${report.join('\n')}`)
+fs.writeFileSync('../../docs/source/network-editor-dependencies.csv', `${'Name,Version,License,URL'+'\n'}${report}`)
