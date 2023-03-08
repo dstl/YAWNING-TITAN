@@ -101,7 +101,7 @@ textarea{
     position: relative;
     display: block;
     flex-wrap: wrap;
-    height: 5rem;
+    min-height: 5rem;
     margin: var(--increment);
     margin-top: calc(var(--increment) * 3) !important;
     margin-bottom: calc(var(--increment) * 3) !important;

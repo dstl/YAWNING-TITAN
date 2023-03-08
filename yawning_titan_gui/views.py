@@ -557,7 +557,7 @@ def db_manager(request: HttpRequest) -> JsonResponse:
             )
 
         operations = {
-            "game mode": {
+            "game_mode": {
                 "create": create_game_mode,
                 "delete": delete_game_mode,
                 "create from": create_game_mode_from,

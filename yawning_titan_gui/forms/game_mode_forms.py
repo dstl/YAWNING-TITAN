@@ -359,10 +359,18 @@ class GameModeSearchForm(django_forms.Form):
                 if type(item.value) in [int, float]:
                     selector = {
                         "min": min(
-                            [g.to_legacy_dict()[name].value for g in game_modes]
+                            [
+                                g.to_legacy_dict()[name].value
+                                for g in game_modes
+                                if g.to_legacy_dict()[name].value is not None
+                            ]
                         ),
                         "max": max(
-                            [g.to_legacy_dict()[name].value for g in game_modes]
+                            [
+                                g.to_legacy_dict()[name].value
+                                for g in game_modes
+                                if g.to_legacy_dict()[name].value is not None
+                            ]
                         ),
                     }
                     if selector["min"] != selector["max"]:
