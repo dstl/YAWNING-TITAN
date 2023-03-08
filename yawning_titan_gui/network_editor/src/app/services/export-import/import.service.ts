@@ -46,6 +46,8 @@ export class ImportService {
     try {
       const network = new Network(JSON.parse(windowNetwork));
       this.networkService.loadNetwork(network);
+      // update network settings
+      this.networkService.updateNetworkSettings(network.networkSettings);
     } catch (e) {
       throw new Error("Unable to parse JSON", e);
     }
