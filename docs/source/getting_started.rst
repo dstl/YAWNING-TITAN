@@ -9,24 +9,22 @@ Pre-Requisites
 To get YAWNING-TITAN (**YT**) installed, you will need to have the following
 installed:
 
-Unix
-~~~~
+**Unix**
 
 * ``python >= 3.8.*, <= 3.10.*``
 * ``python3-pip``
 * ``virtualenv``
 
-Windows
-~~~~
+**Windows**
 
 * ``python >= 3.8.*, <= 3.10.*``
 
 **YT** is designed to be OS-agnostic, and thus should work on most variations/distros of Linux, Windows, and MacOS.
 
 Environment Setup
-~~~~~~~~~~~~~~~~~
+*****************
 
-YT operates from the users home directory where it has two locations, one hidden for backend stuff, and one user-facing
+**YT** operates from the users home directory where it has two locations, one hidden for backend stuff, and one user-facing
 for user files. To initialise this environment, run:
 
 **Unix**
@@ -53,7 +51,7 @@ for user files. To initialise this environment, run:
 Starting Yawning-Titan
 **********************
 
-The best way to begin working with YT is to run Jupyter Lab from the newly created venv.
+The best way to begin working with **YT** is to run Jupyter Lab from the newly created venv.
 
 **Unix**
 
@@ -92,9 +90,9 @@ The :class:`~yawning_titan.yawning_titan_run.YawningTitanRun` class is fully con
 
 
 Development Install
-~~~~~~~~~~~~~~~~~~~
+*******************
 
-For those wishing to install YT and use it or extend it from within an IDE, perform the following development installation:
+For those wishing to install **YT** and use it or extend it from within an IDE, perform the following development installation:
 
 1. Navigate to the YAWNING-TITAN folder and create a new python :term:`Virtual Environment` (**venv**)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -121,8 +119,8 @@ For those wishing to install YT and use it or extend it from within an IDE, perf
 
    .\venv\Scripts\activate
 
-3. Install :mod:`~yawning_titan` into the :term:`venv<Virtual Environment>` along with all of its dependencies
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+3. Install YT into the :term:`venv<Virtual Environment>` along with all of its dependencies
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: bash
 
