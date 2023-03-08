@@ -6350,7 +6350,6 @@
           "high_value_node": false,
           "entry_node": true,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 1,
           "y_pos": 7
         },
@@ -6360,7 +6359,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 3,
           "y_pos": 6
         },
@@ -6370,7 +6368,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 2,
           "y_pos": 7
         },
@@ -6380,7 +6377,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 3,
           "y_pos": 7
         },
@@ -6390,7 +6386,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 4,
           "y_pos": 7
         },
@@ -6400,7 +6395,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 5,
           "y_pos": 7
         },
@@ -6410,7 +6404,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 3,
           "y_pos": 4
         },
@@ -6420,7 +6413,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 1,
           "y_pos": 4
         },
@@ -6430,7 +6422,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 4,
           "y_pos": 4
         },
@@ -6440,7 +6431,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 3,
           "y_pos": 2
         },
@@ -6450,7 +6440,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 6,
           "y_pos": 5
         },
@@ -6460,7 +6449,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 6,
           "y_pos": 4
         },
@@ -6470,7 +6458,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 6,
           "y_pos": 3
         },
@@ -6480,7 +6467,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 1,
           "y_pos": 1
         },
@@ -6490,7 +6476,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 2,
           "y_pos": 1
         },
@@ -6500,7 +6485,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 3,
           "y_pos": 1
         },
@@ -6510,7 +6494,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 4,
           "y_pos": 1
         },
@@ -6520,7 +6503,6 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "classes": "standard_node",
           "x_pos": 5,
           "y_pos": 1
         }
