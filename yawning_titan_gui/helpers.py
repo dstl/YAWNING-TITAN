@@ -1,9 +1,67 @@
+import glob
+import logging
+import os
+import sys
 from pathlib import Path
 from typing import Any, List
 
+from django.http import HttpRequest, JsonResponse
+
+from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB, NetworkSchema
+from yawning_titan.yawning_titan_run import YawningTitanRun
+from yawning_titan_gui import STATIC_DIR, YT_RUN_TEMP_DIR
+from yawning_titan_server.settings import STATIC_URL
+
+
+class RunManager:
+    gif = None
+
+    @classmethod
+    def run_yt(cls, *args, **kwargs):  # TODO: Move
+        Path("spam.log").unlink()
+        logger = logging.getLogger("yr_run")
+        logger.setLevel(logging.DEBUG)
+        # create file handler which logs even debug messages
+        fh = logging.FileHandler("spam.log")
+        fh.setLevel(logging.DEBUG)
+        logger.addHandler(fh)
+        kwargs["logger"] = logger
+        with open("stdout.txt", "w+") as sys.stdout:
+            run = YawningTitanRun(**kwargs)
+        if kwargs["render"]:
+            loop = ActionLoop(
+                run.env,
+                run.agent,
+                episode_count=kwargs.get("num_episodes", run.total_timesteps),
+            )
+            loop.gif_action_loop(
+                output_directory=YT_RUN_TEMP_DIR, save_gif=True, render_network=False
+            )
+
+    @classmethod
+    def get_output(cls):
+        output = {"stderr": "", "stdout": ""}
+        with open("spam.log", "r") as f:
+            try:
+                lines = f.readlines()
+                text = "<br>".join(lines)
+                output["stderr"] = text
+            except Exception as e:
+                pass
+        with open("stdout.txt", "r") as f:
+            try:
+                lines = f.readlines()
+                text = "<br>".join(lines)
+                output["stdout"] = text
+            except Exception as e:
+                pass
+        dir = glob.glob(YT_RUN_TEMP_DIR.as_posix())
+        gif_path = max(dir, key=os.path.getctime)
+        output["gif"] = f"/{STATIC_URL}{Path(gif_path).name}"
+        return output
 
 
 class NetworkManager:
@@ -138,3 +196,11 @@ def uniquify(path: Path) -> Path:
         path = parent / f"{filename}({counter}){extension}"
         counter += 1
     return path
+
+
+def static_path_to_url(path: str):
+    """"""
+    print("PATH", path, STATIC_DIR.as_posix())
+    return path
+    # print("TESTxxxx",path.split(STATIC_DIR.as_posix())[1])
+    # return path.split(STATIC_DIR.as_posix())[1]

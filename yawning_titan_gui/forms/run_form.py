@@ -16,6 +16,15 @@ class RunForm(django_forms.Form):
         help_text="Whether the evaluation should use stochastic or deterministic actions",
     )
 
+    render = django_forms.BooleanField(
+        widget=widgets.CheckboxInput(
+            attrs={"role": "switch", "class": "form-check-input"}
+        ),
+        required=False,
+        label="Render gif",
+        help_text="Whether the output should render a gif action loop",
+    )
+
     total_timesteps = django_forms.IntegerField(
         widget=widgets.NumberInput(attrs={"class": "form-control"}),
         required=False,
@@ -35,6 +44,13 @@ class RunForm(django_forms.Form):
         required=False,
         help_text="The number of episodes to evaluate the agent",
         label="N eval episodes",
+    )
+
+    num_episodes = django_forms.IntegerField(
+        widget=widgets.NumberInput(attrs={"class": "form-control"}),
+        required=False,
+        help_text="The number of episodes to run",
+        label="Number of episodes",
     )
 
     def __init__(self, *args, **kwargs) -> None:
