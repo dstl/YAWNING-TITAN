@@ -4,12 +4,10 @@ from typing import List, Set
 import pytest
 from pandas import DataFrame
 
+from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.networks.node import Node
 
 
-@pytest.mark.skip(
-    reason="Failing tests. Needs to be looked at. Bug ticket " "raised (AIDT-260)."
-)
 @pytest.mark.integration_test
 def test_target_specific_node(
     basic_2_agent_loop,
@@ -23,7 +21,7 @@ def test_target_specific_node(
     """
     yt_run = create_yawning_titan_run(
         game_mode_name="settable_target_node",
-        network_name="Default 18-node network",
+        network_name="Default 18-node network with set entry node",
         deterministic=True,
     )
 
@@ -31,7 +29,7 @@ def test_target_specific_node(
     captured_nodes: Set[Node] = set()
 
     for _ in range(0, 10):
-        action_loop = basic_2_agent_loop(yt_run)
+        action_loop: ActionLoop = basic_2_agent_loop(yt_run)
         results: List[DataFrame] = action_loop.standard_action_loop()
         x = list(
             chain.from_iterable(
@@ -49,8 +47,6 @@ def test_target_specific_node(
         captured_nodes.update(x)
 
     captured_node_names = [node.name for node in captured_nodes]
-    print(f"{nodes_on_path=}")
-    print(f"{captured_node_names=}")
     assert all(node in nodes_on_path for node in captured_node_names)
 
 
