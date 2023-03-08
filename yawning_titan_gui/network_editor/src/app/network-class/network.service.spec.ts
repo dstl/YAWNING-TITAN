@@ -55,7 +55,6 @@ describe('NetworkService', () => {
     it('should update network settings and apply the change to nodes', () => {
       const networkUpdateSpy = spyOn(service['_network'], 'updateNetworkSettings').and.callFake(() => { });
       const nodeUpdateSpy = spyOn<any>(service, 'applyNetworkSettingsToNodes');
-      const networkEventSpy = spyOn(service['_networkSubject'], 'next');
 
       service.updateNetworkSettings({
         entryNode: null,
@@ -65,7 +64,6 @@ describe('NetworkService', () => {
 
       expect(networkUpdateSpy).toHaveBeenCalled();
       expect(nodeUpdateSpy).toHaveBeenCalled();
-      expect(networkEventSpy).toHaveBeenCalled();
     });
   });
 

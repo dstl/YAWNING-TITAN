@@ -34,7 +34,7 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
       // update node when there are changes
       this.formGroup.valueChanges
         .subscribe(() => {
-          this.vulnerabilityVal = roundNumber(this.formGroup.get('vulnerability').value);
+          this.vulnerabilityVal = roundNumber(this.formGroup.get('vulnerability')?.value);
           this.updateNode();
         });
     });
@@ -65,12 +65,12 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     const nodeProperty = {
-      uuid: this.formGroup.get('uuid').value,
-      name: this.formGroup.get('name').value,
+      uuid: this.formGroup.get('uuid')?.value,
+      name: this.formGroup.get('name')?.value,
       x_pos: this.formGroup.get('x_pos')?.value,
       y_pos: this.formGroup.get('y_pos')?.value,
-      high_value_node: this.formGroup.get('high_value_node').value,
-      entry_node: this.formGroup.get('entry_node').value,
+      high_value_node: this.formGroup.get('high_value_node')?.value,
+      entry_node: this.formGroup.get('entry_node')?.value,
       vulnerability: roundNumber(this.formGroup.get('vulnerability')?.value),
     }
 

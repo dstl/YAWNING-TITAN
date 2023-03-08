@@ -42,7 +42,7 @@ describe('NodePropertiesSidenavComponent', () => {
   describe('METHOD: open', () => {
     it('should open the sidenav', () => {
       const spy = spyOn(component.sidenav, 'open');
-      component.open('');
+      component.open({} as any);
       expect(spy).toHaveBeenCalled();
     });
   });
