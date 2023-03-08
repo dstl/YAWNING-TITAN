@@ -24,7 +24,7 @@ class GameMode(ConfigGroup, DocMetaDataObject):
         red: Red = None,
         blue: Blue = None,
         game_rules: GameRules = None,
-        blue_can_observe: ObservationSpace = None,
+        observation_space: ObservationSpace = None,
         on_reset: Reset = None,
         rewards: Rewards = None,
         miscellaneous: Miscellaneous = None,
@@ -33,8 +33,8 @@ class GameMode(ConfigGroup, DocMetaDataObject):
         self.red: Red = red if red else Red()
         self.blue: Blue = blue if blue else Blue()
         self.game_rules: GameRules = game_rules if game_rules else GameRules()
-        self.blue_can_observe: ObservationSpace = (
-            blue_can_observe if blue_can_observe else ObservationSpace()
+        self.observation_space: ObservationSpace = (
+            observation_space if observation_space else ObservationSpace()
         )
         self.on_reset: Reset = on_reset if on_reset else Reset()
         self.rewards: Rewards = rewards if rewards else Rewards()

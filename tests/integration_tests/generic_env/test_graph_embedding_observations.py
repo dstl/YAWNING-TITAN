@@ -77,7 +77,7 @@ def test_obs_range(
         obs = env.reset()
         np.set_printoptions(suppress=True)
         start = 0
-        if env.network_interface.game_mode.blue_can_observe.node_connections.value:
+        if env.network_interface.game_mode.observation_space.node_connections.value:
             start = 500
             embedding = obs[0:500]
 
@@ -88,8 +88,8 @@ def test_obs_range(
         for j in obs[start:]:
             assert -1 <= j <= 1
         if (
-            env.network_interface.game_mode.blue_can_observe.compromised_status.value
-            and env.network_interface.game_mode.blue_can_observe.vulnerabilities.value
+            env.network_interface.game_mode.observation_space.compromised_status.value
+            and env.network_interface.game_mode.observation_space.vulnerabilities.value
         ):
             padded_vulns = obs[start + num_nodes_check : (start + num_nodes_check * 2)]
             assert len(padded_vulns) == num_nodes_check

@@ -270,7 +270,7 @@ def check_observation_space(env: GenericNetworkEnv, obs):
     adj_matrix = nx.to_numpy_array(env.network_interface.current_graph)
     open_spaces = env.network_interface.get_number_unused_deceptive_nodes()
     adj_matrix = np.pad(adj_matrix, (0, open_spaces), "constant").flatten()
-    if env.network_interface.game_mode.blue_can_observe.node_connections.value:
+    if env.network_interface.game_mode.observation_space.node_connections.value:
         assert np.array_equal(obs[: len(adj_matrix)], adj_matrix)
 
     observation_size = env.calculate_observation_space_size(with_feather=False)
