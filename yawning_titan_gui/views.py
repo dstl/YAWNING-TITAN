@@ -168,7 +168,6 @@ class GameModesView(View):
         search_form = GameModeSearchForm(request.POST)
         try:
             if search_form.is_valid():
-                print("FILTERS", search_form.filters)
                 if search_form.filters:
                     game_modes = GameModeManager.filter(search_form.filters)
                 else:
