@@ -147,7 +147,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
@@ -331,7 +331,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": "changed",
         "vulnerabilities": "changed",
         "node_connections": "changed",
@@ -513,7 +513,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
@@ -695,7 +695,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
@@ -877,7 +877,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
@@ -1059,7 +1059,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
@@ -1241,7 +1241,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
@@ -1423,7 +1423,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": false,
         "node_connections": true,
@@ -1605,7 +1605,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": false,
         "vulnerabilities": true,
         "node_connections": true,
@@ -1787,7 +1787,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": false,
@@ -1969,7 +1969,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": false,
@@ -2151,7 +2151,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
@@ -2333,7 +2333,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
@@ -2515,7 +2515,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
@@ -2697,7 +2697,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
@@ -2879,7 +2879,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
@@ -3061,7 +3061,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
@@ -3243,7 +3243,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
@@ -3425,7 +3425,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
@@ -3607,7 +3607,7 @@
           }
         }
       },
-      "blue_can_observe": {
+      "observation_space": {
         "compromised_status": true,
         "vulnerabilities": true,
         "node_connections": true,
