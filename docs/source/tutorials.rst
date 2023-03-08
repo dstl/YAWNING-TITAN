@@ -11,10 +11,31 @@ and are copied over to the newly created users notebooks application directory (
 These are the best place to start if you want to get a feel for **YT** before builidng the docs and exploring further.
 If the notebooks become corrupted in the users notebooks application directory, they can be reset running the following
 commands from an interactive Python session on your venv:
-```python
-from yawning_titan.notebooks.jupyter import reset_default_jupyter_notebooks
-reset_default_jupyter_notebooks(overwrite_existing=True)
-```
+
+.. code:: python
+
+    from yawning_titan.notebooks.jupyter import reset_default_jupyter_notebooks
+    reset_default_jupyter_notebooks(overwrite_existing=True)
+
+To get started with Notebooks, run Jupyter Lab:
+
+**Unix**
+
+.. code:: bash
+
+    cd ~/yawning_titan
+    source .venv/bin/activate
+    cd ~/yawning_titan/notebooks
+    jupyter lab
+
+**Windows**
+
+.. code:: powershell
+
+    cd ~\yawning_titan
+    .\.venv\Scripts\activate
+    cd ~\yawning_titan\notebooks
+    jupyter lab
 
 The supplied notebooks are:
 
@@ -31,5 +52,5 @@ The supplied notebooks are:
     Shows you how to create a simple environment and an agent that can give regular updates on its
     performance throughout training.
 
-If you have a Jupyter notebook that you think would make a good edition to the **YT* default notebooks, please submit is
-as  feature request by following our [contribution guidelines](
+If you have a Jupyter notebook that you think would make a good edition to the **YT* default notebooks, please submit it
+as feature request by following our [contribution guidelines](https://github.com/dstl/YAWNING-TITAN/blob/main/CONTRIBUTING.md).
