@@ -6,18 +6,18 @@ on:
       - main
       - dev
       - dev-gui
-      - 'releases/**'  # dev-gui to be removed once dev-gui branch is dropped
+      - 'releases/**'
   pull_request:
     branches:
       - main
       - dev
       - dev-gui
-      - 'releases/**'  # dev-gui to be removed once dev-gui branch is dropped
+      - 'releases/**'
 jobs:
   build:
 
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     strategy:
       matrix:
         python-version: ["3.8", "3.9", "3.10"]
@@ -40,10 +40,10 @@ jobs:
           pip install wheel
       - name: Build Yawning-Titan
         run: |
-          python setup.py sdist
+          python setup.py bdist_wheel
       - name: Install Yawning-Titan
         run: |
-          YT=$(ls ./dist/yawningtitan-*.*.*.tar.gz)
+          YT=$(ls ./dist/yawningtitan-*.*.*-*.whl)
           python -m pip install torch==1.11+cpu -f https://download.pytorch.org/whl/torch_stable.html
           python -m pip install $YT[dev] --default-timeout 1000
       - name: Lint with flake8
@@ -52,6 +52,15 @@ jobs:
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      - name: Test with pytest
+      - name: Run unmarked tests
         run: |
-          pytest tests
+          pytest tests/ -m "not (unit_test or integration_test or e2e_integration_test)"
+      - name: Run unit tests
+        run: |
+          pytest tests/ -m unit_test
+      - name: Run integration tests
+        run: |
+          pytest tests/ -m integration_test
+      - name: Run integration tests
+        run: |
+          pytest tests/ -m e2e_integration_test
