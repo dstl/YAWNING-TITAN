@@ -63,12 +63,10 @@ If you would like to include a citation for **YT** in your work, please cite the
 
    source/getting_started
    source/create_a_network
-   GameMode UML <source/game_mode_config_explained>
    source/db
-   source/experiments
    source/tutorials
-   #source/quick_start_experiment_runner
-   #source/enhancing_yawning_titan
+   source/experiments
+   GameMode UML <source/game_mode_config_explained>
    Yawning-Titan API <source/_autosummary/yawning_titan>
    Yawning-Titan Tests <source/_autosummary/tests>
    Contribute to YT <source/contributing>
