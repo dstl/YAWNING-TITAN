@@ -36,7 +36,7 @@ if __name__ == "__main__":
         choices=[
             "five-node-def-v0",
             "four-node-def-v0",
-            "network-graph-explore-v0",
+            "networks-graph-explore-v0",
             "18-node-env-v0",
         ],
         required=True,
@@ -132,7 +132,6 @@ if __name__ == "__main__":
     )
 
     if args.algo_backend == "sb3":
-
         env = init_env(args.env, experiment_id)
 
         # Initialising Agents
@@ -163,7 +162,6 @@ if __name__ == "__main__":
                 agent.save(f"./logs/agents/{filename}")
 
     if args.algo_backend == "rllib":
-
         training_env = "four-node-def-v0"
         register_env(training_env, lambda config: FourNodeDef())
 

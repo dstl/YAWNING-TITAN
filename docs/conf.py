@@ -25,9 +25,10 @@ copyright = "Crown Copyright (C) Dstl 2022"
 author = "Defence Science and Technology Laboratory UK"
 
 # The short Major.Minor.Build version
-version = "1.0.1"
+with open("../VERSION", "r") as file:
+    version = file.readline()
 # The full version, including alpha/beta/rc tags
-release = "1.0.1"
+release = version
 
 
 # -- General configuration ---------------------------------------------------
@@ -57,6 +58,7 @@ intersphinx_mapping = {
     "pandas": ("https://pandas.pydata.org/docs/", None),
     "matplotlib": ("https://matplotlib.org/stable/", None),
     "Django": ("https://docs.djangoproject.com/en/4.1/", None),
+    "tinydb": ("https://tinydb.readthedocs.io/en/latest/", None),
 }
 autosummary_generate = True  # Turn on sphinx.ext.autosummary
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
@@ -65,12 +67,14 @@ html_show_sourcelink = (
 )
 autodoc_inherit_docstrings = True  # If no docstring, inherit from base class
 set_type_checking_flag = True  # Enable 'expensive' imports for sphinx_autodoc_typehints
+autodoc_typehints = "none"
 add_module_names = True  # Remove namespaces from class/method signatures
 napoleon_google_docstring = True
 todo_include_todos = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
+
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -213,3 +217,8 @@ autodoc_default_options = {
     "undoc-members": True,
     "exclude-members": "__weakref__",
 }
+
+
+def setup(app):
+    """Set up the necessary files needed to build the docs page."""
+    app.add_css_file("docs.css")
