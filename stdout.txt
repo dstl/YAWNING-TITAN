@@ -1,29 +1,13 @@
-TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\yawning_titan\\db\\networks.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\yawning_titan\\db\\networks.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\yawning_titan\\db\\networks.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='D:\\Pycharm projects\\YAWNING-TITAN\\yawning_titan\\game_modes\\_package_data\\game_modes.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\yawning_titan\\db\\game_modes.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\yawning_titan\\db\\game_modes.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\yawning_titan\\db\\game_modes.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\yawning_titan\\db\\game_modes.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\yawning_titan\\db\\game_modes.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='D:\\Pycharm projects\\YAWNING-TITAN\\yawning_titan\\game_modes\\_package_data\\game_modes.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\yawning_titan\\db\\game_modes.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\yawning_titan\\db\\game_modes.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\yawning_titan\\db\\game_modes.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\yawning_titan\\db\\game_modes.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\yawning_titan\\db\\game_modes.json' mode='r+' encoding='cp1252'>
-TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\yawning_titan\\db\\game_modes.json' mode='r+' encoding='cp1252'>
 Using cpu device
 Wrapping the env with a `Monitor` wrapper
 Wrapping the env in a DummyVecEnv.
-Logging to C:\Users\stefe\yawning_titan\agents\logs\tensorboard\PPO_114
+Logging to C:\Users\stefe\yawning_titan\agents\logs\tensorboard\PPO_115
 ---------------------------------
 | rollout/           |          |
-|    ep_len_mean     | 28.4     |
-|    ep_rew_mean     | -125     |
+|    ep_len_mean     | 31.9     |
+|    ep_rew_mean     | -128     |
 | time/              |          |
-|    fps             | 486      |
+|    fps             | 467      |
 |    iterations      | 1        |
 |    time_elapsed    | 4        |
 |    total_timesteps | 2048     |

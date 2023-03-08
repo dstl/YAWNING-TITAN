@@ -1,16 +1,16 @@
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: Run initialised
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: Network interface created
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: Red agent created
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: Blue agent created
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: GenericNetworkEnv created
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: Performing env check
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: Env checking complete
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: GenericNetworkEnv reset
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: Instantiating agent
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: Agent instantiated
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: Eval callback set
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: Performing agent training
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: Training run 1 complete
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: GenericNetworkEnv reset
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: Agent training complete
-YT run  56c8b7db-e27d-41f7-bb0b-23eb30584cab: Saved trained agent (Stable Baselines3 PPO) to: C:\Users\stefe\yawning_titan\agents\trained\2023-03-07\56c8b7db-e27d-41f7-bb0b-23eb30584cab\ppo.zip
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: Run initialised
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: Network interface created
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: Red agent created
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: Blue agent created
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: GenericNetworkEnv created
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: Performing env check
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: Env checking complete
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: GenericNetworkEnv reset
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: Instantiating agent
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: Agent instantiated
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: Eval callback set
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: Performing agent training
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: Training run 1 complete
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: GenericNetworkEnv reset
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: Agent training complete
+YT run  2392eb3d-db29-44f1-98c6-571d73af0c5b: Saved trained agent (Stable Baselines3 PPO) to: C:\Users\stefe\yawning_titan\agents\trained\2023-03-08\2392eb3d-db29-44f1-98c6-571d73af0c5b\ppo.zip
