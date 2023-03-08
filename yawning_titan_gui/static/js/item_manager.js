@@ -90,11 +90,15 @@ $(document).ready(function(){
     });
 
     // delete icons - search elements
-    $("#search-form .mb-3:not(:has(*[restrict-selector]))").append(
-        `<div class="icon delete">
-            <i class="bi bi-trash3"></i>
-        </div>`
-    );
+    // only add if item_type is game_mode
+    if(ITEM_TYPE == "game_mode"){
+        $("#search-form .mb-3:not(:has(*[restrict-selector]))").append(
+            `<div class="icon delete">
+                <i class="bi bi-trash3"></i>
+            </div>`
+        );
+    }
+
     $("#search-form .delete").click(function(){
         let container = $(this).closest(".mb-3"),
             input;
