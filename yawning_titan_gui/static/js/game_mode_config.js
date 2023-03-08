@@ -14,29 +14,6 @@ $(document).ready(function(){
         $("."+$("option:selected",this).text().replaceAll(" ","_")).removeClass("hidden")
     });
 
-    $("input[type='checkbox'].grouped.parent").each(function(i,el){
-        let child_el = `.${$(el).get(0).classList[1]}:not(.parent)`;
-        if($(el).is(":checked")){
-            $(el).addClass("checked");
-            $(child_el).removeClass("hidden");
-        }else{
-            $(child_el).attr("disabled","disabled");
-            $(child_el).closest(".mb-3").removeClass("active");
-        }
-    });
-
-    $("input[type='text'].grouped.parent").each(function(){
-        let child_el = `.${$(el).get(0).classList[1]}:not(.parent)`;
-        if($(el).val().length > 0){
-            $(el).addClass("checked");
-            $(child_el).removeClass("hidden");
-        }else{
-            $(child_el).attr("disabled","disabled");
-            $(child_el).closest(".mb-3").removeClass("active");
-        }
-    });
-    //
-
     // update select dependencies
     $(document).on("change",".config-form select",function(){
         if($("show-hidden-dependents").is(":checked")){
@@ -119,7 +96,10 @@ function submit_form(form_element,section_name){
         cache: false,
         dataType: "json",
         success: function(response){
-            $(".error-list",form_element).empty()
+            $(".error-list",form_element).empty();
+            if(response.valid){
+                $(`.icon-container[data-section="${SECTION_NAME}"]`).addClass("complete");
+            }
         },
         error: function(response){
             let errors = response.responseJSON.errors;
@@ -131,6 +111,7 @@ function submit_form(form_element,section_name){
 function add_form_errors(errors){
     $(".error-list").remove(); // remove existing errors
     $(".erroneous").removeClass("erroneous"); // remove all erroneous settings
+    $(`.icon-container[data-section="${SECTION_NAME}"]`).removeClass("complete"); // show section as incomplete
     for (const [form_id, error] of Object.entries(errors)){
         let group_error_list = $("<ul class='error-list'></ul>");
 
@@ -148,20 +129,5 @@ function add_form_errors(errors){
             info_obj.children(".error-list").remove();
             info_obj.append(item_error_list);
         }
-    }
-}
-
-// update dependent elements state
-function handle_dependent_elements(selector, operation){
-    if(operation == "activate"){
-        $(selector).removeClass("hidden");
-        $(selector).removeAttr("disabled");
-        $(selector).closest(".mb-3").addClass("active");
-    }else if(operation == "deactivate"){
-        if($("show-hidden-dependents").is(":checked")){
-            $(selector).addClass("hidden")
-        }
-        $(selector).attr("disabled","disabled");
-        $(selector).closest(".mb-3").removeClass("active");
     }
 }
