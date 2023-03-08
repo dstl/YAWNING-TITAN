@@ -2,7 +2,7 @@
 A new node network that can be configured for multiple different configurations.
 
 Paper:
-https://www.nsa.gov.Portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf
+https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf
 
 Currently suppports:
     - 18 node network from the research paper.
@@ -56,8 +56,9 @@ from gym import spaces
 
 from yawning_titan.agents.nsa_red import NSARed
 from yawning_titan.envs.generic.helpers.graph2plot import CustomEnvGraph
-from yawning_titan.envs.generic.helpers.network_creator import create_18_node_network
 from yawning_titan.envs.specific.core.nsa_node_collection import NodeCollection
+from yawning_titan.networks.network import Network
+from yawning_titan.networks.network_db import default_18_node_network
 
 logger = logging.getLogger(__name__)
 
@@ -77,7 +78,7 @@ class NodeEnv(gym.Env):
         spread_vs_random_intrusion: float = 0.5,
         punish_for_isolate: bool = False,
         reward_method: int = 1,
-        network: Tuple[np.array, dict] = create_18_node_network(),
+        network: Network = None,
     ):
         super(NodeEnv, self).__init__()
 
@@ -96,6 +97,10 @@ class NodeEnv(gym.Env):
         self.duration = 0
 
         self.graph_plotter = None
+
+        # TODO: replace this with a full implementation of networkx Network
+        if self.network is None:
+            self.network = list(default_18_node_network().to_adj_matrix_and_positions())
 
         self.state = NodeCollection(self.network, self.chance_to_spread_during_patch)
         # skill, action_set, action_probabilities, node_set

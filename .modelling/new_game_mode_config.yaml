@@ -1,0 +1,143 @@
+# This file contains an example config for the generic network environment.
+
+red:
+  agent_attack:
+    ignores_defences:
+    always_succeeds:
+    skill:
+      use:
+      value:
+    attack_from:
+      only_main_red_node:
+      any_red_node:
+  action_set:
+    spread:
+      use:
+      likelihood:
+      chance:
+    random_infect:
+      use: False
+      likelihood:
+      chance:
+    move:
+      use: False
+      likelihood:
+    basic_attack:
+      use: True
+      likelihood:
+    do_nothing:
+      use: True
+      likelihood:
+    zero_day:
+      use: True
+      start_amount:
+      days_required:
+  natural_spreading:
+    capable:
+    chance:
+      to_connected_node:
+      to_unconnected_node:
+  target_mechanism:
+    random:
+    prioritise_connected_nodes:
+    prioritise_unconnected_nodes:
+    prioritise_vulnerable_nodes:
+    prioritise_resilient_nodes:
+    target_specific_node:
+      use:
+      target:
+      always_choose_shortest_distance:
+
+blue:
+  action_set:
+    restore_node:
+    scan:
+    isolate_node:
+    reconnect_node:
+    reduce_vulnerability:
+    do_nothing:
+    make_node_safe:
+      use:
+      increases_vulnerability:
+      gives_random_vulnerability:
+      vulnerability_change:
+    deceptive_nodes:
+      use: False
+      max_number:
+      new_node_on_relocate:
+  intrusion_discovery_chance:
+    immediate:
+      standard_node:
+      deceptive_node:
+    on_scan:
+      standard_node:
+      deceptive_node:
+  attack_discovery:
+    failed_attacks:
+      use: True
+      chance:
+        standard_node:
+        deceptive_node:
+    succeeded_attacks:
+      use: True
+      chance:
+        standard_node:
+        deceptive_node:
+    succeeded_attacks_unknown_comprimise:
+      use: True
+      chance:
+        standard_node:
+        deceptive_node:
+
+game_rules:
+  grace_period_length:
+  max_steps:
+  network_compatibility:
+    node_count:
+      max:
+      min:
+      restrict:
+    entry_node_count:
+      max:
+      min:
+      restrict:
+    high_value_node_count:
+      max:
+      min:
+      restrict:
+  blue_loss_condition:
+    all_nodes_lost:
+    high_value_node_lost:
+    target_node_lost:
+    n_percent_nodes_lost:
+      use:
+      value:
+
+observation_space:
+  compromised_status:
+  vulnerabilities:
+  node_connections:
+  average_vulnerability:
+  graph_connectivity:
+  attacking_nodes:
+  attacked_nodes:
+  special_nodes:
+  red_agent_skill:
+
+
+on_reset:
+  randomise_vulnerabilities:
+  choose_new_high_value_nodes:
+  choose_new_entry_nodes:
+
+rewards:
+  for_loss:
+  for_reaching_max_steps:
+  end_rewards_are_multiplied_by_end_state:
+  reduce_negative_rewards_for_closer_fails:
+  function:
+
+
+miscellaneous:
+  output_timestep_data_to_json:
+  random_seed:
