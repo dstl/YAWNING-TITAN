@@ -417,31 +417,31 @@ class ObservationSpaceSchema:
 
     COMPROMISED_STATUS: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.compromised_status
+    ] = YawningTitanQuery().observation_space.compromised_status
     VULNERABILITIES: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.vulnerabilities
+    ] = YawningTitanQuery().observation_space.vulnerabilities
     NODE_CONNECTIONS: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.node_connections
+    ] = YawningTitanQuery().observation_space.node_connections
     AVERAGE_VULNERABILITY: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.average_vulnerability
+    ] = YawningTitanQuery().observation_space.average_vulnerability
     GRAPH_CONNECTIVITY: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.graph_connectivity
+    ] = YawningTitanQuery().observation_space.graph_connectivity
     ATTACKING_NODES: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.attacking_nodes
+    ] = YawningTitanQuery().observation_space.attacking_nodes
     ATTACKED_NODES: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.attacked_nodes
+    ] = YawningTitanQuery().observation_space.attacked_nodes
     SPECIAL_NODES: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.special_nodes
+    ] = YawningTitanQuery().observation_space.special_nodes
     RED_AGENT_SKILL: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.red_agent_skill
+    ] = YawningTitanQuery().observation_space.red_agent_skill
 
 
 class GameRulesSchema:

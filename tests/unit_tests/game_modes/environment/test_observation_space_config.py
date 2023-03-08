@@ -7,7 +7,7 @@ from yawning_titan.game_modes.components.observation_space import ObservationSpa
 @pytest.fixture
 def default_observation_space(default_game_mode) -> ObservationSpace:
     """Get observation_space from default game mode."""
-    return default_game_mode.blue_can_observe
+    return default_game_mode.observation_space
 
 
 @pytest.mark.unit_test
