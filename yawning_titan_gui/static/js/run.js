@@ -45,8 +45,7 @@ function run(data){
         dataType: "json",
         success: function(response){
             let out = $("#log-view");
-            let text =  $(out).html(response.stdout);
-
+            console.log("FINISHED");
             clearInterval(interval);
         },
         error: function(response){
@@ -65,6 +64,7 @@ function get_output(){
         cache: false,
         dataType: "json",
         success: function(response){
+            //console.log("RESPONSE",response);
             let stderr_out = $("#log-view"),
                 stdout_out = $("#metric-view");
 
@@ -73,6 +73,8 @@ function get_output(){
 
             $(stderr_out).scrollTop($(stderr_out).get(0).scrollHeight);
             $(stdout_out).scrollTop($(stdout_out).get(0).scrollHeight);
+
+            $("#gif-output").attr("src",response.gif);
         }
     });
 }

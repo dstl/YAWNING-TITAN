@@ -17,14 +17,14 @@ TEST <_io.TextIOWrapper name='C:\\Users\\stefe\\AppData\\Local\\yawning_titan\\y
 Using cpu device
 Wrapping the env with a `Monitor` wrapper
 Wrapping the env in a DummyVecEnv.
-Logging to C:\Users\stefe\yawning_titan\agents\logs\tensorboard\PPO_98
+Logging to C:\Users\stefe\yawning_titan\agents\logs\tensorboard\PPO_114
 ---------------------------------
 | rollout/           |          |
-|    ep_len_mean     | 31.5     |
-|    ep_rew_mean     | -129     |
+|    ep_len_mean     | 28.4     |
+|    ep_rew_mean     | -125     |
 | time/              |          |
-|    fps             | 617      |
+|    fps             | 486      |
 |    iterations      | 1        |
-|    time_elapsed    | 3        |
+|    time_elapsed    | 4        |
 |    total_timesteps | 2048     |
 ---------------------------------

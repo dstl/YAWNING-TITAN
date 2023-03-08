@@ -28,7 +28,7 @@ from yawning_titan_gui.forms.netowork_forms import (
     NetworkTemplateForm,
 )
 from yawning_titan_gui.forms.run_form import RunForm
-from yawning_titan_gui.helpers import GameModeManager, NetworkManager
+from yawning_titan_gui.helpers import GameModeManager, NetworkManager, RunManager
 
 default_sidebar = {
     "Documentation": ["Getting started", "Tutorials", "How to configure", "Code"],
@@ -149,7 +149,7 @@ class RunView(View):
             if fkwargs["game_mode"] is not None:
                 fkwargs["game_mode"] = GameModeManager.db.get(fkwargs["game_mode"])
             process = multiprocessing.Process(
-                target=run_yt,
+                target=RunManager.run_yt,
                 kwargs=(fkwargs),
             )
             process.start()
@@ -157,41 +157,9 @@ class RunView(View):
         return JsonResponse({"message": "error"}, status=400)
 
 
-# stderr = StringIO()
-# sys.stderr = StringIO()
-
-
-def run_yt(*args, **kwargs):  # TODO: Move
-    # Path('spam.log').unlink()
-    logger = logging.getLogger("yr_run")
-    logger.setLevel(logging.DEBUG)
-    # create file handler which logs even debug messages
-    fh = logging.FileHandler("spam.log")
-    fh.setLevel(logging.DEBUG)
-    logger.addHandler(fh)
-    kwargs["logger"] = logger
-    with open("stdout.txt", "w+") as sys.stdout:
-        YawningTitanRun(**kwargs)
-
-
 def get_output(request: HttpRequest):
     if request.method == "GET":
-        output = {"stderr": "", "stdout": ""}
-        with open("spam.log", "r") as f:
-            try:
-                lines = f.readlines()
-                text = "<br>".join(lines)
-                output["stderr"] = text
-            except Exception as e:
-                pass
-        with open("stdout.txt", "r") as f:
-            try:
-                lines = f.readlines()
-                text = "<br>".join(lines)
-                output["stdout"] = text
-            except Exception as e:
-                pass
-        return JsonResponse(output)
+        return JsonResponse(RunManager.get_output())
 
 
 class NodeEditor(View):
