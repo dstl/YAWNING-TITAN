@@ -19,17 +19,17 @@
     <div id="config-form-left">
         <form id="doc-meta-form" data-id="doc-meta">
             {% include 'elements/el_form_fields.html' with form=doc_metadata_form protected=False %}
-        </form>  
+        </form>
         <div id="config-form-icons">
             {% for section_name, section in sections.items %}
-            <a href="{{request.path|url_trim:2}}{{ section_name }}/" class="icon-container{% if section_name == current_section_name %} selected{% endif %}{% if section.config_class.validation.passed %} complete{% endif %}">
+            <a href="{{request.path|url_trim:2}}{{ section_name }}/" class="icon-container{% if section_name == current_section_name %} selected{% endif %}{% if section.config_class.validation.passed %} complete{% endif %}" data-section="{{section_name}}">
                 <div id="{{ section_name }}-icon" class="icon" data-form="#{{ section_name }}-config-form">
                     <i class="bi {{ section.icon }}"></i>
                 </div>
                 <p>{{ section_name }}</p>
             </a>
             {% endfor %}
-        </div>       
+        </div>
     </div>
     <div id="{{current_section_name}}-config-form-container" class="form-container">
         <div id="subsection-forms" class="border-bottom">
