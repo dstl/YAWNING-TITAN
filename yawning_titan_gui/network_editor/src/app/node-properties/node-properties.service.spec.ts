@@ -55,9 +55,9 @@ describe('NodePropertiesService', () => {
       }
     });
 
-    expect(service['_nodePropertiesFormGroup'].get('entry_node').value).toBeFalsy();
-    expect(service['_nodePropertiesFormGroup'].get('high_value_node').value).toBeFalsy();
-    expect(service['_nodePropertiesFormGroup'].get('vulnerability').value).toBe('0.20');
+    expect(service['nodePropertiesFormGroup'].get('entry_node').value).toBeFalsy();
+    expect(service['nodePropertiesFormGroup'].get('high_value_node').value).toBeFalsy();
+    expect(service['nodePropertiesFormGroup'].get('vulnerability').value).toBe('0.20');
   });
 
   it('should update node positions when drag event updates', () => {
@@ -83,7 +83,7 @@ describe('NodePropertiesService', () => {
       service.loadDetails('fake id');
       tick();
 
-      expect(service['_nodePropertiesFormGroup']).toBeUndefined();
+      expect(service['nodePropertiesFormGroup']).toBeUndefined();
     }));
 
     it('should update the nodeDetailsSubject with the details of the given node', fakeAsync(() => {
@@ -117,7 +117,7 @@ describe('NodePropertiesService', () => {
     it('should not update nodes unless the form is valid', () => {
       const spy = spyOn(service['networkService'], 'editNodeDetails');
 
-      service['_nodePropertiesFormGroup'] = new FormBuilder().group({ test: new FormControl('', Validators.required) })
+      service['nodePropertiesFormGroup'] = new FormBuilder().group({ test: new FormControl('', Validators.required) })
 
       service.updateNodeProperties();
       expect(spy).not.toHaveBeenCalled();
@@ -126,7 +126,7 @@ describe('NodePropertiesService', () => {
     it('should update the node if the form is valid', () => {
       const spy = spyOn(service['networkService'], 'editNodeDetails');
 
-      service['_nodePropertiesFormGroup'] = new FormBuilder().group({
+      service['nodePropertiesFormGroup'] = new FormBuilder().group({
         uuid: new FormControl('id'),
         name: new FormControl('name'),
         x_pos: new FormControl(0),
@@ -157,8 +157,8 @@ describe('NodePropertiesService', () => {
 
       service.updateNodePositions({ id: 'not this one', position: { x: 10, y: 10 } });
 
-      expect(service['_nodePropertiesFormGroup'].get('x_pos').value).toBe(0);
-      expect(service['_nodePropertiesFormGroup'].get('y_pos').value).toBe(0);
+      expect(service['nodePropertiesFormGroup'].get('x_pos').value).toBe(0);
+      expect(service['nodePropertiesFormGroup'].get('y_pos').value).toBe(0);
     });
 
     it('should update input field if the node being dragged is what is displayed by the node properties', () => {
@@ -176,8 +176,8 @@ describe('NodePropertiesService', () => {
 
       service.updateNodePositions({ id: 'id', position: { x: 10, y: 10 } });
 
-      expect(service['_nodePropertiesFormGroup'].get('x_pos').value).toBe(10);
-      expect(service['_nodePropertiesFormGroup'].get('y_pos').value).toBe(10);
+      expect(service['nodePropertiesFormGroup'].get('x_pos').value).toBe(10);
+      expect(service['nodePropertiesFormGroup'].get('y_pos').value).toBe(10);
     });
   });
 });

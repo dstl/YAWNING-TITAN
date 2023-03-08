@@ -120,8 +120,8 @@ export class InteractionService {
     }
 
     const node = this.networkService.getNodeById(evt?.target?.id());
-    node.x_pos = evt.target.position().x;
-    node.y_pos = evt.target.position().y;
+    node.x_pos = Number(evt.target.position().x.toFixed());
+    node.y_pos = Number(evt.target.position().y.toFixed());
     this.networkService.editNodeDetails(node);
     this.dragSubject.next({
       id: node.uuid,

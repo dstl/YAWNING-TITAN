@@ -54,12 +54,12 @@ export class NetworkViewComponent implements AfterViewInit {
    */
   @HostListener('document:networkSettingsUpdate', ['$event'])
   private listenToNetworkSettingsChange(event: any) {
-    const val = {};
+    let val = {};
     for (const formData of event?.detail) {
       val[`${formData[0]}`] = formData[1];
     }
 
-    this.interactionService.processNetworkSettingsChanges(event);
+    this.interactionService.processNetworkSettingsChanges(val);
   }
 
   @HostListener('document:nodeSelected', ['$event'])
