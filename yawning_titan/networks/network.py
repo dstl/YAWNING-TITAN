@@ -11,7 +11,22 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 
 import networkx as nx
 import numpy
+from networkx.drawing.layout import (
+    bipartite_layout,
+    circular_layout,
+    fruchterman_reingold_layout,
+    kamada_kawai_layout,
+    multipartite_layout,
+    planar_layout,
+    random_layout,
+    rescale_layout,
+    shell_layout,
+    spectral_layout,
+    spiral_layout,
+    spring_layout,
+)
 from numpy.random import choice
+from tabulate import tabulate
 
 from yawning_titan.db.doc_metadata import DocMetadata
 from yawning_titan.exceptions import NetworkError
@@ -19,7 +34,44 @@ from yawning_titan.networks.node import Node
 
 _LOGGER = getLogger(__name__)
 
-# --- Tier 0 groups
+
+class NetworkLayout(Enum):
+    """
+    An enum class that maps to layout functions in networkx.drawing.layout.
+
+    See: https://networkx.org/documentation/stable/reference/drawing.html#module-networkx.drawing.layout
+    """
+
+    BIPARTITE = "bipartite"
+    CIRCULAR = "circular"
+    FRUCHTERMAN_REINGOLD = "fruchterman_reingold"
+    KAMADA_KAWAI = "kamada_kawai"
+    MULTIPARTITE = "multipartite"
+    PLANAR = "planar"
+    RANDOM = "random"
+    RESCALE = "rescale"
+    SHELL = "shell"
+    SPECTRAL = "spectral"
+    SPIRAL = "spiral"
+    SPRING = "spring"
+
+    def as_layout_func(self):
+        """Maps the NetworkLayout to a function in networkx.drawing.layout."""
+        layout_dict = {
+            NetworkLayout.BIPARTITE: bipartite_layout,
+            NetworkLayout.CIRCULAR: circular_layout,
+            NetworkLayout.FRUCHTERMAN_REINGOLD: fruchterman_reingold_layout,
+            NetworkLayout.KAMADA_KAWAI: kamada_kawai_layout,
+            NetworkLayout.MULTIPARTITE: multipartite_layout,
+            NetworkLayout.PLANAR: planar_layout,
+            NetworkLayout.RANDOM: random_layout,
+            NetworkLayout.RESCALE: rescale_layout,
+            NetworkLayout.SHELL: shell_layout,
+            NetworkLayout.SPECTRAL: spectral_layout,
+            NetworkLayout.SPIRAL: spiral_layout,
+            NetworkLayout.SPRING: spring_layout,
+        }
+        return layout_dict[self]
 
 
 class RandomHighValueNodePreference(Enum):
@@ -43,7 +95,16 @@ class RandomEntryNodePreference(Enum):
 
 
 class Network(nx.Graph):
-    """A representation of a network in YawningTitan."""
+    """
+    A Network that the NetworkInterface interacts with.
+
+    Network extends networkx.Graph.
+
+    Example:
+        .. code::python
+
+
+    """
 
     def __init__(
         self,
@@ -59,7 +120,32 @@ class Network(nx.Graph):
         doc_metadata: Optional[DocMetadata] = None,
         **kwargs,
     ):
-        """Extend networkx.Graph with a series of attributes required to represent a YawningTitan network using a series of :class: `~yawning_titan.networks.node.Node` objects."""
+        """
+        The Network constructor.
+
+        :param set_random_entry_nodes: Whether entry nodes are set at random
+            if not set in nodes. Default value of False.
+        :param random_entry_node_preference: The random entry node placement
+            preference as an instance of
+            yawning_titan.networks.network.RandomEntryNodePreference.
+            Default value of RandomEntryNodePreference.NONE.
+        :param num_of_random_entry_nodes: The number of random entry nodes
+            that will be attempted to be set.
+        :param set_random_high_value_nodes: Whether high value nodes are set
+            at random if not set in nodes. Default value of False.
+        :param random_high_value_node_preference: The random high value node
+            placement preference as an instance of
+            yawning_titan.networks.network.RandomHighValueNodePreference.
+            Default value of RandomHighValueNodePreference.NONE.
+        :param num_of_random_high_value_nodes: The number of random high value
+            nodes that will be attempted to be set.
+        :param set_random_vulnerabilities: Whether node vulnerability scores
+            are set at random.
+        :param node_vulnerability_lower_bound: The lower-bound of a nodes
+            vulnerability score. Default value of 0.01.
+        :param node_vulnerability_upper_bound: The upper-bound of a nodes
+            vulnerability score. Default value of 0.01.
+        """
         super().__init__()
         self.set_random_entry_nodes = set_random_entry_nodes
         """If no entry nodes are added, set them at random. Default is ``False``."""
@@ -149,6 +235,7 @@ class Network(nx.Graph):
             super().add_node(node_for_adding, **kwargs)
             if node_for_adding.entry_node or node_for_adding.high_value_node:
                 self._check_intersect(node_for_adding)
+            self.set_node_positions()
 
     def remove_node(self, n: Node):
         """
@@ -157,6 +244,7 @@ class Network(nx.Graph):
         Extend the `remove_node` method of the superclass.
         """
         super().remove_node(n)
+        self.set_node_positions()
 
     def add_edge(self, u_of_edge: Node, v_of_edge: Node, **kwargs):
         """
@@ -165,6 +253,7 @@ class Network(nx.Graph):
         Extend the `add_edge` method of the superclass.
         """
         super().add_edge(u_of_edge, v_of_edge, **kwargs)
+        self.set_node_positions()
 
     def remove_edge(self, u: Node, v: Node):
         """
@@ -173,6 +262,59 @@ class Network(nx.Graph):
         Extend the `remove_edge` method of the superclass.
         """
         super().remove_edge(u, v)
+
+    def reset(self):
+        """
+        Resets the network.
+
+        This is done by calling:
+
+        - reset_random_entry_nodes()
+        - reset_random_high_value_nodes
+        - reset_random_vulnerabilities()
+        """
+        if self.set_random_entry_nodes:
+            self.reset_random_entry_nodes()
+        if self.set_random_high_value_nodes:
+            self.reset_random_high_value_nodes()
+        if self.set_random_vulnerabilities:
+            self.reset_random_vulnerabilities()
+
+    def show(self, verbose=False):
+        """
+        Show details of all Nodes in the Network.
+
+        :param verbose: If True, all Node attributes are shown, otherwise
+            just the uuid is shown.
+        """
+        rows = []
+        headers = [
+            "UUID",
+            "Name",
+            "High Value Node",
+            "Entry Node",
+            "Vulnerability",
+            "Position (x,y)",
+        ]
+        keys = [
+            "uuid",
+            "name",
+            "high_value_node",
+            "entry_node",
+            "vulnerability",
+            "position",
+        ]
+
+        for node in self.nodes:
+            node_dict = node.to_dict()
+            node_dict["position"] = f"{node.x_pos:.2f}, {node.y_pos:.2f}"
+            d = {key: node_dict[key] for key in keys}
+            row = list(d.values())
+            if not verbose:
+                row = [row[0]]
+            rows.append(row)
+
+        print(tabulate([headers] + rows, headers="firstrow"))
 
     def get_nodes(
         self,
@@ -185,6 +327,7 @@ class Network(nx.Graph):
         filter_deceptive: bool = False,
         filter_non_deceptive: bool = False,
         key_by_name: bool = False,
+        as_list: bool = False,
     ) -> Union[List[Node], Dict[str, Node]]:
         """
         Get all of the nodes from the network and apply a filter(s) to extract a specific subset of the nodes.
@@ -228,10 +371,13 @@ class Network(nx.Graph):
             # Return True if deceptive node is False
             nodes = [n for n in nodes if not n.deceptive_node]
 
-        if not key_by_name:
-            return nodes
+        if key_by_name:
+            return {n.name: n for n in nodes}
 
-        return {n.name: n for n in nodes}
+        if as_list:
+            return list(nodes)
+
+        return nodes
 
     def get_node_from_uuid(self, uuid: str) -> Union[Node, None]:
         """Return the first node that has a given uuid."""
@@ -315,6 +461,8 @@ class Network(nx.Graph):
                 remove_existing=remove_existing_edges,
             )
 
+        self.set_node_positions()
+
         for k, v in config_dict.items():
             if hasattr(self, k):
                 setattr(self, k, v)
@@ -339,31 +487,17 @@ class Network(nx.Graph):
         """Manually set entry nodes in the network after instantiation."""
         names = names if names else []
         ids = ids if ids else []
+
+    def set_node_positions(self, network_layout: NetworkLayout = NetworkLayout.SPRING):
+        """
+        Sets the Node positions of the current Network.
+
+        :param network_layout: A member of NetworkLayout. Default is
+            NetworkLayout.SPRING.
+        """
+        pos_dict = network_layout.as_layout_func()(self)
         for node in self.nodes:
-            if node.name in names or node.uuid in ids:
-                node.entry_node = True
-            else:
-                node.entry_node = False  # reset entry node designations
-
-            self._check_intersect(node)
-
-    def set_high_value_nodes(self, names: List[str] = None, ids: List[str] = None):
-        """Manually set high value nodes in the network after instantiation."""
-        names = names if names else []
-        ids = ids if ids else []
-        potential_hvns = [n for n in self.nodes if n.name in names or n.uuid in ids]
-
-        if len(names) + len(ids) > self.num_possible_high_value_nodes:
-            warnings.warn(UserWarning(""))
-            potential_hvns = potential_hvns[: self.num_possible_high_value_nodes]
-
-        for node in self.nodes:
-            if node in potential_hvns:
-                node.high_value_node = True
-            else:
-                node.high_value_node = False  # reset high value node designations
-
-            self._check_intersect(node)
+            node.node_position = pos_dict[node]
 
     def add_nodes_from_dict(self, nodes_dict: Dict[str, dict], remove_existing=False):
         """Add nodes to the graph with properties defined from a dictionary.
@@ -585,3 +719,29 @@ class Network(nx.Graph):
         network = Network()
         network.set_from_dict(network_dict)
         return network
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.doc_metadata.uuid == other.doc_metadata.uuid
+        return False
+
+    def __hash__(self):
+        return hash(self.doc_metadata.uuid)
+
+    def __repr__(self):
+        net_str = (
+            f"{self.__class__.__name__}("
+            f"uuid='{self.doc_metadata.uuid}', "
+            f"nodes={len(self.nodes)}, "
+        )
+
+        if self.doc_metadata.name:
+            net_str += f"name='{self.doc_metadata.name}', "
+        if self.doc_metadata.author:
+            net_str += f"author='{self.doc_metadata.author}', "
+        net_str += f"locked={self.doc_metadata.locked})"
+
+        return net_str
+
+    def __str__(self):
+        return repr(self)

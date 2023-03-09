@@ -37,8 +37,6 @@ User directories initialised:
 Logging configured from the root:
     Logging is configured using the `yawning_titan.config._package_data.logging_config.yaml` config file.
 """
-__version__ = "1.0.1"
-
 import logging.config
 import os
 import sys

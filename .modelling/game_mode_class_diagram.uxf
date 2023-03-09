@@ -14,7 +14,7 @@
 + red: Red
 + blue: Blue
 + game_rules: GameRules
-+ blue_can_observer: ObservationSpace
++ observation_spacer: ObservationSpace
 + reset: Reset
 + reward: Rewards
 + miscellaneous: Miscellaneous

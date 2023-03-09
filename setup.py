@@ -1,16 +1,56 @@
+import os
 import sys
+from typing import List
 
 from setuptools import find_packages, setup
 from setuptools.command.develop import develop
 from setuptools.command.install import install
+
+try:
+    from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
+
+    class bdist_wheel(_bdist_wheel):  # noqa
+        def finalize_options(self):  # noqa
+            super().finalize_options()
+            # forces whee to be platform and Python version specific
+            # Source: https://stackoverflow.com/a/45150383
+            self.root_is_pure = False
+
+except ImportError:
+    bdist_wheel = None
+
+
+def version() -> str:
+    """
+    Gets the version from the `VERSION` file.
+
+    :return: The version string.
+    """
+    with open("VERSION", "r") as file:
+        return file.readline()
+
+
+def package_data_paths() -> List[str]:
+    """
+    Get the list of package data files.
+
+    :return: A list of string paths.
+    """
+    filepaths = []
+    for root, dirs, files in os.walk("yawning_titan"):
+        if root.split(os.sep)[-1] == "_package_data":
+            for file in files:
+                file_path = os.path.join(root, file)
+                filepaths.append(file_path.split("yawning_titan")[-1][1:])
+    return filepaths
 
 
 def _create_app_dirs():
     """
     Handles creation of application directories and user directories.
 
-    Uses `platformdirs.PlatformDirs` and `pathlib.Path` to create the required app directories in the correct
-    locations based on the users OS.
+    Uses `platformdirs.PlatformDirs` and `pathlib.Path` to create the required
+    app directories in the correct locations based on the users OS.
     """
     import sys
     from pathlib import Path, PosixPath
@@ -148,14 +188,14 @@ setup(
     url="https://github.com/dstl/YAWNING-TITAN",
     description="An abstract, flexible and configurable cyber security simulation",
     python_requires=">=3.8, <3.11",
-    version="1.0.1",
+    version=version(),
     license="MIT License",
     packages=find_packages(),
     install_requires=[
         "dm-tree==0.1.7",
         "gym==0.21.0",
         "imageio==2.9.0",
-        "jupyter==1.0.0",
+        "jupyterlab==3.6.1",
         "karateclub==1.3.0",
         "matplotlib==3.6.2",
         "networkx==2.5.1",
@@ -188,24 +228,15 @@ setup(
             "pytest-flake8==1.1.1",
             "sphinx==5.3.0",
             "sphinx_rtd_theme==1.1.1",
+            "wheel",
         ],
         "tensorflow": ["tensorflow==2.11.0"],
     },
-    package_data={
-        "yawning_titan": [
-            "game_modes/_package_data/dcbo_config.yaml",
-            "game_modes/_package_data/default_game_mode.yaml",
-            "game_modes/_package_data/default_new_game_mode.yaml",
-            "game_modes/_package_data/game_modes.json",
-            "game_modes/_package_data/low_skill_red_with_random_infection_perfect_detection.yaml",
-            "game_modes/_package_data/multiple_high_value_targets.yaml",
-            "networks/_package_data/network.json",
-            "notebooks/_package_data/sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb",
-            "notebooks/_package_data/sb3/Using an Evaluation Callback to monitor progress during training.ipynb",
-            "notebooks/_package_data/Creating and playing as a Keyboard Agent.ipynb",
-            "notebooks/_package_data/sb3/YawningTitanRun Example.ipynb",
-        ]
-    },
+    package_data={"yawning_titan": package_data_paths()},
     include_package_data=True,
-    cmdclass={"install": PostInstallCommand, "develop": PostDevelopCommand},
+    cmdclass={
+        "install": PostInstallCommand,
+        "develop": PostDevelopCommand,
+        "bdist_wheel": bdist_wheel,
+    },
 )

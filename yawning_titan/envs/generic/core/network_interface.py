@@ -228,7 +228,7 @@ class NetworkInterface:
 
         # Gets the isolation states for each node
         isolated_state = []
-        if self.game_mode.blue_can_observe.node_connections.value:
+        if self.game_mode.observation_space.node_connections.value:
             node_connections = self.adj_matrix
             # pads the array to account for any missing deceptive nodes that may not have been placed yet
             node_connections = np.pad(node_connections, (0, open_spaces), "constant")
@@ -243,7 +243,7 @@ class NetworkInterface:
 
         # Gets the current safe/compromised status of all of the nodes
         compromised_state = []
-        if self.game_mode.blue_can_observe.compromised_status.value:
+        if self.game_mode.observation_space.compromised_status.value:
             compromised_state = np.asarray(
                 list(
                     self.get_attributes_from_key(
@@ -254,7 +254,7 @@ class NetworkInterface:
             compromised_state = np.pad(compromised_state, (0, open_spaces), "constant")
         # Gets the vulnerability score of all of the nodes
         vulnerabilities = []
-        if self.game_mode.blue_can_observe.vulnerabilities.value:
+        if self.game_mode.observation_space.vulnerabilities.value:
             vulnerabilities = np.asarray(
                 list(self.get_attributes_from_key("vulnerability_score").values())
             )
@@ -262,21 +262,21 @@ class NetworkInterface:
 
         # Gets the average vulnerability of all the nodes
         avg_vuln = []
-        if self.game_mode.blue_can_observe.average_vulnerability.value:
+        if self.game_mode.observation_space.average_vulnerability.value:
             all_vuln = self.get_attributes_from_key("vulnerability_score").values()
             avg_vuln = [sum(all_vuln) / len(all_vuln)]
 
         # Gets the connectivity of the graph, closer to 1 means more edges per node
         connectivity = []
-        if self.game_mode.blue_can_observe.graph_connectivity.value:
+        if self.game_mode.observation_space.graph_connectivity.value:
             connectivity = [self.connectivity]
 
         # Gets the attacks that the blue agent detected
         attacking_nodes = []
         attacked_nodes = []
         if (
-            self.game_mode.blue_can_observe.attacking_nodes.value
-            or self.game_mode.blue_can_observe.attacked_nodes.value
+            self.game_mode.observation_space.attacking_nodes.value
+            or self.game_mode.observation_space.attacked_nodes.value
         ):
             attacking = {n: 0 for n in self.current_graph.get_nodes()}
             attacked = {n: 0 for n in self.current_graph.get_nodes()}
@@ -286,11 +286,11 @@ class NetworkInterface:
                     attacking[node_set[0]] = 1
                 # extract the node that was attacked
                 attacked[node_set[1]] = 1
-            if self.game_mode.blue_can_observe.attacking_nodes.value:
+            if self.game_mode.observation_space.attacking_nodes.value:
                 # attacking nodes
                 attacking_nodes = list(attacking.values())
                 attacking_nodes = np.pad(attacking_nodes, (0, open_spaces), "constant")
-            if self.game_mode.blue_can_observe.attacked_nodes.value:
+            if self.game_mode.observation_space.attacked_nodes.value:
                 # nodes attacked
                 attacked_nodes = list(attacked.values())
                 attacked_nodes = np.pad(attacked_nodes, (0, open_spaces), "constant")
@@ -300,7 +300,7 @@ class NetworkInterface:
         nodes = []
         target_nodes = []
 
-        if self.game_mode.blue_can_observe.special_nodes.value:
+        if self.game_mode.observation_space.special_nodes.value:
             # gets the entry nodes
             entry_nodes = {n: 0 for n in self.current_graph.get_nodes()}
             for n in self.current_graph.entry_nodes:
@@ -328,7 +328,7 @@ class NetworkInterface:
 
         # gets the skill of the red agent
         skill = []
-        if self.game_mode.blue_can_observe.red_agent_skill.value:
+        if self.game_mode.observation_space.red_agent_skill.value:
             skill = [self.game_mode.red.agent_attack.skill.value.value]
 
         # combines all of the env observations together to create the observation that the blue agent gets
@@ -371,31 +371,31 @@ class NetworkInterface:
 
         # calculate the size of the observation space
         # the size depends on what observations are turned on/off in the config file
-        if self.game_mode.blue_can_observe.node_connections.value:
+        if self.game_mode.observation_space.node_connections.value:
             # add node connections to observation size
             observation_size += node_connections
             # add isolated nodes to observation size
             observation_size += max_number_of_nodes
-        if self.game_mode.blue_can_observe.compromised_status.value:
+        if self.game_mode.observation_space.compromised_status.value:
             observation_size += max_number_of_nodes
-        if self.game_mode.blue_can_observe.vulnerabilities.value:
+        if self.game_mode.observation_space.vulnerabilities.value:
             observation_size += max_number_of_nodes
-        if self.game_mode.blue_can_observe.average_vulnerability.value:
+        if self.game_mode.observation_space.average_vulnerability.value:
             observation_size += 1
-        if self.game_mode.blue_can_observe.graph_connectivity.value:
+        if self.game_mode.observation_space.graph_connectivity.value:
             observation_size += 1
-        if self.game_mode.blue_can_observe.attacking_nodes.value:
+        if self.game_mode.observation_space.attacking_nodes.value:
             observation_size += max_number_of_nodes
-        if self.game_mode.blue_can_observe.attacked_nodes.value:
+        if self.game_mode.observation_space.attacked_nodes.value:
             observation_size += max_number_of_nodes
-        if self.game_mode.blue_can_observe.special_nodes.value:
+        if self.game_mode.observation_space.special_nodes.value:
             observation_size += max_number_of_nodes
             if self.game_mode.game_rules.blue_loss_condition.target_node_lost.value:
                 observation_size += max_number_of_nodes
             if self.game_mode.game_rules.blue_loss_condition.high_value_node_lost.value:
                 observation_size += max_number_of_nodes
 
-        if self.game_mode.blue_can_observe.red_agent_skill.value:
+        if self.game_mode.observation_space.red_agent_skill.value:
             observation_size += 1
         return observation_size
 

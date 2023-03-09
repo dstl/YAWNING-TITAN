@@ -81,7 +81,7 @@ def start_jupyter_session():
             # Jupyter is installed
             working_dir = os.getcwd()
             os.chdir(NOTEBOOKS_DIR)
-            subprocess.Popen("jupyter notebook")
+            subprocess.Popen("jupyter lab")
             os.chdir(working_dir)
         else:
             # Jupyter is not installed
