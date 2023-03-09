@@ -113,15 +113,15 @@ option:hover{
     width: var(--padding);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     background-color: var(--light);
     border-right: 1px solid var(--text-mid);
 }
 #toolbar>*{
     font-size: 2rem;
-    margin-top: calc(var(--increment)*3);
-    margin-bottom: calc(var(--increment)*3);
+    margin-top: 5px;
+    margin-bottom: 5px;
     color: var(--text-light);
 }
 

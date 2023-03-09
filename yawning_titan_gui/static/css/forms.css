@@ -36,7 +36,7 @@
     color: red
 }
 .form-control{
-    padding: 0;
+    padding: 0 10px;
     /* padding-left: var(--increment); */
 }
 .form-container{
