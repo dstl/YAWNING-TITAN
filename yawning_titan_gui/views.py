@@ -139,7 +139,6 @@ class RunView(View):
 
         :param request: the Django page `request` object containing the html data for `run.html` and the server GET / POST request bodies.
         """
-        print("POSTED", request.POST)
         form = RunForm(request.POST)
         if form.is_valid():
             print("DATA", form.cleaned_data)
@@ -148,12 +147,8 @@ class RunView(View):
                 fkwargs["network"] = NetworkManager.db.get(fkwargs["network"])
             if fkwargs["game_mode"] is not None:
                 fkwargs["game_mode"] = GameModeManager.db.get(fkwargs["game_mode"])
-            process = multiprocessing.Process(
-                target=RunManager.run_yt,
-                kwargs=(fkwargs),
-            )
-            process.start()
-            return JsonResponse({"stdout": sys.stderr})
+            RunManager.start_process(fkwargs=fkwargs)
+            return JsonResponse({"message": "complete"})
         return JsonResponse({"message": "error"}, status=400)
 
 

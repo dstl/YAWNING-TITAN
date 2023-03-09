@@ -25,6 +25,8 @@ $(document).ready(function(){
         $($(this).data("toggle")).show();
     });
 
+    console.log("OUTPUT",OUTPUT_URL);
+
     //setup on start
     $("#view-buttons button:first-child").addClass("selected");
     $(".run-subsection:first-child").show();
@@ -44,17 +46,14 @@ function run(data){
         cache: false,
         dataType: "json",
         success: function(response){
-            let out = $("#log-view");
             console.log("FINISHED");
-            clearInterval(interval);
+            // clearInterval(interval);
         },
         error: function(response){
             console.log(response.message)
         }
     });
-    interval = setInterval(function(){
-        get_output();
-    },100);
+    interval = setInterval(get_output,100);
 }
 
 function get_output(){
@@ -64,7 +63,7 @@ function get_output(){
         cache: false,
         dataType: "json",
         success: function(response){
-            //console.log("RESPONSE",response);
+            console.log("RESPONSE",response);
             let stderr_out = $("#log-view"),
                 stdout_out = $("#metric-view");
 
@@ -74,7 +73,12 @@ function get_output(){
             $(stderr_out).scrollTop($(stderr_out).get(0).scrollHeight);
             $(stdout_out).scrollTop($(stdout_out).get(0).scrollHeight);
 
-            $("#gif-output").attr("src",response.gif);
+            if(!response.active & response.request_count > 100){
+                console.log("FINISHED!!!");
+                $("#gif-output").show();
+                $("#gif-output").attr("src",response.gif);
+                clearInterval(interval);
+            }
         }
     });
 }
