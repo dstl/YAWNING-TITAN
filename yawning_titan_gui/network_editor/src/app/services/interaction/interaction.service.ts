@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as cytoscape from 'cytoscape';
 import { Observable, Subject } from 'rxjs';
+import { NetworkSettings, RandomEntryNodePreference, RandomHighValueNodePreference } from 'src/app/network-class/network-interfaces';
 import { NetworkService } from 'src/app/network-class/network.service';
 import { CytoscapeService } from '../cytoscape/cytoscape.service';
 import { ElementType, SelectedGraphRef } from '../cytoscape/graph-objects';
@@ -114,13 +115,13 @@ export class InteractionService {
      * @param evt
      */
   private handleDrag(evt: cytoscape.EventObject): void {
-    if(!evt) {
+    if (!evt) {
       return;
     }
 
     const node = this.networkService.getNodeById(evt?.target?.id());
-    node.x_pos = evt.target.position().x;
-    node.y_pos = evt.target.position().y;
+    node.x_pos = Number(evt.target.position().x.toFixed());
+    node.y_pos = Number(evt.target.position().y.toFixed());
     this.networkService.editNodeDetails(node);
     this.dragSubject.next({
       id: node.uuid,
@@ -171,6 +172,56 @@ export class InteractionService {
 
   private handleControlKeyInput(event: KeyboardEvent): void {
 
+  }
+
+
+  /**
+   * Converts the network settings update into an object the angular side of
+   * the network editor can process
+   * @param update
+   */
+  public processNetworkSettingsChanges(update: any): void {
+    const processedVal: NetworkSettings = {
+      entryNode: {
+        set_random_entry_nodes: update?.set_random_entry_nodes == 'on' ? true : false,
+        num_of_random_entry_nodes: Number(update?.num_of_random_entry_nodes),
+        random_entry_node_preference: update?.random_entry_node_preference as RandomEntryNodePreference
+      },
+      highValueNode: {
+        set_random_high_value_nodes: update?.set_random_high_value_nodes == 'on' ? true : false,
+        num_of_random_high_value_nodes: Number(update?.num_of_random_high_value_nodes),
+        random_high_value_node_preference: update?.random_high_value_node_preference as RandomHighValueNodePreference
+      },
+      vulnerability: {
+        set_random_vulnerabilities: update?.set_random_vulnerabilities == 'on' ? true : false,
+        node_vulnerability_upper_bound: Number(update?.node_vulnerability_upper_bound),
+        node_vulnerability_lower_bound: Number(update?.node_vulnerability_lower_bound),
+      }
+    };
+
+    this.networkService.updateNetworkSettings(processedVal);
+  }
+
+  /**
+   * Process the select node interaction in the node list
+   * @param id
+   */
+  public processNodeSelected(id: string): void {
+    // set the id to selected
+    this._selectedItem = {
+      id: id,
+      type: ElementType.NODE
+    }
+    this.selectedItemSubject.next(this._selectedItem);
+    this.cytoscapeService.selectNode(id);
+  }
+
+  /**
+   * Process the delete node interaction in the node list
+   * @param id
+   */
+  public processNodeDelete(id: string): void {
+    this.networkService.removeItem({ id: id, type: ElementType.NODE });
   }
 
   /**

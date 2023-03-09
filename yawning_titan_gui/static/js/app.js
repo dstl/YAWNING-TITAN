@@ -3,54 +3,57 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
-function check_form_filled(selector){
+function check_form_filled(selector) {
     let update = true;
-    $(selector).each(function(){
-        if($(this).val() == null){
+    $(selector).each(function () {
+        if ($(this).val() == null) {
             update = false
         }
     });
     return update
 }
 
-function update_tooltip(selector,replace,replace_with){
-    $(selector).attr('data-bs-original-title',$(selector).data("bs-original-title").replace(replace,replace_with));
+function update_tooltip(selector, replace, replace_with) {
+    $(selector).attr('data-bs-original-title', $(selector).data("bs-original-title").replace(replace, replace_with));
 }
 
-function toggle_dialogue(dialogue_selector){
-    if($("#mask").hasClass("hidden")){
+function toggle_dialogue(dialogue_selector) {
+    if ($("#mask").hasClass("hidden")) {
         $("#mask").removeClass("hidden");
         $(dialogue_selector).removeClass("hidden");
         $("#window").addClass("blur");
-    }else{
+    } else {
         $("#mask").addClass("hidden");
         $("#mask>*").addClass("hidden");
         $("#window").removeClass("blur");
     }
 }
 
-$(window).on('load', function(){
+$(window).on('load', function () {
     $("body").removeClass("preload");
 });
 
-$(document).ready(function(){
+$(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
-    //activate first toolbar button
-    $(".toolbar-button:first-child").addClass("active");
-
     //handle toolbar clicks
-    $(".toolbar-button").click(function(){
+    $(".toolbar-button").click(function () {
+        var toolbarIconEl = $(this)
+        if (!toolbarIconEl.hasClass("active")) {
+            $(".toolbar-button").removeClass("active");
+            toolbarIconEl.addClass("active");
+            return;
+        }
+
         $(".toolbar-button").removeClass("active");
-        $(this).addClass("active");
     });
 
-    $('#sandwich-icon').click(function(){
-		$(this).toggleClass('open');
+    $('#sandwich-icon').click(function () {
+        $(this).toggleClass('open');
         $($(this).data("sidebar")).toggleClass('open');
-	});
+    });
     //close center dialogue
-    $(".dialogue-center .cancel").click(function(){
+    $(".dialogue-center .cancel").click(function () {
         toggle_dialogue($(this).closest(".dialogue-center"))
     });
 
@@ -62,24 +65,24 @@ $(document).ready(function(){
     $(".form-range").append("<input type='number' class='range-setter form-control'>");
 
     // constrain range setter input field
-    $(".range-setter").each(function(){
+    $(".range-setter").each(function () {
         let slider_el = $(this).closest(".form-range").children("input[type='range']").first();
-        $(this).prop("min",slider_el.prop("min"));
-        $(this).prop("max",slider_el.prop("max"));
-        $(this).prop("step",slider_el.prop("step"));
+        $(this).prop("min", slider_el.prop("min"));
+        $(this).prop("max", slider_el.prop("max"));
+        $(this).prop("step", slider_el.prop("step"));
         $(this).val(slider_el.val());
     })
 
     // implement cross updates between range-setter and range sliders
-    $(document).on("keyup",".range-setter",function(){
+    $(document).on("keyup", ".range-setter", function () {
         $(this).siblings("input[type='range']").first().val($(this).val());
     });
-    $(document).on("mousemove","input[type='range']",function(){
+    $(document).on("mousemove", "input[type='range']", function () {
         $(this).siblings(".range-setter").first().val($(this).val());
     });
 
     $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
+        beforeSend: function (xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken", CSRF_TOKEN);
             }
@@ -87,19 +90,19 @@ $(document).ready(function(){
     });
 });
 
-class Filter{
-    constructor(){
+class Filter {
+    constructor() {
         this.hidden = {};
     }
-    update_elements(){
+    update_elements() {
         $(".list-item").removeClass("hidden");
-        for (const [group,elements] of Object.entries(this.hidden)){
-            elements.each(function(){
+        for (const [group, elements] of Object.entries(this.hidden)) {
+            elements.each(function () {
                 $(this).addClass("hidden")
             })
         }
     }
-    set(elements,group){
+    set(elements, group) {
         this.hidden[group] = elements
     }
 }
