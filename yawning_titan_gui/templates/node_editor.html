@@ -15,9 +15,12 @@
 {% block main %}
 <app-root></app-root>
 <div id="random-elements" class="form-container">
+  <div id="network-tabs" class="flex-row">
+    <button type="button" id="network-attributes" class="btn">Network attributes</button>
+    <button type="button" id="node-list" class="btn">Node list</button>
+  </div>
   <form id="doc-meta-form" data-id="doc-meta">
-    <!-- <button type="button" id="random-elements" class="btn">Temp</button> -->
-      {% include 'elements/el_form_fields.html' with form=doc_metadata_form protected=False %}
+    {% include 'elements/el_form_fields.html' with form=doc_metadata_form protected=False %}
   </form>
   <form id="random-elements-form" class="config-form">
     {% include 'elements/el_form_fields.html' with form=form protected=protected %}
@@ -90,6 +93,17 @@
     }
     .help-text{
       color: var(--text-dark);
+    }
+    #network-tabs{
+      width: 100%;
+      border-bottom: 1px solid var(--text-superlight);
+    }
+    #network-tabs>*{
+      margin-left: var(--increment);
+      margin-right: var(--increment);
+      color: var(--text-superlight);
+      border-radius: .5rem .5rem 0 0 ;
+      background-color: var(--light);
     }
 </style>
 {% endblock %}

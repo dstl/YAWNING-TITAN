@@ -26,7 +26,7 @@
                 <div id="{{ section_name }}-icon" class="icon" data-form="#{{ section_name }}-config-form">
                     <i class="bi {{ section.icon }}"></i>
                 </div>
-                <p>{{ section_name }}</p>
+                <p>{{ section_name|format_text }}</p>
             </a>
             {% endfor %}
         </div>
@@ -125,7 +125,7 @@
     #config-form-icons .icon{
         margin-left: 0;
         box-shadow: 0 0 0 var(--increment) var(--mid);
-        transform: translate(-50%,0%);
+        transform: translate(-75%,0%);
     }
     #config-form-icons .icon-container.complete>.icon{
         border: 2px solid var(--primary);
