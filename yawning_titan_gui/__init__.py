@@ -29,5 +29,7 @@ DEFAULT_GAME_MODE: Final[str] = "everything_off_config.yaml"
 STATIC_DIR: Final[Union[Path, PosixPath]] = _static_dir()
 """The path to the app static directory as an instance of `Path` or `PosixPath`, depending on the OS."""
 
-YT_RUN_TEMP_DIR: Final[Union[Path, PosixPath]] = _yt_run_temp_dir()
-"""The path to the app temp directory for :class: `~yawning_titan.yawning_titan_run.YawningTitanRun` as an instance of `Path` or `PosixPath`, depending on the OS."""
+# YT_RUN_TEMP_DIR: Final[Union[Path, PosixPath]] = _yt_run_temp_dir()
+# """The path to the app temp directory for :class: `~yawning_titan.yawning_titan_run.YawningTitanRun` as an instance of `Path` or `PosixPath`, depending on the OS."""
+
+YT_RUN_TEMP_DIR = _YT_GUI_ROOT_DIR / "static" / "gifs"

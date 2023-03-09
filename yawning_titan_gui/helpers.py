@@ -1,5 +1,6 @@
 import glob
 import logging
+import multiprocessing
 import os
 import sys
 from pathlib import Path
@@ -18,6 +19,20 @@ from yawning_titan_server.settings import STATIC_URL
 
 class RunManager:
     gif = None
+    process = None
+    counter = 0
+    run_args = None
+
+    @staticmethod
+    def format_file(path):
+        """"""
+        with open(path, "r") as f:
+            try:
+                lines = [l.replace(" ", "&nbsp;") for l in f.readlines()]
+                text = "<br>".join(lines)
+                return text
+            except Exception as e:
+                return ""
 
     @classmethod
     def run_yt(cls, *args, **kwargs):  # TODO: Move
@@ -29,12 +44,14 @@ class RunManager:
         fh.setLevel(logging.DEBUG)
         logger.addHandler(fh)
         kwargs["logger"] = logger
+        cls.run_args = kwargs
         with open("stdout.txt", "w+") as sys.stdout:
             run = YawningTitanRun(**kwargs)
         if kwargs["render"]:
             loop = ActionLoop(
-                run.env,
-                run.agent,
+                env=run.env,
+                agent=run.agent,
+                filename="test",
                 episode_count=kwargs.get("num_episodes", run.total_timesteps),
             )
             loop.gif_action_loop(
@@ -43,25 +60,31 @@ class RunManager:
 
     @classmethod
     def get_output(cls):
-        output = {"stderr": "", "stdout": ""}
-        with open("spam.log", "r") as f:
-            try:
-                lines = f.readlines()
-                text = "<br>".join(lines)
-                output["stderr"] = text
-            except Exception as e:
-                pass
-        with open("stdout.txt", "r") as f:
-            try:
-                lines = f.readlines()
-                text = "<br>".join(lines)
-                output["stdout"] = text
-            except Exception as e:
-                pass
-        dir = glob.glob(YT_RUN_TEMP_DIR.as_posix())
+        cls.counter += 1
+        output = {
+            "stderr": "",
+            "stdout": "",
+            "gif": "",
+            "active": cls.process.is_alive(),
+            "request_count": cls.counter,
+        }
+        output["stderr"] = cls.format_file("spam.log")
+        output["stdout"] = cls.format_file("stdout.txt")
+        dir = glob.glob(f"{YT_RUN_TEMP_DIR.as_posix()}/*")
         gif_path = max(dir, key=os.path.getctime)
-        output["gif"] = f"/{STATIC_URL}{Path(gif_path).name}"
+        # print("PATH-->",f"/{STATIC_URL}gifs/{Path(gif_path).name}".replace("\\","/"))
+        output["gif"] = f"/{STATIC_URL}gifs/{Path(gif_path).name}".replace("\\", "/")
         return output
+
+    @classmethod
+    def start_process(cls, fkwargs: dict):
+        """"""
+        cls.counter = 0
+        cls.process = multiprocessing.Process(
+            target=RunManager.run_yt,
+            kwargs=(fkwargs),
+        )
+        cls.process.start()
 
 
 class NetworkManager:
