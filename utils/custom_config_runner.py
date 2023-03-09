@@ -23,10 +23,10 @@ from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.game_modes.game_mode import GameMode
-from yawning_titan.game_modes.game_modes import default_game_mode_path
+from yawning_titan.game_modes.game_modes import legacy_default_game_mode_path
 from yawning_titan.networks import network_creator
 
-game_mode = GameMode.create_from_yaml(default_game_mode_path())
+game_mode = GameMode.create_from_yaml(legacy_default_game_mode_path())
 
 network = network_creator.gnp_random_connected_graph(
     n_nodes=15, probability_of_edge=0.02

@@ -151,6 +151,15 @@ class GameModeDB:
         """
         return [self._doc_to_game_mode(doc) for doc in self._db.all()]
 
+    def show(self, verbose=False):
+        """
+        Show details of all entries in the db.
+
+        :param verbose: If True, all doc metadata details are shown,
+            otherwise just the name is shown.
+        """
+        self._db.show(verbose)
+
     def get(self, uuid: str) -> Union[GameMode, None]:
         """
         Get a game_mode config document from its uuid.

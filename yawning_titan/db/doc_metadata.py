@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, Final, Optional, Union
+from typing import Dict, Final, List, Optional, Union
 from uuid import uuid4
 
 from yawning_titan.db.query import YawningTitanQuery
@@ -38,33 +38,33 @@ class DocMetadata:
     def __init__(
         self,
         uuid: Optional[str] = None,
-        created_at: Optional[datetime] = None,
-        updated_at: Optional[datetime] = None,
         name: Optional[str] = None,
         description: Optional[str] = None,
         author: Optional[str] = None,
         locked: Optional[bool] = False,
+        created_at: Optional[datetime] = None,
+        updated_at: Optional[datetime] = None,
     ):
         """
         The :class:`~yawning_titan.db.yawning_titan_db.DocMetadata` constructor.
 
         :param uuid: The documents globally unique identifier.
-        :param created_at: The datetime the document was created at as an ISO 8601 str.
-        :param updated_at: The datetime the document was last updated at as an ISO 8601 str.
         :param name: The name given to the document by the author.
         :param description: The description given to the document by the author.
         :param author: The original author of the document.
         :param locked: Whether the doc is locked for editing or not.
+        :param created_at: The datetime the document was created at as an ISO 8601 str.
+        :param updated_at: The datetime the document was last updated at as an ISO 8601 str.
         """
         self._uuid: Final[str] = uuid if uuid is not None else str(uuid4())
-        self._created_at: Final[str] = (
-            created_at if created_at is not None else datetime.now().isoformat()
-        )
-        self._updated_at: Optional[str] = updated_at
         self._name: Optional[str] = name
         self._description: Optional[str] = description
         self._author: Optional[str] = author
         self._locked: bool = locked
+        self._created_at: Final[str] = (
+            created_at if created_at is not None else datetime.now().isoformat()
+        )
+        self._updated_at: Optional[str] = updated_at
 
     # region Getters
     @property
@@ -152,16 +152,24 @@ class DocMetadata:
         """
         doc_dict = {
             "uuid": self._uuid,
-            "created_at": self._created_at,
-            "updated_at": self._updated_at,
             "name": self._name,
             "description": self._description,
             "author": self._author,
             "locked": self._locked,
+            "created_at": self._created_at,
+            "updated_at": self._updated_at,
         }
         if not include_none:
             return {k: v for k, v in doc_dict.items() if v is not None}
         return doc_dict
+
+    def to_list(self) -> List[str, None]:
+        """
+        Get the doc metadata values as a list.
+
+        :return: The values as a list of strings and None.
+        """
+        return list(self.to_dict(include_none=True).values())
 
     def __str__(self):
         if self.name:
