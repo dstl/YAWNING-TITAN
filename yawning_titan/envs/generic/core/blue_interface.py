@@ -2,6 +2,7 @@ from typing import Tuple
 
 from yawning_titan.envs.generic.core.blue_action_set import BlueActionSet
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
+from yawning_titan.networks.node import Node
 
 
 class BlueInterface(BlueActionSet):
@@ -21,47 +22,47 @@ class BlueInterface(BlueActionSet):
         action_number = 0
         self.deceptive_actions = 0
         # all of the actions that blue can do
-        if self.network_interface.game_mode.blue.blue_uses_reduce_vulnerability:
+        if self.network_interface.game_mode.blue.action_set.reduce_vulnerability.value:
             # Checks if the action is enabled in the settings file
             self.action_dict[action_number] = self.reduce_node_vulnerability
             action_number += 1
-        if self.network_interface.game_mode.blue.blue_uses_restore_node:
+        if self.network_interface.game_mode.blue.action_set.restore_node.value:
             self.action_dict[action_number] = self.restore_node
             action_number += 1
-        if self.network_interface.game_mode.blue.blue_uses_make_node_safe:
+        if self.network_interface.game_mode.blue.action_set.make_node_safe.use.value:
             self.action_dict[action_number] = self.make_safe_node
             action_number += 1
-        if self.network_interface.game_mode.blue.blue_uses_isolate_node:
+        if self.network_interface.game_mode.blue.action_set.isolate_node.value:
             self.action_dict[action_number] = self.isolate_node
             action_number += 1
-        if self.network_interface.game_mode.blue.blue_uses_reconnect_node:
+        if self.network_interface.game_mode.blue.action_set.reconnect_node.value:
             self.action_dict[action_number] = self.reconnect_node
             action_number += 1
 
         # deceptive actions -> since the number of edges is not equal to the number of nodes this has to be done
         # separately
-        if self.network_interface.game_mode.blue.blue_uses_deceptive_nodes:
-            self.deceptive_actions = self.network_interface.get_number_base_edges()
+        if self.network_interface.game_mode.blue.action_set.deceptive_nodes.use.value:
+            self.deceptive_actions = self.network_interface.base_graph.number_of_edges()
 
         # global actions (don't apply to a single node)
         self.global_action_dict = {}
         global_action_number = 0
-        if self.network_interface.game_mode.blue.blue_uses_scan:
+        if self.network_interface.game_mode.blue.action_set.scan.value:
             # scans all of the nodes in the network
             self.global_action_dict[global_action_number] = self.scan_all_nodes
             global_action_number += 1
-        if self.network_interface.game_mode.blue.blue_uses_do_nothing:
+        if self.network_interface.game_mode.blue.action_set.do_nothing.value:
             # does nothing
             self.global_action_dict[global_action_number] = self.do_nothing
             global_action_number += 1
         self.number_of_actions = action_number
         self.number_global_action = global_action_number
 
-    def perform_action(self, action: int) -> Tuple[str, str]:
+    def perform_action(self, action: int) -> Tuple[str, Node]:
         """
         Perform an action within the environment.
 
-        Takes in an action number and then maps this to the correct action to perform. There are 3 different types of
+        Takes in an action number and then maps this to the correct action to perform. There are 3 different item_types of
         actions:
             - standard actions
             - deceptive actions
@@ -109,16 +110,20 @@ class BlueInterface(BlueActionSet):
             action = action - self.deceptive_actions
             # global actions
             if action < self.number_global_action:
-
                 blue_action, blue_node = self.global_action_dict[action]()
             else:
                 # standard actions
                 action = action - self.number_global_action
-                action_node = int(action / self.number_of_actions)
-                if action_node >= self.network_interface.get_number_of_nodes():
+                action_node_number = int(action / self.number_of_actions)
+
+                if (
+                    action_node_number
+                    >= self.network_interface.current_graph.number_of_nodes()
+                ):
                     blue_action, blue_node = self.do_nothing()
                 else:
-                    action_node = self.network_interface.get_nodes()[action_node]
+                    nodes = self.network_interface.current_graph.get_nodes()
+                    action_node = sorted(nodes)[action_node_number]
                     action_taken = int(action % self.number_of_actions)
 
                     blue_action, blue_node = self.action_dict[action_taken](action_node)
@@ -129,7 +134,7 @@ class BlueInterface(BlueActionSet):
         """
         Get the number of actions that this blue agent can perform.
 
-        There are three types of actions:
+        There are three item_types of actions:
             - global actions (apply to all nodes) - need 1 action space
             - deceptive actions (Add new nodes to environment)
             - standard actions (apply to a single node) - need 2 action space (action and node to perform on)

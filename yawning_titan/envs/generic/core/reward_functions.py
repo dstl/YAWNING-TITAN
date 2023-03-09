@@ -20,7 +20,11 @@ The reward function returns a single number (integer or float) that is the blue 
 """
 
 # Functions:
+from __future__ import annotations
+
 import math
+
+from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 
 REMOVE_RED_POINTS = []
 for i in range(0, 101):
@@ -60,7 +64,7 @@ def standard_rewards(args: dict) -> float:
         The reward earned for this specific turn for the blue agent
     """
     # Get information about the current state of the environment
-    network_interface = args["network_interface"]
+    network_interface: NetworkInterface = args["network_interface"]
     blue_action = args["blue_action"]
     start_state = args["start_state"]
     end_state = args["end_state"]
@@ -77,13 +81,18 @@ def standard_rewards(args: dict) -> float:
         "restore_node": 1,
         "make_node_safe": 0.5,
         "scan": 0,
-        "isolate": 10,
+        "isolate": 1,
         "connect": 0,
         "do_nothing": -0.5,
         "add_deceptive_node": 8,
     }
 
-    reward = -action_cost[blue_action]
+    # prevent isolate reward from being duplicated
+    reward = -action_cost[blue_action] if blue_action != "isolate" else 0
+
+    # punish agent for every node it has isolated
+    reward += -action_cost["isolate"] * sum(end_isolation.values())
+
     # calculating number of red nodes before and after the blue agents turn
     initial_cumulative_states = sum(start_state.values())
     final_cumulative_states = sum(end_state.values())
@@ -102,13 +111,17 @@ def standard_rewards(args: dict) -> float:
     if initial_cumulative_states > final_cumulative_states:
         reward += REMOVE_RED_POINTS[
             round(
-                100 * final_cumulative_states / network_interface.get_number_of_nodes()
+                100
+                * final_cumulative_states
+                / network_interface.current_graph.number_of_nodes()
             )
         ]
 
     # punish agent for doing nothing if there are large numbers or red controlled nodes in the environment
     if blue_action != "make_node_safe" and blue_action != "restore_node":
-        amount = final_cumulative_states / network_interface.get_number_of_nodes()
+        amount = (
+            final_cumulative_states / network_interface.current_graph.number_of_nodes()
+        )
         if amount > 0.3:
             reward = reward - amount + 0.3
 
@@ -136,7 +149,7 @@ def standard_rewards(args: dict) -> float:
 
     # rewards for reducing node vulnerabilities
     if (
-        network_interface.game_mode.red.red_ignores_defences is False
+        network_interface.game_mode.red.agent_attack.ignores_defences.value is False
         and blue_action == "reduce_vulnerability"
     ):
         initial_cumulative_vuln = sum(start_vulnerabilities.values())
@@ -175,7 +188,7 @@ def experimental_rewards(args: dict) -> float:
         The reward earned for this specific turn for the blue agent
     """
     # Get information about the current state of the environment
-    network_interface = args["network_interface"]
+    network_interface: NetworkInterface = args["network_interface"]
     blue_action = args["blue_action"]
     start_state = args["start_state"]
     end_state = args["end_state"]
@@ -211,7 +224,7 @@ def experimental_rewards(args: dict) -> float:
                 round(
                     100
                     * final_cumulative_states
-                    / network_interface.get_number_of_nodes()
+                    / network_interface.current_graph.number_of_nodes()
                 )
             ]
         elif initial_cumulative_states > final_cumulative_states:
@@ -334,7 +347,7 @@ def punish_bad_actions(args: dict) -> float:
 
     """
     # Get information about the current state of the game
-    network_interface = args["network_interface"]
+    network_interface: NetworkInterface = args["network_interface"]
     blue_action = args["blue_action"]
     start_state = args["start_state"]
     end_state = args["end_state"]

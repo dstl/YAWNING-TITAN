@@ -6,7 +6,7 @@ The `yawning_titan` top-level __init__.
         entry_point: `yawning_titan.envs.specific:FiveNodeDef`
     `four-node-def-v0`
         entry_point: `yawning_titan.envs.specific:FourNodeDef`
-    `network-graph-explore-v0`
+    `networks-graph-explore-v0`
         entry_point: `yawning_titan.envs.specific:GraphExplore`
     `18-node-env-v0`
         entry_point: `yawning_titan.envs.specific:NodeEnv`
@@ -37,8 +37,6 @@ User directories initialised:
 Logging configured from the root:
     Logging is configured using the `yawning_titan.config._package_data.logging_config.yaml` config file.
 """
-__version__ = "1.0.1"
-
 import logging.config
 import os
 import sys
@@ -54,7 +52,7 @@ register(id="five-node-def-v0", entry_point="yawning_titan.envs.specific:FiveNod
 register(id="four-node-def-v0", entry_point="yawning_titan.envs.specific:FourNodeDef")
 
 register(
-    id="network-graph-explore-v0",
+    id="networks-graph-explore-v0",
     entry_point="yawning_titan.envs.specific:GraphExplore",
 )
 

@@ -70,15 +70,18 @@ reset_default_jupyter_notebooks(overwrite_existing=False)
 
 
 def start_jupyter_session():
-    """Starts a new Jupyter notebook session. in the app notebooks directory. Currently only works on Windows OS."""
+    """
+    Starts a new Jupyter notebook session. in the app notebooks directory. Currently only works on Windows OS.
+
+    .. todo:: Figure out how to get this working for Linux and MacOS too.
+    """
     reset_default_jupyter_notebooks(overwrite_existing=False)
-    # TODO: Figure out how to get this working for Linux and MacOS too.
     if sys.platform == "win32":
         if importlib.util.find_spec("jupyter") is not None:
             # Jupyter is installed
             working_dir = os.getcwd()
             os.chdir(NOTEBOOKS_DIR)
-            subprocess.Popen("jupyter notebook")
+            subprocess.Popen("jupyter lab")
             os.chdir(working_dir)
         else:
             # Jupyter is not installed
