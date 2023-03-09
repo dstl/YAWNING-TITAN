@@ -203,7 +203,7 @@ setup(
         "pandas==1.3.5",
         "platformdirs==2.5.2",
         "pyyaml==5.4.1",
-        _ray_3_beta_rllib_py_platform_pip_install(),
+        # _ray_3_beta_rllib_py_platform_pip_install(),
         "scipy==1.9.2",
         "seaborn==0.12.1",
         "stable_baselines3==1.6.2",
