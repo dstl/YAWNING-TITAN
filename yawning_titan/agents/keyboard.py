@@ -36,7 +36,7 @@ class KeyboardAgent:
         standard_actions = 0
 
         # checks the settings for the currently active blue actions
-        if settings.blue.blue_uses_deceptive_nodes:
+        if settings.blue.action_set.deceptive_nodes.use.value:
             # If the actions are active then creates a map using dictionaries between
             # the AI gym action number and the
             # action name and any sub actions that this action has
@@ -46,35 +46,35 @@ class KeyboardAgent:
             actions += len(edge_list)
             standard_actions += len(edge_list)
 
-        if settings.blue.blue_uses_scan:
+        if settings.blue.action_set.scan.value:
             full_action_dict["scan"] = None
             top_level_action_mask["scan"] = actions
             actions += 1
             standard_actions += 1
-        if settings.blue.blue_uses_do_nothing:
+        if settings.blue.action_set.do_nothing.value:
             full_action_dict["do_nothing"] = None
             top_level_action_mask["do_nothing"] = actions
             actions += 1
             standard_actions += 1
 
-        node_list = ["Node " + i for i in network_interface.get_nodes()]
-        if settings.blue.blue_uses_reduce_vulnerability:
+        node_list = ["Node " + i for i in network_interface.current_graph.get_nodes()]
+        if settings.blue.action_set.reduce_vulnerability.value:
             full_action_dict["reduce_vulnerability"] = node_list
             top_level_action_mask["reduce_vulnerability"] = actions
             actions += 1
-        if settings.blue.blue_uses_restore_node:
+        if settings.blue.action_set.restore_node.value:
             full_action_dict["restore_node"] = node_list
             top_level_action_mask["restore_node"] = actions
             actions += 1
-        if settings.blue.blue_uses_make_node_safe:
+        if settings.blue.action_set.make_node_safe.use.value:
             full_action_dict["make_node_safe"] = node_list
             top_level_action_mask["make_node_safe"] = actions
             actions += 1
-        if settings.blue.blue_uses_isolate_node:
+        if settings.blue.action_set.isolate_node.value:
             full_action_dict["isolate"] = node_list
             top_level_action_mask["isolate"] = actions
             actions += 1
-        if settings.blue.blue_uses_reconnect_node:
+        if settings.blue.action_set.reconnect_node.value:
             full_action_dict["connect"] = node_list
             top_level_action_mask["connect"] = actions
             actions += 1
@@ -92,7 +92,7 @@ class KeyboardAgent:
         Play the game as a keyboard agent.
 
         Allows the user to select an action using the console and displays the
-        effect of the action on the envionrment.
+        effect of the action on the environment.
 
         Args:
             render_graphically: If True render using the matplotlib renderer, if False

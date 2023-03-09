@@ -1,18 +1,17 @@
 from logging import getLogger
-from typing import List, Tuple
+from typing import List, Optional
 
 from gym import spaces
 from stable_baselines3.common.env_checker import check_env
 
 from yawning_titan.agents.sinewave_red import SineWaveRedAgent
-from yawning_titan.config.game_config.game_mode_config import GameModeConfig
-from yawning_titan.config.game_modes import dcbo_game_mode_path
-from yawning_titan.config.network_config.network_config import NetworkConfig
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
 from yawning_titan.envs.generic.core.network_interface import NetworkInterface
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
-from yawning_titan.envs.generic.helpers import network_creator
+from yawning_titan.game_modes.game_mode_db import dcbo_game_mode
 from yawning_titan.integrations.dcbo.dcbo_agent import DCBOAgent
+from yawning_titan.networks import network_creator
+from yawning_titan.networks.network_db import dcbo_base_network
 
 _LOGGER = getLogger(__name__)
 
@@ -27,15 +26,12 @@ def create_env(use_same_net: bool = False) -> GenericNetworkEnv:
     :returns: A YAWNING TITAN OpenAI Gym environment.
 
     """
-    game_mode = GameModeConfig.create_from_yaml(dcbo_game_mode_path())
+    game_mode = dcbo_game_mode()
 
     if use_same_net:
-        matrix, positions = network_creator.dcbo_base_network()
-        network = NetworkConfig.create_from_args(matrix=matrix, positions=positions)
+        network = dcbo_base_network()
     else:
-        matrix, positions = network_creator.create_mesh(size=10)
-        network = NetworkConfig.create_from_args(matrix=matrix, positions=positions)
-
+        network = network_creator.create_mesh(size=10)
     network_interface = NetworkInterface(game_mode, network)
 
     red = SineWaveRedAgent(network_interface)
@@ -57,7 +53,7 @@ def create_env(use_same_net: bool = False) -> GenericNetworkEnv:
     return env
 
 
-def init_dcbo_agent(action_probabs: Tuple[None, List[float]]) -> DCBOAgent:
+def init_dcbo_agent(action_probabs: Optional[List[float]] = None) -> DCBOAgent:
     """
     Create a DCBOAgent object with a set of initial action probabilities.
 

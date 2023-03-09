@@ -11,11 +11,10 @@ class NodeCollection:
     """Class representing a collection of nodes for the 18-node Ridley Environment."""
 
     def __init__(self, network: Tuple[np.array, dict], chance_to_spread_during_patch):
-
         self.adj_matrix = network[0]
         self.pos_dic = network[1]
         self.nodes = []
-        for i in range(0, len(self.adj_matrix)):
+        for _ in range(0, len(self.adj_matrix)):
             self.nodes.append(Node())
         self.chance_to_spread_during_patch = chance_to_spread_during_patch
 
@@ -174,7 +173,7 @@ class NodeCollection:
 
     def calculate_reward(self) -> float:
         """
-        Calculate a reward for the current networks state.
+        Calculate a reward for the current network state.
 
         Returns:
             reward: the reward for being in the current state

@@ -11,22 +11,15 @@ saves training metrics to tensorboard.
     'Reinforcement Learning (RL) baseline agent' example will be available as a
     pre-defined configurable run.
 """
+from __future__ import annotations
 
 from stable_baselines3 import PPO
-from stable_baselines3.common.callbacks import EvalCallback
-from stable_baselines3.common.env_checker import check_env
-from stable_baselines3.common.monitor import Monitor
-from stable_baselines3.ppo import MlpPolicy as PPOMlp
 
-from yawning_titan import PPO_TENSORBOARD_LOGS_DIR
 from yawning_titan.agents.sinewave_red import SineWaveRedAgent
-from yawning_titan.config.game_config.game_mode_config import GameModeConfig
-from yawning_titan.config.game_modes import dcbo_game_mode_path
-from yawning_titan.config.network_config.network_config import NetworkConfig
 from yawning_titan.envs.generic.core.blue_interface import BlueInterface
-from yawning_titan.envs.generic.core.network_interface import NetworkInterface
-from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
-from yawning_titan.envs.generic.helpers import network_creator
+from yawning_titan.game_modes.game_mode_db import dcbo_game_mode
+from yawning_titan.networks.network_db import dcbo_base_network
+from yawning_titan.yawning_titan_run import YawningTitanRun
 
 
 def generate(
@@ -40,7 +33,8 @@ def generate(
     warn: bool = True,
     render: bool = False,
     verbose: int = 1,
-) -> PPO:
+    save: bool = True,
+) -> tuple[PPO | None, str | None] | tuple[PPO | None, None]:
     """
     Generate a Reinforcement Learning (RL) baseline agent.
 
@@ -64,47 +58,32 @@ def generate(
     :param verbose: Verbosity level: 0 for no output, 1 for info messages
         (such as device or wrappers used), 2 for debug messages. Default
         value = 1.
+    :param save: If True, saves the trained agent using the stable_baselines3 save as zip functionality.
     :return: A trained agent as an instance of
         :class:`stable_baselines3.ppo.ppo.PPO`.
     """
-    game_mode = GameModeConfig.create_from_yaml(dcbo_game_mode_path())
-
-    matrix, positions = network_creator.dcbo_base_network()
-    network = NetworkConfig.create_from_args(matrix=matrix, positions=positions)
-
-    network_interface = NetworkInterface(game_mode, network)
-
-    red = SineWaveRedAgent(network_interface)
-    blue = BlueInterface(network_interface)
-    env = GenericNetworkEnv(
-        red_agent=red,
-        blue_agent=blue,
-        network_interface=network_interface,
+    yt_run = YawningTitanRun(
+        network=dcbo_base_network(),
+        game_mode=dcbo_game_mode(),
+        red_agent_class=SineWaveRedAgent,
+        blue_agent_class=BlueInterface,
+        eval_freq=eval_freq,
+        total_timesteps=total_timesteps,
+        n_eval_episodes=n_eval_episodes,
+        deterministic=deterministic,
         print_metrics=print_metrics,
         show_metrics_every=show_metrics_every,
         collect_additional_per_ts_data=collect_additional_per_ts_data,
-    )
-
-    check_env(env, warn=warn)
-
-    env.reset()
-
-    agent = PPO(
-        PPOMlp,
-        env,
+        warn=warn,
+        render=render,
         verbose=verbose,
-        tensorboard_log=str(PPO_TENSORBOARD_LOGS_DIR),
-        seed=env.network_interface.random_seed,
     )
 
-    eval_callback = EvalCallback(
-        Monitor(env), eval_freq=eval_freq, deterministic=deterministic, render=render
-    )
+    if save:
+        path = yt_run.save()
+        return yt_run.agent, path
+    else:
+        return yt_run.agent, None
 
-    agent.learn(
-        total_timesteps=total_timesteps,
-        n_eval_episodes=n_eval_episodes,
-        callback=eval_callback,
-    )
 
-    return agent
+generate(total_timesteps=10000)

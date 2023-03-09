@@ -13,14 +13,20 @@ import seaborn as sns
 DATA_1 = "../json(6)"
 DATA_2 = "../json(5)"
 plt.rcParams.update(
-    {"text.usetex": True, "font.family": "sans-serif", "font.sans-serif": ["Helvetica"]}
+    {
+        "text.usetex": True,
+        "font.family": "sans-serif",
+        "font.sans-serif": ["Helvetica"],
+    },
 )
 # for Palatino and other serif fonts use:
 plt.rcParams.update(
-    {"text.usetex": True, "font.family": "serif", "font.serif": ["Palatino"]}
+    {"text.usetex": True, "font.family": "serif", "font.serif": ["Palatino"]},
 )
 # It's also possible to use the reduced notation by directly setting font.family:
-plt.rcParams.update({"text.usetex": True, "font.family": "Helvetica"})
+plt.rcParams.update(
+    {"text.usetex": True, "font.family": "Helvetica"},
+)
 
 sns.set_theme(
     context="paper", style="ticks", palette="deep", font="sans-serif", font_scale=1.3
@@ -66,7 +72,6 @@ for i in eval_data:
     x_e.append(max_time / len(eval_data) * cur)
     y_e.append(i[2])
     cur += 1
-
 
 x_rn_m = running_mean(x, 5)
 
