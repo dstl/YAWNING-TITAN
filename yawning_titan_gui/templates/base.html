@@ -31,7 +31,7 @@
 </head>
 <body class="preload">
     <nav id="top-nav" class="border-bottom">
-        <div id="sandwich-icon" data-sidebar="#sidebar-left">
+        <div id="sandwich-icon" data-toolbar="#toolbar">
             <span></span>
             <span></span>
             <span></span>
@@ -43,41 +43,41 @@
         {% endblock %}
     </nav>
     <div id="window-container">
-        <div id="toolbar">
+        <div toolbar="" id="toolbar">
             {% for id, el in toolbar.items %}
-                <a id="{{id}}-icon" class="toolbar-button {{id}} {% if el.active %}active{% endif %}" href="{{el.title|get_url}}" data-toggle="tooltip" data-placement="right" title="{{el.title}}">
-                    {% if el.active %}
-                    <i class="bi {{el.icon}}-fill"></i>
-                    {% else %}
-                    <i class="bi {{el.icon}}"></i>
+                <div class="toolbar-button {% if el.active %}active{% endif %}" data-href="{{el.title|get_url}}">
+                    <div class="flex-row">
+                        <div id="{{id}}-icon" class="icon-container {{id}}">
+                            {% if el.active %}
+                            <i class="bi {{el.icon}}-fill"></i>
+                            {% else %}
+                            <i class="bi {{el.icon}}"></i>
+                            {% endif %}
+                        </div>
+                        <div class="icon-text">
+                            <span>{{el.title}}</span>
+                        </div>
+                        {%if el.links %}
+                            <div class="toolbar-collapse">
+                                <i class="bi bi-plus"></i>
+                                <i class="bi bi-dash"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+
+
+
+                    {%if el.links %}
+                    <div class="toolbar-links">
+                        {% for link in el.links %}
+                            <a class="toolbar-link" href="{{link.href}}" target="{% if link.new_tab %}_blank{% endif %}">{{link.name|format_text}}</a>
+                        {% endfor %}
+                    </div>
                     {% endif %}
-                </a>
+                </div>
             {% endfor %}
         </div>
         <div id="window">
-            <div id="sidebar-left">
-                <div id="nav-accordion" class="accordion">
-                    {% for button_name, links in sidebar.items %}
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="{{button_name|to_id}}-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{button_name|to_id}}-links" aria-expanded="false" aria-controls="images-list">
-                                {{button_name}}
-                            </button>
-                        </h2>
-                        <div id="{{button_name|to_id}}-links" class="accordion-collapse collapse" aria-labelledby="{{button_name|to_id}}-header" data-bs-parent="#nav-accordion">
-                            <div class="accordion-body list">
-                            {% for link in links %}
-                                <a class="wide" href="{{link.href}}" target="{% if link.new_tab %}_blank{% endif %}">{{link.name}}</a>
-                            {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% block sidebar %}
-
-                {% endblock %}
-            </div>
             <div id="main">
                 {% block main %}
 

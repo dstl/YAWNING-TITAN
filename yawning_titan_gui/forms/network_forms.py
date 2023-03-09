@@ -362,7 +362,6 @@ class NetworkFormManager:
             network = NetworkManager.db.get(network_id)
             form = NetworkForm(network)
             cls.network_forms[network_id] = form
-            print("KEYS", cls.network_forms.keys())
             return form
 
     # Setters

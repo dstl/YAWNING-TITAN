@@ -22,12 +22,7 @@ from yawning_titan_gui.forms.network_forms import (
     NetworkSearchForm,
     NetworkTemplateForm,
 )
-from yawning_titan_gui.helpers import (
-    GameModeManager,
-    NetworkManager,
-    get_sidebar,
-    get_toolbar,
-)
+from yawning_titan_gui.helpers import GameModeManager, NetworkManager, get_toolbar
 
 default_toolbar = {
     "home": {"icon": "bi-house-door", "title": "Home"},
@@ -64,7 +59,7 @@ class HomeView(View):
         return render(
             request,
             "home.html",
-            {"sidebar": get_sidebar(), "toolbar": get_toolbar("Home")},
+            {"toolbar": get_toolbar("Home")},
         )
 
 
@@ -88,7 +83,6 @@ class DocsView(View):
             request,
             "docs.html",
             {
-                "sidebar": get_sidebar(),
                 "toolbar": get_toolbar("Documentation"),
                 "doc_url": doc_url,
             },
@@ -106,7 +100,6 @@ class DocsView(View):
             request,
             "docs.html",
             {
-                "sidebar": get_sidebar(),
                 "toolbar": get_toolbar("Documentation"),
                 "doc_url": doc_url,
             },
@@ -147,7 +140,6 @@ class GameModesView(View):
             request,
             "game_modes.html",
             {
-                "sidebar": get_sidebar(),
                 "toolbar": get_toolbar("Manage game modes"),
                 "item_type": "game_mode",
                 "dialogue_boxes": dialogue_boxes,
@@ -217,7 +209,6 @@ class NetworksView(View):
             request,
             "networks.html",
             {
-                "sidebar": get_sidebar(),
                 "toolbar": get_toolbar("Manage networks"),
                 "item_type": "network",
                 "networks": [network.doc_metadata for network in networks],
@@ -266,7 +257,6 @@ class NetworkCreator(View):
             request,
             "network_creator.html",
             {
-                "sidebar": get_sidebar(),
                 "toolbar": get_toolbar(),
                 "form": NetworkTemplateForm(),
                 # "random_elements_form": NetworkFormManager.get_or_create_form(network_id),
@@ -349,7 +339,6 @@ class NodeEditor(View):
             request,
             "node_editor.html",
             {
-                "sidebar": get_sidebar(),
                 "toolbar": get_toolbar(),
                 "form": network_form,
                 "doc_metadata_form": network_form.doc_metadata_form,
@@ -468,7 +457,6 @@ class GameModeConfigView(View):
                 "doc_metadata_form": game_mode_form.doc_metadata_form,
                 "current_section_name": section.name,
                 "last": False,
-                "sidebar": get_sidebar(),
                 "toolbar": get_toolbar(),
                 "game_mode_name": game_mode_form.game_mode.doc_metadata.name,
                 "game_mode_id": game_mode_form.game_mode.doc_metadata.uuid,

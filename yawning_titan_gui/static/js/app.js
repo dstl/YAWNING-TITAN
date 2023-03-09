@@ -37,10 +37,20 @@ $(document).ready(function(){
 
     $('[data-toggle="tooltip"]').tooltip();
 
+    //toolbar
     $('#sandwich-icon').click(function(){
 		$(this).toggleClass('open');
-        $($(this).data("sidebar")).toggleClass('open');
+        $($(this).data("toolbar")).toggleClass("open");
 	});
+    $("#toolbar .toolbar-button").click(function(){
+        $(this).siblings(".toolbar-button").removeClass("show");
+        $(this).toggleClass("show");
+        if(!$(this).closest("*[toolbar]").hasClass("open") | $(this).find(".toolbar-links").length == 0){
+            window.location.href = $(this).data("href")
+        }
+    });
+
+
     //close center dialogue
     $(".dialogue-center .cancel").click(function(){
         toggle_dialogue($(this).closest(".dialogue-center"))
@@ -66,6 +76,7 @@ $(document).ready(function(){
     // implement cross updates between range-setter and range sliders
     $(document).on("change",".range-setter",function(){
         $(this).siblings("input[type='range']").first().val($(this).val());
+        $(this).siblings("input[type='range'].slider-progress").first().css("--value",$(this).val()); // update slider progress value
     });
     $(document).on("mousemove","input[type='range']",function(){
         $(this).siblings(".range-setter").first().val($(this).val());
@@ -103,12 +114,17 @@ const item_filter = new Filter();
 
 
 function setup_form_range(){
-    for (let e of document.querySelectorAll('input[type="range"].slider-progress')) {
-        e.style.setProperty('--value', e.value);
-        e.style.setProperty('--min', e.min == '' ? '0' : e.min);
-        e.style.setProperty('--max', e.max == '' ? '100' : e.max);
-        e.addEventListener('input', () => e.style.setProperty('--value', e.value));
-    }
+    $('input[type="range"].slider-progress').each(function(i,el){
+        console.log("EL",el);
+        $(el).css({
+            "--value":el.value,
+            '--min': el.min == '' ? '0' : el.min,
+            '--max': el.max == '' ? '100' : el.max
+        });
+        $(el).on("input",function(){
+            $(this).css("--value",el.value);
+        });
+    });
 }
 
 function setup_form_multi_range(){

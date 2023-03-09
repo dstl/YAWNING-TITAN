@@ -182,47 +182,37 @@ def get_url_dict(name: str, href: str, new_tab: bool = False):
     return {"name": name, "href": href, "new_tab": new_tab}
 
 
-def get_sidebar():
-    """Get a sidebar element."""
-    default_sidebar = {
-        "Documentation": [
-            get_url_dict(n, get_url("Documentation", section=n))
-            for n in get_docs_sections()
-        ],
-        "Configuration": [
-            get_url_dict(n, get_url(n))
-            for n in ["Manage game modes", "Manage networks"]
-            if get_url(n)
-        ],
-        "Training runs": [
-            get_url_dict(n, get_url(n))
-            for n in ["Setup a training run", "View completed runs"]
-            if get_url(n)
-        ],
-        "About": [
-            get_url_dict(n, href, True)
-            for n, href in zip(
-                ["Contributors", "Discussions", "Report bug", "Feature request"],
-                [
-                    "https://github.com/dstl/YAWNING-TITAN/graphs/contributors",
-                    "https://github.com/dstl/YAWNING-TITAN/discussions",
-                    "https://github.com/dstl/YAWNING-TITAN/issues/new?assignees=&labels=bug&template=bug_report.md&title=[BUG]",
-                    "https://github.com/dstl/YAWNING-TITAN/issues/new?assignees=&labels=feature_request&template=feature_request.md&title=[REQUEST]",
-                ],
-            )
-        ],
-    }
-    return default_sidebar
-
-
 def get_toolbar(current_page_title: str = None):
     """Get toolbar information for the current page title."""
     default_toolbar = {
         "home": {"icon": "bi-house-door", "title": "Home"},
-        "doc": {"icon": "bi-file-earmark", "title": "Documentation"},
-        "manage_game_modes": {"icon": "bi-gear", "title": "Manage game modes"},
-        "manage_networks": {"icon": "bi-diagram-2", "title": "Manage networks"},
+        "doc": {
+            "icon": "bi-file-earmark",
+            "title": "Documentation",
+            "links": [
+                get_url_dict(n, get_url("Documentation", section=n))
+                for n in get_docs_sections()
+            ],
+        },
+        "manage-game_modes": {"icon": "bi-gear", "title": "Manage game modes"},
+        "manage-networks": {"icon": "bi-diagram-2", "title": "Manage networks"},
         "run-view": {"icon": "bi-play", "title": "Run session"},
+        "about": {
+            "icon": "bi-question-lg",
+            "title": "About",
+            "links": [
+                get_url_dict(n, href, True)
+                for n, href in zip(
+                    ["Contributors", "Discussions", "Report bug", "Feature request"],
+                    [
+                        "https://github.com/dstl/YAWNING-TITAN/graphs/contributors",
+                        "https://github.com/dstl/YAWNING-TITAN/discussions",
+                        "https://github.com/dstl/YAWNING-TITAN/issues/new?assignees=&labels=bug&template=bug_report.md&title=[BUG]",
+                        "https://github.com/dstl/YAWNING-TITAN/issues/new?assignees=&labels=feature_request&template=feature_request.md&title=[REQUEST]",
+                    ],
+                )
+            ],
+        },
     }
     for id, info in default_toolbar.items():
         default_toolbar[id]["active"] = info["title"] == current_page_title
