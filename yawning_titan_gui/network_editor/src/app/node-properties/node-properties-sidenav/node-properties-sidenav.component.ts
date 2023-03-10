@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Node } from 'src/app/network-class/network-interfaces';
 
 @Component({
   selector: 'app-node-properties-sidenav',
@@ -8,7 +9,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class NodePropertiesSidenavComponent {
 
-  public nodeId = null;
+  public node: Node = null;
 
   @ViewChild('sidenav') sidenav: MatSidenav;
 
@@ -16,8 +17,8 @@ export class NodePropertiesSidenavComponent {
     this.sidenav.close();
   }
 
-  public open(id: string): void {
-    this.nodeId = id;
+  public open(node: Node): void {
+    this.node = node;
     this.sidenav.open();
   }
 }

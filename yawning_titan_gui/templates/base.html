@@ -64,13 +64,13 @@
                             </div>
                         {% endif %}
                     </div>
-
-
-
                     {%if el.links %}
                     <div class="toolbar-links">
                         {% for link in el.links %}
                             <a class="toolbar-link" href="{{link.href}}" target="{% if link.new_tab %}_blank{% endif %}">{{link.name|format_text}}</a>
+                        {% endfor %}
+                        {% for i in el.info %}
+                            <p>{{i}}</p>
                         {% endfor %}
                     </div>
                     {% endif %}

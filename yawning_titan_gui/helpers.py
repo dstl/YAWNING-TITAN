@@ -5,13 +5,14 @@ from typing import Any, Dict, List
 
 from django.urls import reverse
 
-from yawning_titan.config.toolbox.item_types.float_item import FloatItem
-from yawning_titan.config.toolbox.item_types.int_item import IntItem
+from yawning_titan.config.item_types.float_item import FloatItem
+from yawning_titan.config.item_types.int_item import IntItem
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
 from yawning_titan_server.settings import DOCS_ROOT
+# from setup import version
 
 
 class NetworkManager:
@@ -212,8 +213,18 @@ def get_toolbar(current_page_title: str = None):
                     ],
                 )
             ],
+            "info":[f"Version: {version()}"]
         },
     }
     for id, info in default_toolbar.items():
         default_toolbar[id]["active"] = info["title"] == current_page_title
     return default_toolbar
+
+def version() -> str:
+    """
+    Gets the version from the `VERSION` file.
+
+    :return: The version string.
+    """
+    with open("VERSION", "r") as file:
+        return file.readline()

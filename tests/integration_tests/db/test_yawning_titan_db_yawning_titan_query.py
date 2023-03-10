@@ -3,15 +3,11 @@ from unittest.mock import patch
 
 import pytest
 
-from tests.fixtures.yawning_titan_demo_db_fixtures import (
-    DemoDB,
-    DemoSchema,
-    demo_db_docs,
-)
-from tests.mock_and_patch.yawning_titan_db_patch import yawning_titan_db_init_patch
+from tests.unit_tests.db.test_yawning_titan_db import DemoDB, DemoSchema, demo_db_docs
+from tests.yawning_titan_db_patch import yawning_titan_db_init_patch
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
 
-docs = demo_db_docs  # Dummy line to 'use' demo_db_docs so flake8 doesn't throw F401 or F811
+docs = demo_db_docs  # noqa
 
 
 @pytest.mark.integration_test

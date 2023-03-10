@@ -1,36 +1,41 @@
 from __future__ import annotations
 
-from typing import Final, List, Optional
+from typing import List, Optional
 from uuid import uuid4
 
 
 class Node:
-    """A Node class that is used by the Network subclass of networkx.Graph."""
+    """A Node for building networks with yawning_titan.networks.network.Network."""
 
     def __init__(
         self,
-        uuid: Optional[str] = None,
         name: Optional[str] = None,
         high_value_node: bool = False,
         entry_node: bool = False,
-        vulnerability: float = 0.0,
-        x_pos: float = 0.0,
-        y_pos: float = 0.0,
-        classes: Optional[str] = None,
+        vulnerability: float = 0.01,
+        classes: str = None
     ):
-        if uuid is None:
-            uuid = str(uuid4())
-        self._uuid: Final[str] = uuid
+        """
+        The Node constructor.
+
+        :param name: An optional name for the Node.
+        :param high_value_node: Whether the Node is a high value node.
+            Default value of False.
+        :param entry_node: Whether the Node is an entry node. Default value
+            of False.
+        :param vulnerability: The vulnerability score of the Node. Has a
+            default value of 0.1.
+        """
+        self._uuid: str = str(uuid4())
         self.name: str = name
         self._high_value_node: bool = high_value_node
         self._entry_node: bool = entry_node
-        self._vulnerability = vulnerability
-        self._x_pos: float = x_pos
-        self._y_pos: float = y_pos
-        self._classes = classes
-        self._set_classes()
+        self._vulnerability = vulnerability    
+        self.classes = classes
 
         # Default node attributes
+        self._x_pos: float = 0.0
+        self._y_pos: float = 0.0
         self.vulnerability_score = vulnerability
         self.true_compromised_status = 0
         self.blue_view_compromised_status = 0
@@ -38,20 +43,46 @@ class Node:
         self.blue_knows_intrusion = False
         self.isolated = False
 
+    @classmethod
+    def create_from_db(
+        cls,
+        uuid: str,
+        high_value_node: bool,
+        entry_node: bool,
+        classes: str,
+        vulnerability: float,
+        x_pos: float,
+        y_pos: float,
+        name: Optional[str] = None,
+    ) -> Node:
+        """
+        Used to create an instance of Node from the NetworkDB.
+
+        :param uuid: the UUID given to a Node when it was first created.
+        :param high_value_node: Whether the Node is a high value node.
+        :param entry_node: Whether the Node is an entry node.
+        :param vulnerability: The vulnerability score of the Node.
+        :param x_pos: The x-position when displayed on a network graph.
+        :param y_pos: The y-position when displayed on a network graph.
+        :param name: An optional name for the Node.
+
+        :return: The instance of Node.
+        """
+        node = Node(
+            name=name,
+            high_value_node=high_value_node,
+            entry_node=entry_node,
+            vulnerability=vulnerability,
+            classes=classes
+        )
+        node._uuid = uuid
+        node.x_pos = x_pos
+        node.y_pos = y_pos
+        return node
+
     def reset_vulnerability(self):
         """Resets the nodes current `vulnerability_score` to the original `vulnerability`."""
         self.vulnerability_score = self.vulnerability
-
-    def _set_classes(self):
-        if self.high_value_node and self._entry_node:
-            self._classes = "high_value_entry_node"
-        else:
-            if self.high_value_node:
-                self._classes = "high_value_node"
-            elif self.entry_node:
-                self._classes = "entry_node"
-            else:
-                self._classes = "standard_node"
 
     @property
     def node_position(self) -> List[float]:
@@ -86,7 +117,6 @@ class Node:
     @high_value_node.setter
     def high_value_node(self, high_value_node: bool):
         self._high_value_node = high_value_node
-        self._set_classes()
 
     @property
     def entry_node(self) -> bool:
@@ -96,7 +126,6 @@ class Node:
     @entry_node.setter
     def entry_node(self, entry_node: bool):
         self._entry_node = entry_node
-        self._set_classes()
 
     @property
     def x_pos(self) -> float:
@@ -124,7 +153,6 @@ class Node:
             "high_value_node": self._high_value_node,
             "entry_node": self._entry_node,
             "vulnerability": self.vulnerability,
-            "classes": self._classes,
             "x_pos": self._x_pos,
             "y_pos": self._y_pos,
         }
@@ -135,10 +163,10 @@ class Node:
         return self.uuid
 
     def __repr__(self):
-        return (
-            f"{self.__class__.__name__}("
-            f"uuid='{self._uuid}', "
-            f"name='{self.name}', "
+        node_str = f"{self.__class__.__name__}(" f"uuid='{self._uuid}', "
+        if self.name:
+            node_str += f"name='{self.name}', "
+        node_str += (
             f"high_value_node={self._high_value_node}, "
             f"entry_node={self._entry_node}, "
             f"vulnerability={self.vulnerability}, "
@@ -146,6 +174,7 @@ class Node:
             f"y_pos={self._y_pos}"
             f")"
         )
+        return node_str
 
     def __hash__(self):
         return hash((self._uuid))

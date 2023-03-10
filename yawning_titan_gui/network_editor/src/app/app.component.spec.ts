@@ -1,7 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { AppComponent } from './app.component';
+import { DJANGO_SAVE_URL } from './app.tokens';
 
 import { CytoscapeService } from './services/cytoscape/cytoscape.service';
 import { ElementType } from './services/cytoscape/graph-objects';
@@ -19,12 +21,18 @@ describe('AppComponent', () => {
     selectedItem: new Subject()
   }
 
+  const httpStub = {
+    post: () => of()
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AppComponent],
       providers: [
         { provide: CytoscapeService, useValue: stubCytoscapeService },
-        { provide: InteractionService, useValue: stubIteractionService }
+        { provide: InteractionService, useValue: stubIteractionService },
+        { provide: DJANGO_SAVE_URL, useValue: '' },
+        { provide: HttpClient, useValue: httpStub }
       ],
       schemas: [
         NO_ERRORS_SCHEMA
@@ -70,6 +78,7 @@ describe('AppComponent', () => {
 
     it('should open the sidenav if the selected element is a node', () => {
       const openSpy = spyOn(component.sidenav, 'open');
+      spyOn(component['networkService'], 'getNodeById').and.returnValue({} as any);
 
       component['toggleNodePropertiesSidenav']({ id: 'test', type: ElementType.NODE });
 

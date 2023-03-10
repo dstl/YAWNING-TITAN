@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from typing import Optional
 
-from yawning_titan.config.toolbox.core import ConfigGroup, ConfigGroupValidation
-from yawning_titan.config.toolbox.groups.core import RestrictRangeGroup, UseValueGroup
-from yawning_titan.config.toolbox.groups.validation import AnyUsedGroup
-from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
-from yawning_titan.config.toolbox.item_types.int_item import IntItem, IntProperties
+from yawning_titan.config.core import ConfigGroup, ConfigGroupValidation
+from yawning_titan.config.groups.core import RestrictRangeGroup, UseValueGroup
+from yawning_titan.config.groups.validation import AnyUsedGroup
+from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
+from yawning_titan.config.item_types.int_item import IntItem, IntProperties
 from yawning_titan.db.schemas import GameModeConfigurationSchema
 from yawning_titan.exceptions import ConfigGroupValidationError
 
@@ -133,12 +133,12 @@ class GameRules(ConfigGroup):
 
     def __init__(
         self,
-        doc: Optional[str] = None,
         grace_period_length: Optional[int] = 0,
         max_steps: Optional[int] = 0,
         blue_loss_condition: Optional[BlueLossConditionGroup] = None,
         network_compatibility: Optional[NetworkCompatibilityGroup] = None,
     ):
+        doc = "The rules of the overall game mode"
         self.grace_period_length = IntItem(
             value=grace_period_length,
             doc=(
@@ -187,7 +187,7 @@ class GameRules(ConfigGroup):
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
         super().validate()
         try:
             if self.grace_period_length.value > self.max_steps.value:

@@ -9,7 +9,7 @@ from yawning_titan.db.query import YawningTitanQuery
 
 # Game Rules
 class NodeCountSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     RESTRICT: Final[
         YawningTitanQuery
@@ -23,7 +23,7 @@ class NodeCountSchema:
 
 
 class EntryNodeCountSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     RESTRICT: Final[
         YawningTitanQuery
@@ -37,7 +37,7 @@ class EntryNodeCountSchema:
 
 
 class HighValueNodeCountSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     RESTRICT: Final[
         YawningTitanQuery
@@ -53,7 +53,7 @@ class HighValueNodeCountSchema:
 
 
 class NetworkCompatibilitySchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     NODE_COUNT: Final[NodeCountSchema] = NodeCountSchema
     ENTRY_NODE_COUNT: Final[EntryNodeCountSchema] = EntryNodeCountSchema
@@ -61,7 +61,7 @@ class NetworkCompatibilitySchema:
 
 
 class NPercentNodesLostSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     USE: Final[
         YawningTitanQuery
@@ -72,7 +72,7 @@ class NPercentNodesLostSchema:
 
 
 class BlueLossConditionSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     ALL_NODES_LOST: Final[
         YawningTitanQuery
@@ -90,7 +90,7 @@ class BlueLossConditionSchema:
 
 
 class MakeNodeSafeSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     USE: Final[
         YawningTitanQuery
@@ -107,7 +107,7 @@ class MakeNodeSafeSchema:
 
 
 class DeceptiveNodeSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     USE: Final[
         YawningTitanQuery
@@ -121,7 +121,7 @@ class DeceptiveNodeSchema:
 
 
 class BlueActionSetSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     REDUCE_VULNERABILITY: Final[
         YawningTitanQuery
@@ -144,7 +144,7 @@ class BlueActionSetSchema:
 
 
 class OnScanSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     STANDARD_NODE: Final[
         YawningTitanQuery
@@ -155,7 +155,7 @@ class OnScanSchema:
 
 
 class ImmediateSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     STANDARD_NODE: Final[
         YawningTitanQuery
@@ -166,14 +166,14 @@ class ImmediateSchema:
 
 
 class BlueIntrusionDiscoverySchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     IMMEDIATE: Final[ImmediateSchema] = ImmediateSchema
     ON_SCAN: Final[OnScanSchema] = OnScanSchema
 
 
 class FailedAttackChanceSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     STANDARD_NODE: Final[
         YawningTitanQuery
@@ -184,7 +184,7 @@ class FailedAttackChanceSchema:
 
 
 class FailedAttackSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     USE: Final[
         YawningTitanQuery
@@ -193,7 +193,7 @@ class FailedAttackSchema:
 
 
 class SucceededAttackKnownCompromiseChanceSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     STANDARD_NODE: Final[
         YawningTitanQuery
@@ -208,7 +208,7 @@ class SucceededAttackKnownCompromiseChanceSchema:
 
 
 class SucceededAttackKnownCompromiseSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     USE: Final[
         YawningTitanQuery
@@ -219,7 +219,7 @@ class SucceededAttackKnownCompromiseSchema:
 
 
 class SucceededAttackUnknownCompromiseChanceSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     STANDARD_NODE: Final[
         YawningTitanQuery
@@ -234,7 +234,7 @@ class SucceededAttackUnknownCompromiseChanceSchema:
 
 
 class SucceededAttackUnknownCompromiseSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     USE: Final[
         YawningTitanQuery
@@ -247,7 +247,7 @@ class SucceededAttackUnknownCompromiseSchema:
 
 
 class BlueAttackDiscoverySchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     FAILED_ATTACKS: Final[FailedAttackSchema] = FailedAttackSchema
     SUCCEEDED_ATTACKS_KNOWN_COMPROMISE: Final[
@@ -260,7 +260,7 @@ class BlueAttackDiscoverySchema:
 
 # Red Agent
 class ZeroDaySchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     USE: Final[YawningTitanQuery] = YawningTitanQuery().red.action_set.zero_day.use
     START_AMOUNT: Final[
@@ -272,7 +272,7 @@ class ZeroDaySchema:
 
 
 class AttackSourceSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     ONLY_MAIN_RED_NODE: Final[
         YawningTitanQuery
@@ -283,7 +283,7 @@ class AttackSourceSchema:
 
 
 class NaturalSpreadChanceSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     TO_CONNECTED_NODE: Final[
         YawningTitanQuery
@@ -294,7 +294,7 @@ class NaturalSpreadChanceSchema:
 
 
 class TargetNodeSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     USE: Final[
         YawningTitanQuery
@@ -310,7 +310,7 @@ class TargetNodeSchema:
 
 
 class SpreadSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     USE: Final[YawningTitanQuery] = YawningTitanQuery().red.action_set.spread.use
     LIKELIHOOD: Final[
@@ -320,7 +320,7 @@ class SpreadSchema:
 
 
 class RandomInfectSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     USE: Final[YawningTitanQuery] = YawningTitanQuery().red.action_set.random_infect.use
     LIKELIHOOD: Final[
@@ -332,7 +332,7 @@ class RandomInfectSchema:
 
 
 class MoveSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     USE: Final[YawningTitanQuery] = YawningTitanQuery().red.action_set.move.use
     LIKELIHOOD: Final[
@@ -341,7 +341,7 @@ class MoveSchema:
 
 
 class BasicAttackSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     USE: Final[YawningTitanQuery] = YawningTitanQuery().red.action_set.basic_attack.use
     LIKELIHOOD: Final[
@@ -350,7 +350,7 @@ class BasicAttackSchema:
 
 
 class DoNothingSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     USE: Final[YawningTitanQuery] = YawningTitanQuery().red.action_set.do_nothing.use
     LIKELIHOOD: Final[
@@ -359,7 +359,7 @@ class DoNothingSchema:
 
 
 class RedActionSetSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     SPREAD: Final[SpreadSchema] = SpreadSchema
     RANDOM_INFECT: Final[RandomInfectSchema] = RandomInfectSchema
@@ -370,14 +370,14 @@ class RedActionSetSchema:
 
 
 class SkillSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     USE: Final[YawningTitanQuery] = YawningTitanQuery().red.agent_attack.skill.use
     VALUE: Final[YawningTitanQuery] = YawningTitanQuery().red.agent_attack.skill.value
 
 
 class RedAgentAttackSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     IGNORES_DEFENCES: Final[
         YawningTitanQuery
@@ -390,7 +390,7 @@ class RedAgentAttackSchema:
 
 
 class RedNaturalSpreadingSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     CAPABLE: Final[
         YawningTitanQuery
@@ -399,7 +399,7 @@ class RedNaturalSpreadingSchema:
 
 
 class RedTargetMechanismSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     RANDOM: Final[YawningTitanQuery] = YawningTitanQuery().red.target_mechanism.random
     PRIORITISE_CONNECTED_NODES: Final[
@@ -421,7 +421,7 @@ class RedTargetMechanismSchema:
 
 
 class ResetSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     RANDOMISE_VULNERABILITIES: Final[
         YawningTitanQuery
@@ -435,7 +435,7 @@ class ResetSchema:
 
 
 class RewardsSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     FOR_LOSS: Final[YawningTitanQuery] = YawningTitanQuery().reward.for_loss
     FOR_REACHING_MAX_STEPS: Final[
@@ -451,7 +451,7 @@ class RewardsSchema:
 
 
 class MiscellaneousSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     RANDOM_SEED: Final[YawningTitanQuery] = YawningTitanQuery().miscellaneous.for_loss
     OUTPUT_TIMESTEP_DATA_TO_JSON: Final[
@@ -460,39 +460,39 @@ class MiscellaneousSchema:
 
 
 class ObservationSpaceSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     COMPROMISED_STATUS: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.compromised_status
+    ] = YawningTitanQuery().observation_space.compromised_status
     VULNERABILITIES: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.vulnerabilities
+    ] = YawningTitanQuery().observation_space.vulnerabilities
     NODE_CONNECTIONS: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.node_connections
+    ] = YawningTitanQuery().observation_space.node_connections
     AVERAGE_VULNERABILITY: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.average_vulnerability
+    ] = YawningTitanQuery().observation_space.average_vulnerability
     GRAPH_CONNECTIVITY: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.graph_connectivity
+    ] = YawningTitanQuery().observation_space.graph_connectivity
     ATTACKING_NODES: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.attacking_nodes
+    ] = YawningTitanQuery().observation_space.attacking_nodes
     ATTACKED_NODES: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.attacked_nodes
+    ] = YawningTitanQuery().observation_space.attacked_nodes
     SPECIAL_NODES: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.special_nodes
+    ] = YawningTitanQuery().observation_space.special_nodes
     RED_AGENT_SKILL: Final[
         YawningTitanQuery
-    ] = YawningTitanQuery().blue_can_observe.red_agent_skill
+    ] = YawningTitanQuery().observation_space.red_agent_skill
 
 
 class GameRulesSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     GRACE_PERIOD_LENGTH: Final[
         YawningTitanQuery
@@ -505,7 +505,7 @@ class GameRulesSchema:
 
 
 class BlueSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     ACTION_SET: Final[BlueActionSetSchema] = BlueActionSetSchema
     INTRUSION_DISCOVERY_CHANCE: Final[
@@ -515,7 +515,7 @@ class BlueSchema:
 
 
 class RedSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     AGENT_ATTACK: Final[RedAgentAttackSchema] = RedAgentAttackSchema
     ACTION_SET: Final[RedActionSetSchema] = RedActionSetSchema
@@ -524,7 +524,7 @@ class RedSchema:
 
 
 class GameModeConfigurationSchema:
-    """Schema to describe a `~yawning_titan.config.toolbox.core.ConfigGroup` object."""
+    """Schema to describe a `~yawning_titan.config.core.ConfigGroup` object."""
 
     RED: RedSchema = RedSchema
     BLUE: BlueSchema = BlueSchema

@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Optional
 
-from yawning_titan.config.toolbox.core import ConfigGroup
-from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
-from yawning_titan.config.toolbox.item_types.int_item import IntItem, IntProperties
-from yawning_titan.config.toolbox.item_types.str_item import StrItem, StrProperties
+from yawning_titan.config.core import ConfigGroup
+from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
+from yawning_titan.config.item_types.int_item import IntItem, IntProperties
+from yawning_titan.config.item_types.str_item import StrItem, StrProperties
 from yawning_titan.db.schemas import GameModeConfigurationSchema
 
 # --- Tier 0 groups
@@ -16,7 +16,6 @@ class Rewards(ConfigGroup):
 
     def __init__(
         self,
-        doc: Optional[str] = None,
         for_loss: Optional[int] = 0,
         for_reaching_max_steps: Optional[int] = 0,
         end_rewards_are_multiplied_by_end_state: Optional[bool] = False,
@@ -24,6 +23,8 @@ class Rewards(ConfigGroup):
         function: Optional[str] = "standard_rewards",
     ):
         from yawning_titan.envs.generic.core import reward_functions
+
+        doc = "The rewards the blue agent gets for different game states"
 
         self.for_loss = IntItem(
             value=for_loss,

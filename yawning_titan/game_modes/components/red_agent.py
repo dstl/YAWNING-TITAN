@@ -2,20 +2,17 @@ from __future__ import annotations
 
 from typing import Optional, Union
 
-from yawning_titan.config.toolbox.core import ConfigGroup, ConfigGroupValidation
-from yawning_titan.config.toolbox.groups.core import (
+from yawning_titan.config.core import ConfigGroup, ConfigGroupValidation
+from yawning_titan.config.groups.core import (
     ActionLikelihoodChanceGroup,
     ActionLikelihoodGroup,
     UseValueGroup,
 )
-from yawning_titan.config.toolbox.groups.validation import AnyNonZeroGroup, AnyUsedGroup
-from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
-from yawning_titan.config.toolbox.item_types.float_item import (
-    FloatItem,
-    FloatProperties,
-)
-from yawning_titan.config.toolbox.item_types.int_item import IntItem, IntProperties
-from yawning_titan.config.toolbox.item_types.str_item import StrItem, StrProperties
+from yawning_titan.config.groups.validation import AnyNonZeroGroup, AnyUsedGroup
+from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
+from yawning_titan.config.item_types.float_item import FloatItem, FloatProperties
+from yawning_titan.config.item_types.int_item import IntItem, IntProperties
+from yawning_titan.config.item_types.str_item import StrItem, StrProperties
 from yawning_titan.db.schemas import GameModeConfigurationSchema
 from yawning_titan.exceptions import ConfigGroupValidationError
 
@@ -86,7 +83,7 @@ class AttackSourceGroup(ConfigGroup):
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
         super().validate()
         try:
             if self.only_main_red_node.value and self.any_red_node.value:
@@ -99,7 +96,7 @@ class AttackSourceGroup(ConfigGroup):
         return self.validation
 
 
-class NaturalSpreadChanceGroup(AnyNonZeroGroup):
+class NaturalSpreadChanceGroup(ConfigGroup):
     """The ConfigGroup to represent the chances of reads natural spreading to different node types."""
 
     def __init__(
@@ -108,6 +105,7 @@ class NaturalSpreadChanceGroup(AnyNonZeroGroup):
         to_connected_node: Optional[Union[int, float]] = 0,
         to_unconnected_node: Optional[Union[int, float]] = 0,
     ):
+        self.doc = doc
         self.to_connected_node = FloatItem(
             value=to_connected_node,
             doc=" If a node is connected to a compromised node what chance does it have to become compromised every turn through natural spreading.",
@@ -136,7 +134,7 @@ class NaturalSpreadChanceGroup(AnyNonZeroGroup):
             ),
             alias="chance_to_spread_to_unconnected_node",
         )
-        super().__init__(doc)
+        super().__init__()
 
 
 class TargetNodeGroup(ConfigGroup):
@@ -172,7 +170,7 @@ class TargetNodeGroup(ConfigGroup):
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
         super().validate()
         try:
             if self.target.value and not self.use.value:
@@ -388,6 +386,21 @@ class RedNaturalSpreadingGroup(ConfigGroup):
         )
         super().__init__(doc)
 
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
+        super().validate()
+        if self.capable.value:
+            try:
+                elements = self.chance.get_config_elements([IntItem, FloatItem])
+                if not any(
+                    e.value > 0 for e in elements.values() if type(e.value) in [int, float]
+                ):
+                    msg = f"At least 1 of {', '.join(elements.keys())} should be above 0"
+                    raise ConfigGroupValidationError(msg)
+            except ConfigGroupValidationError as e:
+                self.validation.add_validation(msg, e)
+        return self.validation
+
 
 class RedTargetMechanismGroup(AnyUsedGroup):
     """The ConfigGroup to represent all possible target mechanism the red agent can use."""
@@ -461,6 +474,7 @@ class Red(ConfigGroup):
         natural_spreading: Optional[RedNaturalSpreadingGroup] = None,
         target_mechanism: Optional[RedTargetMechanismGroup] = None,
     ):
+        doc = "The configuration of the red agent"
         self.agent_attack = (
             agent_attack
             if agent_attack
@@ -492,7 +506,7 @@ class Red(ConfigGroup):
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
         super().validate()
 
         try:

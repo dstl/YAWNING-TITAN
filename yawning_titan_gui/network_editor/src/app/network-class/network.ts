@@ -1,6 +1,7 @@
 import { NetworkDocMetadata, NetworkJson, NetworkSettings, Node, RandomEntryNodePreference, RandomHighValueNodePreference } from "./network-interfaces";
 import { v4 as uuid } from 'uuid';
 import { EdgeObj } from "../services/cytoscape/graph-objects";
+import { roundNumber } from "../utils/utils";
 
 export class Network {
   nodeList: Node[] = [];
@@ -150,9 +151,9 @@ export class Network {
         name: nodes[`${nodeUUID}`]?.name,
         high_value_node: nodes[`${nodeUUID}`]?.high_value_node,
         entry_node: nodes[`${nodeUUID}`]?.entry_node,
-        x_pos: nodes[`${nodeUUID}`]?.x_pos,
-        y_pos: nodes[`${nodeUUID}`]?.y_pos,
-        vulnerability: nodes[`${nodeUUID}`]?.vulnerability,
+        x_pos: roundNumber(nodes[`${nodeUUID}`]?.x_pos, 0),
+        y_pos: roundNumber(nodes[`${nodeUUID}`]?.y_pos, 0),
+        vulnerability: roundNumber(nodes[`${nodeUUID}`]?.vulnerability),
       });
     });
   }
@@ -253,8 +254,8 @@ export class Network {
         name: `node ${nodeCount}`,
         entry_node: false,
         high_value_node: false,
-        x_pos: x,
-        y_pos: y,
+        x_pos: roundNumber(x, 0),
+        y_pos: roundNumber(y, 0),
         vulnerability: 0
       }
     }

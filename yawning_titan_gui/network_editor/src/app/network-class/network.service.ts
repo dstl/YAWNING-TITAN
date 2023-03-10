@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Network } from './network';
 import { NetworkJson, NetworkSettings, Node } from './network-interfaces';
 import { CytoscapeService } from '../services/cytoscape/cytoscape.service';
@@ -22,6 +22,11 @@ export class NetworkService {
   private _networkSubject = new BehaviorSubject<Network>(this._network);
   get networkObservable(): Observable<Network> {
     return this._networkSubject.asObservable();
+  }
+
+  private _networkSettingsSubject = new BehaviorSubject<NetworkSettings>(this._network?.networkSettings);
+  get networkSettingsObservable(): Observable<NetworkSettings> {
+    return this._networkSettingsSubject.asObservable();
   }
 
   constructor(
@@ -53,7 +58,7 @@ export class NetworkService {
     // apply settings to nodes
     this.applyNetworkSettingsToNodes(networkSettings);
 
-    this._networkSubject.next(this._network);
+    this._networkSettingsSubject.next(networkSettings);
   }
 
   /**
