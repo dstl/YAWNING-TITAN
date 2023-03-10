@@ -9,10 +9,14 @@ import { NetworkViewModule } from './network-view/network-view.module';
 import { NodePropertiesModule } from './node-properties/node-properties.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ConfigurationService } from './services/configuration/configuration.service';
-import { DJANGO_SAVE_URL } from './app.tokens';
+import { NODE_KEY_CONFIG, DJANGO_SAVE_URL } from './app.tokens';
 
 export function djangoSaveUrlFactory(configurationService: ConfigurationService) {
   return configurationService.config?.saveLocation;
+}
+
+export function cytoscapeStyleFactory(configurationService: ConfigurationService) {
+  return configurationService.config?.cytoscapeStyle;
 }
 
 @NgModule({
@@ -33,12 +37,17 @@ export function djangoSaveUrlFactory(configurationService: ConfigurationService)
     {
       provide: APP_INITIALIZER, deps: [ConfigurationService], multi: true,
       useFactory: (configurationService: ConfigurationService) => () => configurationService.loadConfig(
-        isDevMode() ? 'assets/config.json' : 'static/dist/assets/config.json'
+        isDevMode() ? 'assets/config.json' : '_static/dist/assets/config.json'
       ).toPromise(),
     },
     {
       provide: DJANGO_SAVE_URL,
       useFactory: djangoSaveUrlFactory,
+      deps: [ConfigurationService]
+    },
+    {
+      provide: NODE_KEY_CONFIG,
+      useFactory: cytoscapeStyleFactory,
       deps: [ConfigurationService]
     }
   ],

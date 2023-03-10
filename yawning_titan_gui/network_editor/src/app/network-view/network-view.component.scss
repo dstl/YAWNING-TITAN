@@ -9,16 +9,23 @@
   flex-direction: row;
   flex: 1;
 
-  .controls {
-    display: flex;
-    width: 300px;
-    flex: 1;
-    background-color: #636363;
-  }
-
   .main {
     display: flex;
-    width: calc(100% - 300px);
+    flex: 1;
+  }
+
+  app-node-colour-key {
+    z-index: 999;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  app-canvas-control {
+    z-index: 999;
+    position: absolute;
+    bottom: 0;
+    left: 0;
   }
 }
 

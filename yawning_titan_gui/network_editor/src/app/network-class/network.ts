@@ -1,17 +1,30 @@
-import { NetworkDocMetadata, NetworkJson, Node } from "./network-interfaces";
+import { NetworkDocMetadata, NetworkJson, NetworkSettings, Node, RandomEntryNodePreference, RandomHighValueNodePreference } from "./network-interfaces";
 import { v4 as uuid } from 'uuid';
+import { EdgeObj } from "../services/cytoscape/graph-objects";
+import { roundNumber } from "../utils/utils";
 
 export class Network {
   nodeList: Node[] = [];
   edgeList: { edgeId: string, nodeA: string, nodeB: string }[] = [];
-  documentMetadata: NetworkDocMetadata;
+
+  // network settings
+  private _networkSettings: NetworkSettings;
+  get networkSettings(): NetworkSettings {
+    return this._networkSettings;
+  }
+
+  // document metadata
+  private _documentMetadata: NetworkDocMetadata;
+  get documentMetadata(): NetworkDocMetadata {
+    return this._documentMetadata;
+  }
 
   constructor(json?: any) {
-    // if not able to load from JSON, do nothing
+    // if not able to load from JSON, set defaults
     if (!json) {
+      this.setDefaultValues();
       return;
     }
-
     this.loadFromJson(json);
   }
 
@@ -41,6 +54,9 @@ export class Network {
       return;
     }
 
+    // load network settings
+    this.loadNetworkSettings(json);
+
     // load nodes
     this.loadNodesFromJson(json?.nodes);
 
@@ -49,6 +65,71 @@ export class Network {
 
     // load the network's doc metadata
     this.loadNetworkDocMetadataFromJson(json?._doc_metadata)
+  }
+
+  /**
+   * Sets the default values for metadata and network settings
+   */
+  private setDefaultValues() {
+    this._networkSettings = {
+      entryNode: {
+        set_random_entry_nodes: false,
+        random_entry_node_preference: RandomEntryNodePreference.NONE,
+        num_of_random_entry_nodes: 0
+      },
+      highValueNode: {
+        set_random_high_value_nodes: false,
+        random_high_value_node_preference: RandomHighValueNodePreference.NONE,
+        num_of_random_high_value_nodes: 0
+      },
+      vulnerability: {
+        set_random_vulnerabilities: false,
+        node_vulnerability_upper_bound: 1,
+        node_vulnerability_lower_bound: 0
+      }
+    }
+
+    this._documentMetadata = {
+      uuid: uuid(),
+      created_at: new Date(),
+      updated_at: null,
+      name: '',
+      description: '',
+      author: '',
+      locked: false
+    }
+  }
+
+  /**
+   * Updates the network settings
+   * @param networkSettings
+   */
+  public updateNetworkSettings(networkSettings: NetworkSettings) {
+    this._networkSettings = networkSettings;
+  }
+
+  /**
+   * Set the relevant network settings
+   * @param network
+   */
+  private loadNetworkSettings(network: NetworkJson) {
+    this._networkSettings = {
+      entryNode: {
+        set_random_entry_nodes: network?.set_random_entry_nodes,
+        random_entry_node_preference: network?.random_entry_node_preference,
+        num_of_random_entry_nodes: network?.num_of_random_entry_nodes
+      },
+      highValueNode: {
+        set_random_high_value_nodes: network?.set_random_high_value_nodes,
+        random_high_value_node_preference: network?.random_high_value_node_preference,
+        num_of_random_high_value_nodes: network?.num_of_random_high_value_nodes
+      },
+      vulnerability: {
+        set_random_vulnerabilities: network?.set_random_vulnerabilities,
+        node_vulnerability_lower_bound: network?.node_vulnerability_lower_bound,
+        node_vulnerability_upper_bound: network?.node_vulnerability_upper_bound
+      }
+    }
   }
 
   /**
@@ -70,9 +151,9 @@ export class Network {
         name: nodes[`${nodeUUID}`]?.name,
         high_value_node: nodes[`${nodeUUID}`]?.high_value_node,
         entry_node: nodes[`${nodeUUID}`]?.entry_node,
-        x_pos: nodes[`${nodeUUID}`]?.x_pos,
-        y_pos: nodes[`${nodeUUID}`]?.y_pos,
-        vulnerability: nodes[`${nodeUUID}`]?.vulnerability,
+        x_pos: roundNumber(nodes[`${nodeUUID}`]?.x_pos, 0),
+        y_pos: roundNumber(nodes[`${nodeUUID}`]?.y_pos, 0),
+        vulnerability: roundNumber(nodes[`${nodeUUID}`]?.vulnerability),
       });
     });
   }
@@ -93,7 +174,11 @@ export class Network {
     jsonEdges.forEach(nodeAuuid => {
       Object.keys(
         edges[`${nodeAuuid}`] ? edges[`${nodeAuuid}`] : {}
-      ).forEach(nodeBuuid => this.addEgde(uuid(), nodeAuuid, nodeBuuid));
+      ).forEach(nodeBuuid => this.addEgde({
+        edgeId: uuid(),
+        nodeA: nodeAuuid,
+        nodeB: nodeBuuid
+      }));
     });
   }
 
@@ -107,7 +192,7 @@ export class Network {
       return;
     }
 
-    this.documentMetadata = {
+    this._documentMetadata = {
       uuid: docMd.uuid,
       created_at: new Date(docMd.created_at),
       updated_at: docMd.updatedAt ? new Date(docMd.updated_at) : null,
@@ -124,12 +209,12 @@ export class Network {
    * @param nodeBID
    * @returns true when successful
    */
-  public addEgde(edgeId: string, nodeAID: string, nodeBID: string): boolean {
+  public addEgde(edgeObj: EdgeObj): EdgeObj {
     // check that node A exists
-    const nodeA = this.nodeList.find(node => node.uuid == nodeAID);
+    const nodeA = this.nodeList.find(node => node.uuid == edgeObj?.nodeA);
 
     // check that node B exists
-    const nodeB = this.nodeList.find(node => node.uuid == nodeBID);
+    const nodeB = this.nodeList.find(node => node.uuid == edgeObj?.nodeB);
 
     if (!nodeA || !nodeB || nodeA == nodeB) {
       return;
@@ -143,9 +228,15 @@ export class Network {
       return;
     }
 
-    this.edgeList.push({ edgeId: edgeId, nodeA: nodeA.uuid, nodeB: nodeB.uuid });
+    const edge = {
+      edgeId: edgeObj?.edgeId ? edgeObj.edgeId : uuid(),
+      nodeA: nodeA.uuid,
+      nodeB: nodeB.uuid
+    }
 
-    return true;
+    this.edgeList.push(edge);
+
+    return edge;
   }
 
   /**
@@ -155,24 +246,39 @@ export class Network {
    * @param y_pos
    * @returns true when successful
    */
-  public addNode(nodeDetails: Node): boolean {
+  public addNode(x: number, y: number, nodeCount: number, nodeProperties?: Node): Node {
+    // if no node properties are provided, create an empty node and add to network
+    if (!nodeProperties) {
+      nodeProperties = {
+        uuid: uuid(),
+        name: `node ${nodeCount}`,
+        entry_node: false,
+        high_value_node: false,
+        x_pos: roundNumber(x, 0),
+        y_pos: roundNumber(y, 0),
+        vulnerability: 0
+      }
+    }
+
     // if uuid already exists, return
-    if (!nodeDetails || !nodeDetails.uuid ||
-      this.nodeList.find(node => node.uuid === nodeDetails.uuid)) {
+    if (!nodeProperties || !nodeProperties.uuid ||
+      this.nodeList.find(node => node.uuid === nodeProperties.uuid)) {
       return;
     }
 
-    this.nodeList.push({
-      uuid: nodeDetails.uuid,
-      name: nodeDetails.name,
-      high_value_node: nodeDetails.high_value_node,
-      entry_node: nodeDetails.entry_node,
-      x_pos: nodeDetails.x_pos,
-      y_pos: nodeDetails.y_pos,
-      vulnerability: nodeDetails.vulnerability
-    });
+    const node = {
+      uuid: nodeProperties.uuid,
+      name: nodeProperties.name,
+      high_value_node: nodeProperties.high_value_node,
+      entry_node: nodeProperties.entry_node,
+      x_pos: nodeProperties.x_pos,
+      y_pos: nodeProperties.y_pos,
+      vulnerability: nodeProperties.vulnerability
+    }
 
-    return true;
+    this.nodeList.push(node);
+
+    return node;
   }
 
   /**
@@ -180,8 +286,8 @@ export class Network {
    * @param uuid
    * @param details
    */
-  public editNodeDetails(uuid: string, details: Node): void {
-    const matchingNode = this.nodeList.findIndex(node => node.uuid === uuid);
+  public editNodeDetails(details: Node): Node {
+    const matchingNode = this.nodeList.findIndex(node => node.uuid === details?.uuid);
 
     // find index returns -1 if matching node is not found
     if (matchingNode < 0) {
@@ -189,6 +295,7 @@ export class Network {
     }
 
     this.nodeList[matchingNode] = details;
+    return this.nodeList[matchingNode];
   }
 
   /**
@@ -216,6 +323,18 @@ export class Network {
    */
   public toJson(): NetworkJson {
     const obj = {
+      set_random_entry_nodes: this._networkSettings.entryNode.set_random_entry_nodes,
+      random_entry_node_preference: this._networkSettings.entryNode.random_entry_node_preference,
+      num_of_random_entry_nodes: this._networkSettings.entryNode.num_of_random_entry_nodes,
+
+      set_random_high_value_nodes: this._networkSettings.highValueNode.set_random_high_value_nodes,
+      random_high_value_node_preference: this._networkSettings.highValueNode.random_high_value_node_preference,
+      num_of_random_high_value_nodes: this._networkSettings.highValueNode.num_of_random_high_value_nodes,
+
+      set_random_vulnerabilities: this._networkSettings.vulnerability.set_random_vulnerabilities,
+      node_vulnerability_lower_bound: this._networkSettings.vulnerability.node_vulnerability_lower_bound,
+      node_vulnerability_upper_bound: this._networkSettings.vulnerability.node_vulnerability_upper_bound,
+
       nodes: this.nodesToJson(),
       edges: this.edgesToJson(),
       _doc_metadata: this.documentMetadata

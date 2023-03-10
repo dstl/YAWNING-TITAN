@@ -3,18 +3,23 @@ import logging
 import multiprocessing
 import os
 import sys
+from functools import reduce
+from operator import and_
 from pathlib import Path
-from typing import Any, List
+from typing import Any, Dict, List
 
-from django.http import HttpRequest, JsonResponse
+from django.urls import reverse
 
+from yawning_titan.config.item_types.float_item import FloatItem
+from yawning_titan.config.item_types.int_item import IntItem
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
+from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
-from yawning_titan.networks.network_db import NetworkDB, NetworkSchema
+from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
 from yawning_titan.yawning_titan_run import YawningTitanRun
 from yawning_titan_gui import STATIC_DIR, YT_RUN_TEMP_DIR
-from yawning_titan_server.settings import STATIC_URL
+from yawning_titan_server.settings import DOCS_ROOT, STATIC_URL
 
 
 class RunManager:
@@ -103,7 +108,9 @@ class NetworkManager:
         """
         return [
             network.doc_metadata.uuid
-            for network in cls.db.search(NetworkSchema.ENTRY_NODES.len_bt(min, max))
+            for network in cls.db.search(
+                NetworkQuery.num_of_entry_nodes_between(min, max)
+            )
         ]
 
     @classmethod
@@ -117,7 +124,7 @@ class NetworkManager:
         return [
             network.doc_metadata.uuid
             for network in cls.db.search(
-                NetworkSchema.HIGH_VALUE_NODES.len_bt(min, max)
+                NetworkQuery.num_of_high_value_nodes_between(min, max)
             )
         ]
 
@@ -131,26 +138,30 @@ class NetworkManager:
         """
         return [
             network.doc_metadata.uuid
-            for network in cls.db.search(NetworkSchema.MATRIX.len_bt(min, max))
+            for network in cls.db.search(NetworkQuery.num_of_nodes_between(min, max))
         ]
 
     @classmethod
-    def filter(cls, attribute: str, min, max) -> List[str]:
+    def filter(cls, filters: Dict[str, dict]) -> List[str]:
         """Call the filter method for the appropriate attribute.
 
         :param attribute: the string name of a network attribute to filter
         :param min: the minimum value of the attribute (inclusive)
         :param max: the maximum value of the attribute (inclusive)
         """
-        attr = f"filter_{attribute}"
-        if not hasattr(cls, attr):
-            print("OOPS")
-            return None
-        return getattr(cls, attr)(min, max)
+        networks: List[set] = []
+        for k, v in filters.items():
+            attr = f"filter_{k}"
+            if hasattr(cls, attr):
+                networks.append(set(getattr(cls, attr)(v["min"], v["max"])))
+        if len(networks) == 1:
+            return list(networks[0])
+        return list(networks[0].intersection(*[networks][1:]))
 
     @classmethod
     def get_network_data(cls) -> List[dict]:
         """Gather the doc metadata of all network objects."""
+
         return [network.doc_metadata for network in cls.db.all()]
 
 
@@ -172,6 +183,19 @@ class GameModeManager:
         if not valid_only:
             return game_modes
         return [g for g in game_modes if g["valid"]]
+
+    @classmethod
+    def filter(cls, filters: dict):
+        """Filter a game mode using a dictionary of ranges or values."""
+        item_dict = GameMode().to_legacy_dict()
+        queries = []
+        for name, filter in filters.items():
+            if isinstance(item_dict[name], (FloatItem, IntItem)):
+                queries.append(item_dict[name].query.bt(filter["min"], filter["max"]))
+            else:
+                queries.append((item_dict[name].query == filter))
+        _filter = reduce(and_, queries)
+        return cls.db.search(_filter)
 
 
 def next_key(_dict: dict, key: int) -> Any:
@@ -227,3 +251,78 @@ def static_path_to_url(path: str):
     return path
     # print("TESTxxxx",path.split(STATIC_DIR.as_posix())[1])
     # return path.split(STATIC_DIR.as_posix())[1]
+
+
+def get_docs_sections():
+    """Return names of each section of the sphinx documentation."""
+    return [p.stem for p in (DOCS_ROOT / "source").iterdir() if p.suffix == ".html"]
+
+
+def get_url(url_name: str, *args, **kwargs):
+    """
+    Wrapped implementation of Django's reverse url.
+
+    A lookup that returns the url by name
+    or empty string when the url does not exist.
+
+    :param url_name: The name of the url string as defined in `urls.py`.
+
+    :return: The full url string as defined in `urls.py`
+    """
+    try:
+        return reverse(url_name, args=args, kwargs=kwargs)
+    except Exception:
+        return None
+
+
+def get_url_dict(name: str, href: str, new_tab: bool = False):
+    """Return a dictionary with keys `name` and `href` to describe a url link element."""
+    return {"name": name, "href": href, "new_tab": new_tab}
+
+
+def get_toolbar(current_page_title: str = None):
+    """Get toolbar information for the current page title."""
+    default_toolbar = {
+        "home": {"icon": "bi-house-door", "title": "Home"},
+        "doc": {
+            "icon": "bi-file-earmark",
+            "title": "Documentation",
+            "links": [
+                get_url_dict(n, get_url("Documentation", section=n))
+                for n in get_docs_sections()
+            ],
+        },
+        "manage-game_modes": {"icon": "bi-gear", "title": "Manage game modes"},
+        "manage-networks": {"icon": "bi-diagram-2", "title": "Manage networks"},
+        "run-view": {"icon": "bi-play", "title": "Run session"},
+        "about": {
+            "icon": "bi-question-lg",
+            "title": "About",
+            "links": [
+                get_url_dict(n, href, True)
+                for n, href in zip(
+                    ["Contributors", "Discussions", "Report bug", "Feature request"],
+                    [
+                        "https://github.com/dstl/YAWNING-TITAN/graphs/contributors",
+                        "https://github.com/dstl/YAWNING-TITAN/discussions",
+                        "https://github.com/dstl/YAWNING-TITAN/issues/new?assignees=&labels=bug&template=bug_report.md&title=[BUG]",
+                        "https://github.com/dstl/YAWNING-TITAN/issues/new?assignees=&labels=feature_request&template=feature_request.md&title=[REQUEST]",
+                    ],
+                )
+            ],
+            "info": [f"Version: {version()}"],
+        },
+    }
+    for id, info in default_toolbar.items():
+        default_toolbar[id]["active"] = info["title"] == current_page_title
+    return default_toolbar
+
+
+def version() -> str:
+    """
+    Gets the version from the `VERSION` file.
+
+    :return: The version string.
+    """
+    with open("VERSION", "r") as file:
+        return file.readline()

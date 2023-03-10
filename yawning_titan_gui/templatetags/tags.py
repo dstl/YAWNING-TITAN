@@ -31,8 +31,8 @@ def to_id(value: str):
 
     :Example::
 
-    >>>{{'my object a'|to_id}}
-    >>>my-object-a
+    >>> {{'my object a'|to_id}}
+    >>> my-object-a
     """
     return value.replace(" ", "-").lower()
 

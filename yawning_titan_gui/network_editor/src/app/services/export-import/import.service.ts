@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Network } from 'src/app/network-class/network';
-import { CytoscapeService } from '../cytoscape/cytoscape.service';
+import { Network } from '../../network-class/network';
+import { NetworkService } from '../../network-class/network.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,7 @@ import { CytoscapeService } from '../cytoscape/cytoscape.service';
 export class ImportService {
 
   constructor(
-    private cytoscapeService: CytoscapeService
+    private networkService: NetworkService
   ) { }
 
   /**
@@ -27,7 +27,7 @@ export class ImportService {
       const content = await ($event[0] as File).text();
       const network = new Network(JSON.parse(content));
 
-      this.cytoscapeService.loadNetwork(network);
+      this.networkService.loadNetwork(network);
     } catch (e) {
       throw new Error("Unable to parse file", e);
     }
@@ -37,7 +37,7 @@ export class ImportService {
    * Load the JSON passed from the window.NETWORK variable that is loaded from the Django side
    * @param windowNetwork
    */
-  public loadNetworkFromWindow(windowNetwork: any) {
+  public loadNetworkFromWindow(windowNetwork: any): void {
     // read first file
     if (!windowNetwork) {
       return;
@@ -45,7 +45,9 @@ export class ImportService {
 
     try {
       const network = new Network(JSON.parse(windowNetwork));
-      this.cytoscapeService.loadNetwork(network);
+      this.networkService.loadNetwork(network);
+      // update network settings
+      this.networkService.updateNetworkSettings(network.networkSettings);
     } catch (e) {
       throw new Error("Unable to parse JSON", e);
     }

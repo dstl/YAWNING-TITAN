@@ -106,7 +106,7 @@ game_rules:
       use: True
       value: 0.8
 
-blue_can_observe:
+observation_space:
   compromised_status: True
   vulnerabilities: True
   node_connections: True

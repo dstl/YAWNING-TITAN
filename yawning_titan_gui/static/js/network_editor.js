@@ -1,38 +1,35 @@
-$(document).ready(function(){
-    console.log("READY");
+$(document).ready(function () {
 
-    $("#random-elements .form-check-input").on("change",function(){
-        if($(this).is(":checked")){
-            $(`#random-elements .mb-3:has(.form-control[${$(this).data("toggle")}])`).show();
-        }else{
-            $(`#random-elements .mb-3:has(.form-control[${$(this).data("toggle")}])`).hide();
+    $("#network-randomisation .form-check-input").on("change", function () {
+        if ($(this).is(":checked")) {
+            $(`#network-randomisation .mb-3:has(.form-control[${$(this).data("toggle")}])`).show();
+        } else {
+            $(`#network-randomisation .mb-3:has(.form-control[${$(this).data("toggle")}])`).hide();
         }
     });
-    $("#random-elements .form-check-input").trigger("change"); // Trigger an initial change call on page ready to hide/show elements.
+    $("#network-randomisation .form-check-input").trigger("change"); // Trigger an initial change call on page ready to hide/show elements.
 
     //Open\close random elements menu
-    $(".toolbar-button").click(function(){
-        $(this).addClass("active");
-        if($(this).hasClass("random-elements")){
-            $("#random-elements").show()
-        }else{
-            $("#random-elements").hide()
-        }
+    $(".toolbar-button").click(function () {
+        toggleToolbar($(this));
     })
 });
 
 $(window).on("load",function(){
-    $("#random-elements-form .form-check-input, #random-elements-form .form-control").on("change",function(){
-        console.log("UPDATING");
-        update_network($("#random-elements-form"));
+    $("#random-elements-form").on("change",function(){
+        update_network(this,"update");
     });
-
+    $("#doc-meta-form").on("change",function(){
+        update_network(this,"update doc meta");
+    });
 });
 
 
-function update_network(form_element){
+function update_network(form_element,operation){
     config = new FormData($(form_element)[0]);
     config.append("_network_id",NETWORK_ID);
+    config.append('_operation',operation);
+    console.log("UPDATE",NETWORK_ID,operation);
     $.ajax({
         type: "POST",
         url: UPDATE_URL,
@@ -43,7 +40,29 @@ function update_network(form_element){
         dataType: "json",
         success: function(response){
             console.log("UPDATED");
-            proxy.NETWORK = response.network_json;
+            if (response.network_json){
+                proxy.NETWORK = response.network_json;
+            }
         }
     });
+}
+
+function toggleToolbar(iconEl) {
+    // hide all sidebars
+    $("#network-randomisation").hide()
+    $("#node-list").hide()
+
+    // if icon clicked is network-randomisation
+    if (iconEl.hasClass("network-randomisation") && iconEl.hasClass("active")) {
+        $("#network-randomisation").show()
+    } else {
+        $("#network-randomisation").hide()
+    }
+
+    // if icon clicked is node-list
+    if (iconEl.hasClass("node-list") && iconEl.hasClass("active")) {
+        $("#node-list").show()
+    } else {
+        $("#node-list").hide()
+    }
 }

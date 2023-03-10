@@ -73,7 +73,6 @@ for i in eval_data:
     y_e.append(i[2])
     cur += 1
 
-
 x_rn_m = running_mean(x, 5)
 
 y_rn_m = running_mean(y, 5)
