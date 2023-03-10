@@ -37,7 +37,7 @@ def test_read_valid_path_and_valid_config_classes_match(default_game_mode: GameM
     red = Red("The configuration of the red agent")
     blue = Blue("The configuration of the blue agent")
     game_rules = GameRules("The rules of the overall game mode")
-    blue_can_observe = ObservationSpace(
+    observation_space = ObservationSpace(
         "The characteristics of the network and the red agent that the blue agent can observe"
     )
     game_rules = GameRules("The rules of the overall game mode")
@@ -48,14 +48,14 @@ def test_read_valid_path_and_valid_config_classes_match(default_game_mode: GameM
     red.set_from_dict(config_dict["red"])
     blue.set_from_dict(config_dict["blue"])
     game_rules.set_from_dict(config_dict["game_rules"])
-    blue_can_observe.set_from_dict(config_dict["blue_can_observe"])
+    observation_space.set_from_dict(config_dict["observation_space"])
     on_reset.set_from_dict(config_dict["on_reset"])
     rewards.set_from_dict(config_dict["rewards"])
     miscellaneous.set_from_dict(config_dict["miscellaneous"])
 
     assert default_game_mode.red == red
     assert default_game_mode.blue == blue
-    assert default_game_mode.blue_can_observe == blue_can_observe
+    assert default_game_mode.observation_space == observation_space
     assert default_game_mode.game_rules == game_rules
     assert default_game_mode.on_reset == on_reset
     assert default_game_mode.rewards == rewards
@@ -72,7 +72,7 @@ def test_read_valid_path_and_valid_config_values_match(default_game_mode: GameMo
     red = Red("The configuration of the red agent")
     blue = Blue("The configuration of the blue agent")
     game_rules = GameRules("The rules of the overall game mode")
-    blue_can_observe = ObservationSpace(
+    observation_space = ObservationSpace(
         "The characteristics of the network and the red agent that the blue agent can observe"
     )
     game_rules = GameRules("The rules of the overall game mode")
@@ -83,7 +83,7 @@ def test_read_valid_path_and_valid_config_values_match(default_game_mode: GameMo
     red.set_from_dict(config_dict["red"])
     blue.set_from_dict(config_dict["blue"])
     game_rules.set_from_dict(config_dict["game_rules"])
-    blue_can_observe.set_from_dict(config_dict["blue_can_observe"])
+    observation_space.set_from_dict(config_dict["observation_space"])
     on_reset.set_from_dict(config_dict["on_reset"])
     rewards.set_from_dict(config_dict["rewards"])
     miscellaneous.set_from_dict(config_dict["miscellaneous"])
@@ -94,9 +94,9 @@ def test_read_valid_path_and_valid_config_values_match(default_game_mode: GameMo
     assert default_game_mode.blue.to_dict(values_only=True) == blue.to_dict(
         values_only=True
     )
-    assert default_game_mode.blue_can_observe.to_dict(
+    assert default_game_mode.observation_space.to_dict(
         values_only=True
-    ) == blue_can_observe.to_dict(values_only=True)
+    ) == observation_space.to_dict(values_only=True)
     assert default_game_mode.game_rules.to_dict(values_only=True) == game_rules.to_dict(
         values_only=True
     )
@@ -118,7 +118,7 @@ def test_read_default_config(default_game_mode: GameMode):
     red = Red("The configuration of the red agent")
     blue = Blue("The configuration of the blue agent")
     game_rules = GameRules("The rules of the overall game mode")
-    blue_can_observe = ObservationSpace(
+    observation_space = ObservationSpace(
         "The characteristics of the network and the red agent that the blue agent can observe"
     )
     game_rules = GameRules("The rules of the overall game mode")
@@ -129,14 +129,14 @@ def test_read_default_config(default_game_mode: GameMode):
     red.set_from_dict(config_dict["red"])
     blue.set_from_dict(config_dict["blue"])
     game_rules.set_from_dict(config_dict["game_rules"])
-    blue_can_observe.set_from_dict(config_dict["blue_can_observe"])
+    observation_space.set_from_dict(config_dict["observation_space"])
     on_reset.set_from_dict(config_dict["on_reset"])
     rewards.set_from_dict(config_dict["rewards"])
     miscellaneous.set_from_dict(config_dict["miscellaneous"])
 
     assert default_game_mode.red == red
     assert default_game_mode.blue == blue
-    assert default_game_mode.blue_can_observe == blue_can_observe
+    assert default_game_mode.observation_space == observation_space
     assert default_game_mode.game_rules == game_rules
     assert default_game_mode.on_reset == on_reset
     assert default_game_mode.rewards == rewards

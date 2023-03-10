@@ -196,9 +196,9 @@ class GameModeForm:
             "game_rules": GameModeSection(
                 section=self.game_mode.red, form_name="game_rules", icon="bi-clipboard"
             ),
-            "blue_can_observe": GameModeSection(
+            "observation_space": GameModeSection(
                 section=self.game_mode.red,
-                form_name="blue_can_observe",
+                form_name="observation_space",
                 icon="bi-binoculars",
             ),
             "rewards": GameModeSection(
