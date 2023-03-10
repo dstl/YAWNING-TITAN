@@ -10,7 +10,7 @@ from yawning_titan.db.doc_metadata import DocMetadata
 from yawning_titan.db.yawning_titan_db import YawningTitanDB
 from yawning_titan.networks.network_db import NetworkDB
 from yawning_titan.networks.node import Node
-from yawning_titan_gui.forms.netowork_forms import NetworkFormManager
+from yawning_titan_gui.forms.network_forms import NetworkFormManager
 from yawning_titan_gui.helpers import NetworkManager
 
 

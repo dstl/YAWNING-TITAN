@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { debounceTime, Subscription, tap } from 'rxjs';
+import { Node } from '../network-class/network-interfaces';
+import { roundNumber } from '../utils/utils';
 import { NodePropertiesService } from './node-properties.service';
 
 @Component({
@@ -10,7 +12,7 @@ import { NodePropertiesService } from './node-properties.service';
 })
 export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input('nodeId') nodeId: string = null;
+  @Input('node') node: Node = null;
 
   @Output() close = new EventEmitter();
 
@@ -29,23 +31,23 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
     this.nodePropertiesService.nodePropertiesFormGroupSubject.subscribe(res => {
       this.formGroup = res;
 
-      this.vulnerabilityVal = this.formGroup.get('vulnerability').value;
-
-      this.vulnerabilityChangeListener = this.formGroup.get('vulnerability').valueChanges
-        .subscribe(val => {
-          this.vulnerabilityVal = val;
-        })
+      // update node when there are changes
+      this.formGroup.valueChanges
+        .subscribe(() => {
+          this.vulnerabilityVal = roundNumber(this.formGroup.get('vulnerability')?.value);
+          this.updateNode();
+        });
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
     // do nothing if the previous value is the same that the current
-    if (changes?.nodeId?.currentValue == changes?.nodeId?.previousValue) {
+    if (changes?.node?.currentValue == changes?.node?.previousValue) {
       return;
     }
 
     // load the details of the new selected node
-    this.nodePropertiesService.loadDetails(this.nodeId);
+    this.nodePropertiesService.loadDetails(this.node);
   }
 
   ngOnDestroy(): void {
@@ -58,7 +60,21 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
    * Persists the node properties that the user has changed
    */
   public updateNode(): void {
-    this.nodePropertiesService.updateNodeProperties();
+    if (!this.formGroup?.valid) {
+      return;
+    }
+
+    const nodeProperty = {
+      uuid: this.formGroup.get('uuid')?.value,
+      name: this.formGroup.get('name')?.value,
+      x_pos: this.formGroup.get('x_pos')?.value,
+      y_pos: this.formGroup.get('y_pos')?.value,
+      high_value_node: this.formGroup.get('high_value_node')?.value,
+      entry_node: this.formGroup.get('entry_node')?.value,
+      vulnerability: roundNumber(this.formGroup.get('vulnerability')?.value),
+    }
+
+    this.nodePropertiesService.updateNodeProperties(nodeProperty);
   }
 
   /**
@@ -66,5 +82,29 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
    */
   public closeSideNav(): void {
     this.close.emit();
+  }
+
+  /**
+   * Show the vulnerability slider if true
+   * @returns
+   */
+  public showVulnerabilitySlider(): boolean {
+    return !this.nodePropertiesService.randomVulnerabilitiesOnReset();
+  }
+
+  /**
+   * Show the entry node toggle if true
+   * @returns
+   */
+  public showEntryNodeToggle(): boolean {
+    return !this.nodePropertiesService.randomEntryNodesOnReset();
+  }
+
+  /**
+   * Show the high value node toggle if true
+   * @returns
+   */
+  public showHighValueNodeToggle(): boolean {
+    return !this.nodePropertiesService.randomHighValueNodesOnReset();
   }
 }

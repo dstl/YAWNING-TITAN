@@ -4,8 +4,6 @@ Provides an extended implementation of a TinyDB class as an ABC.
 Makes use of uuid and locked values to ensure duplicates are not possible, and
 locked files (system defaults) cannot be updated or removed.
 
-.. todo:: Ensure the below versionadded is correct at the time of release.
-
 .. versionadded:: 1.1.0
 """
 from __future__ import annotations
@@ -17,6 +15,7 @@ from logging import getLogger
 from pathlib import Path
 from typing import Final, List, Mapping, Optional, Union
 
+from tabulate import tabulate
 from tinydb import TinyDB
 from tinydb.queries import QueryInstance
 from tinydb.table import Document
@@ -143,6 +142,29 @@ class YawningTitanDB:
     def all(self) -> List[Document]:
         """A wrapper for :func:`tinydb.table.Table.all`."""
         return self.db.all()
+
+    def show(self, verbose=False):
+        """
+        Show details of all entries in the db.
+
+        :param verbose: If True, all doc metadata details are shown,
+            otherwise just the name is shown.
+        """
+        docs = self.all()
+        rows = []
+        headers = []
+        keys = ["name", "author", "locked", "uuid"]
+
+        for doc in docs:
+            d = {key: doc["_doc_metadata"][key] for key in keys}
+            row = list(d.values())
+            headers = list(d.keys())
+            if not verbose:
+                row = [row[0]]
+                headers = [headers[0]]
+            rows.append(row)
+
+        print(tabulate([headers] + rows, headers="firstrow"))
 
     def get(self, uuid: str) -> Union[Document, None]:
         """

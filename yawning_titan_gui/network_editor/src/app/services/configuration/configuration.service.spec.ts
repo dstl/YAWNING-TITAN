@@ -29,9 +29,9 @@ describe('ConfigurationService', () => {
       const stubConfig = {
         config: 'yes'
       };
-      spyOn<any>(service['httpClient'], 'get').and.returnValue(of(stubConfig));
+      spyOn<any>(service['httpClient'], 'get').and.returnValue(of(JSON.stringify(stubConfig)));
       service.loadConfig('').toPromise();
-      expect(service['_config']).toBe(stubConfig);
+      expect(service['_config']).toEqual(stubConfig);
     });
   });
 });

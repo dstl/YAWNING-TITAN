@@ -16,26 +16,26 @@
       </mat-form-field>
       <mat-form-field hideRequiredMarker="true">
         <mat-label>X Position</mat-label>
-        <input matInput formControlName="x_pos" appFocusTracking>
+        <input matInput formControlName="x_pos" appFocusTracking step="0.01">
       </mat-form-field>
       <mat-form-field hideRequiredMarker="true">
         <mat-label>Y Position</mat-label>
-        <input matInput formControlName="y_pos" appFocusTracking>
+        <input matInput formControlName="y_pos" appFocusTracking step="0.01">
       </mat-form-field>
-      <div class="node-properties-vulnerability-container">
+      <div class="node-properties-vulnerability-container" *ngIf="showVulnerabilitySlider()">
         <div class="node-properties-vulnerability-label-container">
           <p class="node-properties-vulnerability-label">Vulnerability</p>
-          <p class="node-properties-vulnerability-value">{{vulnerabilityVal}}</p>
+          <p class="node-properties-vulnerability-value">{{formGroup?.get('vulnerability')?.value}}</p>
         </div>
         <mat-slider min="0" max="1" step="0.01">
-          <input matSliderThumb formControlName="vulnerability">
+          <input matSliderThumb formControlName="vulnerability" displayWith>
         </mat-slider>
       </div>
       <div class="node-properties-toggle-input-container">
-        <mat-slide-toggle color="primary" formControlName="entry_node">
+        <mat-slide-toggle color="primary" formControlName="entry_node" *ngIf="showEntryNodeToggle()">
         Entry Node
       </mat-slide-toggle>
-      <mat-slide-toggle color="primary" formControlName="high_value_node">
+      <mat-slide-toggle color="primary" formControlName="high_value_node" *ngIf="showHighValueNodeToggle()">
         High Value Node
       </mat-slide-toggle>
       </div>

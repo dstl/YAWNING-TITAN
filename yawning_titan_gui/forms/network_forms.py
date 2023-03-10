@@ -1,6 +1,7 @@
 from typing import Dict
 
 from django import forms as django_forms
+from django.conf import settings
 from django.forms import widgets
 from django.http import QueryDict
 
@@ -93,7 +94,7 @@ class NetworkTemplateForm(django_forms.Form):
         field_elements = {}
         field_elements["type"] = django_forms.ChoiceField(
             widget=django_forms.Select(
-                attrs={"class": "form-control ", "type-selector": ""}
+                attrs={"class": "form-control form-select", "type-selector": ""}
             ),
             choices=((t, t) for t in types.keys()),
             required=True,
@@ -154,7 +155,9 @@ class NetworkForm(django_forms.Form):
         label="Number of random entry nodes",
     )
     random_entry_node_preference = django_forms.ChoiceField(
-        widget=django_forms.Select(attrs={"class": "form-control", "random-en": ""}),
+        widget=django_forms.Select(
+            attrs={"class": "form-control form-select", "random-en": ""}
+        ),
         choices=(
             (t.name, t.name.replace("_", " ").capitalize())
             for t in RandomEntryNodePreference
@@ -182,7 +185,9 @@ class NetworkForm(django_forms.Form):
         label="Number of random high value nodes",
     )
     random_high_value_node_preference = django_forms.ChoiceField(
-        widget=django_forms.Select(attrs={"class": "form-control", "random-hvn": ""}),
+        widget=django_forms.Select(
+            attrs={"class": "form-control form-select", "random-hvn": ""}
+        ),
         choices=(
             (t.name, t.name.replace("_", " ").capitalize())
             for t in RandomHighValueNodePreference
@@ -260,7 +265,72 @@ class NetworkForm(django_forms.Form):
         self.doc_metadata_form = DocMetaDataForm(data=data)
         if self.doc_metadata_form.is_valid():
             self.network.doc_metadata.update(**self.doc_metadata_form.cleaned_data)
-            NetworkManager.db.update(self.network)
+            if settings.DYNAMIC_UPDATES:
+                NetworkManager.db.update(self.network)
+
+
+class NetworkSearchForm(django_forms.Form):
+    """A Django form object to represent the filterable components of a :class: `~yawning_titan.game_modes.game_mode.GameMode`."""
+
+    def __init__(self, *args, **kwargs):
+        """A Django form object to represent the filterable components of a :class: `~yawning_titan.game_modes.game_mode.GameMode`."""
+        field_elements = {}
+
+        networks = NetworkManager.db.all()
+
+        if networks:
+            for key, name in {
+                "entry_nodes": "entry_nodes",
+                "high_value_nodes": "high_value_nodes",
+                "nodes": "network_nodes",
+            }.items():
+                selector = {
+                    "min": min([len(getattr(n, key)) for n in networks]),
+                    "max": max([len(getattr(n, key)) for n in networks]),
+                }
+                if selector["min"] != selector["max"]:
+                    field_elements[f"{name}_min"] = django_forms.FloatField(
+                        widget=RangeInput(
+                            attrs={"class": f"{name} multi-range-placeholder integer"}
+                        ),
+                        required=False,
+                        min_value=selector["min"],
+                        max_value=selector["max"],
+                        initial=selector["min"],
+                        label=name,
+                        help_text=f"Select networks based upon the number of {name} being within a given range.",
+                    )
+                    field_elements[f"{name}_max"] = django_forms.FloatField(
+                        widget=django_forms.HiddenInput(),
+                        required=False,
+                        min_value=selector["min"],
+                        max_value=selector["max"],
+                        initial=selector["max"],
+                        label=name,
+                        help_text="",
+                    )
+        super(NetworkSearchForm, self).__init__(*args, **kwargs)
+        # created dropdowns from grouped elements
+        self.fields: Dict[str, django_forms.Field] = field_elements
+
+    @property
+    def filters(self):
+        """Generate a dictionary of ranges or values that a game mode must have to be a valid query result."""
+        filters = {
+            n: self.cleaned_data[n] for n in self.changed_data if n != "elements"
+        }
+        cleaned_filters = {}
+        for k, v in filters.items():
+            if k.endswith(("_min", "_max")):
+                name = k.rstrip("_min").rstrip("_max")
+                print("NAME", name)
+                cleaned_filters[name] = {
+                    "min": self.cleaned_data[f"{name}_min"],
+                    "max": self.cleaned_data[f"{name}_max"],
+                }
+            else:
+                cleaned_filters[k] = v
+        return cleaned_filters
 
 
 class NetworkFormManager:
@@ -292,7 +362,6 @@ class NetworkFormManager:
             network = NetworkManager.db.get(network_id)
             form = NetworkForm(network)
             cls.network_forms[network_id] = form
-            print("KEYS", cls.network_forms.keys())
             return form
 
     # Setters
@@ -324,7 +393,7 @@ class NetworkFormManager:
         form = NetworkForm(
             network=network, data=data
         )  # create a new network form an update with the new data
-        if form.is_valid():
+        if form.is_valid() and settings.DYNAMIC_UPDATES:
             NetworkManager.db.update(form.network)  # update the network in the database
         cls.network_forms[network_id] = form
 
@@ -340,5 +409,6 @@ class NetworkFormManager:
         """
         form = cls.get_or_create_form(network_id)
         form.network.set_from_dict(config_dict=data)
-        NetworkManager.db.update(form.network)  # update the network in the database
+        if settings.DYNAMIC_UPDATES:
+            NetworkManager.db.update(form.network)  # update the network in the database
         return form

@@ -2,7 +2,6 @@ $(document).ready(function(){
     $(".template .mb-3:not(:first-child)").hide();
     $(`.template .mb-3:has(.${$("select").val()})`).show();
     $("select[type-selector]").on("change",function(){
-        console.log($(this).val());
         $(".template  .mb-3:not(:first-child)").hide();
         $(`.template  .mb-3:has(.${$(this).val()})`).show();
     });
@@ -11,11 +10,8 @@ $(document).ready(function(){
             load_template($("#template-form"))
         }
     });
-    $(".random-elements  .form-control").on("change",function(){
-        update_network($("#random-elements-form"))
-    });
-    $("#save").click(function(){
-        save_template()
+    $(".network-randomisation  .form-control").on("change",function(){
+        update_network($("#network-randomisation-form"))
     });
 });
 
@@ -34,13 +30,5 @@ function load_template(form_element){
             proxy.NETWORK = response.network_json;
             $("#open-editor").attr("href",EDITOR_URL + response.network_id);
         }
-    });
-}
-
-function save_template(){
-    $.ajax({
-        type: "POST",
-        url: window.location.href,
-        data: {save:true}
     });
 }
