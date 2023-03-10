@@ -184,7 +184,10 @@ class KeyboardAgent:
                     print("Node: ", node, " State: ", state)
 
         # checks if the red or blue agent won
-        if self.env.current_duration == self.env.settings["GAME_RULES"]["max_steps"]:
+        if (
+            self.env.current_duration
+            == self.env.network_interface.game_mode.game_rules.max_steps.value
+        ):
             print("---Blue agent wins---")
         else:
             print("---Red agent wins---")
