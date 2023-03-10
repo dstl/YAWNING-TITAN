@@ -1,18 +1,15 @@
 """Used to test the GenericEnv() class and the associated agent interfaces."""
 import random
 from collections import defaultdict
-from typing import Dict, Final, List, Tuple, Union
+from typing import Dict, List, Tuple, Union
 
 import networkx as nx
 import numpy as np
 import pytest
 
+from tests.conftest import N_TIME_STEPS
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 from yawning_titan.networks.node import Node
-
-TOLERANCE: Final[float] = 0.1
-N_TIME_STEPS: Final[int] = 1000
-N_TIME_STEPS_LONG: Final[int] = 10000
 
 
 class RandomGen:
