@@ -206,7 +206,7 @@ def basic_2_agent_loop(create_yawning_titan_run):
 
 
 class Group(ConfigGroup):
-    """Basic implementation of a :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+    """Basic implementation of a :class: `~yawning_titan.config.core.ConfigGroup`."""
 
     def __init__(self, doc: Optional[str] = None):
         self.a: BoolItem = BoolItem(value=False, alias="legacy_a")
@@ -216,7 +216,7 @@ class Group(ConfigGroup):
 
 
 class GroupTier1(ConfigGroup):
-    """Basic implementation of a nested :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+    """Basic implementation of a nested :class: `~yawning_titan.config.core.ConfigGroup`."""
 
     def __init__(self, doc: Optional[str] = None):
         self.bool: BoolItem = BoolItem(value=False)
@@ -224,7 +224,7 @@ class GroupTier1(ConfigGroup):
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
         super().validate()
         try:
             if self.bool.value and self.float.value > 1:
@@ -242,7 +242,7 @@ class GroupTier1(ConfigGroup):
 
 
 class GroupTier2(ConfigGroup):
-    """Basic implementation of a nested :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+    """Basic implementation of a nested :class: `~yawning_titan.config.core.ConfigGroup`."""
 
     def __init__(self, doc: Optional[str] = None):
         self.bool: BoolItem = BoolItem(value=False)
@@ -251,7 +251,7 @@ class GroupTier2(ConfigGroup):
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
         super().validate()
         try:
             if self.bool.value and self.int.value != 1:
@@ -264,11 +264,11 @@ class GroupTier2(ConfigGroup):
 
 @pytest.fixture
 def test_group() -> Group:
-    """A test instance of :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+    """A test instance of :class: `~yawning_titan.config.core.ConfigGroup`."""
     return Group()
 
 
 @pytest.fixture
 def multi_tier_test_group() -> GroupTier2:
-    """A nested test instance of :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+    """A nested test instance of :class: `~yawning_titan.config.core.ConfigGroup`."""
     return GroupTier2()
