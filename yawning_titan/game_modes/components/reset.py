@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Optional
 
-from yawning_titan.config.toolbox.core import ConfigGroup
-from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
+from yawning_titan.config.core import ConfigGroup
+from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
 from yawning_titan.db.schemas import GameModeConfigurationSchema
 
 # --- Tier 0 groups
@@ -14,11 +14,11 @@ class Reset(ConfigGroup):
 
     def __init__(
         self,
-        doc: Optional[str] = None,
         randomise_vulnerabilities: Optional[bool] = False,
         choose_new_high_value_nodes: Optional[bool] = False,
         choose_new_entry_nodes: Optional[bool] = False,
     ):
+        doc = "The changes to the network made upon reset"
         self.randomise_vulnerabilities = BoolItem(
             value=randomise_vulnerabilities,
             doc="Randomise the node vulnerabilities when the network is reset",

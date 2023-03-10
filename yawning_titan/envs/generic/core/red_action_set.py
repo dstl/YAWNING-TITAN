@@ -176,7 +176,6 @@ class RedActionSet:
 
         # get the node that red attacked from
         attacking_node = original_node[target]
-
         return target, attacking_node
 
     def choose_action(self) -> int:

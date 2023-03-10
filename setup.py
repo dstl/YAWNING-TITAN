@@ -6,6 +6,19 @@ from setuptools import find_packages, setup
 from setuptools.command.develop import develop
 from setuptools.command.install import install
 
+try:
+    from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
+
+    class bdist_wheel(_bdist_wheel):  # noqa
+        def finalize_options(self):  # noqa
+            super().finalize_options()
+            # forces whee to be platform and Python version specific
+            # Source: https://stackoverflow.com/a/45150383
+            self.root_is_pure = False
+
+except ImportError:
+    bdist_wheel = None
+
 
 def version() -> str:
     """
@@ -36,8 +49,8 @@ def _create_app_dirs():
     """
     Handles creation of application directories and user directories.
 
-    Uses `platformdirs.PlatformDirs` and `pathlib.Path` to create the required app directories in the correct
-    locations based on the users OS.
+    Uses `platformdirs.PlatformDirs` and `pathlib.Path` to create the required
+    app directories in the correct locations based on the users OS.
     """
     import sys
     from pathlib import Path, PosixPath
@@ -215,10 +228,15 @@ setup(
             "pytest-flake8==1.1.1",
             "sphinx==5.3.0",
             "sphinx_rtd_theme==1.1.1",
+            "wheel",
         ],
         "tensorflow": ["tensorflow==2.11.0"],
     },
     package_data={"yawning_titan": package_data_paths()},
     include_package_data=True,
-    cmdclass={"install": PostInstallCommand, "develop": PostDevelopCommand},
+    cmdclass={
+        "install": PostInstallCommand,
+        "develop": PostDevelopCommand,
+        "bdist_wheel": bdist_wheel,
+    },
 )

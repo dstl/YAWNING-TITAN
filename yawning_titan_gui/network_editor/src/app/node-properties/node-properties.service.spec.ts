@@ -12,7 +12,7 @@ describe('NodePropertiesService', () => {
     updateNode: () => { },
     editNodeDetails: () => { },
     getNodeById: () => { },
-    networkObservable: new Subject()
+    networkSettingsObservable: new Subject()
   }
 
   let interactionServiceStub: any = {
@@ -24,7 +24,7 @@ describe('NodePropertiesService', () => {
       networkServiceStub,
       interactionServiceStub,
       new FormBuilder()
-    )
+    );
   });
 
   it('should be created', () => {
@@ -32,7 +32,7 @@ describe('NodePropertiesService', () => {
   });
 
   it('should update input fields when the network settings are changed', () => {
-    spyOn(service['networkService'], 'getNodeById').and.returnValue({
+    const node = {
       uuid: 'id',
       name: 'node',
       x_pos: 0,
@@ -40,18 +40,17 @@ describe('NodePropertiesService', () => {
       high_value_node: true,
       entry_node: true,
       vulnerability: 0
-    });
+    }
+    spyOn(service['networkService'], 'getNodeById').and.returnValue(node);
 
-    service.loadDetails('id');
+    service.loadDetails(node);
 
-    networkServiceStub.networkObservable.next({
-      networkSettings: {
-        entryNode: { set_random_entry_nodes: true },
-        highValueNode: { set_random_high_value_nodes: true },
-        vulnerability: {
-          set_random_vulnerabilities: true,
-          node_vulnerability_lower_bound: 0.2
-        }
+    networkServiceStub.networkSettingsObservable.next({
+      entryNode: { set_random_entry_nodes: true },
+      highValueNode: { set_random_high_value_nodes: true },
+      vulnerability: {
+        set_random_vulnerabilities: true,
+        node_vulnerability_lower_bound: 0.2
       }
     });
 
@@ -67,24 +66,15 @@ describe('NodePropertiesService', () => {
   });
 
   describe('METHOD: loadDetails', () => {
-    it('should do nothing if the node to be updated does not exist', fakeAsync(() => {
-      const node = {
-        uuid: 'id',
-        name: 'name',
-        high_value_node: true,
-        entry_node: false,
-        x_pos: 0,
-        y_pos: 0,
-        vulnerability: 0
-      };
-
-      service['networkService'].addNode(node.x_pos, node.y_pos, node);
-
-      service.loadDetails('fake id');
-      tick();
-
-      expect(service['_nodePropertiesFormGroup']).toBeUndefined();
-    }));
+    const node = {
+      uuid: 'id',
+      name: 'node',
+      x_pos: 0,
+      y_pos: 0,
+      high_value_node: true,
+      entry_node: true,
+      vulnerability: 0
+    }
 
     it('should update the nodeDetailsSubject with the details of the given node', fakeAsync(() => {
       const node = {
@@ -102,79 +92,67 @@ describe('NodePropertiesService', () => {
       service.nodePropertiesFormGroupSubject.subscribe((res: any) => {
         expect(res.get('uuid').value).toBe(node.uuid);
         expect(res.get('name').value).toBe(node.name);
-        expect(res.get('high_value_node').value).toBeTruthy();
-        expect(res.get('entry_node').value).toBeFalsy();
-        expect(res.get('x_pos').value).toBe(0);
-        expect(res.get('y_pos').value).toBe(0);
+        expect(res.get('high_value_node').value).toBe(node.high_value_node);
+        expect(res.get('entry_node').value).toBe(node.entry_node);
+        expect(res.get('x_pos').value).toBe(node.x_pos);
+        expect(res.get('y_pos').value).toBe(node.y_pos);
       });
 
-      service.loadDetails('id');
+      service.loadDetails(node);
       tick();
     }));
   });
 
   describe('METHOD: updateNodeProperties', () => {
-    it('should not update nodes unless the form is valid', () => {
-      const spy = spyOn(service['networkService'], 'editNodeDetails');
+    const node = {
+      uuid: 'id',
+      name: 'node',
+      x_pos: 0,
+      y_pos: 0,
+      high_value_node: true,
+      entry_node: true,
+      vulnerability: 0
+    }
 
-      service['_nodePropertiesFormGroup'] = new FormBuilder().group({ test: new FormControl('', Validators.required) })
-
-      service.updateNodeProperties();
-      expect(spy).not.toHaveBeenCalled();
+    beforeEach(() => {
+      service.loadDetails(node)
     });
 
     it('should update the node if the form is valid', () => {
       const spy = spyOn(service['networkService'], 'editNodeDetails');
-
-      service['_nodePropertiesFormGroup'] = new FormBuilder().group({
-        uuid: new FormControl('id'),
-        name: new FormControl('name'),
-        x_pos: new FormControl(0),
-        y_pos: new FormControl(0),
-        vulnerability: new FormControl(0),
-        high_value_node: new FormControl(true),
-        entry_node: new FormControl(true),
-      })
-
-      service.updateNodeProperties();
+      service.updateNodeProperties({} as any);
       expect(spy).toHaveBeenCalled();
     });
   });
 
   describe('METHOD: updateNodePositions', () => {
+    const node = {
+      uuid: 'id',
+      name: 'node',
+      x_pos: 0,
+      y_pos: 0,
+      high_value_node: true,
+      entry_node: true,
+      vulnerability: 0
+    }
+
+    beforeEach(() => {
+      service.loadDetails(node)
+    });
+
     it('should do nothing if the node being dragged is not what is displayed by the node properties', () => {
-      spyOn(service['networkService'], 'getNodeById').and.returnValue({
-        uuid: 'id',
-        name: 'node',
-        x_pos: 0,
-        y_pos: 0,
-        high_value_node: true,
-        entry_node: true,
-        vulnerability: 0
-      });
+      service.loadDetails(node);
 
-      service.loadDetails('id');
-
-      service.updateNodePositions({ id: 'not this one', position: { x: 10, y: 10 } });
+      service.updateNodePositions({ id: 'other', position: { x: 10, y: 10 } });
 
       expect(service['_nodePropertiesFormGroup'].get('x_pos').value).toBe(0);
       expect(service['_nodePropertiesFormGroup'].get('y_pos').value).toBe(0);
     });
 
     it('should update input field if the node being dragged is what is displayed by the node properties', () => {
-      spyOn(service['networkService'], 'getNodeById').and.returnValue({
-        uuid: 'id',
-        name: 'node',
-        x_pos: 0,
-        y_pos: 0,
-        high_value_node: true,
-        entry_node: true,
-        vulnerability: 0
-      });
+      service.loadDetails(node);
 
-      service.loadDetails('id');
-
-      service.updateNodePositions({ id: 'id', position: { x: 10, y: 10 } });
+      service.updateNodePositions({ id: node.uuid, position: { x: 10, y: 10 } });
 
       expect(service['_nodePropertiesFormGroup'].get('x_pos').value).toBe(10);
       expect(service['_nodePropertiesFormGroup'].get('y_pos').value).toBe(10);

@@ -273,192 +273,150 @@
         "created_at": "2022-12-08T14:56:42.891677"
       }
     },
-    "2":{
-      "set_random_entry_nodes":false,
-      "random_entry_node_preference":"NONE",
-      "num_of_random_entry_nodes":0,
-      "set_random_high_value_nodes":false,
-      "random_high_value_node_preference":"NONE",
-      "num_of_random_high_value_nodes":0,
-      "set_random_vulnerabilities":false,
-      "node_vulnerability_lower_bound":0.01,
-      "node_vulnerability_upper_bound":1,
-      "nodes":{
-         "4180851d-a066-4d97-ba36-ba0c3971000e":{
-            "uuid":"4180851d-a066-4d97-ba36-ba0c3971000e",
-            "name":"0",
-            "high_value_node":false,
-            "entry_node":false,
-            "vulnerability":0.0,
-            "classes":"standard_node",
-            "x_pos":3.0,
-            "y_pos":8.0
-         },
-         "b6ab4f5d-0295-4a5a-81e2-6febb26bbac0":{
-            "uuid":"b6ab4f5d-0295-4a5a-81e2-6febb26bbac0",
-            "name":"1",
-            "high_value_node":false,
-            "entry_node":false,
-            "vulnerability":0.0,
-            "classes":"standard_node",
-            "x_pos":2.0,
-            "y_pos":9.0
-         },
-         "353e4860-9514-4083-91cd-6a0bbace8cad":{
-            "uuid":"353e4860-9514-4083-91cd-6a0bbace8cad",
-            "name":"2",
-            "high_value_node":false,
-            "entry_node":false,
-            "vulnerability":0.0,
-            "classes":"standard_node",
-            "x_pos":9.0,
-            "y_pos":2.0
-         },
-         "b02dfc7e-2369-4a99-804a-130b922d308c":{
-            "uuid":"b02dfc7e-2369-4a99-804a-130b922d308c",
-            "name":"3",
-            "high_value_node":false,
-            "entry_node":false,
-            "vulnerability":0.0,
-            "classes":"standard_node",
-            "x_pos":7.0,
-            "y_pos":4.0
-         },
-         "915ce639-307b-454b-86dc-0f9ccf708b38":{
-            "uuid":"915ce639-307b-454b-86dc-0f9ccf708b38",
-            "name":"4",
-            "high_value_node":false,
-            "entry_node":false,
-            "vulnerability":0.0,
-            "classes":"standard_node",
-            "x_pos":0.0,
-            "y_pos":3.0
-         },
-         "8d216687-f3cb-4cb1-a533-4ffcadcc439a":{
-            "uuid":"8d216687-f3cb-4cb1-a533-4ffcadcc439a",
-            "name":"5",
-            "high_value_node":false,
-            "entry_node":false,
-            "vulnerability":0.0,
-            "classes":"standard_node",
-            "x_pos":10.0,
-            "y_pos":6.0
-         },
-         "8f2e9bf5-0e88-4b21-b5cc-f90a7e9899eb":{
-            "uuid":"8f2e9bf5-0e88-4b21-b5cc-f90a7e9899eb",
-            "name":"6",
-            "high_value_node":false,
-            "entry_node":false,
-            "vulnerability":0.0,
-            "classes":"standard_node",
-            "x_pos":6.0,
-            "y_pos":1.0
-         },
-         "10b665bf-c821-4c45-b51c-d80c509cec84":{
-            "uuid":"10b665bf-c821-4c45-b51c-d80c509cec84",
-            "name":"7",
-            "high_value_node":false,
-            "entry_node":false,
-            "vulnerability":0.0,
-            "classes":"standard_node",
-            "x_pos":9.0,
-            "y_pos":4.0
-         },
-         "a5f7c102-5bee-4dbd-bea4-90faa9a4f195":{
-            "uuid":"a5f7c102-5bee-4dbd-bea4-90faa9a4f195",
-            "name":"8",
-            "high_value_node":false,
-            "entry_node":false,
-            "vulnerability":0.0,
-            "classes":"standard_node",
-            "x_pos":7.0,
-            "y_pos":2.0
-         },
-         "bf53b3ff-75d9-47da-8c57-1ca571dab5ae":{
-            "uuid":"bf53b3ff-75d9-47da-8c57-1ca571dab5ae",
-            "name":"9",
-            "high_value_node":false,
-            "entry_node":false,
-            "vulnerability":0.0,
-            "classes":"standard_node",
-            "x_pos":3.0,
-            "y_pos":6.0
-         }
+    "2": {
+      "set_random_entry_nodes": false,
+      "random_entry_node_preference": "NONE",
+      "num_of_random_entry_nodes": 0,
+      "set_random_high_value_nodes": false,
+      "random_high_value_node_preference": "NONE",
+      "num_of_random_high_value_nodes": 0,
+      "set_random_vulnerabilities": false,
+      "node_vulnerability_lower_bound": 0.01,
+      "node_vulnerability_upper_bound": 1,
+      "nodes": {
+        "4180851d-a066-4d97-ba36-ba0c3971000e": {
+          "uuid": "4180851d-a066-4d97-ba36-ba0c3971000e",
+          "name": "0",
+          "high_value_node": false,
+          "entry_node": false,
+          "vulnerability": 0.0,
+          "x_pos": 3.0,
+          "y_pos": 8.0
+        },
+        "b6ab4f5d-0295-4a5a-81e2-6febb26bbac0": {
+          "uuid": "b6ab4f5d-0295-4a5a-81e2-6febb26bbac0",
+          "name": "1",
+          "high_value_node": false,
+          "entry_node": false,
+          "vulnerability": 0.0,
+          "x_pos": 2.0,
+          "y_pos": 9.0
+        },
+        "353e4860-9514-4083-91cd-6a0bbace8cad": {
+          "uuid": "353e4860-9514-4083-91cd-6a0bbace8cad",
+          "name": "2",
+          "high_value_node": false,
+          "entry_node": false,
+          "vulnerability": 0.0,
+          "x_pos": 9.0,
+          "y_pos": 2.0
+        },
+        "b02dfc7e-2369-4a99-804a-130b922d308c": {
+          "uuid": "b02dfc7e-2369-4a99-804a-130b922d308c",
+          "name": "3",
+          "high_value_node": false,
+          "entry_node": false,
+          "vulnerability": 0.0,
+          "x_pos": 7.0,
+          "y_pos": 4.0
+        },
+        "915ce639-307b-454b-86dc-0f9ccf708b38": {
+          "uuid": "915ce639-307b-454b-86dc-0f9ccf708b38",
+          "name": "4",
+          "high_value_node": false,
+          "entry_node": false,
+          "vulnerability": 0.0,
+          "x_pos": 0.0,
+          "y_pos": 3.0
+        },
+        "8d216687-f3cb-4cb1-a533-4ffcadcc439a": {
+          "uuid": "8d216687-f3cb-4cb1-a533-4ffcadcc439a",
+          "name": "5",
+          "high_value_node": false,
+          "entry_node": false,
+          "vulnerability": 0.0,
+          "x_pos": 10.0,
+          "y_pos": 6.0
+        },
+        "8f2e9bf5-0e88-4b21-b5cc-f90a7e9899eb": {
+          "uuid": "8f2e9bf5-0e88-4b21-b5cc-f90a7e9899eb",
+          "name": "6",
+          "high_value_node": false,
+          "entry_node": false,
+          "vulnerability": 0.0,
+          "x_pos": 6.0,
+          "y_pos": 1.0
+        },
+        "10b665bf-c821-4c45-b51c-d80c509cec84": {
+          "uuid": "10b665bf-c821-4c45-b51c-d80c509cec84",
+          "name": "7",
+          "high_value_node": false,
+          "entry_node": false,
+          "vulnerability": 0.0,
+          "x_pos": 9.0,
+          "y_pos": 4.0
+        },
+        "a5f7c102-5bee-4dbd-bea4-90faa9a4f195": {
+          "uuid": "a5f7c102-5bee-4dbd-bea4-90faa9a4f195",
+          "name": "8",
+          "high_value_node": false,
+          "entry_node": false,
+          "vulnerability": 0.0,
+          "x_pos": 7.0,
+          "y_pos": 2.0
+        },
+        "bf53b3ff-75d9-47da-8c57-1ca571dab5ae": {
+          "uuid": "bf53b3ff-75d9-47da-8c57-1ca571dab5ae",
+          "name": "9",
+          "high_value_node": false,
+          "entry_node": false,
+          "vulnerability": 0.0,
+          "x_pos": 3.0,
+          "y_pos": 6.0
+        }
       },
-      "edges":{
-         "4180851d-a066-4d97-ba36-ba0c3971000e":{
-            "bf53b3ff-75d9-47da-8c57-1ca571dab5ae":{
-
-            }
-         },
-         "b6ab4f5d-0295-4a5a-81e2-6febb26bbac0":{
-            "bf53b3ff-75d9-47da-8c57-1ca571dab5ae":{
-
-            }
-         },
-         "353e4860-9514-4083-91cd-6a0bbace8cad":{
-            "bf53b3ff-75d9-47da-8c57-1ca571dab5ae":{
-
-            }
-         },
-         "b02dfc7e-2369-4a99-804a-130b922d308c":{
-            "bf53b3ff-75d9-47da-8c57-1ca571dab5ae":{
-
-            }
-         },
-         "915ce639-307b-454b-86dc-0f9ccf708b38":{
-            "bf53b3ff-75d9-47da-8c57-1ca571dab5ae":{
-
-            }
-         },
-         "8d216687-f3cb-4cb1-a533-4ffcadcc439a":{
-
-         },
-         "8f2e9bf5-0e88-4b21-b5cc-f90a7e9899eb":{
-
-         },
-         "10b665bf-c821-4c45-b51c-d80c509cec84":{
-            "bf53b3ff-75d9-47da-8c57-1ca571dab5ae":{
-
-            }
-         },
-         "a5f7c102-5bee-4dbd-bea4-90faa9a4f195":{
-            "bf53b3ff-75d9-47da-8c57-1ca571dab5ae":{
-
-            }
-         },
-         "bf53b3ff-75d9-47da-8c57-1ca571dab5ae":{
-            "4180851d-a066-4d97-ba36-ba0c3971000e":{
-
-            },
-            "b6ab4f5d-0295-4a5a-81e2-6febb26bbac0":{
-
-            },
-            "353e4860-9514-4083-91cd-6a0bbace8cad":{
-
-            },
-            "b02dfc7e-2369-4a99-804a-130b922d308c":{
-
-            },
-            "915ce639-307b-454b-86dc-0f9ccf708b38":{
-
-            },
-            "10b665bf-c821-4c45-b51c-d80c509cec84":{
-
-            },
-            "a5f7c102-5bee-4dbd-bea4-90faa9a4f195":{
-
-            }
-         }
+      "edges": {
+        "4180851d-a066-4d97-ba36-ba0c3971000e": {
+          "bf53b3ff-75d9-47da-8c57-1ca571dab5ae": {}
+        },
+        "b6ab4f5d-0295-4a5a-81e2-6febb26bbac0": {
+          "bf53b3ff-75d9-47da-8c57-1ca571dab5ae": {}
+        },
+        "353e4860-9514-4083-91cd-6a0bbace8cad": {
+          "bf53b3ff-75d9-47da-8c57-1ca571dab5ae": {}
+        },
+        "b02dfc7e-2369-4a99-804a-130b922d308c": {
+          "bf53b3ff-75d9-47da-8c57-1ca571dab5ae": {}
+        },
+        "915ce639-307b-454b-86dc-0f9ccf708b38": {
+          "bf53b3ff-75d9-47da-8c57-1ca571dab5ae": {}
+        },
+        "8d216687-f3cb-4cb1-a533-4ffcadcc439a": {},
+        "8f2e9bf5-0e88-4b21-b5cc-f90a7e9899eb": {},
+        "10b665bf-c821-4c45-b51c-d80c509cec84": {
+          "bf53b3ff-75d9-47da-8c57-1ca571dab5ae": {}
+        },
+        "a5f7c102-5bee-4dbd-bea4-90faa9a4f195": {
+          "bf53b3ff-75d9-47da-8c57-1ca571dab5ae": {}
+        },
+        "bf53b3ff-75d9-47da-8c57-1ca571dab5ae": {
+          "4180851d-a066-4d97-ba36-ba0c3971000e": {},
+          "b6ab4f5d-0295-4a5a-81e2-6febb26bbac0": {},
+          "353e4860-9514-4083-91cd-6a0bbace8cad": {},
+          "b02dfc7e-2369-4a99-804a-130b922d308c": {},
+          "915ce639-307b-454b-86dc-0f9ccf708b38": {},
+          "10b665bf-c821-4c45-b51c-d80c509cec84": {},
+          "a5f7c102-5bee-4dbd-bea4-90faa9a4f195": {}
+        }
       },
-      "_doc_metadata":{
-        "uuid":"47cb9f49-b53d-44f8-9a7b-3d74cf2ec1b0",
+      "_doc_metadata": {
+        "uuid": "47cb9f49-b53d-44f8-9a7b-3d74cf2ec1b0",
         "name": "Dcbo base network",
         "description": "the same network used to generated DCBO data.",
         "author": "dstl/YAWNING-TITAN",
         "locked": true,
-        "created_at":"2023-02-07T18:20:09.029016"
+        "created_at": "2023-02-07T18:20:09.029016"
       }
-   }
+    }
   }
 }

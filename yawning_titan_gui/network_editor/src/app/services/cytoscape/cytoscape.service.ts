@@ -198,4 +198,26 @@ export class CytoscapeService {
   public removeCytoscapeEdge(id: string) {
     this.cy.$id(id).remove();
   }
+
+  /**
+   * Highlights a node
+   * Used when selecting a node from the node list
+   * @param id
+   */
+  public selectNode(id: string) {
+    // unselect all other nodes
+    this.cy.nodes().unselect();
+
+    // set the given id to selected
+    this.cy.$id(id).select();
+
+    // center on the node
+    const viewportZoom = this.cy.animation({
+      zoom: 2,
+      center: { eles: `#${id}` },
+      easing: 'ease-out-circ'
+    });
+
+    viewportZoom.play();
+  }
 }

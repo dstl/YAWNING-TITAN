@@ -3,33 +3,33 @@ function csrfSafeMethod(method) {
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 }
 
-function check_form_filled(selector){
+function check_form_filled(selector) {
     let update = true;
-    $(selector).each(function(){
-        if($(this).val() == null){
+    $(selector).each(function () {
+        if ($(this).val() == null) {
             update = false
         }
     });
     return update
 }
 
-function update_tooltip(selector,replace,replace_with){
-    $(selector).attr('data-bs-original-title',$(selector).data("bs-original-title").replace(replace,replace_with));
+function update_tooltip(selector, replace, replace_with) {
+    $(selector).attr('data-bs-original-title', $(selector).data("bs-original-title").replace(replace, replace_with));
 }
 
-function toggle_dialogue(dialogue_selector){
-    if($("#mask").hasClass("hidden")){
+function toggle_dialogue(dialogue_selector) {
+    if ($("#mask").hasClass("hidden")) {
         $("#mask").removeClass("hidden");
         $(dialogue_selector).removeClass("hidden");
         $("#window").addClass("blur");
-    }else{
+    } else {
         $("#mask").addClass("hidden");
         $("#mask>*").addClass("hidden");
         $("#window").removeClass("blur");
     }
 }
 
-$(window).on('load', function(){
+$(window).on('load', function () {
     $("body").removeClass("preload");
 });
 
@@ -52,7 +52,7 @@ $(document).ready(function(){
 
 
     //close center dialogue
-    $(".dialogue-center .cancel").click(function(){
+    $(".dialogue-center .cancel").click(function () {
         toggle_dialogue($(this).closest(".dialogue-center"))
     });
 
@@ -78,7 +78,7 @@ $(document).ready(function(){
         $(this).siblings("input[type='range']").first().val($(this).val());
         $(this).siblings("input[type='range'].slider-progress").first().css("--value",$(this).val()); // update slider progress value
     });
-    $(document).on("mousemove","input[type='range']",function(){
+    $(document).on("mousemove", "input[type='range']", function () {
         $(this).siblings(".range-setter").first().val($(this).val());
     });
 
@@ -86,7 +86,7 @@ $(document).ready(function(){
     setup_form_multi_range();
 
     $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
+        beforeSend: function (xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken", CSRF_TOKEN);
             }
@@ -94,19 +94,19 @@ $(document).ready(function(){
     });
 });
 
-class Filter{
-    constructor(){
+class Filter {
+    constructor() {
         this.hidden = {};
     }
-    update_elements(){
+    update_elements() {
         $(".list-item").removeClass("hidden");
-        for (const [group,elements] of Object.entries(this.hidden)){
-            elements.each(function(){
+        for (const [group, elements] of Object.entries(this.hidden)) {
+            elements.each(function () {
                 $(this).addClass("hidden")
             })
         }
     }
-    set(elements,group){
+    set(elements, group) {
         this.hidden[group] = elements
     }
 }
