@@ -509,7 +509,7 @@ class Network(nx.Graph):
             for n in self.nodes:
                 self.remove_node(n)
         for uuid, attrs in nodes_dict.items():
-            self.add_node(Node(**attrs))
+            self.add_node(Node.create_from_db(**attrs))
 
     def add_edges_from_dict(self, edges_dict: Dict[str, dict], remove_existing=False):
         """Add edges to the graph with properties defined from a dictionary.
