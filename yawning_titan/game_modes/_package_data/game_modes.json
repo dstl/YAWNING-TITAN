@@ -137,13 +137,13 @@
              },
              "entry_node_count":{
                "restrict":false,
-               "min":null,
-               "max":null
+               "min":0,
+               "max":8
              },
              "high_value_node_count":{
                "restrict":false,
-               "min":null,
-               "max":null
+               "min":0,
+               "max":8
              }
          }
        },
@@ -317,12 +317,12 @@
          "node_count": {
            "restrict": true,
            "min": 2,
-           "max": 18
+           "max": 20
          },
          "entry_node_count": {
            "restrict": true,
            "min": 2,
-           "max": 5
+           "max": 6
          },
          "high_value_node_count": {
            "restrict": true,
@@ -500,18 +500,18 @@
        "network_compatibility": {
          "node_count": {
            "restrict": false,
-           "min": null,
-           "max": null
+           "min": 1,
+           "max": 20
          },
          "entry_node_count": {
            "restrict": true,
            "min": 4,
-           "max": null
+           "max": 8
          },
          "high_value_node_count": {
            "restrict": false,
-           "min": null,
-           "max": null
+           "min": 0,
+           "max": 8
          }
        }
      },
