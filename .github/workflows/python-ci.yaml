@@ -40,10 +40,10 @@ jobs:
           pip install wheel
       - name: Build Yawning-Titan
         run: |
-          python setup.py bdist_wheel
+          python setup.py sdist
       - name: Install Yawning-Titan
         run: |
-          YT=$(ls ./dist/yawningtitan-*.*.*-*.whl)
+          YT=$(ls ./dist/yawningtitan-*.*.*.tar.gz)
           python -m pip install torch==1.11+cpu -f https://download.pytorch.org/whl/torch_stable.html
           python -m pip install $YT[dev] --default-timeout 1000
       - name: Lint with flake8
