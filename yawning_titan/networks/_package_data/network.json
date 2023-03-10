@@ -274,9 +274,9 @@
       }
     },
     "2": {
-      "set_random_entry_nodes": false,
+      "set_random_entry_nodes": true,
       "random_entry_node_preference": "NONE",
-      "num_of_random_entry_nodes": 0,
+      "num_of_random_entry_nodes": 3,
       "set_random_high_value_nodes": false,
       "random_high_value_node_preference": "NONE",
       "num_of_random_high_value_nodes": 0,
