@@ -13,7 +13,6 @@ class Node:
         high_value_node: bool = False,
         entry_node: bool = False,
         vulnerability: float = 0.01,
-        classes: str = None
     ):
         """
         The Node constructor.
@@ -30,8 +29,7 @@ class Node:
         self.name: str = name
         self._high_value_node: bool = high_value_node
         self._entry_node: bool = entry_node
-        self._vulnerability = vulnerability    
-        self.classes = classes
+        self._vulnerability = vulnerability
 
         # Default node attributes
         self._x_pos: float = 0.0
@@ -49,7 +47,6 @@ class Node:
         uuid: str,
         high_value_node: bool,
         entry_node: bool,
-        classes: str,
         vulnerability: float,
         x_pos: float,
         y_pos: float,
@@ -73,7 +70,6 @@ class Node:
             high_value_node=high_value_node,
             entry_node=entry_node,
             vulnerability=vulnerability,
-            classes=classes
         )
         node._uuid = uuid
         node.x_pos = x_pos
