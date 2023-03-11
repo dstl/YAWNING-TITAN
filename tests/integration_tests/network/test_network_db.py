@@ -68,6 +68,6 @@ def test_network_schema():
         db = NetworkDB()
         db.rebuild_db()
         results = db.search(NetworkSchema.SET_RANDOM_ENTRY_NODES == True)
-        assert len(results) == 1
+        assert len(results) == 2
         assert results[0].doc_metadata.uuid == "b3cd9dfd-b178-415d-93f0-c9e279b3c511"
         db._db.close_and_delete_temp_db()
