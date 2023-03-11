@@ -115,7 +115,6 @@ const item_filter = new Filter();
 
 function setup_form_range(){
     $('input[type="range"].slider-progress').each(function(i,el){
-        console.log("EL",el);
         $(el).css({
             "--value":el.value,
             '--min': el.min == '' ? '0' : el.min,

@@ -9,35 +9,39 @@
 {% endblock %}
 
 {% block top-buttons %}
-<<<<<<< HEAD
   <a id="back" href="{% url 'Manage networks' %}"><i class="bi bi-arrow-90deg-left"></i></a>
-=======
-<a id="back" href="javascript:history.back()"><i class="bi bi-arrow-90deg-left"></i></a>
->>>>>>> dev-gui-fixed
 {% endblock %}
 
 {% block main %}
 <app-root></app-root>
-<<<<<<< HEAD
-<div id="random-elements" class="form-container">
-  <div id="network-tabs" class="flex-row">
-    <button type="button" id="network-attributes" class="btn">Network attributes</button>
-    <button type="button" id="node-list" class="btn">Node list</button>
+
+<div id="toolbar-buttons">
+  <div class="accordion-item">
+      <h2 class="accordion-header" id="advanced-search-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#advanced-search-items" aria-expanded="false">
+              Network toolbars
+          </button>
+      </h2>
+      <div id="advanced-search-items" class="accordion-collapse collapse" aria-labelledby="advanced-search-header" data-bs-parent="#search-accordion">
+          <div class="accordion-body">
+              <button id="network-randomisation-button" data-toolbar="#network-randomisation" class="btn toolbar-button">Network randomisation</button>
+              <button id="node-list-button"  data-toolbar="#node-list" class="btn toolbar-button">Node list</button>
+          </div>
+      </div>
   </div>
-  <form id="doc-meta-form" data-id="doc-meta">
-    {% include 'elements/el_form_fields.html' with form=doc_metadata_form protected=False %}
-  </form>
-  <form id="random-elements-form" class="config-form">
-    {% include 'elements/el_form_fields.html' with form=form protected=protected %}
-  </form>
-=======
+</div>
 <div id="network-randomisation" class="form-container">
   <div class="tab-content">
     <div class="toolbar-tab-title">
-      <h3>Network Randomisation</h3>
-      <p>Set the reset behaviour of the network</p>
+      <h3>Network randomisation</h3>
+      <p>Set the reset behavior of the network</p>
     </div>
-    {% include 'elements/el_form.html' with form=form form_name='network-randomisation' %}
+    <form id="doc-meta-form" data-id="doc-meta">
+      {% include 'elements/el_form_fields.html' with form=doc_metadata_form protected=False %}
+    </form>
+    <form id="random-elements-form" class="config-form">
+      {% include 'elements/el_form_fields.html' with form=form protected=protected %}
+    </form>
   </div>
 </div>
 <div id="node-list" class="node-list">
@@ -48,7 +52,6 @@
     </div>
     {% include 'elements/el_node_list.html' %}
   </div>
->>>>>>> dev-gui-fixed
 </div>
 {% endblock %}
 
@@ -63,21 +66,42 @@
 
   #main {
     padding: 0 !important;
-    position: relative;
   }
 
-<<<<<<< HEAD
-    #random-elements{
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      padding: var(--increment);
-      width: 350px;
-      height: 100%;
-      z-index: 999;
-      background-color: var(--superlight);
-    }
-=======
+  #toolbar-buttons{
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    background-color: #424242;
+    z-index: 1000;
+    width: 230px;
+    border-radius: .2rem;
+    transform: translate(-50%, 0%);
+  }
+  #toolbar-buttons .accordion-header{
+    height: 40px;
+  }
+  #toolbar-buttons .accordion-button{
+    padding: .875rem .875rem;
+    background-color: #424242;
+  }
+  #toolbar-buttons .accordion-body{
+    margin-top: .5rem;
+    background-color: #424242;
+    padding: 0;
+  }
+  #toolbar-buttons .accordion-body button{
+    width: 100%;
+    padding: .875rem .875rem;
+  }
+  #toolbar-buttons .accordion-body button:hover{
+    background-color: var(--dark);
+  }
+  #toolbar-buttons *{
+    color: var(--text-superlight);
+    text-align: left;
+  }
+
   #network-randomisation,
   #node-list {
     position: absolute;
@@ -90,7 +114,6 @@
     background-color: var(--superlight);
     display: none;
   }
->>>>>>> dev-gui-fixed
 
   app-root {
     height: 100%;
@@ -119,40 +142,22 @@
     height: 100%
   }
 
-<<<<<<< HEAD
-    .field-container:has(.form-switch){
-      max-width: 100px;
-    }
-    .help-text{
-      color: var(--text-dark);
-    }
-    #network-tabs{
-      width: 100%;
-      border-bottom: 1px solid var(--text-superlight);
-    }
-    #network-tabs>*{
-      margin-left: var(--increment);
-      margin-right: var(--increment);
-      color: var(--text-superlight);
-      border-radius: .5rem .5rem 0 0 ;
-      background-color: var(--light);
-    }
-=======
-  body {
-    height: 100%;
+  .field-container:has(.form-switch){
+    max-width: 100px;
+  }
+  .help-text{
+    color: var(--text-dark);
+  }
+  #network-tabs{
     width: 100%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    font-family: Arial, Helvetica, sans-serif
+    border-bottom: 1px solid var(--text-superlight);
   }
-
-  .mb-3 {
-    display: block;
-  }
-
-  .mb-3:has(.inline) {
-    display: flex;
+  #network-tabs>*{
+    margin-left: var(--increment);
+    margin-right: var(--increment);
+    color: var(--text-superlight);
+    border-radius: .5rem .5rem 0 0 ;
+    background-color: var(--light);
   }
 
   .field-container:has(.form-switch) {
@@ -175,6 +180,5 @@
     flex-direction: column;
     height: 100%;
 }
->>>>>>> dev-gui-fixed
 </style>
 {% endblock %}
