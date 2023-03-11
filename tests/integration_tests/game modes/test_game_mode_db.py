@@ -59,21 +59,21 @@ def test_game_mode_compatibility_query_network():
 
         network = default_18_node_network()
 
-        # default network is restricted to have between 2-5 entry nodes so this network will not be found
+        # default network is restricted to have between 2-6 entry nodes so this network will not be found
         found = db.search(GameModeSchema.ENTRY_NODES.works_with(network))
-        assert len(found) == len(db.all()) - 1
+        assert len(found) == len(db.all()) - 2
 
-        # default network is restricted to have between 2-5 high value nodes so this network will not be found
+        # default network is restricted to have between 2-6 high value nodes so this network will not be found
         found = db.search(GameModeSchema.HIGH_VALUE_NODES.works_with(network))
         assert len(found) == len(db.all()) - 1
 
-        # default network is restricted to have between 2-18 network nodes so this network will not be found
+        # all game modes are compatible with default network
         found = db.search(GameModeSchema.NETWORK_NODES.works_with(network))
-        assert len(found) == len(db.all()) - 1
+        assert len(found) == len(db.all())
 
-        # default game mode incompatible with network as high value nodes and network nodes have incompatible counts
+        # only 1 game mode is compatible with networks
         found = db.search(GameModeSchema.NETWORK_COMPATIBILITY.compatible_with(network))
-        assert len(found) == len(db.all()) - 1
+        assert len(found) == len(db.all()) - 2
 
         db._db.close_and_delete_temp_db()
 
@@ -85,15 +85,15 @@ def test_game_mode_compatibility_query_integer():
         db = GameModeDB()
 
         # all are compatible as they are either unrestricted or sufficiently sized.
-        found = db.search(GameModeSchema.ENTRY_NODES.works_with(3))
+        found = db.search(GameModeSchema.ENTRY_NODES.works_with(5))
         assert len(found) == len(db.all())
 
-        # default network is restricted to have between 2-5 high value nodes so this network will not be found
+        # default network is restricted to have between 2-6 high value nodes so this network will not be found
         found = db.search(GameModeSchema.HIGH_VALUE_NODES.works_with(0))
         assert len(found) == len(db.all()) - 1
 
         # all are compatible as they are either unrestricted or sufficiently sized.
         found = db.search(GameModeSchema.NETWORK_NODES.works_with(18))
-        assert len(found) == len(db.all()) - 1
+        assert len(found) == len(db.all())
 
         db._db.close_and_delete_temp_db()

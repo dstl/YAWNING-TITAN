@@ -257,7 +257,7 @@ class NetworkCreator(View):
             request,
             "network_creator.html",
             {
-                "toolbar": get_toolbar(),
+                "toolbar": get_toolbar("Manage networks"),
                 "form": NetworkTemplateForm(),
                 # "random_elements_form": NetworkFormManager.get_or_create_form(network_id),
                 "network_json": json.dumps(network.to_dict(json_serializable=True)),
@@ -339,7 +339,7 @@ class NodeEditor(View):
             request,
             "node_editor.html",
             {
-                "toolbar": get_toolbar(),
+                "toolbar": get_toolbar("Manage networks"),
                 "form": network_form,
                 "doc_metadata_form": network_form.doc_metadata_form,
                 "protected": network_form.network.doc_metadata.locked,
@@ -457,7 +457,7 @@ class GameModeConfigView(View):
                 "doc_metadata_form": game_mode_form.doc_metadata_form,
                 "current_section_name": section.name,
                 "last": False,
-                "toolbar": get_toolbar(),
+                "toolbar": get_toolbar("Manage game modes"),
                 "game_mode_name": game_mode_form.game_mode.doc_metadata.name,
                 "game_mode_id": game_mode_form.game_mode.doc_metadata.uuid,
                 "game_mode_description": game_mode_form.game_mode.doc_metadata.description

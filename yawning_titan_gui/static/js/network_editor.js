@@ -49,20 +49,18 @@ function update_network(form_element,operation){
 
 function toggleToolbar(iconEl) {
     // hide all sidebars
-    $("#network-randomisation").hide()
-    $("#node-list").hide()
+    $("#network-randomisation").hide();
+    $("#node-list").hide();
 
     // if icon clicked is network-randomisation
-    if (iconEl.hasClass("network-randomisation") && iconEl.hasClass("active")) {
-        $("#network-randomisation").show()
-    } else {
-        $("#network-randomisation").hide()
-    }
+    $($(iconEl).data("toolbar")).show();
+
+    console.log("TOOLBAR",$(iconEl).data("toolbar"));
 
     // if icon clicked is node-list
-    if (iconEl.hasClass("node-list") && iconEl.hasClass("active")) {
-        $("#node-list").show()
-    } else {
-        $("#node-list").hide()
-    }
+    // if (iconEl.hasClass("node-list") && iconEl.hasClass("active")) {
+    //     $("#node-list").show()
+    // } else {
+    //     $("#node-list").hide()
+    // }
 }

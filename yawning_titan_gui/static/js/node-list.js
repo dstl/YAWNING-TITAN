@@ -39,8 +39,8 @@ $(document).ready(function () {
 
   /**
  * Update the node list container with the latest node list
- * @param {*} nodeList 
- * @returns 
+ * @param {*} nodeList
+ * @returns
  */
   function updateNodeList(nodeList, filterStr) {
     var nodeListContainer = $("#node-list-container");
@@ -69,16 +69,16 @@ $(document).ready(function () {
         return 1;
       return 0;
     }).forEach(node => {
-      // add the node list item to the node lsit container
+      // add the node list item to the node list container
       nodeListContainer.append(createNodeListItem(node.uuid, node.name));
     });
   }
 
   /**
    * Creates the node list item element
-   * @param {*} id 
-   * @param {*} name 
-   * @returns 
+   * @param {*} id
+   * @param {*} name
+   * @returns
    */
   function createNodeListItem(id, name) {
     // create node list container

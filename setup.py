@@ -233,6 +233,7 @@ setup(
         "tensorflow": ["tensorflow==2.11.0"],
     },
     package_data={"yawning_titan": package_data_paths()},
+    data_files=[(".", ["VERSION"])],
     include_package_data=True,
     cmdclass={
         "install": PostInstallCommand,
