@@ -12,6 +12,7 @@ from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
 from yawning_titan_server.settings import DOCS_ROOT
+
 # from setup import version
 
 
@@ -75,6 +76,7 @@ class NetworkManager:
         networks: List[set] = []
         for k, v in filters.items():
             attr = f"filter_{k}"
+            print("ATTR = ", attr)
             if hasattr(cls, attr):
                 networks.append(set(getattr(cls, attr)(v["min"], v["max"])))
         if len(networks) == 1:
@@ -213,12 +215,13 @@ def get_toolbar(current_page_title: str = None):
                     ],
                 )
             ],
-            "info":[f"Version: {version()}"]
+            "info": [f"Version: {version()}"],
         },
     }
     for id, info in default_toolbar.items():
         default_toolbar[id]["active"] = info["title"] == current_page_title
     return default_toolbar
+
 
 def version() -> str:
     """
