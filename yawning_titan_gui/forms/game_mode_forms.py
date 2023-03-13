@@ -4,10 +4,10 @@ from typing import Dict, List
 from django import forms as django_forms
 from django.forms import widgets
 
-from yawning_titan.config.toolbox.core import ConfigGroup, ConfigItem
-from yawning_titan.config.toolbox.item_types.bool_item import BoolItem
-from yawning_titan.config.toolbox.item_types.float_item import FloatItem
-from yawning_titan.config.toolbox.item_types.int_item import IntItem
+from yawning_titan.config.core import ConfigGroup, ConfigItem
+from yawning_titan.config.item_types.bool_item import BoolItem
+from yawning_titan.config.item_types.float_item import FloatItem
+from yawning_titan.config.item_types.int_item import IntItem
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan_gui.forms import RangeInput
 from yawning_titan_gui.helpers import GameModeManager, next_key
@@ -24,7 +24,7 @@ class ConfigForm(django_forms.Form):
     - Represent elements that are mutually exclusive as dropdowns
 
     :param section: The string name of a config section in the Yawning Titan config
-    :param ConfigClass: An instance of :class: `~yawning_titan.config.toolbox.core.ConfigGroup` representing a
+    :param ConfigClass: An instance of :class: `~yawning_titan.config.core.ConfigGroup` representing a
         section of the Yawning Titan config
     """
 
@@ -94,7 +94,7 @@ class GameModeSection:
     def create_form_from_group(
         self, group: ConfigGroup, form_name: str = "", tier: int = 0
     ):
-        """Create a representation of a single :class: `~yawning_titan.config.toolbox.core.ConfigGroup` element as a django form.
+        """Create a representation of a single :class: `~yawning_titan.config.core.ConfigGroup` element as a django form.
 
         :param group: A config group object
         :param form_name: The name of the group/form element
@@ -185,7 +185,7 @@ class GameModeForm:
     game_mode: GameMode
 
     def __post_init__(self) -> None:
-        """Initialise the individual sections representing all descendent :class:`~yawning_titan.config.toolbox.core.ConfigGroup`'s."""
+        """Initialise the individual sections representing all descendent :class:`~yawning_titan.config.core.ConfigGroup`'s."""
         self.sections: Dict[str, GameModeSection] = {
             "red": GameModeSection(
                 section=self.game_mode.red, form_name="red", icon="bi-lightning"
@@ -196,9 +196,9 @@ class GameModeForm:
             "game_rules": GameModeSection(
                 section=self.game_mode.red, form_name="game_rules", icon="bi-clipboard"
             ),
-            "blue_can_observe": GameModeSection(
+            "observation_space": GameModeSection(
                 section=self.game_mode.red,
-                form_name="blue_can_observe",
+                form_name="observation_space",
                 icon="bi-binoculars",
             ),
             "rewards": GameModeSection(
@@ -286,7 +286,7 @@ class GameModeFormManager:
         set the options based off the default configuration.
 
         Set the status of the game mode sections based upon whether they pass the validation rules in their corresponding
-        :class: `~yawning_titan.config.toolbox.core.ConfigGroup`
+        :class: `~yawning_titan.config.core.ConfigGroup`
 
         :param game_mode_filename: the file name and extension of the current game mode
         :return: a dictionary representation of the sections of the :class: `~yawning_titan.game_modes.game_mode.GameMode`
