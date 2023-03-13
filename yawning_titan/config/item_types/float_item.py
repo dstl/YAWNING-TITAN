@@ -6,7 +6,6 @@ from yawning_titan.config.core import (
     ConfigItemValidation,
     ItemTypeProperties,
 )
-from yawning_titan.db.query import YawningTitanQuery
 from yawning_titan.exceptions import ConfigItemValidationError
 
 
@@ -90,7 +89,6 @@ class FloatItem(ConfigItem):
         self,
         value: float,
         doc: Optional[str] = None,
-        query: YawningTitanQuery = None,
         alias: Optional[str] = None,
         depends_on: Optional[List[str]] = None,
         properties: Optional[FloatProperties] = None,
@@ -102,4 +100,4 @@ class FloatItem(ConfigItem):
                 )
         else:
             properties = FloatProperties()
-        super().__init__(value, doc, query, alias, depends_on, properties)
+        super().__init__(value, doc, alias, depends_on, properties)
