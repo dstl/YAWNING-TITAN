@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tags %}
+
+{% block scripts %}
+
+    {% include 'wrappers/node_editor_imports.html' %}
+
+    <script src="{% static 'js/network_creator.js' %}"></script>
+
+{% endblock %}
+
+{% block top-buttons %}
+    <a id="back" href="{% url 'Manage networks' %}"><i class="bi bi-arrow-90deg-left"></i></a>
+{% endblock %}
+
+{% block main %}
+
+<div id="config-forms">
+    <header id="config-header">
+        <h2>Template Network</h2>
+        <h3>{{network_name}}</h3>
+    </header>
+    <div class="form-container">
+        {% include 'elements/el_form.html' with form=form form_name='template' %}
+    </div>
+    <a id="open-editor" class="btn btn-primary">Open in editor</a>
+</div>
+<div id="network-preview">
+    <app-root></app-root>
+</div>
+<style>
+     @font-face {
+      font-family: 'Material Icons';
+      font-style: normal;
+      font-weight: 400;
+      src: url(https://fonts.gstatic.com/s/materialicons/v139/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
+    }
+
+    .material-icons {
+      font-family: 'Material Icons';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    html {
+      display: flex;
+      flex: 1;
+      height: 100%
+    }
+
+    body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      font-family: Arial, Helvetica, sans-serif
+    }
+    header{
+        border-bottom: 1px solid var(--text-mid);
+        margin-bottom: var(--increment);
+    }
+    h3{
+        font-size: 1.2rem;
+    }
+
+    /* specific elements */
+    #main{
+        padding: var(--padding);
+        display: flex;
+        flex-direction: row;
+    }
+    #network-preview{
+        flex:1;
+        pointer-events: none;
+        overflow: hidden;
+    }
+    #config-forms{
+        display: flex;
+        flex-direction: column;
+        width: 450px;
+        height: 100%;
+        margin-right: var(--padding);
+    }
+    #config-forms>a,#config-forms>button{
+        margin-bottom: var(--increment);
+    }
+
+    .mb-3{
+        display: block;
+    }
+    .mb-3:has(.inline){
+        display: flex;
+    }
+
+    .form-container{
+        min-height: 0;
+        max-height: 100%;
+        overflow-y: auto;
+        flex: 1;
+    }
+
+    app-root{
+        width: calc(100% + 300px) !important;
+        height: 100%;
+        margin-left: -300px;
+    }
+</style>
+{% endblock %}

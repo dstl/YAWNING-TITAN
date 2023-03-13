@@ -82,6 +82,8 @@ class ActionLikelihoodChanceGroup(ActionLikelihoodGroup):
         :param chance: The chance of the action.
         :param doc: An optional descriptor.
         """
+        self.use = None
+        self.likelihood = None
         self.chance: FloatItem = FloatItem(
             value=chance,
             doc="The chance of the action.",

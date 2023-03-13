@@ -14,29 +14,6 @@ $(document).ready(function(){
         $("."+$("option:selected",this).text().replaceAll(" ","_")).removeClass("hidden")
     });
 
-    $("input[type='checkbox'].grouped.parent").each(function(i,el){
-        let child_el = `.${$(el).get(0).classList[1]}:not(.parent)`;
-        if($(el).is(":checked")){
-            $(el).addClass("checked");
-            $(child_el).removeClass("hidden");
-        }else{
-            $(child_el).attr("disabled","disabled");
-            $(child_el).closest(".mb-3").removeClass("active");
-        }
-    });
-
-    $("input[type='text'].grouped.parent").each(function(){
-        let child_el = `.${$(el).get(0).classList[1]}:not(.parent)`;
-        if($(el).val().length > 0){
-            $(el).addClass("checked");
-            $(child_el).removeClass("hidden");
-        }else{
-            $(child_el).attr("disabled","disabled");
-            $(child_el).closest(".mb-3").removeClass("active");
-        }
-    });
-    //
-
     // update select dependencies
     $(document).on("change",".config-form select",function(){
         if($("show-hidden-dependents").is(":checked")){
@@ -72,7 +49,11 @@ $(document).ready(function(){
     });
 
     $(".config-form").change(function(){
-        submit_form(this);
+        submit_form(this,SECTION_NAME);
+    });
+
+    $("#doc-meta-form").change(function(){
+        submit_form(this,"doc-meta");
     });
 
     $("#config-form-icons>.icon").click(function(){
@@ -85,7 +66,7 @@ $(document).ready(function(){
 
 function save_game_mode(){
     config = new FormData();
-    config.append('_game_mode_filename',game_mode_filename);
+    config.append('_game_mode_id',GAME_MODE_ID);
     config.append('_operation',"save");
     $.ajax({
         type: "POST",
@@ -100,11 +81,11 @@ function save_game_mode(){
 }
 
 // wrapper for async post request for config section form processing
-function submit_form(form_element){
+function submit_form(form_element,section_name){
     config = new FormData($(form_element)[0]);
     config.append('_form_id',$(form_element).data("id"));
     config.append('_section_name',section_name);
-    config.append('_game_mode_filename',game_mode_filename);
+    config.append('_game_mode_id',GAME_MODE_ID);
     config.append('_operation',"update");
     $.ajax({
         type: "POST",
@@ -115,19 +96,22 @@ function submit_form(form_element){
         cache: false,
         dataType: "json",
         success: function(response){
-            $(".error-list",form_element).empty()
+            $(".error-list",form_element).empty();
+            if(response.valid){
+                $(`.icon-container[data-section="${SECTION_NAME}"]`).addClass("complete");
+            }
         },
         error: function(response){
             let errors = response.responseJSON.errors;
             add_form_errors(JSON.parse(errors));
         }
     });
-
 }
 
 function add_form_errors(errors){
     $(".error-list").remove(); // remove existing errors
     $(".erroneous").removeClass("erroneous"); // remove all erroneous settings
+    $(`.icon-container[data-section="${SECTION_NAME}"]`).removeClass("complete"); // show section as incomplete
     for (const [form_id, error] of Object.entries(errors)){
         let group_error_list = $("<ul class='error-list'></ul>");
 
@@ -145,20 +129,5 @@ function add_form_errors(errors){
             info_obj.children(".error-list").remove();
             info_obj.append(item_error_list);
         }
-    }
-}
-
-// update dependent elements state
-function handle_dependent_elements(selector, operation){
-    if(operation == "activate"){
-        $(selector).removeClass("hidden");
-        $(selector).removeAttr("disabled");
-        $(selector).closest(".mb-3").addClass("active");
-    }else if(operation == "deactivate"){
-        if($("show-hidden-dependents").is(":checked")){
-            $(selector).addClass("hidden")
-        }
-        $(selector).attr("disabled","disabled");
-        $(selector).closest(".mb-3").removeClass("active");
     }
 }

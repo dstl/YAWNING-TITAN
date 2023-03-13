@@ -1,7 +1,8 @@
 {% load static %}
 {% load tags %}
-<form id="{{form_name}}-form" class="config-form {{form_name}}" action="" method="post">
-    {% for field in form %}
+
+<div class="fields">
+    {% for field in form.visible_fields %}
         <div class="mb-3 active{% if field.errors %} erroneous{% endif %}">
             <div class="info">
                 <label for="id_{{ field.name }}" class="form-label">{{ field.label|format_text }}</label>
@@ -19,4 +20,4 @@
             </div>
         </div>
     {% endfor %}
-</form>
+</div>

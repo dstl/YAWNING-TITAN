@@ -38,20 +38,46 @@ class NetworkQuery(YawningTitanQuery):
         """
         return YawningTitanQuery()["nodes"].len_eq(n)
 
-    def _num_of_entry_nodes(self, n):
+    @staticmethod
+    def num_of_nodes_between(min: int, max: int) -> YawningTitanQuery:
+        """Returns all Networks with between `min` and `max` number of nodes.
+
+        :Example:
+
+        >>> from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
+        >>> db = NetworkDB()
+        >>> networks = db.search(NetworkQuery.num_of_nodes(18))
+
+        :param min: The minimum number of nodes in a Network.
+        :param max: The maximum number of nodes in a Network.
+        :return: A list of Networks.
+        """
+        return YawningTitanQuery()["nodes"].len_bt(min, max)
+
+    def _num_nodes_of_type(self, n, type):
         """Helper function for num_of_entry_nodes."""
 
         def test_len(val, i):
             try:
-                nodes = []
-                for node in val.items():
-                    if node[1]["entry_node"]:
-                        nodes.append(node)
+                nodes = [n for n in val.values() if val[type]]
                 return len(nodes) == i
             except TypeError:
                 return False
 
         return self.test(test_len, n)
+
+    def _num_nodes_of_type_between(self, min, max, type):
+        """Helper function for num_of_entry_nodes."""
+
+        def test_len(val, min, max, type):
+            print("VAL", val)
+            try:
+                nodes = [n for n in val.values() if n[type]]
+                return min <= len(nodes) <= max
+            except TypeError:
+                return False
+
+        return self.test(test_len, min, max, type)
 
     @staticmethod
     def num_of_entry_nodes(n: int) -> YawningTitanQuery:
@@ -67,22 +93,23 @@ class NetworkQuery(YawningTitanQuery):
         :param n: The target number of entry nodes.
         :return: A List of Nodes.
         """
-        return NetworkQuery().nodes._num_of_entry_nodes(n)
+        return NetworkQuery().nodes._num_nodes_of_type(n, "entry_node")
 
-    def _num_of_high_value_nodes(self, n):
-        """Helper function for num_of_high_value_nodes."""
+    @staticmethod
+    def num_of_entry_nodes_between(min: int, max: int) -> YawningTitanQuery:
+        """
+        Returns all Networks with between `min` and `max` number of entry nodes.
 
-        def test_len(val, i):
-            try:
-                nodes = []
-                for node in val.items():
-                    if node[1]["high_value_node"]:
-                        nodes.append(node)
-                return len(nodes) == i
-            except TypeError:
-                return False
+        :Example:
 
-        return self.test(test_len, n)
+        >>> from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
+        >>> db = NetworkDB()
+        >>> networks = db.search(NetworkQuery.num_of_entry_nodes_between(3,6))
+
+        :param n: The target number of entry nodes.
+        :return: A List of Nodes.
+        """
+        return NetworkQuery().nodes._num_nodes_of_type_between(min, max, "entry_node")
 
     @staticmethod
     def num_of_high_value_nodes(n: int) -> YawningTitanQuery:
@@ -95,10 +122,30 @@ class NetworkQuery(YawningTitanQuery):
         >>> db = NetworkDB()
         >>> networks = db.search(NetworkQuery.num_of_high_value_nodes(3))
 
-        :param n: The target number of high_value nodes.
+        :param min: The minimum number of high_value nodes.
+        :param max: The maximum number of high_value nodes.
         :return: A List of Nodes.
         """
-        return NetworkQuery().nodes._num_of_high_value_nodes(n)
+        return NetworkQuery().nodes._num_nodes_of_type(n, "high_value_node")
+
+    @staticmethod
+    def num_of_high_value_nodes_between(min: int, max: int) -> YawningTitanQuery:
+        """
+        Returns all Networks with between `min` and `max` number of high value nodes.
+
+        :Example:
+
+        >>> from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
+        >>> db = NetworkDB()
+        >>> networks = db.search(NetworkQuery.num_of_high_value_nodes_between(3,6))
+
+        :param min: The minimum number of high_value nodes.
+        :param max: The minimum number of high_value nodes.
+        :return: A List of Nodes.
+        """
+        return NetworkQuery().nodes._num_nodes_of_type_between(
+            min, max, "high_value_node"
+        )
 
 
 class NetworkSchema(YawningTitanDBSchema):

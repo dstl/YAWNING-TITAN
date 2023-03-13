@@ -1,11 +1,14 @@
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
+from django.views.generic import TemplateView
 
+from yawning_titan_gui.helpers import get_docs_sections
 from yawning_titan_gui.views import (
     DocsView,
     GameModeConfigView,
     GameModesView,
     HomeView,
+    NetworkCreator,
     NetworksView,
     NodeEditor,
     db_manager,
@@ -14,10 +17,17 @@ from yawning_titan_gui.views import (
 )
 
 urlpatterns = [
-    path("", HomeView.as_view(), name="home"),
-    path("docs/", DocsView.as_view(), name="docs"),
+    path("", HomeView.as_view(), name="Home"),
+    path("docs/", DocsView.as_view(), name="Documentation"),
+    path("docs/<str:section>/", DocsView.as_view(), name="Documentation"),
     path("game_modes/", GameModesView.as_view(), name="Manage game modes"),
     path("networks/", NetworksView.as_view(), name="Manage networks"),
+    path("network_creator", NetworkCreator.as_view(), name="network creator"),
+    path(
+        "network_creator/<str:network_id>/",
+        NetworkCreator.as_view(),
+        name="network creator",
+    ),
     path(
         "game_mode_config/",
         GameModeConfigView.as_view(),
@@ -38,6 +48,16 @@ urlpatterns = [
     path("manage_db/", db_manager, name="db manager"),
     path("update_game_mode/", update_game_mode, name="update config"),
     path("update_network/", update_network, name="update network"),
+    path("/", TemplateView.as_view(template_name="index.html"), name="docs index"),
+]
+
+urlpatterns += [
+    path(
+        f"docs_{name}/",
+        TemplateView.as_view(template_name=f"source/{name}.html"),
+        name=f"docs {name}",
+    )
+    for name in get_docs_sections()
 ]
 
 urlpatterns += staticfiles_urlpatterns()
