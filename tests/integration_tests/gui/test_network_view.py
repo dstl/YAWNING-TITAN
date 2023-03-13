@@ -83,7 +83,8 @@ class TestNetworkView:
         """Test the function that processes gui requests when given an invalid operation."""
         response = client.post(self.url, {"attribute": "test", "min": 1, "max": 1})
         assert response.status_code == 200
-        assert response.content == json.dumps({"ids": None}).encode("utf-8")
+        print("CONTENT", response.content)
+        assert response.content == json.dumps({"item_ids": []}).encode("utf-8")
 
     def test_create(self, client: Client):
         """Test the function that processes gui requests to :method: `~yawning_titan_gui.helpers.GameModeManager.create_game_mode`."""

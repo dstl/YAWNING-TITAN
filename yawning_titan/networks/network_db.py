@@ -69,14 +69,15 @@ class NetworkQuery(YawningTitanQuery):
     def _num_nodes_of_type_between(self, min, max, type):
         """Helper function for num_of_entry_nodes."""
 
-        def test_len(val, min, max):
+        def test_len(val, min, max, type):
+            print("VAL", val)
             try:
-                nodes = [n for n in val.values() if val[type]]
+                nodes = [n for n in val.values() if n[type]]
                 return min <= len(nodes) <= max
             except TypeError:
                 return False
 
-        return self.test(test_len, min, max)
+        return self.test(test_len, min, max, type)
 
     @staticmethod
     def num_of_entry_nodes(n: int) -> YawningTitanQuery:
