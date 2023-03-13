@@ -85,21 +85,18 @@ class BlueLossConditionGroup(AnyUsedGroup):
         self.all_nodes_lost: BoolItem = BoolItem(
             value=all_nodes_lost,
             doc="The blue agent loses if all the nodes become compromised",
-            query=GameModeConfigurationSchema.GAME_RULES.BLUE_LOSS_CONDITION.ALL_NODES_LOST,
             properties=BoolProperties(allow_null=True, default=False),
             alias="lose_when_all_nodes_lost",
         )
         self.high_value_node_lost: BoolItem = BoolItem(
             value=high_value_node_lost,
             doc="Blue loses if a special node designated as 'high value' is lost",
-            query=GameModeConfigurationSchema.GAME_RULES.BLUE_LOSS_CONDITION.HIGH_VALUE_NODE_LOST,
             properties=BoolProperties(allow_null=True, default=False),
             alias="lose_when_high_value_node_lost",
         )
         self.target_node_lost: BoolItem = BoolItem(
             value=target_node_lost,
             doc="Blue loses if a target node it lost",
-            query=GameModeConfigurationSchema.GAME_RULES.BLUE_LOSS_CONDITION.TARGET_NODE_LOST,
             properties=BoolProperties(allow_null=True, default=False),
             alias="lose_when_target_node_lost",
         )
@@ -145,7 +142,6 @@ class GameRules(ConfigGroup):
                 "The length of a grace period at the start of the game. During this time the red agent cannot act. "
                 "This gives the blue agent a chance to 'prepare' (A length of 0 means that there is no grace period)"
             ),
-            query=GameModeConfigurationSchema.GAME_RULES.GRACE_PERIOD_LENGTH,
             properties=IntProperties(
                 allow_null=False,
                 default=0,
@@ -159,7 +155,6 @@ class GameRules(ConfigGroup):
         self.max_steps = IntItem(
             value=max_steps,
             doc="The max steps that a game can go on for. If the blue agent reaches this they win",
-            query=GameModeConfigurationSchema.GAME_RULES.MAX_STEPS,
             properties=IntProperties(
                 allow_null=False,
                 default=1,
