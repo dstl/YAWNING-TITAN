@@ -2,7 +2,7 @@
 {% load tags %}
 
 <div class="fields">
-    {% for field in form.visible_fields %}
+    {% for field in fields %}
         <div class="mb-3 active{% if field.errors %} erroneous{% endif %}">
             <div class="info">
                 <label for="id_{{ field.name }}" class="form-label">{{ field.label|format_text }}</label>

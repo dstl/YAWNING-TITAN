@@ -402,8 +402,8 @@ option:hover{
     -o-transition: none !important;
 }
 .btn-primary{
-    background-color: var(--primary);
-    border-color: var(--primary);
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
     color: var(--text-superlight) !important;
 }
 .btn{
