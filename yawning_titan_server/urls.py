@@ -1,7 +1,7 @@
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
+from django.views.generic import TemplateView
 
-from dist.manage.django.views.generic.base import TemplateView
 from yawning_titan_gui.helpers import get_docs_sections
 from yawning_titan_gui.views import (
     DocsView,
