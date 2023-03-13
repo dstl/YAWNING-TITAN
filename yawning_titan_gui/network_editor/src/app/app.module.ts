@@ -37,7 +37,7 @@ export function cytoscapeStyleFactory(configurationService: ConfigurationService
     {
       provide: APP_INITIALIZER, deps: [ConfigurationService], multi: true,
       useFactory: (configurationService: ConfigurationService) => () => configurationService.loadConfig(
-        isDevMode() ? 'assets/config.json' : 'static/dist/assets/config.json'
+        isDevMode() ? 'assets/config.json' : '_static/dist/assets/config.json'
       ).toPromise(),
     },
     {

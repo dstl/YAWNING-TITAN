@@ -26,6 +26,7 @@ SECRET_KEY = "django-insecure-cu!)4gec_vj=vhj&jba(b$vd6#$i#v^tr%z%#4idf9c17a#7g9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+DOCS_ROOT = BASE_DIR / "docs/_build/html"
 
 # Application definition
 
@@ -52,7 +53,7 @@ ROOT_URLCONF = "yawning_titan_server.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "yawning_titan_gui/templates"],
+        "DIRS": [BASE_DIR / "yawning_titan_gui/templates", DOCS_ROOT],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -71,6 +72,9 @@ WSGI_APPLICATION = "yawning_titan_server.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {"default": {}}
+
+# Update the databases dynamically or only when 'Save'
+DYNAMIC_UPDATES = True
 
 
 # Password validation
@@ -107,25 +111,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "_static/"
 STATIC_ROOT = STATIC_DIR
-STATICFILES_DIRS = [BASE_DIR / "yawning_titan_gui/static"]
+STATICFILES_DIRS = [BASE_DIR / "yawning_titan_gui/static", DOCS_ROOT / "_static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 X_FRAME_OPTIONS = "SAMEORIGIN"
-
-
-# ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
-
-# CORS_ORIGIN_ALLOW_ALL = False
-
-# CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "http://127.0.0.1:8000"]
-# CORS_ORIGIN_WHITELIST = (
-#     "http://127.0.0.1*",
-#     "http://localhost:8000",
-#     "http://127.0.0.1:8000",
-#     "/node_editor/",
-# )

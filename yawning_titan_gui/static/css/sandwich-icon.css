@@ -2,8 +2,8 @@
 #sandwich-icon{
     width: 30px;
     height: 22px;
-    margin-left: var(--increment);
-    margin-right: var(--increment);
+    margin-left: calc(3*var(--increment));
+    margin-right: calc(3*var(--increment));
     position: relative;
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);

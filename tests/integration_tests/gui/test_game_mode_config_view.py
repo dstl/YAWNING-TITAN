@@ -55,7 +55,7 @@ class TestGameModeConfigView:
         return ids
 
     def test_get_with_no_args(self, client: Client):
-        """Test that a game mode config cannot be retrieved without a game_mode_filename."""
+        """Test that a game mode config cannot be retrieved without a _game_mode_id."""
         url = reverse("game mode config")
         response = client.get(url)
         assert response.status_code == 404

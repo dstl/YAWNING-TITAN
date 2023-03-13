@@ -1,4 +1,5 @@
 import json
+import traceback
 from io import StringIO
 
 from django.http import Http404, HttpRequest, JsonResponse
@@ -8,29 +9,27 @@ from django.views import View
 
 from yawning_titan.db.doc_metadata import DocMetadata
 from yawning_titan.game_modes.game_mode import GameMode
+from yawning_titan.networks import network_creator
 from yawning_titan.networks.network import Network
 from yawning_titan_gui.forms.game_mode_forms import (
     GameModeForm,
     GameModeFormManager,
+    GameModeSearchForm,
     GameModeSection,
 )
-from yawning_titan_gui.forms.netowork_forms import NetworkFormManager
-from yawning_titan_gui.helpers import GameModeManager, NetworkManager
-
-default_sidebar = {
-    "Documentation": ["Getting started", "Tutorials", "How to configure", "Code"],
-    "Configuration": [
-        "Manage game modes",
-    ],
-    "Training runs": ["Setup a training run", "View completed runs"],
-    "About": ["Contributors", "Report bug", "FAQ"],
-}
+from yawning_titan_gui.forms.network_forms import (
+    NetworkFormManager,
+    NetworkSearchForm,
+    NetworkTemplateForm,
+)
+from yawning_titan_gui.helpers import GameModeManager, NetworkManager, get_toolbar
 
 default_toolbar = {
-    "network-randomisation": {"icon": "bi-gear", "title": "Set network randomisation"},
-    "node-list": {"icon": "bi-diagram-2", "title": "Network nodes"},
-    # "run-config-set": {"icon": "bi-collection-play", "title": "Run config"},
-    # "run-view": {"icon": "bi-play", "title": "Run game"},
+    "home": {"icon": "bi-house-door", "title": "Home"},
+    "doc": {"icon": "bi-file-earmark", "title": "Documentation"},
+    "manage_game_modes": {"icon": "bi-gear", "title": "Manage game modes"},
+    "manage_networks": {"icon": "bi-diagram-2", "title": "Manage networks"},
+    "run-view": {"icon": "bi-play", "title": "Run session"},
 }
 
 protected_game_mode_ids = ["base_config.yaml"]
@@ -60,7 +59,7 @@ class HomeView(View):
         return render(
             request,
             "home.html",
-            {"sidebar": default_sidebar},
+            {"toolbar": get_toolbar("Home")},
         )
 
 
@@ -71,7 +70,7 @@ class DocsView(View):
     implements 'get' and 'post' methods to handle page requests.
     """
 
-    def get(self, request: HttpRequest, *args, **kwargs):
+    def get(self, request: HttpRequest, *args, section: str = None, **kwargs):
         """
         Handle page get requests.
 
@@ -79,23 +78,31 @@ class DocsView(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
+        doc_url = reverse(f"docs {section}") if section else reverse("docs index")
         return render(
             request,
             "docs.html",
-            {"sidebar": default_sidebar},
+            {
+                "toolbar": get_toolbar("Documentation"),
+                "doc_url": doc_url,
+            },
         )
 
-    def post(self, request: HttpRequest, *args, **kwargs):
+    def post(self, request: HttpRequest, *args, section: str = None, **kwargs):
         """Handle page post requests.
 
         :param request: A Django `request` object that contains the data passed from
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
+        doc_url = reverse(f"docs {section}") if section else "index.html"
         return render(
             request,
             "docs.html",
-            {"sidebar": default_sidebar},
+            {
+                "toolbar": get_toolbar("Documentation"),
+                "doc_url": doc_url,
+            },
         )
 
 
@@ -133,11 +140,36 @@ class GameModesView(View):
             request,
             "game_modes.html",
             {
-                "sidebar": default_sidebar,
+                "toolbar": get_toolbar("Manage game modes"),
+                "item_type": "game_mode",
                 "dialogue_boxes": dialogue_boxes,
                 "game_modes": GameModeManager.get_game_mode_data(),
+                # "search_form": GameModeSearchForm(),
+                "game_mode": GameMode(),
             },
         )
+
+    def post(self, request: HttpRequest, *args, **kwargs):
+        """Handle page get requests.
+
+        :param request: A Django `request` object that contains the data passed from
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
+        """
+        search_form = GameModeSearchForm(request.POST)
+        try:
+            if search_form.is_valid():
+                if search_form.filters:
+                    game_modes = GameModeManager.filter(search_form.filters)
+                else:
+                    game_modes = GameModeManager.db.all()
+                return JsonResponse(
+                    {"item_ids": [g.doc_metadata.uuid for g in game_modes]}
+                )
+        except Exception as e:
+            print("ERR", e, traceback.print_exc())
+        print("%%", search_form.errors)
+        return JsonResponse({"message": search_form.errors}, status=500)
 
 
 class NetworksView(View):
@@ -150,43 +182,7 @@ class NetworksView(View):
         :param: request: the Django page `request` object containing the html data for `networks.html` and the server GET / POST request bodies.
         """
         networks = NetworkManager.db.all()
-        range_bound_items = [
-            {
-                "name": "entry_nodes",
-                "min": min(
-                    [
-                        len(network.entry_nodes) if network.entry_nodes else 0
-                        for network in networks
-                    ]
-                ),
-                "max": max(
-                    [
-                        len(network.entry_nodes) if network.entry_nodes else 0
-                        for network in networks
-                    ]
-                ),
-            },
-            {
-                "name": "high_value_nodes",
-                "min": min(
-                    [
-                        len(network.high_value_nodes) if network.high_value_nodes else 0
-                        for network in networks
-                    ]
-                ),
-                "max": max(
-                    [
-                        len(network.high_value_nodes) if network.high_value_nodes else 0
-                        for network in networks
-                    ]
-                ),
-            },
-            {
-                "name": "network_nodes",
-                "min": min([len(network.nodes) for network in networks]),
-                "max": max([len(network.nodes) for network in networks]),
-            },
-        ]
+
         dialogue_boxes = [
             {
                 "id": "delete-dialogue",
@@ -212,9 +208,10 @@ class NetworksView(View):
             request,
             "networks.html",
             {
-                "sidebar": default_sidebar,
+                "toolbar": get_toolbar("Manage networks"),
+                "item_type": "network",
                 "networks": [network.doc_metadata for network in networks],
-                "range_bound_items": range_bound_items,
+                "search_form": NetworkSearchForm(),
                 "dialogue_boxes": dialogue_boxes,
             },
         )
@@ -226,17 +223,99 @@ class NetworksView(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        if request.method == "POST":
-            return JsonResponse(
-                {
-                    "ids": NetworkManager.filter(
-                        request.POST.get("attribute"),
-                        request.POST.get("min"),
-                        request.POST.get("max"),
-                    )
-                }
+        search_form = NetworkSearchForm(request.POST)
+        if search_form.is_valid():
+            if search_form.filters:
+                networks = NetworkManager.filter(search_form.filters)
+            else:
+                networks = [n.doc_metadata.uuid for n in NetworkManager.db.all()]
+            return JsonResponse({"item_ids": networks})
+
+        return JsonResponse({"message": search_form.errors})
+
+
+class NetworkCreator(View):
+    """Django page for creating a network from a template."""
+
+    def get(
+        self,
+        request: HttpRequest,
+        *args,
+        network_id: str = None,
+        **kwargs,
+    ):
+        """Handle page get requests.
+
+        Args:
+            request: A Django `request` object that contains the data passed from
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
+        """
+        network = NetworkManager.db.get(network_id)
+        return render(
+            request,
+            "network_creator.html",
+            {
+                "toolbar": get_toolbar("Manage networks"),
+                "form": NetworkTemplateForm(),
+                # "random_elements_form": NetworkFormManager.get_or_create_form(network_id),
+                "network_json": json.dumps(network.to_dict(json_serializable=True)),
+                "network_name": network.doc_metadata.name,
+                "network_id": network.doc_metadata.uuid,
+            },
+        )
+
+    def post(
+        self,
+        request: HttpRequest,
+        *args,
+        network_id: str = None,
+        **kwargs,
+    ):
+        """Handle page post requests.
+
+        :param request: A Django `request` object that contains the data passed from
+            the html page. A `request` object will always be delivered when a page
+            object is accessed.
+        """
+        creator_type = request.POST.get("type")
+        if creator_type == "Mesh":
+            network = network_creator.create_mesh(
+                size=int(request.POST.get("size")),
+                connectivity=float(request.POST.get("connectivity")),
             )
-        return JsonResponse({"message": "error"}, status=400)
+        elif creator_type == "Star":
+            network = network_creator.create_star(
+                first_layer_size=int(request.POST.get("first_layer_size")),
+                group_size=int(request.POST.get("star_group_size")),
+                group_connectivity=float(request.POST.get("star_group_connectivity")),
+            )
+        elif creator_type == "P2P":
+            network = network_creator.create_p2p(
+                inter_group_connectivity=float(
+                    request.POST.get("inter_group_connectivity")
+                ),
+                group_size=int(request.POST.get("P2P_group_size")),
+                group_connectivity=float(request.POST.get("P2P_group_connectivity")),
+            )
+        elif creator_type == "Ring":
+            network = network_creator.create_ring(
+                break_probability=float(request.POST.get("break_probability")),
+                ring_size=int(request.POST.get("ring_size")),
+            )
+        current_network = NetworkManager.db.get(network_id)
+        network._doc_metadata = (
+            current_network.doc_metadata
+        )  # copy the metadata from the old to the new network instance
+        NetworkManager.db.update(network=network)
+        network_form = NetworkFormManager.get_or_create_form(network_id)
+        network_form.network = network
+        return JsonResponse(
+            {
+                "network_json": json.dumps(network.to_dict(json_serializable=True)),
+                "network_id": network.doc_metadata.uuid,
+            }
+        )
 
 
 class NodeEditor(View):
@@ -259,9 +338,10 @@ class NodeEditor(View):
             request,
             "node_editor.html",
             {
-                "sidebar": default_sidebar,
+                "toolbar": get_toolbar("Manage networks"),
                 "form": network_form,
-                "toolbar": default_toolbar,
+                "doc_metadata_form": network_form.doc_metadata_form,
+                "protected": network_form.network.doc_metadata.locked,
                 "network_id": network_id,
                 "network_json": json.dumps(
                     network_form.network.to_dict(json_serializable=True)
@@ -347,7 +427,7 @@ class GameModeConfigView(View):
             return redirect(
                 "game mode config",
                 game_mode_id,
-                game_mode_form.get_next_section_name(section_name),
+                game_mode_form.get_next_section(section),
             )
         return self.render_page(request, section, game_mode_form)
 
@@ -373,10 +453,15 @@ class GameModeConfigView(View):
             {
                 "sections": game_mode_form.sections,
                 "section": section,
+                "doc_metadata_form": game_mode_form.doc_metadata_form,
                 "current_section_name": section.name,
                 "last": False,
-                "sidebar": default_sidebar,
+                "toolbar": get_toolbar("Manage game modes"),
                 "game_mode_name": game_mode_form.game_mode.doc_metadata.name,
+                "game_mode_id": game_mode_form.game_mode.doc_metadata.uuid,
+                "game_mode_description": game_mode_form.game_mode.doc_metadata.description
+                if game_mode_form.game_mode.doc_metadata.description
+                else "",
                 "protected": game_mode_form.game_mode.doc_metadata.locked,
             },
         )
@@ -390,11 +475,10 @@ def db_manager(request: HttpRequest) -> JsonResponse:
     use the information to perform the appropriate alteration to the
     game mode files contained in the `GAME_MODES_DIR`.
 
-    Args:
-        request: here the django_request object will be specifically loaded with
+    :param request: here the django_request object will be specifically loaded with
         `operation`,`game_mode_name` and optional `source_game_mode` parameters.
 
-    Returns:
+    :return:
         `JsonResponse` object with either success code 500 (generic success) or
         error code 400 (generic error) containing a message.
     """
@@ -442,10 +526,7 @@ def db_manager(request: HttpRequest) -> JsonResponse:
 
         def create_game_mode_from():
             game_mode = GameModeManager.db.get(request.POST.get("source_item_id"))
-            meta = game_mode.doc_metadata.to_dict()
-            meta["uuid"] = None
-            meta["locked"] = False
-            game_mode._doc_metadata = DocMetadata(**meta)
+            game_mode._doc_metadata = DocMetadata()
             GameModeManager.db.insert(game_mode=game_mode, name=item_name)
             return reverse(
                 "game mode config",
@@ -454,10 +535,7 @@ def db_manager(request: HttpRequest) -> JsonResponse:
 
         def create_network_from():
             network = NetworkManager.db.get(request.POST.get("source_item_id"))
-            meta = network.doc_metadata.to_dict()
-            meta["uuid"] = None
-            meta["locked"] = False
-            network._doc_metadata = DocMetadata(**meta)
+            network._doc_metadata = DocMetadata()
             NetworkManager.db.insert(network=network, name=item_name)
             return reverse(
                 "node editor",
@@ -465,7 +543,7 @@ def db_manager(request: HttpRequest) -> JsonResponse:
             )
 
         operations = {
-            "game mode": {
+            "game_mode": {
                 "create": create_game_mode,
                 "delete": delete_game_mode,
                 "create from": create_game_mode_from,
@@ -505,12 +583,16 @@ def update_game_mode(request: HttpRequest) -> JsonResponse:
             return JsonResponse({"message": "saved"})
         elif operation == "update":
             section_name = request.POST.get("_section_name")
+            if section_name == "doc-meta":
+                game_mode_form.update_doc_meta(data=request.POST)
             form_id = int(request.POST.get("_form_id"))
             section = game_mode_form.update_section(
                 section_name=section_name, form_id=form_id, data=request.POST
             )
             if section.config_class.validation.passed:
-                return JsonResponse({"message": "updated"})
+                return JsonResponse(
+                    {"valid": game_mode_form.game_mode.validation.passed}
+                )  # whether the complete game mode is valid
             else:
                 return JsonResponse(
                     {"errors": json.dumps(section.get_form_errors())}, status=400
@@ -531,14 +613,27 @@ def update_network(request: HttpRequest) -> JsonResponse:
     :return: response object containing error if config is invalid or a json representation of a network if valid.
     """
     if request.method == "POST":
-        network_form = NetworkFormManager.update_network_attributes(
-            request.POST.get("_network_id"), request.POST
-        )
-        return JsonResponse(
-            {
-                "network_json": json.dumps(
-                    network_form.network.to_dict(json_serializable=True)
+        operation = request.POST.get("_operation")
+        network_id = request.POST.get("_network_id")
+        if operation == "update":
+            try:
+                network_form = NetworkFormManager.update_network_attributes(
+                    network_id, request.POST
                 )
-            }
-        )
+            except Exception as e:
+                print("OOPS", e)
+            return JsonResponse(
+                {
+                    "network_json": json.dumps(
+                        network_form.network.to_dict(json_serializable=True)
+                    )
+                }
+            )
+        elif operation == "update doc meta":
+            try:
+                network_form = NetworkFormManager.get_or_create_form(network_id)
+                network_form.update_doc_meta(request.POST)
+            except Exception as e:
+                print("OOPS", e)
+            return JsonResponse({"network_json": None})
     return JsonResponse({"message": "Invalid operation"})

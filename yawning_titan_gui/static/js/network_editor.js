@@ -15,36 +15,52 @@ $(document).ready(function () {
     })
 });
 
-$(window).on("load", function () {
-    $("#network-randomisation-form .form-check-input, #network-randomisation-form .form-control").on("change", function () {
-        update_network($("#network-randomisation-form"));
+$(window).on("load",function(){
+    $("#random-elements-form").on("change",function(){
+        update_network(this,"update");
     });
-
+    $("#doc-meta-form").on("change",function(){
+        update_network(this,"update doc meta");
+    });
 });
 
 
-function update_network(form_element) {
+function update_network(form_element,operation){
     config = new FormData($(form_element)[0]);
-    config.append("_network_id", NETWORK_ID);
-    proxy.NETWORK_SETTINGS = config;
+    config.append("_network_id",NETWORK_ID);
+    config.append('_operation',operation);
+    console.log("UPDATE",NETWORK_ID,operation);
+    $.ajax({
+        type: "POST",
+        url: UPDATE_URL,
+        data: config,
+        processData: false,
+        contentType: false,
+        cache: false,
+        dataType: "json",
+        success: function(response){
+            console.log("UPDATED");
+            if (response.network_json){
+                proxy.NETWORK = response.network_json;
+            }
+        }
+    });
 }
 
 function toggleToolbar(iconEl) {
     // hide all sidebars
-    $("#network-randomisation").hide()
-    $("#node-list").hide()
+    $("#network-randomisation").hide();
+    $("#node-list").hide();
 
     // if icon clicked is network-randomisation
-    if (iconEl.hasClass("network-randomisation") && iconEl.hasClass("active")) {
-        $("#network-randomisation").show()
-    } else {
-        $("#network-randomisation").hide()
-    }
+    $($(iconEl).data("toolbar")).show();
+
+    console.log("TOOLBAR",$(iconEl).data("toolbar"));
 
     // if icon clicked is node-list
-    if (iconEl.hasClass("node-list") && iconEl.hasClass("active")) {
-        $("#node-list").show()
-    } else {
-        $("#node-list").hide()
-    }
+    // if (iconEl.hasClass("node-list") && iconEl.hasClass("active")) {
+    //     $("#node-list").show()
+    // } else {
+    //     $("#node-list").hide()
+    // }
 }

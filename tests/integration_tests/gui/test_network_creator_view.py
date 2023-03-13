@@ -14,7 +14,7 @@ from yawning_titan_gui.forms.network_forms import NetworkFormManager
 from yawning_titan_gui.helpers import NetworkManager
 
 
-class TestNetworkEditorView:
+class TestNetworkCreatorView:
     """Test processes executed through requests to the 'Manage game modes' and 'db manager' endpoints."""
 
     # test filtering where no high value nodes exist on a network!
