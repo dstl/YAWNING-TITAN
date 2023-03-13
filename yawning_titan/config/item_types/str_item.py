@@ -6,7 +6,6 @@ from yawning_titan.config.core import (
     ConfigItemValidation,
     ItemTypeProperties,
 )
-from yawning_titan.db.query import YawningTitanQuery
 from yawning_titan.exceptions import ConfigItemValidationError
 
 
@@ -54,7 +53,6 @@ class StrItem(ConfigItem):
         self,
         value: bool,
         doc: Optional[str] = None,
-        query: YawningTitanQuery = None,
         alias: Optional[str] = None,
         depends_on: Optional[List[str]] = None,
         properties: Optional[StrProperties] = None,
@@ -66,4 +64,4 @@ class StrItem(ConfigItem):
                 )
         else:
             properties = StrProperties()
-        super().__init__(value, doc, query, alias, depends_on, properties)
+        super().__init__(value, doc, alias, depends_on, properties)
