@@ -7,7 +7,6 @@ from yawning_titan.config.groups.core import RestrictRangeGroup, UseValueGroup
 from yawning_titan.config.groups.validation import AnyUsedGroup
 from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
 from yawning_titan.config.item_types.int_item import IntItem, IntProperties
-from yawning_titan.db.schemas import GameModeConfigurationSchema
 from yawning_titan.exceptions import ConfigGroupValidationError
 
 # --- Tier 0 groups
@@ -46,27 +45,6 @@ class NetworkCompatibilityGroup(ConfigGroup):
         )
 
         self.node_count.min.alias = "min_number_of_network_nodes"
-
-        self.node_count.min.query = (
-            GameModeConfigurationSchema.GAME_RULES.NETWORK_COMPATIBILITY.NODE_COUNT.MIN
-        )
-        self.node_count.max.query = (
-            GameModeConfigurationSchema.GAME_RULES.NETWORK_COMPATIBILITY.NODE_COUNT.MAX
-        )
-
-        self.high_value_node_count.min.query = (
-            GameModeConfigurationSchema.GAME_RULES.NETWORK_COMPATIBILITY.HIGH_VALUE_NODE_COUNT.MIN
-        )
-        self.high_value_node_count.max.query = (
-            GameModeConfigurationSchema.GAME_RULES.NETWORK_COMPATIBILITY.HIGH_VALUE_NODE_COUNT.MAX
-        )
-
-        self.entry_node_count.min.query = (
-            GameModeConfigurationSchema.GAME_RULES.NETWORK_COMPATIBILITY.ENTRY_NODE_COUNT.MIN
-        )
-        self.entry_node_count.max.query = (
-            GameModeConfigurationSchema.GAME_RULES.NETWORK_COMPATIBILITY.ENTRY_NODE_COUNT.MAX
-        )
 
         super().__init__(doc)
 
@@ -111,14 +89,9 @@ class BlueLossConditionGroup(AnyUsedGroup):
         self.n_percent_nodes_lost.value.alias = (
             "percentage_of_nodes_compromised_equals_loss"
         )
-        self.n_percent_nodes_lost.value.query = (
-            GameModeConfigurationSchema.GAME_RULES.BLUE_LOSS_CONDITION.N_PERCENT_NODES_LOST.VALUE
-        )
 
         self.n_percent_nodes_lost.use.alias = "lose_when_n_percent_of_nodes_lost"
-        self.n_percent_nodes_lost.use.query = (
-            GameModeConfigurationSchema.GAME_RULES.BLUE_LOSS_CONDITION.N_PERCENT_NODES_LOST.USE
-        )
+
         super().__init__(doc)
 
 

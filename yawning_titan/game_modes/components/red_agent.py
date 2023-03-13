@@ -13,7 +13,6 @@ from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
 from yawning_titan.config.item_types.float_item import FloatItem, FloatProperties
 from yawning_titan.config.item_types.int_item import IntItem, IntProperties
 from yawning_titan.config.item_types.str_item import StrItem, StrProperties
-from yawning_titan.db.schemas import GameModeConfigurationSchema
 from yawning_titan.exceptions import ConfigGroupValidationError
 
 
@@ -237,62 +236,28 @@ class RedActionSetGroup(AnyUsedGroup):
         )
 
         self.spread.use.alias = "red_uses_spread_action"
-        self.spread.use.query = GameModeConfigurationSchema.RED.ACTION_SET.SPREAD.USE
 
         self.random_infect.use.alias = "red_uses_random_infect_action"
-        self.random_infect.use.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.RANDOM_INFECT.USE
-        )
 
         self.move.use.alias = "red_uses_move_action"
-        self.move.use.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.RANDOM_INFECT.USE
-        )
 
         self.basic_attack.use.alias = "red_uses_basic_attack_action"
-        self.basic_attack.use.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.BASIC_ATTACK.USE
-        )
 
         self.do_nothing.use.alias = "red_uses_do_nothing_action"
-        self.do_nothing.use.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.DO_NOTHING.USE
-        )
 
         self.spread.likelihood.alias = "spread_action_likelihood"
-        self.spread.likelihood.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.SPREAD.LIKELIHOOD
-        )
 
         self.random_infect.likelihood.alias = "random_infect_action_likelihood"
-        self.random_infect.likelihood.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.RANDOM_INFECT.LIKELIHOOD
-        )
 
         self.move.likelihood.alias = "move_action_likelihood"
-        self.move.likelihood.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.MOVE.LIKELIHOOD
-        )
 
         self.basic_attack.likelihood.alias = "basic_attack_action_likelihood"
-        self.basic_attack.likelihood.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.BASIC_ATTACK.LIKELIHOOD
-        )
 
         self.do_nothing.likelihood.alias = "do_nothing_action_likelihood"
-        self.do_nothing.likelihood.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.DO_NOTHING.LIKELIHOOD
-        )
 
         self.spread.chance.alias = "chance_for_red_to_spread"
-        self.spread.chance.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.SPREAD.CHANCE
-        )
 
         self.random_infect.chance.alias = "chance_for_red_to_random_compromise"
-        self.random_infect.chance.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.RANDOM_INFECT.CHANCE
-        )
 
         super().__init__(doc)
 
@@ -339,12 +304,8 @@ class RedAgentAttackGroup(ConfigGroup):
         )
 
         self.skill.use.alias = "red_uses_skill"
-        self.skill.use.query = GameModeConfigurationSchema.RED.AGENT_ATTACK.SKILL.USE
 
         self.skill.value.alias = "red_skill"
-        self.skill.value.query = (
-            GameModeConfigurationSchema.RED.AGENT_ATTACK.SKILL.VALUE
-        )
 
         super().__init__(doc)
 
