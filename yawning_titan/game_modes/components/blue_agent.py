@@ -8,7 +8,6 @@ from yawning_titan.config.groups.validation import AnyUsedGroup
 from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
 from yawning_titan.config.item_types.float_item import FloatItem, FloatProperties
 from yawning_titan.config.item_types.int_item import IntItem, IntProperties
-from yawning_titan.db.schemas import GameModeConfigurationSchema
 from yawning_titan.exceptions import ConfigGroupValidationError
 
 
@@ -228,17 +227,11 @@ class BlueIntrusionDiscoveryGroup(ConfigGroup):
 
         self.immediate.standard_node.alias = "chance_to_immediately_discover_intrusion"
         self.immediate.standard_node.doc = "Chance for blue to discover a node that red has compromised the instant red compromises the node."
-        self.immediate.standard_node.query = (
-            GameModeConfigurationSchema.BLUE.INTRUSION_DISCOVERY_CHANCE.IMMEDIATE.STANDARD_NODE
-        )
 
         self.immediate.deceptive_node.alias = (
             "chance_to_immediately_discover_intrusion_deceptive_node"
         )
         self.immediate.deceptive_node.doc = "Chance for blue to discover a deceptive node that red has compromised the instant it is compromised."
-        self.immediate.deceptive_node.query = (
-            GameModeConfigurationSchema.BLUE.INTRUSION_DISCOVERY_CHANCE.IMMEDIATE.DECEPTIVE_NODE
-        )
 
         self.on_scan = NodeChanceGroup(
             standard_node=on_scan_standard_node, deceptive_node=on_scan_deceptive_node
@@ -246,17 +239,11 @@ class BlueIntrusionDiscoveryGroup(ConfigGroup):
 
         self.on_scan.standard_node.alias = "chance_to_discover_intrusion_on_scan"
         self.on_scan.standard_node.doc = "When blue performs the scan action this is the chance that a red intrusion is discovered."
-        self.on_scan.standard_node.query = (
-            GameModeConfigurationSchema.BLUE.INTRUSION_DISCOVERY_CHANCE.ON_SCAN.STANDARD_NODE
-        )
 
         self.on_scan.deceptive_node.alias = (
             "chance_to_discover_intrusion_on_scan_deceptive_node"
         )
         self.on_scan.deceptive_node.doc = "When blue uses the scan action what is the chance that blue will detect an intrusion in a deceptive node."
-        self.on_scan.deceptive_node.query = (
-            GameModeConfigurationSchema.BLUE.INTRUSION_DISCOVERY_CHANCE.ON_SCAN.DECEPTIVE_NODE
-        )
 
         super().__init__(doc)
 
@@ -292,22 +279,13 @@ class BlueAttackDiscoveryGroup(ConfigGroup):
             )
         )
         self.failed_attacks.use.alias = "can_discover_failed_attacks"
-        self.failed_attacks.use.query = (
-            GameModeConfigurationSchema.BLUE.ATTACK_DISCOVERY.FAILED_ATTACKS.USE
-        )
 
         self.failed_attacks.chance.standard_node.alias = (
             "chance_to_discover_failed_attack"
         )
-        self.failed_attacks.chance.standard_node.query = (
-            GameModeConfigurationSchema.BLUE.ATTACK_DISCOVERY.FAILED_ATTACKS.CHANCE.STANDARD_NODE
-        )
 
         self.failed_attacks.chance.deceptive_node.alias = (
             "chance_to_discover_failed_attack_deceptive_node"
-        )
-        self.failed_attacks.chance.deceptive_node.query = (
-            GameModeConfigurationSchema.BLUE.ATTACK_DISCOVERY.FAILED_ATTACKS.CHANCE.DECEPTIVE_NODE
         )
 
         self.succeeded_attacks_known_compromise: UseChancesGroup = (
@@ -321,22 +299,13 @@ class BlueAttackDiscoveryGroup(ConfigGroup):
         self.succeeded_attacks_known_compromise.use.alias = (
             "can_discover_succeeded_attacks_if_compromise_is_discovered"
         )
-        self.succeeded_attacks_known_compromise.use.query = (
-            GameModeConfigurationSchema.BLUE.ATTACK_DISCOVERY.SUCCEEDED_ATTACKS_KNOWN_COMPROMISE.USE
-        )
 
         self.succeeded_attacks_known_compromise.chance.standard_node.alias = (
             "chance_to_discover_succeeded_attack_compromise_known"
         )
-        self.succeeded_attacks_known_compromise.chance.standard_node.query = (
-            GameModeConfigurationSchema.BLUE.ATTACK_DISCOVERY.SUCCEEDED_ATTACKS_KNOWN_COMPROMISE.CHANCE.STANDARD_NODE
-        )
 
         self.succeeded_attacks_known_compromise.chance.deceptive_node.alias = (
             "chance_to_discover_succeeded_attack_deceptive_node"
-        )
-        self.succeeded_attacks_known_compromise.chance.deceptive_node.query = (
-            GameModeConfigurationSchema.BLUE.ATTACK_DISCOVERY.SUCCEEDED_ATTACKS_KNOWN_COMPROMISE.CHANCE.DECEPTIVE_NODE
         )
 
         self.succeeded_attacks_unknown_compromise: UseChancesGroup = (
@@ -350,23 +319,14 @@ class BlueAttackDiscoveryGroup(ConfigGroup):
         self.succeeded_attacks_unknown_compromise.use.alias = (
             "can_discover_succeeded_attacks_if_compromise_is_not_discovered"
         )
-        self.succeeded_attacks_unknown_compromise.use.query = (
-            GameModeConfigurationSchema.BLUE.ATTACK_DISCOVERY.SUCCEEDED_ATTACKS_UNKNOWN_COMPROMISE.USE
-        )
 
         self.succeeded_attacks_unknown_compromise.chance.standard_node.alias = (
             "chance_to_discover_succeeded_attack_compromise_not_known"
-        )
-        self.succeeded_attacks_unknown_compromise.chance.standard_node.query = (
-            GameModeConfigurationSchema.BLUE.ATTACK_DISCOVERY.SUCCEEDED_ATTACKS_UNKNOWN_COMPROMISE.CHANCE.STANDARD_NODE
         )
 
         # Set the deceptive node chances to both reference same config item
         self.succeeded_attacks_unknown_compromise.chance.deceptive_node = (
             self.succeeded_attacks_known_compromise.chance.deceptive_node
-        )
-        self.succeeded_attacks_unknown_compromise.chance.deceptive_node.query = (
-            GameModeConfigurationSchema.BLUE.ATTACK_DISCOVERY.SUCCEEDED_ATTACKS_UNKNOWN_COMPROMISE.CHANCE.DECEPTIVE_NODE
         )
 
         super().__init__(doc)
