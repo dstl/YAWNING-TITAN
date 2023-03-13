@@ -8,6 +8,7 @@ from typing import Any, Dict, List
 
 from django.urls import reverse
 
+from yawning_titan import LOG_DIR
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
@@ -15,6 +16,9 @@ from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
 from yawning_titan.yawning_titan_run import YawningTitanRun
 from yawning_titan_gui import YT_RUN_TEMP_DIR
 from yawning_titan_server.settings import DOCS_ROOT, STATIC_URL
+
+RUN_LOG = LOG_DIR / "spam.log"
+STDOUT = LOG_DIR / "stdout.txt"
 
 
 class RunManager:
@@ -39,16 +43,16 @@ class RunManager:
     @classmethod
     def run_yt(cls, *args, **kwargs):
         """Run an instance of :class: `~yawning_titan.yawning_titan_run.YawningTitanRun`."""
-        Path("spam.log").unlink()
-        logger = logging.getLogger("yr_run")
+        RUN_LOG.unlink()
+        logger = logging.getLogger("yt_run")
         logger.setLevel(logging.DEBUG)
         # create file handler which logs even debug messages
-        fh = logging.FileHandler("spam.log")
+        fh = logging.FileHandler(RUN_LOG.as_posix())
         fh.setLevel(logging.DEBUG)
         logger.addHandler(fh)
 
         cls.run_args = kwargs
-        with open("stdout.txt", "w+") as sys.stdout:
+        with open(STDOUT, "w+") as sys.stdout:
             run = YawningTitanRun(**kwargs, auto=False, logger=logger)
 
             run.setup()
@@ -86,8 +90,8 @@ class RunManager:
             "active": cls.process.is_alive(),
             "request_count": cls.counter,
         }
-        output["stderr"] = cls.format_file("spam.log")
-        output["stdout"] = cls.format_file("stdout.txt")
+        output["stderr"] = cls.format_file(RUN_LOG)
+        output["stdout"] = cls.format_file(STDOUT)
         dir = glob.glob(f"{YT_RUN_TEMP_DIR.as_posix()}/*")
         gif_path = max(dir, key=os.path.getctime)
         output["gif"] = f"/{STATIC_URL}gifs/{Path(gif_path).name}".replace("\\", "/")
@@ -164,7 +168,6 @@ class NetworkManager:
         networks: List[set] = []
         for k, v in filters.items():
             attr = f"filter_{k}"
-            print("ATTR = ", attr)
             if hasattr(cls, attr):
                 networks.append(set(getattr(cls, attr)(v["min"], v["max"])))
         if len(networks) == 1:
