@@ -27,28 +27,24 @@ class MakeNodeSafeGroup(ConfigGroup):
         self.use: BoolItem = BoolItem(
             value=use,
             doc="Blue fixes a node but does not restore it to its initial state.",
-            query=GameModeConfigurationSchema.BLUE.ACTION_SET.MAKE_NODE_SAFE.USE,
             alias="blue_uses_make_node_safe",
             properties=BoolProperties(allow_null=False, default=False),
         )
         self.increases_vulnerability: BoolItem = BoolItem(
             value=increases_vulnerability,
             doc="If blue fixes a node then the vulnerability score of that node increases.",
-            query=GameModeConfigurationSchema.BLUE.ACTION_SET.MAKE_NODE_SAFE.INCREASES_VULNERABILITY,
             alias="making_node_safe_modifies_vulnerability",
             properties=BoolProperties(allow_null=False),
         )
         self.gives_random_vulnerability: BoolItem = BoolItem(
             value=gives_random_vulnerability,
             doc="making_node_safe_gives_random_vulnerability",
-            query=GameModeConfigurationSchema.BLUE.ACTION_SET.MAKE_NODE_SAFE.GIVES_RANDOM_VULNERABILITY,
             alias="making_node_safe_gives_random_vulnerability",
             properties=BoolProperties(allow_null=False),
         )
         self.vulnerability_change: FloatItem = FloatItem(
             value=vulnerability_change,
             doc="The amount that the vulnerability of a node changes when it is made safe.",
-            query=GameModeConfigurationSchema.BLUE.ACTION_SET.MAKE_NODE_SAFE.VULNERABILITY_CHANGE,
             alias="vulnerability_change_during_node_patch",
             properties=FloatProperties(
                 allow_null=True,
@@ -92,14 +88,12 @@ class DeceptiveNodeGroup(ConfigGroup):
                 "Blue agent can place down deceptive nodes. These nodes act as just another node "
                 "in the network but have a different chance of spotting attacks and always show when they are compromised."
             ),
-            query=GameModeConfigurationSchema.BLUE.ACTION_SET.DECEPTIVE_NODES.USE,
             alias="blue_uses_deceptive_nodes",
             properties=BoolProperties(allow_null=False, default=False),
         )
         self.max_number: IntItem = IntItem(
             value=max_number,
             doc="The max number of deceptive nodes that blue can place.",
-            query=GameModeConfigurationSchema.BLUE.ACTION_SET.DECEPTIVE_NODES.MAX_NUMBER,
             alias="max_number_deceptive_nodes",
             properties=IntProperties(
                 allow_null=True, default=1, min_val=0, inclusive_min=True
@@ -112,7 +106,6 @@ class DeceptiveNodeGroup(ConfigGroup):
             the first deceptive node that it used and "relocate it" When relocating a node will the stats for the node
             (such as the vulnerability and compromised status)
             be re-generated as if adding a new node or will they carry over from the "old" node.""",
-            query=GameModeConfigurationSchema.BLUE.ACTION_SET.DECEPTIVE_NODES.NEW_NODE_ON_RELOCATE,
             alias="relocating_deceptive_nodes_generates_a_new_node",
             properties=BoolProperties(allow_null=True, default=False),
         )
@@ -149,42 +142,36 @@ class BlueActionSetGroup(AnyUsedGroup):
         self.reduce_vulnerability: BoolItem = BoolItem(
             value=reduce_vulnerability,
             doc="Blue picks a node and reduces the vulnerability score.",
-            query=GameModeConfigurationSchema.BLUE.ACTION_SET.REDUCE_VULNERABILITY,
             alias="blue_uses_reduce_vulnerability",
             properties=BoolProperties(allow_null=True, default=False),
         )
         self.restore_node: BoolItem = BoolItem(
             value=restore_node,
             doc="Blue picks a node and restores everything about the node to its starting state.",
-            query=GameModeConfigurationSchema.BLUE.ACTION_SET.RESTORE_NODE,
             alias="blue_uses_restore_node",
             properties=BoolProperties(allow_null=True, default=False),
         )
         self.scan: BoolItem = BoolItem(
             value=scan,
             doc="Blue scans all the nodes to try and detect any red intrusions.",
-            query=GameModeConfigurationSchema.BLUE.ACTION_SET.SCAN,
             alias="blue_uses_scan",
             properties=BoolProperties(allow_null=True, default=False),
         )
         self.isolate_node: BoolItem = BoolItem(
             value=isolate_node,
             doc="Blue disables all the connections to and from a node.",
-            query=GameModeConfigurationSchema.BLUE.ACTION_SET.ISOLATE_NODE,
             alias="blue_uses_isolate_node",
             properties=BoolProperties(allow_null=True, default=False),
         )
         self.reconnect_node: BoolItem = BoolItem(
             value=reconnect_node,
             doc="Blue re-connects all the connections to and from a node.",
-            query=GameModeConfigurationSchema.BLUE.ACTION_SET.RECONNECT_NODE,
             alias="blue_uses_reconnect_node",
             properties=BoolProperties(allow_null=True, default=False),
         )
         self.do_nothing: BoolItem = BoolItem(
             value=do_nothing,
             doc="The blue agent is able to perform no attack for a given turn.",
-            query=GameModeConfigurationSchema.BLUE.ACTION_SET.DO_NOTHING,
             alias="blue_uses_do_nothing",
             properties=BoolProperties(allow_null=True, default=False),
         )

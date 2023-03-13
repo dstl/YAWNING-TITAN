@@ -1,13 +1,8 @@
-from functools import reduce
-from operator import and_
 from pathlib import Path
 from typing import Any, Dict, List
 
 from django.urls import reverse
 
-from yawning_titan.config.item_types.float_item import FloatItem
-from yawning_titan.config.item_types.int_item import IntItem
-from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
@@ -97,18 +92,18 @@ class GameModeManager:
             for g in cls.db.all()
         ]
 
-    @classmethod
-    def filter(cls, filters: dict):
-        """Filter a game mode using a dictionary of ranges or values."""
-        item_dict = GameMode().to_legacy_dict()
-        queries = []
-        for name, filter in filters.items():
-            if isinstance(item_dict[name], (FloatItem, IntItem)):
-                queries.append(item_dict[name].query.bt(filter["min"], filter["max"]))
-            else:
-                queries.append((item_dict[name].query == filter))
-        _filter = reduce(and_, queries)
-        return cls.db.search(_filter)
+    # @classmethod
+    # def filter(cls, filters: dict):
+    #     """Filter a game mode using a dictionary of ranges or values."""
+    #     item_dict = GameMode().to_legacy_dict()
+    #     queries = []
+    #     for name, filter in filters.items():
+    #         if isinstance(item_dict[name], (FloatItem, IntItem)):
+    #             queries.append(item_dict[name].query.bt(filter["min"], filter["max"]))
+    #         else:
+    #             queries.append((item_dict[name].query == filter))
+    #     _filter = reduce(and_, queries)
+    #     return cls.db.search(_filter)
 
 
 def next_key(_dict: dict, key: int) -> Any:

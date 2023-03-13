@@ -4,8 +4,8 @@
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dstl/YAWNING-TITAN/build-sphinx-to-github-pages?label=docs)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/dstl/YAWNING-TITAN)
 ![GitHub commits since latest release (by SemVer)](https://img.shields.io/github/commits-since/dstl/YAWNING-TITAN/latest)
-![GitHub issue custom search](https://img.shields.io/github/issues-search?label=active%20bug%20issues&query=repo%3Adstl%2FYAWNING-TITAN%20is%3Aopen%20label%3Abug)
-![GitHub issue custom search](https://img.shields.io/github/issues-search?label=active%20feature%20requests&query=repo%3Adstl%2FYAWNING-TITAN%20is%3Aopen%20label%3Afeature_request)
+![GitHub issue custom search](https://img.shields.io/github/issues-search?label=active%20bug%20issues&
+![GitHub issue custom search](https://img.shields.io/github/issues-search?label=active%20feature%20requests&
 ![GitHub Discussions](https://img.shields.io/github/discussions/dstl/YAWNING-TITAN)
 
 # YAWNING-TITAN
