@@ -2,15 +2,12 @@ from __future__ import annotations
 
 from typing import Optional, Union
 
-from yawning_titan.config.toolbox.core import ConfigGroup, ConfigGroupValidation
-from yawning_titan.config.toolbox.groups.core import NodeChanceGroup, UseChancesGroup
-from yawning_titan.config.toolbox.groups.validation import AnyUsedGroup
-from yawning_titan.config.toolbox.item_types.bool_item import BoolItem, BoolProperties
-from yawning_titan.config.toolbox.item_types.float_item import (
-    FloatItem,
-    FloatProperties,
-)
-from yawning_titan.config.toolbox.item_types.int_item import IntItem, IntProperties
+from yawning_titan.config.core import ConfigGroup, ConfigGroupValidation
+from yawning_titan.config.groups.core import NodeChanceGroup, UseChancesGroup
+from yawning_titan.config.groups.validation import AnyUsedGroup
+from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
+from yawning_titan.config.item_types.float_item import FloatItem, FloatProperties
+from yawning_titan.config.item_types.int_item import IntItem, IntProperties
 from yawning_titan.exceptions import ConfigGroupValidationError
 
 
@@ -60,7 +57,7 @@ class MakeNodeSafeGroup(ConfigGroup):
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
         super().validate()
         try:
             if (
@@ -114,7 +111,7 @@ class DeceptiveNodeGroup(ConfigGroup):
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
         super().validate()
         try:
             if self.use.value and self.max_number.value == 0:
@@ -199,7 +196,7 @@ class BlueActionSetGroup(AnyUsedGroup):
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
         super().validate()
 
         pair = [self.isolate_node.value, self.reconnect_node.value]
@@ -251,7 +248,7 @@ class BlueIntrusionDiscoveryGroup(ConfigGroup):
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
         super().validate()
         try:
             if (
@@ -338,11 +335,11 @@ class Blue(ConfigGroup):
 
     def __init__(
         self,
-        doc: Optional[str] = None,
         action_set: Optional[BlueActionSetGroup] = None,
         intrusion_discovery_chance: Optional[BlueIntrusionDiscoveryGroup] = None,
         attack_discovery: Optional[BlueAttackDiscoveryGroup] = None,
     ):
+        doc = "The configuration of the blue agent"
         self.action_set: BlueActionSetGroup = (
             action_set
             if action_set
@@ -367,7 +364,7 @@ class Blue(ConfigGroup):
         super().__init__(doc)
 
     def validate(self) -> ConfigGroupValidation:
-        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.toolbox.core.ConfigGroup`."""
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
         super().validate()
         try:
             if (
