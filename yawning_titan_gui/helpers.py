@@ -43,7 +43,8 @@ class RunManager:
     @classmethod
     def run_yt(cls, *args, **kwargs):
         """Run an instance of :class: `~yawning_titan.yawning_titan_run.YawningTitanRun`."""
-        RUN_LOG.unlink()
+        if RUN_LOG.exists():
+            RUN_LOG.unlink()
         logger = logging.getLogger("yt_run")
         logger.setLevel(logging.DEBUG)
         # create file handler which logs even debug messages
@@ -95,6 +96,7 @@ class RunManager:
         dir = glob.glob(f"{YT_RUN_TEMP_DIR.as_posix()}/*")
         gif_path = max(dir, key=os.path.getctime)
         output["gif"] = f"/{STATIC_URL}gifs/{Path(gif_path).name}".replace("\\", "/")
+        print("GIF", output["gif"])
         return output
 
     @classmethod

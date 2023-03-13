@@ -7,7 +7,6 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views import View
 
-from yawning_titan import LOG_FILE_PATH
 from yawning_titan.db.doc_metadata import DocMetadata
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.networks import network_creator
@@ -126,7 +125,6 @@ class RunView(View):
         :param request: the Django page `request` object containing the html data for `run.html` and the server GET / POST request bodies.
         """
         form = RunForm()
-        print("PATH", LOG_FILE_PATH)
 
         return render(
             request,
@@ -147,7 +145,6 @@ class RunView(View):
         """
         form = RunForm(request.POST)
         if form.is_valid():
-            print("DATA", form.cleaned_data)
             fkwargs = form.cleaned_data
             if fkwargs["network"] is not None:
                 fkwargs["network"] = NetworkManager.db.get(fkwargs["network"])
