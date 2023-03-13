@@ -1,6 +1,6 @@
 """Test the main :class: `yawning_titan.networks.network_db.NetworkDB`."""
+import copy
 import os
-from copy import copy
 from unittest.mock import patch
 
 import pytest
