@@ -8,12 +8,11 @@ from yawning_titan.config.groups.core import (
     ActionLikelihoodGroup,
     UseValueGroup,
 )
-from yawning_titan.config.groups.validation import AnyNonZeroGroup, AnyUsedGroup
+from yawning_titan.config.groups.validation import AnyUsedGroup
 from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
 from yawning_titan.config.item_types.float_item import FloatItem, FloatProperties
 from yawning_titan.config.item_types.int_item import IntItem, IntProperties
 from yawning_titan.config.item_types.str_item import StrItem, StrProperties
-from yawning_titan.db.schemas import GameModeConfigurationSchema
 from yawning_titan.exceptions import ConfigGroupValidationError
 
 
@@ -31,14 +30,12 @@ class ZeroDayGroup(ConfigGroup):
         self.use: BoolItem = BoolItem(
             value=use,
             doc="The red agent will pick a safe node connected to an infected node and take it over with a 100% chance to succeed (can only happen every n timesteps).",
-            query=GameModeConfigurationSchema.RED.ACTION_SET.ZERO_DAY.USE,
             properties=BoolProperties(allow_null=False, default=False),
             alias="red_uses_zero_day_action",
         )
         self.start_amount: IntItem = IntItem(
             value=start_amount,
             doc="The number of zero-day attacks that the red agent starts with.",
-            query=GameModeConfigurationSchema.RED.ACTION_SET.ZERO_DAY.START_AMOUNT,
             properties=IntProperties(
                 allow_null=True, default=0, min_val=0, inclusive_min=True
             ),
@@ -47,7 +44,6 @@ class ZeroDayGroup(ConfigGroup):
         self.days_required: IntItem = IntItem(
             value=days_required,
             doc="The amount of 'progress' that need to have passed before the red agent gains a zero day attack.",
-            query=GameModeConfigurationSchema.RED.ACTION_SET.ZERO_DAY.DAYS_REQUIRED,
             properties=IntProperties(
                 allow_null=True, default=0, min_val=0, inclusive_min=True
             ),
@@ -68,14 +64,12 @@ class AttackSourceGroup(ConfigGroup):
         self.only_main_red_node = BoolItem(
             value=only_main_red_node,
             doc="Red agent can only attack from its main node on that turn.",
-            query=GameModeConfigurationSchema.RED.AGENT_ATTACK.ATTACK_FROM.ONLY_MAIN_RED_NODE,
             properties=BoolProperties(allow_null=False, default=False),
             alias="red_can_only_attack_from_red_agent_node",
         )
         self.any_red_node = BoolItem(
             value=any_red_node,
             doc="Red can attack from any node that it controls.",
-            query=GameModeConfigurationSchema.RED.AGENT_ATTACK.ATTACK_FROM.ANY_RED_NODE,
             properties=BoolProperties(allow_null=False, default=False),
             alias="red_can_attack_from_any_red_node",
         )
@@ -109,7 +103,6 @@ class NaturalSpreadChanceGroup(ConfigGroup):
         self.to_connected_node = FloatItem(
             value=to_connected_node,
             doc=" If a node is connected to a compromised node what chance does it have to become compromised every turn through natural spreading.",
-            query=GameModeConfigurationSchema.RED.NATURAL_SPREADING.CHANCE.TO_CONNECTED_NODE,
             properties=FloatProperties(
                 allow_null=True,
                 default=0,
@@ -123,7 +116,6 @@ class NaturalSpreadChanceGroup(ConfigGroup):
         self.to_unconnected_node = FloatItem(
             value=to_unconnected_node,
             doc="If a node is not connected to a compromised node what chance does it have to become randomly infected through natural spreading.",
-            query=GameModeConfigurationSchema.RED.NATURAL_SPREADING.CHANCE.TO_UNCONNECTED_NODE,
             properties=FloatProperties(
                 allow_null=True,
                 default=0,
@@ -150,20 +142,17 @@ class TargetNodeGroup(ConfigGroup):
         self.use: BoolItem = BoolItem(
             value=use,
             doc="Red targets a specific node.",
-            query=GameModeConfigurationSchema.RED.TARGET_MECHANISM.TARGET_SPECIFIC_NODE.USE,
             properties=BoolProperties(allow_null=False, default=False),
         )
         self.target: StrItem = StrItem(
             value=target,
             doc="The name of a node that the red agent targets.",
-            query=GameModeConfigurationSchema.RED.TARGET_MECHANISM.TARGET_SPECIFIC_NODE.TARGET,
             properties=StrProperties(allow_null=True),
             alias="red_target_node",
         )
         self.always_choose_shortest_distance: BoolItem = BoolItem(
             value=always_choose_shortest_distance,
             doc="Whether red should pick the absolute shortest distance to the target node or choose nodes to attack based on a chance weighted inversely by distance",
-            query=GameModeConfigurationSchema.RED.TARGET_MECHANISM.TARGET_SPECIFIC_NODE.ALWAYS_CHOOSE_SHORTEST_DISTANCE,
             properties=BoolProperties(allow_null=True),
             alias="red_always_chooses_shortest_distance_to_target",
         )
@@ -247,62 +236,28 @@ class RedActionSetGroup(AnyUsedGroup):
         )
 
         self.spread.use.alias = "red_uses_spread_action"
-        self.spread.use.query = GameModeConfigurationSchema.RED.ACTION_SET.SPREAD.USE
 
         self.random_infect.use.alias = "red_uses_random_infect_action"
-        self.random_infect.use.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.RANDOM_INFECT.USE
-        )
 
         self.move.use.alias = "red_uses_move_action"
-        self.move.use.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.RANDOM_INFECT.USE
-        )
 
         self.basic_attack.use.alias = "red_uses_basic_attack_action"
-        self.basic_attack.use.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.BASIC_ATTACK.USE
-        )
 
         self.do_nothing.use.alias = "red_uses_do_nothing_action"
-        self.do_nothing.use.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.DO_NOTHING.USE
-        )
 
         self.spread.likelihood.alias = "spread_action_likelihood"
-        self.spread.likelihood.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.SPREAD.LIKELIHOOD
-        )
 
         self.random_infect.likelihood.alias = "random_infect_action_likelihood"
-        self.random_infect.likelihood.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.RANDOM_INFECT.LIKELIHOOD
-        )
 
         self.move.likelihood.alias = "move_action_likelihood"
-        self.move.likelihood.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.MOVE.LIKELIHOOD
-        )
 
         self.basic_attack.likelihood.alias = "basic_attack_action_likelihood"
-        self.basic_attack.likelihood.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.BASIC_ATTACK.LIKELIHOOD
-        )
 
         self.do_nothing.likelihood.alias = "do_nothing_action_likelihood"
-        self.do_nothing.likelihood.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.DO_NOTHING.LIKELIHOOD
-        )
 
         self.spread.chance.alias = "chance_for_red_to_spread"
-        self.spread.chance.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.SPREAD.CHANCE
-        )
 
         self.random_infect.chance.alias = "chance_for_red_to_random_compromise"
-        self.random_infect.chance.query = (
-            GameModeConfigurationSchema.RED.ACTION_SET.RANDOM_INFECT.CHANCE
-        )
 
         super().__init__(doc)
 
@@ -323,14 +278,12 @@ class RedAgentAttackGroup(ConfigGroup):
         self.ignores_defences = BoolItem(
             value=ignores_defences,
             doc="The red agent ignores the defences of nodes.",
-            query=GameModeConfigurationSchema.RED.AGENT_ATTACK.IGNORES_DEFENCES,
             properties=BoolProperties(allow_null=False, default=False),
             alias="red_ignores_defences",
         )
         self.always_succeeds = BoolItem(
             value=always_succeeds,
             doc="Reds attacks always succeed.",
-            query=GameModeConfigurationSchema.RED.AGENT_ATTACK.ALWAYS_SUCCEEDS,
             properties=BoolProperties(allow_null=False, default=False),
             alias="red_always_succeeds",
         )
@@ -351,12 +304,8 @@ class RedAgentAttackGroup(ConfigGroup):
         )
 
         self.skill.use.alias = "red_uses_skill"
-        self.skill.use.query = GameModeConfigurationSchema.RED.AGENT_ATTACK.SKILL.USE
 
         self.skill.value.alias = "red_skill"
-        self.skill.value.query = (
-            GameModeConfigurationSchema.RED.AGENT_ATTACK.SKILL.VALUE
-        )
 
         super().__init__(doc)
 
@@ -373,7 +322,6 @@ class RedNaturalSpreadingGroup(ConfigGroup):
         self.capable = BoolItem(
             value=capable,
             doc="Whether the red agents infection can naturally spread to surrounding nodes",
-            query=GameModeConfigurationSchema.RED.NATURAL_SPREADING.CAPABLE,
             properties=BoolProperties(allow_null=False, default=False),
             alias="red_can_naturally_spread",
         )
@@ -393,9 +341,13 @@ class RedNaturalSpreadingGroup(ConfigGroup):
             try:
                 elements = self.chance.get_config_elements([IntItem, FloatItem])
                 if not any(
-                    e.value > 0 for e in elements.values() if type(e.value) in [int, float]
+                    e.value > 0
+                    for e in elements.values()
+                    if type(e.value) in [int, float]
                 ):
-                    msg = f"At least 1 of {', '.join(elements.keys())} should be above 0"
+                    msg = (
+                        f"At least 1 of {', '.join(elements.keys())} should be above 0"
+                    )
                     raise ConfigGroupValidationError(msg)
             except ConfigGroupValidationError as e:
                 self.validation.add_validation(msg, e)
@@ -417,35 +369,30 @@ class RedTargetMechanismGroup(AnyUsedGroup):
     ):
         self.random = BoolItem(
             doc="Red randomly chooses nodes to target",
-            query=GameModeConfigurationSchema.RED.TARGET_MECHANISM.RANDOM,
             value=random,
             properties=BoolProperties(default=False, allow_null=True),
             alias="red_chooses_target_at_random",
         )
         self.prioritise_connected_nodes = BoolItem(
             doc="Red sorts the nodes it can attack and chooses the one that has the most connections",
-            query=GameModeConfigurationSchema.RED.TARGET_MECHANISM.PRIORITISE_CONNECTED_NODES,
             value=prioritise_connected_nodes,
             properties=BoolProperties(default=False, allow_null=True),
             alias="red_prioritises_connected_nodes",
         )
         self.prioritise_unconnected_nodes = BoolItem(
             doc="Red sorts the nodes it can attack and chooses the one that has the least connections",
-            query=GameModeConfigurationSchema.RED.TARGET_MECHANISM.PRIORITISE_UNCONNECTED_NODES,
             value=prioritise_unconnected_nodes,
             properties=BoolProperties(default=False, allow_null=True),
             alias="red_prioritises_un_connected_nodes",
         )
         self.prioritise_vulnerable_nodes = BoolItem(
             doc="Red sorts the nodes is can attack and chooses the one that is the most vulnerable",
-            query=GameModeConfigurationSchema.RED.TARGET_MECHANISM.PRIORITISE_VULNERABLE_NODES,
             value=prioritise_vulnerable_nodes,
             properties=BoolProperties(default=False, allow_null=True),
             alias="red_prioritises_vulnerable_nodes",
         )
         self.prioritise_resilient_nodes = BoolItem(
             doc="Red sorts the nodes is can attack and chooses the one that is the least vulnerable",
-            query=GameModeConfigurationSchema.RED.TARGET_MECHANISM.PRIORITISE_RESILIENT_NODES,
             value=prioritise_resilient_nodes,
             properties=BoolProperties(default=False, allow_null=True),
             alias="red_prioritises_resilient_nodes",

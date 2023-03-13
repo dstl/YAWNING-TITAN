@@ -91,7 +91,7 @@ class TestNetworkEditorView:
         source_network = NetworkManager.db.all()[0]
         id = self.create_temp_networks(source_network.doc_metadata.uuid, 1)[0]
         network = NetworkManager.db.get(id)
-        self.updated_attr_example.update({"_network_id": id})
+        self.updated_attr_example.update({"_network_id": id, "_operation": "update"})
         response = client.post(self.management_url, self.updated_attr_example)
         network_dict = json.loads(json.loads(response.content)["network_json"])
         assert response.status_code == 200
@@ -120,7 +120,7 @@ class TestNetworkEditorView:
             data=json.dumps(network.to_dict(json_serializable=True)),
             content_type="application/json",
         )
-        self.updated_attr_example.update({"_network_id": id})
+        self.updated_attr_example.update({"_network_id": id, "_operation": "update"})
         response = client.post(self.management_url, self.updated_attr_example)
         updated_network = NetworkManager.db.get(id)
         assert response.status_code == 200

@@ -3,17 +3,12 @@ import logging
 import multiprocessing
 import os
 import sys
-from functools import reduce
-from operator import and_
 from pathlib import Path
 from typing import Any, Dict, List
 
 from django.urls import reverse
 
-from yawning_titan.config.item_types.float_item import FloatItem
-from yawning_titan.config.item_types.int_item import IntItem
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
-from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
@@ -169,6 +164,7 @@ class NetworkManager:
         networks: List[set] = []
         for k, v in filters.items():
             attr = f"filter_{k}"
+            print("ATTR = ", attr)
             if hasattr(cls, attr):
                 networks.append(set(getattr(cls, attr)(v["min"], v["max"])))
         if len(networks) == 1:
@@ -200,18 +196,18 @@ class GameModeManager:
             return game_modes
         return [g for g in game_modes if g["valid"]]
 
-    @classmethod
-    def filter(cls, filters: dict):
-        """Filter a game mode using a dictionary of ranges or values."""
-        item_dict = GameMode().to_legacy_dict()
-        queries = []
-        for name, filter in filters.items():
-            if isinstance(item_dict[name], (FloatItem, IntItem)):
-                queries.append(item_dict[name].query.bt(filter["min"], filter["max"]))
-            else:
-                queries.append((item_dict[name].query == filter))
-        _filter = reduce(and_, queries)
-        return cls.db.search(_filter)
+    # @classmethod
+    # def filter(cls, filters: dict):
+    #     """Filter a game mode using a dictionary of ranges or values."""
+    #     item_dict = GameMode().to_legacy_dict()
+    #     queries = []
+    #     for name, filter in filters.items():
+    #         if isinstance(item_dict[name], (FloatItem, IntItem)):
+    #             queries.append(item_dict[name].query.bt(filter["min"], filter["max"]))
+    #         else:
+    #             queries.append((item_dict[name].query == filter))
+    #     _filter = reduce(and_, queries)
+    #     return cls.db.search(_filter)
 
 
 def next_key(_dict: dict, key: int) -> Any:
@@ -263,7 +259,10 @@ def uniquify(path: Path) -> Path:
 
 def get_docs_sections():
     """Return names of each section of the sphinx documentation."""
-    return [p.stem for p in (DOCS_ROOT / "source").iterdir() if p.suffix == ".html"]
+    docs_dir = DOCS_ROOT / "source"
+    if docs_dir.exists():
+        return [p.stem for p in docs_dir.iterdir() if p.suffix == ".html"]
+    return []
 
 
 def get_url(url_name: str, *args, **kwargs):

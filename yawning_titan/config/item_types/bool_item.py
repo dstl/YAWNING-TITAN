@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 from yawning_titan.config.core import ConfigItem, ItemTypeProperties
-from yawning_titan.db.query import YawningTitanQuery
 
 
 @dataclass()
@@ -27,7 +26,6 @@ class BoolItem(ConfigItem):
         self,
         value: bool,
         doc: Optional[str] = None,
-        query: YawningTitanQuery = None,
         alias: Optional[str] = None,
         depends_on: Optional[List[str]] = None,
         properties: Optional[BoolProperties] = None,
@@ -39,4 +37,4 @@ class BoolItem(ConfigItem):
                 )
         else:
             properties = BoolProperties()
-        super().__init__(value, doc, query, alias, depends_on, properties)
+        super().__init__(value, doc, alias, depends_on, properties)

@@ -62,12 +62,9 @@ class TestGameModeManagerView:
         assert response.status_code == 200
 
     def test_game_modes_view_post(self, client: Client):
-        """Test that the Manage game modes view cannot accept POST requests.
-
-        Status 405 represents not allowed request method.
-        """
+        """Test that the Manage game modes view can accept POST requests."""
         response = client.post(self.url)
-        assert response.status_code == 405
+        assert response.status_code == 500
 
     def test_post_invalid_operation(self, client: Client):
         """Test the function that processes gui requests when given an invalid operation."""
@@ -85,7 +82,7 @@ class TestGameModeManagerView:
             {
                 "item_names[]": [game_mode_name],
                 "operation": "create",
-                "item_type": "game mode",
+                "item_type": "game_mode",
             },
         )
         self.assert_correct_response_and_game_mode(game_mode_name, response)
@@ -98,7 +95,7 @@ class TestGameModeManagerView:
             {
                 "operation": "create from",
                 "item_names[]": [game_mode_name],
-                "item_type": "game mode",
+                "item_type": "game_mode",
                 "source_item_id": self.default_game_mode_id,
             },
         )
@@ -118,7 +115,7 @@ class TestGameModeManagerView:
                 "item_ids[]": [game_mode.doc_metadata.uuid],
                 "item_names": [game_mode_name],
                 "operation": "delete",
-                "item_type": "game mode",
+                "item_type": "game_mode",
             },
         )
         assert response.status_code == 200

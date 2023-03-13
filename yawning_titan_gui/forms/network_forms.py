@@ -323,7 +323,6 @@ class NetworkSearchForm(django_forms.Form):
         for k, v in filters.items():
             if k.endswith(("_min", "_max")):
                 name = k.rstrip("_min").rstrip("_max")
-                print("NAME", name)
                 cleaned_filters[name] = {
                     "min": self.cleaned_data[f"{name}_min"],
                     "max": self.cleaned_data[f"{name}_max"],

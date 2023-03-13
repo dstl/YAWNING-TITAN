@@ -6,7 +6,6 @@ from typing import Any, Dict, Hashable, List, Optional, Union
 
 import yaml
 
-from yawning_titan.db.query import YawningTitanQuery
 from yawning_titan.exceptions import (
     ConfigGroupValidationError,
     ConfigItemValidationError,
@@ -20,7 +19,10 @@ class ConfigBase(ABC):
     """Used to provide helper methods to represent a ConfigGroup object."""
 
     def get_config_elements(
-        self, types: Optional[Union[ConfigItem, ConfigGroup,List[Union[ConfigItem, ConfigGroup]]]] = None
+        self,
+        types: Optional[
+            Union[ConfigItem, ConfigGroup, List[Union[ConfigItem, ConfigGroup]]]
+        ] = None,
     ) -> Dict[str, Union[ConfigItem, ConfigGroup]]:
         """
         Get the attributes of the class that are either :class: `ConfigGroup` or :class:`ConfigItem`.
@@ -375,8 +377,6 @@ class ConfigItem:
     """The items value."""
     doc: Optional[str] = None
     """The items doc."""
-    query: Optional[YawningTitanQuery] = None
-    """The items query within the database."""
     alias: str = field(default=None, repr=False)
     """The alias of the config item, i.e. its representation from the original config."""
     depends_on: List[str] = field(default_factory=list, repr=False)
