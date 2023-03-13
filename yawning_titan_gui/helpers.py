@@ -160,7 +160,10 @@ def uniquify(path: Path) -> Path:
 
 def get_docs_sections():
     """Return names of each section of the sphinx documentation."""
-    return [p.stem for p in (DOCS_ROOT / "source").iterdir() if p.suffix == ".html"]
+    docs_dir = DOCS_ROOT / "source"
+    if docs_dir.exists():
+        return [p.stem for p in docs_dir.iterdir() if p.suffix == ".html"]
+    return []
 
 
 def get_url(url_name: str, *args, **kwargs):
