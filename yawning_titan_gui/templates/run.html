@@ -45,27 +45,16 @@
         </div>
     </div>
     <div id="run-config" class="grid-item">
+        <div id="field-menu" class="flex-row">
+            <button type="button" id="training-fields-button" data-form="#training-fields" class="btn btn-primary">Training</button>
+            <button type="button" id="evaluation-fields-button" data-form="#evaluation-fields" class="btn">Evaluation</button>
+        </div>
         <form id="run-form">
-            {% csrf_token %}
-            <div class="fields">
-                {% for field in form.visible_fields %}
-                    <div class="mb-3 active{% if field.errors %} erroneous{% endif %}">
-                        <div class="info">
-                            <label for="id_{{ field.name }}" class="form-label">{{ field.label|format_text }}</label>
-                            <p class="help-text">{{field.help_text}}</p>
-                            {% if field.errors %}
-                                <ul class="error-list">
-                                    {% for error in field.errors %}
-                                    <li>{{ error|escape }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </div>
-                        <div class="field-container {% if protected %}disabled{% endif %}">
-                            {{ field }}
-                        </div>
-                    </div>
-                {% endfor %}
+            <div id="training-fields" class="run-fieldset">
+                {% include 'elements/el_form_fields.html' with fields=form.training_fields protected=False %}
+            </div>
+            <div id="evaluation-fields"  class="run-fieldset" style="display: none;">
+                {% include 'elements/el_form_fields.html' with fields=form.evaluation_fields protected=False %}
             </div>
             <div class="flex-break"></div>
             <button type="submit" id="run" class="btn btn-primary">Run</button>
@@ -105,7 +94,6 @@
         border-radius: 1rem;
         padding: calc(3*var(--increment));
         margin: calc(3*var(--increment));
-        margin: calc(3*var(--increment));
         min-width: 0;
         flex-basis: 30%;
         min-height: 0;
@@ -121,11 +109,22 @@
         font-family: 'Courier New';
         font-size: 12px;
         color: var(--text-superlight);
-        /* letter-spacing: ;
-        word-spacing: ; */
+    }
+    #field-menu{
+        border-bottom: 1px solid var(--text-superlight);
+        margin-bottom: var(--increment);
+    }
+    #field-menu .btn{
+        border-radius: .25rem .25rem 0 0;
+        background-color: var(--mid);
+        border: 1px solid var(--text-superlight);
+    }
+    #field-menu button:not(:last-child){
+        margin-right: var(--increment);
     }
 
     #run{
+        margin-top: var(--increment);
         width: 100%;
     }
     #run-view{
@@ -143,11 +142,17 @@
     }
     #run-form{
         min-height: 0;
+        max-height: 100%;
         height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
+    }
+    #run-form>div{
+        width: 100%;
+        max-height: 100%;
+        overflow-y: auto;
     }
     #view-container{
         flex: 1;

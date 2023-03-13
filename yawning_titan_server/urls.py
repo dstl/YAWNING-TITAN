@@ -19,7 +19,7 @@ from yawning_titan_gui.views import (
 )
 
 urlpatterns = [
-    path("", HomeView.as_view(), name="home"),
+    path("", HomeView.as_view(), name="Home"),
     path("docs/", DocsView.as_view(), name="docs"),
     path("run/", RunView.as_view(), name="Run session"),
     path("docs/", DocsView.as_view(), name="Documentation"),
@@ -60,7 +60,7 @@ urlpatterns += [
     path(
         f"docs_{name}/",
         TemplateView.as_view(template_name=f"source/{name}.html"),
-        name=f"docs {name}",
+        name=f"docs_{name}",
     )
     for name in get_docs_sections()
 ]

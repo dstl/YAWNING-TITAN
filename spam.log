@@ -1,16 +1,15 @@
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: Run initialised
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: Network interface created
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: Red agent created
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: Blue agent created
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: GenericNetworkEnv created
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: Performing env check
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: Env checking complete
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: GenericNetworkEnv reset
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: Instantiating agent
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: Agent instantiated
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: Eval callback set
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: Performing agent training
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: Training run 1 complete
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: GenericNetworkEnv reset
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: Agent training complete
-YT run  ca8a0508-f1ea-4990-b5c9-5002510f8020: Saved trained agent (Stable Baselines3 PPO) to: C:\Users\stefe\yawning_titan\agents\trained\2023-03-09\ca8a0508-f1ea-4990-b5c9-5002510f8020\ppo.zip
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: Run initialised
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: Network interface created
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: Red agent created
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: Blue agent created
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: GenericNetworkEnv created
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: Performing env check
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: Env checking complete
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: GenericNetworkEnv reset
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: Instantiating agent
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: Agent instantiated
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: Eval callback set
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: Performing agent training
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: Training run 1 complete
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: GenericNetworkEnv reset
+YT run  78a0347b-9696-4dbe-8fd0-996457f3e93e: Agent training complete

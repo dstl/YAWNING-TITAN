@@ -1,12 +1,6 @@
-import io
 import json
-import logging
-import multiprocessing
-import sys
 import traceback
-from contextlib import redirect_stderr
 from io import StringIO
-from pathlib import Path
 
 from django.http import Http404, HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
@@ -18,7 +12,6 @@ from yawning_titan.db.doc_metadata import DocMetadata
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.networks import network_creator
 from yawning_titan.networks.network import Network
-from yawning_titan.yawning_titan_run import YawningTitanRun
 from yawning_titan_gui.forms.game_mode_forms import (
     GameModeForm,
     GameModeFormManager,
@@ -103,7 +96,7 @@ class DocsView(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        doc_url = reverse(f"docs {section}") if section else reverse("docs index")
+        doc_url = reverse(f"docs_{section}") if section else reverse("docs index")
         return render(
             request,
             "docs.html",
@@ -120,7 +113,7 @@ class DocsView(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        return render(request, "docs.html", {"sidebar": default_sidebar})
+        return render(request, "docs.html", {"toolbar": get_toolbar("Documentation")})
 
 
 class RunView(View):
@@ -140,7 +133,7 @@ class RunView(View):
             "run.html",
             {
                 "form": form,
-                "sidebar": default_sidebar,
+                "toolbar": get_toolbar("Run session"),
                 "game_modes": GameModeManager.get_game_mode_data(valid_only=True),
                 "networks": NetworkManager.get_network_data(),
             },
@@ -163,37 +156,6 @@ class RunView(View):
             RunManager.start_process(fkwargs=fkwargs)
             return JsonResponse({"message": "complete"})
         return JsonResponse({"message": "error"}, status=400)
-
-
-def get_output(request: HttpRequest):
-    if request.method == "GET":
-        return JsonResponse(RunManager.get_output())
-
-
-class NodeEditor(View):
-    """
-    Django representation of node_editor.html.
-
-    implements 'get' and 'post' methods to handle page requests.
-    """
-
-    def get(self, request, *args, **kwargs):
-        """Handle page get requests.
-
-        :param request: A Django `request` object that contains the data passed from
-            the html page. A `request` object will always be delivered when a page
-            object is accessed.
-        """
-        return render(request, "node_editor.html", {"sidebar": default_sidebar})
-
-    def post(self, request, *args, **kwargs):
-        """Handle page post requests.
-
-        :param request: A Django `request` object that contains the data passed from
-            the html page. A `request` object will always be delivered when a page
-            object is accessed.
-        """
-        return render(request, "node_editor.html", {"sidebar": default_sidebar})
 
 
 class GameModesView(View):
@@ -556,6 +518,12 @@ class GameModeConfigView(View):
                 "protected": game_mode_form.game_mode.doc_metadata.locked,
             },
         )
+
+
+def get_output(request: HttpRequest):
+    """Get the output of a :class: `~yawning_titan.yawning_titan_run.YawningTitanRun`."""
+    if request.method == "GET":
+        return JsonResponse(RunManager.get_output())
 
 
 def db_manager(request: HttpRequest) -> JsonResponse:

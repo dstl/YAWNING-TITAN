@@ -37,10 +37,10 @@
       <p>Set the reset behavior of the network</p>
     </div>
     <form id="doc-meta-form" data-id="doc-meta">
-      {% include 'elements/el_form_fields.html' with form=doc_metadata_form protected=False %}
+      {% include 'elements/el_form_fields.html' with fields=doc_metadata_form.visible_fields protected=False %}
     </form>
     <form id="random-elements-form" class="config-form">
-      {% include 'elements/el_form_fields.html' with form=form protected=protected %}
+      {% include 'elements/el_form_fields.html' with fields=form.visible_fields protected=protected %}
     </form>
   </div>
 </div>

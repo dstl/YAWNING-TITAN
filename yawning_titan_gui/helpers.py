@@ -18,11 +18,13 @@ from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
 from yawning_titan.yawning_titan_run import YawningTitanRun
-from yawning_titan_gui import STATIC_DIR, YT_RUN_TEMP_DIR
+from yawning_titan_gui import YT_RUN_TEMP_DIR
 from yawning_titan_server.settings import DOCS_ROOT, STATIC_URL
 
 
 class RunManager:
+    """Wrapper over an instance of :class: `~yawning_titan.yawning_titan_run.YawningTitanRun` to provide helper functions to the GUI."""
+
     gif = None
     process = None
     counter = 0
@@ -30,17 +32,18 @@ class RunManager:
 
     @staticmethod
     def format_file(path):
-        """"""
+        """Format a text reference file as a html object."""
         with open(path, "r") as f:
             try:
-                lines = [l.replace(" ", "&nbsp;") for l in f.readlines()]
+                lines = [line.replace(" ", "&nbsp;") for line in f.readlines()]
                 text = "<br>".join(lines)
                 return text
-            except Exception as e:
+            except Exception:
                 return ""
 
     @classmethod
-    def run_yt(cls, *args, **kwargs):  # TODO: Move
+    def run_yt(cls, *args, **kwargs):
+        """Run an instance of :class: `~yawning_titan.yawning_titan_run.YawningTitanRun`."""
         Path("spam.log").unlink()
         logger = logging.getLogger("yr_run")
         logger.setLevel(logging.DEBUG)
@@ -48,23 +51,38 @@ class RunManager:
         fh = logging.FileHandler("spam.log")
         fh.setLevel(logging.DEBUG)
         logger.addHandler(fh)
-        kwargs["logger"] = logger
+
         cls.run_args = kwargs
         with open("stdout.txt", "w+") as sys.stdout:
-            run = YawningTitanRun(**kwargs)
-        if kwargs["render"]:
-            loop = ActionLoop(
-                env=run.env,
-                agent=run.agent,
-                filename="test",
-                episode_count=kwargs.get("num_episodes", run.total_timesteps),
-            )
-            loop.gif_action_loop(
-                output_directory=YT_RUN_TEMP_DIR, save_gif=True, render_network=False
-            )
+            run = YawningTitanRun(**kwargs, auto=False, logger=logger)
+
+            run.setup()
+            run.train()
+            run.evaluate()
+
+            if kwargs["save"]:
+                run.save()
+
+            if kwargs["export"]:
+                run.export()
+
+            if kwargs["render"]:
+                loop = ActionLoop(
+                    env=run.env,
+                    agent=run.agent,
+                    filename="test",
+                    episode_count=kwargs.get("num_episodes", run.total_timesteps),
+                )
+                loop.gif_action_loop(
+                    output_directory=YT_RUN_TEMP_DIR,
+                    save_gif=True,
+                    render_network=True
+                    # TODO: fix bug where network must be rendered to get gif to be produced
+                )
 
     @classmethod
     def get_output(cls):
+        """Get the output of a :class: `~yawning_titan.yawning_titan_run.YawningTitanRun`."""
         cls.counter += 1
         output = {
             "stderr": "",
@@ -77,13 +95,12 @@ class RunManager:
         output["stdout"] = cls.format_file("stdout.txt")
         dir = glob.glob(f"{YT_RUN_TEMP_DIR.as_posix()}/*")
         gif_path = max(dir, key=os.path.getctime)
-        # print("PATH-->",f"/{STATIC_URL}gifs/{Path(gif_path).name}".replace("\\","/"))
         output["gif"] = f"/{STATIC_URL}gifs/{Path(gif_path).name}".replace("\\", "/")
         return output
 
     @classmethod
     def start_process(cls, fkwargs: dict):
-        """"""
+        """Spawn a subprocess to run the instance of :class: `~yawning_titan.yawning_titan_run.YawningTitanRun` with the given arguments."""
         cls.counter = 0
         cls.process = multiprocessing.Process(
             target=RunManager.run_yt,
@@ -161,12 +178,11 @@ class NetworkManager:
     @classmethod
     def get_network_data(cls) -> List[dict]:
         """Gather the doc metadata of all network objects."""
-
         return [network.doc_metadata for network in cls.db.all()]
 
 
 class GameModeManager:
-    """Wrapper over an instance of `~yawning_titan.game_modes.game_mode_db.GameModeDB` to provide helper functions to the GUI."""
+    """Wrapper over an instance of :class: `~yawning_titan.game_modes.game_mode_db.GameModeDB` to provide helper functions to the GUI."""
 
     db: GameModeDB = GameModeDB()
 
@@ -243,14 +259,6 @@ def uniquify(path: Path) -> Path:
         path = parent / f"{filename}({counter}){extension}"
         counter += 1
     return path
-
-
-def static_path_to_url(path: str):
-    """"""
-    print("PATH", path, STATIC_DIR.as_posix())
-    return path
-    # print("TESTxxxx",path.split(STATIC_DIR.as_posix())[1])
-    # return path.split(STATIC_DIR.as_posix())[1]
 
 
 def get_docs_sections():

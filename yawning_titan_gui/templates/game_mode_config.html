@@ -18,7 +18,7 @@
 <div id="config-forms">
     <div id="config-form-left">
         <form id="doc-meta-form" data-id="doc-meta">
-            {% include 'elements/el_form_fields.html' with form=doc_metadata_form protected=False %}
+            {% include 'elements/el_form_fields.html' with fields=doc_metadata_form.visible_fields protected=False %}
         </form>
         <div id="config-form-icons">
             {% for section_name, section in sections.items %}
@@ -46,7 +46,7 @@
                             </ul>
                         {% endif %}
                     </div>
-                    {% include 'elements/el_form_fields.html' with form=form protected=protected %}
+                    {% include 'elements/el_form_fields.html' with fields=form.visible_fields protected=protected %}
                 </form>
             {% endfor %}
         </div>

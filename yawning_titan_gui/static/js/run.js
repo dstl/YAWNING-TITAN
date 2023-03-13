@@ -3,6 +3,12 @@ $(document).ready(function(){
         "game_mode":null,
         "network":null
     }
+    $("#field-menu button").click(function(){
+        $(this).siblings("button").removeClass("btn-primary");
+        $(this).addClass("btn-primary");
+        $(".run-fieldset").hide();
+        $($(this).data("form")).show();
+    });
     $(".list-item").click(function(){
         $(this).closest(".grid-item").find(".list-item").removeClass("selected");
         $(this).addClass("selected");
@@ -64,8 +70,8 @@ function get_output(){
         dataType: "json",
         success: function(response){
             console.log("RESPONSE",response);
-            let stderr_out = $("#log-view"),
-                stdout_out = $("#metric-view");
+            let stderr_out = $("#log-view>.inner"),
+                stdout_out = $("#metric-view>.inner");
 
             $(stderr_out).html(response.stderr);
             $(stdout_out).html(response.stdout);
