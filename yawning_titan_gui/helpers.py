@@ -17,7 +17,7 @@ from yawning_titan.yawning_titan_run import YawningTitanRun
 from yawning_titan_gui import YT_RUN_TEMP_DIR
 from yawning_titan_server.settings import DOCS_ROOT, STATIC_URL
 
-RUN_LOG = LOG_DIR / "spam.log"
+RUN_LOG = LOG_DIR / "yt_gui_run.log"
 STDOUT = LOG_DIR / "stdout.txt"
 
 
