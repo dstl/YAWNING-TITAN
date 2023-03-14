@@ -6,8 +6,9 @@
       "high_value_node": false,
       "entry_node": false,
       "vulnerability": 0.6,
-      "x_pos": 1,
-      "y_pos": 7
+      "classes": "standard_node",
+      "x_pos": 100,
+      "y_pos": 700
     },
     "test2": {
       "uuid": "test2",
@@ -15,8 +16,9 @@
       "high_value_node": false,
       "entry_node": false,
       "vulnerability": 0.79,
-      "x_pos": 3,
-      "y_pos": 6
+      "classes": "standard_node",
+      "x_pos": 300,
+      "y_pos": 600
     },
     "test3": {
       "uuid": "test3",
@@ -24,8 +26,9 @@
       "high_value_node": false,
       "entry_node": false,
       "vulnerability": 0.3,
-      "x_pos": 2,
-      "y_pos": 7
+      "classes": "standard_node",
+      "x_pos": 200,
+      "y_pos": 700
     }
   },
   "edges": {
@@ -46,6 +49,6 @@
     "name": "test-network",
     "description": "end to end test network",
     "author": "Czar",
-    "locked": true
+    "locked": false
   }
 }
