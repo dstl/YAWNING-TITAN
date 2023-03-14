@@ -46,7 +46,7 @@ class TestNetworkView:
         assert len(networks) > 0
         if load == "next":
             load = reverse(
-                "node editor",
+                "network editor",
                 kwargs={"network_id": network.doc_metadata.uuid},
             )
 

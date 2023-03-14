@@ -294,7 +294,15 @@ export class Network {
       return;
     }
 
-    this.nodeList[matchingNode] = details;
+    this.nodeList[matchingNode] = {
+      uuid: details.uuid,
+      name: details.name,
+      entry_node: details.entry_node,
+      high_value_node: details.high_value_node,
+      vulnerability: roundNumber(details?.vulnerability, 6),
+      x_pos: roundNumber(details?.x_pos),
+      y_pos: roundNumber(details?.y_pos)
+    };
     return this.nodeList[matchingNode];
   }
 

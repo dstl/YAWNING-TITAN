@@ -369,7 +369,7 @@ class NetworkCreator(View):
 
 class NodeEditor(View):
     """
-    Django representation of node_editor.html.
+    Django representation of network_editor.html.
 
     implements 'get' and 'post' methods to handle page requests.
     """
@@ -385,7 +385,7 @@ class NodeEditor(View):
         network_form = NetworkFormManager.get_or_create_form(network_id)
         return render(
             request,
-            "node_editor.html",
+            "network_editor.html",
             {
                 "toolbar": get_toolbar("Manage networks"),
                 "form": network_form,
@@ -558,7 +558,7 @@ def db_manager(request: HttpRequest) -> JsonResponse:
         def create_network():
             network = NetworkManager.db.insert(network=Network(), name=item_name)
             return reverse(
-                "node editor",
+                "network editor",
                 kwargs={"network_id": network.doc_metadata.uuid},
             )
 
@@ -593,7 +593,7 @@ def db_manager(request: HttpRequest) -> JsonResponse:
             network._doc_metadata = DocMetadata()
             NetworkManager.db.insert(network=network, name=item_name)
             return reverse(
-                "node editor",
+                "network editor",
                 kwargs={"network_id": network.doc_metadata.uuid},
             )
 

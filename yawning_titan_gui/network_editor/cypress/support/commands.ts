@@ -50,14 +50,26 @@ export function cleanUpNetwork(networkId?: string) {
   cy.contains('Delete network').click();
 }
 
+export function cleanUpGameMode(gameModeId?: string) {
+  // go to the networks and delete what was created
+  cy.visit(`${Cypress.env('TEST_URL')}${Cypress.env('GAME_MODE_PATH')}`);
+  cy.get('.head').should('be.visible');
+
+  // find the correct item and delete
+  cy.get(`[data-item-name="${gameModeId ? gameModeId : testId}"] > .icons > .delete`).click();
+  cy.contains('Delete game mode').click();
+}
+
 Cypress.Commands.add('openEmptyNetwork', openEmptyNetwork);
 Cypress.Commands.add('cleanUpNetwork', cleanUpNetwork);
+Cypress.Commands.add('cleanUpGameMode', cleanUpGameMode);
 
 declare global {
   namespace Cypress {
     interface Chainable {
       openEmptyNetwork: typeof openEmptyNetwork
       cleanUpNetwork: typeof cleanUpNetwork
+      cleanUpGameMode: typeof cleanUpGameMode
     }
   }
 }

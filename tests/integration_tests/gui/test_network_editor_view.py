@@ -24,7 +24,7 @@ class TestNetworkEditorView:
         with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
             NetworkManager.db = NetworkDB()
 
-        self.url = reverse("node editor")
+        self.url = reverse("network editor")
         self.management_url = reverse("update network")
         self.updated_attr_example = {
             "set_random_entry_nodes": "on",
@@ -69,7 +69,7 @@ class TestNetworkEditorView:
         network.add_node(new_node)
         response = client.post(
             reverse(
-                "node editor",
+                "network editor",
                 kwargs={"network_id": id},
             ),
             data=json.dumps(network.to_dict(json_serializable=True)),
@@ -114,7 +114,7 @@ class TestNetworkEditorView:
         network.add_node(new_node)
         client.post(
             reverse(
-                "node editor",
+                "network editor",
                 kwargs={"network_id": id},
             ),
             data=json.dumps(network.to_dict(json_serializable=True)),
