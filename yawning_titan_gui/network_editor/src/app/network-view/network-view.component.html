@@ -1,0 +1,5 @@
+<div class="window" #window>
+  <app-node-colour-key></app-node-colour-key>
+  <app-canvas-control></app-canvas-control>
+  <div #main class="main" appFileDragDrop (fileDropped)="loadFile($event)"></div>
+</div>

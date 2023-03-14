@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tags %}
+
+{% block scripts %}
+
+{% include 'wrappers/node_editor_imports.html' %}
+
+{% endblock %}
+
+{% block top-buttons %}
+  <a id="back" href="{% url 'Manage networks' %}"><i class="bi bi-arrow-90deg-left"></i></a>
+{% endblock %}
+
+{% block main %}
+<app-root></app-root>
+
+<div id="toolbar-buttons">
+  <div class="accordion-item">
+      <h2 class="accordion-header" id="advanced-search-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#advanced-search-items" aria-expanded="false">
+              Network toolbars
+          </button>
+      </h2>
+      <div id="advanced-search-items" class="accordion-collapse collapse" aria-labelledby="advanced-search-header" data-bs-parent="#search-accordion">
+          <div class="accordion-body">
+              <button id="network-randomisation-button" data-toolbar="#network-randomisation" class="btn toolbar-button">Network randomisation</button>
+              <button id="node-list-button"  data-toolbar="#node-list" class="btn toolbar-button">Node list</button>
+          </div>
+      </div>
+  </div>
+</div>
+<div id="network-randomisation" class="form-container">
+  <div class="tab-content">
+    <div class="toolbar-tab-title">
+      <h3>Network randomisation</h3>
+      <p>Set the reset behavior of the network</p>
+    </div>
+    <form id="doc-meta-form" data-id="doc-meta">
+      {% include 'elements/el_form_fields.html' with fields=doc_metadata_form.visible_fields protected=False %}
+    </form>
+    <form id="random-elements-form" class="config-form">
+      {% include 'elements/el_form_fields.html' with fields=form.visible_fields protected=protected %}
+    </form>
+  </div>
+</div>
+<div id="node-list" class="node-list">
+  <div class="tab-content">
+    <div class="toolbar-tab-title">
+      <h3>Node List</h3>
+      <p>View the list of nodes in the network</p>
+    </div>
+    {% include 'elements/el_node_list.html' %}
+  </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<style>
+  @font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialicons/v139/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
+  }
+
+  #main {
+    padding: 0 !important;
+  }
+
+  #toolbar-buttons{
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    background-color: #424242;
+    z-index: 1000;
+    width: 230px;
+    border-radius: .2rem;
+    transform: translate(-50%, 0%);
+  }
+  #toolbar-buttons .accordion-header{
+    height: 40px;
+  }
+  #toolbar-buttons .accordion-button{
+    padding: .875rem .875rem;
+    background-color: #424242;
+  }
+  #toolbar-buttons .accordion-body{
+    margin-top: .5rem;
+    background-color: #424242;
+    padding: 0;
+  }
+  #toolbar-buttons .accordion-body button{
+    width: 100%;
+    padding: .875rem .875rem;
+  }
+  #toolbar-buttons .accordion-body button:hover{
+    background-color: var(--dark);
+  }
+  #toolbar-buttons *{
+    color: var(--text-superlight);
+    text-align: left;
+  }
+
+  #network-randomisation,
+  #node-list {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    padding: var(--increment);
+    width: 350px;
+    height: 100%;
+    z-index: 999;
+    background-color: var(--superlight);
+    display: none;
+  }
+
+  app-root {
+    height: 100%;
+    width: 100%;
+  }
+
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  html {
+    display: flex;
+    flex: 1;
+    height: 100%
+  }
+
+  .field-container:has(.form-switch){
+    max-width: 100px;
+  }
+  .help-text{
+    color: var(--text-dark);
+  }
+  #network-tabs{
+    width: 100%;
+    border-bottom: 1px solid var(--text-superlight);
+  }
+  #network-tabs>*{
+    margin-left: var(--increment);
+    margin-right: var(--increment);
+    color: var(--text-superlight);
+    border-radius: .5rem .5rem 0 0 ;
+    background-color: var(--light);
+  }
+
+  .field-container:has(.form-switch) {
+    max-width: 100px;
+  }
+
+  .help-text {
+    color: var(--text-dark);
+  }
+
+  .toolbar-tab-title {
+    margin-bottom: 30px;
+    margin-top: 10px;
+    color: var(--text-superlight);
+    flex-shrink: 1;
+  }
+
+  .tab-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+</style>
+{% endblock %}

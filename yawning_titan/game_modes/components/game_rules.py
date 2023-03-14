@@ -45,6 +45,7 @@ class NetworkCompatibilityGroup(ConfigGroup):
         )
 
         self.node_count.min.alias = "min_number_of_network_nodes"
+
         super().__init__(doc)
 
 
@@ -88,7 +89,9 @@ class BlueLossConditionGroup(AnyUsedGroup):
         self.n_percent_nodes_lost.value.alias = (
             "percentage_of_nodes_compromised_equals_loss"
         )
+
         self.n_percent_nodes_lost.use.alias = "lose_when_n_percent_of_nodes_lost"
+
         super().__init__(doc)
 
 

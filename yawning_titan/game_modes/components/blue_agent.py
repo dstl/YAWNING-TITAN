@@ -178,7 +178,7 @@ class BlueActionSetGroup(AnyUsedGroup):
             make_node_safe
             if make_node_safe
             else MakeNodeSafeGroup(
-                doc="all information relating to the process of the blue fixing a node but not restoring it to its initial state."
+                doc="all information relating to the process of the blue fixing a node but not restoring it to its initial state.",
             )
         )
         self.deceptive_nodes: DeceptiveNodeGroup = (
@@ -279,9 +279,11 @@ class BlueAttackDiscoveryGroup(ConfigGroup):
             )
         )
         self.failed_attacks.use.alias = "can_discover_failed_attacks"
+
         self.failed_attacks.chance.standard_node.alias = (
             "chance_to_discover_failed_attack"
         )
+
         self.failed_attacks.chance.deceptive_node.alias = (
             "chance_to_discover_failed_attack_deceptive_node"
         )
@@ -297,9 +299,11 @@ class BlueAttackDiscoveryGroup(ConfigGroup):
         self.succeeded_attacks_known_compromise.use.alias = (
             "can_discover_succeeded_attacks_if_compromise_is_discovered"
         )
+
         self.succeeded_attacks_known_compromise.chance.standard_node.alias = (
             "chance_to_discover_succeeded_attack_compromise_known"
         )
+
         self.succeeded_attacks_known_compromise.chance.deceptive_node.alias = (
             "chance_to_discover_succeeded_attack_deceptive_node"
         )
@@ -315,6 +319,7 @@ class BlueAttackDiscoveryGroup(ConfigGroup):
         self.succeeded_attacks_unknown_compromise.use.alias = (
             "can_discover_succeeded_attacks_if_compromise_is_not_discovered"
         )
+
         self.succeeded_attacks_unknown_compromise.chance.standard_node.alias = (
             "chance_to_discover_succeeded_attack_compromise_not_known"
         )

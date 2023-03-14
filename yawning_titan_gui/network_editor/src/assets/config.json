@@ -1,0 +1,66 @@
+{
+  "saveLocation": "http://localhost:8000/node_editor/",
+  "cytoscapeStyle": [
+    {
+      "label": "Node",
+      "cytoscapeStyleSheet": {
+        "selector": "node",
+        "style": {
+          "label": "data(name)",
+          "background-color": "#f0f0f0",
+          "border-color": "#909090",
+          "border-width": 1,
+          "color": "#fff",
+          "line-color": "#909090"
+        }
+      }
+    },
+    {
+      "label": "Edge",
+      "noKeyDisplay": true,
+      "cytoscapeStyleSheet": {
+        "selector": "edge",
+        "style": {
+          "width": 3,
+          "line-color": "#505050",
+          "target-arrow-color": "#ccc",
+          "curve-style": "bezier"
+        }
+      }
+    },
+    {
+      "label": "Entry Node",
+      "cytoscapeStyleSheet": {
+        "selector": "node[?entry_node]",
+        "style": {
+          "label": "data(name)",
+          "background-image": "{{ASSETS_PATH}}/img/entry_node.svg",
+          "background-width": "50%",
+          "background-height": "50%"
+        }
+      }
+    },
+    {
+      "label": "High Value Node",
+      "cytoscapeStyleSheet": {
+        "selector": "node[?high_value_node]",
+        "style": {
+          "label": "data(name)",
+          "background-color": "#da2fed"
+        }
+      }
+    },
+    {
+      "label": "Selected Node",
+      "cytoscapeStyleSheet": {
+        "selector": ":selected",
+        "style": {
+          "label": "data(name)",
+          "border-color": "#005e97",
+          "border-width": 3,
+          "line-color": "#009eff"
+        }
+      }
+    }
+  ]
+}
