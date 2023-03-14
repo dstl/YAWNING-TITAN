@@ -303,10 +303,27 @@ def get_toolbar(current_page_title: str = None):
                 get_url_dict(n, get_url("Documentation", section=n))
                 for n in get_docs_sections()
             ],
+            "cypressRefToolbar": "toolbar-documentation",
+            "cypressRefMenu": "menu-documentation"
         },
-        "manage-game_modes": {"icon": "bi-gear", "title": "Manage game modes"},
-        "manage-networks": {"icon": "bi-diagram-2", "title": "Manage networks"},
-        "run-view": {"icon": "bi-play", "title": "Run session"},
+        "manage-game_modes": {
+            "icon": "bi-gear",
+            "title": "Manage game modes",
+            "cypressRefToolbar": "toolbar-manage-game-modes",
+            "cypressRefMenu": "menu-manage-game-modes"
+        },
+        "manage-networks": {
+            "icon": "bi-diagram-2",
+            "title": "Manage networks",
+            "cypressRefToolbar": "toolbar-manage-networks",
+            "cypressRefMenu": "menu-manage-networks"
+        },
+        "run-view": {
+            "icon": "bi-play",
+            "title": "Run session",
+            "cypressRefToolbar": "toolbar-run-yt",
+            "cypressRefMenu": "menu-run-yt"
+        },
         "about": {
             "icon": "bi-question-lg",
             "title": "About",
@@ -323,6 +340,8 @@ def get_toolbar(current_page_title: str = None):
                 )
             ],
             "info": [f"Version: {version()}"],
+            "cypressRefToolbar": "toolbar-about",
+            "cypressRefMenu": "menu-about"
         },
     }
     for id, info in default_toolbar.items():
