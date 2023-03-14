@@ -20,6 +20,6 @@ import './commands'
 // require('./commands')
 
 beforeEach(() => {
-  cy.visit('http://localhost:8000/networks/');
+  cy.visit(`${Cypress.env('TEST_URL')}`);
   cy.get('.head').should('be.visible');
 });
