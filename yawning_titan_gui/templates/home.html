@@ -5,7 +5,7 @@
 {% block main %}
 <div id="center-container" class="small">
     {% for id, el in toolbar.items %}
-        <a href="{{el.title|get_url}}"><i class="bi {{el.icon}}"></i></i>{{el.title}}</a>
+        <a href="{{el.title|get_url}}"><i class="bi {{el.icon}}"></i>{{el.title}}</a>
     {% endfor %}
 </div>
 {% endblock %}

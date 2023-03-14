@@ -89,6 +89,7 @@ class YawningTitanRun:
         logger: Optional[Logger] = None,
         output_dir: Optional[str] = None,
         auto: bool = True,
+        **kwargs,
     ):
         """
         The YawningTitanRun constructor.

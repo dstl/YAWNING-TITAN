@@ -11,13 +11,17 @@ from yawning_titan_gui.views import (
     NetworkCreator,
     NetworksView,
     NodeEditor,
+    RunView,
     db_manager,
+    get_output,
     update_game_mode,
     update_network,
 )
 
 urlpatterns = [
     path("", HomeView.as_view(), name="Home"),
+    path("docs/", DocsView.as_view(), name="docs"),
+    path("run/", RunView.as_view(), name="Run session"),
     path("docs/", DocsView.as_view(), name="Documentation"),
     path("docs/<str:section>/", DocsView.as_view(), name="Documentation"),
     path("game_modes/", GameModesView.as_view(), name="Manage game modes"),
@@ -48,6 +52,7 @@ urlpatterns = [
     path("manage_db/", db_manager, name="db manager"),
     path("update_game_mode/", update_game_mode, name="update config"),
     path("update_network/", update_network, name="update network"),
+    path("output/", get_output, name="stderr"),
     path("/", TemplateView.as_view(template_name="index.html"), name="docs index"),
 ]
 
@@ -55,7 +60,7 @@ urlpatterns += [
     path(
         f"docs_{name}/",
         TemplateView.as_view(template_name=f"source/{name}.html"),
-        name=f"docs {name}",
+        name=f"docs_{name}",
     )
     for name in get_docs_sections()
 ]

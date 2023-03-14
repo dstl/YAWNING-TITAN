@@ -13,7 +13,7 @@
 
 {% block items %}
     {% for game_mode in game_modes %}
-        {% include 'elements/el_game_mode.html' with game_mode=game_mode %}
+        {% include 'elements/el_game_mode.html' with game_mode=game_mode show_icons=True %}
     {% endfor %}
 {% endblock %}
 

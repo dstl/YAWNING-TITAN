@@ -85,6 +85,9 @@ textarea{
     margin-bottom: calc(var(--increment)*4);
     /* flex: 1; */
 }
+.fields{
+    width: 100%;
+}
 .config-form>.fields{
     overflow-y: auto;
     padding-right: var(--increment);

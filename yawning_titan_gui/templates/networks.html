@@ -15,7 +15,7 @@
 
 {% block items %}
     {% for network in networks %}
-        {% include 'elements/el_network.html' with network=network %}
+        {% include 'elements/el_network.html' with network=network show_icons=True %}
     {% endfor %}
 {% endblock %}
 
