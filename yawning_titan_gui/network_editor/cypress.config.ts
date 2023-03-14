@@ -12,6 +12,16 @@ export default defineConfig({
       DOCS_PATH: 'docs/',
       GAME_MODE_PATH: 'game_modes/',
       NETWORKS_PATH: 'networks/'
-    }
+    },
+    retries: {
+      // no retry while developing
+      openMode: 0,
+      // retry twice in ci - should not be needed, but
+      // just in case...
+      runMode: 2
+    },
+    // 720p viewport
+    viewportWidth: 1366,
+    viewportHeight: 720
   },
 });
