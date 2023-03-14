@@ -17,17 +17,17 @@ NPM can be used as the default package manager, but yarn is recommended:
 - navigate to the root of the network editor project
 - `yarn install`
 
-### Run the node editor:
+### Run the network editor:
 - navigate to the root of the network editor project
 - `yarn start`
 - open http://localhost:4200/ in browser
 
-### Run node editor unit tests
+### Run network editor unit tests
 - navigate to the root of the network editor project
 - `yarn test`
 
-### Run node editor end to end tests
-If the node editor has not been built yet, follow the "Building the node editor files" step.
+### Run network editor end to end tests
+If the network editor has not been built yet, follow the "Building the network editor files" step.
 
 #### Run the django server:
 - navigate to repository root
@@ -46,8 +46,8 @@ then press "Start E2E Testing"
 - navigate to the root of the network editor project
 - `yarn test:e2e:ci`
 
-### Building the node editor files
-- navigate to the root of the network editor project
+### Building the network editor files
+- navigate to the root of the network editor project (`<YAWNING_TITAN_ROOT_DIRECTORY>/yawning_titan_gui/network_editor/`)
 - `yarn build`
 
 ### Updating the Network Editor dependencies
@@ -61,6 +61,18 @@ Windows: `.\make.bat html`
 
 Linux: `make html`
 
-### Further help
+## Updating Cypress End to End tests
+The Django server must be up in order to run the end to end test:
+- Navigate to the root folder and run `py manage.py runserver`
+- Wait for the service to be loaded
+- To open the cypress e2e to end tests, run `yarn test:e2e`
+- Select "E2E Testing" on the window that opens
+- Select any browser to run tests on
+- Press run X specs, which is next to the "E2E specs" title in the header
+
+Making any changes in the network editor (`<YAWNING_TITAN_ROOT_DIRECTORY>/yawning_titan_gui/network_editor/`) will require [Rebuilding the network editor](#building-the node-editor-files)
+to be run in order for django to pick up the changes, as Django hosts the built network editor files
+
+## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

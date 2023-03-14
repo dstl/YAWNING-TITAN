@@ -282,7 +282,7 @@ class FourNodeDef(gym.Env):
 
     def _is_done(self):
         """
-        Determine if an epsiode has been completed.
+        Determine if an episode has been completed.
 
         There are two terminal states.
 

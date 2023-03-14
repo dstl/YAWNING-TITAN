@@ -402,12 +402,15 @@ option:hover{
     -o-transition: none !important;
 }
 .btn-primary{
-    background-color: var(--primary);
-    border-color: var(--primary);
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
     color: var(--text-superlight) !important;
 }
 .btn{
     color: var(--text-light);
+}
+.btn:hover{
+    color: var(--text-superlight);
 }
 .border-bottom{
     border-bottom: 1px solid var(--text-mid);

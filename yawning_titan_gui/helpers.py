@@ -1,14 +1,113 @@
+import glob
+import logging
+import multiprocessing
+import os
+import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
 from django.urls import reverse
 
+from yawning_titan import LOG_DIR
+from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
-from yawning_titan_server.settings import DOCS_ROOT
+from yawning_titan.yawning_titan_run import YawningTitanRun
+from yawning_titan_gui import YT_RUN_TEMP_DIR
+from yawning_titan_server.settings import DOCS_ROOT, STATIC_URL
 
-# from setup import version
+RUN_LOG = LOG_DIR / "yt_gui_run.log"
+STDOUT = LOG_DIR / "stdout.txt"
+
+
+class RunManager:
+    """Wrapper over an instance of :class: `~yawning_titan.yawning_titan_run.YawningTitanRun` to provide helper functions to the GUI."""
+
+    gif = None
+    process = None
+    counter = 0
+    run_args = None
+
+    @staticmethod
+    def format_file(path):
+        """Format a text reference file as a html object."""
+        with open(path, "r") as f:
+            try:
+                lines = [line.replace(" ", "&nbsp;") for line in f.readlines()]
+                text = "<br>".join(lines)
+                return text
+            except Exception:
+                return ""
+
+    @classmethod
+    def run_yt(cls, *args, **kwargs):
+        """Run an instance of :class: `~yawning_titan.yawning_titan_run.YawningTitanRun`."""
+        if RUN_LOG.exists():
+            RUN_LOG.unlink()
+        logger = logging.getLogger("yt_run")
+        logger.setLevel(logging.DEBUG)
+        # create file handler which logs even debug messages
+        fh = logging.FileHandler(RUN_LOG.as_posix())
+        fh.setLevel(logging.DEBUG)
+        logger.addHandler(fh)
+
+        cls.run_args = kwargs
+        with open(STDOUT, "w+") as sys.stdout:
+            run = YawningTitanRun(**kwargs, auto=False, logger=logger)
+
+            run.setup()
+            run.train()
+            run.evaluate()
+
+            if kwargs["save"]:
+                run.save()
+
+            if kwargs["export"]:
+                run.export()
+
+            if kwargs["render"]:
+                loop = ActionLoop(
+                    env=run.env,
+                    agent=run.agent,
+                    filename="test",
+                    episode_count=kwargs.get("num_episodes", run.total_timesteps),
+                )
+                loop.gif_action_loop(
+                    output_directory=YT_RUN_TEMP_DIR,
+                    save_gif=True,
+                    render_network=True
+                    # TODO: fix bug where network must be rendered to get gif to be produced
+                )
+
+    @classmethod
+    def get_output(cls):
+        """Get the output of a :class: `~yawning_titan.yawning_titan_run.YawningTitanRun`."""
+        cls.counter += 1
+        output = {
+            "stderr": "",
+            "stdout": "",
+            "gif": "",
+            "active": cls.process.is_alive(),
+            "request_count": cls.counter,
+        }
+        output["stderr"] = cls.format_file(RUN_LOG)
+        output["stdout"] = cls.format_file(STDOUT)
+        dir = glob.glob(f"{YT_RUN_TEMP_DIR.as_posix()}/*")
+        gif_path = max(dir, key=os.path.getctime)
+        output["gif"] = f"/{STATIC_URL}gifs/{Path(gif_path).name}".replace("\\", "/")
+        print("GIF", output["gif"])
+        return output
+
+    @classmethod
+    def start_process(cls, fkwargs: dict):
+        """Spawn a subprocess to run the instance of :class: `~yawning_titan.yawning_titan_run.YawningTitanRun` with the given arguments."""
+        cls.counter = 0
+        cls.process = multiprocessing.Process(
+            target=RunManager.run_yt,
+            kwargs=(fkwargs),
+        )
+        cls.process.start()
 
 
 class NetworkManager:
@@ -71,26 +170,36 @@ class NetworkManager:
         networks: List[set] = []
         for k, v in filters.items():
             attr = f"filter_{k}"
-            print("ATTR = ", attr)
             if hasattr(cls, attr):
                 networks.append(set(getattr(cls, attr)(v["min"], v["max"])))
         if len(networks) == 1:
             return list(networks[0])
         return list(networks[0].intersection(*[networks][1:]))
 
+    @classmethod
+    def get_network_data(cls) -> List[dict]:
+        """Gather the doc metadata of all network objects."""
+        return [network.doc_metadata for network in cls.db.all()]
+
 
 class GameModeManager:
-    """Wrapper over an instance of `~yawning_titan.game_modes.game_mode_db.GameModeDB` to provide helper functions to the GUI."""
+    """Wrapper over an instance of :class: `~yawning_titan.game_modes.game_mode_db.GameModeDB` to provide helper functions to the GUI."""
 
     db: GameModeDB = GameModeDB()
 
     @classmethod
-    def get_game_mode_data(cls):
-        """Gather the doc metadata of all game mode objects adding a field `complete` to denote that a game mode is fully valid."""
-        return [
-            {**g.doc_metadata.to_dict(), "complete": g.validation.passed}
+    def get_game_mode_data(cls, valid_only: bool = False) -> List[dict]:
+        """Gather the doc metadata of all game mode objects adding a field `valid` to denote that a game mode is fully valid.
+
+        :param valid_only: return only valid game modes.
+        """
+        game_modes = [
+            {**g.doc_metadata.to_dict(), "valid": g.validation.passed}
             for g in cls.db.all()
         ]
+        if not valid_only:
+            return game_modes
+        return [g for g in game_modes if g["valid"]]
 
     # @classmethod
     # def filter(cls, filters: dict):
@@ -194,10 +303,27 @@ def get_toolbar(current_page_title: str = None):
                 get_url_dict(n, get_url("Documentation", section=n))
                 for n in get_docs_sections()
             ],
+            "cypressRefToolbar": "toolbar-documentation",
+            "cypressRefMenu": "menu-documentation"
         },
-        "manage-game_modes": {"icon": "bi-gear", "title": "Manage game modes"},
-        "manage-networks": {"icon": "bi-diagram-2", "title": "Manage networks"},
-        "run-view": {"icon": "bi-play", "title": "Run session"},
+        "manage-game_modes": {
+            "icon": "bi-gear",
+            "title": "Manage game modes",
+            "cypressRefToolbar": "toolbar-manage-game-modes",
+            "cypressRefMenu": "menu-manage-game-modes"
+        },
+        "manage-networks": {
+            "icon": "bi-diagram-2",
+            "title": "Manage networks",
+            "cypressRefToolbar": "toolbar-manage-networks",
+            "cypressRefMenu": "menu-manage-networks"
+        },
+        "run-view": {
+            "icon": "bi-play",
+            "title": "Run session",
+            "cypressRefToolbar": "toolbar-run-yt",
+            "cypressRefMenu": "menu-run-yt"
+        },
         "about": {
             "icon": "bi-question-lg",
             "title": "About",
@@ -214,6 +340,8 @@ def get_toolbar(current_page_title: str = None):
                 )
             ],
             "info": [f"Version: {version()}"],
+            "cypressRefToolbar": "toolbar-about",
+            "cypressRefMenu": "menu-about"
         },
     }
     for id, info in default_toolbar.items():

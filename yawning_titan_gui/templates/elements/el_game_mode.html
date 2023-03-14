@@ -3,22 +3,24 @@
         <h3 class="subhead">{{game_mode.name}}</h3>
         <p class="description">{{game_mode.description}}</p>
     </div>
-    <div class="icons">
-        <div class="icon create-from">
-            <i class="bi bi-clipboard"></i>
+    {% if show_icons %}
+        <div class="icons">
+            <div class="icon create-from">
+                <i class="bi bi-clipboard"></i>
+            </div>
+            {% if not game_mode.locked %}
+            <a class="icon" href="{% url 'game mode config' game_mode_id=game_mode.uuid %}">
+                <i class="bi bi-pencil"></i>
+            </a>
+            <div class="icon delete">
+                <i class="bi bi-trash3"></i>
+            </div>
+            <input class="form-check-input icon" type="checkbox" value="">
+            {% else %}
+            <a class="icon" href="{% url 'game mode config' game_mode_id=game_mode.uuid %}">
+                <i class="bi bi-eye"></i>
+            </a>
+            {% endif %}
         </div>
-        {% if not game_mode.locked %}
-        <a class="icon" href="{% url 'game mode config' game_mode_id=game_mode.uuid %}">
-            <i class="bi bi-pencil"></i>
-        </a>
-        <div class="icon delete">
-            <i class="bi bi-trash3"></i>
-        </div>
-        <input item-selector="" class="form-check-input icon" type="checkbox" value="">
-        {% else %}
-        <a class="icon" href="{% url 'game mode config' game_mode_id=game_mode.uuid %}">
-            <i class="bi bi-eye"></i>
-        </a>
-        {% endif %}
-    </div>
+    {% endif %}
 </div>

@@ -22,7 +22,22 @@ from yawning_titan_gui.forms.network_forms import (
     NetworkSearchForm,
     NetworkTemplateForm,
 )
-from yawning_titan_gui.helpers import GameModeManager, NetworkManager, get_toolbar
+from yawning_titan_gui.forms.run_form import RunForm
+from yawning_titan_gui.helpers import (
+    GameModeManager,
+    NetworkManager,
+    RunManager,
+    get_toolbar,
+)
+
+default_sidebar = {
+    "Documentation": ["Getting started", "Tutorials", "How to configure", "Code"],
+    "Configuration": [
+        "Manage game modes",
+    ],
+    "Training runs": ["Setup a training run", "View completed runs"],
+    "About": ["Contributors", "Report bug", "FAQ"],
+}
 
 default_toolbar = {
     "home": {"icon": "bi-house-door", "title": "Home"},
@@ -33,6 +48,8 @@ default_toolbar = {
 }
 
 protected_game_mode_ids = ["base_config.yaml"]
+
+run_config = {}
 
 
 class HomeView(View):
@@ -78,7 +95,7 @@ class DocsView(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        doc_url = reverse(f"docs {section}") if section else reverse("docs index")
+        doc_url = reverse(f"docs_{section}") if section else reverse("docs index")
         return render(
             request,
             "docs.html",
@@ -95,15 +112,47 @@ class DocsView(View):
             the html page. A `request` object will always be delivered when a page
             object is accessed.
         """
-        doc_url = reverse(f"docs {section}") if section else "index.html"
+        return render(request, "docs.html", {"toolbar": get_toolbar("Documentation")})
+
+
+class RunView(View):
+    """Django page template for Yawning Titan Run class."""
+
+    def get(self, request: HttpRequest, *args, **kwargs):
+        """
+        Handle page get requests.
+
+        :param request: the Django page `request` object containing the html data for `run.html` and the server GET / POST request bodies.
+        """
+        form = RunForm()
+
         return render(
             request,
-            "docs.html",
+            "run.html",
             {
-                "toolbar": get_toolbar("Documentation"),
-                "doc_url": doc_url,
+                "form": form,
+                "toolbar": get_toolbar("Run session"),
+                "game_modes": GameModeManager.get_game_mode_data(valid_only=True),
+                "networks": NetworkManager.get_network_data(),
             },
         )
+
+    def post(self, request: HttpRequest, *args, **kwargs):
+        """
+        Handle page post requests.
+
+        :param request: the Django page `request` object containing the html data for `run.html` and the server GET / POST request bodies.
+        """
+        form = RunForm(request.POST)
+        if form.is_valid():
+            fkwargs = form.cleaned_data
+            if fkwargs["network"] is not None:
+                fkwargs["network"] = NetworkManager.db.get(fkwargs["network"])
+            if fkwargs["game_mode"] is not None:
+                fkwargs["game_mode"] = GameModeManager.db.get(fkwargs["game_mode"])
+            RunManager.start_process(fkwargs=fkwargs)
+            return JsonResponse({"message": "complete"})
+        return JsonResponse({"message": "error"}, status=400)
 
 
 class GameModesView(View):
@@ -465,6 +514,12 @@ class GameModeConfigView(View):
                 "protected": game_mode_form.game_mode.doc_metadata.locked,
             },
         )
+
+
+def get_output(request: HttpRequest):
+    """Get the output of a :class: `~yawning_titan.yawning_titan_run.YawningTitanRun`."""
+    if request.method == "GET":
+        return JsonResponse(RunManager.get_output())
 
 
 def db_manager(request: HttpRequest) -> JsonResponse:
