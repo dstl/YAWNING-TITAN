@@ -1,0 +1,97 @@
+{% load static %}
+{% load tags %}
+
+<head>
+    <link rel="icon" type="image/x-icon" href="{% static 'ytlogo.ico' %}">
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/bootstrap.min.css' %}">
+
+    <script src="{% static 'lib/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'lib/jquery.js' %}"></script>
+
+    <script type="text/javascript">
+        const CSRF_TOKEN = "{{ csrf_token }}";
+    </script>
+
+    <script src="{% static 'js/app.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/multi-range.css' %}">
+    <link rel="stylesheet" href="{% static 'css/list-item.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sandwich-icon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/form-range.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/nested-dropdown.css' %}">
+
+
+    {% block scripts %}
+
+    {% endblock %}
+</head>
+<body class="preload">
+    <nav id="top-nav" class="border-bottom">
+        <div id="sandwich-icon" data-toolbar="#toolbar">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <h2 class="head">Yawning Titan</h2>
+        <div class="flex-break"></div>
+        {% block top-buttons %}
+        {% endblock %}
+    </nav>
+    <div id="window-container">
+        <div toolbar="" id="toolbar">
+            {% for id, el in toolbar.items %}
+                <div class="toolbar-button {% if el.active %}active{% endif %}" data-href="{{el.title|get_url}}">
+                    <div class="flex-row">
+                        <div id="{{id}}-icon" class="icon-container {{id}}">
+                            {% if el.active %}
+                            <i class="bi {{el.icon}}-fill"></i>
+                            {% else %}
+                            <i class="bi {{el.icon}}"></i>
+                            {% endif %}
+                        </div>
+                        <div class="icon-text">
+                            <span>{{el.title}}</span>
+                        </div>
+                        {%if el.links %}
+                            <div class="toolbar-collapse">
+                                <i class="bi bi-plus"></i>
+                                <i class="bi bi-dash"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {%if el.links %}
+                    <div class="toolbar-links">
+                        {% for link in el.links %}
+                            <a class="toolbar-link" href="{{link.href}}" target="{% if link.new_tab %}_blank{% endif %}">{{link.name|format_text}}</a>
+                        {% endfor %}
+                        {% for i in el.info %}
+                            <p>{{i}}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <div id="window">
+            <div id="main">
+                {% block main %}
+
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    <div id="mask" class="hidden">
+        {% block dialogues %}
+
+        {% endblock %}
+    </div>
+    <script> </script>
+</body>
+
+{% block style %}
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "item-manager.html" %}
+{% load static %}
+{% load tags %}
+<!-- <!DOCTYPE html> -->
+
+{% block scripts %}
+<script src="{% static 'js/item_manager.js' %}"></script>
+<script type="text/javascript">
+    const DB_MANAGER_URL = "{% url 'db manager' %}";
+    const ITEM_TYPE = "{{item_type}}";
+</script>
+{% endblock %}
+
+{% block items %}
+    {% for game_mode in game_modes %}
+        {% include 'elements/el_game_mode.html' with game_mode=game_mode show_icons=True %}
+    {% endfor %}
+{% endblock %}
+
+{% block bottom-buttons %}
+<button id="delete-all" class="btn hidden">Delete selected</button>
+<button id="create" class="btn btn-primary">New game mode</button>
+{% endblock %}
+
+
+{% block dialogues %}
+    {% for dialogue_info in dialogue_boxes %}
+        {% include 'elements/el_dialogue_center.html' with info=dialogue_info %}
+    {% endfor %}
+{% endblock %}

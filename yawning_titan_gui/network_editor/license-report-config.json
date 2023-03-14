@@ -1,0 +1,29 @@
+{
+  "output": "csv",
+  "fields": [
+    "name",
+    "installedVersion",
+    "licenseType",
+    "link"
+  ],
+  "tablemarkOptions": {
+    "columns": [
+      {
+        "name": "name",
+        "align": "center"
+      },
+      {
+        "name": "installedVersion",
+        "align": "center"
+      },
+      {
+        "name": "licenseType",
+        "align": "center"
+      },
+      {
+        "name": "link",
+        "align": "center"
+      }
+    ]
+  }
+}
