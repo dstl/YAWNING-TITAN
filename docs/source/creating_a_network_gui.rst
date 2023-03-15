@@ -5,11 +5,11 @@ Create a Network
 Gettting started
 ################
 
-To get started, Navigate to the network manager page from the sidebar or main menu
+To get started, Navigate to the network manager (node tree icon) page from the sidebar or main menu
 
 .. image:: ../_static/create_template_network.gif
   :width: 800
-  :alt: create alternative network
+  :alt: create network
 
 Copying a network
 ######################
@@ -40,9 +40,11 @@ Launch the *Template network creator* by clicking the *Template network* button 
 Node editor
 ***********
 Networks can be created from scratch in the network editor by manually adding nodes and edges.
-When the network is updated the changes will automatically be saved to the network in the database.
-
 Launch the *Node editor* by clicking the *Custom network* button on the *Network management* page.
+
+Saving changes
+==============
+By default when the network is updated the changes will automatically be saved to the network in the database.
 
 Menus
 =====

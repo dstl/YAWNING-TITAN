@@ -96,15 +96,12 @@ function submit_form(form_element,section_name){
         cache: false,
         dataType: "json",
         success: function(response){
-            console.log("SUCCESS");
             $(form_element).find(".error-list").empty();
-            console.log("TEST",form_element, $(form_element).find(".error-list").empty());
             if(response.valid){
                 $(`.icon-container[data-section="${SECTION_NAME}"]`).addClass("complete");
             }
         },
         error: function(response){
-            console.log("ERROR");
             let errors = response.responseJSON.errors;
             add_form_errors(JSON.parse(errors));
         }
