@@ -7,9 +7,6 @@
     width: 100%;
     margin-top: var(--increment);
 }
-.multi-range>input[type="number"]{
-    width: 2rem;
-}
 .slider-distance{
     flex: 1;
 }

@@ -31,30 +31,33 @@ import { v4 as uuid } from 'uuid';
 
 export function openEmptyNetwork() {
   // get to the network editor page
-  cy.get('[data-cy="create-new-network-button"]').click();
+  cy.visit(`${Cypress.env('TEST_URL')}${Cypress.env('NETWORKS_PATH')}`);
+
+  // create new network
+  cy.get('#create').click();
   testId = uuid()
   cy.get('#create-dialogue > [data-cy="new-item-name-input"]').type(testId);
   cy.get('.custom-network').click();
 }
 
-export function cleanUp() {
+export function cleanUpNetwork(networkId?: string) {
   // go to the networks and delete what was created
-  cy.visit('http://localhost:8000/networks');
+  cy.visit(`${Cypress.env('TEST_URL')}${Cypress.env('NETWORKS_PATH')}`);
   cy.get('.head').should('be.visible');
 
   // find the correct item and delete
-  cy.get(`[data-item-name="${testId}"] > .icons > .delete`).click();
+  cy.get(`[data-item-name="${networkId ? networkId : testId}"] > .icons > .delete`).click();
   cy.contains('Delete network').click();
 }
 
 Cypress.Commands.add('openEmptyNetwork', openEmptyNetwork);
-Cypress.Commands.add('cleanUp', cleanUp);
+Cypress.Commands.add('cleanUpNetwork', cleanUpNetwork);
 
 declare global {
   namespace Cypress {
     interface Chainable {
       openEmptyNetwork: typeof openEmptyNetwork
-      cleanUp: typeof cleanUp
+      cleanUpNetwork: typeof cleanUpNetwork
     }
   }
 }

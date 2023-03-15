@@ -11,10 +11,13 @@
     box-shadow: rgba(181, 181, 181, 0.15) 1.95px 1.95px 2.6px;
     cursor: pointer;
     box-sizing: border-box;
-    border: 1px solid orange;
     height: 5rem;
+    border: 1px solid var(--text-light);
 }
-.list-item.complete{
+.list-item.invalid{
+    border: 1px solid orange;
+}
+.list-item.valid{
     border: 1px solid var(--primary);
 }
 .list-item:hover .icon:has(.bi-check-lg),.list-item.selected .icon:has(.bi-check-lg){
@@ -54,4 +57,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+#list-items{
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
+}
+#delete-all{
+    background-color: red;
+    border: red;
+    color: var(--text-superlight);
 }

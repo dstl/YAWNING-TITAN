@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tags %}
+<!-- <!DOCTYPE html> -->
+
+{% block scripts %}
+<!-- <script src="{% static 'js/game_mode.js' %}"></script> -->
+<script src="{% static 'js/run.js' %}"></script>
+<script type="text/javascript">
+    const FILE_MANAGER_URL = "{% url 'db manager' %}";
+    const OUTPUT_URL = "{% url 'stderr' %}";
+</script>
+{% endblock %}
+
+{% block main %}
+<div id="grid-container" class="stretch clear">
+    <div id="game-modes-container" class="grid-item">
+        <div id="search-container">
+            <div class="input-group rounded">
+                <input id="filter-game-modes" type="search" class="form-control rounded" placeholder="Filter" aria-label="Search" aria-describedby="search-addon" />
+                <span class="input-group-text border-0" id="search-addon">
+                    <i class="bi bi-search"></i>
+                </span>
+            </div>
+        </div>
+        <div id="game-modes">
+            {% for game_mode in game_modes %}
+                {% include 'elements/el_game_mode.html' with game_mode=game_mode show_icons=False %}
+            {% endfor %}
+        </div>
+    </div>
+    <div id="networks-container"  class="grid-item">
+        <div id="search-container">
+            <div class="input-group rounded">
+                <input id="filter-game-modes" type="search" class="form-control rounded" placeholder="Filter" aria-label="Search" aria-describedby="search-addon" />
+                <span class="input-group-text border-0" id="search-addon">
+                    <i class="bi bi-search"></i>
+                </span>
+            </div>
+        </div>
+        <div id="networks">
+            {% for network in networks %}
+                {% include 'elements/el_network.html' with network=network show_icons=False %}
+            {% endfor %}
+        </div>
+    </div>
+    <div id="run-config" class="grid-item">
+        <div id="field-menu" class="flex-row">
+            <button type="button" id="training-fields-button" data-form="#training-fields" class="btn btn-primary">Training</button>
+            <button type="button" id="evaluation-fields-button" data-form="#evaluation-fields" class="btn">Evaluation</button>
+        </div>
+        <form id="run-form">
+            <div id="training-fields" class="run-fieldset">
+                {% include 'elements/el_form_fields.html' with fields=form.training_fields protected=False %}
+            </div>
+            <div id="evaluation-fields"  class="run-fieldset" style="display: none;">
+                {% include 'elements/el_form_fields.html' with fields=form.evaluation_fields protected=False %}
+            </div>
+            <div class="flex-break"></div>
+            <button type="submit" id="run" class="btn btn-primary">Run</button>
+        </form>
+    </div>
+    <div id="log-view" class="grid-item">
+        <h3>Training Logs</h3>
+        <div class="inner"></div>
+    </div>
+    <div id="metric-view" class="grid-item">
+        <h3>Output metrics</h3>
+        <div class="inner"></div>
+    </div>
+    <div id="action-loop-view" class="grid-item">
+        <img id="gif-output" alt="gif" style="display: none;">
+    </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<style>
+    #grid-container{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        overflow-y: auto;
+    }
+    .grid-item{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--dark);
+        border-radius: 1rem;
+        padding: calc(3*var(--increment));
+        margin: calc(3*var(--increment));
+        min-width: 0;
+        flex-basis: 30%;
+        min-height: 0;
+        max-height: calc(50% - 6*var(--increment));
+        height: 50%;
+        word-wrap: break-word;
+    }
+    .grid-item>.inner{
+        flex:1;
+    }
+
+    #log-view .inner,#metric-view .inner{
+        font-family: 'Courier New';
+        font-size: 12px;
+        color: var(--text-superlight);
+    }
+    #field-menu{
+        border-bottom: 1px solid var(--text-superlight);
+        margin-bottom: var(--increment);
+    }
+    #field-menu .btn{
+        border-radius: .25rem .25rem 0 0;
+        background-color: var(--mid);
+        border: 1px solid var(--text-superlight);
+    }
+    #field-menu button:not(:last-child){
+        margin-right: var(--increment);
+    }
+
+    #run{
+        margin-top: var(--increment);
+        width: 100%;
+    }
+    #run-view{
+        flex:1;
+        width: 100%;
+        max-height: 100%;
+        min-height: 0;
+        overflow-y: auto;
+    }
+    #run-config-container{
+        display: flex;
+        flex-direction: column;
+        max-height: 100%;
+        min-height: 0;
+    }
+    #run-form{
+        min-height: 0;
+        max-height: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    #run-form>div{
+        width: 100%;
+        max-height: 100%;
+        overflow-y: auto;
+    }
+    #view-container{
+        flex: 1;
+        width: 100%;
+        margin-top: var(--increment);
+        max-height: 100%;
+        min-height: 0;
+    }
+    #view-container>div{
+        display: none;
+    }
+    #view-buttons button.selected{
+        border: 1px solid var(--text-mid);
+    }
+    #output-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .run-subsection{
+        border: 1px solid var(--text-mid);
+        min-height: 0;
+        max-height: 100%;
+        height: 100%;
+        overflow-y: auto;
+        padding: var(--increment);
+    }
+
+
+    /* Search */
+    #search-container{
+        padding-bottom: calc(var(--increment) * 3);
+        border-bottom: 1px solid var(--text-mid);
+        margin-bottom: calc(var(--increment) * 2);
+    }
+    #search-container span{
+        background-color: var(--primary);
+        color: var(--text-superlight);
+    }
+
+    .list-item.selected{
+        border: 1px solid var(--primary) !important;
+    }
+
+    /* overrides */
+    .field-container{
+        max-width: 75px;
+    }
+    .list-item.valid{
+        border: 1px solid var(--text-light);
+    }
+
+</style>
+{% endblock %}

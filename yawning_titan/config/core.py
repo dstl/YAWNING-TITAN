@@ -19,7 +19,10 @@ class ConfigBase(ABC):
     """Used to provide helper methods to represent a ConfigGroup object."""
 
     def get_config_elements(
-        self, types: Optional[Union[ConfigItem, ConfigGroup]] = None
+        self,
+        types: Optional[
+            Union[ConfigItem, ConfigGroup, List[Union[ConfigItem, ConfigGroup]]]
+        ] = None,
     ) -> Dict[str, Union[ConfigItem, ConfigGroup]]:
         """
         Get the attributes of the class that are either :class: `ConfigGroup` or :class:`ConfigItem`.
@@ -53,6 +56,16 @@ class ConfigBase(ABC):
             for k, v in self.__dict__.items()
             if k not in self.get_config_elements() and not k.startswith("_")
         }
+
+    @property
+    def config_items(self):
+        """Property to represent the :class: `~yawning_titan.config.core.ConfigItem` children of the group."""
+        return self.get_config_elements(ConfigItem)
+
+    @property
+    def config_groups(self):
+        """Property to represent the :class: `~yawning_titan.config.core.ConfigGroup` children of the group."""
+        return self.get_config_elements(ConfigGroup)
 
     def stringify(self):
         """Represent the class as a string.
