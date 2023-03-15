@@ -115,7 +115,8 @@ function submit_form(form_element){
         cache: false,
         dataType: "json",
         success: function(response){
-            $(".error-list",form_element).empty()
+            $(".error-list").empty();
+            $(`.icon-container[data-section="${SECTION_NAME}"]`).addClass("complete");
         },
         error: function(response){
             let errors = response.responseJSON.errors;
@@ -126,7 +127,7 @@ function submit_form(form_element){
 }
 
 function add_form_errors(errors){
-    $(".error-list").remove(); // remove existing errors
+    $(".error-list").empty(); // remove existing errors
     $(".erroneous").removeClass("erroneous"); // remove all erroneous settings
     for (const [form_id, error] of Object.entries(errors)){
         let group_error_list = $("<ul class='error-list'></ul>");
