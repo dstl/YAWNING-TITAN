@@ -96,10 +96,8 @@ function submit_form(form_element,section_name){
         cache: false,
         dataType: "json",
         success: function(response){
-            $(".error-list",form_element).empty();
-            if(response.valid){
-                $(`.icon-container[data-section="${SECTION_NAME}"]`).addClass("complete");
-            }
+            $(".error-list").empty();
+            $(`.icon-container[data-section="${SECTION_NAME}"]`).addClass("complete");
         },
         error: function(response){
             let errors = response.responseJSON.errors;
@@ -109,7 +107,7 @@ function submit_form(form_element,section_name){
 }
 
 function add_form_errors(errors){
-    $(".error-list").remove(); // remove existing errors
+    $(".error-list").empty(); // remove existing errors
     $(".erroneous").removeClass("erroneous"); // remove all erroneous settings
     $(`.icon-container[data-section="${SECTION_NAME}"]`).removeClass("complete"); // show section as incomplete
     for (const [form_id, error] of Object.entries(errors)){
