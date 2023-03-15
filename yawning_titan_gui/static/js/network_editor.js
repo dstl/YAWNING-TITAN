@@ -29,7 +29,6 @@ function update_network(form_element,operation){
     config = new FormData($(form_element)[0]);
     config.append("_network_id",NETWORK_ID);
     config.append('_operation',operation);
-    console.log("UPDATE",NETWORK_ID,operation);
     $.ajax({
         type: "POST",
         url: UPDATE_URL,
@@ -39,7 +38,6 @@ function update_network(form_element,operation){
         cache: false,
         dataType: "json",
         success: function(response){
-            console.log("UPDATED");
             if (response.network_json){
                 proxy.NETWORK = response.network_json;
             }
@@ -54,13 +52,4 @@ function toggleToolbar(iconEl) {
 
     // if icon clicked is network-randomisation
     $($(iconEl).data("toolbar")).show();
-
-    console.log("TOOLBAR",$(iconEl).data("toolbar"));
-
-    // if icon clicked is node-list
-    // if (iconEl.hasClass("node-list") && iconEl.hasClass("active")) {
-    //     $("#node-list").show()
-    // } else {
-    //     $("#node-list").hide()
-    // }
 }
