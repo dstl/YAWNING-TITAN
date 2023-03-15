@@ -82,10 +82,49 @@ $(document).ready(function(){
         e.stopPropagation();
         toggle_delete_all();
     });
+
+    // search form
+
+    $("*[restrict-selector]").on("change",function(){
+        $(`.${$(this).val()}`).removeClass("hidden");
+    });
+
+    // delete icons - search elements
+    // only add if item_type is game_mode
+    if(ITEM_TYPE == "game_mode"){
+        $("#search-form .mb-3:not(:has(*[restrict-selector]))").append(
+            `<div class="icon delete">
+                <i class="bi bi-trash3"></i>
+            </div>`
+        );
+    }
+
+    $("#search-form .delete").click(function(){
+        let container = $(this).closest(".mb-3"),
+            input;
+        if ($(container).find(".multi-range").length){
+            let left_setter =  $(container).find(".range-setter.left"),
+                right_setter = $(container).find(".range-setter.right");
+            input = $(container).find(".multi-range");
+            $(left_setter).val($(left_setter).attr("min"));
+            $(right_setter).val($(right_setter).attr("max"));
+        }else if($(container).find(".form-check-input").length){
+            input = $(container).find(".form-check-input");
+            $(input).prop("checked",false);
+        }
+
+        $(input).addClass("hidden");
+        $("*[restrict-selector] option:selected").prop("selected", false); // update selected filters
+        $("#search-form").trigger("change"); // update filters
+    });
+
+    $("#search-form").change(function(){
+        filter(this)
+    });
 });
 
 function toggle_delete_all(){
-    if($('.form-check-input:checkbox:checked').length > 0){
+    if($('.list-item .form-check-input:checkbox:checked').length > 0){
         $("#delete-all").removeClass("hidden")
     }else{
         $("#delete-all").addClass("hidden")
@@ -101,13 +140,38 @@ function check_dialogue_filled(dialogue_el){
     }
 }
 
+function search_form_data(form_element){
+    let data = {};
+    $(form_element).find(".multi-range").each(function(i,el){
+        data[$(el).attr("name")+"_min"] = $(el).find(".range-setter.left").first().val();
+        data[$(el).attr("name")+"_max"] = $(el).find(".range-setter.right").first().val();
+    });
+    $(form_element).find(".form-check-input").each(function(i,el){
+        data[$(el).attr("name")] = $(el).is(':checked') ? "true" : "false";
+    });
+    $(form_element).find(".form-control").each(function(i,el){
+        data[$(el).attr("name")] = $(el).val();
+    });
+    return data
+}
+
+function hide_show_items(item_ids){
+    $(".list-item").addClass("hidden");
+    console.log("IDS",item_ids);
+    $(".list-item").each(function(i,el){
+        if(item_ids.includes($(el).data("item-id"))){
+            $(el).removeClass("hidden")
+        }
+    });
+}
+
 // wrapper for async post request for managing config items
 function manage_items(operation,item_names=[],item_ids=[],additional_data={}){
     $.ajax({
         type: "POST",
-        url: FILE_MANAGER_URL,
+        url: DB_MANAGER_URL,
         dataType : "json",
-        data: Object.assign({},{"operation":operation,"item_type":FILE_TYPE,"item_ids":item_ids,"item_names":item_names},additional_data),
+        data: Object.assign({},{"operation":operation,"item_type":ITEM_TYPE,"item_ids":item_ids,"item_names":item_names},additional_data),
         success: function(response){
             if (response.load == "reload"){
                 location.reload()
@@ -117,6 +181,23 @@ function manage_items(operation,item_names=[],item_ids=[],additional_data={}){
         },
         error: function(response){
             console.log(response)
+        }
+    });
+}
+
+// wrapper for async post request for config section form processing
+function filter(form_element){
+    console.log("POSTING TO",window.location.href);
+    $.ajax({
+        type: "POST",
+        url: window.location.href,
+        data: search_form_data(form_element),
+        dataType: "json",
+        success: function(response){
+            hide_show_items(response.item_ids)
+        },
+        error: function(response){
+            console.log("ERR",response.message)
         }
     });
 }

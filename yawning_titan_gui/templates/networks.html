@@ -7,15 +7,15 @@
 <script src="{% static 'js/item_manager.js' %}"></script>
 <script src="{% static 'js/networks.js' %}"></script>
 <script type="text/javascript">
-    const FILE_MANAGER_URL = "{% url 'db manager' %}";
-    const FILE_TYPE = "network";
+    const DB_MANAGER_URL = "{% url 'db manager' %}";
+    const ITEM_TYPE = "{{item_type}}";
 </script>
 {% endblock %}
 
 
 {% block items %}
     {% for network in networks %}
-        {% include 'elements/el_network.html' with network=network %}
+        {% include 'elements/el_network.html' with network=network show_icons=True %}
     {% endfor %}
 {% endblock %}
 
@@ -26,15 +26,12 @@
 {% endblock %}
 
 {% block bottom-buttons %}
-<button id="delete-all" class="btn btn-primary">Delete selected</button>
-<button id="create" class="btn btn-primary" data-cy="create-new-network-button">New network</button>
+<button id="delete-all" class="btn hidden">Delete selected</button>
+<button id="create" class="btn btn-primary">New network</button>
 {% endblock %}
 
 {% block style %}
 <style>
-    #main .accordion-item,#main .accordion-header,#main .accordion-header *{
-        background-color: transparent !important;
-    }
     .list-item{
         border-color: var(--text-light);
     }

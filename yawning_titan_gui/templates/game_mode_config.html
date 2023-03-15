@@ -5,8 +5,8 @@
 {% block scripts %}
 <script src="{% static 'js/game_mode_config.js' %}"></script>
 <script text="text/javascript">
-    const game_mode_filename = "{{game_mode_filename}}";
-    const section_name = "{{current_section_name}}";
+    const SECTION_NAME = "{{current_section_name}}";
+    const GAME_MODE_ID = "{{game_mode_id}}";
 </script>
 {% endblock %}
 
@@ -15,29 +15,24 @@
 {% endblock %}
 
 {% block main %}
-<header id="config-header" class="el-row">
-    <h2>Game mode: {{ game_mode_name }}</h2>
-</header>
-
 <div id="config-forms">
     <div id="config-form-left">
+        <form id="doc-meta-form" data-id="doc-meta">
+            {% include 'elements/el_form_fields.html' with fields=doc_metadata_form.visible_fields protected=False %}
+        </form>
         <div id="config-form-icons">
             {% for section_name, section in sections.items %}
-            <a href="{{request.path|url_trim:2}}{{ section_name }}/" class="icon-container{% if section_name == current_section_name %} selected{% endif %}{% if section.config_class.validation.passed %} complete{% endif %}">
+            <a href="{{request.path|url_trim:2}}{{ section_name }}/" class="icon-container{% if section_name == current_section_name %} selected{% endif %}{% if section.config_class.validation.passed %} complete{% endif %}" data-section="{{section_name}}">
                 <div id="{{ section_name }}-icon" class="icon" data-form="#{{ section_name }}-config-form">
                     <i class="bi {{ section.icon }}"></i>
                 </div>
-                <p>{{ section_name }}</p>
+                <p>{{ section_name|format_text }}</p>
             </a>
             {% endfor %}
         </div>
-        <div id="config-description">
-            <h3>Description</h3>
-            <textarea></textarea>
-        </div>
     </div>
     <div id="{{current_section_name}}-config-form-container" class="form-container">
-        <div id="subsection-forms">
+        <div id="subsection-forms" class="border-bottom">
             {% for form in section.forms %}
                 <form id="config-form-{{ forloop.counter0 }}" class="config-form tier-{{form.tier}}{% if form.config_class.validation.fail_reasons %} erroneous{% endif %}" data-id="{{forloop.counter0}}">
                     <div class="title-container">
@@ -51,26 +46,7 @@
                             </ul>
                         {% endif %}
                     </div>
-                    <div class="fields">
-                        {% for field in form %}
-                            <div class="mb-3 active{% if field.errors %} erroneous{% endif %}">
-                                <div class="info">
-                                    <label for="id_{{ field.name }}" class="form-label">{{ field.label|format_text }}</label>
-                                    <p class="help-text">{{field.help_text}}</p>
-                                    {% if field.errors %}
-                                        <ul class="error-list">
-                                            {% for error in field.errors %}
-                                            <li>{{ error|escape }}</li>
-                                            {% endfor %}
-                                        </ul>
-                                    {% endif %}
-                                </div>
-                                <div class="field-container {% if protected %}disabled{% endif %}">
-                                    {{ field }}
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
+                    {% include 'elements/el_form_fields.html' with fields=form.visible_fields protected=protected %}
                 </form>
             {% endfor %}
         </div>
@@ -107,7 +83,6 @@
         display: flex;
         flex-direction: column;
         margin-right: var(--padding);
-        padding-top: var(--padding);
         padding-bottom: var(--padding);
     }
     #config-form-icons{
@@ -117,6 +92,7 @@
         justify-content: center;
         align-items: center;
         font-size: 30px;
+        margin-left: 30px;
         color: var(--text-light);
         margin-bottom: var(--padding);
     }
@@ -149,7 +125,7 @@
     #config-form-icons .icon{
         margin-left: 0;
         box-shadow: 0 0 0 var(--increment) var(--mid);
-        transform: translate(-50%,0%);
+        transform: translate(-75%,0%);
     }
     #config-form-icons .icon-container.complete>.icon{
         border: 2px solid var(--primary);

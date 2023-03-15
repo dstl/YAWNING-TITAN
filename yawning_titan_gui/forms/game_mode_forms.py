@@ -4,13 +4,14 @@ from typing import Dict, List
 from django import forms as django_forms
 from django.conf import settings
 from django.forms import widgets
+from django.http import QueryDict
 
 from yawning_titan.config.core import ConfigGroup, ConfigItem
 from yawning_titan.config.item_types.bool_item import BoolItem
 from yawning_titan.config.item_types.float_item import FloatItem
 from yawning_titan.config.item_types.int_item import IntItem
 from yawning_titan.game_modes.game_mode import GameMode
-from yawning_titan_gui.forms import RangeInput
+from yawning_titan_gui.forms import RangeInput, create_doc_meta_form
 from yawning_titan_gui.helpers import GameModeManager, next_key
 
 
@@ -106,7 +107,7 @@ class GameModeSection:
             if isinstance(e, BoolItem):
                 el = django_forms.BooleanField(
                     widget=widgets.CheckboxInput(
-                        attrs={"role": "switch", "class": "form-check-input"}
+                        attrs={"role": "switch", "class": "inline form-check-input"}
                     ),
                     required=False,
                     help_text=e.doc,
@@ -114,7 +115,12 @@ class GameModeSection:
                 )
             elif isinstance(e, FloatItem):
                 el = django_forms.FloatField(
-                    widget=RangeInput(attrs={"class": "form-control", "step": "0.01"}),
+                    widget=RangeInput(
+                        attrs={
+                            "class": "inline form-control form-range slider-progress",
+                            "step": "0.01",
+                        }
+                    ),
                     required=False,
                     help_text=e.doc,
                     min_value=e.properties.min_val,
@@ -123,14 +129,14 @@ class GameModeSection:
                 )
             elif isinstance(e, IntItem):
                 el = django_forms.IntegerField(
-                    widget=widgets.NumberInput(attrs={"class": "form-control"}),
+                    widget=widgets.NumberInput(attrs={"class": "inline form-control"}),
                     required=False,
                     help_text=e.doc,
                     label=name,
                 )
             else:
                 el = django_forms.CharField(
-                    widget=widgets.TextInput(attrs={"class": "form-control"}),
+                    widget=widgets.TextInput(attrs={"class": "inline form-control"}),
                     required=False,
                     help_text=e.doc,
                     label=name,
@@ -179,6 +185,9 @@ class GameModeSection:
         }
 
 
+DocMetaDataForm: django_forms.Form = create_doc_meta_form("game mode")
+
+
 @dataclass
 class GameModeForm:
     """A representation of a :class: `~yawning_titan.game_modes.game_mode.GameMode` as a editable form."""
@@ -192,28 +201,35 @@ class GameModeForm:
                 section=self.game_mode.red, form_name="red", icon="bi-lightning"
             ),
             "blue": GameModeSection(
-                section=self.game_mode.red, form_name="blue", icon="bi-shield"
+                section=self.game_mode.blue, form_name="blue", icon="bi-shield"
             ),
             "game_rules": GameModeSection(
-                section=self.game_mode.red, form_name="game_rules", icon="bi-clipboard"
+                section=self.game_mode.game_rules,
+                form_name="game_rules",
+                icon="bi-clipboard",
             ),
             "observation_space": GameModeSection(
-                section=self.game_mode.red,
+                section=self.game_mode.observation_space,
                 form_name="observation_space",
                 icon="bi-binoculars",
             ),
             "rewards": GameModeSection(
-                section=self.game_mode.red, form_name="rewards", icon="bi-star"
+                section=self.game_mode.rewards, form_name="rewards", icon="bi-star"
             ),
             "on_reset": GameModeSection(
-                section=self.game_mode.red,
+                section=self.game_mode.on_reset,
                 form_name="on_reset",
                 icon="bi-arrow-clockwise",
             ),
             "miscellaneous": GameModeSection(
-                section=self.game_mode.red, form_name="miscellaneous", icon="bi-brush"
+                section=self.game_mode.miscellaneous,
+                form_name="miscellaneous",
+                icon="bi-brush",
             ),
         }
+        self.doc_metadata_form: django_forms.Form = DocMetaDataForm(
+            data=self.game_mode.doc_metadata.to_dict()
+        )
 
     def get_section(self, section_name: str = None) -> GameModeSection:
         """
@@ -226,18 +242,14 @@ class GameModeForm:
             return self.first_section
         return self.sections[section_name]
 
-    def get_next_section_name(self, section_name=None) -> str:
+    def get_next_section(self, current_section: GameModeSection) -> str:
         """
-        Get a specific :param:`section` of a form for an active :param:`game_mode_id`.
+        Get the `section` of the game mode form after the current section.
 
-        :param game_mode_id: the file name and extension of the current game mode
-        :param section_name: the name of the section to get from which to retrieve the value of
-        :return: a dictionary containing status and :class:`ConfigForm` of the selected :param:`section_name`
+        :param current_section: the name of the section to get from which to retrieve the value of
+        :return: A :class: `GameModeSection`.
         """
-        if section_name is None:
-            return self.first_section
-
-        return next_key(self.sections, section_name)
+        return next_key(self.sections, current_section.name)
 
     def update_section(
         self, section_name: str, form_id: int, data: dict
@@ -256,6 +268,14 @@ class GameModeForm:
         if settings.DYNAMIC_UPDATES:
             GameModeManager.db.update(self.game_mode)
         return section
+
+    def update_doc_meta(self, data: QueryDict):
+        """Update the game modes doc metadata."""
+        self.doc_metadata_form = DocMetaDataForm(data=data)
+        if self.doc_metadata_form.is_valid():
+            self.game_mode.doc_metadata.update(**self.doc_metadata_form.cleaned_data)
+            if settings.DYNAMIC_UPDATES:
+                GameModeManager.db.update(self.game_mode)
 
     @property
     def first_section(self) -> GameModeSection:
@@ -290,7 +310,7 @@ class GameModeFormManager:
         Set the status of the game mode sections based upon whether they pass the validation rules in their corresponding
         :class: `~yawning_titan.config.core.ConfigGroup`
 
-        :param game_mode_filename: the file name and extension of the current game mode
+        :param game_mode_id: the file name and extension of the current game mode
         :return: a dictionary representation of the sections of the :class: `~yawning_titan.game_modes.game_mode.GameMode`
         """
         if game_mode_id in cls.game_mode_forms:
@@ -320,3 +340,119 @@ class GameModeFormManager:
         else:
             GameModeManager.db.insert(game_mode=game_mode_form.game_mode)
         return game_mode_form.game_mode
+
+
+class GameModeSearchForm(django_forms.Form):
+    """A Django form object to represent the filterable components of a :class: `~yawning_titan.game_modes.game_mode.GameMode`."""
+
+    def __init__(self, *args, **kwargs):
+        """A Django form object to represent the filterable components of a :class: `~yawning_titan.game_modes.game_mode.GameMode`."""
+        field_elements = {}
+        fields = {}
+        searchable_items = []
+
+        game_modes = GameModeManager.db.all()
+        items = game_modes[0].to_legacy_dict()
+
+        if game_modes:
+            for name, item in items.items():
+                if type(item.value) in [int, float]:
+                    selector = {
+                        "min": min(
+                            [
+                                g.to_legacy_dict()[name].value
+                                for g in game_modes
+                                if g.to_legacy_dict()[name].value is not None
+                            ]
+                        ),
+                        "max": max(
+                            [
+                                g.to_legacy_dict()[name].value
+                                for g in game_modes
+                                if g.to_legacy_dict()[name].value is not None
+                            ]
+                        ),
+                    }
+                    if selector["min"] != selector["max"]:
+                        _type = "float"
+                        if type(item.value) == int:
+                            _type = "integer"
+                        field_elements[f"{name}_min"] = django_forms.FloatField(
+                            widget=RangeInput(
+                                attrs={
+                                    "class": f"{name} multi-range-placeholder {_type} hidden"
+                                }
+                            ),
+                            required=False,
+                            help_text=item.doc,
+                            min_value=selector["min"],
+                            max_value=selector["max"],
+                            initial=selector["min"],
+                            label=name,
+                        )
+                        field_elements[f"{name}_max"] = django_forms.FloatField(
+                            widget=django_forms.HiddenInput(),
+                            required=False,
+                            help_text=item.doc,
+                            min_value=selector["min"],
+                            max_value=selector["max"],
+                            initial=selector["max"],
+                            label=name,
+                        )
+                        searchable_items.append(name)
+
+                elif type(item.value) is bool:
+                    if [
+                        g.to_legacy_dict()[name].value
+                        for g in game_modes
+                        if g.to_legacy_dict()[name].value
+                    ] != len(game_modes):
+                        field_elements[name] = django_forms.BooleanField(
+                            widget=widgets.CheckboxInput(
+                                attrs={
+                                    "role": "switch",
+                                    "class": f"{name} form-check-input inline hidden",
+                                }
+                            ),
+                            required=False,
+                            help_text=item.doc,
+                            label=name,
+                            initial=False,
+                        )
+                        searchable_items.append(name)
+
+        fields["elements"] = django_forms.ChoiceField(
+            widget=django_forms.Select(
+                attrs={
+                    "class": "form-control form-select inline",
+                    "restrict-selector": "",
+                }
+            ),
+            choices=((t, t) for t in searchable_items),
+            required=True,
+            help_text="The element to restrict",
+            label="Elements",
+        )
+        fields.update(field_elements)
+
+        super(GameModeSearchForm, self).__init__(*args, **kwargs)
+        # created dropdowns from grouped elements
+        self.fields: Dict[str, django_forms.Field] = fields
+
+    @property
+    def filters(self):
+        """Generate a dictionary of ranges or values that a game mode must have to be a valid query result."""
+        filters = {
+            n: self.cleaned_data[n] for n in self.changed_data if n != "elements"
+        }
+        cleaned_filters = {}
+        for k, v in filters.items():
+            if k.endswith(("_min", "_max")):
+                name = k[:-4]
+                cleaned_filters[name] = {
+                    "min": self.cleaned_data[f"{name}_min"],
+                    "max": self.cleaned_data[f"{name}_max"],
+                }
+            else:
+                cleaned_filters[k] = v
+        return cleaned_filters

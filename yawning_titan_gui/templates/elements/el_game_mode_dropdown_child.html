@@ -1,0 +1,18 @@
+{% load static %}
+{% load tags %}
+
+<li>
+    <a class="dropdown-item" href="#">
+        {{child_name}} &raquo;
+    </a>
+    <ul class="dropdown-menu dropdown-submenu">
+        {% for name,item in element.config_items.items %}
+            <li>
+                <a class="dropdown-item" href="#" data-element="{{item.alias}}">{{name}}</a>
+            </li>
+        {% endfor %}
+        {% for name,group in element.config_groups.items %}
+            {% include 'elements/el_game_mode_dropdown_child.html' with element=group child_name=name %}
+        {% endfor %}
+    </ul>
+</li>
