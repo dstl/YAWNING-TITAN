@@ -644,7 +644,7 @@ def update_game_mode(request: HttpRequest) -> JsonResponse:
             section = game_mode_form.update_section(
                 section_name=section_name, form_id=form_id, data=request.POST
             )
-            if section.config_class.validation.passed:
+            if game_mode_form.game_mode.validation.passed:
                 return JsonResponse(
                     {"valid": game_mode_form.game_mode.validation.passed}
                 )  # whether the complete game mode is valid
