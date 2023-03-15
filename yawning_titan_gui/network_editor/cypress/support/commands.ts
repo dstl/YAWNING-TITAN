@@ -29,6 +29,9 @@ let testId;
 
 import { v4 as uuid } from 'uuid';
 
+/**
+ * Function used to create an empty network for tests
+ */
 export function openEmptyNetwork() {
   // get to the network editor page
   cy.visit(`${Cypress.env('TEST_URL')}${Cypress.env('NETWORKS_PATH')}`);
@@ -40,6 +43,10 @@ export function openEmptyNetwork() {
   cy.get('.custom-network').click();
 }
 
+/**
+ * Function used to clean up networks created during tests
+ * @param networkId
+ */
 export function cleanUpNetwork(networkId?: string) {
   // go to the networks and delete what was created
   cy.visit(`${Cypress.env('TEST_URL')}${Cypress.env('NETWORKS_PATH')}`);
@@ -50,6 +57,10 @@ export function cleanUpNetwork(networkId?: string) {
   cy.contains('Delete network').click();
 }
 
+/**
+ * Deletes a game mode with the given id
+ * @param gameModeId
+ */
 export function cleanUpGameMode(gameModeId?: string) {
   // go to the networks and delete what was created
   cy.visit(`${Cypress.env('TEST_URL')}${Cypress.env('GAME_MODE_PATH')}`);
@@ -60,9 +71,25 @@ export function cleanUpGameMode(gameModeId?: string) {
   cy.contains('Delete game mode').click();
 }
 
+/**
+ * Function that fails the test if the element exists and is visible
+ * @param selector
+ */
+export function existsButNotVisible(selector: string) {
+  cy.wait(500) // wait for things to update
+    .get(selector).each((el) => {
+      // check if the client height and width is more than 0
+      if (el[0].clientHeight > 0 && el[0].clientWidth > 0) {
+        // element is visible
+        throw new Error(`${selector} is visible`);
+      }
+    })
+}
+
 Cypress.Commands.add('openEmptyNetwork', openEmptyNetwork);
 Cypress.Commands.add('cleanUpNetwork', cleanUpNetwork);
 Cypress.Commands.add('cleanUpGameMode', cleanUpGameMode);
+Cypress.Commands.add('existsButNotVisible', existsButNotVisible);
 
 declare global {
   namespace Cypress {
@@ -70,6 +97,7 @@ declare global {
       openEmptyNetwork: typeof openEmptyNetwork
       cleanUpNetwork: typeof cleanUpNetwork
       cleanUpGameMode: typeof cleanUpGameMode
+      existsButNotVisible: typeof existsButNotVisible
     }
   }
 }
