@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Dict, List
 
 from django import forms as django_forms
+from django.conf import settings
 from django.forms import widgets
 
 from yawning_titan.config.core import ConfigGroup, ConfigItem
@@ -251,8 +252,9 @@ class GameModeForm:
         """
         section = self.get_section(section_name)
         section.forms[form_id] = section.form_classes[form_id](data=data)
-        # section.forms[form_id].update_and_check()
-        section.config_class.validate()
+        self.game_mode.validate()
+        if settings.DYNAMIC_UPDATES:
+            GameModeManager.db.update(self.game_mode)
         return section
 
     @property
