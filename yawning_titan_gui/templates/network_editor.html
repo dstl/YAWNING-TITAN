@@ -9,48 +9,50 @@
 {% endblock %}
 
 {% block top-buttons %}
-  <a id="back" href="{% url 'Manage networks' %}"><i class="bi bi-arrow-90deg-left"></i></a>
+<a id="back" href="{% url 'Manage networks' %}"><i class="bi bi-arrow-90deg-left"></i></a>
 {% endblock %}
 
 {% block main %}
 <app-root></app-root>
 
 <div id="toolbar-buttons">
-  <div class="accordion-item">
-      <h2 class="accordion-header" id="advanced-search-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#advanced-search-items" aria-expanded="false">
-              Network toolbars
-          </button>
-      </h2>
-      <div id="advanced-search-items" class="accordion-collapse collapse" aria-labelledby="advanced-search-header" data-bs-parent="#search-accordion">
-          <div class="accordion-body">
-              <button id="network-randomisation-button" data-toolbar="#network-randomisation" class="btn toolbar-button">Network randomisation</button>
-              <button id="node-list-button"  data-toolbar="#node-list" class="btn toolbar-button">Node list</button>
-          </div>
+</div>
+<div data-cy="network-sidenav" class="network-sidenav">
+  <div class="tab-navigation">
+    <button class="btn network-sidenav-navigation-btn" id="network-details-nav-button" data-item="#network-details"
+      data-toggle="tooltip" data-placement="bottom" title="Network Settings">
+      <i class="bi bi-gear"></i>
+    </button>
+    <button class="btn network-sidenav-navigation-btn" id="node-list-nav-button" data-item="#node-list"
+      data-toggle="tooltip" data-placement="bottom" title="Node List">
+      <i class="bi bi-three-dots-vertical"></i>
+    </button>
+  </div>
+  <div class="tab-content">
+    <div id="network-details" class="tab-container">
+      <div class="toolbar-tab-title">
+        <h3>Network Settings</h3>
+        <p>Set the details and behaviour of the network</p>
       </div>
-  </div>
-</div>
-<div id="network-randomisation" class="form-container">
-  <div class="tab-content">
-    <div class="toolbar-tab-title">
-      <h3>Network randomisation</h3>
-      <p>Set the reset behavior of the network</p>
+      <div class="toolbar-content">
+        <form id="doc-meta-form" data-id="doc-meta">
+          {% include 'elements/el_form_fields.html' with fields=doc_metadata_form.visible_fields protected=False %}
+        </form>
+        <form id="random-elements-form" class="config-form">
+          {% include 'elements/el_form_fields.html' with fields=form.visible_fields protected=protected %}
+        </form>
+      </div>
     </div>
-    <form id="doc-meta-form" data-id="doc-meta">
-      {% include 'elements/el_form_fields.html' with fields=doc_metadata_form.visible_fields protected=False %}
-    </form>
-    <form id="random-elements-form" class="config-form">
-      {% include 'elements/el_form_fields.html' with fields=form.visible_fields protected=protected %}
-    </form>
-  </div>
-</div>
-<div id="node-list" class="node-list">
-  <div class="tab-content">
-    <div class="toolbar-tab-title">
-      <h3>Node List</h3>
-      <p>View the list of nodes in the network</p>
+
+    <div id="node-list" class="tab-container">
+      <div class="toolbar-tab-title">
+        <h3>Node List</h3>
+        <p>View the list of nodes in the network</p>
+      </div>
+      <div class="toolbar-content">
+        {% include 'elements/el_node_list.html' %}
+      </div>
     </div>
-    {% include 'elements/el_node_list.html' %}
   </div>
 </div>
 {% endblock %}
@@ -68,7 +70,7 @@
     padding: 0 !important;
   }
 
-  #toolbar-buttons{
+  #toolbar-buttons {
     position: absolute;
     top: 10px;
     left: 50%;
@@ -78,46 +80,88 @@
     border-radius: .2rem;
     transform: translate(-50%, 0%);
   }
-  #toolbar-buttons .accordion-header{
+
+  #toolbar-buttons .accordion-header {
     height: 40px;
   }
-  #toolbar-buttons .accordion-button{
+
+  #toolbar-buttons .accordion-button {
     padding: .875rem .875rem;
     background-color: #424242;
   }
-  #toolbar-buttons .accordion-body{
+
+  #toolbar-buttons .accordion-body {
     margin-top: .5rem;
     background-color: #424242;
     padding: 0;
   }
-  #toolbar-buttons .accordion-body button{
+
+  #toolbar-buttons .accordion-body button {
     width: 100%;
     padding: .875rem .875rem;
   }
-  #toolbar-buttons .accordion-body button:hover{
+
+  #toolbar-buttons .accordion-body button:hover {
     background-color: var(--dark);
   }
-  #toolbar-buttons *{
+
+  #toolbar-buttons * {
     color: var(--text-superlight);
     text-align: left;
   }
 
-  #network-randomisation,
+  #network-details,
   #node-list {
-    position: absolute;
-    top: 0px;
-    left: 0px;
     padding: var(--increment);
-    width: 350px;
-    height: 100%;
+    flex: 1;
     z-index: 999;
     background-color: var(--superlight);
     display: none;
   }
 
+  .network-sidenav {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 350px;
+    height: 100%;
+    z-index: 999;
+    background-color: var(--lighter);
+    overflow: hidden;
+  }
+
+  .tab-navigation {
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 1;
+    width: 100%;
+    overflow: hidden;
+    padding: 5px 10px 0 10px;
+  }
+
+  .network-sidenav-navigation-btn {
+    font-size: 1.5rem;
+    padding: 5px 20px;
+    border-radius: 0;
+  }
+
+  .network-sidenav-navigation-btn.active {
+    color: var(--primary);
+    background-color: var(--superlight);
+  }
+
+  .network-sidenav-navigation-btn:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
   app-root {
     height: 100%;
-    width: 100%;
+    width: calc(100% - 350px) !important;
+    right: 0 !important;
+    position: absolute;
   }
 
   .material-icons {
@@ -142,21 +186,24 @@
     height: 100%
   }
 
-  .field-container:has(.form-switch){
+  .field-container:has(.form-switch) {
     max-width: 100px;
   }
-  .help-text{
+
+  .help-text {
     color: var(--text-dark);
   }
-  #network-tabs{
+
+  #network-tabs {
     width: 100%;
     border-bottom: 1px solid var(--text-superlight);
   }
-  #network-tabs>*{
+
+  #network-tabs>* {
     margin-left: var(--increment);
     margin-right: var(--increment);
     color: var(--text-superlight);
-    border-radius: .5rem .5rem 0 0 ;
+    border-radius: .5rem .5rem 0 0;
     background-color: var(--light);
   }
 
@@ -175,10 +222,16 @@
     flex-shrink: 1;
   }
 
-  .tab-content {
+  .tab-content,
+  .tab-container {
     display: flex;
     flex-direction: column;
-    height: 100%;
-}
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .toolbar-content {
+    overflow-y: auto;
+  }
 </style>
 {% endblock %}
