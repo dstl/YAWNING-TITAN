@@ -1,18 +1,21 @@
 $(document).ready(function () {
 
-    $("#network-randomisation .form-check-input").on("change", function () {
+    $("#network-details .form-check-input").on("change", function () {
         if ($(this).is(":checked")) {
-            $(`#network-randomisation .mb-3:has(.form-control[${$(this).data("toggle")}])`).show();
+            $(`#network-details .mb-3:has(.form-control[${$(this).data("toggle")}])`).show();
         } else {
-            $(`#network-randomisation .mb-3:has(.form-control[${$(this).data("toggle")}])`).hide();
+            $(`#network-details .mb-3:has(.form-control[${$(this).data("toggle")}])`).hide();
         }
     });
-    $("#network-randomisation .form-check-input").trigger("change"); // Trigger an initial change call on page ready to hide/show elements.
+    $("#network-details .form-check-input").trigger("change"); // Trigger an initial change call on page ready to hide/show elements.
 
     //Open\close random elements menu
-    $(".toolbar-button").click(function () {
+    $(".network-sidenav-navigation-btn").click(function () {
         toggleToolbar($(this));
-    })
+    });
+
+    // open the first tab item on load
+    $(".network-sidenav-navigation-btn:first").trigger("click");
 });
 
 $(window).on("load",function(){
@@ -48,19 +51,16 @@ function update_network(form_element,operation){
 }
 
 function toggleToolbar(iconEl) {
+    // remove active from all icons
+    $(".network-sidenav-navigation-btn").removeClass("active");
+
+    // add active class to icon
+    $(iconEl).addClass("active")
+
     // hide all sidebars
-    $("#network-randomisation").hide();
+    $("#network-details").hide();
     $("#node-list").hide();
 
-    // if icon clicked is network-randomisation
-    $($(iconEl).data("toolbar")).show();
-
-    console.log("TOOLBAR",$(iconEl).data("toolbar"));
-
-    // if icon clicked is node-list
-    // if (iconEl.hasClass("node-list") && iconEl.hasClass("active")) {
-    //     $("#node-list").show()
-    // } else {
-    //     $("#node-list").hide()
-    // }
+    // open the relevant item
+    $($(iconEl).data("item")).css('display', 'flex');
 }

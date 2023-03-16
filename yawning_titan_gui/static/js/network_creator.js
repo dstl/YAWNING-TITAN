@@ -10,8 +10,8 @@ $(document).ready(function(){
             load_template($("#template-form"))
         }
     });
-    $(".network-randomisation  .form-control").on("change",function(){
-        update_network($("#network-randomisation-form"))
+    $(".network-details  .form-control").on("change",function(){
+        update_network($("#network-details-form"))
     });
 });
 

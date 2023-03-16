@@ -2,6 +2,7 @@
     --primary: #00A86B;
     --primary-light: #A8E4A0;
     --superlight: #636363;
+    --lighter: #535353;
     --light: #323233;
     --mid: #252526;
     --dark: #1e1e1e;
@@ -286,7 +287,7 @@ option:hover{
     display: none;
 }
 .icon-container{
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin-top: calc(var(--increment)*3);
     margin-bottom: calc(var(--increment)*3);
     color: var(--text-light);
