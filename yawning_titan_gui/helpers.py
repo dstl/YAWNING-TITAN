@@ -28,6 +28,7 @@ class RunManager:
     process = None
     counter = 0
     run_args = None
+    run_started = False
 
     @staticmethod
     def format_file(path):
@@ -47,11 +48,12 @@ class RunManager:
             RUN_LOG.unlink()
         logger = logging.getLogger("yt_run")
         logger.setLevel(logging.DEBUG)
+
         # create file handler which logs even debug messages
         fh = logging.FileHandler(RUN_LOG.as_posix())
         fh.setLevel(logging.DEBUG)
         logger.addHandler(fh)
-        cls.run_args = kwargs
+
         with open(STDOUT, "w+") as sys.stdout:
             run = YawningTitanRun(**kwargs, auto=False, logger=logger)
 
@@ -94,15 +96,18 @@ class RunManager:
         output["stdout"] = cls.format_file(STDOUT)
         if cls.run_args["render"]:
             dir = glob.glob(f"{YT_RUN_TEMP_DIR.as_posix()}/*")
-            gif_path = max(dir, key=os.path.getctime)
-            output["gif"] = f"/{STATIC_URL}gifs/{Path(gif_path).name}".replace(
-                "\\", "/"
-            )
+            if dir:
+                gif_path = max(dir, key=os.path.getctime)
+                output["gif"] = f"/{STATIC_URL}gifs/{Path(gif_path).name}".replace(
+                    "\\", "/"
+                )
         return output
 
     @classmethod
     def start_process(cls, fkwargs: dict):
         """Spawn a subprocess to run the instance of :class: `~yawning_titan.yawning_titan_run.YawningTitanRun` with the given arguments."""
+        cls.run_started = True
+        cls.run_args = fkwargs
         cls.counter = 0
         cls.process = multiprocessing.Process(
             target=RunManager.run_yt,
