@@ -51,7 +51,6 @@ class RunManager:
         fh = logging.FileHandler(RUN_LOG.as_posix())
         fh.setLevel(logging.DEBUG)
         logger.addHandler(fh)
-
         cls.run_args = kwargs
         with open(STDOUT, "w+") as sys.stdout:
             run = YawningTitanRun(**kwargs, auto=False, logger=logger)
@@ -93,10 +92,12 @@ class RunManager:
         }
         output["stderr"] = cls.format_file(RUN_LOG)
         output["stdout"] = cls.format_file(STDOUT)
-        dir = glob.glob(f"{YT_RUN_TEMP_DIR.as_posix()}/*")
-        gif_path = max(dir, key=os.path.getctime)
-        output["gif"] = f"/{STATIC_URL}gifs/{Path(gif_path).name}".replace("\\", "/")
-        print("GIF", output["gif"])
+        if cls.run_args["render"]:
+            dir = glob.glob(f"{YT_RUN_TEMP_DIR.as_posix()}/*")
+            gif_path = max(dir, key=os.path.getctime)
+            output["gif"] = f"/{STATIC_URL}gifs/{Path(gif_path).name}".replace(
+                "\\", "/"
+            )
         return output
 
     @classmethod
@@ -304,25 +305,25 @@ def get_toolbar(current_page_title: str = None):
                 for n in get_docs_sections()
             ],
             "cypressRefToolbar": "toolbar-documentation",
-            "cypressRefMenu": "menu-documentation"
+            "cypressRefMenu": "menu-documentation",
         },
         "manage-game_modes": {
             "icon": "bi-gear",
             "title": "Manage game modes",
             "cypressRefToolbar": "toolbar-manage-game-modes",
-            "cypressRefMenu": "menu-manage-game-modes"
+            "cypressRefMenu": "menu-manage-game-modes",
         },
         "manage-networks": {
             "icon": "bi-diagram-2",
             "title": "Manage networks",
             "cypressRefToolbar": "toolbar-manage-networks",
-            "cypressRefMenu": "menu-manage-networks"
+            "cypressRefMenu": "menu-manage-networks",
         },
         "run-view": {
             "icon": "bi-play",
             "title": "Run session",
             "cypressRefToolbar": "toolbar-run-yt",
-            "cypressRefMenu": "menu-run-yt"
+            "cypressRefMenu": "menu-run-yt",
         },
         "about": {
             "icon": "bi-question-lg",
@@ -341,7 +342,7 @@ def get_toolbar(current_page_title: str = None):
             ],
             "info": [f"Version: {version()}"],
             "cypressRefToolbar": "toolbar-about",
-            "cypressRefMenu": "menu-about"
+            "cypressRefMenu": "menu-about",
         },
     }
     for id, info in default_toolbar.items():
