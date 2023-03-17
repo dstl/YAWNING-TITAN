@@ -9,7 +9,7 @@ import { InteractionService } from '../services/interaction/interaction.service'
   styleUrls: ['./network-view.component.scss']
 })
 export class NetworkViewComponent implements AfterViewInit {
-  @ViewChild('main', { static: true }) main!: ElementRef;
+  @ViewChild('cytoscapeCanvas', { static: true }) cytoscapeCanvas!: ElementRef;
 
   private curNetworkJsonString = "";
 
@@ -21,7 +21,7 @@ export class NetworkViewComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     // set the element to render to
-    this.cytoscapeService.init(this.main?.nativeElement);
+    this.cytoscapeService.init(this.cytoscapeCanvas?.nativeElement);
 
     // check if window.NETWORK has been set
     if (globalThis.NETWORK) {

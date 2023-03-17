@@ -14,7 +14,7 @@
 
 {% block main %}
 <div id="grid-container" class="stretch clear">
-    <div id="game-modes-container" class="grid-item">
+    <div id="game-modes-container" class="grid-item list-container">
         <div id="search-container">
             <div class="input-group rounded">
                 <input id="filter-game-modes" type="search" class="form-control rounded" placeholder="Filter" aria-label="Search" aria-describedby="search-addon" />
@@ -23,13 +23,13 @@
                 </span>
             </div>
         </div>
-        <div id="game-modes">
+        <div id="game-modes" class="item-list">
             {% for game_mode in game_modes %}
                 {% include 'elements/el_game_mode.html' with game_mode=game_mode show_icons=False %}
             {% endfor %}
         </div>
     </div>
-    <div id="networks-container"  class="grid-item">
+    <div id="networks-container"  class="grid-item list-container">
         <div id="search-container">
             <div class="input-group rounded">
                 <input id="filter-game-modes" type="search" class="form-control rounded" placeholder="Filter" aria-label="Search" aria-describedby="search-addon" />
@@ -38,7 +38,7 @@
                 </span>
             </div>
         </div>
-        <div id="networks">
+        <div id="networks" class="item-list">
             {% for network in networks %}
                 {% include 'elements/el_network.html' with network=network show_icons=False %}
             {% endfor %}
@@ -103,6 +103,12 @@
     }
     .grid-item>.inner{
         flex:1;
+    }
+    .list-container {
+        overflow: hidden;
+    }
+    .item-list {
+        overflow: auto;
     }
 
     #log-view .inner,#metric-view .inner{

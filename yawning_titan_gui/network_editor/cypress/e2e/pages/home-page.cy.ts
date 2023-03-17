@@ -22,7 +22,7 @@ describe('Home Page', () => {
         // open the networks page
         cy.openEmptyNetwork();
 
-        // click the header button
+        // click the home button
         cy.get('[data-cy="toolbar-home"]').click();
 
         // homepage buttons should be visible

@@ -41,6 +41,9 @@ export function openEmptyNetwork() {
   testId = uuid()
   cy.get('#create-dialogue > [data-cy="new-item-name-input"]').type(testId);
   cy.get('.custom-network').click();
+
+  cy.wait(500)
+    .get('[data-cy="cytoscape-canvas"]');
 }
 
 /**
