@@ -22,6 +22,8 @@ export default defineConfig({
     },
     // 720p viewport
     viewportWidth: 1366,
-    viewportHeight: 720
+    viewportHeight: 720,
+    trashAssetsBeforeRuns: true,
+    videoUploadOnPasses: false
   },
 });

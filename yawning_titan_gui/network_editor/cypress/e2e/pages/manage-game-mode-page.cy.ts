@@ -1,13 +1,13 @@
 import { v4 as uuid } from 'uuid';
 
 describe('Manage Game Mode Page', () => {
-  let testId;
+  let testName;
 
   // open the game mode for each test in this spec
   beforeEach(() => {
     cy.get('[data-cy="menu-manage-game-modes"]').click();
     // random id for test
-    testId = uuid();
+    testName = uuid();
   });
 
   it('should open when the manage game mode button is pressed', () => {
@@ -33,7 +33,7 @@ describe('Manage Game Mode Page', () => {
       // click create from in default game mode list item
       cy.get('[data-item-name="Default Game Mode"]').find('.create-from').click();
 
-      cy.get('#create-from-dialogue > [data-cy="new-item-name-input"]').type(testId);
+      cy.get('#create-from-dialogue > [data-cy="new-item-name-input"]').type(testName);
 
       cy.get('#create-from-dialogue').find('.btn').contains('Create game mode').click();
 
@@ -41,7 +41,7 @@ describe('Manage Game Mode Page', () => {
       cy.get('#config-forms').should('be.visible');
 
       // clean up
-      cy.cleanUpGameMode(testId);
+      cy.cleanUpGameMode(testName);
     });
   });
 
@@ -64,7 +64,7 @@ describe('Manage Game Mode Page', () => {
       cy.get('[data-cy="create-game-mode-button"]').click();
 
       // input game mode name
-      cy.get('#create-dialogue > [data-cy="new-item-name-input"]').type(testId);
+      cy.get('#create-dialogue > [data-cy="new-item-name-input"]').type(testName);
 
       cy.get('#create-dialogue').find('.btn').contains('Create').click();
 
@@ -186,7 +186,7 @@ describe('Manage Game Mode Page', () => {
       cy.get('[data-cy="next-game-mode-button"]').click();
 
       // clean up
-      cy.cleanUpGameMode(testId);
+      cy.cleanUpGameMode(testName);
     });
   });
 });
