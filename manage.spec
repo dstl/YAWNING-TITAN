@@ -35,7 +35,8 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='manage',
+    name='yawning_titan',
+    icon='yawning_titan_gui/static/lib/ytlogo.ico',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -55,5 +56,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='manage',
+    name='yawning_titan',
 )
