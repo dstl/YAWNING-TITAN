@@ -8,17 +8,13 @@ from typing import Any, Dict, List
 
 from django.urls import reverse
 
-from yawning_titan import LOG_DIR
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
 from yawning_titan.yawning_titan_run import YawningTitanRun
-from yawning_titan_gui import YT_RUN_TEMP_DIR
+from yawning_titan_gui import YT_GUI_RUN_LOG, YT_GUI_STDOUT, YT_RUN_TEMP_DIR
 from yawning_titan_server.settings import DOCS_ROOT, STATIC_URL
-
-RUN_LOG = LOG_DIR / "yt_gui_run.log"
-STDOUT = LOG_DIR / "stdout.txt"
 
 
 class RunManager:
@@ -44,17 +40,17 @@ class RunManager:
     @classmethod
     def run_yt(cls, *args, **kwargs):
         """Run an instance of :class: `~yawning_titan.yawning_titan_run.YawningTitanRun`."""
-        if RUN_LOG.exists():
-            RUN_LOG.unlink()
+        if YT_GUI_RUN_LOG.exists():
+            YT_GUI_RUN_LOG.unlink()
         logger = logging.getLogger("yt_run")
         logger.setLevel(logging.DEBUG)
 
         # create file handler which logs even debug messages
-        fh = logging.FileHandler(RUN_LOG.as_posix())
+        fh = logging.FileHandler(YT_GUI_RUN_LOG.as_posix())
         fh.setLevel(logging.DEBUG)
         logger.addHandler(fh)
 
-        with open(STDOUT, "w+") as sys.stdout:
+        with open(YT_GUI_STDOUT, "w+") as sys.stdout:
             run = YawningTitanRun(**kwargs, auto=False, logger=logger)
 
             run.setup()
@@ -75,7 +71,7 @@ class RunManager:
                     episode_count=kwargs.get("num_episodes", run.total_timesteps),
                 )
                 loop.gif_action_loop(
-                    output_directory=YT_RUN_TEMP_DIR,
+                    # output_directory=IMAGES_D,
                     save_gif=True,
                     render_network=True
                     # TODO: fix bug where network must be rendered to get gif to be produced
@@ -92,8 +88,8 @@ class RunManager:
             "active": cls.process.is_alive(),
             "request_count": cls.counter,
         }
-        output["stderr"] = cls.format_file(RUN_LOG)
-        output["stdout"] = cls.format_file(STDOUT)
+        output["stderr"] = cls.format_file(YT_GUI_RUN_LOG)
+        output["stdout"] = cls.format_file(YT_GUI_STDOUT)
         if cls.run_args["render"]:
             dir = glob.glob(f"{YT_RUN_TEMP_DIR.as_posix()}/*")
             if dir:
