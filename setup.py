@@ -26,7 +26,7 @@ def version() -> str:
 
     :return: The version string.
     """
-    with open("VERSION", "r") as file:
+    with open("data/VERSION", "r") as file:
         return file.readline()
 
 
@@ -233,7 +233,7 @@ setup(
         "tensorflow": ["tensorflow==2.11.0"],
     },
     package_data={"yawning_titan": package_data_paths()},
-    data_files=[(".", ["VERSION"])],
+    data_files=[(".", ["data/VERSION"])],
     include_package_data=True,
     cmdclass={
         "install": PostInstallCommand,
