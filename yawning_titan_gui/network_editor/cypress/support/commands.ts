@@ -25,7 +25,7 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
-let testId;
+let testName;
 
 import { v4 as uuid } from 'uuid';
 
@@ -38,8 +38,8 @@ export function openEmptyNetwork() {
 
   // create new network
   cy.get('#create').click();
-  testId = uuid()
-  cy.get('#create-dialogue > [data-cy="new-item-name-input"]').type(testId);
+  testName = uuid()
+  cy.get('#create-dialogue > [data-cy="new-item-name-input"]').type(testName);
   cy.get('.custom-network').click();
 
   cy.wait(500)
@@ -56,7 +56,7 @@ export function cleanUpNetwork(networkId?: string) {
   cy.get('.head').should('be.visible');
 
   // find the correct item and delete
-  cy.get(`[data-item-name="${networkId ? networkId : testId}"] > .icons > .delete`).click();
+  cy.get(`[data-item-name="${networkId ? networkId : testName}"] > .icons > .delete`).click();
   cy.contains('Delete network').click();
 }
 
@@ -70,7 +70,7 @@ export function cleanUpGameMode(gameModeId?: string) {
   cy.get('.head').should('be.visible');
 
   // find the correct item and delete
-  cy.get(`[data-item-name="${gameModeId ? gameModeId : testId}"] > .icons > .delete`).click();
+  cy.get(`[data-item-name="${gameModeId ? gameModeId : testName}"] > .icons > .delete`).click();
   cy.contains('Delete game mode').click();
 }
 

@@ -5,6 +5,42 @@ describe('Manage Networks Page', () => {
     cy.get('[data-cy="menu-manage-networks"]').click();
   });
 
+  describe('Make a copy of a network', () => {
+    it('should create a copy of the default 18 node network', () => {
+      const testName = uuid();
+      // open networks
+      cy.get('[data-cy="menu-manage-networks"]').click();
+
+      // click on create from
+      cy.get('[data-item-name="Default 18-node network"]').find('.create-from').click();
+
+      cy.get('#create-from-dialogue > [data-cy="new-item-name-input"]').type(testName);
+
+      cy.get('#create-from-dialogue').find('.btn').contains('Create network').click();
+
+      cy.wait(500)
+        .get('[data-cy="cytoscape-canvas"]').should('be.visible');
+
+      // open the node list
+      cy.get('[data-cy="node-list-nav-button"]').click();
+
+      // check that the correct number of nodes are in the copy
+      cy.get('.node-list-container').find('.node-list-item-label')
+        .then(el => expect(el.length).to.eq(18));
+
+      // check detail of 1 node
+      cy.get('.node-list-container').find('.node-list-item-label')
+        .contains('0')
+        .click()
+        .then(() => {
+          cy.get('[data-cy="node-properties-uuid-input"]')
+            .should('be.visible')
+            .then((el: any) => expect(el[0].value).to.eq('00c9f604-83c4-4da9-a71d-9d8376d95253'));
+        })
+        .then(() => cy.cleanUpNetwork(testName))
+    });
+  });
+
   describe('Make a new network', () => {
     it('should create a network from scratch', () => {
       const node1Name = uuid();
@@ -98,38 +134,4 @@ describe('Manage Networks Page', () => {
     });
   });
 
-  describe('Make a copy of a network', () => {
-    it('should create a copy of the default 18 node network', () => {
-      const testId = uuid();
-      // open networks
-      cy.get('[data-cy="menu-manage-networks"]').click();
-
-      // click on create from
-      cy.get('[data-item-name="Default 18-node network"]').find('.create-from').click();
-
-      cy.get('#create-from-dialogue > [data-cy="new-item-name-input"]').type(testId);
-
-      cy.get('#create-from-dialogue').find('.btn').contains('Create network').click();
-
-      cy.wait(500)
-        .get('[data-cy="cytoscape-canvas"]').should('be.visible');
-
-      // open the node list
-      cy.get('[data-cy="node-list-nav-button"]').click();
-
-      // check that the correct number of nodes are in the copy
-      cy.get('.node-list-container').find('.node-list-item-label')
-        .then(el => expect(el.length).to.eq(18));
-
-      // check detail of 1 node
-      cy.get('.node-list-container').find('.node-list-item-label')
-        .contains('0')
-        .click()
-        .then(() => {
-          cy.get('[data-cy="node-properties-uuid-input"]')
-            .should('be.visible')
-            .then((el: any) => expect(el[0].value).to.eq('00c9f604-83c4-4da9-a71d-9d8376d95253'));
-        })
-    });
-  });
 });
