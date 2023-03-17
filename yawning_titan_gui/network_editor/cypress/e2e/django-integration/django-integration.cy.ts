@@ -10,12 +10,13 @@ describe('Django integration', () => {
     cy.cleanUpNetwork();
   });
 
-  it.only('should send the correct POST body', () => {
+  it('should send the correct POST body', () => {
     // create an empty network
     cy.openEmptyNetwork();
 
     // trigger network load
-    cy.fixture('test-network')
+    cy.wait(500)
+      .fixture('test-network')
       .then(network => {
         cy.document()
           .then(doc => {
@@ -29,10 +30,10 @@ describe('Django integration', () => {
             cy.intercept('POST', '/network_editor').as('saveRequest');
 
             // open the node list
-            cy.get('#network-toolbars-header').should('be.visible').click();
+            cy.get('[data-cy="node-list-nav-button"]').should('be.visible').click();
 
             // node list should be visible
-            cy.get('#node-list-button').should('be.visible').click();
+            cy.get('#node-list').should('be.visible').click();
 
             // get the node with name 'test1'
             cy.get('.node-list-item-label').contains('test1').click();
