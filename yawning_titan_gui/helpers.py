@@ -6,8 +6,10 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
+from django.conf import settings
 from django.urls import reverse
 
+from yawning_titan import IMAGES_DIR
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
@@ -70,8 +72,12 @@ class RunManager:
                     filename="test",
                     episode_count=kwargs.get("num_episodes", run.total_timesteps),
                 )
+                if settings.DEBUG:
+                    output_dir = YT_RUN_TEMP_DIR
+                else:
+                    output_dir = IMAGES_DIR
                 loop.gif_action_loop(
-                    # output_directory=IMAGES_D,
+                    output_directory=output_dir,
                     save_gif=True,
                     render_network=True
                     # TODO: fix bug where network must be rendered to get gif to be produced
