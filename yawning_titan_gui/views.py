@@ -383,6 +383,7 @@ class NodeEditor(View):
             object is accessed.
         """
         network_form = NetworkFormManager.get_or_create_form(network_id)
+        print("TEST", network_form.network.to_dict(json_serializable=True))
         return render(
             request,
             "node_editor.html",
@@ -675,15 +676,16 @@ def update_network(request: HttpRequest) -> JsonResponse:
                 network_form = NetworkFormManager.update_network_attributes(
                     network_id, request.POST
                 )
+                return JsonResponse(
+                    {
+                        "network_json": json.dumps(
+                            network_form.network.to_dict(json_serializable=True)
+                        )
+                    }
+                )
             except Exception as e:
                 print("OOPS", e)
-            return JsonResponse(
-                {
-                    "network_json": json.dumps(
-                        network_form.network.to_dict(json_serializable=True)
-                    )
-                }
-            )
+
         elif operation == "update doc meta":
             try:
                 network_form = NetworkFormManager.get_or_create_form(network_id)
