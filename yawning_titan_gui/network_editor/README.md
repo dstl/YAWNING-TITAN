@@ -70,7 +70,7 @@ The Django server must be up in order to run the end to end test:
 - Select any browser to run tests on
 - Press run X specs, which is next to the "E2E specs" title in the header
 
-Making any changes in the network editor (`<YAWNING_TITAN_ROOT_DIRECTORY>/yawning_titan_gui/network_editor/`) will require [Rebuilding the network editor](#building-the node-editor-files)
+Making any changes in the network editor (`<YAWNING_TITAN_ROOT_DIRECTORY>/yawning_titan_gui/network_editor/`) will require [Rebuilding the network editor](#building-the network-editor-files)
 to be run in order for django to pick up the changes, as Django hosts the built network editor files
 
 ## Further help
