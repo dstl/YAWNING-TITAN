@@ -38,7 +38,7 @@ export class NetworkViewComponent implements AfterViewInit {
   @HostListener('document:networkUpdate', ['$event'])
   private listenToNetworkChange(event: any) {
     // make sure that the network is not the same as previous
-    if(!event || event?.detail == this.curNetworkJsonString) {
+    if (!event || event?.detail == this.curNetworkJsonString) {
       return;
     }
 
@@ -59,7 +59,13 @@ export class NetworkViewComponent implements AfterViewInit {
       val[`${formData[0]}`] = formData[1];
     }
 
-    this.interactionService.processNetworkSettingsChanges(val);
+    if (val['_operation'] == 'UPDATE_NETWORK_DETAILS') {
+      this.interactionService.processNetworkSettingsChanges(val);
+      return;
+    } else if (val['_operation'] == 'UPDATE_NETWORK_METADATA') {
+      this.interactionService.processNetworkMetadataChanges(val);
+      return;
+    }
   }
 
   @HostListener('document:nodeSelected', ['$event'])
