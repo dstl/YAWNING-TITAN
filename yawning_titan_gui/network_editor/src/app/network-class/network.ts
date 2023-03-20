@@ -91,8 +91,8 @@ export class Network {
 
     this._documentMetadata = {
       uuid: uuid(),
-      created_at: new Date(),
-      updated_at: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
       name: '',
       description: '',
       author: '',
@@ -194,8 +194,8 @@ export class Network {
 
     this._documentMetadata = {
       uuid: docMd.uuid,
-      created_at: new Date(docMd.created_at),
-      updated_at: docMd.updatedAt ? new Date(docMd.updated_at) : null,
+      created_at: docMd.created_at,
+      updated_at: docMd.updatedAt ? docMd.updated_at : new Date().toISOString(),
       name: docMd.name,
       description: docMd.description,
       author: docMd.author,
@@ -345,10 +345,26 @@ export class Network {
 
       nodes: this.nodesToJson(),
       edges: this.edgesToJson(),
-      _doc_metadata: this.documentMetadata
+      _doc_metadata: this.docMetadataToJson()
     }
 
     return obj;
+  }
+
+  /**
+   * Get the document metadata in JSON format
+   * @returns
+   */
+  private docMetadataToJson(): NetworkDocMetadata {
+    return {
+      author: this._documentMetadata.author,
+      created_at: this._documentMetadata.created_at ? this._documentMetadata.created_at : new Date().toISOString(),
+      description: this._documentMetadata.description,
+      locked: this._documentMetadata.locked,
+      name: this._documentMetadata.name,
+      updated_at: new Date().toISOString(),
+      uuid: this._documentMetadata.uuid
+    }
   }
 
   /**
