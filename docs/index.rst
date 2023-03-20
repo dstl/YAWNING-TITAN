@@ -55,6 +55,35 @@ The **YT-GUI** also integrates with a customised version cytoscape JS which has 
 This allows for users to directly interface with network topologies and edit the position and attributes of network nodes
 that actively updates a database of stored networks.
 
+Running YAWNING-TITAN-GUI from terminal
+---------------------------------------
+
+* Set up dependencies
+.. code:: console
+
+    - `npm install -g yarn`
+
+* navigate to the root of the network editor project
+.. code:: console
+
+    - `yarn install`
+
+* navigate to the root of the network editor project (`<YAWNING_TITAN_ROOT_DIRECTORY>/yawning_titan_gui/network_editor/`)
+* Building the network editor files
+.. code:: console
+
+    - `yarn build`
+
+* navigate to repository root
+* Run the django server:
+.. code:: console
+    - python manage.py runserver
+
+* Run the django server in a minified chrome window:
+.. code:: console
+
+    - run `python manage.py`
+
 What does Django provide
 ---------------------------
 * Sidebar navigation allows for quick access to key **YT** features
