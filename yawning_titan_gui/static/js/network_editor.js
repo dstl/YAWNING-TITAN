@@ -41,11 +41,7 @@ function update_network(form_element,operation){
             if (response.network_json){
                 proxy.NETWORK = response.network_json;
             }
-            console.log("SUCESS",proxy.NETWORK);
         },
-        error: function(response){
-            console.log("ERROR",response.error)
-        }
     });
 }
 
