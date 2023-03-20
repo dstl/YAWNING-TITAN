@@ -61,4 +61,3 @@ declare global {
     }
   }
 }
-
