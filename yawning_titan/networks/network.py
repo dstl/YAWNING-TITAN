@@ -505,8 +505,9 @@ class Network(nx.Graph):
         :param nodes_dict: a dictionary of node uuids to properties
         :param remove_existing: a boolean to indicate whether to remove existing nodes
         """
+        nodes = [*self.nodes]
         if remove_existing:
-            for n in self.nodes:
+            for n in nodes:
                 self.remove_node(n)
         for uuid, attrs in nodes_dict.items():
             self.add_node(Node.create_from_db(**attrs))
