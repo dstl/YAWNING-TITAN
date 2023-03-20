@@ -107,8 +107,6 @@ describe('Manage Networks Page', () => {
             // check body
             const bodyJson = JSON.parse(request.body);
 
-            console.log(bodyJson)
-
             // make sure that there are 3 nodes
             expect(Object.keys(bodyJson.nodes).length).to.eq(3);
 
