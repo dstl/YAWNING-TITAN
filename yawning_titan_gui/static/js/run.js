@@ -31,8 +31,6 @@ $(document).ready(function(){
         $($(this).data("toggle")).show();
     });
 
-    console.log("OUTPUT",OUTPUT_URL);
-
     //setup on start
     $("#view-buttons button:first-child").addClass("selected");
     $(".run-subsection:first-child").show();
@@ -51,10 +49,9 @@ function run(data){
         contentType: false,
         cache: false,
         dataType: "json",
-        success: function(response){
-            console.log("FINISHED");
-            // clearInterval(interval);
-        },
+        // success: function(response){
+        //     // clearInterval(interval);
+        // },
         error: function(response){
             console.log(response.message)
         }
@@ -69,7 +66,6 @@ function get_output(){
         cache: false,
         dataType: "json",
         success: function(response){
-            console.log("RESPONSE",response);
             let stderr_out = $("#log-view>.inner"),
                 stdout_out = $("#metric-view>.inner");
 
@@ -80,7 +76,6 @@ function get_output(){
             $(stdout_out).scrollTop($(stdout_out).get(0).scrollHeight);
 
             if(!response.active & response.request_count > 100){
-                console.log("FINISHED!!!");
                 $("#gif-output").show();
                 $("#gif-output").attr("src",response.gif);
                 clearInterval(interval);

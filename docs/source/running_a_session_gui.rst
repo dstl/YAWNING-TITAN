@@ -7,7 +7,7 @@ Gettting started
 
 To get started, Navigate to the run session (play icon) page from the sidebar or main menu
 
-.. image:: ../_static/create_template_network.gif
+.. image:: ../_static/create_template_run.gif
   :width: 800
   :alt: run session
 
