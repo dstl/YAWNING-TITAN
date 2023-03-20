@@ -51,6 +51,8 @@ export function openEmptyNetwork() {
  * @param networkId
  */
 export function cleanUpNetwork(networkId?: string) {
+  // wait a bit
+  cy.wait(500);
   // go to the networks and delete what was created
   cy.visit(`${Cypress.env('TEST_URL')}${Cypress.env('NETWORKS_PATH')}`);
   cy.get('.head').should('be.visible');
@@ -65,7 +67,9 @@ export function cleanUpNetwork(networkId?: string) {
  * @param gameModeId
  */
 export function cleanUpGameMode(gameModeId?: string) {
-  // go to the networks and delete what was created
+  // wait a bit
+  cy.wait(500);
+  // go to the game mode and delete what was created
   cy.visit(`${Cypress.env('TEST_URL')}${Cypress.env('GAME_MODE_PATH')}`);
   cy.get('.head').should('be.visible');
 

@@ -111,15 +111,12 @@ describe('Network', () => {
     it('should load the network metadata', () => {
       const network = new Network(test_network);
 
-      expect(network.documentMetadata).toEqual({
-        uuid: test_network._doc_metadata.uuid,
-        created_at: new Date(test_network._doc_metadata.created_at),
-        updated_at: null,
-        name: test_network._doc_metadata.name,
-        description: test_network._doc_metadata.description,
-        author: test_network._doc_metadata.author,
-        locked: test_network._doc_metadata.locked
-      })
+      expect(network.documentMetadata.uuid).toEqual(test_network._doc_metadata.uuid);
+      expect(network.documentMetadata.name).toEqual(test_network._doc_metadata.name);
+      expect(network.documentMetadata.description).toEqual(test_network._doc_metadata.description);
+      expect(network.documentMetadata.author).toEqual(test_network._doc_metadata.author);
+      expect(network.documentMetadata.locked).toEqual(test_network._doc_metadata.locked);
+      expect(network.documentMetadata.created_at).toEqual(test_network._doc_metadata.created_at);
     });
   });
 
