@@ -34,7 +34,7 @@ import { v4 as uuid } from 'uuid';
  */
 export function openEmptyNetwork() {
   // get to the network editor page
-  cy.visit(`${Cypress.env('TEST_URL')}${Cypress.env('NETWORKS_PATH')}`);
+  cy.get('[data-cy="menu-manage-networks"]').click();
 
   // create new network
   cy.get('#create').click();
@@ -54,7 +54,8 @@ export function cleanUpNetwork(networkId?: string) {
   // wait a bit
   cy.wait(500);
   // go to the networks and delete what was created
-  cy.visit(`${Cypress.env('TEST_URL')}${Cypress.env('NETWORKS_PATH')}`);
+  cy.get('[data-cy="toolbar-home"]').click();
+  cy.get('[data-cy="menu-manage-networks"]').click();
   cy.get('.head').should('be.visible');
 
   // find the correct item and delete
@@ -70,7 +71,8 @@ export function cleanUpGameMode(gameModeId?: string) {
   // wait a bit
   cy.wait(500);
   // go to the game mode and delete what was created
-  cy.visit(`${Cypress.env('TEST_URL')}${Cypress.env('GAME_MODE_PATH')}`);
+  cy.get('[data-cy="toolbar-home"]').click();
+  cy.get('[data-cy="menu-manage-game-modes"]').click();
   cy.get('.head').should('be.visible');
 
   // find the correct item and delete
