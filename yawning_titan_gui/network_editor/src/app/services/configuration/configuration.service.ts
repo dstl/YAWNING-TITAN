@@ -25,7 +25,7 @@ export class ConfigurationService {
       .pipe(tap((res: string) => {
         // replace assets with the correct path
         let replaceStr = isDevMode() ? `${window.location.origin}/assets` :
-          `${window.location.origin}/static/dist/assets`;
+          `${window.location.origin}/_static/dist/assets`;
 
         res = res.replace(/{{.*}}/, replaceStr)
 
