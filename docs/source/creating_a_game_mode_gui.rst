@@ -7,7 +7,7 @@ Gettting started
 
 To get started, Navigate to the game mode manager page (cog wheel icon) from the sidebar or main menu
 
-.. image:: ../_static/create_template_network.gif
+.. image:: ../_static/create_template_game_mode.gif
   :width: 800
   :alt: create game mode
 
