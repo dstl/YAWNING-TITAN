@@ -109,6 +109,27 @@ export class Network {
   }
 
   /**
+   * Updates the network doc metadata
+   * @param docMetadata
+   * @returns
+   */
+  public updateNetworkDocMetadata(docMetadata: NetworkDocMetadata) {
+    if (!docMetadata) {
+      return;
+    }
+
+    this._documentMetadata = {
+      author: docMetadata.author ? docMetadata.author : this._documentMetadata.author,
+      created_at: docMetadata.created_at ? docMetadata.created_at : this._documentMetadata.created_at,
+      description: docMetadata.description ? docMetadata.description : this._documentMetadata.description,
+      locked: docMetadata.locked ? docMetadata.locked : this._documentMetadata.locked,
+      name: docMetadata.name ? docMetadata.name : this._documentMetadata.name,
+      updated_at: new Date().toISOString(),
+      uuid: docMetadata.uuid ? docMetadata.uuid : this._documentMetadata.uuid
+    }
+  }
+
+  /**
    * Set the relevant network settings
    * @param network
    */

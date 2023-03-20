@@ -20,10 +20,10 @@ $(document).ready(function () {
 
 $(window).on("load",function(){
     $("#random-elements-form").on("change",function(){
-        update_network(this,"update");
+        update_network(this,"UPDATE_NETWORK_DETAILS");
     });
     $("#doc-meta-form").on("change",function(){
-        update_network(this,"update doc meta");
+        update_network(this,"UPDATE_NETWORK_METADATA");
     });
 });
 
@@ -32,22 +32,19 @@ function update_network(form_element,operation){
     config = new FormData($(form_element)[0]);
     config.append("_network_id",NETWORK_ID);
     config.append('_operation',operation);
-    console.log("UPDATE",NETWORK_ID,operation);
-    $.ajax({
-        type: "POST",
-        url: UPDATE_URL,
-        data: config,
-        processData: false,
-        contentType: false,
-        cache: false,
-        dataType: "json",
-        success: function(response){
-            console.log("UPDATED");
-            if (response.network_json){
-                proxy.NETWORK = response.network_json;
-            }
-        }
-    });
+    
+    /**
+     * The network editor listens to NETWORK_SETTINGS
+     * for any changes in the network metadata and the
+     * randomisation settings
+     * 
+     * Any updates to the form here will be reflected on the
+     * POST body that the angular network editor sends to
+     * .../network_editor/
+     * 
+     * Don't do double requests - we can cause race conditions
+     */
+    proxy.NETWORK_SETTINGS = config;
 }
 
 function toggleToolbar(iconEl) {
