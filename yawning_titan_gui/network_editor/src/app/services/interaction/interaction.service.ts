@@ -203,6 +203,22 @@ export class InteractionService {
   }
 
   /**
+   * Converts the network metadata update into an object the angular side of
+   * the network editor can process
+   * @param update
+   */
+  public processNetworkMetadataChanges(update: any): void {
+    const processedVal = {
+      author: update?.author,
+      description: update?.description,
+      name: update?.name,
+      uuid: update?._network_id
+    }
+
+    this.networkService.updateNetworkDocMetadata(processedVal)
+  }
+
+  /**
    * Process the select node interaction in the node list
    * @param id
    */

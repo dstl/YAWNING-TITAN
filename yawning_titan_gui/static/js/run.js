@@ -59,7 +59,7 @@ function run(data){
             console.log(response.message)
         }
     });
-    interval = setInterval(get_output,100);
+    interval = setInterval(get_output,500);
 }
 
 function get_output(){

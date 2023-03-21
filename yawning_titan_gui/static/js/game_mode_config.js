@@ -23,26 +23,6 @@ $(document).ready(function(){
         el.removeClass("hidden");
     });
 
-    // update checkbox dependencies
-    $(document).on("change",".config-form  .form-check-input",function(){
-        let child_els = `.${$(this).get(0).classList[1]}:not(.parent)`;
-        if($(this).is(":checked")){
-            handle_dependent_elements(child_els,"activate")
-        }else{
-            handle_dependent_elements(child_els,"deactivate")
-        }
-    });
-
-    // update input dependencies
-    $(document).on("keyup",".config-form  .grouped.parent",function(){
-        let child_els = `.${$(this).get(0).classList[1]}:not(.parent)`;
-        if($(this).val().length > 0){
-            handle_dependent_elements(child_els,"activate")
-        }else{
-            handle_dependent_elements(child_els,"deactivate")
-        }
-    });
-
     // form updates
     $("#save-game-mode").click(function(){
         save_game_mode();
