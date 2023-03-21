@@ -303,7 +303,12 @@ def get_url_dict(name: str, href: str, new_tab: bool = False):
 def get_toolbar(current_page_title: str = None):
     """Get toolbar information for the current page title."""
     default_toolbar = {
-        "home": {"icon": "bi-house-door", "title": "Home"},
+        "home": {
+            "icon": "bi-house-door",
+            "title": "Home",
+            "cypressRefToolbar": "toolbar-home",
+            "cypressRefMenu": "menu-home",
+        },
         "doc": {
             "icon": "bi-file-earmark",
             "title": "Documentation",

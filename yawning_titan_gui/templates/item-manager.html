@@ -11,7 +11,7 @@
 <div id="center-container" class="stretch clear">
     <div id="search-container" class="border-bottom">
         <div class="input-group rounded" style="{% if range_bound_items %}margin-bottom: calc(3*var(--increment));{% endif %}">
-            <input id="filter-list-items" type="search" class="form-control rounded" placeholder="Filter" aria-label="Search" aria-describedby="search-addon" />
+            <input data-cy="manager-page-filter-input" id="filter-list-items" type="search" class="form-control rounded" placeholder="Filter" aria-label="Search" aria-describedby="search-addon" />
             <span class="input-group-text border-0" id="search-addon">
                 <i class="bi bi-search"></i>
             </span>
@@ -38,7 +38,7 @@
         </div>
         {% endif %}
     </div>
-    <div id="list-items" class="border-bottom">
+    <div data-cy="item-list-container" id="list-items" class="border-bottom">
         {% block items %}
         {% endblock %}
     </div>

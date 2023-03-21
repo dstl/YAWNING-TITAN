@@ -8,7 +8,7 @@ from yawning_titan.networks.node import Node
 from yawning_titan_gui.forms.network_forms import NetworkFormManager
 from yawning_titan_gui.helpers import NetworkManager
 
-URL = reverse("node editor")
+URL = reverse("network editor")
 MANAGEMENT_URL = reverse("update network")
 UPDATED_ATTRIBUTES = {
     "set_random_entry_nodes": "on",
@@ -32,7 +32,7 @@ def test_update_network_elements(temp_networks, client: Client):
     network.add_node(new_node)
     response = client.post(
         reverse(
-            "node editor",
+            "network editor",
             kwargs={"network_id": id},
         ),
         data=json.dumps(network.to_dict(json_serializable=True)),
@@ -78,7 +78,7 @@ def test_cumulative_updates(temp_networks, client: Client):
     network.add_node(new_node)
     client.post(
         reverse(
-            "node editor",
+            "network editor",
             kwargs={"network_id": id},
         ),
         data=json.dumps(network.to_dict(json_serializable=True)),

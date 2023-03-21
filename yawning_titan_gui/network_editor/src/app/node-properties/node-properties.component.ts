@@ -67,11 +67,11 @@ export class NodePropertiesComponent implements OnInit, OnChanges, OnDestroy {
     const nodeProperty = {
       uuid: this.formGroup.get('uuid')?.value,
       name: this.formGroup.get('name')?.value,
-      x_pos: this.formGroup.get('x_pos')?.value,
-      y_pos: this.formGroup.get('y_pos')?.value,
+      x_pos: roundNumber(this.formGroup.get('x_pos')?.value),
+      y_pos: roundNumber(this.formGroup.get('y_pos')?.value),
       high_value_node: this.formGroup.get('high_value_node')?.value,
       entry_node: this.formGroup.get('entry_node')?.value,
-      vulnerability: roundNumber(this.formGroup.get('vulnerability')?.value),
+      vulnerability: roundNumber(this.formGroup.get('vulnerability')?.value, 6),
     }
 
     this.nodePropertiesService.updateNodeProperties(nodeProperty);

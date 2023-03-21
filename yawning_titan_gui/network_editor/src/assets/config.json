@@ -1,5 +1,5 @@
 {
-  "saveLocation": "http://localhost:8000/node_editor/",
+  "saveLocation": "http://localhost:8000/network_editor/",
   "cytoscapeStyle": [
     {
       "label": "Node",
