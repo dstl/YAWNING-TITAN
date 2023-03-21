@@ -157,7 +157,6 @@ function search_form_data(form_element){
 
 function hide_show_items(item_ids){
     $(".list-item").addClass("hidden");
-    console.log("IDS",item_ids);
     $(".list-item").each(function(i,el){
         if(item_ids.includes($(el).data("item-id"))){
             $(el).removeClass("hidden")
@@ -187,7 +186,6 @@ function manage_items(operation,item_names=[],item_ids=[],additional_data={}){
 
 // wrapper for async post request for config section form processing
 function filter(form_element){
-    console.log("POSTING TO",window.location.href);
     $.ajax({
         type: "POST",
         url: window.location.href,
