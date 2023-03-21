@@ -217,7 +217,6 @@ class GameModesView(View):
                 )
         except Exception as e:
             print("ERR", e, traceback.print_exc())
-        print("%%", search_form.errors)
         return JsonResponse({"message": search_form.errors}, status=500)
 
 
@@ -307,7 +306,6 @@ class NetworkCreator(View):
             {
                 "toolbar": get_toolbar("Manage networks"),
                 "form": NetworkTemplateForm(),
-                # "random_elements_form": NetworkFormManager.get_or_create_form(network_id),
                 "network_json": json.dumps(network.to_dict(json_serializable=True)),
                 "network_name": network.doc_metadata.name,
                 "network_id": network.doc_metadata.uuid,
@@ -369,7 +367,7 @@ class NetworkCreator(View):
 
 class NodeEditor(View):
     """
-    Django representation of node_editor.html.
+    Django representation of network_editor.html.
 
     implements 'get' and 'post' methods to handle page requests.
     """
@@ -385,7 +383,7 @@ class NodeEditor(View):
         network_form = NetworkFormManager.get_or_create_form(network_id)
         return render(
             request,
-            "node_editor.html",
+            "network_editor.html",
             {
                 "toolbar": get_toolbar("Manage networks"),
                 "form": network_form,
@@ -558,7 +556,7 @@ def db_manager(request: HttpRequest) -> JsonResponse:
         def create_network():
             network = NetworkManager.db.insert(network=Network(), name=item_name)
             return reverse(
-                "node editor",
+                "network editor",
                 kwargs={"network_id": network.doc_metadata.uuid},
             )
 
@@ -593,7 +591,7 @@ def db_manager(request: HttpRequest) -> JsonResponse:
             network._doc_metadata = DocMetadata()
             NetworkManager.db.insert(network=network, name=item_name)
             return reverse(
-                "node editor",
+                "network editor",
                 kwargs={"network_id": network.doc_metadata.uuid},
             )
 
@@ -644,7 +642,7 @@ def update_game_mode(request: HttpRequest) -> JsonResponse:
             section = game_mode_form.update_section(
                 section_name=section_name, form_id=form_id, data=request.POST
             )
-            if section.config_class.validation.passed:
+            if game_mode_form.game_mode.validation.passed:
                 return JsonResponse(
                     {"valid": game_mode_form.game_mode.validation.passed}
                 )  # whether the complete game mode is valid
@@ -675,20 +673,22 @@ def update_network(request: HttpRequest) -> JsonResponse:
                 network_form = NetworkFormManager.update_network_attributes(
                     network_id, request.POST
                 )
+                return JsonResponse(
+                    {
+                        "network_json": json.dumps(
+                            network_form.network.to_dict(json_serializable=True)
+                        )
+                    }
+                )
             except Exception as e:
                 print("OOPS", e)
-            return JsonResponse(
-                {
-                    "network_json": json.dumps(
-                        network_form.network.to_dict(json_serializable=True)
-                    )
-                }
-            )
+                return JsonResponse({"message": e}, status=400)
         elif operation == "update doc meta":
             try:
                 network_form = NetworkFormManager.get_or_create_form(network_id)
                 network_form.update_doc_meta(request.POST)
             except Exception as e:
                 print("OOPS", e)
+                return JsonResponse({"message": e}, status=400)
             return JsonResponse({"network_json": None})
     return JsonResponse({"message": "Invalid operation"})

@@ -23,26 +23,6 @@ $(document).ready(function(){
         el.removeClass("hidden");
     });
 
-    // update checkbox dependencies
-    $(document).on("change",".config-form  .form-check-input",function(){
-        let child_els = `.${$(this).get(0).classList[1]}:not(.parent)`;
-        if($(this).is(":checked")){
-            handle_dependent_elements(child_els,"activate")
-        }else{
-            handle_dependent_elements(child_els,"deactivate")
-        }
-    });
-
-    // update input dependencies
-    $(document).on("keyup",".config-form  .grouped.parent",function(){
-        let child_els = `.${$(this).get(0).classList[1]}:not(.parent)`;
-        if($(this).val().length > 0){
-            handle_dependent_elements(child_els,"activate")
-        }else{
-            handle_dependent_elements(child_els,"deactivate")
-        }
-    });
-
     // form updates
     $("#save-game-mode").click(function(){
         save_game_mode();
@@ -96,10 +76,8 @@ function submit_form(form_element,section_name){
         cache: false,
         dataType: "json",
         success: function(response){
-            $(form_element).find(".error-list").empty();
-            if(response.valid){
-                $(`.icon-container[data-section="${SECTION_NAME}"]`).addClass("complete");
-            }
+            $(".error-list").empty();
+            $(`.icon-container[data-section="${SECTION_NAME}"]`).addClass("complete");
         },
         error: function(response){
             let errors = response.responseJSON.errors;
@@ -109,7 +87,7 @@ function submit_form(form_element,section_name){
 }
 
 function add_form_errors(errors){
-    $(".error-list").remove(); // remove existing errors
+    $(".error-list").empty(); // remove existing errors
     $(".erroneous").removeClass("erroneous"); // remove all erroneous settings
     $(`.icon-container[data-section="${SECTION_NAME}"]`).removeClass("complete"); // show section as incomplete
     for (const [form_id, error] of Object.entries(errors)){

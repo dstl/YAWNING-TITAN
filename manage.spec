@@ -10,13 +10,15 @@ a = Analysis(
     binaries=[],
     datas=[
         ("yawning_titan_gui/templates","yawning_titan_gui/templates"),
-
         ("yawning_titan_gui/static","yawning_titan_gui/static"),
-
-        (".venv/Lib/site-packages/stable_baselines3-1.6.2-py3.9.egg/stable_baselines3/version.txt","stable_baselines3"),
-
+        ("yawning_titan/game_modes/_package_data/game_modes.json","yawning_titan/game_modes/_package_data"),
+        ("yawning_titan/networks/_package_data/network.json","yawning_titan/networks/_package_data"),
+        ("yawning_titan/config/_package_data/logging_config.yaml","yawning_titan/config/_package_data"),
+        ("VERSION","data"),
+        ("yawning_titan_gui/management/commands","django/core/management/commands"),
+        (".venv/Lib/site-packages/stable_baselines3/version.txt","stable_baselines3")
     ],
-    hiddenimports=[],
+    hiddenimports=['flaskwebgui'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -33,7 +35,8 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='manage',
+    name='YAWNING-TITAN',
+    icon='yawning_titan_gui/static/lib/ytlogo.ico',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -53,5 +56,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='manage',
+    name='yawning_titan',
 )

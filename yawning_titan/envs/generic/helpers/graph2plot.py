@@ -96,6 +96,9 @@ class CustomEnvGraph:
             show_only_blue_view: If true only shows what the blue agent can see
             show_node_names: Show the names of nodes
         """
+        # arrange nodes in graph for matplot layout:
+        g.set_node_positions()
+
         # If no value for  entrance nodes is passed in then it is set to an empty list
 
         self.vis_ax.clear()

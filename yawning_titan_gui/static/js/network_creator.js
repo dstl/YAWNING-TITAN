@@ -1,17 +1,17 @@
 $(document).ready(function(){
-    $(".template .mb-3:not(:first-child)").hide();
-    $(`.template .mb-3:has(.${$("select").val()})`).show();
+    $("#template-form .mb-3:not(:first-child)").hide();
+    $(`#template-form .mb-3:has(.${$("select").val()})`).show();
     $("select[type-selector]").on("change",function(){
         $(".template  .mb-3:not(:first-child)").hide();
         $(`.template  .mb-3:has(.${$(this).val()})`).show();
     });
-    $(".template  .form-control").on("change",function(){
+    $("#template-form  .form-control").on("change",function(){
         if (check_form_filled(".template ."+$("select[type-selector]").val())){
             load_template($("#template-form"))
         }
     });
-    $(".network-randomisation  .form-control").on("change",function(){
-        update_network($("#network-randomisation-form"))
+    $(".network-details  .form-control").on("change",function(){
+        update_network($("#network-details-form"))
     });
 });
 

@@ -62,6 +62,20 @@ export class NetworkService {
   }
 
   /**
+   * Updates the current network doc metadata
+   * @param docMetadata
+   */
+  public updateNetworkDocMetadata(docMetadata: any) {
+    if (!docMetadata) {
+      return;
+    }
+
+    this._network.updateNetworkDocMetadata(docMetadata);
+
+    this._networkSubject.next(this._network);
+  }
+
+  /**
    * Sets relevant node properties to false depending on network settings
    */
   private applyNetworkSettingsToNodes(networkSettings: NetworkSettings): void {
