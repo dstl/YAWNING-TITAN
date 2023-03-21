@@ -60,9 +60,11 @@ $(document).ready(function(){
     $("input[role='switch']").wrap("<div class=form-switch></div>");
 
     // add range setter input field
-    $("input[type='range'].form-range").each(function(i,el){
-        $(el).wrap("<div class='form-range-container'></div>");
-        $(el).closest(".form-range-container").append(`<input type='number' class='range-setter form-control' id="range-setter-${$(el).attr("id")}">`);
+    $("input[type='range'].form-range").each(
+        function (i, el)
+        { $(el).wrap("<div class='form-range-container'></div>");
+        $(el).closest(".form-range-container")
+        .append(`<input type='number' class='range-setter form-control' data-cy="${$(el).attr("data-cy")}_input">`);
     });
 
     // constrain range setter input field

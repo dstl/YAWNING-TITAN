@@ -91,8 +91,8 @@ export class Network {
 
     this._documentMetadata = {
       uuid: uuid(),
-      created_at: new Date(),
-      updated_at: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
       name: '',
       description: '',
       author: '',
@@ -106,6 +106,27 @@ export class Network {
    */
   public updateNetworkSettings(networkSettings: NetworkSettings) {
     this._networkSettings = networkSettings;
+  }
+
+  /**
+   * Updates the network doc metadata
+   * @param docMetadata
+   * @returns
+   */
+  public updateNetworkDocMetadata(docMetadata: NetworkDocMetadata) {
+    if (!docMetadata) {
+      return;
+    }
+
+    this._documentMetadata = {
+      author: docMetadata.author ? docMetadata.author : this._documentMetadata.author,
+      created_at: docMetadata.created_at ? docMetadata.created_at : this._documentMetadata.created_at,
+      description: docMetadata.description ? docMetadata.description : this._documentMetadata.description,
+      locked: docMetadata.locked ? docMetadata.locked : this._documentMetadata.locked,
+      name: docMetadata.name ? docMetadata.name : this._documentMetadata.name,
+      updated_at: new Date().toISOString(),
+      uuid: docMetadata.uuid ? docMetadata.uuid : this._documentMetadata.uuid
+    }
   }
 
   /**
@@ -194,8 +215,8 @@ export class Network {
 
     this._documentMetadata = {
       uuid: docMd.uuid,
-      created_at: new Date(docMd.created_at),
-      updated_at: docMd.updatedAt ? new Date(docMd.updated_at) : null,
+      created_at: docMd.created_at,
+      updated_at: docMd.updatedAt ? docMd.updated_at : new Date().toISOString(),
       name: docMd.name,
       description: docMd.description,
       author: docMd.author,
@@ -294,7 +315,15 @@ export class Network {
       return;
     }
 
-    this.nodeList[matchingNode] = details;
+    this.nodeList[matchingNode] = {
+      uuid: details.uuid,
+      name: details.name,
+      entry_node: details.entry_node,
+      high_value_node: details.high_value_node,
+      vulnerability: roundNumber(details?.vulnerability, 6),
+      x_pos: roundNumber(details?.x_pos),
+      y_pos: roundNumber(details?.y_pos)
+    };
     return this.nodeList[matchingNode];
   }
 
@@ -337,10 +366,26 @@ export class Network {
 
       nodes: this.nodesToJson(),
       edges: this.edgesToJson(),
-      _doc_metadata: this.documentMetadata
+      _doc_metadata: this.docMetadataToJson()
     }
 
     return obj;
+  }
+
+  /**
+   * Get the document metadata in JSON format
+   * @returns
+   */
+  private docMetadataToJson(): NetworkDocMetadata {
+    return {
+      author: this._documentMetadata.author,
+      created_at: this._documentMetadata.created_at ? this._documentMetadata.created_at : new Date().toISOString(),
+      description: this._documentMetadata.description,
+      locked: this._documentMetadata.locked,
+      name: this._documentMetadata.name,
+      updated_at: new Date().toISOString(),
+      uuid: this._documentMetadata.uuid
+    }
   }
 
   /**

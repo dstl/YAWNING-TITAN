@@ -16,7 +16,7 @@
                 {% endif %}
             </div>
             <div class="field-container {% if protected %}disabled{% endif %}">
-                {{ field }}
+                {{ field | set_cypress_ref }}
             </div>
         </div>
     {% endfor %}

@@ -6,7 +6,6 @@
       "high_value_node": false,
       "entry_node": false,
       "vulnerability": 0.6,
-      "classes": "standard_node",
       "x_pos": 100,
       "y_pos": 700
     },
@@ -16,7 +15,6 @@
       "high_value_node": false,
       "entry_node": false,
       "vulnerability": 0.79,
-      "classes": "standard_node",
       "x_pos": 300,
       "y_pos": 600
     },
@@ -26,7 +24,6 @@
       "high_value_node": false,
       "entry_node": false,
       "vulnerability": 0.3,
-      "classes": "standard_node",
       "x_pos": 200,
       "y_pos": 700
     }

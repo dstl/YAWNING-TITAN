@@ -6,19 +6,17 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
+from django.conf import settings
 from django.urls import reverse
 
-from yawning_titan import LOG_DIR
+from yawning_titan import IMAGES_DIR
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
 from yawning_titan.yawning_titan_run import YawningTitanRun
-from yawning_titan_gui import YT_RUN_TEMP_DIR
+from yawning_titan_gui import YT_GUI_RUN_LOG, YT_GUI_STDOUT, YT_RUN_TEMP_DIR
 from yawning_titan_server.settings import DOCS_ROOT, STATIC_URL
-
-RUN_LOG = LOG_DIR / "yt_gui_run.log"
-STDOUT = LOG_DIR / "stdout.txt"
 
 
 class RunManager:
@@ -28,6 +26,7 @@ class RunManager:
     process = None
     counter = 0
     run_args = None
+    run_started = False
 
     @staticmethod
     def format_file(path):
@@ -43,17 +42,17 @@ class RunManager:
     @classmethod
     def run_yt(cls, *args, **kwargs):
         """Run an instance of :class: `~yawning_titan.yawning_titan_run.YawningTitanRun`."""
-        if RUN_LOG.exists():
-            RUN_LOG.unlink()
+        if YT_GUI_RUN_LOG.exists():
+            YT_GUI_RUN_LOG.unlink()
         logger = logging.getLogger("yt_run")
         logger.setLevel(logging.DEBUG)
+
         # create file handler which logs even debug messages
-        fh = logging.FileHandler(RUN_LOG.as_posix())
+        fh = logging.FileHandler(YT_GUI_RUN_LOG.as_posix())
         fh.setLevel(logging.DEBUG)
         logger.addHandler(fh)
 
-        cls.run_args = kwargs
-        with open(STDOUT, "w+") as sys.stdout:
+        with open(YT_GUI_STDOUT, "w+") as sys.stdout:
             run = YawningTitanRun(**kwargs, auto=False, logger=logger)
 
             run.setup()
@@ -73,8 +72,12 @@ class RunManager:
                     filename="test",
                     episode_count=kwargs.get("num_episodes", run.total_timesteps),
                 )
+                if settings.DEBUG:
+                    output_dir = YT_RUN_TEMP_DIR
+                else:
+                    output_dir = IMAGES_DIR
                 loop.gif_action_loop(
-                    output_directory=YT_RUN_TEMP_DIR,
+                    output_directory=output_dir,
                     save_gif=True,
                     render_network=True
                     # TODO: fix bug where network must be rendered to get gif to be produced
@@ -91,17 +94,22 @@ class RunManager:
             "active": cls.process.is_alive(),
             "request_count": cls.counter,
         }
-        output["stderr"] = cls.format_file(RUN_LOG)
-        output["stdout"] = cls.format_file(STDOUT)
-        dir = glob.glob(f"{YT_RUN_TEMP_DIR.as_posix()}/*")
-        gif_path = max(dir, key=os.path.getctime)
-        output["gif"] = f"/{STATIC_URL}gifs/{Path(gif_path).name}".replace("\\", "/")
-        print("GIF", output["gif"])
+        output["stderr"] = cls.format_file(YT_GUI_RUN_LOG)
+        output["stdout"] = cls.format_file(YT_GUI_STDOUT)
+        if cls.run_args["render"]:
+            dir = glob.glob(f"{YT_RUN_TEMP_DIR.as_posix()}/*")
+            if dir:
+                gif_path = max(dir, key=os.path.getctime)
+                output["gif"] = f"/{STATIC_URL}gifs/{Path(gif_path).name}".replace(
+                    "\\", "/"
+                )
         return output
 
     @classmethod
     def start_process(cls, fkwargs: dict):
         """Spawn a subprocess to run the instance of :class: `~yawning_titan.yawning_titan_run.YawningTitanRun` with the given arguments."""
+        cls.run_started = True
+        cls.run_args = fkwargs
         cls.counter = 0
         cls.process = multiprocessing.Process(
             target=RunManager.run_yt,
@@ -295,7 +303,12 @@ def get_url_dict(name: str, href: str, new_tab: bool = False):
 def get_toolbar(current_page_title: str = None):
     """Get toolbar information for the current page title."""
     default_toolbar = {
-        "home": {"icon": "bi-house-door", "title": "Home"},
+        "home": {
+            "icon": "bi-house-door",
+            "title": "Home",
+            "cypressRefToolbar": "toolbar-home",
+            "cypressRefMenu": "menu-home",
+        },
         "doc": {
             "icon": "bi-file-earmark",
             "title": "Documentation",
