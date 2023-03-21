@@ -107,7 +107,7 @@ class NetworkTemplateForm(django_forms.Form):
                 field_elements[float_item["label"]] = django_forms.FloatField(
                     widget=RangeInput(
                         attrs={
-                            "class": "form-control form-range " + name,
+                            "class": "form-control form-range slider-progress " + name,
                             "step": "0.01",
                         }
                     ),

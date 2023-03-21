@@ -22,7 +22,10 @@
         <h3>{{network_name}}</h3>
     </header>
     <div class="form-container">
-        {% include 'elements/el_form.html' with form=form form_name='template' %}
+        <form id="template-form">
+            {% include 'elements/el_form_fields.html' with fields=form.visible_fields protected=False %}
+        </form>
+
     </div>
     <a id="open-editor" class="btn btn-primary">Open in editor</a>
 </div>
