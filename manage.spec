@@ -14,7 +14,7 @@ a = Analysis(
         ("yawning_titan/game_modes/_package_data/game_modes.json","yawning_titan/game_modes/_package_data"),
         ("yawning_titan/networks/_package_data/network.json","yawning_titan/networks/_package_data"),
         ("yawning_titan/config/_package_data/logging_config.yaml","yawning_titan/config/_package_data"),
-        ("data/VERSION","data"),
+        ("VERSION","data"),
         ("yawning_titan_gui/management/commands","django/core/management/commands"),
         (".venv/Lib/site-packages/stable_baselines3/version.txt","stable_baselines3")
     ],

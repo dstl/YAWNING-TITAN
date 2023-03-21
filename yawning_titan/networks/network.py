@@ -483,11 +483,6 @@ class Network(nx.Graph):
         for node in self.high_value_nodes:
             node.high_value_node = False
 
-    def set_entry_nodes(self, names: List[str] = None, ids: List[str] = None):
-        """Manually set entry nodes in the network after instantiation."""
-        names = names if names else []
-        ids = ids if ids else []
-
     def set_node_positions(self, network_layout: NetworkLayout = NetworkLayout.SPRING):
         """
         Sets the Node positions of the current Network.
