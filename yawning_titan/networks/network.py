@@ -235,7 +235,7 @@ class Network(nx.Graph):
             super().add_node(node_for_adding, **kwargs)
             if node_for_adding.entry_node or node_for_adding.high_value_node:
                 self._check_intersect(node_for_adding)
-            self.set_node_positions()
+            # self.set_node_positions()
 
     def remove_node(self, n: Node):
         """
@@ -244,7 +244,7 @@ class Network(nx.Graph):
         Extend the `remove_node` method of the superclass.
         """
         super().remove_node(n)
-        self.set_node_positions()
+        # self.set_node_positions()
 
     def add_edge(self, u_of_edge: Node, v_of_edge: Node, **kwargs):
         """
@@ -253,7 +253,7 @@ class Network(nx.Graph):
         Extend the `add_edge` method of the superclass.
         """
         super().add_edge(u_of_edge, v_of_edge, **kwargs)
-        self.set_node_positions()
+        # self.set_node_positions()
 
     def remove_edge(self, u: Node, v: Node):
         """
@@ -461,7 +461,7 @@ class Network(nx.Graph):
                 remove_existing=remove_existing_edges,
             )
 
-        self.set_node_positions()
+        # self.set_node_positions()
 
         for k, v in config_dict.items():
             if hasattr(self, k):
@@ -500,8 +500,9 @@ class Network(nx.Graph):
         :param nodes_dict: a dictionary of node uuids to properties
         :param remove_existing: a boolean to indicate whether to remove existing nodes
         """
+        nodes = [*self.nodes]
         if remove_existing:
-            for n in self.nodes:
+            for n in nodes:
                 self.remove_node(n)
         for uuid, attrs in nodes_dict.items():
             self.add_node(Node.create_from_db(**attrs))
