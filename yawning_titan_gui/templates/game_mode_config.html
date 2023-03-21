@@ -53,10 +53,10 @@
         <form id="section-controls" action="" method="post">
             {% csrf_token %}
             {% if last %}
-                <button id="next-section" type="submit" class="btn btn-primary">Finish</button>
+                <button id="next-section" type="submit" class="btn btn-primary" data-cy="finish-game-mode-button">Finish</button>
             {% else %}
-                <button id="next-section" type="submit" class="btn btn-primary">Next</button>
-                <button id="save-game-mode" type="button" class="btn btn-primary">Save</button>
+                <button id="next-section" type="submit" class="btn btn-primary" data-cy="next-game-mode-button">Next</button>
+                <button id="save-game-mode" type="button" class="btn btn-primary" data-cy="save-game-mode-button">Save</button>
             {% endif %}
         </form>
     </div>

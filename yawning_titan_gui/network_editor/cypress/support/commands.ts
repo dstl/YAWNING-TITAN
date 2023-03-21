@@ -25,39 +25,88 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
-let testId;
+let testName;
 
 import { v4 as uuid } from 'uuid';
 
+/**
+ * Function used to create an empty network for tests
+ */
 export function openEmptyNetwork() {
   // get to the network editor page
-  cy.visit(`${Cypress.env('TEST_URL')}${Cypress.env('NETWORKS_PATH')}`);
+  cy.get('[data-cy="menu-manage-networks"]').click();
 
   // create new network
   cy.get('#create').click();
-  testId = uuid()
-  cy.get('#create-dialogue > [data-cy="new-item-name-input"]').type(testId);
+  testName = uuid()
+  cy.get('#create-dialogue > [data-cy="new-item-name-input"]').type(testName);
   cy.get('.custom-network').click();
+
+  cy.wait(500)
+    .get('[data-cy="cytoscape-canvas"]');
 }
 
+/**
+ * Function used to clean up networks created during tests
+ * @param networkId
+ */
 export function cleanUpNetwork(networkId?: string) {
+  // wait a bit
+  cy.wait(500);
   // go to the networks and delete what was created
-  cy.visit(`${Cypress.env('TEST_URL')}${Cypress.env('NETWORKS_PATH')}`);
+  cy.get('[data-cy="toolbar-home"]').click();
+  cy.get('[data-cy="menu-manage-networks"]').click();
   cy.get('.head').should('be.visible');
 
   // find the correct item and delete
-  cy.get(`[data-item-name="${networkId ? networkId : testId}"] > .icons > .delete`).click();
+  cy.get(`[data-item-name="${networkId ? networkId : testName}"] > .icons > .delete`).click();
   cy.contains('Delete network').click();
+}
+
+/**
+ * Deletes a game mode with the given id
+ * @param gameModeId
+ */
+export function cleanUpGameMode(gameModeId?: string) {
+  // wait a bit
+  cy.wait(500);
+  // go to the game mode and delete what was created
+  cy.get('[data-cy="toolbar-home"]').click();
+  cy.get('[data-cy="menu-manage-game-modes"]').click();
+  cy.get('.head').should('be.visible');
+
+  // find the correct item and delete
+  cy.get(`[data-item-name="${gameModeId ? gameModeId : testName}"] > .icons > .delete`).click();
+  cy.contains('Delete game mode').click();
+}
+
+/**
+ * Function that fails the test if the element exists and is visible
+ * @param selector
+ */
+export function existsButNotVisible(selector: string) {
+  cy.wait(500) // wait for things to update
+    .get(selector).each((el) => {
+      // check if the client height and width is more than 0
+      if (el[0].clientHeight > 0 && el[0].clientWidth > 0) {
+        // element is visible
+        throw new Error(`${selector} is visible`);
+      }
+    })
 }
 
 Cypress.Commands.add('openEmptyNetwork', openEmptyNetwork);
 Cypress.Commands.add('cleanUpNetwork', cleanUpNetwork);
+Cypress.Commands.add('cleanUpGameMode', cleanUpGameMode);
+Cypress.Commands.add('existsButNotVisible', existsButNotVisible);
 
 declare global {
   namespace Cypress {
     interface Chainable {
       openEmptyNetwork: typeof openEmptyNetwork
       cleanUpNetwork: typeof cleanUpNetwork
+      cleanUpGameMode: typeof cleanUpGameMode
+      existsButNotVisible: typeof existsButNotVisible
     }
   }
 }
