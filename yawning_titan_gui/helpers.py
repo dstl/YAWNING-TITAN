@@ -368,5 +368,5 @@ def version() -> str:
 
     :return: The version string.
     """
-    with open("data/VERSION", "r") as file:
+    with open("VERSION", "r") as file:
         return file.readline()
