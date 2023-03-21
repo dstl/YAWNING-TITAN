@@ -307,7 +307,6 @@ class NetworkCreator(View):
             {
                 "toolbar": get_toolbar("Manage networks"),
                 "form": NetworkTemplateForm(),
-                # "random_elements_form": NetworkFormManager.get_or_create_form(network_id),
                 "network_json": json.dumps(network.to_dict(json_serializable=True)),
                 "network_name": network.doc_metadata.name,
                 "network_id": network.doc_metadata.uuid,
