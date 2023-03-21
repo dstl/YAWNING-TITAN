@@ -217,7 +217,6 @@ class GameModesView(View):
                 )
         except Exception as e:
             print("ERR", e, traceback.print_exc())
-        print("%%", search_form.errors)
         return JsonResponse({"message": search_form.errors}, status=500)
 
 
@@ -674,20 +673,22 @@ def update_network(request: HttpRequest) -> JsonResponse:
                 network_form = NetworkFormManager.update_network_attributes(
                     network_id, request.POST
                 )
+                return JsonResponse(
+                    {
+                        "network_json": json.dumps(
+                            network_form.network.to_dict(json_serializable=True)
+                        )
+                    }
+                )
             except Exception as e:
                 print("OOPS", e)
-            return JsonResponse(
-                {
-                    "network_json": json.dumps(
-                        network_form.network.to_dict(json_serializable=True)
-                    )
-                }
-            )
+                return JsonResponse({"message": e}, status=400)
         elif operation == "update doc meta":
             try:
                 network_form = NetworkFormManager.get_or_create_form(network_id)
                 network_form.update_doc_meta(request.POST)
             except Exception as e:
                 print("OOPS", e)
+                return JsonResponse({"message": e}, status=400)
             return JsonResponse({"network_json": None})
     return JsonResponse({"message": "Invalid operation"})
