@@ -407,7 +407,8 @@ class NetworkFormManager:
             including nodes and edges.
         """
         form = cls.get_or_create_form(network_id)
-        form.network.set_from_dict(config_dict=data)
+        form.network.add_nodes_from_dict(remove_existing=True, nodes_dict=data["nodes"])
+        form.network.add_edges_from_dict(remove_existing=True, edges_dict=data["edges"])
         if settings.DYNAMIC_UPDATES:
             NetworkManager.db.update(form.network)  # update the network in the database
         return form
