@@ -35,7 +35,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='yawning_titan',
+    name='YAWNING-TITAN',
     icon='yawning_titan_gui/static/lib/ytlogo.ico',
     debug=False,
     bootloader_ignore_signals=False,
