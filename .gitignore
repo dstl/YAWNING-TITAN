@@ -2,7 +2,7 @@ venv/
 .idea/
 .vscode/
 *.egg-info
-/dist/
+dist/
 build/
 yawning_titan_gui/network_editor/node_modules
 logs/*
