@@ -6,13 +6,13 @@ on:
       - main
       - dev
       - dev-gui
-      - 'releases/**'
+      - 'release/**'
   pull_request:
     branches:
       - main
       - dev
       - dev-gui
-      - 'releases/**'
+      - 'release/**'
 jobs:
   build:
 
