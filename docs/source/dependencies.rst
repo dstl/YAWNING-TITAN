@@ -5,13 +5,13 @@ Dependencies
 ===========
 
 ***************
-YAWNING TITAN AND YAWNING TITAN GUI
+Yawning-Titan
 ***************
 
 .. include:: yt-dependencies.rst
 
 ***************
-NETWORK EDITOR
+Network Editor
 ***************
 
 .. csv-table::
