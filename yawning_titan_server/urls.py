@@ -48,7 +48,9 @@ urlpatterns = [
         name="game mode config",
     ),
     path("network_editor/", NodeEditor.as_view(), name="network editor"),
-    path("network_editor/<str:network_id>", NodeEditor.as_view(), name="network editor"),
+    path(
+        "network_editor/<str:network_id>", NodeEditor.as_view(), name="network editor"
+    ),
     path("manage_db/", db_manager, name="db manager"),
     path("update_game_mode/", update_game_mode, name="update config"),
     path("update_network/", update_network, name="update network"),
@@ -58,7 +60,7 @@ urlpatterns = [
 
 urlpatterns += [
     path(
-        f"docs_{name}/",
+        f"source/{name}.html",
         TemplateView.as_view(template_name=f"source/{name}.html"),
         name=f"docs_{name}",
     )
