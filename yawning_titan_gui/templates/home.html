@@ -2,10 +2,25 @@
 {% load static %}
 {% load tags %}
 
+{% block scripts %}
+    <script text="text/javascript">
+        $(document).ready(function(){
+            $("#about").click(function(e){
+                e.preventDefault();
+                $("#sandwich-icon").toggleClass('open');
+                $($("#sandwich-icon").data("toolbar")).toggleClass("open");
+                $(".toolbar-button").removeClass("show");
+                $("#toolbar-button-about").toggleClass("show");
+            });
+        });
+    </script>
+
+{% endblock %}
+
 {% block main %}
 <div id="center-container" class="small">
     {% for id, el in toolbar.items %}
-        <a href="{{el.title|get_url}}" data-cy="{{el.cypressRefMenu}}"><i class="bi {{el.icon}}"></i>{{el.title}}</a>
+        <a href="{{el.title|get_url}}" id={{el.title|to_id}} data-cy="{{el.cypressRefMenu}}"><i class="bi {{el.icon}}"></i>{{el.title}}</a>
     {% endfor %}
 </div>
 {% endblock %}
