@@ -1,9 +1,11 @@
+import pytest
 from django import forms as django_forms
 
 from tests.conftest import Group, GroupTier2
 from yawning_titan_gui.forms.game_mode_forms import GameModeSection
 
 
+@pytest.mark.gui_test
 def test_config_class_instance_persisted(test_group: Group):
     """Test that the same config group instance is referenced throughout the code."""
     section = GameModeSection(test_group, "test")
@@ -11,6 +13,7 @@ def test_config_class_instance_persisted(test_group: Group):
     assert section.config_class == section.forms[0].config_class
 
 
+@pytest.mark.gui_test
 def test_game_mode_section_single_form(test_group: Group):
     """Test that the config items are correctly converted to django fields when a :class: ~yawning_titan_gui.forms.GameModeSection` is instantiated."""
     section = GameModeSection(test_group, "test")
@@ -25,6 +28,7 @@ def test_game_mode_section_single_form(test_group: Group):
     )
 
 
+@pytest.mark.gui_test
 def test_game_mode_section_single_form_errors(test_group: Group):
     """Test that the errors returned from :method: `~yawning_titan_gui.forms.GameModeSection.get_form_errors` are correct and match those of the config class."""
     section = GameModeSection(test_group, "test")
@@ -44,6 +48,7 @@ def test_game_mode_section_single_form_errors(test_group: Group):
     assert errors[0]["items"]["a"] == config_class.a.validation.fail_reasons
 
 
+@pytest.mark.gui_test
 def test_game_mode_section_only_relevant_errors_returned(
     multi_tier_test_group: GroupTier2,
 ):
@@ -57,6 +62,7 @@ def test_game_mode_section_only_relevant_errors_returned(
     }
 
 
+@pytest.mark.gui_test
 def test_game_mode_section_multiple_forms(multi_tier_test_group: GroupTier2):
     """Test that a form is created for each group in a nested set of config groups."""
     section = GameModeSection(multi_tier_test_group, "test")
