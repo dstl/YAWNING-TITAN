@@ -6,21 +6,21 @@ yawning\_titan.config.item\_types
 
 .. automodule:: yawning_titan.config.item_types
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -33,4 +33,3 @@ yawning\_titan.config.item\_types
    yawning_titan.config.item_types.float_item
    yawning_titan.config.item_types.int_item
    yawning_titan.config.item_types.str_item
-

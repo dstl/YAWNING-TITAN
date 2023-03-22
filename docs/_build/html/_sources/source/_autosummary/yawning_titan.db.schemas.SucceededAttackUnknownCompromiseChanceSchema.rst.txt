@@ -12,23 +12,21 @@ yawning\_titan.db.schemas.SucceededAttackUnknownCompromiseChanceSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~SucceededAttackUnknownCompromiseChanceSchema.DECEPTIVE_NODE
       ~SucceededAttackUnknownCompromiseChanceSchema.STANDARD_NODE
-   
-   

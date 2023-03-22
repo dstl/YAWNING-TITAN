@@ -12,17 +12,11 @@ tests.e2e\_integration\_tests.test\_generic\_env\_e2e.RandomGen
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-      ~RandomGen.get_action
-   
-   
 
-   
-   
-   
+      ~RandomGen.get_action

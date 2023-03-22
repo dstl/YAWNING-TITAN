@@ -6,23 +6,23 @@ yawning\_titan.db.schemas
 
 .. automodule:: yawning_titan.db.schemas
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       AttackSourceSchema
       BasicAttackSchema
       BlueActionSetSchema
@@ -64,12 +64,3 @@ yawning\_titan.db.schemas
       SucceededAttackUnknownCompromiseSchema
       TargetNodeSchema
       ZeroDaySchema
-   
-   
-
-   
-   
-   
-
-
-

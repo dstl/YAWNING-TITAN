@@ -12,24 +12,22 @@ yawning\_titan.db.schemas.DeceptiveNodeSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~DeceptiveNodeSchema.MAX_NUMBER
       ~DeceptiveNodeSchema.NEW_NODE_ON_RELOCATE
       ~DeceptiveNodeSchema.USE
-   
-   

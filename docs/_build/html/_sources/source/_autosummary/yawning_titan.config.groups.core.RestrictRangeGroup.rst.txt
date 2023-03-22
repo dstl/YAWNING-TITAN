@@ -12,13 +12,13 @@ yawning\_titan.config.groups.core.RestrictRangeGroup
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~RestrictRangeGroup.get_config_elements
       ~RestrictRangeGroup.get_non_config_elements
       ~RestrictRangeGroup.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.config.groups.core.RestrictRangeGroup
       ~RestrictRangeGroup.to_yaml
       ~RestrictRangeGroup.validate
       ~RestrictRangeGroup.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~RestrictRangeGroup.config_groups
       ~RestrictRangeGroup.config_items
-   
-   

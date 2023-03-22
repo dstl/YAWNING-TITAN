@@ -12,26 +12,24 @@ yawning\_titan.config.item\_types.str\_item.StrProperties
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~StrProperties.to_dict
       ~StrProperties.validate
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~StrProperties.allow_null
       ~StrProperties.default
       ~StrProperties.options
-   
-   

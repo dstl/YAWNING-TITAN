@@ -12,18 +12,12 @@ yawning\_titan.agents.keyboard.KeyboardAgent
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~KeyboardAgent.get_move_set
       ~KeyboardAgent.play
-   
-   
-
-   
-   
-   

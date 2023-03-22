@@ -6,21 +6,21 @@ tests
 
 .. automodule:: tests
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -38,4 +38,3 @@ tests
    tests.test_pipeline_markers
    tests.unit_tests
    tests.yawning_titan_db_patch
-

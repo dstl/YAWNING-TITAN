@@ -6,31 +6,18 @@ tests.unit\_tests.network.test\_network
 
 .. automodule:: tests.unit_tests.network.test_network
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       test_reset_entry_nodes_randomly
       test_reset_high_value_nodes_randomly
       test_setting_high_value_nodes_before_entry_nodes
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

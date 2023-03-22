@@ -6,21 +6,21 @@ tests.unit\_tests.config
 
 .. automodule:: tests.unit_tests.config
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -33,4 +33,3 @@ tests.unit\_tests.config
    tests.unit_tests.config.groups
    tests.unit_tests.config.item_types
    tests.unit_tests.config.validation
-

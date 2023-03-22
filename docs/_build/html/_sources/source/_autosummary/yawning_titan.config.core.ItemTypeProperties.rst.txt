@@ -12,25 +12,23 @@ yawning\_titan.config.core.ItemTypeProperties
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~ItemTypeProperties.to_dict
       ~ItemTypeProperties.validate
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~ItemTypeProperties.allow_null
       ~ItemTypeProperties.default
-   
-   

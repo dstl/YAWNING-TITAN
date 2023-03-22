@@ -12,31 +12,29 @@ yawning\_titan.config.item\_types.bool\_item.BoolItem
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~BoolItem.set_value
       ~BoolItem.stringify
       ~BoolItem.to_dict
       ~BoolItem.validate
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~BoolItem.alias
       ~BoolItem.doc
       ~BoolItem.properties
       ~BoolItem.validation
       ~BoolItem.value
       ~BoolItem.depends_on
-   
-   

@@ -12,13 +12,13 @@ yawning\_titan.game\_modes.components.blue\_agent.BlueAttackDiscoveryGroup
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~BlueAttackDiscoveryGroup.get_config_elements
       ~BlueAttackDiscoveryGroup.get_non_config_elements
       ~BlueAttackDiscoveryGroup.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.game\_modes.components.blue\_agent.BlueAttackDiscoveryGroup
       ~BlueAttackDiscoveryGroup.to_yaml
       ~BlueAttackDiscoveryGroup.validate
       ~BlueAttackDiscoveryGroup.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~BlueAttackDiscoveryGroup.config_groups
       ~BlueAttackDiscoveryGroup.config_items
-   
-   

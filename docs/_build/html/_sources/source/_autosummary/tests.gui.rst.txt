@@ -6,21 +6,21 @@ tests.gui
 
 .. automodule:: tests.gui
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -35,4 +35,3 @@ tests.gui
    tests.gui.test_network_creator_view
    tests.gui.test_network_editor_view
    tests.gui.test_network_view
-

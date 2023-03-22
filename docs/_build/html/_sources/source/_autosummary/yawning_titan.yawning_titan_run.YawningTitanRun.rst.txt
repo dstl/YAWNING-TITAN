@@ -12,13 +12,13 @@ yawning\_titan.yawning\_titan\_run.YawningTitanRun
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~YawningTitanRun.evaluate
       ~YawningTitanRun.export
       ~YawningTitanRun.import_from_export
@@ -26,9 +26,3 @@ yawning\_titan.yawning\_titan\_run.YawningTitanRun
       ~YawningTitanRun.save
       ~YawningTitanRun.setup
       ~YawningTitanRun.train
-   
-   
-
-   
-   
-   

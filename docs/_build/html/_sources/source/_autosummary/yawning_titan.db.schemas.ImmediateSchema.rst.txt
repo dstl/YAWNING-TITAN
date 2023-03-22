@@ -12,23 +12,21 @@ yawning\_titan.db.schemas.ImmediateSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~ImmediateSchema.DECEPTIVE_NODE
       ~ImmediateSchema.STANDARD_NODE
-   
-   

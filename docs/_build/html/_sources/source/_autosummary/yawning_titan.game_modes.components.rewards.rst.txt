@@ -6,30 +6,21 @@ yawning\_titan.game\_modes.components.rewards
 
 .. automodule:: yawning_titan.game_modes.components.rewards
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       Rewards
-   
-   
-
-   
-   
-   
-
-
-

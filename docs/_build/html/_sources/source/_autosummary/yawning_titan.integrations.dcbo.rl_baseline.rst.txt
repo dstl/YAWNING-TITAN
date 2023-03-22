@@ -6,29 +6,16 @@ yawning\_titan.integrations.dcbo.rl\_baseline
 
 .. automodule:: yawning_titan.integrations.dcbo.rl_baseline
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       generate
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

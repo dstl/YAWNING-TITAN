@@ -6,18 +6,18 @@ tests.unit\_tests.db.test\_yawning\_titan\_db
 
 .. automodule:: tests.unit_tests.db.test_yawning_titan_db
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       demo_db_docs
       test_all
       test_count
@@ -34,26 +34,17 @@ tests.unit\_tests.db.test\_yawning\_titan\_db
       test_update_metadata
       test_upsert_insert
       test_upsert_update
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       DemoDB
       DemoSchema
-   
-   
-
-   
-   
-   
-
-
-

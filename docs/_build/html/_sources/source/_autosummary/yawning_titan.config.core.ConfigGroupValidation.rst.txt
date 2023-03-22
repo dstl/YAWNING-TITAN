@@ -12,13 +12,13 @@ yawning\_titan.config.core.ConfigGroupValidation
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~ConfigGroupValidation.add_element_validation
       ~ConfigGroupValidation.add_validation
       ~ConfigGroupValidation.get_config_elements
@@ -26,20 +26,18 @@ yawning\_titan.config.core.ConfigGroupValidation
       ~ConfigGroupValidation.log
       ~ConfigGroupValidation.stringify
       ~ConfigGroupValidation.to_dict
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~ConfigGroupValidation.config_groups
       ~ConfigGroupValidation.config_items
       ~ConfigGroupValidation.element_validation
       ~ConfigGroupValidation.elements_passed
       ~ConfigGroupValidation.group_passed
       ~ConfigGroupValidation.passed
-   
-   

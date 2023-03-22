@@ -6,29 +6,16 @@ tests.integration\_tests.test\_network\_interface
 
 .. automodule:: tests.integration_tests.test_network_interface
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       test_network_interface
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

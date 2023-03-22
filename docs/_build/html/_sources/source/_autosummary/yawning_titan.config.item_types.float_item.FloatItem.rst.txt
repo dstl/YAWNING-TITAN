@@ -12,31 +12,29 @@ yawning\_titan.config.item\_types.float\_item.FloatItem
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~FloatItem.set_value
       ~FloatItem.stringify
       ~FloatItem.to_dict
       ~FloatItem.validate
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~FloatItem.alias
       ~FloatItem.doc
       ~FloatItem.properties
       ~FloatItem.validation
       ~FloatItem.value
       ~FloatItem.depends_on
-   
-   

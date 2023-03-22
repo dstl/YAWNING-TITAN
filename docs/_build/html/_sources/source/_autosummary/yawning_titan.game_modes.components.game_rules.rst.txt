@@ -6,32 +6,23 @@ yawning\_titan.game\_modes.components.game\_rules
 
 .. automodule:: yawning_titan.game_modes.components.game_rules
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       BlueLossConditionGroup
       GameRules
       NetworkCompatibilityGroup
-   
-   
-
-   
-   
-   
-
-
-

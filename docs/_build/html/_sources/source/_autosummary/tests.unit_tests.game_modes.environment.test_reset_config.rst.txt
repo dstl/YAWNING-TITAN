@@ -6,30 +6,17 @@ tests.unit\_tests.game\_modes.environment.test\_reset\_config
 
 .. automodule:: tests.unit_tests.game_modes.environment.test_reset_config
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       default_reset
       test_default_reset_from_legacy
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

@@ -12,24 +12,22 @@ yawning\_titan.db.schemas.ResetSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~ResetSchema.CHOOSE_NEW_ENTRY_NODES
       ~ResetSchema.CHOOSE_NEW_HIGH_VALUE_NODES
       ~ResetSchema.RANDOMISE_VULNERABILITIES
-   
-   

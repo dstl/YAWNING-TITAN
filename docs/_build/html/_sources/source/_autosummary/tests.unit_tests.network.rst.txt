@@ -6,21 +6,21 @@ tests.unit\_tests.network
 
 .. automodule:: tests.unit_tests.network
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -30,4 +30,3 @@ tests.unit\_tests.network
    :recursive:
 
    tests.unit_tests.network.test_network
-

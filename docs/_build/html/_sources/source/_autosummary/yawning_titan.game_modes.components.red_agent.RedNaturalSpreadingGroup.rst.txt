@@ -12,13 +12,13 @@ yawning\_titan.game\_modes.components.red\_agent.RedNaturalSpreadingGroup
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~RedNaturalSpreadingGroup.get_config_elements
       ~RedNaturalSpreadingGroup.get_non_config_elements
       ~RedNaturalSpreadingGroup.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.game\_modes.components.red\_agent.RedNaturalSpreadingGroup
       ~RedNaturalSpreadingGroup.to_yaml
       ~RedNaturalSpreadingGroup.validate
       ~RedNaturalSpreadingGroup.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~RedNaturalSpreadingGroup.config_groups
       ~RedNaturalSpreadingGroup.config_items
-   
-   

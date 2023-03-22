@@ -1,6 +1,0 @@
-tests.unit\_tests.config.environment.test\_reset\_config.test\_default\_reset\_from\_legacy
-===========================================================================================
-
-.. currentmodule:: tests.unit_tests.config.environment.test_reset_config
-
-.. autofunction:: test_default_reset_from_legacy

@@ -5,22 +5,3 @@ yawning\_titan.experiment\_helpers.constants
 ============================================
 
 .. automodule:: yawning_titan.experiment_helpers.constants
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

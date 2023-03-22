@@ -6,21 +6,21 @@ tests.unit\_tests.game\_modes
 
 .. automodule:: tests.unit_tests.game_modes
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -32,4 +32,3 @@ tests.unit\_tests.game\_modes
    tests.unit_tests.game_modes.agents
    tests.unit_tests.game_modes.environment
    tests.unit_tests.game_modes.test_game_mode
-

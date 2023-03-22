@@ -12,25 +12,23 @@ yawning\_titan.config.item\_types.bool\_item.BoolProperties
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~BoolProperties.to_dict
       ~BoolProperties.validate
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~BoolProperties.allow_null
       ~BoolProperties.default
-   
-   

@@ -6,21 +6,21 @@ yawning\_titan.config.groups
 
 .. automodule:: yawning_titan.config.groups
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -31,4 +31,3 @@ yawning\_titan.config.groups
 
    yawning_titan.config.groups.core
    yawning_titan.config.groups.validation
-

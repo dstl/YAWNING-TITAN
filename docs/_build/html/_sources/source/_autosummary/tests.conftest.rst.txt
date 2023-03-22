@@ -6,18 +6,18 @@ tests.conftest
 
 .. automodule:: tests.conftest
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       basic_2_agent_loop
       corporate_network
       create_yawning_titan_run
@@ -32,27 +32,18 @@ tests.conftest
       not_raises
       temp_networks
       test_group
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       Group
       GroupTier1
       GroupTier2
-   
-   
-
-   
-   
-   
-
-
-

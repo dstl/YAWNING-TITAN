@@ -6,21 +6,21 @@ tests.unit\_tests.config.validation
 
 .. automodule:: tests.unit_tests.config.validation
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -32,4 +32,3 @@ tests.unit\_tests.config.validation
    tests.unit_tests.config.validation.test_any_non_zero
    tests.unit_tests.config.validation.test_any_true
    tests.unit_tests.config.validation.test_any_used
-

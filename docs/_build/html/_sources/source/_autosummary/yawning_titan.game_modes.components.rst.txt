@@ -6,21 +6,21 @@ yawning\_titan.game\_modes.components
 
 .. automodule:: yawning_titan.game_modes.components
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -36,4 +36,3 @@ yawning\_titan.game\_modes.components
    yawning_titan.game_modes.components.red_agent
    yawning_titan.game_modes.components.reset
    yawning_titan.game_modes.components.rewards
-

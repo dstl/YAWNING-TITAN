@@ -12,22 +12,22 @@ yawning\_titan.db.schemas.ObservationSpaceSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~ObservationSpaceSchema.ATTACKED_NODES
       ~ObservationSpaceSchema.ATTACKING_NODES
       ~ObservationSpaceSchema.AVERAGE_VULNERABILITY
@@ -37,5 +37,3 @@ yawning\_titan.db.schemas.ObservationSpaceSchema
       ~ObservationSpaceSchema.RED_AGENT_SKILL
       ~ObservationSpaceSchema.SPECIAL_NODES
       ~ObservationSpaceSchema.VULNERABILITIES
-   
-   

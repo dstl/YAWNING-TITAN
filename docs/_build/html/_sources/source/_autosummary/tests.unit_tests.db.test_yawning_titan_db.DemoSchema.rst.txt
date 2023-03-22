@@ -12,25 +12,23 @@ tests.unit\_tests.db.test\_yawning\_titan\_db.DemoSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~DemoSchema.AGE
       ~DemoSchema.FORENAME
       ~DemoSchema.HOBBIES
       ~DemoSchema.SURNAME
-   
-   

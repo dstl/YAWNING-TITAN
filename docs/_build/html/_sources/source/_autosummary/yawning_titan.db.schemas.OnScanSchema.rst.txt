@@ -12,23 +12,21 @@ yawning\_titan.db.schemas.OnScanSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~OnScanSchema.DECEPTIVE_NODE
       ~OnScanSchema.STANDARD_NODE
-   
-   

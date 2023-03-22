@@ -12,24 +12,24 @@ yawning\_titan.config.item\_types.int\_item.IntProperties
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~IntProperties.to_dict
       ~IntProperties.validate
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~IntProperties.allow_null
       ~IntProperties.default
       ~IntProperties.inclusive_max
@@ -37,5 +37,3 @@ yawning\_titan.config.item\_types.int\_item.IntProperties
       ~IntProperties.max_val
       ~IntProperties.min_val
       ~IntProperties.parity
-   
-   

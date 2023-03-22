@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to YAWNING-TITAN’s documentation! &mdash; YAWNING TITAN 1.1.1
+  <title>Welcome to YAWNING-TITAN’s documentation! &mdash; YAWNING TITAN 2.0.0b1
  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
@@ -12,7 +12,7 @@
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
+
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
@@ -22,10 +22,10 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Getting Started" href="source/getting_started.html" /> 
+    <link rel="next" title="Getting Started" href="source/getting_started.html" />
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
@@ -33,7 +33,7 @@
             <a href="#" class="icon icon-home"> YAWNING TITAN
           </a>
               <div class="version">
-                1.1.1
+                2.0.0b1
 
               </div>
 <div role="search">
@@ -50,8 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="source/create_a_network.html">Create a Network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source/db.html">Yawning-Titan DB</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source/tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/experiments.html">Monitoring Experiments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="source/game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/yt_gui.html">Yawning-Titan GUI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
 <li class="toctree-l1"><a class="reference internal" href="source/contributing.html">Contribute to YT</a></li>
@@ -82,7 +81,7 @@
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-             
+
   <section id="welcome-to-yawning-titan-s-documentation">
 <h1>Welcome to YAWNING-TITAN’s documentation!<a class="headerlink" href="#welcome-to-yawning-titan-s-documentation" title="Permalink to this heading"></a></h1>
 <section id="what-is-yawning-titan">
@@ -95,6 +94,12 @@ which are great for learning and debugging, as well as a flexible, highly config
 of increasing complexity and scale. The generic environment only needs a network topology and a settings file in order to create
 an OpenAI Gym compliant environment which also enables open research and enhanced reproducibility.</p>
 </section>
+<section id="how-can-yawning-titan-be-used">
+<h2>How can YAWNING-TITAN be used?<a class="headerlink" href="#how-can-yawning-titan-be-used" title="Permalink to this heading"></a></h2>
+<p>YAWNING_TITAN can be used either through the command line interface or through a bespoke graphical user interface (<strong>GUI</strong>).
+The idea of this is to make YT as accessible as possible to all users out of the box whilst not compromising the ability
+for users to make in depth modifications to the source code.</p>
+</section>
 <section id="design-principles">
 <h2>Design Principles<a class="headerlink" href="#design-principles" title="Permalink to this heading"></a></h2>
 <p><strong>YT</strong> has been designed with the following key principles in mind:
@@ -104,6 +109,7 @@ an OpenAI Gym compliant environment which also enables open research and enhance
 - Support for a wide range of algorithms
 - Enhanced agent/policy evaluation support
 - Flexible environment and game rule configuration
+- intuitive representation of all elements
 - Generation of evaluation episode visualisations (gifs)</p>
 </section>
 <section id="what-is-yawning-titan-built-with">
@@ -115,8 +121,76 @@ an OpenAI Gym compliant environment which also enables open research and enhance
 <li><p><a class="reference external" href="https://github.com/networkx/networkx">Networkx</a> is used as the underlying data structure used for all environments</p></li>
 <li><p><a class="reference external" href="https://github.com/DLR-RM/stable-baselines3">Stable Baselines 3</a> is used as a source of RL algorithms</p></li>
 <li><p><a class="reference external" href="https://github.com/ray-project/ray">Rllib (part of Ray)</a> is used as another source of RL algorithms</p></li>
+<li><p><a class="reference external" href="https://www.djangoproject.com/">Django</a> is used to provide the management and elements of the GUI</p></li>
+<li><p><a class="reference external" href="https://cytoscape.org/">Cytoscape</a> is used to provide a lightweight and intuitive node editor</p></li>
 </ul>
 </div></blockquote>
+</section>
+<section id="how-is-the-yawning-titan-gui-built">
+<h2>How is the YAWNING-TITAN-GUI built<a class="headerlink" href="#how-is-the-yawning-titan-gui-built" title="Permalink to this heading"></a></h2>
+<p><strong>YT-GUI</strong> is designed as an optional extension to the underlying <strong>YT</strong> library.
+The Yawning Titan GUI primarily uses Django to convert aspects of <strong>YT</strong> into html objects that can be interacted with
+in a local browser instance by the user thereby allowing the underlying python to be executed without need for a command
+line interface or knowledge of the python language.</p>
+<p>The <strong>YT-GUI</strong> also integrates with a customised version cytoscape JS which has been extended to work directly with <strong>YT</strong>.
+This allows for users to directly interface with network topologies and edit the position and attributes of network nodes
+that actively updates a database of stored networks.</p>
+</section>
+<section id="running-yawning-titan-gui-from-terminal">
+<h2>Running YAWNING-TITAN-GUI from terminal<a class="headerlink" href="#running-yawning-titan-gui-from-terminal" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Set up dependencies</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">- `npm install -g yarn`</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>navigate to the root of the network editor project</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">- `yarn install`</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>navigate to the root of the network editor project (<cite>&lt;YAWNING_TITAN_ROOT_DIRECTORY&gt;/yawning_titan_gui/network_editor/</cite>)</p></li>
+<li><p>Building the network editor files</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">- `yarn build`</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>navigate to repository root</p></li>
+<li><p>Run the django server:</p></li>
+</ul>
+<ul class="simple">
+<li><p>Run the django server in a minified chrome window:</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">- run `python manage.py`</span>
+</pre></div>
+</div>
+</section>
+<section id="what-does-django-provide">
+<h2>What does Django provide<a class="headerlink" href="#what-does-django-provide" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Sidebar navigation allows for quick access to key <strong>YT</strong> features</p></li>
+<li><p>database managers allow for efficient and intuitive management of GameMode and Network objects</p></li>
+<li><p>multiple window outputs to allow users to easily monitor game loops</p></li>
+<li><p>ability to create or edit Network and GameMode objects with real time validation and autosave</p></li>
+</ul>
+</section>
+<section id="what-does-cytoscape-provide">
+<h2>What does Cytoscape provide<a class="headerlink" href="#what-does-cytoscape-provide" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>create customised network topologies which can be used directly with <strong>YT</strong></p></li>
+<li><p>edit attributes of network nodes</p></li>
+</ul>
+</section>
+<section id="how-does-the-yawning-titan-gui-integrate-with-yawning-titan">
+<h2>How does the YAWNING-TITAN-GUI integrate with YAWNING-TITAN<a class="headerlink" href="#how-does-the-yawning-titan-gui-integrate-with-yawning-titan" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>The required inputs for <strong>YT</strong> components are represented as Django form elements which pass data to a class on the back end which process the input and updates the values within the <strong>YT</strong> component.</p></li>
+<li><p>Individual requirements of <strong>YT</strong> are split into separate Django view objects which represent all <strong>YT</strong> items for a specific page</p></li>
+<li><p>Several components of <strong>YT</strong> are assigned <em>Manager classes</em> which extend the <strong>YT</strong> object to provide additional functionality for use in the GUI</p></li>
+</ul>
 </section>
 <section id="where-next">
 <h2>Where next?<a class="headerlink" href="#where-next" title="Permalink to this heading"></a></h2>
@@ -180,13 +254,72 @@ an OpenAI Gym compliant environment which also enables open research and enhance
 <li class="toctree-l2"><a class="reference internal" href="source/tutorials.html#example-notebooks">Example notebooks</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="source/experiments.html">Monitoring Experiments</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="source/experiments.html#mid-experiment">Mid Experiment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/experiments.html#end-of-experiment">End of Experiment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="source/experiments.html#rendering">Rendering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="source/yt_gui.html">Yawning-Titan GUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="source/creating_a_game_mode_gui.html">Create a game mode</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="source/creating_a_game_mode_gui.html#gettting-started">Gettting started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/creating_a_game_mode_gui.html#copying-a-game-mode">Copying a game mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/creating_a_game_mode_gui.html#creating-a-new-game-mode">Creating a new game mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/creating_a_game_mode_gui.html#deleting-a-game-mode">Deleting a game mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/creating_a_game_mode_gui.html#configuring-a-game-mode">Configuring a game mode</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/creating_a_game_mode_gui.html#saving-changes">Saving changes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/creating_a_game_mode_gui.html#game-mode-sections">Game mode sections</a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/creating_a_game_mode_gui.html#editing-a-specific-game-mode">Editing a specific game mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/creating_a_game_mode_gui.html#validation">Validation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="source/game_mode_config_explained.html">GameMode UML</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="source/creating_a_network_gui.html">Create a Network</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="source/creating_a_network_gui.html#gettting-started">Gettting started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/creating_a_network_gui.html#copying-a-network">Copying a network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/creating_a_network_gui.html#creating-a-new-network">Creating a new network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/creating_a_network_gui.html#deleting-a-network">Deleting a network</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/creating_a_network_gui.html#template">Template</a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/creating_a_network_gui.html#node-editor">Node editor</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="source/creating_a_network_gui.html#saving-changes">Saving changes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="source/creating_a_network_gui.html#menus">Menus</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/creating_a_network_gui.html#node-colour-key">Node colour key</a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/creating_a_network_gui.html#network-toolbars">Network toolbars</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="source/creating_a_network_gui.html#node-instantiation">Node Instantiation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="source/creating_a_network_gui.html#adding-edges-between-nodes">Adding Edges Between Nodes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="source/creating_a_network_gui.html#setting-entry-nodes">Setting Entry Nodes</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/creating_a_network_gui.html#manually">Manually</a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/creating_a_network_gui.html#randomly">Randomly</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="source/creating_a_network_gui.html#setting-high-value-nodes">Setting High Value Nodes</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/creating_a_network_gui.html#id1">Manually</a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/creating_a_network_gui.html#id2">Randomly</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="source/creating_a_network_gui.html#setting-node-vulnerability">Setting Node Vulnerability</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="source/creating_a_network_gui.html#id3">Manually</a></li>
+<li class="toctree-l6"><a class="reference internal" href="source/creating_a_network_gui.html#id4">Randomly</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="source/running_a_session_gui.html">Running a session</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="source/running_a_session_gui.html#gettting-started">Gettting started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="source/running_a_session_gui.html#running-a-yawningtitanrun-session">Running a YawningTitanRun session</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="source/running_a_session_gui.html#network-selection">Network selection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/running_a_session_gui.html#game-mode-selection">Game mode selection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/running_a_session_gui.html#configurable-inputs">Configurable inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/running_a_session_gui.html#metric-display">Metric display</a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/running_a_session_gui.html#log-display">Log display</a></li>
+<li class="toctree-l4"><a class="reference internal" href="source/running_a_session_gui.html#gif-output">Gif output</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="source/_autosummary/yawning_titan.html">Yawning-Titan API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="source/_autosummary/yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="source/_autosummary/yawning_titan.DATA_DIR.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
@@ -816,8 +949,6 @@ an OpenAI Gym compliant environment which also enables open research and enhance
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.bool_item.html#yawning_titan.config.item_types.bool_item.BoolItem"><code class="docutils literal notranslate"><span class="pre">BoolItem</span></code></a><ul>
-<li class="toctree-l6"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.bool_item.html#yawning_titan.config.item_types.bool_item.BoolItem.value"><code class="docutils literal notranslate"><span class="pre">BoolItem.value</span></code></a></li>
-<li class="toctree-l6"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.bool_item.html#yawning_titan.config.item_types.bool_item.BoolItem.depends_on"><code class="docutils literal notranslate"><span class="pre">BoolItem.depends_on</span></code></a></li>
 <li class="toctree-l6"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.bool_item.html#yawning_titan.config.item_types.bool_item.BoolItem.__init__"><code class="docutils literal notranslate"><span class="pre">BoolItem.__init__()</span></code></a></li>
 </ul>
 </li>
@@ -867,8 +998,6 @@ an OpenAI Gym compliant environment which also enables open research and enhance
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.float_item.html#yawning_titan.config.item_types.float_item.FloatItem"><code class="docutils literal notranslate"><span class="pre">FloatItem</span></code></a><ul>
-<li class="toctree-l6"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.float_item.html#yawning_titan.config.item_types.float_item.FloatItem.value"><code class="docutils literal notranslate"><span class="pre">FloatItem.value</span></code></a></li>
-<li class="toctree-l6"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.float_item.html#yawning_titan.config.item_types.float_item.FloatItem.depends_on"><code class="docutils literal notranslate"><span class="pre">FloatItem.depends_on</span></code></a></li>
 <li class="toctree-l6"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.float_item.html#yawning_titan.config.item_types.float_item.FloatItem.__init__"><code class="docutils literal notranslate"><span class="pre">FloatItem.__init__()</span></code></a></li>
 </ul>
 </li>
@@ -933,8 +1062,6 @@ an OpenAI Gym compliant environment which also enables open research and enhance
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.int_item.html#yawning_titan.config.item_types.int_item.IntItem"><code class="docutils literal notranslate"><span class="pre">IntItem</span></code></a><ul>
-<li class="toctree-l6"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.int_item.html#yawning_titan.config.item_types.int_item.IntItem.value"><code class="docutils literal notranslate"><span class="pre">IntItem.value</span></code></a></li>
-<li class="toctree-l6"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.int_item.html#yawning_titan.config.item_types.int_item.IntItem.depends_on"><code class="docutils literal notranslate"><span class="pre">IntItem.depends_on</span></code></a></li>
 <li class="toctree-l6"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.int_item.html#yawning_titan.config.item_types.int_item.IntItem.__init__"><code class="docutils literal notranslate"><span class="pre">IntItem.__init__()</span></code></a></li>
 </ul>
 </li>
@@ -977,8 +1104,6 @@ an OpenAI Gym compliant environment which also enables open research and enhance
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.str_item.html#yawning_titan.config.item_types.str_item.StrItem"><code class="docutils literal notranslate"><span class="pre">StrItem</span></code></a><ul>
-<li class="toctree-l6"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.str_item.html#yawning_titan.config.item_types.str_item.StrItem.value"><code class="docutils literal notranslate"><span class="pre">StrItem.value</span></code></a></li>
-<li class="toctree-l6"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.str_item.html#yawning_titan.config.item_types.str_item.StrItem.depends_on"><code class="docutils literal notranslate"><span class="pre">StrItem.depends_on</span></code></a></li>
 <li class="toctree-l6"><a class="reference internal" href="source/_autosummary/yawning_titan.config.item_types.str_item.html#yawning_titan.config.item_types.str_item.StrItem.__init__"><code class="docutils literal notranslate"><span class="pre">StrItem.__init__()</span></code></a></li>
 </ul>
 </li>
@@ -4817,7 +4942,7 @@ an OpenAI Gym compliant environment which also enables open research and enhance
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+
 
 </footer>
         </div>
@@ -4828,7 +4953,7 @@ an OpenAI Gym compliant environment which also enables open research and enhance
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
 
 </body>
 </html>

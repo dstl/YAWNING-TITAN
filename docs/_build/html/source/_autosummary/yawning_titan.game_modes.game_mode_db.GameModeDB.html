@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>yawning_titan.game_modes.game_mode_db.GameModeDB &mdash; YAWNING TITAN 1.1.1
+  <title>yawning_titan.game_modes.game_mode_db.GameModeDB &mdash; YAWNING TITAN 2.0.0b1
  documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
@@ -12,7 +12,7 @@
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
+
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
@@ -23,10 +23,10 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="yawning_titan.game_modes.game_mode_db.GameModeSchema" href="yawning_titan.game_modes.game_mode_db.GameModeSchema.html" />
-    <link rel="prev" title="yawning_titan.game_modes.game_mode_db.default_game_mode" href="yawning_titan.game_modes.game_mode_db.default_game_mode.html" /> 
+    <link rel="prev" title="yawning_titan.game_modes.game_mode_db.default_game_mode" href="yawning_titan.game_modes.game_mode_db.default_game_mode.html" />
 </head>
 
-<body class="wy-body-for-nav"> 
+<body class="wy-body-for-nav">
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
@@ -34,7 +34,7 @@
             <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
           </a>
               <div class="version">
-                1.1.1
+                2.0.0b1
 
               </div>
 <div role="search">
@@ -51,8 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../experiments.html">Monitoring Experiments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../yt_gui.html">Yawning-Titan GUI</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
@@ -136,7 +135,7 @@
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-             
+
   <section id="yawning-titan-game-modes-game-mode-db-gamemodedb">
 <h1>yawning_titan.game_modes.game_mode_db.GameModeDB<a class="headerlink" href="#yawning-titan-game-modes-game-mode-db-gamemodedb" title="Permalink to this heading"></a></h1>
 <dl class="py class">
@@ -370,12 +369,18 @@ Has a default value of <code class="docutils literal notranslate"><span class="p
 
 <dl class="py method">
 <dt class="sig sig-object py" id="yawning_titan.game_modes.game_mode_db.GameModeDB.reset_default_game_modes_in_db">
-<span class="sig-name descname"><span class="pre">reset_default_game_modes_in_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/game_modes/game_mode_db.html#GameModeDB.reset_default_game_modes_in_db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.game_modes.game_mode_db.GameModeDB.reset_default_game_modes_in_db" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">reset_default_game_modes_in_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/game_modes/game_mode_db.html#GameModeDB.reset_default_game_modes_in_db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.game_modes.game_mode_db.GameModeDB.reset_default_game_modes_in_db" title="Permalink to this definition"></a></dt>
 <dd><p>Reset the default game_mode in the db.</p>
 <p>Achieves this by loading the default
 <cite>yawning_titan/game_modes/_package_data/game_mode.json</cite> db file into TinyDB,
 then iterating over all docs and forcing an update of each one in the main
 game_modes db from its uuid if they do not match.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>force</strong> – Forces a reset without checking for equality when
+True. Has a default value of False.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -431,7 +436,7 @@ function.</p>
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+
 
 </footer>
         </div>
@@ -442,7 +447,7 @@ function.</p>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
 
 </body>
 </html>

@@ -12,13 +12,13 @@ yawning\_titan.config.core.ConfigGroup
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~ConfigGroup.get_config_elements
       ~ConfigGroup.get_non_config_elements
       ~ConfigGroup.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.config.core.ConfigGroup
       ~ConfigGroup.to_yaml
       ~ConfigGroup.validate
       ~ConfigGroup.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~ConfigGroup.config_groups
       ~ConfigGroup.config_items
-   
-   

@@ -6,18 +6,18 @@ yawning\_titan.networks.network\_creator
 
 .. automodule:: yawning_titan.networks.network_creator
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       check_if_nearby
       create_mesh
       create_p2p
@@ -29,16 +29,3 @@ yawning\_titan.networks.network\_creator
       get_18_node_network_mesh
       get_network_from_matrix_and_positions
       gnp_random_connected_graph
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

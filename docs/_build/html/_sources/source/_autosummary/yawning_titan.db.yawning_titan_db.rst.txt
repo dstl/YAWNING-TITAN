@@ -6,31 +6,22 @@ yawning\_titan.db.yawning\_titan\_db
 
 .. automodule:: yawning_titan.db.yawning_titan_db
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       YawningTitanDB
       YawningTitanDBSchema
-   
-   
-
-   
-   
-   
-
-
-

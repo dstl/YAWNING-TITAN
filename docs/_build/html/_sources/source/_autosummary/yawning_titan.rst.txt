@@ -6,13 +6,13 @@ yawning\_titan
 
 .. automodule:: yawning_titan
 
-   
-   
+
+
    .. rubric:: Module attributes
 
    .. autosummary::
       :toctree:
-   
+
       DATA_DIR
       CONFIG_DIR
       LOG_DIR
@@ -25,20 +25,20 @@ yawning\_titan
       AGENTS_DIR
       AGENTS_LOGS_DIR
       PPO_TENSORBOARD_LOGS_DIR
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -58,4 +58,3 @@ yawning\_titan
    yawning_titan.networks
    yawning_titan.notebooks
    yawning_titan.yawning_titan_run
-

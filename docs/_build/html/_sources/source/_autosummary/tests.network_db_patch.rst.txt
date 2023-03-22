@@ -6,29 +6,16 @@ tests.network\_db\_patch
 
 .. automodule:: tests.network_db_patch
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       network_db_init_patch
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

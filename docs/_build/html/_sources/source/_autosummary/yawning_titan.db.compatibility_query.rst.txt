@@ -6,41 +6,32 @@ yawning\_titan.db.compatibility\_query
 
 .. automodule:: yawning_titan.db.compatibility_query
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
-      check_element
-   
-   
 
-   
-   
+      check_element
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       EntryNodeCompatibilityQuery
       HighValueNodeCompatibilityQuery
       NetworkCompatibilityQuery
       NetworkNodeCompatibilityQuery
-   
-   
-
-   
-   
-   
-
-
-

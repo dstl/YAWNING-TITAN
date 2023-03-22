@@ -12,23 +12,23 @@ yawning\_titan.networks.network.NetworkLayout
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-      ~NetworkLayout.as_layout_func
-   
-   
 
-   
-   
+      ~NetworkLayout.as_layout_func
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~NetworkLayout.BIPARTITE
       ~NetworkLayout.CIRCULAR
       ~NetworkLayout.FRUCHTERMAN_REINGOLD
@@ -41,5 +41,3 @@ yawning\_titan.networks.network.NetworkLayout
       ~NetworkLayout.SPECTRAL
       ~NetworkLayout.SPIRAL
       ~NetworkLayout.SPRING
-   
-   

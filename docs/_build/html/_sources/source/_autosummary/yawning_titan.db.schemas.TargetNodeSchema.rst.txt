@@ -12,24 +12,22 @@ yawning\_titan.db.schemas.TargetNodeSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~TargetNodeSchema.ALWAYS_CHOOSE_SHORTEST_DISTANCE
       ~TargetNodeSchema.TARGET
       ~TargetNodeSchema.USE
-   
-   

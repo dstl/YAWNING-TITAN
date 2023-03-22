@@ -6,30 +6,17 @@ tests.unit\_tests.config.item\_types.test\_str\_item
 
 .. automodule:: tests.unit_tests.config.item_types.test_str_item
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       test_bool_properties_validation
       test_str_item_incorrect_properties_type
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

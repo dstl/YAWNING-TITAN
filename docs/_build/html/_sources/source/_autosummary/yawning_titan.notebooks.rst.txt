@@ -6,21 +6,21 @@ yawning\_titan.notebooks
 
 .. automodule:: yawning_titan.notebooks
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -30,4 +30,3 @@ yawning\_titan.notebooks
    :recursive:
 
    yawning_titan.notebooks.jupyter
-

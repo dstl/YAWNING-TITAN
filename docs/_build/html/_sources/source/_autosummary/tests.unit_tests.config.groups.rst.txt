@@ -6,21 +6,21 @@ tests.unit\_tests.config.groups
 
 .. automodule:: tests.unit_tests.config.groups
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -32,4 +32,3 @@ tests.unit\_tests.config.groups
    tests.unit_tests.config.groups.test_action_likelihood_chance_group
    tests.unit_tests.config.groups.test_restrict_range_group
    tests.unit_tests.config.groups.test_use_chances_group
-

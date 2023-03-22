@@ -6,21 +6,21 @@ tests.unit\_tests.config.core
 
 .. automodule:: tests.unit_tests.config.core
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -31,4 +31,3 @@ tests.unit\_tests.config.core
 
    tests.unit_tests.config.core.test_config_group
    tests.unit_tests.config.core.test_config_item
-

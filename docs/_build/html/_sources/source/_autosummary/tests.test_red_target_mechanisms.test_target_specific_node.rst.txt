@@ -1,6 +1,0 @@
-tests.test\_red\_target\_mechanisms.test\_target\_specific\_node
-================================================================
-
-.. currentmodule:: tests.test_red_target_mechanisms
-
-.. autofunction:: test_target_specific_node

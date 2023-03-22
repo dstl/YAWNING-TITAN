@@ -12,13 +12,13 @@ yawning\_titan.db.yawning\_titan\_db.YawningTitanDB
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~YawningTitanDB.all
       ~YawningTitanDB.close
       ~YawningTitanDB.count
@@ -31,16 +31,14 @@ yawning\_titan.db.yawning\_titan\_db.YawningTitanDB
       ~YawningTitanDB.show
       ~YawningTitanDB.update
       ~YawningTitanDB.upsert
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~YawningTitanDB.db
       ~YawningTitanDB.name
-   
-   

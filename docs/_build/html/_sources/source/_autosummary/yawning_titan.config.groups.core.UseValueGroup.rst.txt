@@ -12,13 +12,13 @@ yawning\_titan.config.groups.core.UseValueGroup
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~UseValueGroup.get_config_elements
       ~UseValueGroup.get_non_config_elements
       ~UseValueGroup.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.config.groups.core.UseValueGroup
       ~UseValueGroup.to_yaml
       ~UseValueGroup.validate
       ~UseValueGroup.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~UseValueGroup.config_groups
       ~UseValueGroup.config_items
-   
-   

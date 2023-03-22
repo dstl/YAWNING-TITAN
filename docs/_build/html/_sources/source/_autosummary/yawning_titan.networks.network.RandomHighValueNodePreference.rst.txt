@@ -12,17 +12,15 @@ yawning\_titan.networks.network.RandomHighValueNodePreference
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~RandomHighValueNodePreference.FURTHEST_AWAY_FROM_ENTRY
       ~RandomHighValueNodePreference.NONE
-   
-   

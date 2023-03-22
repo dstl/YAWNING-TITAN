@@ -6,21 +6,21 @@ tests.unit\_tests.game\_modes.environment
 
 .. automodule:: tests.unit_tests.game_modes.environment
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -32,4 +32,3 @@ tests.unit\_tests.game\_modes.environment
    tests.unit_tests.game_modes.environment.test_game_rules_config
    tests.unit_tests.game_modes.environment.test_observation_space_config
    tests.unit_tests.game_modes.environment.test_reset_config
-

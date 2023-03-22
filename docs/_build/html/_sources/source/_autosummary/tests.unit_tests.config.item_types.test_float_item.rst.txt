@@ -6,30 +6,17 @@ tests.unit\_tests.config.item\_types.test\_float\_item
 
 .. automodule:: tests.unit_tests.config.item_types.test_float_item
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       test_float_item_incorrect_properties_type
       test_float_properties_validation
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

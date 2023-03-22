@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creating an installer &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Creating an installer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="creating-an-installer">
+<h1>Creating an installer<a class="headerlink" href="#creating-an-installer" title="Permalink to this heading"></a></h1>
+<p>To create a .spec file to use with pyinstaller run the command:</p>
+<p>pyinstaller manage.py</p>
+<p>If the .spec file is being built from scratch it is good practice to add a .ico file to the exe arguments as well as amending all references to name to match the YAWNING-TITAN project name. also switching off console prevents a console window from opening when the yawning_titan.exe file is ran.</p>
+<dl class="simple">
+<dt>exe = EXE(</dt><dd><p>…,
+icon=’path/to/icon.ico’,
+name=’YAWNING-TITAN’,
+console=False,</p>
+</dd>
+</dl>
+<p>)</p>
+<p>If the .spec file is built from scratch we must also be sure to point the hidden ‘flaskwebgui’ package in the hidden imports section.</p>
+<p>To build the distributable files using pyinstaller run the command</p>
+<p>pyinstaller manage.spec</p>
+<p>To create a windows installer using InstallForge</p>
+<p>Creating an installer</p>
+<p>To create our installer we’ll be using a tool called InstallForge. InstallForge is free and you can download the installer from this page.</p>
+<p>General</p>
+<p>run InstallForge  an open the general tab. Enter the basic information for the yawning_titan instance.</p>
+<p>You can also select the target platforms for the installer, from various versions of Windows that are available. For desktop applications you currently probably only want to target Windows 7, 8 and 10.</p>
+<p>Setup</p>
+<p>Click on the left sidebar to open the “Files” page under “Setup”. Here you can specify the files to be bundled in the installer.</p>
+<p>Use “Add Files…” and select all the files in the dist/yawning_titan folder produced by PyInstaller. The file browser that pops up allows multiple file selections, so you can add them all in a single go, however you need to add folders separately. Click “Add Folder…” and add any folders under dist/yawning_titan</p>
+<p>Once you’re finished scroll through the list to the bottom and ensure that the folders are listed to be included. You want all files and folders under dist/yawning_titan to be present. But the folder dist/yawning_titan itself should not be listed.</p>
+<p>Navigate to the “Uninstall” tab, and attach an unistaller by ticking the box. This will also make the application appear in “Add or Remove Programs”.</p>
+<p>System</p>
+<p>Under “System” select “Shortcuts” to open the shortcut editor. Here you can specify shortcuts for both the Start Menu and Desktop if you like.</p>
+<p>Click “Add…” to add new shortcuts for your application. Choose between Start menu and Desktop shortcuts, and fill in the name and target file. This is the path your application EXE will end up at once installed. Since &lt;installpath&gt; is already specified, now add the name yawning_titan to the app exe.</p>
+<p>Build</p>
+<p>With the basic settings in place, you can now build your installer.</p>
+<p>At this point you can save your InstallForge project so you can re-build the installer from the same settings in future.</p>
+<p>Click on the “Build” section at the bottom to open the build panel.</p>
+<p>Click on the large icon button to start the build process. If you haven’t already specified a setup file location you will be prompted for one. This is the location where you want the completed installer to be saved.</p>
+<p>The build process will began, collecting and compressing the files into the installer.</p>
+<p>Running the installer</p>
+<p>The installer itself shouldn’t have any surprises, working as expected. Depending on the options selected in InstallForge you may have extra panels or options.</p>
+<p>Step through the installer until it is complete. You can optionally run the application from the last page of the installer, or you can find it in your start menu.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

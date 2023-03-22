@@ -6,32 +6,19 @@ tests.test\_pipeline\_markers
 
 .. automodule:: tests.test_pipeline_markers
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       test_e2e_integration_test
       test_integration_test
       test_no_mark
       test_unit_test
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

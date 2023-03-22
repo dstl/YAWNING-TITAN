@@ -6,35 +6,26 @@ yawning\_titan.game\_modes.components.blue\_agent
 
 .. automodule:: yawning_titan.game_modes.components.blue_agent
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       Blue
       BlueActionSetGroup
       BlueAttackDiscoveryGroup
       BlueIntrusionDiscoveryGroup
       DeceptiveNodeGroup
       MakeNodeSafeGroup
-   
-   
-
-   
-   
-   
-
-
-

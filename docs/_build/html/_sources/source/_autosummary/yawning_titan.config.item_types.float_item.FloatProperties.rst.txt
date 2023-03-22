@@ -12,29 +12,27 @@ yawning\_titan.config.item\_types.float\_item.FloatProperties
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~FloatProperties.to_dict
       ~FloatProperties.validate
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~FloatProperties.allow_null
       ~FloatProperties.default
       ~FloatProperties.inclusive_max
       ~FloatProperties.inclusive_min
       ~FloatProperties.max_val
       ~FloatProperties.min_val
-   
-   

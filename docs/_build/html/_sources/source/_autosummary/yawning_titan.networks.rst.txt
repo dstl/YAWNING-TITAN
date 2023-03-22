@@ -6,21 +6,21 @@ yawning\_titan.networks
 
 .. automodule:: yawning_titan.networks
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -33,4 +33,3 @@ yawning\_titan.networks
    yawning_titan.networks.network_creator
    yawning_titan.networks.network_db
    yawning_titan.networks.node
-

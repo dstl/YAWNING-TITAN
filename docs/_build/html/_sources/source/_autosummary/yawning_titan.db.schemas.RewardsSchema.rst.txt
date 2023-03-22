@@ -12,26 +12,24 @@ yawning\_titan.db.schemas.RewardsSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~RewardsSchema.END_REWARDS_ARE_MULTIPLIED_BY_END_STATE
       ~RewardsSchema.FOR_LOSS
       ~RewardsSchema.FOR_REACHING_MAX_STEPS
       ~RewardsSchema.FUNCTION
       ~RewardsSchema.REDUCE_NEGATIVE_REWARDS_FOR_CLOSER_FAILS
-   
-   

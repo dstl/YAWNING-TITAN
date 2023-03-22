@@ -6,31 +6,22 @@ yawning\_titan.config.item\_types.str\_item
 
 .. automodule:: yawning_titan.config.item_types.str_item
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       StrItem
       StrProperties
-   
-   
-
-   
-   
-   
-
-
-

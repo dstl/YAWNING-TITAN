@@ -6,29 +6,16 @@ tests.game\_mode\_db\_patch
 
 .. automodule:: tests.game_mode_db_patch
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       game_mode_db_init_patch
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

@@ -6,40 +6,31 @@ yawning\_titan.game\_modes.game\_mode\_db
 
 .. automodule:: yawning_titan.game_modes.game_mode_db
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       dcbo_game_mode
       default_game_mode
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       GameModeDB
       GameModeSchema
-   
-   
-
-   
-   
-   
-
-
-

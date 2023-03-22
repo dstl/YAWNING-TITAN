@@ -6,33 +6,24 @@ yawning\_titan.networks.network
 
 .. automodule:: yawning_titan.networks.network
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       Network
       NetworkLayout
       RandomEntryNodePreference
       RandomHighValueNodePreference
-   
-   
-
-   
-   
-   
-
-
-

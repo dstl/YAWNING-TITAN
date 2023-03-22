@@ -6,30 +6,21 @@ yawning\_titan.game\_modes.components.reset
 
 .. automodule:: yawning_titan.game_modes.components.reset
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       Reset
-   
-   
-
-   
-   
-   
-
-
-

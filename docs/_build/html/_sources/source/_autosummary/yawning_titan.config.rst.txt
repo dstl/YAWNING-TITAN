@@ -6,21 +6,21 @@ yawning\_titan.config
 
 .. automodule:: yawning_titan.config
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -32,4 +32,3 @@ yawning\_titan.config
    yawning_titan.config.core
    yawning_titan.config.groups
    yawning_titan.config.item_types
-

@@ -6,23 +6,23 @@ yawning\_titan.game\_modes.components.red\_agent
 
 .. automodule:: yawning_titan.game_modes.components.red_agent
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       AttackSourceGroup
       NaturalSpreadChanceGroup
       Red
@@ -32,12 +32,3 @@ yawning\_titan.game\_modes.components.red\_agent
       RedTargetMechanismGroup
       TargetNodeGroup
       ZeroDayGroup
-   
-   
-
-   
-   
-   
-
-
-

@@ -12,23 +12,21 @@ yawning\_titan.db.schemas.GameRulesSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~GameRulesSchema.GRACE_PERIOD_LENGTH
       ~GameRulesSchema.MAX_STEPS
-   
-   

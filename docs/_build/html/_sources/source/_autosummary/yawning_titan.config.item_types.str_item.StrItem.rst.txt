@@ -12,31 +12,29 @@ yawning\_titan.config.item\_types.str\_item.StrItem
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~StrItem.set_value
       ~StrItem.stringify
       ~StrItem.to_dict
       ~StrItem.validate
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~StrItem.alias
       ~StrItem.doc
       ~StrItem.properties
       ~StrItem.validation
       ~StrItem.value
       ~StrItem.depends_on
-   
-   

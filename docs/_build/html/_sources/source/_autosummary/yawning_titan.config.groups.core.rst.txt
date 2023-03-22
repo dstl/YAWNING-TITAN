@@ -6,35 +6,26 @@ yawning\_titan.config.groups.core
 
 .. automodule:: yawning_titan.config.groups.core
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       ActionLikelihoodChanceGroup
       ActionLikelihoodGroup
       NodeChanceGroup
       RestrictRangeGroup
       UseChancesGroup
       UseValueGroup
-   
-   
-
-   
-   
-   
-
-
-

@@ -6,30 +6,21 @@ yawning\_titan.game\_modes.components.miscellaneous
 
 .. automodule:: yawning_titan.game_modes.components.miscellaneous
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       Miscellaneous
-   
-   
-
-   
-   
-   
-
-
-

@@ -6,32 +6,19 @@ tests.integration\_tests.generic\_env.test\_graph\_embedding\_observations
 
 .. automodule:: tests.integration_tests.generic_env.test_graph_embedding_observations
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       test_env_check
       test_obs_range
       test_obs_size
       test_wrapped_env
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

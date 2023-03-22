@@ -6,21 +6,21 @@ tests.unit\_tests.integrations.dcbo
 
 .. automodule:: tests.unit_tests.integrations.dcbo
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -30,4 +30,3 @@ tests.unit\_tests.integrations.dcbo
    :recursive:
 
    tests.unit_tests.integrations.dcbo.test_dcbo_utils
-

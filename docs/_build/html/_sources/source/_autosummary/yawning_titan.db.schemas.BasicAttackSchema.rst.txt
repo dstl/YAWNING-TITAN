@@ -12,23 +12,21 @@ yawning\_titan.db.schemas.BasicAttackSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~BasicAttackSchema.LIKELIHOOD
       ~BasicAttackSchema.USE
-   
-   

@@ -12,22 +12,20 @@ yawning\_titan.db.doc\_metadata.DocMetaDataObject
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~DocMetaDataObject.doc_metadata
-   
-   

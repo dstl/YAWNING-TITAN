@@ -12,26 +12,24 @@ yawning\_titan.db.schemas.RedTargetMechanismSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~RedTargetMechanismSchema.PRIORITISE_CONNECTED_NODES
       ~RedTargetMechanismSchema.PRIORITISE_RESILIENT_NODES
       ~RedTargetMechanismSchema.PRIORITISE_UNCONNECTED_NODES
       ~RedTargetMechanismSchema.PRIORITISE_VULNERABLE_NODES
       ~RedTargetMechanismSchema.RANDOM
-   
-   

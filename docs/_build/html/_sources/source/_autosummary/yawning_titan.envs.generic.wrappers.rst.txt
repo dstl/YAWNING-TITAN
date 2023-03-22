@@ -6,21 +6,21 @@ yawning\_titan.envs.generic.wrappers
 
 .. automodule:: yawning_titan.envs.generic.wrappers
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -30,4 +30,3 @@ yawning\_titan.envs.generic.wrappers
    :recursive:
 
    yawning_titan.envs.generic.wrappers.graph_embedding_observations
-

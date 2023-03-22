@@ -12,23 +12,21 @@ yawning\_titan.db.schemas.RedAgentAttackSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~RedAgentAttackSchema.ALWAYS_SUCCEEDS
       ~RedAgentAttackSchema.IGNORES_DEFENCES
-   
-   

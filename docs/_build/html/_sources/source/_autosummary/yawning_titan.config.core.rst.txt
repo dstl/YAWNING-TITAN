@@ -6,23 +6,23 @@ yawning\_titan.config.core
 
 .. automodule:: yawning_titan.config.core
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       ConfigBase
       ConfigGroup
       ConfigGroupValidation
@@ -30,12 +30,3 @@ yawning\_titan.config.core
       ConfigItemValidation
       ConfigValidationBase
       ItemTypeProperties
-   
-   
-
-   
-   
-   
-
-
-

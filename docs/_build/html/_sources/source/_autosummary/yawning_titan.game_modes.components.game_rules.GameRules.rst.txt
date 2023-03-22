@@ -12,13 +12,13 @@ yawning\_titan.game\_modes.components.game\_rules.GameRules
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~GameRules.get_config_elements
       ~GameRules.get_non_config_elements
       ~GameRules.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.game\_modes.components.game\_rules.GameRules
       ~GameRules.to_yaml
       ~GameRules.validate
       ~GameRules.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~GameRules.config_groups
       ~GameRules.config_items
-   
-   

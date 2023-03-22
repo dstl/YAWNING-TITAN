@@ -6,32 +6,19 @@ tests.unit\_tests.config.groups.test\_use\_chances\_group
 
 .. automodule:: tests.unit_tests.config.groups.test_use_chances_group
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       test_chance_group_fail_used_group_fail
       test_chance_group_fail_used_item_fail
       test_chance_group_not_used
       test_chance_group_valid_used
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

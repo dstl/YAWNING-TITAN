@@ -6,18 +6,18 @@ tests.e2e\_integration\_tests.test\_generic\_env\_e2e
 
 .. automodule:: tests.e2e_integration_tests.test_generic_env_e2e
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       calculate_counts
       check_attacks_come_from_connected_node
       check_blue_actions
@@ -40,25 +40,16 @@ tests.e2e\_integration\_tests.test\_generic\_env\_e2e
       check_when_done
       check_when_not_done
       test_generic_env_e2e
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       RandomGen
-   
-   
-
-   
-   
-   
-
-
-

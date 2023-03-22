@@ -6,18 +6,18 @@ tests.unit\_tests.config.core.test\_config\_group
 
 .. automodule:: tests.unit_tests.config.core.test_config_group
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       multi_tier_test_group
       test_create_from_legacy
       test_group
@@ -32,27 +32,18 @@ tests.unit\_tests.config.core.test\_config\_group
       test_stringify
       test_to_dict
       test_yaml_round_trip
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
       :nosignatures:
-   
+
       Group
       GroupTier1
       GroupTier2
-   
-   
-
-   
-   
-   
-
-
-

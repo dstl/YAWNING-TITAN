@@ -12,27 +12,25 @@ yawning\_titan.db.schemas.BlueActionSetSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~BlueActionSetSchema.DO_NOTHING
       ~BlueActionSetSchema.ISOLATE_NODE
       ~BlueActionSetSchema.RECONNECT_NODE
       ~BlueActionSetSchema.REDUCE_VULNERABILITY
       ~BlueActionSetSchema.RESTORE_NODE
       ~BlueActionSetSchema.SCAN
-   
-   

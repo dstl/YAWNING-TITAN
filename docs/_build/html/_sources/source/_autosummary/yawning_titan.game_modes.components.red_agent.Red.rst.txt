@@ -12,13 +12,13 @@ yawning\_titan.game\_modes.components.red\_agent.Red
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~Red.get_config_elements
       ~Red.get_non_config_elements
       ~Red.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.game\_modes.components.red\_agent.Red
       ~Red.to_yaml
       ~Red.validate
       ~Red.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~Red.config_groups
       ~Red.config_items
-   
-   

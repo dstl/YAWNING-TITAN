@@ -12,13 +12,13 @@ tests.unit\_tests.config.core.test\_config\_group.GroupTier1
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~GroupTier1.get_config_elements
       ~GroupTier1.get_non_config_elements
       ~GroupTier1.set_from_dict
@@ -29,16 +29,14 @@ tests.unit\_tests.config.core.test\_config\_group.GroupTier1
       ~GroupTier1.to_yaml
       ~GroupTier1.validate
       ~GroupTier1.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~GroupTier1.config_groups
       ~GroupTier1.config_items
-   
-   

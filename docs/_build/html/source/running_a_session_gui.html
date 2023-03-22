@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Running a session &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="yawning_titan" href="_autosummary/yawning_titan.html" />
+    <link rel="prev" title="Create a Network" href="creating_a_network_gui.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yt_gui.html">Yawning-Titan GUI</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="creating_a_game_mode_gui.html">Create a game mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="creating_a_network_gui.html">Create a Network</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Running a session</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gettting-started">Gettting started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-a-yawningtitanrun-session">Running a YawningTitanRun session</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#network-selection">Network selection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#game-mode-selection">Game mode selection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configurable-inputs">Configurable inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metric-display">Metric display</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#log-display">Log display</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gif-output">Gif output</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yt_gui.html">Yawning-Titan GUI</a></li>
+      <li class="breadcrumb-item active">Running a session</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="running-a-session">
+<h1>Running a session<a class="headerlink" href="#running-a-session" title="Permalink to this heading"></a></h1>
+<section id="gettting-started">
+<h2>Gettting started<a class="headerlink" href="#gettting-started" title="Permalink to this heading"></a></h2>
+<p>To get started, Navigate to the run session (play icon) page from the sidebar or main menu</p>
+<a class="reference internal image-reference" href="../_images/create_template_run.gif"><img alt="run session" src="../_images/create_template_run.gif" style="width: 800px;" /></a>
+</section>
+<section id="running-a-yawningtitanrun-session">
+<h2>Running a YawningTitanRun session<a class="headerlink" href="#running-a-yawningtitanrun-session" title="Permalink to this heading"></a></h2>
+<p>The run session page is comprised of 6 sections that represent most configurable elements of the :class: <cite>~yawning_titan.yawning_titan_run.YawningTitanRun</cite>.
+To launch a run instance navigate to the <em>Run session</em> button on the bottom right of the window</p>
+<section id="network-selection">
+<h3>Network selection<a class="headerlink" href="#network-selection" title="Permalink to this heading"></a></h3>
+<p>The first section displays all networks which can be selected to be used within the run session</p>
+</section>
+<section id="game-mode-selection">
+<h3>Game mode selection<a class="headerlink" href="#game-mode-selection" title="Permalink to this heading"></a></h3>
+<p>The next section displays valid game modes compatible with the chosen network which can be selected to be used within the run session</p>
+</section>
+<section id="configurable-inputs">
+<h3>Configurable inputs<a class="headerlink" href="#configurable-inputs" title="Permalink to this heading"></a></h3>
+<p>The next section is comprised of 2 tabs which represent configurable elements for agent training and evaluation sessions</p>
+</section>
+<section id="metric-display">
+<h3>Metric display<a class="headerlink" href="#metric-display" title="Permalink to this heading"></a></h3>
+<p>The next section is a live display of the metrics output by each loop of the currently running session</p>
+</section>
+<section id="log-display">
+<h3>Log display<a class="headerlink" href="#log-display" title="Permalink to this heading"></a></h3>
+<p>The next section is a live display of the logs produced by :class: <cite>~yawning_titan.yawning_titan_run.YawningTitanRun</cite>
+related to the Individual stages of the run session</p>
+</section>
+<section id="gif-output">
+<h3>Gif output<a class="headerlink" href="#gif-output" title="Permalink to this heading"></a></h3>
+<p>The next section displays the gif output produced by each iteration of the trained agent playing the game</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="creating_a_network_gui.html" class="btn btn-neutral float-left" title="Create a Network" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="_autosummary/yawning_titan.html" class="btn btn-neutral float-right" title="yawning_titan" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

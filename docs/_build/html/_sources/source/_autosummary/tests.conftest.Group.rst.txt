@@ -12,13 +12,13 @@ tests.conftest.Group
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~Group.get_config_elements
       ~Group.get_non_config_elements
       ~Group.set_from_dict
@@ -29,16 +29,14 @@ tests.conftest.Group
       ~Group.to_yaml
       ~Group.validate
       ~Group.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~Group.config_groups
       ~Group.config_items
-   
-   

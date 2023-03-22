@@ -12,23 +12,21 @@ yawning\_titan.db.schemas.AttackSourceSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~AttackSourceSchema.ANY_RED_NODE
       ~AttackSourceSchema.ONLY_MAIN_RED_NODE
-   
-   

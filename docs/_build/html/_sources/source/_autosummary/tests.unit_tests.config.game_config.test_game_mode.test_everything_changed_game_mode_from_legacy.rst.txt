@@ -1,6 +1,0 @@
-tests.unit\_tests.config.game\_config.test\_game\_mode.test\_everything\_changed\_game\_mode\_from\_legacy
-==========================================================================================================
-
-.. currentmodule:: tests.unit_tests.config.game_config.test_game_mode
-
-.. autofunction:: test_everything_changed_game_mode_from_legacy

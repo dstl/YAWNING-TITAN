@@ -6,21 +6,21 @@ tests.unit\_tests.game\_modes.agents
 
 .. automodule:: tests.unit_tests.game_modes.agents
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -31,4 +31,3 @@ tests.unit\_tests.game\_modes.agents
 
    tests.unit_tests.game_modes.agents.test_blue_agent_config
    tests.unit_tests.game_modes.agents.test_red_agent_config
-

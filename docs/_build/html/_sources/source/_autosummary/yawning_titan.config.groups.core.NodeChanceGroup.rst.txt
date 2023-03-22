@@ -12,13 +12,13 @@ yawning\_titan.config.groups.core.NodeChanceGroup
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~NodeChanceGroup.get_config_elements
       ~NodeChanceGroup.get_non_config_elements
       ~NodeChanceGroup.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.config.groups.core.NodeChanceGroup
       ~NodeChanceGroup.to_yaml
       ~NodeChanceGroup.validate
       ~NodeChanceGroup.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~NodeChanceGroup.config_groups
       ~NodeChanceGroup.config_items
-   
-   

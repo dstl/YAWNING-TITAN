@@ -12,18 +12,16 @@ yawning\_titan.networks.network.RandomEntryNodePreference
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~RandomEntryNodePreference.CENTRAL
       ~RandomEntryNodePreference.EDGE
       ~RandomEntryNodePreference.NONE
-   
-   

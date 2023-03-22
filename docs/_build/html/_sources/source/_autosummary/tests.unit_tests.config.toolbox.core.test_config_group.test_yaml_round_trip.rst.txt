@@ -1,6 +1,0 @@
-tests.unit\_tests.config.toolbox.core.test\_config\_group.test\_yaml\_round\_trip
-=================================================================================
-
-.. currentmodule:: tests.unit_tests.config.toolbox.core.test_config_group
-
-.. autofunction:: test_yaml_round_trip

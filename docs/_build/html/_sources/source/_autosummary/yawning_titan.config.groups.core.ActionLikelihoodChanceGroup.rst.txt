@@ -12,13 +12,13 @@ yawning\_titan.config.groups.core.ActionLikelihoodChanceGroup
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~ActionLikelihoodChanceGroup.get_config_elements
       ~ActionLikelihoodChanceGroup.get_non_config_elements
       ~ActionLikelihoodChanceGroup.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.config.groups.core.ActionLikelihoodChanceGroup
       ~ActionLikelihoodChanceGroup.to_yaml
       ~ActionLikelihoodChanceGroup.validate
       ~ActionLikelihoodChanceGroup.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~ActionLikelihoodChanceGroup.config_groups
       ~ActionLikelihoodChanceGroup.config_items
-   
-   

@@ -12,24 +12,22 @@ yawning\_titan.db.schemas.RandomInfectSchema
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~RandomInfectSchema.CHANCE
       ~RandomInfectSchema.LIKELIHOOD
       ~RandomInfectSchema.USE
-   
-   

@@ -12,13 +12,13 @@ yawning\_titan.networks.network.Network
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~Network.add_edge
       ~Network.add_edges_from
       ~Network.add_edges_from_dict
@@ -66,15 +66,15 @@ yawning\_titan.networks.network.Network
       ~Network.to_undirected
       ~Network.to_undirected_class
       ~Network.update
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~Network.adj
       ~Network.deceptive_nodes
       ~Network.degree
@@ -94,5 +94,3 @@ yawning\_titan.networks.network.Network
       ~Network.num_of_random_high_value_nodes
       ~Network.set_random_vulnerabilities
       ~Network.node_vulnerability_upper_bound
-   
-   

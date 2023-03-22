@@ -6,32 +6,19 @@ tests.unit\_tests.config.core.test\_config\_item
 
 .. automodule:: tests.unit_tests.config.core.test_config_item
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       test_assign_incorrect_properties
       test_assignment
       test_set_value
       test_to_dict
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

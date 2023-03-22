@@ -6,21 +6,21 @@ yawning\_titan.game\_modes
 
 .. automodule:: yawning_titan.game_modes
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -32,4 +32,3 @@ yawning\_titan.game\_modes
    yawning_titan.game_modes.components
    yawning_titan.game_modes.game_mode
    yawning_titan.game_modes.game_mode_db
-

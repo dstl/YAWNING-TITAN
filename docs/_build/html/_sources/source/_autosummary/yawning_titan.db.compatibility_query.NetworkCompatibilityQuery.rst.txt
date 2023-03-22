@@ -12,13 +12,13 @@ yawning\_titan.db.compatibility\_query.NetworkCompatibilityQuery
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~NetworkCompatibilityQuery.all
       ~NetworkCompatibilityQuery.any
       ~NetworkCompatibilityQuery.compatible_with
@@ -31,9 +31,3 @@ yawning\_titan.db.compatibility\_query.NetworkCompatibilityQuery
       ~NetworkCompatibilityQuery.one_of
       ~NetworkCompatibilityQuery.search
       ~NetworkCompatibilityQuery.test
-   
-   
-
-   
-   
-   

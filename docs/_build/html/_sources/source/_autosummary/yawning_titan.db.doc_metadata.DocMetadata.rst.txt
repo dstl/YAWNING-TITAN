@@ -12,25 +12,25 @@ yawning\_titan.db.doc\_metadata.DocMetadata
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~DocMetadata.to_dict
       ~DocMetadata.to_list
       ~DocMetadata.update
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~DocMetadata.author
       ~DocMetadata.created_at
       ~DocMetadata.description
@@ -38,5 +38,3 @@ yawning\_titan.db.doc\_metadata.DocMetadata
       ~DocMetadata.name
       ~DocMetadata.updated_at
       ~DocMetadata.uuid
-   
-   

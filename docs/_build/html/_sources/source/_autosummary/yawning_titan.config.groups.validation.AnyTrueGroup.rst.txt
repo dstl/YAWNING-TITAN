@@ -12,13 +12,13 @@ yawning\_titan.config.groups.validation.AnyTrueGroup
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~AnyTrueGroup.get_config_elements
       ~AnyTrueGroup.get_non_config_elements
       ~AnyTrueGroup.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.config.groups.validation.AnyTrueGroup
       ~AnyTrueGroup.to_yaml
       ~AnyTrueGroup.validate
       ~AnyTrueGroup.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~AnyTrueGroup.config_groups
       ~AnyTrueGroup.config_items
-   
-   

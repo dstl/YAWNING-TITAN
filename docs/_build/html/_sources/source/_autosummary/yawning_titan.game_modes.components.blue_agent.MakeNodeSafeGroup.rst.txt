@@ -12,13 +12,13 @@ yawning\_titan.game\_modes.components.blue\_agent.MakeNodeSafeGroup
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~MakeNodeSafeGroup.get_config_elements
       ~MakeNodeSafeGroup.get_non_config_elements
       ~MakeNodeSafeGroup.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.game\_modes.components.blue\_agent.MakeNodeSafeGroup
       ~MakeNodeSafeGroup.to_yaml
       ~MakeNodeSafeGroup.validate
       ~MakeNodeSafeGroup.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~MakeNodeSafeGroup.config_groups
       ~MakeNodeSafeGroup.config_items
-   
-   

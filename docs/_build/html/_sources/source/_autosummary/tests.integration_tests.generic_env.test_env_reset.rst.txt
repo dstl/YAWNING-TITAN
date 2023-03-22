@@ -6,29 +6,16 @@ tests.integration\_tests.generic\_env.test\_env\_reset
 
 .. automodule:: tests.integration_tests.generic_env.test_env_reset
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       test_env_reset
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

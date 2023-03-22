@@ -12,13 +12,13 @@ yawning\_titan.game\_modes.components.game\_rules.NetworkCompatibilityGroup
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~NetworkCompatibilityGroup.get_config_elements
       ~NetworkCompatibilityGroup.get_non_config_elements
       ~NetworkCompatibilityGroup.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.game\_modes.components.game\_rules.NetworkCompatibilityGroup
       ~NetworkCompatibilityGroup.to_yaml
       ~NetworkCompatibilityGroup.validate
       ~NetworkCompatibilityGroup.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~NetworkCompatibilityGroup.config_groups
       ~NetworkCompatibilityGroup.config_items
-   
-   

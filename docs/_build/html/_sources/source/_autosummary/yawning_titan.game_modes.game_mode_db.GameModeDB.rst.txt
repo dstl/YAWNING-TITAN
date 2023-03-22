@@ -12,13 +12,13 @@ yawning\_titan.game\_modes.game\_mode\_db.GameModeDB
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~GameModeDB.add_yaml_game_modes_to_db
       ~GameModeDB.all
       ~GameModeDB.count
@@ -32,9 +32,3 @@ yawning\_titan.game\_modes.game\_mode\_db.GameModeDB
       ~GameModeDB.show
       ~GameModeDB.update
       ~GameModeDB.upsert
-   
-   
-
-   
-   
-   

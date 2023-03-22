@@ -6,21 +6,21 @@ yawning\_titan.db
 
 .. automodule:: yawning_titan.db
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
-   
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -34,4 +34,3 @@ yawning\_titan.db
    yawning_titan.db.query
    yawning_titan.db.schemas
    yawning_titan.db.yawning_titan_db
-

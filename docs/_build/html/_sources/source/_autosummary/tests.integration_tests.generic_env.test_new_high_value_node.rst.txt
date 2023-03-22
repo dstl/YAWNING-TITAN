@@ -6,29 +6,16 @@ tests.integration\_tests.generic\_env.test\_new\_high\_value\_node
 
 .. automodule:: tests.integration_tests.generic_env.test_new_high_value_node
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
       :nosignatures:
-   
+
       test_new_high_value_node
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

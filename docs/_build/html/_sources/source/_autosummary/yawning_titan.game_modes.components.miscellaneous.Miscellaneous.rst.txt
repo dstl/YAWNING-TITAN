@@ -12,13 +12,13 @@ yawning\_titan.game\_modes.components.miscellaneous.Miscellaneous
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~Miscellaneous.get_config_elements
       ~Miscellaneous.get_non_config_elements
       ~Miscellaneous.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.game\_modes.components.miscellaneous.Miscellaneous
       ~Miscellaneous.to_yaml
       ~Miscellaneous.validate
       ~Miscellaneous.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~Miscellaneous.config_groups
       ~Miscellaneous.config_items
-   
-   

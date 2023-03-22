@@ -12,25 +12,25 @@ yawning\_titan.networks.node.Node
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~Node.create_from_db
       ~Node.reset_vulnerability
       ~Node.to_dict
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~Node.entry_node
       ~Node.high_value_node
       ~Node.node_position
@@ -38,5 +38,3 @@ yawning\_titan.networks.node.Node
       ~Node.vulnerability
       ~Node.x_pos
       ~Node.y_pos
-   
-   

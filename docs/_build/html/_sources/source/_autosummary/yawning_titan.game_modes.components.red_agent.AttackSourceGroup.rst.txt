@@ -12,13 +12,13 @@ yawning\_titan.game\_modes.components.red\_agent.AttackSourceGroup
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~AttackSourceGroup.get_config_elements
       ~AttackSourceGroup.get_non_config_elements
       ~AttackSourceGroup.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.game\_modes.components.red\_agent.AttackSourceGroup
       ~AttackSourceGroup.to_yaml
       ~AttackSourceGroup.validate
       ~AttackSourceGroup.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~AttackSourceGroup.config_groups
       ~AttackSourceGroup.config_items
-   
-   

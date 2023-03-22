@@ -12,13 +12,13 @@ yawning\_titan.game\_modes.components.reset.Reset
    :inherited-members:
    :special-members: __call__, __add__, __mul__
 
-   
-   
+
+
    .. rubric:: Methods
 
    .. autosummary::
       :nosignatures:
-   
+
       ~Reset.get_config_elements
       ~Reset.get_non_config_elements
       ~Reset.set_from_dict
@@ -29,16 +29,14 @@ yawning\_titan.game\_modes.components.reset.Reset
       ~Reset.to_yaml
       ~Reset.validate
       ~Reset.validate_elements
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~Reset.config_groups
       ~Reset.config_items
-   
-   
