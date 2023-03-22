@@ -76,7 +76,7 @@ jobs:
         run: |
           pytest tests/ -m integration_test
 
-      - name: Run integration tests
+      - name: Run end-to-end integration tests
         run: |
           pytest tests/ -m e2e_integration_test
 
