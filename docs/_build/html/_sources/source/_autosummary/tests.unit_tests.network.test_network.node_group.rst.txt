@@ -1,0 +1,6 @@
+tests.unit\_tests.network.test\_network.node\_group
+===================================================
+
+.. currentmodule:: tests.unit_tests.network.test_network
+
+.. autofunction:: node_group

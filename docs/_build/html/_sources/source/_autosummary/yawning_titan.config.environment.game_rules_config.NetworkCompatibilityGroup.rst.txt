@@ -1,0 +1,37 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.environment.game\_rules\_config.NetworkCompatibilityGroup
+===============================================================================
+
+.. currentmodule:: yawning_titan.config.environment.game_rules_config
+
+.. autoclass:: NetworkCompatibilityGroup
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~NetworkCompatibilityGroup.get_config_elements
+      ~NetworkCompatibilityGroup.get_non_config_elements
+      ~NetworkCompatibilityGroup.set_from_dict
+      ~NetworkCompatibilityGroup.set_from_yaml
+      ~NetworkCompatibilityGroup.stringify
+      ~NetworkCompatibilityGroup.to_dict
+      ~NetworkCompatibilityGroup.to_legacy_dict
+      ~NetworkCompatibilityGroup.to_yaml
+      ~NetworkCompatibilityGroup.validate
+      ~NetworkCompatibilityGroup.validate_elements
+   
+   
+
+   
+   
+   

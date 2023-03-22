@@ -1,0 +1,6 @@
+tests.unit\_tests.network.test\_network.test\_node\_group\_erroneous\_entry\_node\_placement
+============================================================================================
+
+.. currentmodule:: tests.unit_tests.network.test_network
+
+.. autofunction:: test_node_group_erroneous_entry_node_placement

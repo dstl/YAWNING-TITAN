@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.DATA_DIR" href="yawning_titan.DATA_DIR.html" />
+    <link rel="prev" title="The Game Mode Config UML Diagram" href="../game_mode_config_explained.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Yawning-Titan API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">yawning_titan</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-yawning_titan">
+<span id="yawning-titan"></span><h1>yawning_titan<a class="headerlink" href="#module-yawning_titan" title="Permalink to this heading"></a></h1>
+<p>The <cite>yawning_titan</cite> top-level __init__.</p>
+<dl class="simple">
+<dt><cite>gym.envs</cite> registered:</dt><dd><dl class="simple">
+<dt><cite>five-node-def-v0</cite></dt><dd><p>entry_point: <cite>yawning_titan.envs.specific:FiveNodeDef</cite></p>
+</dd>
+<dt><cite>four-node-def-v0</cite></dt><dd><p>entry_point: <cite>yawning_titan.envs.specific:FourNodeDef</cite></p>
+</dd>
+<dt><cite>networks-graph-explore-v0</cite></dt><dd><p>entry_point: <cite>yawning_titan.envs.specific:GraphExplore</cite></p>
+</dd>
+<dt><cite>18-node-env-v0</cite></dt><dd><p>entry_point: <cite>yawning_titan.envs.specific:NodeEnv</cite></p>
+</dd>
+</dl>
+</dd>
+<dt>App directories initialised:</dt><dd><dl class="simple">
+<dt><cite>DATA_DIR</cite>:</dt><dd><p>The path to the app data directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd>
+<dt><cite>CONFIG_DIR</cite>:</dt><dd><p>The path to the app config directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd>
+<dt><cite>LOG_DIR</cite>:</dt><dd><p>The path to the app log directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd>
+<dt><cite>DOCS_DIR</cite>:</dt><dd><p>The path to the app docs directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd>
+<dt><cite>DB_DIR</cite>:</dt><dd><p>The path to the app db directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd>
+<dt><cite>APP_IMAGES_DIR</cite>:</dt><dd><p>The path to the app images directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd>
+</dl>
+</dd>
+<dt>User directories initialised:</dt><dd><dl class="simple">
+<dt><cite>NOTEBOOKS_DIR</cite>:</dt><dd><p>The path to the users notebooks directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd>
+<dt><cite>GAME_MODES_DIR</cite>:</dt><dd><p>The path to the users game modes directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd>
+<dt><cite>IMAGES_DIR</cite>:</dt><dd><p>The path to the users images directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd>
+<dt><cite>AGENTS_DIR</cite>:</dt><dd><p>The path to the users agents directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd>
+</dl>
+</dd>
+<dt>Logging configured from the root:</dt><dd><p>Logging is configured using the <cite>yawning_titan.config._package_data.logging_config.yaml</cite> config file.</p>
+</dd>
+</dl>
+<p class="rubric">Module attributes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.DATA_DIR.html#yawning_titan.DATA_DIR" title="yawning_titan.DATA_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></p></td>
+<td><p>The path to the app data directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.CONFIG_DIR.html#yawning_titan.CONFIG_DIR" title="yawning_titan.CONFIG_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></p></td>
+<td><p>The path to the app config directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.LOG_DIR.html#yawning_titan.LOG_DIR" title="yawning_titan.LOG_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></p></td>
+<td><p>The path to the app log directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.DOCS_DIR.html#yawning_titan.DOCS_DIR" title="yawning_titan.DOCS_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></p></td>
+<td><p>The path to the app docs directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.DB_DIR.html#yawning_titan.DB_DIR" title="yawning_titan.DB_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></p></td>
+<td><p>The path to the app db directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html#yawning_titan.APP_IMAGES_DIR" title="yawning_titan.APP_IMAGES_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></p></td>
+<td><p>The path to the app images directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html#yawning_titan.NOTEBOOKS_DIR" title="yawning_titan.NOTEBOOKS_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></p></td>
+<td><p>The path to the users notebooks directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html#yawning_titan.GAME_MODES_DIR" title="yawning_titan.GAME_MODES_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></p></td>
+<td><p>The path to the users game modes directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.IMAGES_DIR.html#yawning_titan.IMAGES_DIR" title="yawning_titan.IMAGES_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></p></td>
+<td><p>The path to the users images directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.AGENTS_DIR.html#yawning_titan.AGENTS_DIR" title="yawning_titan.AGENTS_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></p></td>
+<td><p>The path to the users agents directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html#yawning_titan.AGENTS_LOGS_DIR" title="yawning_titan.AGENTS_LOGS_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></p></td>
+<td><p>The path to the users agents logs directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR" title="yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></p></td>
+<td><p>The path to the PPO algorithm tensorboard logs directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py data">
+<dt class="sig sig-object py" id="yawning_titan.DATA_DIR">
+<span class="sig-prename descclassname"><span class="pre">yawning_titan.</span></span><span class="sig-name descname"><span class="pre">DATA_DIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">WindowsPath('C:/Users/czar.echavez/AppData/Local/yawning_titan/yawning_titan')</span></em><a class="headerlink" href="#yawning_titan.DATA_DIR" title="Permalink to this definition"></a></dt>
+<dd><p>The path to the app data directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="yawning_titan.CONFIG_DIR">
+<span class="sig-prename descclassname"><span class="pre">yawning_titan.</span></span><span class="sig-name descname"><span class="pre">CONFIG_DIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">WindowsPath('C:/Users/czar.echavez/AppData/Local/yawning_titan/yawning_titan/config')</span></em><a class="headerlink" href="#yawning_titan.CONFIG_DIR" title="Permalink to this definition"></a></dt>
+<dd><p>The path to the app config directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="yawning_titan.LOG_DIR">
+<span class="sig-prename descclassname"><span class="pre">yawning_titan.</span></span><span class="sig-name descname"><span class="pre">LOG_DIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">WindowsPath('C:/Users/czar.echavez/AppData/Local/yawning_titan/yawning_titan/logs')</span></em><a class="headerlink" href="#yawning_titan.LOG_DIR" title="Permalink to this definition"></a></dt>
+<dd><p>The path to the app log directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="yawning_titan.DOCS_DIR">
+<span class="sig-prename descclassname"><span class="pre">yawning_titan.</span></span><span class="sig-name descname"><span class="pre">DOCS_DIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">WindowsPath('C:/Users/czar.echavez/AppData/Local/yawning_titan/yawning_titan/docs')</span></em><a class="headerlink" href="#yawning_titan.DOCS_DIR" title="Permalink to this definition"></a></dt>
+<dd><p>The path to the app docs directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="yawning_titan.DB_DIR">
+<span class="sig-prename descclassname"><span class="pre">yawning_titan.</span></span><span class="sig-name descname"><span class="pre">DB_DIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">WindowsPath('C:/Users/czar.echavez/AppData/Local/yawning_titan/yawning_titan/db')</span></em><a class="headerlink" href="#yawning_titan.DB_DIR" title="Permalink to this definition"></a></dt>
+<dd><p>The path to the app db directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="yawning_titan.APP_IMAGES_DIR">
+<span class="sig-prename descclassname"><span class="pre">yawning_titan.</span></span><span class="sig-name descname"><span class="pre">APP_IMAGES_DIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">WindowsPath('C:/Users/czar.echavez/AppData/Local/yawning_titan/yawning_titan/app_images')</span></em><a class="headerlink" href="#yawning_titan.APP_IMAGES_DIR" title="Permalink to this definition"></a></dt>
+<dd><p>The path to the app images directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="yawning_titan.NOTEBOOKS_DIR">
+<span class="sig-prename descclassname"><span class="pre">yawning_titan.</span></span><span class="sig-name descname"><span class="pre">NOTEBOOKS_DIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">WindowsPath('C:/Users/czar.echavez/yawning_titan/notebooks')</span></em><a class="headerlink" href="#yawning_titan.NOTEBOOKS_DIR" title="Permalink to this definition"></a></dt>
+<dd><p>The path to the users notebooks directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+<p>Users notebooks are stored at: ~/yawning_titan/notebooks.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="yawning_titan.GAME_MODES_DIR">
+<span class="sig-prename descclassname"><span class="pre">yawning_titan.</span></span><span class="sig-name descname"><span class="pre">GAME_MODES_DIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">WindowsPath('C:/Users/czar.echavez/yawning_titan/game_modes')</span></em><a class="headerlink" href="#yawning_titan.GAME_MODES_DIR" title="Permalink to this definition"></a></dt>
+<dd><p>The path to the users game modes directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+<p>Users game modes are stored at: ~/yawning_titan/game_modes.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="yawning_titan.IMAGES_DIR">
+<span class="sig-prename descclassname"><span class="pre">yawning_titan.</span></span><span class="sig-name descname"><span class="pre">IMAGES_DIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">WindowsPath('C:/Users/czar.echavez/yawning_titan/images')</span></em><a class="headerlink" href="#yawning_titan.IMAGES_DIR" title="Permalink to this definition"></a></dt>
+<dd><p>The path to the users images directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+<p>Users images are stored at: ~/yawning_titan/images.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="yawning_titan.AGENTS_DIR">
+<span class="sig-prename descclassname"><span class="pre">yawning_titan.</span></span><span class="sig-name descname"><span class="pre">AGENTS_DIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">WindowsPath('C:/Users/czar.echavez/yawning_titan/agents')</span></em><a class="headerlink" href="#yawning_titan.AGENTS_DIR" title="Permalink to this definition"></a></dt>
+<dd><p>The path to the users agents directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+<p>Users agents are stored at: ~/yawning_titan/agents.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="yawning_titan.AGENTS_LOGS_DIR">
+<span class="sig-prename descclassname"><span class="pre">yawning_titan.</span></span><span class="sig-name descname"><span class="pre">AGENTS_LOGS_DIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">WindowsPath('C:/Users/czar.echavez/yawning_titan/agents/logs')</span></em><a class="headerlink" href="#yawning_titan.AGENTS_LOGS_DIR" title="Permalink to this definition"></a></dt>
+<dd><p>The path to the users agents logs directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+<p>Users agent logs are stored at: ~/yawning_titan/agents/logs.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="yawning_titan.PPO_TENSORBOARD_LOGS_DIR">
+<span class="sig-prename descclassname"><span class="pre">yawning_titan.</span></span><span class="sig-name descname"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">WindowsPath('C:/Users/czar.echavez/yawning_titan/agents/logs/tensorboard')</span></em><a class="headerlink" href="#yawning_titan.PPO_TENSORBOARD_LOGS_DIR" title="Permalink to this definition"></a></dt>
+<dd><p>The path to the PPO algorithm tensorboard logs directory as an instance of <cite>Path</cite> or <cite>PosixPath</cite>, depending on the OS.</p>
+<p>Users agent PPO algorithm tensorboard logs are stored at: ~/yawning_titan/agents/logs/ppo_tensorboard.</p>
+</dd></dl>
+
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.agents.html#module-yawning_titan.agents" title="yawning_titan.agents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yawning_titan.agents</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.config.html#module-yawning_titan.config" title="yawning_titan.config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yawning_titan.config</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.db.html#module-yawning_titan.db" title="yawning_titan.db"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yawning_titan.db</span></code></a></p></td>
+<td><p>Responsible for inserting, querying, updating and deleting in the <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.database.TinyDB" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TinyDB</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.envs.html#module-yawning_titan.envs" title="yawning_titan.envs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yawning_titan.envs</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.exceptions.html#module-yawning_titan.exceptions" title="yawning_titan.exceptions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yawning_titan.exceptions</span></code></a></p></td>
+<td><p>Custom Yawning-Titan exceptions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.experiment_helpers.html#module-yawning_titan.experiment_helpers" title="yawning_titan.experiment_helpers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yawning_titan.experiment_helpers</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.game_modes.html#module-yawning_titan.game_modes" title="yawning_titan.game_modes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yawning_titan.game_modes</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.integrations.html#module-yawning_titan.integrations" title="yawning_titan.integrations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yawning_titan.integrations</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.networks.html#module-yawning_titan.networks" title="yawning_titan.networks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yawning_titan.networks</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.notebooks.html#module-yawning_titan.notebooks" title="yawning_titan.notebooks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yawning_titan.notebooks</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.yawning_titan_run.html#module-yawning_titan.yawning_titan_run" title="yawning_titan.yawning_titan_run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yawning_titan.yawning_titan_run</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../game_mode_config_explained.html" class="btn btn-neutral float-left" title="The Game Mode Config UML Diagram" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.DATA_DIR.html" class="btn btn-neutral float-right" title="yawning_titan.DATA_DIR" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

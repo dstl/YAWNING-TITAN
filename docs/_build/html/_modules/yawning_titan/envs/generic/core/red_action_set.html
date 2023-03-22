@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.envs.generic.core.red_action_set &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.envs.generic.core.red_action_set</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for yawning_titan.envs.generic.core.red_action_set</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A Parent red agent.</span>
+
+<span class="sd">This red agent acts as a container for any move that a red agent could want to make. An actual red</span>
+<span class="sd">agent that would interfaces with the generic Gym environment uses all of or a subset of the methods available here.</span>
+<span class="sd">All of the methods interact with the network interface to affect the environment.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.core.network_interface</span> <span class="kn">import</span> <span class="n">NetworkInterface</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.node</span> <span class="kn">import</span> <span class="n">Node</span>
+
+
+<div class="viewcode-block" id="RedActionSet"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.red_action_set.RedActionSet.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet">[docs]</a><span class="k">class</span> <span class="nc">RedActionSet</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing a Red Agents action set.&quot;&quot;&quot;</span>
+
+    <span class="n">action_set</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">action_probabilities</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">node_set</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="RedActionSet.__init__"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.red_action_set.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">network_interface</span><span class="p">:</span> <span class="n">NetworkInterface</span><span class="p">,</span>
+        <span class="n">action_set</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+        <span class="n">action_probabilities</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialise the red agent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            network_interface: Object from the NetworkInterface class</span>
+<span class="sd">            action_set: The possible actions that the red agent can take (list)</span>
+<span class="sd">            action_probabilities: The likelihood of those actions being chosen (list)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span> <span class="o">=</span> <span class="n">network_interface</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">skill</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zero_day_amount</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">zero_day</span><span class="o">.</span><span class="n">start_amount</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zero_day_required</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">zero_day</span><span class="o">.</span><span class="n">days_required</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_set</span> <span class="o">=</span> <span class="n">action_set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_probabilities</span> <span class="o">=</span> <span class="n">action_probabilities</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="RedActionSet.reset"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.red_action_set.RedActionSet.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset red agent episode dependent variables to initial value.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zero_day_amount</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">zero_day</span><span class="o">.</span><span class="n">start_amount</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zero_day_current_day</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="RedActionSet.choose_target_node"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.red_action_set.RedActionSet.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet.choose_target_node">[docs]</a>    <span class="k">def</span> <span class="nf">choose_target_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Node</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Choose a target node.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The target node (False if no possible nodes to attack)</span>
+<span class="sd">            The node attacking the target node (False if no possible nodes to attack)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># creates a set of nodes that the red agent could attack</span>
+        <span class="n">possible_to_attack</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">original_node</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">attack_from</span><span class="o">.</span><span class="n">any_red_node</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
+                <span class="n">filter_true_compromised</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+            <span class="c1"># runs through the connected nodes and adds the safe nodes to a set of possible nodes to attack</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+                <span class="c1"># If red can attack from any compromised node</span>
+                <span class="n">connected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">connected_node</span> <span class="ow">in</span> <span class="n">connected</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">connected_node</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">original_node</span><span class="p">[</span><span class="n">connected_node</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span>
+                        <span class="n">possible_to_attack</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">connected_node</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">attack_from</span><span class="o">.</span><span class="n">only_main_red_node</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="c1"># If red can only attack from the central red node</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">connected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">connected</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">original_node</span><span class="p">[</span>
+                            <span class="n">node</span>
+                        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span>
+                        <span class="n">possible_to_attack</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="c1"># also adds entry nodes into the set of possible nodes. This is the red agents entrance into the network</span>
+
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">entry_nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">possible_to_attack</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                <span class="n">original_node</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">possible_to_attack</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">possible_to_attack</span><span class="p">))</span>
+
+        <span class="n">weights</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># red can prioritise nodes based on some different parameters chosen in the settings menu</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="c1"># equal weighting for all nodes</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">possible_to_attack</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">prioritise_connected_nodes</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">possible_to_attack</span><span class="p">:</span>
+                <span class="c1"># more connections means a higher weight</span>
+                <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">))</span>
+                <span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">prioritise_unconnected_nodes</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">possible_to_attack</span><span class="p">:</span>
+                <span class="c1"># higher connections means a lower weight</span>
+                <span class="n">current_connected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">current_connected</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">current_connected</span> <span class="o">=</span> <span class="mf">0.1</span>
+                <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">current_connected</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">prioritise_vulnerable_nodes</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">possible_to_attack</span><span class="p">:</span>
+                <span class="c1"># higher vulnerability means a higher weight</span>
+                <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">node</span><span class="o">.</span><span class="n">vulnerability_score</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">prioritise_resilient_nodes</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">possible_to_attack</span><span class="p">:</span>
+                <span class="c1"># higher vulnerability means a lower weight</span>
+                <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">node</span><span class="o">.</span><span class="n">vulnerability_score</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">target_specific_node</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">target_specific_node</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">value</span>
+            <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="n">distances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_shortest_distances_to_target</span><span class="p">(</span>
+                <span class="n">possible_to_attack</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">dist</span> <span class="ow">in</span> <span class="n">distances</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">target_specific_node</span><span class="o">.</span><span class="n">always_choose_shortest_distance</span><span class="o">.</span><span class="n">value</span>
+                <span class="p">):</span>
+                    <span class="n">weight</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">dist</span> <span class="o">==</span> <span class="nb">min</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">weight</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">dist</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">dist</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span>
+                <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># if using the configuration checker then this should never happen</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="s2">&quot;Red should have have a method for how it chooses nodes to attack (enable &quot;</span>
+                <span class="s2">&quot;red_chooses_targets_at_random in the config file if you are unsure)&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">possible_to_attack</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># If the red agent cannot attack anything then return False showing that the attack has failed</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">counter</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+                <span class="n">weights</span><span class="p">[</span><span class="n">counter</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">weights_normal</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">]</span>
+        <span class="c1"># Chooses a target with some being more likely than others</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span>
+            <span class="n">population</span><span class="o">=</span><span class="n">possible_to_attack</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights_normal</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># get the node that red attacked from</span>
+        <span class="n">attacking_node</span> <span class="o">=</span> <span class="n">original_node</span><span class="p">[</span><span class="n">target</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">attacking_node</span></div>
+
+<div class="viewcode-block" id="RedActionSet.choose_action"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.red_action_set.RedActionSet.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet.choose_action">[docs]</a>    <span class="k">def</span> <span class="nf">choose_action</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Choose an action to perform.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The chosen action to perform</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span>
+            <span class="n">population</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">action_set</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">action_probabilities</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">action</span></div>
+
+<div class="viewcode-block" id="RedActionSet.increment_day"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.red_action_set.RedActionSet.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet.increment_day">[docs]</a>    <span class="k">def</span> <span class="nf">increment_day</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Increment the day for zero day attack generation.&quot;&quot;&quot;</span>
+        <span class="c1"># If the number of days equals the days required for a zero day then the number of available zero days is</span>
+        <span class="c1"># increased</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">zero_day_current_day</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">zero_day_required</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zero_day_amount</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zero_day_current_day</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zero_day_current_day</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="RedActionSet.get_amount_zero_day"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.red_action_set.RedActionSet.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet.get_amount_zero_day">[docs]</a>    <span class="k">def</span> <span class="nf">get_amount_zero_day</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the amount of zero day attacks that the red agent has stored up.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Integer number - amount of zero day attacks</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">zero_day_amount</span></div>
+
+<div class="viewcode-block" id="RedActionSet.random_move"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.red_action_set.RedActionSet.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet.random_move">[docs]</a>    <span class="k">def</span> <span class="nf">random_move</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select a random connected compromised node to move to.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary containing:</span>
+<span class="sd">                The name of the action</span>
+<span class="sd">                If the move succeeded</span>
+<span class="sd">                The new red location</span>
+<span class="sd">                The old red location</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># If the central red agent is not in the environment then it will enter through the entry points</span>
+            <span class="n">connected</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">entry_nodes</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span>
+                    <span class="nb">set</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
+                            <span class="n">filter_true_compromised</span><span class="o">=</span><span class="kc">True</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Otherwise the red agent will move to a connected node</span>
+            <span class="n">connected</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="nb">set</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span>
+                    <span class="p">)</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span>
+                    <span class="nb">set</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
+                            <span class="n">filter_true_compromised</span><span class="o">=</span><span class="kc">True</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="c1"># gets the current location and copies it. This is for logging purposes to ensure that the red agent moves</span>
+        <span class="c1"># correctly</span>
+        <span class="n">pre</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">connected</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">population</span><span class="o">=</span><span class="n">connected</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span> <span class="o">=</span> <span class="n">direction</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;random_move&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">pre</span><span class="p">],</span>
+                <span class="s2">&quot;Target_Nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span><span class="p">],</span>
+                <span class="s2">&quot;Successes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+            <span class="p">}</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;random_move&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">pre</span><span class="p">],</span>
+            <span class="s2">&quot;Target_Nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">pre</span><span class="p">],</span>
+            <span class="s2">&quot;Successes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">],</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="RedActionSet.do_nothing"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.red_action_set.RedActionSet.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet.do_nothing">[docs]</a>    <span class="k">def</span> <span class="nf">do_nothing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        No-op.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The name of the action</span>
+<span class="sd">            If the move succeeded</span>
+<span class="sd">            The target node</span>
+<span class="sd">            The current node</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;do_nothing&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;Target_Nodes&quot;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s2">&quot;Successes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="RedActionSet.zero_day_attack"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.red_action_set.RedActionSet.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet.zero_day_attack">[docs]</a>    <span class="k">def</span> <span class="nf">zero_day_attack</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute a zero-day attack if available.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The name of the action taken</span>
+<span class="sd">            If the action succeeded</span>
+<span class="sd">            The target node</span>
+<span class="sd">            The attacking node</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_amount_zero_day</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># Can only use this if there are available zero days</span>
+            <span class="n">target</span><span class="p">,</span> <span class="n">attacking_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choose_target_node</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{</span>
+                    <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;no_possible_targets&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                    <span class="s2">&quot;Target_Nodes&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                    <span class="s2">&quot;Successes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">],</span>
+                <span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">zero_day_amount</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">attack_node</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">guarantee</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># Moves the red agent to the attacked location</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># moves the red agent into the network if it is not currently</span>
+                <span class="k">if</span> <span class="n">target</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">entry_nodes</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span> <span class="o">=</span> <span class="n">target</span>
+            <span class="k">elif</span> <span class="n">target</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span> <span class="o">=</span> <span class="n">target</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;zero_day&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">attacking_node</span><span class="p">],</span>
+                <span class="s2">&quot;Target_Nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">target</span><span class="p">],</span>
+                <span class="s2">&quot;Successes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;zero_day&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;Target_Nodes&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;Successes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">],</span>
+            <span class="p">}</span></div>
+
+<div class="viewcode-block" id="RedActionSet.basic_attack"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.red_action_set.RedActionSet.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet.basic_attack">[docs]</a>    <span class="k">def</span> <span class="nf">basic_attack</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute a basic attack.</span>
+
+<span class="sd">        The red agent will attempt to compromise a target node using the predefined attack method.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The name of the action taken</span>
+<span class="sd">            If the action succeeded</span>
+<span class="sd">            The target node</span>
+<span class="sd">            The attacking node</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">target</span><span class="p">,</span> <span class="n">attacking_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choose_target_node</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;no_possible_targets&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;Target_Nodes&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;Successes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">],</span>
+            <span class="p">}</span>
+        <span class="n">attack_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">attack_node</span><span class="p">(</span>
+            <span class="n">target</span><span class="p">,</span>
+            <span class="n">skill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">skill</span><span class="p">,</span>
+            <span class="n">use_skill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">use_vulnerability</span><span class="o">=</span><span class="p">(</span>
+                <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">ignores_defences</span><span class="o">.</span><span class="n">value</span>
+            <span class="p">),</span>
+            <span class="n">guarantee</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">always_succeeds</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">attack_status</span><span class="p">:</span>
+            <span class="c1"># update the location of the red agent if applicable</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">target</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">entry_nodes</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span> <span class="o">=</span> <span class="n">target</span>
+            <span class="k">elif</span> <span class="n">target</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span> <span class="o">=</span> <span class="n">target</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;basic_attack&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">attacking_node</span><span class="p">],</span>
+                <span class="s2">&quot;Target_Nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">target</span><span class="p">],</span>
+                <span class="s2">&quot;Successes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;basic_attack&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">attacking_node</span><span class="p">],</span>
+                <span class="s2">&quot;Target_Nodes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">target</span><span class="p">],</span>
+                <span class="s2">&quot;Successes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">False</span><span class="p">],</span>
+            <span class="p">}</span></div>
+
+<div class="viewcode-block" id="RedActionSet.natural_spread"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.red_action_set.RedActionSet.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet.natural_spread">[docs]</a>    <span class="k">def</span> <span class="nf">natural_spread</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Naturally spread throughout the network.</span>
+
+<span class="sd">        Nodes that are connected to compromised nodes can have a different chance to become compromised.</span>
+<span class="sd">        The settings for how likely nodes are to become compromised are in the config file.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The success status of all the attacks</span>
+<span class="sd">            The target nodes</span>
+<span class="sd">            The attacking nodes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Lists to contain what nodes were attacked and if the attacks succeeded</span>
+        <span class="n">success</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">targets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">attacking_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># gets a list of all the compromised nodes</span>
+        <span class="n">compromised_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
+            <span class="n">filter_true_compromised</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="c1"># creates a set that is used to store all of the nodes that the red agent naturally spreads to (used to work out</span>
+        <span class="c1"># what nodes are not easily spread to)</span>
+        <span class="n">set_of_spreading_nodes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">attacking_node_map</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">compromised_node</span> <span class="ow">in</span> <span class="n">compromised_nodes</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span>
+                <span class="n">compromised_node</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># add the current node to the set of nodes connected to a compromised node</span>
+                    <span class="n">set_of_spreading_nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                    <span class="n">attacking_node_map</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">compromised_node</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">natural_spreading</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">to_connected_node</span><span class="o">.</span><span class="n">value</span>
+            <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="p">):</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">set_of_spreading_nodes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+                    <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">natural_spreading</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">to_unconnected_node</span><span class="o">.</span><span class="n">value</span>
+                    <span class="o">*</span> <span class="mi">100</span>
+                <span class="p">):</span>
+                    <span class="c1"># try to naturally spread to the node based on a percentage change listed in the config file</span>
+                    <span class="n">attack_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">attack_node</span><span class="p">(</span>
+                        <span class="n">node</span><span class="p">,</span>
+                        <span class="n">skill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">skill</span><span class="p">,</span>
+                        <span class="n">use_skill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                        <span class="n">use_vulnerability</span><span class="o">=</span><span class="p">(</span>
+                            <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">ignores_defences</span><span class="o">.</span><span class="n">value</span>
+                        <span class="p">),</span>
+                        <span class="n">guarantee</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">always_succeeds</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">attack_status</span><span class="p">:</span>
+                        <span class="c1"># If the attack succeeds</span>
+                        <span class="n">success</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">success</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+                    <span class="n">attacking_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attacking_node_map</span><span class="p">[</span><span class="n">node</span><span class="p">])</span>
+                    <span class="n">targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">natural_spreading</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">to_connected_node</span>
+        <span class="p">):</span>
+            <span class="c1"># Calculate the list of nodes that are not connected to a compromised node</span>
+            <span class="n">nodes_not_connected_to_red</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">())</span>
+                <span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">compromised_nodes</span><span class="p">))</span>
+                <span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">set_of_spreading_nodes</span><span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="c1"># all the nodes that are not connected to red (has a different chance to naturally spread to)</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes_not_connected_to_red</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+                    <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">natural_spreading</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">to_connected_node</span><span class="o">.</span><span class="n">value</span>
+                    <span class="o">*</span> <span class="mi">100</span>
+                <span class="p">):</span>
+                    <span class="c1"># Try to naturally randomly infect nodes based on a percentage chance in the config file</span>
+                    <span class="n">attack_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">attack_node</span><span class="p">(</span>
+                        <span class="n">node</span><span class="p">,</span>
+                        <span class="n">skill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">skill</span><span class="p">,</span>
+                        <span class="n">use_skill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                        <span class="n">use_vulnerability</span><span class="o">=</span><span class="p">(</span>
+                            <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">ignores_defences</span><span class="o">.</span><span class="n">value</span>
+                        <span class="p">),</span>
+                        <span class="n">guarantee</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">always_succeeds</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                    <span class="p">)</span>
+                    <span class="n">targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">attack_status</span><span class="p">:</span>
+                        <span class="c1"># store the success status of the attack</span>
+                        <span class="n">success</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">success</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="n">attacking_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+        <span class="c1"># return the information about the attacks made during this turn</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;natural_spread&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">:</span> <span class="n">attacking_nodes</span><span class="p">,</span>
+            <span class="s2">&quot;Target_Nodes&quot;</span><span class="p">:</span> <span class="n">targets</span><span class="p">,</span>
+            <span class="s2">&quot;Successes&quot;</span><span class="p">:</span> <span class="n">success</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="RedActionSet.spread"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.red_action_set.RedActionSet.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet.spread">[docs]</a>    <span class="k">def</span> <span class="nf">spread</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute a spread attack.</span>
+
+<span class="sd">        The red agent will try and spread from every infected node to every connected safe node.</span>
+<span class="sd">        The chance to spread between two nodes is independent of any other spreading.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The name of the action</span>
+<span class="sd">            A list of success status for each node attacked</span>
+<span class="sd">            A list of the target nodes</span>
+<span class="sd">            A list of the attacking nodes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">compromised_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># check the nodes red can attack based on the current configuration</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">attack_from</span><span class="o">.</span><span class="n">any_red_node</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="n">compromised_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
+                <span class="n">filter_true_compromised</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">attack_from</span><span class="o">.</span><span class="n">only_main_red_node</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="n">compromised_nodes</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span><span class="p">]</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># store the location the attack originated from</span>
+        <span class="n">attacking_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">success</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">compromised_nodes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># If red does not control any nodes then the entry nodes are used</span>
+                <span class="n">connected_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">entry_nodes</span>
+                <span class="n">connected_nodes</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">connected_nodes</span> <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">0</span>
+                <span class="p">]</span>
+                <span class="n">attacking_nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">connected_nodes</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">connected_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span>
+                    <span class="n">node</span>
+                <span class="p">)</span>
+                <span class="n">connected_nodes</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">connected_nodes</span> <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">0</span>
+                <span class="p">]</span>
+
+                <span class="n">attacking_nodes</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">node</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">connected_nodes</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">connected_node</span> <span class="ow">in</span> <span class="n">connected_nodes</span><span class="p">:</span>
+                <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">connected_node</span><span class="p">)</span>
+                <span class="n">attack_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">attack_node</span><span class="p">(</span>
+                    <span class="n">connected_node</span><span class="p">,</span>
+                    <span class="n">skill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">spread</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                    <span class="n">use_skill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">use_vulnerability</span><span class="o">=</span><span class="p">(</span>
+                        <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">ignores_defences</span><span class="o">.</span><span class="n">value</span>
+                    <span class="p">),</span>
+                    <span class="n">guarantee</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">always_succeeds</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">attack_status</span><span class="p">:</span>
+                    <span class="c1"># If the attack succeeds</span>
+                    <span class="k">if</span> <span class="n">node</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span> <span class="o">=</span> <span class="n">connected_node</span>
+                    <span class="c1"># Since spread can attack multiple nodes in one go the agent remembers the success of each of the</span>
+                    <span class="c1"># attacks in a list</span>
+                    <span class="n">success</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">success</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;spread&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">:</span> <span class="n">attacking_nodes</span><span class="p">,</span>
+            <span class="s2">&quot;Target_Nodes&quot;</span><span class="p">:</span> <span class="n">nodes</span><span class="p">,</span>
+            <span class="s2">&quot;Successes&quot;</span><span class="p">:</span> <span class="n">success</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="RedActionSet.intrude"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.red_action_set.RedActionSet.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet.intrude">[docs]</a>    <span class="k">def</span> <span class="nf">intrude</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute an attack on all nodes simultaneously.</span>
+
+<span class="sd">        The red agent will try to infect every safe node at once (regardless of connectivity).</span>
+<span class="sd">        The chance for the red agent to compromise a node is independent to each of the other nodes</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The name of the action</span>
+<span class="sd">            A list of success status for each node attacked</span>
+<span class="sd">            A list of the target nodes</span>
+<span class="sd">            A list of the attacking nodes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># gets the nodes that are currently safe</span>
+        <span class="n">safe_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
+            <span class="n">filter_true_safe</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="n">success</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">attacking_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># tries to attack the safe nodes</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">safe_nodes</span><span class="p">:</span>
+            <span class="n">attack_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">attack_node</span><span class="p">(</span>
+                <span class="n">node</span><span class="p">,</span>
+                <span class="n">skill</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">random_infect</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">use_skill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">use_vulnerability</span><span class="o">=</span><span class="p">(</span>
+                    <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">ignores_defences</span><span class="o">.</span><span class="n">value</span>
+                <span class="p">),</span>
+                <span class="n">guarantee</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">always_succeeds</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">attack_status</span><span class="p">:</span>
+                <span class="c1"># Agent remembers each of the successes or failures for each node it</span>
+                <span class="c1"># attempts to intrude</span>
+                <span class="n">success</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">success</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">attacking_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;intrude&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">:</span> <span class="n">attacking_nodes</span><span class="p">,</span>
+            <span class="s2">&quot;Target_Nodes&quot;</span><span class="p">:</span> <span class="n">nodes</span><span class="p">,</span>
+            <span class="s2">&quot;Successes&quot;</span><span class="p">:</span> <span class="n">success</span><span class="p">,</span>
+        <span class="p">}</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

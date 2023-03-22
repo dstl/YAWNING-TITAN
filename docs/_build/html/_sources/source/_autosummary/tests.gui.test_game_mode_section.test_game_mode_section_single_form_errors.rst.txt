@@ -1,0 +1,6 @@
+tests.gui.test\_game\_mode\_section.test\_game\_mode\_section\_single\_form\_errors
+===================================================================================
+
+.. currentmodule:: tests.gui.test_game_mode_section
+
+.. autofunction:: test_game_mode_section_single_form_errors

@@ -1,0 +1,6 @@
+tests.unit\_tests.integrations.dcbo.test\_dcbo\_utils.test\_base\_dcbo\_agent
+=============================================================================
+
+.. currentmodule:: tests.unit_tests.integrations.dcbo.test_dcbo_utils
+
+.. autofunction:: test_base_dcbo_agent

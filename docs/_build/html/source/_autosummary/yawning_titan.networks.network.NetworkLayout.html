@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.networks.network.NetworkLayout &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.networks.network.RandomEntryNodePreference" href="yawning_titan.networks.network.RandomEntryNodePreference.html" />
+    <link rel="prev" title="yawning_titan.networks.network.Network" href="yawning_titan.networks.network.Network.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="yawning_titan.networks.network.html">yawning_titan.networks.network</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.Network.html">yawning_titan.networks.network.Network</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">yawning_titan.networks.network.NetworkLayout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.RandomEntryNodePreference.html">yawning_titan.networks.network.RandomEntryNodePreference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.RandomHighValueNodePreference.html">yawning_titan.networks.network.RandomHighValueNodePreference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.html#yawning_titan.networks.network.choice"><code class="docutils literal notranslate"><span class="pre">choice()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.html#yawning_titan.networks.network.NetworkLayout"><code class="docutils literal notranslate"><span class="pre">NetworkLayout</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.html#yawning_titan.networks.network.RandomHighValueNodePreference"><code class="docutils literal notranslate"><span class="pre">RandomHighValueNodePreference</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.html#yawning_titan.networks.network.RandomEntryNodePreference"><code class="docutils literal notranslate"><span class="pre">RandomEntryNodePreference</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.html#yawning_titan.networks.network.Network"><code class="docutils literal notranslate"><span class="pre">Network</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.networks.network_creator.html">yawning_titan.networks.network_creator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.networks.network_db.html">yawning_titan.networks.network_db</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.networks.node.html">yawning_titan.networks.node</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.html">yawning_titan</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.networks.network.html">yawning_titan.networks.network</a></li>
+      <li class="breadcrumb-item active">yawning_titan.networks.network.NetworkLayout</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="yawning-titan-networks-network-networklayout">
+<h1>yawning_titan.networks.network.NetworkLayout<a class="headerlink" href="#yawning-titan-networks-network-networklayout" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.networks.network.</span></span><span class="sig-name descname"><span class="pre">NetworkLayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#NetworkLayout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></a></p>
+<p>An enum class that maps to layout functions in networkx.drawing.layout.</p>
+<p>See: <a class="reference external" href="https://networkx.org/documentation/stable/reference/drawing.html#module-networkx.drawing.layout">https://networkx.org/documentation/stable/reference/drawing.html#module-networkx.drawing.layout</a></p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.NetworkLayout.as_layout_func" title="yawning_titan.networks.network.NetworkLayout.as_layout_func"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_layout_func</span></code></a></p></td>
+<td><p>Maps the NetworkLayout to a function in networkx.drawing.layout.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.NetworkLayout.BIPARTITE" title="yawning_titan.networks.network.NetworkLayout.BIPARTITE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BIPARTITE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.NetworkLayout.CIRCULAR" title="yawning_titan.networks.network.NetworkLayout.CIRCULAR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CIRCULAR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.NetworkLayout.FRUCHTERMAN_REINGOLD" title="yawning_titan.networks.network.NetworkLayout.FRUCHTERMAN_REINGOLD"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FRUCHTERMAN_REINGOLD</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.NetworkLayout.KAMADA_KAWAI" title="yawning_titan.networks.network.NetworkLayout.KAMADA_KAWAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">KAMADA_KAWAI</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.NetworkLayout.MULTIPARTITE" title="yawning_titan.networks.network.NetworkLayout.MULTIPARTITE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MULTIPARTITE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.NetworkLayout.PLANAR" title="yawning_titan.networks.network.NetworkLayout.PLANAR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PLANAR</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.NetworkLayout.RANDOM" title="yawning_titan.networks.network.NetworkLayout.RANDOM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RANDOM</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.NetworkLayout.RESCALE" title="yawning_titan.networks.network.NetworkLayout.RESCALE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RESCALE</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.NetworkLayout.SHELL" title="yawning_titan.networks.network.NetworkLayout.SHELL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SHELL</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.NetworkLayout.SPECTRAL" title="yawning_titan.networks.network.NetworkLayout.SPECTRAL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SPECTRAL</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.NetworkLayout.SPIRAL" title="yawning_titan.networks.network.NetworkLayout.SPIRAL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SPIRAL</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.NetworkLayout.SPRING" title="yawning_titan.networks.network.NetworkLayout.SPRING"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SPRING</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.BIPARTITE">
+<span class="sig-name descname"><span class="pre">BIPARTITE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'bipartite'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.BIPARTITE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.CIRCULAR">
+<span class="sig-name descname"><span class="pre">CIRCULAR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'circular'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.CIRCULAR" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.FRUCHTERMAN_REINGOLD">
+<span class="sig-name descname"><span class="pre">FRUCHTERMAN_REINGOLD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'fruchterman_reingold'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.FRUCHTERMAN_REINGOLD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.KAMADA_KAWAI">
+<span class="sig-name descname"><span class="pre">KAMADA_KAWAI</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'kamada_kawai'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.KAMADA_KAWAI" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.MULTIPARTITE">
+<span class="sig-name descname"><span class="pre">MULTIPARTITE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'multipartite'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.MULTIPARTITE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.PLANAR">
+<span class="sig-name descname"><span class="pre">PLANAR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'planar'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.PLANAR" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.RANDOM">
+<span class="sig-name descname"><span class="pre">RANDOM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'random'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.RANDOM" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.RESCALE">
+<span class="sig-name descname"><span class="pre">RESCALE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'rescale'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.RESCALE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.SHELL">
+<span class="sig-name descname"><span class="pre">SHELL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'shell'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.SHELL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.SPECTRAL">
+<span class="sig-name descname"><span class="pre">SPECTRAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'spectral'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.SPECTRAL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.SPIRAL">
+<span class="sig-name descname"><span class="pre">SPIRAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'spiral'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.SPIRAL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.SPRING">
+<span class="sig-name descname"><span class="pre">SPRING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'spring'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.SPRING" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.as_layout_func">
+<span class="sig-name descname"><span class="pre">as_layout_func</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#NetworkLayout.as_layout_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.as_layout_func" title="Permalink to this definition"></a></dt>
+<dd><p>Maps the NetworkLayout to a function in networkx.drawing.layout.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="yawning_titan.networks.network.Network.html" class="btn btn-neutral float-left" title="yawning_titan.networks.network.Network" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.networks.network.RandomEntryNodePreference.html" class="btn btn-neutral float-right" title="yawning_titan.networks.network.RandomEntryNodePreference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

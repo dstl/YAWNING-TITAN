@@ -1,0 +1,6 @@
+yawning\_titan.exceptions.YawningTitanDBCriticalError
+=====================================================
+
+.. currentmodule:: yawning_titan.exceptions
+
+.. autoexception:: YawningTitanDBCriticalError

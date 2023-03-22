@@ -1,0 +1,6 @@
+tests.unit\_tests.config.item\_types.test\_str\_item.test\_str\_item\_incorrect\_properties\_type
+=================================================================================================
+
+.. currentmodule:: tests.unit_tests.config.item_types.test_str_item
+
+.. autofunction:: test_str_item_incorrect_properties_type

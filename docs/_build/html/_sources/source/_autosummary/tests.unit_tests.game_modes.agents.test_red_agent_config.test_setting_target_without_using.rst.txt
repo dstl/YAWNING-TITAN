@@ -1,0 +1,6 @@
+tests.unit\_tests.game\_modes.agents.test\_red\_agent\_config.test\_setting\_target\_without\_using
+===================================================================================================
+
+.. currentmodule:: tests.unit_tests.game_modes.agents.test_red_agent_config
+
+.. autofunction:: test_setting_target_without_using

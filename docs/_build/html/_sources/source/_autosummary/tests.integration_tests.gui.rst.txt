@@ -1,0 +1,37 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.integration\_tests.gui
+============================
+
+.. automodule:: tests.integration_tests.gui
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   tests.integration_tests.gui.test_game_mode_config_view
+   tests.integration_tests.gui.test_game_mode_section
+   tests.integration_tests.gui.test_game_mode_view
+   tests.integration_tests.gui.test_network_editor_view
+   tests.integration_tests.gui.test_network_view
+

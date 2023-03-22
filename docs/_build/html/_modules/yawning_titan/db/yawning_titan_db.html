@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.db.yawning_titan_db &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.db.yawning_titan_db</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for yawning_titan.db.yawning_titan_db</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Provides an extended implementation of a TinyDB class as an ABC.</span>
+
+<span class="sd">Makes use of uuid and locked values to ensure duplicates are not possible, and</span>
+<span class="sd">locked files (system defaults) cannot be updated or removed.</span>
+
+<span class="sd">.. versionadded:: 1.1.0</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
+<span class="kn">from</span> <span class="nn">tinydb</span> <span class="kn">import</span> <span class="n">TinyDB</span>
+<span class="kn">from</span> <span class="nn">tinydb.queries</span> <span class="kn">import</span> <span class="n">QueryInstance</span>
+<span class="kn">from</span> <span class="nn">tinydb.table</span> <span class="kn">import</span> <span class="n">Document</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan</span> <span class="kn">import</span> <span class="n">DB_DIR</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.db.doc_metadata</span> <span class="kn">import</span> <span class="n">DocMetadata</span><span class="p">,</span> <span class="n">DocMetadataSchema</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.exceptions</span> <span class="kn">import</span> <span class="n">YawningTitanDBCriticalError</span><span class="p">,</span> <span class="n">YawningTitanDBError</span>
+
+<span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="YawningTitanDBSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.YawningTitanDBSchema.html#yawning_titan.db.yawning_titan_db.YawningTitanDBSchema">[docs]</a><span class="k">class</span> <span class="nc">YawningTitanDBSchema</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;YawningTitanDBSchema ABC that is implemented by all schema classes.&quot;&quot;&quot;</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="YawningTitanDB"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB">[docs]</a><span class="k">class</span> <span class="nc">YawningTitanDB</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An :py:class:`~abc.ABC` that implements and extends the :class:`~tinydb.database.TinyDB` query functions.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="YawningTitanDB.__init__"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">if</span> <span class="n">root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">root</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2">.json&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">DB_DIR</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2">.json&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_file_exist</span><span class="p">():</span>
+            <span class="n">_LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;New TinyDB .json file created: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span> <span class="o">=</span> <span class="n">TinyDB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">YawningTitanDB</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<div class="viewcode-block" id="YawningTitanDB.close"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the db.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_db_file_exist</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check whether the :class:`~tinydb.database.TinyDB` .json file exists.</span>
+
+<span class="sd">        :return: ``True`` if it does exist, otherwise ``False``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_update_doc_metadata</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">doc</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">author</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a name, description, author to a doc&#39;s metadata.</span>
+
+<span class="sd">        :param doc: A doc.</span>
+<span class="sd">        :param name: The doc name.</span>
+<span class="sd">        :param description: The doc description.</span>
+<span class="sd">        :param author: The docs author.</span>
+<span class="sd">        :return: The updated doc.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;_doc_metadata&quot;</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span><span class="p">:</span>
+                <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="k">if</span> <span class="n">description</span><span class="p">:</span>
+                <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span>
+            <span class="k">if</span> <span class="n">author</span><span class="p">:</span>
+                <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;author&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">author</span>
+        <span class="k">return</span> <span class="n">doc</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_update_doc_updated_at_datetime</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the created_at field in _doc_metadata to the current datetime in iso format.</span>
+
+<span class="sd">        :param doc: A doc.</span>
+<span class="sd">        :return: The updated doc.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;updated_at&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">doc</span>
+
+<div class="viewcode-block" id="YawningTitanDB.is_locked"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.is_locked">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_locked</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check whether a doc is locked for editing or not.</span>
+
+<span class="sd">        :param doc: A doc.</span>
+<span class="sd">        :return: ``True`` if the doc is locked, otherwise ``False``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;_doc_metadata&quot;</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;locked&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The DB name.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">db</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TinyDB</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The instance of :class:`~tinydb.database.TinyDB`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span>
+
+<div class="viewcode-block" id="YawningTitanDB.count"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.count">[docs]</a>    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cond</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QueryInstance</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Count how many docs are in the db. Extends :class:`tinydb.table.Table.count`.</span>
+
+<span class="sd">        A :class:`~yawning_titan.db.query.YawningTitanQuery` can be used to</span>
+<span class="sd">        filter the count.</span>
+
+<span class="sd">        :param cond: An optional :class:`~yawning_titan.db.query.YawningTitanQuery`.</span>
+<span class="sd">            Has a default value of ``None``.</span>
+<span class="sd">        :return: The number of docs counted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cond</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">cond</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">all</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="YawningTitanDB.all"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.all">[docs]</a>    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A wrapper for :func:`tinydb.table.Table.all`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="YawningTitanDB.show"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Show details of all entries in the db.</span>
+
+<span class="sd">        :param verbose: If True, all doc metadata details are shown,</span>
+<span class="sd">            otherwise just the name is shown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;author&quot;</span><span class="p">,</span> <span class="s2">&quot;locked&quot;</span><span class="p">,</span> <span class="s2">&quot;uuid&quot;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">}</span>
+            <span class="n">row</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+                <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="n">headers</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">([</span><span class="n">headers</span><span class="p">]</span> <span class="o">+</span> <span class="n">rows</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">&quot;firstrow&quot;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="YawningTitanDB.get"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a doc from its uuid.</span>
+
+<span class="sd">        :param uuid: A uuid.</span>
+<span class="sd">        :return: The matching doc if it exists, otherwise ``None``.</span>
+<span class="sd">        :raise: :class:`~yawning_titan.exceptions.YawningTitanDBCriticalError`</span>
+<span class="sd">            when the search returns multiple docs with the same uuid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">DocMetadataSchema</span><span class="o">.</span><span class="n">UUID</span> <span class="o">==</span> <span class="n">uuid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">clear_cache</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">results</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Get from the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2"> db with uuid=&#39;</span><span class="si">{</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&#39; aborted as multiple docs with the uuid &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;exist. The &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="si">}</span><span class="s2">&#39; db file is corrupted.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">YawningTitanDBCriticalError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">YawningTitanDBCriticalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">_LOGGER</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">e</span></div>
+
+<div class="viewcode-block" id="YawningTitanDB.search"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cond</span><span class="p">:</span> <span class="n">QueryInstance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A wrapper for :func:`tinydb.table.Table.search`.&quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">cond</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">clear_cache</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">results</span></div>
+
+<div class="viewcode-block" id="YawningTitanDB.insert"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">doc</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">author</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Document</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An extension of :func:`tinydb.table.Table.insert`.</span>
+
+<span class="sd">        If a doc doesn&#39;t have DocMetadata, the default DocMetadata is set.</span>
+
+<span class="sd">        If a doc already exists with the same uuid, the insert is blocked and</span>
+<span class="sd">        a :class:`~yawning_titan.exceptions.YawningTitanDBCriticalError` is</span>
+<span class="sd">        raised alongside a log as ``CRITICAL`` level, as this would indicate</span>
+<span class="sd">        db file is corrupted.</span>
+
+<span class="sd">        :param doc: A doc.</span>
+<span class="sd">        :param name: The doc name.</span>
+<span class="sd">        :param description: The doc description.</span>
+<span class="sd">        :param author: The docs author.</span>
+<span class="sd">        :return: The inserted doc.</span>
+<span class="sd">        :raise: :class:`~yawning_titan.exceptions.YawningTitanDBCriticalError`</span>
+<span class="sd">            when a doc already exists with the same uuid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;_doc_metadata&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+            <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DocMetadata</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Check for existing uuid entry</span>
+            <span class="n">uuid</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uuid</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Failed to insert doc into the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2"> db with uuid=&#39;</span><span class="si">{</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&#39; as one already exists. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;The &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="si">}</span><span class="s2">&#39; db file is corrupted.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">YawningTitanDBCriticalError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">YawningTitanDBCriticalError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">_LOGGER</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_doc_metadata</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">author</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;locked&quot;</span><span class="p">]:</span>
+            <span class="n">uuid</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span>
+            <span class="n">_LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Doc inserted into the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2"> db with uuid=&#39;</span><span class="si">{</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&#39; was inserted as locked.&quot;</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="YawningTitanDB.update"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">doc</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">author</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Document</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        An extension of :func:`tinydb.table.Table.update`.</span>
+
+<span class="sd">        Performs a check that prevents locked files from being updated and raises</span>
+<span class="sd">        :class:`~yawning_titan.exceptions.YawningTitanDBError` alongside a log at</span>
+<span class="sd">        ``INFO`` level.</span>
+
+<span class="sd">        :param doc: A doc.</span>
+<span class="sd">        :param uuid: The docs uuid.</span>
+<span class="sd">        :param name: The doc name.</span>
+<span class="sd">        :param description: The doc description.</span>
+<span class="sd">        :param author: The docs author.</span>
+<span class="sd">        :return: The updated doc.</span>
+<span class="sd">        :raise: :class:`~yawning_titan.exceptions.YawningTitanDBError` if</span>
+<span class="sd">            the doc is locked.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">existing_doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">existing_doc</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_locked</span><span class="p">(</span><span class="n">existing_doc</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Cannot update doc with uuid=&#39;</span><span class="si">{</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&#39; in the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2"> db as it is locked for editing.&quot;</span>
+            <span class="n">_LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">YawningTitanDBError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">YawningTitanDBError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_doc_metadata</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">author</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_doc_updated_at_datetime</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">cond</span><span class="o">=</span><span class="n">DocMetadataSchema</span><span class="o">.</span><span class="n">UUID</span> <span class="o">==</span> <span class="n">uuid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="YawningTitanDB.upsert"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.upsert">[docs]</a>    <span class="k">def</span> <span class="nf">upsert</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">doc</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">author</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Document</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A manual upsert method in place of :func:`tinydb.table.Table.upsert`.</span>
+
+<span class="sd">        If the docs uuid already exists, the args are passed to</span>
+<span class="sd">        :func:`yawning_titan.db.yawning_titan_db.YawningTitanDB.update` to</span>
+<span class="sd">        perform an update, otherwise they&#39;re passed to</span>
+<span class="sd">        :func:`~yawning_titan.db.yawning_titan_db.YawningTitanDB.insert` to</span>
+<span class="sd">        perform an insert. This is done to make use of the existing uuid and</span>
+<span class="sd">        locked file handling in the two methods.</span>
+
+<span class="sd">        :param doc: A doc.</span>
+<span class="sd">        :param uuid: The docs uuid.</span>
+<span class="sd">        :param name: The doc name.</span>
+<span class="sd">        :param description: The doc description.</span>
+<span class="sd">        :param author: The docs author.</span>
+<span class="sd">        :return: The updated doc.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">existing_doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">existing_doc</span><span class="p">:</span>
+            <span class="c1"># Attempt to update</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">author</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Insert</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">author</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="YawningTitanDB.remove_by_cond"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.remove_by_cond">[docs]</a>    <span class="k">def</span> <span class="nf">remove_by_cond</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cond</span><span class="p">:</span> <span class="n">QueryInstance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove documents that match a query.</span>
+
+<span class="sd">        :param cond: A:class:`~yawning_titan.db.query.YawningTitanQuery`.</span>
+<span class="sd">        :return: The list of uuids from documents removed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">cond</span><span class="p">)</span>
+        <span class="n">removed_uuids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">uuid</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span>
+            <span class="n">removed_uuid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">removed_uuid</span><span class="p">:</span>
+                <span class="n">removed_uuids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">removed_uuid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">removed_uuids</span></div>
+
+<div class="viewcode-block" id="YawningTitanDB.remove"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove a document with a given _doc_metadata.uuid.</span>
+
+<span class="sd">        :param uuid: A documents _doc_metadata.uuid.</span>
+<span class="sd">        :return: The uuid of the removed document.</span>
+<span class="sd">        :raises: :class:`~yawning_titan.exceptions.YawningTitanDBCriticalError`</span>
+<span class="sd">            when there is more than one doc with the same uuid to remove.</span>
+<span class="sd">            :class:`~yawning_titan.exceptions.YawningTitanDBError` when</span>
+<span class="sd">            an attempt to remove a locked doc is made.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">DocMetadataSchema</span><span class="o">.</span><span class="n">UUID</span> <span class="o">==</span> <span class="n">uuid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">doc</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Removal of a doc from the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2"> db with uuid=&#39;</span><span class="si">{</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&#39; aborted as multiple docs with &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;the uuid exist. The &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="si">}</span><span class="s2">&#39; db file is corrupted.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">YawningTitanDBCriticalError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">YawningTitanDBError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">_LOGGER</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">doc</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="s2">&quot;_doc_metadata&quot;</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;locked&quot;</span><span class="p">]:</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Aborted removal of doc with uuid=&#39;</span><span class="si">{</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&#39; from the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2"> db as it is locked &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;for removal.&quot;</span>
+                        <span class="p">)</span>
+                        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="n">YawningTitanDBError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="n">YawningTitanDBError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="n">e</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">cond</span><span class="o">=</span><span class="n">DocMetadataSchema</span><span class="o">.</span><span class="n">UUID</span> <span class="o">==</span> <span class="n">uuid</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">uuid</span>
+        <span class="k">return</span> <span class="kc">None</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

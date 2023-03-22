@@ -1,0 +1,35 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.game\_modes.components.observation\_space
+========================================================
+
+.. automodule:: yawning_titan.game_modes.components.observation_space
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      ObservationSpace
+   
+   
+
+   
+   
+   
+
+
+

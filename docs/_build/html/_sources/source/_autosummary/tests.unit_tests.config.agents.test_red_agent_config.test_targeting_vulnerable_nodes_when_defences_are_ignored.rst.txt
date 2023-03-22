@@ -1,0 +1,6 @@
+tests.unit\_tests.config.agents.test\_red\_agent\_config.test\_targeting\_vulnerable\_nodes\_when\_defences\_are\_ignored
+=========================================================================================================================
+
+.. currentmodule:: tests.unit_tests.config.agents.test_red_agent_config
+
+.. autofunction:: test_targeting_vulnerable_nodes_when_defences_are_ignored

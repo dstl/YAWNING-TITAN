@@ -1,0 +1,6 @@
+yawning\_titan.networks.network\_creator.get\_18\_node\_network\_mesh
+=====================================================================
+
+.. currentmodule:: yawning_titan.networks.network_creator
+
+.. autofunction:: get_18_node_network_mesh

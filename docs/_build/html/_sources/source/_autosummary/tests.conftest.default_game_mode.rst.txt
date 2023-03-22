@@ -1,0 +1,6 @@
+tests.conftest.default\_game\_mode
+==================================
+
+.. currentmodule:: tests.conftest
+
+.. autofunction:: default_game_mode

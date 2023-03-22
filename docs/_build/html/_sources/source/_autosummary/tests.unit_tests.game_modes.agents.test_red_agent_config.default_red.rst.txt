@@ -1,0 +1,6 @@
+tests.unit\_tests.game\_modes.agents.test\_red\_agent\_config.default\_red
+==========================================================================
+
+.. currentmodule:: tests.unit_tests.game_modes.agents.test_red_agent_config
+
+.. autofunction:: default_red

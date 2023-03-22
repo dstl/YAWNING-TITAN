@@ -1,0 +1,44 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.unit\_tests.config.validation.test\_any\_true.Group
+=========================================================
+
+.. currentmodule:: tests.unit_tests.config.validation.test_any_true
+
+.. autoclass:: Group
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~Group.get_config_elements
+      ~Group.get_non_config_elements
+      ~Group.set_from_dict
+      ~Group.set_from_yaml
+      ~Group.stringify
+      ~Group.to_dict
+      ~Group.to_legacy_dict
+      ~Group.to_yaml
+      ~Group.validate
+      ~Group.validate_elements
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Group.config_groups
+      ~Group.config_items
+   
+   

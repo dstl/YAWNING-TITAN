@@ -1,0 +1,6 @@
+yawning\_titan.networks.network\_db.default\_18\_node\_network
+==============================================================
+
+.. currentmodule:: yawning_titan.networks.network_db
+
+.. autofunction:: default_18_node_network

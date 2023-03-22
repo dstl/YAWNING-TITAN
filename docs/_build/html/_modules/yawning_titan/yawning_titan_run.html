@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.yawning_titan_run &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.yawning_titan_run</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for yawning_titan.yawning_titan_run</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Final</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">uuid</span> <span class="kn">import</span> <span class="n">uuid4</span>
+
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="n">PPO</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.callbacks</span> <span class="kn">import</span> <span class="n">EvalCallback</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.env_checker</span> <span class="kn">import</span> <span class="n">check_env</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.evaluation</span> <span class="kn">import</span> <span class="n">evaluate_policy</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.monitor</span> <span class="kn">import</span> <span class="n">Monitor</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.ppo</span> <span class="kn">import</span> <span class="n">MlpPolicy</span> <span class="k">as</span> <span class="n">PPOMlp</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan</span> <span class="kn">import</span> <span class="n">AGENTS_DIR</span><span class="p">,</span> <span class="n">PPO_TENSORBOARD_LOGS_DIR</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.agents.fixed_red</span> <span class="kn">import</span> <span class="n">FixedRedAgent</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.agents.nsa_red</span> <span class="kn">import</span> <span class="n">NSARed</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.agents.simple_blue</span> <span class="kn">import</span> <span class="n">SimpleBlue</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.agents.sinewave_red</span> <span class="kn">import</span> <span class="n">SineWaveRedAgent</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.core.blue_interface</span> <span class="kn">import</span> <span class="n">BlueInterface</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.core.network_interface</span> <span class="kn">import</span> <span class="n">NetworkInterface</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.core.red_interface</span> <span class="kn">import</span> <span class="n">RedInterface</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.generic_env</span> <span class="kn">import</span> <span class="n">GenericNetworkEnv</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.exceptions</span> <span class="kn">import</span> <span class="n">YawningTitanRunError</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.game_modes.game_mode</span> <span class="kn">import</span> <span class="n">GameMode</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.game_modes.game_mode_db</span> <span class="kn">import</span> <span class="n">default_game_mode</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.network</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.network_db</span> <span class="kn">import</span> <span class="n">default_18_node_network</span>
+
+<span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="YawningTitanRun"><a class="viewcode-back" href="../../source/_autosummary/yawning_titan.yawning_titan_run.YawningTitanRun.html#yawning_titan.yawning_titan_run.YawningTitanRun">[docs]</a><span class="k">class</span> <span class="nc">YawningTitanRun</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ``YawningTitanRun`` class is the run class for training YT agents from a given set of parameters.</span>
+
+<span class="sd">    The ``YawningTitanRun`` class can be used &#39;straight out of the box&#39;, as all params have default values.</span>
+
+<span class="sd">    .. code::python</span>
+
+<span class="sd">        yt_run = YawningTitanRun()</span>
+
+<span class="sd">    The ``YawningTitanRun`` class can also be used manually by setting auto=False.</span>
+
+<span class="sd">    .. code::python</span>
+
+<span class="sd">        yt_run = YawningTitanRun(auto=False)</span>
+<span class="sd">        yt_run.setup()</span>
+<span class="sd">        yt_run.train()</span>
+<span class="sd">        yt_run.evaluate()</span>
+
+<span class="sd">    Trained agents can be saved by calling ``.save()``. If no path is provided, a path is generated using the</span>
+<span class="sd">    AGENTS_DIR, today&#39;s date, and the uuid of the instance of ``YawningTitanRun``.</span>
+
+<span class="sd">    .. code::python</span>
+
+<span class="sd">        yt_run = YawningTitanRun()</span>
+<span class="sd">        yt_run.save()</span>
+
+<span class="sd">    .. todo::</span>
+
+<span class="sd">        - Build a reporting functionality that captures all logs and eval and generates a PDF report.</span>
+<span class="sd">        - Add multiple training runs functionality for the same agent.</span>
+<span class="sd">        - Add the ability to load a saved agent and continue training it.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="YawningTitanRun.__init__"><a class="viewcode-back" href="../../source/_autosummary/yawning_titan.yawning_titan_run.html#yawning_titan.yawning_titan_run.YawningTitanRun.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">network</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Network</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">game_mode</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GameMode</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">red_agent_class</span><span class="o">=</span><span class="n">RedInterface</span><span class="p">,</span>
+        <span class="n">blue_agent_class</span><span class="o">=</span><span class="n">BlueInterface</span><span class="p">,</span>
+        <span class="n">print_metrics</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">show_metrics_every</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">collect_additional_per_ts_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">eval_freq</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">,</span>
+        <span class="n">total_timesteps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200000</span><span class="p">,</span>
+        <span class="n">training_runs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">n_eval_episodes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">warn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">render</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">logger</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Logger</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">output_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">auto</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The YawningTitanRun constructor.</span>
+
+<span class="sd">        # TODO: Add proper Sphinx mapping for classes/methods.</span>
+
+<span class="sd">        :param network: An instance of ``Network``.</span>
+<span class="sd">        :param game_mode: An instance of ``GameMode``.</span>
+<span class="sd">        :param red_agent_class: The agent/action set class used for the red agent.</span>
+<span class="sd">        :param blue_agent_class: The agent/action set class used for the blue agent.</span>
+<span class="sd">        :param print_metrics: Print the metrics if True. Default value = True.</span>
+<span class="sd">        :param show_metrics_every: Prints the metrics every ``show_metrics_every`` time steps. Default value = 10.</span>
+<span class="sd">        :param collect_additional_per_ts_data: Collects additional per-timestep data if True.Default value = False.</span>
+<span class="sd">        :param eval_freq: Evaluate the agent every ``eval_freq`` call of the callback. Default value = 10,000.</span>
+<span class="sd">        :param total_timesteps: The number of samples (env steps) to train on. Default value = 200000.</span>
+<span class="sd">        :param training_runs: The number of times the agent is trained.</span>
+<span class="sd">        :param n_eval_episodes: The number of episodes to evaluate the agent. Default value = 1.</span>
+<span class="sd">        :param deterministic: Whether the evaluation should use stochastic or deterministic actions. Default value =</span>
+<span class="sd">            False.</span>
+<span class="sd">        :param warn: Output additional warnings mainly related to the interaction with stable_baselines if True.</span>
+<span class="sd">            Default value = True.</span>
+<span class="sd">        :param render: Renders the environment during evaluation if True. Default value = False.</span>
+<span class="sd">        :param verbose: Verbosity level: 0 for no output, 1 for info messages (such as device or wrappers used),</span>
+<span class="sd">            2 for debug messages. Default value = 1.</span>
+<span class="sd">        :param logger: An optional custom logger to override the use of the default module logger.</span>
+<span class="sd">        :param output_dir: An optional output path for eval output and saved agent zip file. If none is provided,</span>
+<span class="sd">            a path is generated using the ``yawning_titan.AGENTS_DIR``, today&#39;s date, and the uuid of the instance</span>
+<span class="sd">            of ``YawningTitanRun``.</span>
+<span class="sd">        :param auto: If True, ``setup()``, ``train()``, and ``evaluate()`` are called automatically.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Give the run an uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid4</span><span class="p">())</span>
+
+        <span class="c1"># Initialise required instance variables as None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">NetworkInterface</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">red</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RedInterface</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blue</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BlueInterface</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GenericNetworkEnv</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PPO</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eval_callback</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EvalCallback</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Set the network using the network arg if one was passed,</span>
+        <span class="c1"># otherwise use the default 18 node network.</span>
+        <span class="k">if</span> <span class="n">network</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">:</span> <span class="n">Network</span> <span class="o">=</span> <span class="n">network</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">default_18_node_network</span><span class="p">()</span>
+
+        <span class="c1"># Set the game_mode using the game_mode arg if one was passed,</span>
+        <span class="c1"># otherwise use the game mode</span>
+        <span class="k">if</span> <span class="n">game_mode</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="p">:</span> <span class="n">GameMode</span> <span class="o">=</span> <span class="n">game_mode</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span> <span class="o">=</span> <span class="n">default_game_mode</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_red_agent_class</span> <span class="o">=</span> <span class="n">red_agent_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blue_agent_class</span> <span class="o">=</span> <span class="n">blue_agent_class</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_metrics</span> <span class="o">=</span> <span class="n">print_metrics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_metrics_every</span> <span class="o">=</span> <span class="n">show_metrics_every</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collect_additional_per_ts_data</span> <span class="o">=</span> <span class="n">collect_additional_per_ts_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eval_freq</span> <span class="o">=</span> <span class="n">eval_freq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span> <span class="o">=</span> <span class="n">total_timesteps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">training_runs</span> <span class="o">=</span> <span class="n">training_runs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_eval_episodes</span> <span class="o">=</span> <span class="n">n_eval_episodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span> <span class="o">=</span> <span class="n">deterministic</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">warn</span> <span class="o">=</span> <span class="n">warn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">render</span> <span class="o">=</span> <span class="n">render</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auto</span> <span class="o">=</span> <span class="n">auto</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">_LOGGER</span> <span class="k">if</span> <span class="n">logger</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">logger</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Run initialised&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">output_dir</span>
+
+        <span class="c1"># Automatically setup, train, and evaluate the agent if auto is True.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_args_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;uuid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="s2">&quot;network&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">json_serializable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="s2">&quot;game_mode&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">json_serializable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="s2">&quot;red_agent_class&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_red_agent_class</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s2">&quot;blue_agent_class&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blue_agent_class</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="s2">&quot;print_metrics&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_metrics</span><span class="p">,</span>
+            <span class="s2">&quot;show_metrics_every&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_metrics_every</span><span class="p">,</span>
+            <span class="s2">&quot;collect_additional_per_ts_data&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">collect_additional_per_ts_data</span><span class="p">,</span>
+            <span class="s2">&quot;eval_freq&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_freq</span><span class="p">,</span>
+            <span class="s2">&quot;total_timesteps&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span><span class="p">,</span>
+            <span class="s2">&quot;training_runs&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">training_runs</span><span class="p">,</span>
+            <span class="s2">&quot;n_eval_episodes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_eval_episodes</span><span class="p">,</span>
+            <span class="s2">&quot;deterministic&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span><span class="p">,</span>
+            <span class="s2">&quot;warn&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">warn</span><span class="p">,</span>
+            <span class="s2">&quot;render&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">,</span>
+            <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="s2">&quot;auto&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_get_new_ppo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PPO</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a new instance of ``stable_baselines.ppo.ppo.PPO``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">PPO</span><span class="p">(</span>
+            <span class="n">PPOMlp</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">tensorboard_log</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">PPO_TENSORBOARD_LOGS_DIR</span><span class="p">),</span>
+            <span class="n">seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">random_seed</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_load_existing_ppo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ppo_zip_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PPO</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load an existing ppo.zip file into ``stable_baselines.ppo.ppo.PPO``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">PPO</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+            <span class="n">ppo_zip_path</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+            <span class="n">tensorboard_log</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">PPO_TENSORBOARD_LOGS_DIR</span><span class="p">),</span>
+            <span class="n">seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">random_seed</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="YawningTitanRun.setup"><a class="viewcode-back" href="../../source/_autosummary/yawning_titan.yawning_titan_run.YawningTitanRun.html#yawning_titan.yawning_titan_run.YawningTitanRun.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ppo_zip_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs a setup of the ``NetworkInterface``, ``GenericNetworkEnv``, ``PPO`` algorithm.</span>
+
+<span class="sd">        The setup needs to be performed before training can occur.</span>
+
+<span class="sd">        :param new: If True, a new instance of PPO is generated. If False, a ppo_zip_path must be passed tooo.</span>
+<span class="sd">        :param ppo_zip_path: Optional path to a saved ppo.zip file. Required if new = False.</span>
+
+<span class="sd">        :raise AttributeError: When new=False and ppo_zip_path hasn&#39;t been provided.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">new</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ppo_zip_path</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Performing setup when new=False requires ppo_zip_path as the path of a saved ppo.zip file.&quot;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">_LOGGER</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">e</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="n">AGENTS_DIR</span><span class="p">,</span> <span class="s2">&quot;trained&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span> <span class="o">=</span> <span class="n">NetworkInterface</span><span class="p">(</span>
+            <span class="n">game_mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="p">,</span> <span class="n">network</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Network interface created&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">red</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_red_agent_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Red agent created&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">blue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blue_agent_class</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Blue agent created&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">GenericNetworkEnv</span><span class="p">(</span>
+            <span class="n">red_agent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">red</span><span class="p">,</span>
+            <span class="n">blue_agent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">blue</span><span class="p">,</span>
+            <span class="n">network_interface</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="p">,</span>
+            <span class="n">print_metrics</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">print_metrics</span><span class="p">,</span>
+            <span class="n">show_metrics_every</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">show_metrics_every</span><span class="p">,</span>
+            <span class="n">collect_additional_per_ts_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">collect_additional_per_ts_data</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: GenericNetworkEnv created&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Performing env check&quot;</span><span class="p">)</span>
+        <span class="n">check_env</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">warn</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Env checking complete&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: GenericNetworkEnv reset&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Instantiating agent&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">agent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_new_ppo</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">agent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_existing_ppo</span><span class="p">(</span><span class="n">ppo_zip_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Agent instantiated&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">eval_callback</span> <span class="o">=</span> <span class="n">EvalCallback</span><span class="p">(</span>
+            <span class="n">Monitor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)),</span>
+            <span class="n">eval_freq</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_freq</span><span class="p">,</span>
+            <span class="n">deterministic</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span><span class="p">,</span>
+            <span class="n">render</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Eval callback set&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="YawningTitanRun.train"><a class="viewcode-back" href="../../source/_autosummary/yawning_titan.yawning_titan_run.YawningTitanRun.html#yawning_titan.yawning_titan_run.YawningTitanRun.train">[docs]</a>    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">PPO</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Trains the agent.</span>
+
+<span class="sd">        :return: The trained instance of ``stable_baselines3.ppo.ppo.PPO``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">eval_callback</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Performing agent training&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">training_runs</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">learn</span><span class="p">(</span>
+                    <span class="n">total_timesteps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span><span class="p">,</span>
+                    <span class="n">n_eval_episodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_eval_episodes</span><span class="p">,</span>
+                    <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_callback</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Training run </span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> complete&quot;</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: GenericNetworkEnv reset&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Agent training complete&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot train the agent for YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2"> as the run has not been setup. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Call .setup() on the instance of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> to setup the run.&quot;</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="YawningTitanRun.evaluate"><a class="viewcode-back" href="../../source/_autosummary/yawning_titan.yawning_titan_run.YawningTitanRun.html#yawning_titan.yawning_titan_run.YawningTitanRun.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluates the trained agent.</span>
+
+<span class="sd">        :return: Mean reward per episode, std of reward per episode.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">evaluate_policy</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">n_eval_episodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">n_eval_episodes</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot evaluate YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2"> as the agent has not been trained. &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Call .train() on the instance of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> to train the agent.&quot;</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="YawningTitanRun.save"><a class="viewcode-back" href="../../source/_autosummary/yawning_titan.yawning_titan_run.YawningTitanRun.html#yawning_titan.yawning_titan_run.YawningTitanRun.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Saves the trained agent using the stable_baselines3 save as zip functionality.</span>
+
+<span class="sd">        The instance of PPO is saved to ppo.zip.</span>
+
+<span class="sd">        The YawningTitanRun args are saved to args.json.</span>
+
+<span class="sd">        The YawningTitanRun.uuid is saved to UUID.</span>
+
+
+<span class="sd">        :return: The path the agent has been saved to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="p">:</span>
+            <span class="c1"># Save the agent</span>
+            <span class="n">agent_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;ppo.zip&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">agent_path</span><span class="p">)</span>
+
+            <span class="c1"># Dump the args down to yaml file</span>
+            <span class="n">args_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;args.json&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_args_dict</span><span class="p">(),</span> <span class="n">file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+            <span class="c1"># Write the UUID file</span>
+            <span class="n">uuid_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;UUID&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">uuid_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Saved trained agent (Stable Baselines3 PPO) to: </span><span class="si">{</span><span class="n">agent_path</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">agent_path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Cannot save the trained agent from YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2"> as the agent has not been &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;trained. Call .train() on the instance of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> to train the agent.&quot;</span>
+            <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_build_inventory_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Walk the output_dir to build an inventory file</span>
+        <span class="n">inventory_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;INVENTORY&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">inventory_path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">inventory_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Building INVENTORY file </span><span class="si">{</span><span class="n">inventory_path</span><span class="si">}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">inventory_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inventory</span><span class="p">:</span>
+            <span class="n">inventory</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;file, ST_SIZE&quot;</span><span class="p">)</span>
+            <span class="n">inventory</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">file</span> <span class="o">!=</span> <span class="s2">&quot;INVENTORY&quot;</span><span class="p">:</span>
+                        <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+                        <span class="n">dir_path</span> <span class="o">=</span> <span class="n">file_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+                        <span class="n">file_stat</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                        <span class="n">inventory</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dir_path</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">file_stat</span><span class="o">.</span><span class="n">st_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">inventory</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: File added to inventory: </span><span class="si">{</span><span class="n">dir_path</span><span class="si">}</span><span class="s2">.&quot;</span>
+                        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Finished building INVENTORY file.&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="YawningTitanRun.export"><a class="viewcode-back" href="../../source/_autosummary/yawning_titan.yawning_titan_run.YawningTitanRun.html#yawning_titan.yawning_titan_run.YawningTitanRun.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Export the YawningTitanRun as a zip.</span>
+
+<span class="sd">        The contents of output_dir is archived to the agents_dir exported dir.</span>
+
+<span class="sd">        Included is an INVENTORY file that contains all files and their sizes. This is used for file verification when</span>
+<span class="sd">        an exported YawningTitanRun is imported.</span>
+
+<span class="sd">        :return: The exported filepath as a str.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Performing export.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_inventory_file</span><span class="p">()</span>
+
+        <span class="c1"># Make a zip archive of the output dir</span>
+        <span class="n">exported_root</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">AGENTS_DIR</span><span class="p">,</span> <span class="s2">&quot;exported&quot;</span><span class="p">))</span>
+        <span class="n">exported_root</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">export_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">exported_root</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;EXPORTED_YT_RUN_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Making a zip archive of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="si">}</span><span class="s2"> and writing to </span><span class="si">{</span><span class="n">export_path</span><span class="si">}</span><span class="s2">.zip.&quot;</span>
+        <span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">make_archive</span><span class="p">(</span><span class="n">export_path</span><span class="p">,</span> <span class="s2">&quot;zip&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;YT run  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">: Export completed.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">export_path</span><span class="si">}</span><span class="s2">.zip&quot;</span></div>
+
+    <span class="c1"># TODO: Remove once proper AgentClass sub-classes have been created and mapped as a function in the main module.</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_get_agent_class_from_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">agent_class_str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Maps AgentClass string names to their actual class.&quot;&quot;&quot;</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;RedInterface&quot;</span><span class="p">:</span> <span class="n">RedInterface</span><span class="p">,</span>
+            <span class="s2">&quot;SineWaveRedAgent&quot;</span><span class="p">:</span> <span class="n">SineWaveRedAgent</span><span class="p">,</span>
+            <span class="s2">&quot;FixedRedAgent&quot;</span><span class="p">:</span> <span class="n">FixedRedAgent</span><span class="p">,</span>
+            <span class="s2">&quot;NSARed&quot;</span><span class="p">:</span> <span class="n">NSARed</span><span class="p">,</span>
+            <span class="s2">&quot;BlueInterface&quot;</span><span class="p">:</span> <span class="n">BlueInterface</span><span class="p">,</span>
+            <span class="s2">&quot;SimpleBlue&quot;</span><span class="p">:</span> <span class="n">SimpleBlue</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">mapping</span><span class="p">[</span><span class="n">agent_class_str</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_load_args_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load an args.json file and returns as a dict.</span>
+
+<span class="sd">        :param path: A saved YawningTitanRun path.</span>
+<span class="sd">        :return: The args.json file as a dict.</span>
+
+<span class="sd">        :raise ValueError: When an args.json file doesn&#39;t exist in the provided path. Or when it does exist but it&#39;s</span>
+<span class="sd">            keys aren&#39;t correct.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">args_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;args.json&quot;</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Cannot load trained agent as the args file (</span><span class="si">{</span><span class="n">args_path</span><span class="si">}</span><span class="s2">) &quot;</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">args_path</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">args</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">==</span> <span class="n">YawningTitanRun</span><span class="p">(</span><span class="n">auto</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">_args_dict</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">args</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s2">&quot;network&quot;</span><span class="p">])</span>
+                <span class="n">args</span><span class="p">[</span><span class="s2">&quot;game_mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">GameMode</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s2">&quot;game_mode&quot;</span><span class="p">])</span>
+                <span class="n">args</span><span class="p">[</span><span class="s2">&quot;red_agent_class&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_agent_class_from_str</span><span class="p">(</span>
+                    <span class="n">args</span><span class="p">[</span><span class="s2">&quot;red_agent_class&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">args</span><span class="p">[</span><span class="s2">&quot;blue_agent_class&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_agent_class_from_str</span><span class="p">(</span>
+                    <span class="n">args</span><span class="p">[</span><span class="s2">&quot;blue_agent_class&quot;</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="n">args</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Args file keys don&#39;t match</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> is corrupted.&quot;</span>
+                <span class="n">_LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Args file doesn&#39;t exist</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span>
+            <span class="n">_LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+<div class="viewcode-block" id="YawningTitanRun.load"><a class="viewcode-back" href="../../source/_autosummary/yawning_titan.yawning_titan_run.YawningTitanRun.html#yawning_titan.yawning_titan_run.YawningTitanRun.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load and return a saved YawningTitanRun.</span>
+
+<span class="sd">        YawningTitanRun&#39;s that have auto=True will not be automatically ran on load.</span>
+
+<span class="sd">        :param path: A saved YawningTitanRun path.</span>
+<span class="sd">        :return: An instance of YawningTitanRun.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_args_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="n">uuid</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;uuid&quot;</span><span class="p">)</span>
+        <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+
+        <span class="n">yt_run</span> <span class="o">=</span> <span class="n">YawningTitanRun</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">,</span> <span class="n">auto</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">yt_run</span><span class="o">.</span><span class="n">uuid</span> <span class="o">=</span> <span class="n">uuid</span>  <span class="c1"># We&#39;ll allow it here :)</span>
+        <span class="n">yt_run</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">new</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ppo_zip_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;ppo.zip&quot;</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">yt_run</span></div>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_verify_import_export_zip_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">unzip_path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Verifies an INVENTORY file with the files contained in its parent dir.</span>
+
+<span class="sd">        :param unzip_path: An unzipped exported YawningTitanRun path.</span>
+<span class="sd">        :return: Whether the INVENTORY file matches the files.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unzip_path</span><span class="p">,</span> <span class="s2">&quot;INVENTORY&quot;</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">inventory_file</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">inventory_file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">file_name</span><span class="p">,</span> <span class="n">st_size</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">unzip_path</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+                <span class="n">target_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unzip_path</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">target_file_path</span><span class="p">)</span>
+                <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempting to verify file: </span><span class="si">{</span><span class="n">target_file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">target_file_path</span><span class="p">):</span>
+                    <span class="n">file_stat</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">target_file_path</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">st_size</span> <span class="o">!=</span> <span class="n">file_stat</span><span class="o">.</span><span class="n">st_size</span><span class="p">:</span>
+                        <span class="c1"># File Size doesn&#39;t match</span>
+                        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;   Verification failed, file size </span><span class="si">{</span><span class="n">file_stat</span><span class="o">.</span><span class="n">st_size</span><span class="si">}</span><span class="s2"> doesn&#39;t match </span><span class="si">{</span><span class="n">st_size</span><span class="si">}</span><span class="s2">.&quot;</span>
+                        <span class="p">)</span>
+                        <span class="k">return</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># File doesn&#39;t exist</span>
+                    <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;   Verification failed, file doesn&#39;t exist.&quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+            <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;   Verification successful.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="YawningTitanRun.import_from_export"><a class="viewcode-back" href="../../source/_autosummary/yawning_titan.yawning_titan_run.YawningTitanRun.html#yawning_titan.yawning_titan_run.YawningTitanRun.import_from_export">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">import_from_export</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">exported_zip_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overwrite_existing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">YawningTitanRun</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Import and return an exported YawningTitanRun.</span>
+
+<span class="sd">        YawningTitanRun&#39;s that have auto=True will not be automatically ran on import.</span>
+
+<span class="sd">        :param exported_zip_file_path: The path of an exported YawningTitanRun.</span>
+<span class="sd">        :param overwrite_existing: If True, if the uuid of the imported agent already exists in the trainer agents dir</span>
+<span class="sd">            it is overwritten.</span>
+<span class="sd">        :return: The imported instance of YawningTitanRun.</span>
+
+<span class="sd">        :raise YawningTitanRunError: When the INVENTORY file fails its verification.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Importing exported agent from </span><span class="si">{</span><span class="n">exported_zip_file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="c1"># Unzip into trained agents folder</span>
+        <span class="n">unzip_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                <span class="n">AGENTS_DIR</span><span class="p">,</span> <span class="s2">&quot;trained&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()),</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid4</span><span class="p">())</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">unzip_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">unpack_archive</span><span class="p">(</span><span class="n">exported_zip_file_path</span><span class="p">,</span> <span class="n">unzip_path</span><span class="p">,</span> <span class="s2">&quot;zip&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Verify the contents</span>
+        <span class="n">verified</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_verify_import_export_zip_file</span><span class="p">(</span><span class="n">unzip_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">verified</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Failed to verify the contents while importing YawningTitanRun from </span><span class="si">{</span><span class="n">exported_zip_file_path</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">YawningTitanRunError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">YawningTitanRunError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">_LOGGER</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">e</span>
+
+        <span class="c1"># Rename unzip_dir using the UUID</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unzip_path</span><span class="p">,</span> <span class="s2">&quot;UUID&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">uuid</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">new_unzip_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">AGENTS_DIR</span><span class="p">,</span> <span class="s2">&quot;trained&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()),</span> <span class="n">uuid</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">new_unzip_path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">unzip_path</span><span class="p">,</span> <span class="n">new_unzip_path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Has already been imported or was created on this machine</span>
+            <span class="k">if</span> <span class="n">overwrite_existing</span><span class="p">:</span>
+                <span class="c1"># Overwrite</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">new_unzip_path</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">unzip_path</span><span class="p">,</span> <span class="n">new_unzip_path</span><span class="p">)</span>
+                <span class="n">_LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Existing YawningTitanRun overwritten at </span><span class="si">{</span><span class="n">new_unzip_path</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Pass new_unzip_path to .load and return</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">new_unzip_path</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;uuid=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&#39;, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;network=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;game_mode=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;red_agent_class=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_red_agent_class</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;blue_agent_class=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_blue_agent_class</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;print_metrics=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">print_metrics</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;show_metrics_every=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">show_metrics_every</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;collect_additional_per_ts_data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">collect_additional_per_ts_data</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;eval_freq=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">eval_freq</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;total_timesteps=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">total_timesteps</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;training_runs=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">training_runs</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;n_eval_episodes=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">n_eval_episodes</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;deterministic=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">deterministic</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;warn=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">warn</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;render=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;verbose=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;)&quot;</span>
+        <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.environment.observation\_space\_config.ObservationSpace
+=============================================================================
+
+.. currentmodule:: yawning_titan.config.environment.observation_space_config
+
+.. autoclass:: ObservationSpace
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ObservationSpace.get_config_elements
+      ~ObservationSpace.get_non_config_elements
+      ~ObservationSpace.set_from_dict
+      ~ObservationSpace.set_from_yaml
+      ~ObservationSpace.stringify
+      ~ObservationSpace.to_dict
+      ~ObservationSpace.to_legacy_dict
+      ~ObservationSpace.to_yaml
+      ~ObservationSpace.validate
+      ~ObservationSpace.validate_elements
+   
+   
+
+   
+   
+   

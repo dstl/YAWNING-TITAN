@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Using the Experiment Runner &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Using the Experiment Runner</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="using-the-experiment-runner">
+<h1>Using the Experiment Runner<a class="headerlink" href="#using-the-experiment-runner" title="Permalink to this heading"></a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The experiment runner is currently not supported and does not work with the <code class="docutils literal notranslate"><span class="pre">GenericEnv()</span></code>.</p>
+</div>
+<p>YAWNING TITAN comes with a command line interface tool called <cite>experiment_runner.py</cite> which allows new users to begin experimenting with Reinforcement learning approaches in the environments
+included. The experiment runner is a way to run some of specific environments such as the 4 node environment</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python3</span> <span class="n">experiment_runner</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">help</span>
+
+<span class="n">usage</span><span class="p">:</span> <span class="n">experiment_runner</span><span class="o">.</span><span class="n">py</span>
+        <span class="o">--</span><span class="n">agent</span> <span class="p">{</span><span class="n">random</span><span class="p">,</span><span class="nb">all</span><span class="p">,</span><span class="n">ppo</span><span class="p">,</span><span class="n">a2c</span><span class="p">,</span><span class="n">dqn</span><span class="p">}</span>
+        <span class="o">--</span><span class="n">env</span> <span class="p">{</span><span class="n">five</span><span class="o">-</span><span class="n">node</span><span class="o">-</span><span class="n">def</span><span class="o">-</span><span class="n">v0</span><span class="p">,</span><span class="n">four</span><span class="o">-</span><span class="n">node</span><span class="o">-</span><span class="n">def</span><span class="o">-</span><span class="n">v0</span><span class="p">,</span><span class="n">network</span><span class="o">-</span><span class="n">graph</span><span class="o">-</span><span class="n">explore</span><span class="o">-</span><span class="n">v0</span><span class="p">,</span><span class="mi">18</span><span class="o">-</span><span class="n">node</span><span class="o">-</span><span class="n">env</span><span class="o">-</span><span class="n">v0</span><span class="p">}</span>
+        <span class="o">--</span><span class="n">training</span><span class="o">-</span><span class="n">period</span> <span class="n">TRAINING_PERIOD</span>
+        <span class="p">[</span><span class="o">--</span><span class="n">help</span><span class="p">]</span>
+        <span class="p">[</span><span class="o">--</span><span class="n">action</span><span class="o">-</span><span class="n">loop</span> <span class="p">{</span><span class="n">gif</span><span class="p">,</span><span class="n">standard</span><span class="p">}]</span>
+        <span class="p">[</span><span class="o">--</span><span class="n">algo</span><span class="o">-</span><span class="n">backend</span> <span class="p">{</span><span class="n">sb3</span><span class="p">,</span><span class="n">rllib</span><span class="p">}]</span>
+        <span class="p">[</span><span class="o">--</span><span class="n">dl</span><span class="o">-</span><span class="n">backend</span> <span class="n">DL_BACKEND</span><span class="p">]</span>
+        <span class="p">[</span><span class="o">--</span><span class="nb">eval</span><span class="o">-</span><span class="n">ep</span><span class="o">-</span><span class="n">count</span> <span class="n">EVAL_EP_COUNT</span><span class="p">]</span>
+        <span class="p">[</span><span class="o">--</span><span class="n">post</span><span class="o">-</span><span class="n">train</span><span class="p">]</span>
+        <span class="p">[</span><span class="o">--</span><span class="n">debug</span><span class="p">]</span>
+        <span class="p">[</span><span class="o">--</span><span class="n">debug</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">file</span><span class="p">]</span>
+        <span class="p">[</span><span class="o">--</span><span class="n">save</span><span class="o">-</span><span class="n">agent</span><span class="p">]</span>
+        <span class="p">[</span><span class="o">--</span><span class="n">output</span><span class="o">-</span><span class="n">raw</span><span class="o">-</span><span class="n">metrics</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Arguments:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">-h,</span> <span class="pre">--help</span></code></dt><dd><p>Show this help message and exit</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--agent</span> <span class="pre">{random,all,ppo,a2c,dqn},</span> <span class="pre">-a</span> <span class="pre">{random,all,ppo,a2c,dqn}</span></code></dt><dd><p>Which algorithm to use to train an agent</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--env</span> <span class="pre">{five-node-def-v0,four-node-def-v0,network-graph-explore-v0,18-node-env-v0},</span> <span class="pre">-e</span> <span class="pre">{five-node-def-v0,four-node-def-v0,network-graph-explore-v0,18-node-env-v0}</span></code></dt><dd><p>Which environment to use</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--action-loop</span> <span class="pre">{gif,standard},</span> <span class="pre">-l</span> <span class="pre">{gif,standard}</span></code></dt><dd><p>Which non-training loop to use. Render/Gif output or no output</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--training-period</span> <span class="pre">TRAINING_PERIOD,</span> <span class="pre">-tt</span> <span class="pre">TRAINING_PERIOD</span></code></dt><dd><p>Length of agent training period</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--algo-backend</span> <span class="pre">{sb3,rllib},</span> <span class="pre">-ab</span> <span class="pre">{sb3,rllib}</span></code></dt><dd><p>Which Deep Reinforcement Learning library to use</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--dl-backend</span> <span class="pre">DL_BACKEND,</span> <span class="pre">-db</span> <span class="pre">DL_BACKEND</span></code></dt><dd><p>Which deep learning backend to use, only important for Ray based experiments</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--eval-ep-count</span> <span class="pre">EVAL_EP_COUNT,</span> <span class="pre">-ec</span> <span class="pre">EVAL_EP_COUNT</span></code></dt><dd><p>Number of episodes to run post train</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--post-train</span></code></dt><dd><p>Toggle to run the agent once trained and render if available</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--debug</span></code></dt><dd><p>Toggle to turn on debugging to the terminal</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--debug-to-file</span></code></dt><dd><p>Toggle to save debugging info to file</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--save-agent</span></code></dt><dd><p>Toggle to save the trained agent</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--output-raw-metrics</span></code></dt><dd><p>Toggle to output raw evaluation metrics alongside summary statistics</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>An example command might look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python3</span> <span class="n">experiment_runner</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">agent</span> <span class="n">ppo</span> <span class="o">--</span><span class="n">env</span> <span class="mi">18</span><span class="o">-</span><span class="n">node</span><span class="o">-</span><span class="n">env</span><span class="o">-</span><span class="n">v0</span> <span class="o">--</span><span class="n">training</span><span class="o">-</span><span class="n">period</span> <span class="mi">10000</span>
+</pre></div>
+</div>
+<p>This will begin the training of a Proximal Policy Optimisation agent using the Stable Baselines 3 RL algorithm library within the environment outlined within the papers published by the NSA which can be
+found at <a class="reference external" href="https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9">https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9</a> for a total of 10K training timesteps. Once the training
+period has completed, the agent will enter an evaluation phase, run through a specified number of evaluation episodes (defaults to 25) and then output some summary statistics.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

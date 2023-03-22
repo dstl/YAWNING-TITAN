@@ -1,0 +1,44 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.game\_modes.components.game\_rules.GameRules
+===========================================================
+
+.. currentmodule:: yawning_titan.game_modes.components.game_rules
+
+.. autoclass:: GameRules
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GameRules.get_config_elements
+      ~GameRules.get_non_config_elements
+      ~GameRules.set_from_dict
+      ~GameRules.set_from_yaml
+      ~GameRules.stringify
+      ~GameRules.to_dict
+      ~GameRules.to_legacy_dict
+      ~GameRules.to_yaml
+      ~GameRules.validate
+      ~GameRules.validate_elements
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GameRules.config_groups
+      ~GameRules.config_items
+   
+   

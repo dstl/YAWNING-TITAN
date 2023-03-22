@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.integrations.dcbo.rl_baseline &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.integrations.dcbo.rl_baseline</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for yawning_titan.integrations.dcbo.rl_baseline</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Generates a Reinforcement Learning (RL) baseline agent.</span>
+
+<span class="sd">Uses the same network and scenario config as used to generated DCBO data and</span>
+<span class="sd">saves training metrics to tensorboard.</span>
+
+<span class="sd">.. warning::</span>
+
+<span class="sd">    This module is being deprecated in a future release. This release will see</span>
+<span class="sd">    the introduction of a Yawning-Titan runner module. This specific</span>
+<span class="sd">    &#39;Reinforcement Learning (RL) baseline agent&#39; example will be available as a</span>
+<span class="sd">    pre-defined configurable run.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">stable_baselines3</span> <span class="kn">import</span> <span class="n">PPO</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan.agents.sinewave_red</span> <span class="kn">import</span> <span class="n">SineWaveRedAgent</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.core.blue_interface</span> <span class="kn">import</span> <span class="n">BlueInterface</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.game_modes.game_mode_db</span> <span class="kn">import</span> <span class="n">dcbo_game_mode</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.network_db</span> <span class="kn">import</span> <span class="n">dcbo_base_network</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.yawning_titan_run</span> <span class="kn">import</span> <span class="n">YawningTitanRun</span>
+
+
+<div class="viewcode-block" id="generate"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.integrations.dcbo.rl_baseline.generate.html#yawning_titan.integrations.dcbo.rl_baseline.generate">[docs]</a><span class="k">def</span> <span class="nf">generate</span><span class="p">(</span>
+    <span class="n">eval_freq</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">,</span>
+    <span class="n">total_timesteps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">350000</span><span class="p">,</span>
+    <span class="n">n_eval_episodes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">print_metrics</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">show_metrics_every</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">collect_additional_per_ts_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">warn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">render</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">save</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">PPO</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">PPO</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a Reinforcement Learning (RL) baseline agent.</span>
+
+<span class="sd">    :param eval_freq: Evaluate the agent every ``eval_freq`` call of the</span>
+<span class="sd">        callback. Default value = 20,000.</span>
+<span class="sd">    :param total_timesteps: The number of samples (env steps) to train on.</span>
+<span class="sd">        Default value = 350,000.</span>
+<span class="sd">    :param n_eval_episodes: The number of episodes to evaluate the agent.</span>
+<span class="sd">        Default value = 1.</span>
+<span class="sd">    :param deterministic: Whether the evaluation should use stochastic or</span>
+<span class="sd">        deterministic actions. Default value = False.</span>
+<span class="sd">    :param print_metrics: Print the metrics if True. Default value = True.</span>
+<span class="sd">    :param show_metrics_every: Prints the metrics every ``show_metrics_every``</span>
+<span class="sd">        timesteps. Default value = 10.</span>
+<span class="sd">    :param collect_additional_per_ts_data: Collects additional per-timestep</span>
+<span class="sd">        data if True.Default value = False.</span>
+<span class="sd">    :param warn: Output additional warnings mainly related to the</span>
+<span class="sd">        interaction with stable_baselines if True. Default value = True.</span>
+<span class="sd">    :param render: Renders the environment during evaluation if True. Default</span>
+<span class="sd">        value = False.</span>
+<span class="sd">    :param verbose: Verbosity level: 0 for no output, 1 for info messages</span>
+<span class="sd">        (such as device or wrappers used), 2 for debug messages. Default</span>
+<span class="sd">        value = 1.</span>
+<span class="sd">    :param save: If True, saves the trained agent using the stable_baselines3 save as zip functionality.</span>
+<span class="sd">    :return: A trained agent as an instance of</span>
+<span class="sd">        :class:`stable_baselines3.ppo.ppo.PPO`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">yt_run</span> <span class="o">=</span> <span class="n">YawningTitanRun</span><span class="p">(</span>
+        <span class="n">network</span><span class="o">=</span><span class="n">dcbo_base_network</span><span class="p">(),</span>
+        <span class="n">game_mode</span><span class="o">=</span><span class="n">dcbo_game_mode</span><span class="p">(),</span>
+        <span class="n">red_agent_class</span><span class="o">=</span><span class="n">SineWaveRedAgent</span><span class="p">,</span>
+        <span class="n">blue_agent_class</span><span class="o">=</span><span class="n">BlueInterface</span><span class="p">,</span>
+        <span class="n">eval_freq</span><span class="o">=</span><span class="n">eval_freq</span><span class="p">,</span>
+        <span class="n">total_timesteps</span><span class="o">=</span><span class="n">total_timesteps</span><span class="p">,</span>
+        <span class="n">n_eval_episodes</span><span class="o">=</span><span class="n">n_eval_episodes</span><span class="p">,</span>
+        <span class="n">deterministic</span><span class="o">=</span><span class="n">deterministic</span><span class="p">,</span>
+        <span class="n">print_metrics</span><span class="o">=</span><span class="n">print_metrics</span><span class="p">,</span>
+        <span class="n">show_metrics_every</span><span class="o">=</span><span class="n">show_metrics_every</span><span class="p">,</span>
+        <span class="n">collect_additional_per_ts_data</span><span class="o">=</span><span class="n">collect_additional_per_ts_data</span><span class="p">,</span>
+        <span class="n">warn</span><span class="o">=</span><span class="n">warn</span><span class="p">,</span>
+        <span class="n">render</span><span class="o">=</span><span class="n">render</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">yt_run</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">yt_run</span><span class="o">.</span><span class="n">agent</span><span class="p">,</span> <span class="n">path</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">yt_run</span><span class="o">.</span><span class="n">agent</span><span class="p">,</span> <span class="kc">None</span></div>
+
+
+<span class="n">generate</span><span class="p">(</span><span class="n">total_timesteps</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

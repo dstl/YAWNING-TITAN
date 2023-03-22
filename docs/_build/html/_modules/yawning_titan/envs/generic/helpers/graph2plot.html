@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.envs.generic.helpers.graph2plot &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.envs.generic.helpers.graph2plot</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for yawning_titan.envs.generic.helpers.graph2plot</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">statistics</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.lines</span> <span class="kn">import</span> <span class="n">Line2D</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.network</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.node</span> <span class="kn">import</span> <span class="n">Node</span>
+
+
+<div class="viewcode-block" id="repeat_check"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.helpers.graph2plot.repeat_check.html#yawning_titan.envs.generic.helpers.graph2plot.repeat_check">[docs]</a><span class="k">def</span> <span class="nf">repeat_check</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">legend_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Line2D</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if a node already exists by comparing the nodes colour and description with nodes already in the legend.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        node: A node dict.</span>
+<span class="sd">        legend_list: The legend list.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ``True`` if is already exists, otherwise ``False``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">legend</span> <span class="ow">in</span> <span class="n">legend_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">legend</span><span class="o">.</span><span class="n">get_markerfacecolor</span><span class="p">()</span> <span class="o">==</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;colour&quot;</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="n">legend</span><span class="o">.</span><span class="n">get_label</span><span class="p">()</span> <span class="o">==</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="CustomEnvGraph"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.helpers.graph2plot.CustomEnvGraph.html#yawning_titan.envs.generic.helpers.graph2plot.CustomEnvGraph">[docs]</a><span class="k">class</span> <span class="nc">CustomEnvGraph</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A network graph rendering environment for Open AI Gym use.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CustomEnvGraph.__init__"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.helpers.graph2plot.html#yawning_titan.envs.generic.helpers.graph2plot.CustomEnvGraph.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialise the CustomEnvGraph that is used to visualise and render node environments.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            title: The name of the plot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="c1"># Create subplot for network graph drawing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis_ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot2grid</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">rowspan</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">colspan</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span>
+            <span class="c1"># left=0.11, bottom=0.24, right=0.90, top=0.90, wspace=0.2, hspace=0</span>
+            <span class="n">left</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
+            <span class="n">bottom</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+            <span class="n">right</span><span class="o">=</span><span class="mf">0.80</span><span class="p">,</span>
+            <span class="n">top</span><span class="o">=</span><span class="mf">0.90</span><span class="p">,</span>
+            <span class="n">wspace</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
+            <span class="n">hspace</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Show the graph without blocking the rest of the program</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CustomEnvGraph.render"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.helpers.graph2plot.CustomEnvGraph.html#yawning_titan.envs.generic.helpers.graph2plot.CustomEnvGraph.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">current_step</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">g</span><span class="p">:</span> <span class="n">Network</span><span class="p">,</span>
+        <span class="c1"># pos: dict,</span>
+        <span class="c1"># compromised_nodes: dict,</span>
+        <span class="c1"># uncompromised_nodes: list,</span>
+        <span class="n">attacked_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]],</span>
+        <span class="n">current_time_step_reward</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="c1"># red_previous_node,</span>
+        <span class="c1"># vulnerability_dict: dict,</span>
+        <span class="n">made_safe_nodes</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="c1"># title: str,</span>
+        <span class="c1"># special_nodes: dict = None,</span>
+        <span class="c1"># entrance_nodes: list = None,</span>
+        <span class="n">show_only_blue_view</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">target_node</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">show_node_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Render the current network into an axis.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            current_step: the current step in the environment (int)</span>
+<span class="sd">            g: a networkx object that stores the current connectivity (networkx graph)</span>
+<span class="sd">            pos: a dictionary that contains the points and their positions</span>
+<span class="sd">            compromised_nodes: a dictionary of all the compromised nodes and a boolean value if blue can see the intrusion or not</span>
+<span class="sd">            uncompromised_nodes: a list of all the uncompromised nodes</span>
+<span class="sd">            attacked_nodes: a list of the nodes where an attack is happening</span>
+<span class="sd">                (infected node, target node)</span>
+<span class="sd">            current_time_step_reward: the current total reward</span>
+<span class="sd">            red_previous_node: CURRENTLY NOT USED</span>
+<span class="sd">            vulnerability_dict: A dictionary that stores the vulnerability of the nodes</span>
+<span class="sd">            made_safe_nodes: a list of nodes that the blue agent has made safe this turn</span>
+<span class="sd">            title: The title for the render</span>
+<span class="sd">            special_nodes: A dictionary containing dictionaries of: nodes, node descriptions and colours for the nodes</span>
+<span class="sd">            entrance_nodes: Nodes that serve as a gateway for the red agent to be able to access the network</span>
+<span class="sd">            show_only_blue_view: If true only shows what the blue agent can see</span>
+<span class="sd">            show_node_names: Show the names of nodes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># arrange nodes in graph for matplot layout:</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">set_node_positions</span><span class="p">()</span>
+
+        <span class="c1"># If no value for  entrance nodes is passed in then it is set to an empty list</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis_ax</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="n">special_node_info</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;high_value_node&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;high value node&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;colour&quot;</span><span class="p">:</span> <span class="s2">&quot;#da2fed&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Creates a list that contains the details for the legend</span>
+        <span class="n">legend_objects</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="c1"># Each item in the legend is an marker with a colour and a description</span>
+            <span class="c1"># Compromised Nodes</span>
+            <span class="n">Line2D</span><span class="p">(</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+                <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Compromised Node&quot;</span><span class="p">,</span>
+                <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="c1"># Vulnerable safe nodes</span>
+            <span class="n">Line2D</span><span class="p">(</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+                <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;#00FF13&quot;</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Safe Node: Weak&quot;</span><span class="p">,</span>
+                <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="c1"># Safe nodes with low vulnerability</span>
+            <span class="n">Line2D</span><span class="p">(</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+                <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;#006007&quot;</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Safe Node: Strong&quot;</span><span class="p">,</span>
+                <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="c1"># Nodes that have just been taken over by red</span>
+            <span class="n">Line2D</span><span class="p">(</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+                <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Attacked Node&quot;</span><span class="p">,</span>
+                <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="c1"># The nodes that blue has &quot;patched&quot; or &quot;fixed&quot; this turn</span>
+            <span class="n">Line2D</span><span class="p">(</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+                <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;#4ef2e7&quot;</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Blue Patch&quot;</span><span class="p">,</span>
+                <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+        <span class="c1"># If a target node is specified add to the legend</span>
+        <span class="k">if</span> <span class="n">target_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">legend_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Line2D</span><span class="p">(</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+                    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+                    <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;#2c195e&quot;</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Target Node&quot;</span><span class="p">,</span>
+                    <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="c1"># plots the target node</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">target_node</span><span class="o">.</span><span class="n">x_pos</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">target_node</span><span class="o">.</span><span class="n">y_pos</span><span class="p">],</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#2c195e&quot;</span><span class="p">,</span>
+                <span class="n">s</span><span class="o">=</span><span class="mi">324</span><span class="p">,</span>
+                <span class="n">zorder</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">legend_objects</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="c1"># An edge that red has attacked along this turn</span>
+                <span class="n">Line2D</span><span class="p">(</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+                    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">,</span>
+                    <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Attack Path&quot;</span><span class="p">,</span>
+                    <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="c1"># An edge</span>
+                <span class="n">Line2D</span><span class="p">(</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span>
+                    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;_&quot;</span><span class="p">,</span>
+                    <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Connection&quot;</span><span class="p">,</span>
+                    <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># If only showing the blue view then only render red nodes that blue can see</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">show_only_blue_view</span><span class="p">:</span>
+            <span class="n">legend_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Line2D</span><span class="p">(</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+                    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">bf</span><span class="si">{O}</span><span class="s2">$&quot;</span><span class="p">,</span>
+                    <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Unknown Compromise&quot;</span><span class="p">,</span>
+                    <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">legend_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Line2D</span><span class="p">(</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+                    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">bf</span><span class="si">{O}</span><span class="s2">$&quot;</span><span class="p">,</span>
+                    <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Known Compromise&quot;</span><span class="p">,</span>
+                    <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="c1"># Some environments may have special custom nodes that they want to add</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">special_node_info</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">node_info</span> <span class="ow">in</span> <span class="n">special_node_info</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="c1"># only insert if the legend is not in the list yet</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">repeat_check</span><span class="p">(</span><span class="n">node_info</span><span class="p">,</span> <span class="n">legend_objects</span><span class="p">):</span>
+                    <span class="c1"># Inserts the object into the legends at position 3. This is because it looks better if there are any</span>
+                    <span class="c1"># special nodes added that they are added at the some point as the other nodes in the legend</span>
+                    <span class="n">legend_objects</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+                        <span class="mi">3</span><span class="p">,</span>
+                        <span class="n">Line2D</span><span class="p">(</span>
+                            <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                            <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+                            <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+                            <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">node_info</span><span class="p">[</span><span class="s2">&quot;colour&quot;</span><span class="p">],</span>
+                            <span class="n">label</span><span class="o">=</span><span class="n">node_info</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">],</span>
+                            <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+                        <span class="p">),</span>
+                    <span class="p">)</span>
+
+        <span class="c1"># If entrance nodes are used then they are added to the legend</span>
+        <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">entry_nodes</span><span class="p">:</span>
+            <span class="n">legend_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">Line2D</span><span class="p">(</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+                    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;$</span><span class="se">\\</span><span class="s2">bf</span><span class="si">{E}</span><span class="s2">$&quot;</span><span class="p">,</span>
+                    <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+                    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Entry Node&quot;</span><span class="p">,</span>
+                    <span class="n">markersize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="c1"># plots all of the edges in the graph</span>
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">edges</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">x_pos</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y_pos</span><span class="p">,</span> <span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y_pos</span><span class="p">],</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+                <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># plots all of the current turns attacks</span>
+        <span class="n">red_nodes_x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">red_nodes_y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">node_set</span> <span class="ow">in</span> <span class="n">attacked_nodes</span><span class="p">:</span>
+            <span class="n">red_nodes_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node_set</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">x_pos</span><span class="p">)</span>
+            <span class="n">red_nodes_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node_set</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y_pos</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">node_set</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">node_set</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x_pos</span><span class="p">,</span> <span class="n">node_set</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">x_pos</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">node_set</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y_pos</span><span class="p">,</span> <span class="n">node_set</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y_pos</span><span class="p">],</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+                    <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="c1"># All the shades of green for the different levels of vulnerability</span>
+        <span class="n">green_shades</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;#00FF13&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#00DF11&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#00BF0E&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#009F0C&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#00800A&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;#006007&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">max_x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_y</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">min_x</span> <span class="o">=</span> <span class="mi">100000</span>
+        <span class="n">min_y</span> <span class="o">=</span> <span class="mi">100000</span>
+        <span class="n">comp_x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">comp_y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">known_comp_x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">known_comp_y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">unknown_comp_x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">unknown_comp_y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">safe_x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">safe_y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">safe_colours</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">void_x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">void_y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">special_x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">special_y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">special_colour</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">made_safe_x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">made_safe_y</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">():</span>
+            <span class="n">max_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_x</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">x_pos</span><span class="p">)</span>
+            <span class="n">max_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_y</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">y_pos</span><span class="p">)</span>
+            <span class="n">min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">x_pos</span><span class="p">)</span>
+            <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">min_y</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">y_pos</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">made_safe_nodes</span><span class="p">:</span>
+                <span class="c1"># get the locations of nodes that have been made safe</span>
+                <span class="n">made_safe_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">x_pos</span><span class="p">)</span>
+                <span class="n">made_safe_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">y_pos</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">high_value_node</span><span class="p">:</span>
+                <span class="c1"># get the locations of special nodes</span>
+                <span class="n">special_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">x_pos</span><span class="p">)</span>
+                <span class="n">special_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">y_pos</span><span class="p">)</span>
+                <span class="n">special_colour</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">special_node_info</span><span class="p">[</span><span class="s2">&quot;high_value_node&quot;</span><span class="p">][</span><span class="s2">&quot;colour&quot;</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">blue_knows_intrusion</span><span class="p">:</span>
+                    <span class="c1"># get the locations of compromised nodes (unknown)</span>
+                    <span class="n">comp_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">x_pos</span><span class="p">)</span>
+                    <span class="n">comp_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">y_pos</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">show_only_blue_view</span><span class="p">:</span>
+                        <span class="c1"># get the locations of compromised nodes (known)</span>
+                        <span class="n">known_comp_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">x_pos</span><span class="p">)</span>
+                        <span class="n">known_comp_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">y_pos</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">show_only_blue_view</span><span class="p">:</span>
+                        <span class="n">comp_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">x_pos</span><span class="p">)</span>
+                        <span class="n">comp_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">y_pos</span><span class="p">)</span>
+                        <span class="n">unknown_comp_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">x_pos</span><span class="p">)</span>
+                        <span class="n">unknown_comp_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">y_pos</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># get the location of the safe nodes</span>
+                        <span class="n">vuln</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">vulnerability_score</span>
+                        <span class="n">index</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">vuln</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">green_shades</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+                        <span class="n">safe_colours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">green_shades</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+                        <span class="n">safe_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">x_pos</span><span class="p">)</span>
+                        <span class="n">safe_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">y_pos</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">n</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># get the locations of safe nodes</span>
+                <span class="n">vuln</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">vulnerability_score</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">vuln</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">green_shades</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="n">safe_colours</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">green_shades</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+                <span class="n">safe_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">x_pos</span><span class="p">)</span>
+                <span class="n">safe_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">y_pos</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">void_x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">x_pos</span><span class="p">)</span>
+                <span class="n">void_y</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">y_pos</span><span class="p">)</span>
+
+        <span class="c1"># plots any nodes that have no features</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">void_x</span><span class="p">,</span> <span class="n">void_y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># plots all of the compromised nodes</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">comp_x</span><span class="p">,</span> <span class="n">comp_y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">324</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+        <span class="c1"># plot the circles around unknown compromised nodes</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">unknown_comp_x</span><span class="p">,</span> <span class="n">unknown_comp_y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">484</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+        <span class="c1"># plot the circles around known compromised nodes</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">known_comp_x</span><span class="p">,</span> <span class="n">known_comp_y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">484</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+        <span class="c1"># plots all of the safe nodes</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">safe_x</span><span class="p">,</span> <span class="n">safe_y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">safe_colours</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">324</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="c1"># plots all of the recently taken red nodes</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">red_nodes_x</span><span class="p">,</span> <span class="n">red_nodes_y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">324</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+        <span class="c1"># plots all of the nodes that have just been patched</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">made_safe_x</span><span class="p">,</span> <span class="n">made_safe_y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#4ef2e7&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">324</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="c1"># plots any special nodes for the env</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">special_x</span><span class="p">,</span> <span class="n">special_y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">special_colour</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">324</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+        <span class="c1"># plot the entrance nodes</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">entry_nodes</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">x_pos</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">y_pos</span><span class="p">],</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+                <span class="n">zorder</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+                <span class="n">s</span><span class="o">=</span><span class="mi">121</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;$E$&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">show_node_names</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">x_pos</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">,</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">y_pos</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">,</span>
+                    <span class="n">node</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+                    <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+                    <span class="n">zorder</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Creates a string containing information about the current state of the network</span>
+
+        <span class="n">info</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;Current Step: &quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_step</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Reward for current time step: &quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_time_step_reward</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Current Avg vulnerability: &quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">n</span><span class="o">.</span><span class="n">vulnerability_score</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">nodes</span><span class="p">]),</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+            <span class="n">handles</span><span class="o">=</span><span class="n">legend_objects</span><span class="p">,</span>
+            <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span>
+            <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+            <span class="n">borderpad</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">labelspacing</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticks</span><span class="p">([])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_ticks</span><span class="p">([])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">min_x</span> <span class="o">-</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">max_x</span><span class="p">,</span> <span class="n">max_x</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">min_y</span> <span class="o">-</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">max_y</span><span class="p">,</span> <span class="n">max_y</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">]:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># plt.show()</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">pause</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CustomEnvGraph.close"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.helpers.graph2plot.CustomEnvGraph.html#yawning_titan.envs.generic.helpers.graph2plot.CustomEnvGraph.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Close all handles to external renderers.&quot;&quot;&quot;</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

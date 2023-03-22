@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.envs.generic.generic_env &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.envs.generic.generic_env</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for yawning_titan.envs.generic.generic_env</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A generic class that creates Open AI environments within YAWNING TITAN.</span>
+
+<span class="sd">This class has several key inputs which determine aspects of the environment such</span>
+<span class="sd">as how the red agent behaves, what the red team and blue team objectives are, the size</span>
+<span class="sd">and topology of the network being defended and what data should be collected during the simulation.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">gym</span> <span class="kn">import</span> <span class="n">spaces</span>
+<span class="kn">from</span> <span class="nn">stable_baselines3.common.utils</span> <span class="kn">import</span> <span class="n">set_random_seed</span>
+
+<span class="kn">import</span> <span class="nn">yawning_titan.envs.generic.core.reward_functions</span> <span class="k">as</span> <span class="nn">reward_functions</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.core.blue_interface</span> <span class="kn">import</span> <span class="n">BlueInterface</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.core.network_interface</span> <span class="kn">import</span> <span class="n">NetworkInterface</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.core.red_interface</span> <span class="kn">import</span> <span class="n">RedInterface</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.helpers.eval_printout</span> <span class="kn">import</span> <span class="n">EvalPrintout</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.helpers.graph2plot</span> <span class="kn">import</span> <span class="n">CustomEnvGraph</span>
+
+
+<div class="viewcode-block" id="GenericNetworkEnv"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.generic.generic_env.GenericNetworkEnv.html#yawning_titan.envs.generic.generic_env.GenericNetworkEnv">[docs]</a><span class="k">class</span> <span class="nc">GenericNetworkEnv</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class to create a generic YAWNING TITAN gym environment.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GenericNetworkEnv.__init__"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.generic.generic_env.html#yawning_titan.envs.generic.generic_env.GenericNetworkEnv.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">red_agent</span><span class="p">:</span> <span class="n">RedInterface</span><span class="p">,</span>
+        <span class="n">blue_agent</span><span class="p">:</span> <span class="n">BlueInterface</span><span class="p">,</span>
+        <span class="n">network_interface</span><span class="p">:</span> <span class="n">NetworkInterface</span><span class="p">,</span>
+        <span class="n">print_metrics</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">show_metrics_every</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">collect_additional_per_ts_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">print_per_ts_data</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialise the generic network environment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            red_agent: Object from the RedInterface class</span>
+<span class="sd">            blue_agent: Object from the BlueInterface class</span>
+<span class="sd">            network_interface: Object from the NetworkInterface class</span>
+<span class="sd">            print_metrics: Whether or not to print metrics (boolean)</span>
+<span class="sd">            show_metrics_every: Number of timesteps to show summary metrics (int)</span>
+<span class="sd">            collect_additional_per_ts_data: Whether or not to collect additional per timestep data (boolean)</span>
+<span class="sd">            print_per_ts_data: Whether or not to print collected per timestep data (boolean)</span>
+
+<span class="sd">        Note: The ``notes`` variable returned at the end of each timestep contains the per</span>
+<span class="sd">        timestep data. By default it contains a base level of info required for some of the</span>
+<span class="sd">        reward functions. When ``collect_additional_per_ts_data`` is toggled on, a lot more</span>
+<span class="sd">        data is collected.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GenericNetworkEnv</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">RED</span> <span class="o">=</span> <span class="n">red_agent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BLUE</span> <span class="o">=</span> <span class="n">blue_agent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blue_actions</span> <span class="o">=</span> <span class="n">blue_agent</span><span class="o">.</span><span class="n">get_number_of_actions</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span> <span class="o">=</span> <span class="n">network_interface</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_duration</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_stats_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_games_since_avg</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">avg_every</span> <span class="o">=</span> <span class="n">show_metrics_every</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_game_blue</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_game_stats</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_games</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">made_safe_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_reward</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_metrics</span> <span class="o">=</span> <span class="n">print_metrics</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_notes</span> <span class="o">=</span> <span class="n">print_per_ts_data</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_seed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">random_seed</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph_plotter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">eval_printout</span> <span class="o">=</span> <span class="n">EvalPrintout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">avg_every</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span> <span class="o">=</span> <span class="n">spaces</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">blue_actions</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_observation_size</span><span class="p">()</span>
+
+        <span class="c1"># sets up the observation space. This is a (n+2 by n) matrix. The first two columns show the state of all the</span>
+        <span class="c1"># nodes. The remaining n columns show the connections between the nodes (effectively the adjacency matrix)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="o">=</span> <span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+            <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">high</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_observation_size</span><span class="p">(),),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># The gym environment can only properly deal with a 1d array so the observation is flattened</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">collect_data</span> <span class="o">=</span> <span class="n">collect_additional_per_ts_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env_observation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_observation</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="GenericNetworkEnv.reset"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.generic.generic_env.GenericNetworkEnv.html#yawning_titan.envs.generic.generic_env.GenericNetworkEnv.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reset the environment to the default state.</span>
+
+<span class="sd">        :todo: May need to add customization of cuda setting.</span>
+
+<span class="sd">        :return: A new starting observation (numpy array).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># conditionally set random_seed</span>
+            <span class="n">set_random_seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_seed</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RED</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_duration</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env_observation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_observation</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_game_blue</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env_observation</span></div>
+
+<div class="viewcode-block" id="GenericNetworkEnv.step"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.generic.generic_env.GenericNetworkEnv.html#yawning_titan.envs.generic.generic_env.GenericNetworkEnv.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Take a time step and executes the actions for both Blue RL agent and non-learning Red agent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            action: The action value generated from the Blue RL agent (int)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">             A four tuple containing the next observation as a numpy array,</span>
+<span class="sd">             the reward for that timesteps, a boolean for whether complete and</span>
+<span class="sd">             additional notes containing timestep information from the environment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># sets the nodes that have been made safe this turn to an empty list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">made_safe_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Gets the initial states of various states for logging and testing purposes</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collect_data</span><span class="p">:</span>
+            <span class="c1"># notes collects information about the state of the env</span>
+            <span class="n">notes</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;initial_state&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_node_compromised_states</span><span class="p">(),</span>
+                <span class="s2">&quot;initial_blue_view&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_node_blue_view_compromised_states</span><span class="p">(),</span>
+                <span class="s2">&quot;initial_vulnerabilities&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_vulnerabilities</span><span class="p">(),</span>
+                <span class="s2">&quot;initial_red_location&quot;</span><span class="p">:</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span>
+                <span class="p">),</span>
+                <span class="s2">&quot;initial_graph&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_graph_as_dict</span><span class="p">(),</span>
+                <span class="s2">&quot;current_step&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_duration</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If not logging everything, the program still needs to collect some information (required by other parts</span>
+            <span class="c1"># of the program)</span>
+            <span class="n">notes</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># resets the attack list for the red agent (so that only the current turns attacks are held)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">reset_stored_attacks</span><span class="p">()</span>
+
+        <span class="c1"># The red agent performs their turn</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">grace_period_length</span><span class="o">.</span><span class="n">value</span>
+            <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_duration</span>
+        <span class="p">):</span>
+            <span class="n">red_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RED</span><span class="o">.</span><span class="n">perform_action</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">red_info</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="mi">0</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;Action&quot;</span><span class="p">:</span> <span class="s2">&quot;do_nothing&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                    <span class="s2">&quot;Target_Nodes&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                    <span class="s2">&quot;Successes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="c1"># Gets the number of nodes that are safe</span>
+        <span class="n">number_uncompromised</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span><span class="n">filter_true_safe</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Collects data on the natural spreading</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collect_data</span><span class="p">:</span>
+            <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;red_info&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">red_info</span>
+
+        <span class="c1"># The states of the nodes after red has had their turn (Used by the reward functions)</span>
+        <span class="n">notes</span><span class="p">[</span>
+            <span class="s2">&quot;post_red_state&quot;</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_node_compromised_states</span><span class="p">()</span>
+        <span class="c1"># Blues view of the environment after red has had their turn</span>
+        <span class="n">notes</span><span class="p">[</span>
+            <span class="s2">&quot;post_red_blue_view&quot;</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_node_blue_view_compromised_states</span><span class="p">()</span>
+        <span class="c1"># A dictionary of vulnerabilities after red has had their turn</span>
+        <span class="n">notes</span><span class="p">[</span>
+            <span class="s2">&quot;post_red_vulnerabilities&quot;</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_vulnerabilities</span><span class="p">()</span>
+        <span class="c1"># The isolation status of all the nodes</span>
+        <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;post_red_isolation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_isolation</span><span class="p">()</span>
+
+        <span class="c1"># collects extra data if turned on</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collect_data</span><span class="p">:</span>
+            <span class="c1"># The location of the red agent after red has had their turn</span>
+            <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;post_red_red_location&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span>
+            <span class="p">)</span>
+
+        <span class="c1"># set up initial variables that are reassigned based on the action that blue takes</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">blue_action</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">blue_node</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Check if the game is over and red has won</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">all_nodes_lost</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">number_uncompromised</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">for_loss</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">blue_action</span> <span class="o">=</span> <span class="s2">&quot;failed&quot;</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">n_percent_nodes_lost</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="c1"># calculate the number of safe nodes</span>
+            <span class="n">percent_comp</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
+                        <span class="n">filter_true_compromised</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">percent_comp</span>
+                <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">n_percent_nodes_lost</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span>
+            <span class="p">):</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">for_loss</span><span class="o">.</span><span class="n">value</span>
+                <span class="c1"># If the game ends before blue has had their turn the the blue action is set to failed</span>
+                <span class="n">blue_action</span> <span class="o">=</span> <span class="s2">&quot;failed&quot;</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">high_value_node_lost</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="c1"># check if a high value node was compromised</span>
+            <span class="n">compromised_hvn</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">for</span> <span class="n">hvn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">high_value_nodes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">hvn</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">compromised_hvn</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">compromised_hvn</span><span class="p">:</span>
+                <span class="c1"># If this mode is selected then the game ends if the high value node has been compromised</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">for_loss</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">blue_action</span> <span class="o">=</span> <span class="s2">&quot;failed&quot;</span>
+
+        <span class="c1"># if self.network_interface.gr_loss_tn:</span>
+        <span class="n">tn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_target_node</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">tn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">target_node_lost</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">tn</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># If this mode is selected then the game ends if the target node has been compromised</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">for_loss</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">blue_action</span> <span class="o">=</span> <span class="s2">&quot;failed&quot;</span>
+
+        <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">reduce_negative_rewards_for_closer_fails</span><span class="o">.</span><span class="n">value</span>
+            <span class="p">):</span>
+                <span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="mi">1</span>
+                    <span class="o">-</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">current_duration</span>
+                        <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">max_steps</span><span class="o">.</span><span class="n">value</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+            <span class="n">blue_action</span><span class="p">,</span> <span class="n">blue_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BLUE</span><span class="o">.</span><span class="n">perform_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;make_node_safe&quot;</span> <span class="ow">or</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;restore_node&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">made_safe_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">blue_node</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">blue_action</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_game_blue</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_game_blue</span><span class="p">[</span><span class="n">blue_action</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_game_blue</span><span class="p">[</span><span class="n">blue_action</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+            <span class="c1"># calculates the reward from the current state of the network</span>
+            <span class="n">reward_args</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;network_interface&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="p">,</span>
+                <span class="s2">&quot;blue_action&quot;</span><span class="p">:</span> <span class="n">blue_action</span><span class="p">,</span>
+                <span class="s2">&quot;blue_node&quot;</span><span class="p">:</span> <span class="n">blue_node</span><span class="p">,</span>
+                <span class="s2">&quot;start_state&quot;</span><span class="p">:</span> <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;post_red_state&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;end_state&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_node_compromised_states</span><span class="p">(),</span>
+                <span class="s2">&quot;start_vulnerabilities&quot;</span><span class="p">:</span> <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;post_red_vulnerabilities&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;end_vulnerabilities&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_vulnerabilities</span><span class="p">(),</span>
+                <span class="s2">&quot;start_isolation&quot;</span><span class="p">:</span> <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;post_red_isolation&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;end_isolation&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_isolation</span><span class="p">(),</span>
+                <span class="s2">&quot;start_blue&quot;</span><span class="p">:</span> <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;post_red_blue_view&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;end_blue&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_node_blue_view_compromised_states</span><span class="p">(),</span>
+            <span class="p">}</span>
+
+            <span class="n">reward</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                <span class="n">reward_functions</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="p">)(</span><span class="n">reward_args</span><span class="p">)</span>
+
+            <span class="c1"># gets the current observation from the environment</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env_observation</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_observation</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_duration</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># if the total number of steps reaches the set end then the blue agent wins and is rewarded accordingly</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_duration</span>
+                <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">max_steps</span><span class="o">.</span><span class="n">value</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">end_rewards_are_multiplied_by_end_state</span><span class="o">.</span><span class="n">value</span>
+                <span class="p">):</span>
+                    <span class="n">reward</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">for_reaching_max_steps</span><span class="o">.</span><span class="n">value</span>
+                        <span class="o">*</span> <span class="p">(</span>
+                            <span class="nb">len</span><span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
+                                    <span class="n">filter_true_safe</span><span class="o">=</span><span class="kc">True</span>
+                                <span class="p">)</span>
+                            <span class="p">)</span>
+                            <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">reward</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">for_reaching_max_steps</span><span class="o">.</span><span class="n">value</span>
+                    <span class="p">)</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Gets the state of the environment at the end of the current time step</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collect_data</span><span class="p">:</span>
+            <span class="c1"># The blues view of the network</span>
+            <span class="n">notes</span><span class="p">[</span>
+                <span class="s2">&quot;end_blue_view&quot;</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_node_blue_view_compromised_states</span><span class="p">()</span>
+            <span class="c1"># The state of the nodes (safe/compromised)</span>
+            <span class="n">notes</span><span class="p">[</span>
+                <span class="s2">&quot;end_state&quot;</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_node_compromised_states</span><span class="p">()</span>
+            <span class="c1"># A dictionary of vulnerabilities</span>
+            <span class="n">notes</span><span class="p">[</span>
+                <span class="s2">&quot;final_vulnerabilities&quot;</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_vulnerabilities</span><span class="p">()</span>
+            <span class="c1"># The location of the red agent</span>
+            <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;final_red_location&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">red_current_location</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">miscellaneous</span><span class="o">.</span><span class="n">output_timestep_data_to_json</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">create_json_time_step</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">save_json</span><span class="p">(</span><span class="n">current_state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_duration</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_metrics</span> <span class="ow">and</span> <span class="n">done</span><span class="p">:</span>
+            <span class="c1"># prints end of game metrics such as who won and how long the game lasted</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_games_since_avg</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">total_games</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># Populate the current game&#39;s dictionary of stats with the episode winner and the number of timesteps</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_duration</span>
+                <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">max_steps</span><span class="o">.</span><span class="n">value</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_game_stats</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;Winner&quot;</span><span class="p">:</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Duration&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_duration</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_game_stats</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;Winner&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;Duration&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_duration</span><span class="p">,</span>
+                <span class="p">}</span>
+
+            <span class="c1"># Add the actions taken by blue during the episode to the stats dictionary</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_game_stats</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_game_blue</span><span class="p">)</span>
+
+            <span class="c1"># Add the current game dictionary to the list of dictionaries to average over</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game_stats_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Counter</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_game_stats</span><span class="o">.</span><span class="n">items</span><span class="p">())))</span>
+
+            <span class="c1"># Every self.avg_every episodes, print the stats to console</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_games_since_avg</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">avg_every</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">eval_printout</span><span class="o">.</span><span class="n">print_stats</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game_stats_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_games</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">num_games_since_avg</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">game_stats_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_reward</span> <span class="o">=</span> <span class="n">reward</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collect_data</span><span class="p">:</span>
+            <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;safe_nodes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span><span class="n">filter_true_safe</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blue_action</span>
+            <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blue_node</span>
+            <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;attacks&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">true_attacks</span>
+            <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;end_isolation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_all_isolation</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_notes</span><span class="p">:</span>
+            <span class="n">json_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">notes</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">json_data</span><span class="p">)</span>
+        <span class="c1"># Returns the environment information that AI gym uses and all of the information collected in a dictionary</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env_observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">notes</span></div>
+
+<div class="viewcode-block" id="GenericNetworkEnv.render"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.generic.generic_env.GenericNetworkEnv.html#yawning_titan.envs.generic.generic_env.GenericNetworkEnv.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;human&quot;</span><span class="p">,</span>
+        <span class="n">show_only_blue_view</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">show_node_names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Render the environment using Matplotlib to create an animation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mode: the mode of the rendering</span>
+<span class="sd">            show_only_blue_view: If true shows only what the blue agent can see</span>
+<span class="sd">            show_node_names: Show the names of the nodes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_plotter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph_plotter</span> <span class="o">=</span> <span class="n">CustomEnvGraph</span><span class="p">()</span>
+
+        <span class="c1"># gets the networkx object</span>
+
+        <span class="c1"># compromised nodes is a dictionary of all the compromised nodes with a 1 if the compromise is known or a 0 if</span>
+        <span class="c1"># not</span>
+        <span class="c1"># gets information about the current state from the network interface</span>
+        <span class="n">main_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span>
+        <span class="k">if</span> <span class="n">show_only_blue_view</span><span class="p">:</span>
+            <span class="n">attacks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">detected_attacks</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attacks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">true_attacks</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_reward</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># sends the current information to a graph plotter to display the information visually</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph_plotter</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
+            <span class="n">current_step</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_duration</span><span class="p">,</span>
+            <span class="n">g</span><span class="o">=</span><span class="n">main_graph</span><span class="p">,</span>
+            <span class="n">attacked_nodes</span><span class="o">=</span><span class="n">attacks</span><span class="p">,</span>
+            <span class="n">current_time_step_reward</span><span class="o">=</span><span class="n">reward</span><span class="p">,</span>
+            <span class="c1"># self.network_interface.red_current_location,</span>
+            <span class="n">made_safe_nodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">made_safe_nodes</span><span class="p">,</span>
+            <span class="n">target_node</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_target_node</span><span class="p">(),</span>
+            <span class="c1"># &quot;RL blue agent vs probabilistic red in a generic network environment&quot;,</span>
+            <span class="n">show_only_blue_view</span><span class="o">=</span><span class="n">show_only_blue_view</span><span class="p">,</span>
+            <span class="n">show_node_names</span><span class="o">=</span><span class="n">show_node_names</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="GenericNetworkEnv.calculate_observation_space_size"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.generic.generic_env.GenericNetworkEnv.html#yawning_titan.envs.generic.generic_env.GenericNetworkEnv.calculate_observation_space_size">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_observation_space_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_feather</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the observation space size.</span>
+
+<span class="sd">        This is done using the current active observation space configuration</span>
+<span class="sd">        and the number of nodes within the environment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            with_feather: Whether to include the size of the Feather Wrapper output</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The observation space size</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_observation_size_base</span><span class="p">(</span><span class="n">with_feather</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

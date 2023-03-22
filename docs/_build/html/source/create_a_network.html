@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create a Network &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Yawning-Titan DB" href="db.html" />
+    <link rel="prev" title="Getting Started" href="getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Create a Network</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#imports">Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#network-instantiation">Network Instantiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#node-instantiation">Node Instantiation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#add-nodes-to-a-network">Add Nodes to a Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-edges-between-nodes">Adding Edges Between Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-entry-nodes">Setting Entry Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-enthigh-value-nodes">Setting EntHigh Value Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-node-vulnerability">Setting Node Vulnerability</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reset-the-network">Reset the Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#view-a-networks-node-details">View a Networks Node Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-network">Example Network</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Create a Network</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="create-a-network">
+<h1>Create a Network<a class="headerlink" href="#create-a-network" title="Permalink to this heading"></a></h1>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this heading"></a></h2>
+<p>To get started, import Network and Node.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">yawning_titan.networks.node</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.network</span> <span class="kn">import</span> <span class="n">Network</span>
+</pre></div>
+</div>
+</section>
+<section id="network-instantiation">
+<h2>Network Instantiation<a class="headerlink" href="#network-instantiation" title="Permalink to this heading"></a></h2>
+<p>To create a Network, first, we must instantiate an instance of <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>.</p>
+<p>While a <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> can be instantiated right out of the box by calling <code class="docutils literal notranslate"><span class="pre">Network()</span></code>,
+there are some configurable parameters that you can set (we’ll get onto these further down).</p>
+<p>network = Network()</p>
+</section>
+<section id="node-instantiation">
+<h2>Node Instantiation<a class="headerlink" href="#node-instantiation" title="Permalink to this heading"></a></h2>
+<p>Next, we instantiate some <a class="reference internal" href="_autosummary/yawning_titan.networks.node.Node.html#yawning_titan.networks.node.Node" title="yawning_titan.networks.node.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>’s.</p>
+<p>Again, while a <a class="reference internal" href="_autosummary/yawning_titan.networks.node.Node.html#yawning_titan.networks.node.Node" title="yawning_titan.networks.node.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a> can be instantiated right out of the box by calling <code class="docutils literal notranslate"><span class="pre">Node()</span></code>,
+there are some configurable parameters that you can set (we’ll get onto these further down).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">node_1</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+<span class="n">node_2</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+<span class="n">node_3</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+<span class="n">node_4</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+<span class="n">node_5</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+<span class="n">node_6</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="add-nodes-to-a-network">
+<h2>Add Nodes to a Network<a class="headerlink" href="#add-nodes-to-a-network" title="Permalink to this heading"></a></h2>
+<p>Currently we only have an instance of <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> and some instances of
+<a class="reference internal" href="_autosummary/yawning_titan.networks.node.Node.html#yawning_titan.networks.node.Node" title="yawning_titan.networks.node.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>.</p>
+<p>To add a <a class="reference internal" href="_autosummary/yawning_titan.networks.node.Node.html#yawning_titan.networks.node.Node" title="yawning_titan.networks.node.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a> to a <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>, we need to
+call <code class="docutils literal notranslate"><span class="pre">.add_node()</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node_1</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node_2</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node_3</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node_4</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node_5</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node_6</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="adding-edges-between-nodes">
+<h2>Adding Edges Between Nodes<a class="headerlink" href="#adding-edges-between-nodes" title="Permalink to this heading"></a></h2>
+<p>With our <a class="reference internal" href="_autosummary/yawning_titan.networks.node.Node.html#yawning_titan.networks.node.Node" title="yawning_titan.networks.node.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>’s added to the <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>,
+we can begin joining them by calling <code class="docutils literal notranslate"><span class="pre">.add_edge()</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">node_1</span><span class="p">,</span> <span class="n">node_2</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">node_1</span><span class="p">,</span> <span class="n">node_3</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">node_1</span><span class="p">,</span> <span class="n">node_4</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">node_2</span><span class="p">,</span> <span class="n">node_5</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">node_2</span><span class="p">,</span> <span class="n">node_6</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And that’s it, our basic <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> has been created.</p>
+</section>
+<section id="setting-entry-nodes">
+<h2>Setting Entry Nodes<a class="headerlink" href="#setting-entry-nodes" title="Permalink to this heading"></a></h2>
+<p>Entry nodes can be set manually at the <a class="reference internal" href="_autosummary/yawning_titan.networks.node.Node.html#yawning_titan.networks.node.Node" title="yawning_titan.networks.node.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">node_1</span><span class="o">.</span><span class="n">entry_node</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>Or by configuring the <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> to set them at random:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">yawning_titan.networks.network</span> <span class="kn">import</span> <span class="n">RandomEntryNodePreference</span>
+
+<span class="n">network</span><span class="o">.</span><span class="n">set_random_entry_nodes</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">network</span><span class="o">.</span><span class="n">num_of_random_entry_nodes</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">network</span><span class="o">.</span><span class="n">random_entry_node_preference</span> <span class="o">=</span> <span class="n">RandomEntryNodePreference</span><span class="o">.</span><span class="n">EDGE</span>
+<span class="n">network</span><span class="o">.</span><span class="n">reset_random_entry_nodes</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="setting-enthigh-value-nodes">
+<h2>Setting EntHigh Value Nodes<a class="headerlink" href="#setting-enthigh-value-nodes" title="Permalink to this heading"></a></h2>
+<p>High value nodes can be set manually at the <a class="reference internal" href="_autosummary/yawning_titan.networks.node.Node.html#yawning_titan.networks.node.Node" title="yawning_titan.networks.node.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">node_1</span><span class="o">.</span><span class="n">high_value_node</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>Or by configuring the <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> to set them at random:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">yawning_titan.networks.network</span> <span class="kn">import</span> <span class="n">RandomHighValueNodePreference</span>
+
+<span class="n">network</span><span class="o">.</span><span class="n">set_random_high_value_nodes</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">network</span><span class="o">.</span><span class="n">num_of_random_high_value_nodes</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">network</span><span class="o">.</span><span class="n">random_high_value_node_preference</span> <span class="o">=</span> <span class="n">RandomHighValueNodePreference</span><span class="o">.</span><span class="n">FURTHEST_AWAY_FROM_ENTRY</span>
+<span class="n">network</span><span class="o">.</span><span class="n">reset_random_high_value_nodes</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="setting-node-vulnerability">
+<h2>Setting Node Vulnerability<a class="headerlink" href="#setting-node-vulnerability" title="Permalink to this heading"></a></h2>
+<p>A nodes vulnerability can be set manually at the <a class="reference internal" href="_autosummary/yawning_titan.networks.node.Node.html#yawning_titan.networks.node.Node" title="yawning_titan.networks.node.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">node_1</span><span class="o">.</span><span class="n">vulnerability</span> <span class="o">=</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+<p>Or by configuring the <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> to set them at random:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">network</span><span class="o">.</span><span class="n">set_random_vulnerabilities</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">network</span><span class="o">.</span><span class="n">reset_random_vulnerabilities</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="reset-the-network">
+<h2>Reset the Network<a class="headerlink" href="#reset-the-network" title="Permalink to this heading"></a></h2>
+<p>To reset all entry nodes, high value nodes, and vulnerabilities at once:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">network</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="view-a-networks-node-details">
+<h2>View a Networks Node Details<a class="headerlink" href="#view-a-networks-node-details" title="Permalink to this heading"></a></h2>
+<p>To view a table of the <a class="reference internal" href="_autosummary/yawning_titan.networks.node.Node.html#yawning_titan.networks.node.Node" title="yawning_titan.networks.node.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a>’s in a <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">network</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This gives an output like:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>UUID                                  Name    High Value Node    Entry Node      Vulnerability  Position (x,y)
+------------------------------------  ------  -----------------  ------------  ---------------  ----------------
+bf308d9f-8382-4c15-99be-51f84f75f9ed          False              False               0.0296121  0.34, -0.23
+1d757e6e-b637-4f63-8988-36e25e51cd55          False              False               0.711901   -0.34, 0.23
+8f76d75c-5afd-4b2c-98ed-9c9dc6181299          True               False               0.65281    0.50, -0.88
+38819aa3-0c05-4863-8b9d-c704f254e065          False              False               0.723192   1.00, -0.13
+cc06f5e0-c956-449a-b397-b0e7bed3b8d4          False              True                0.85681    -0.49, 0.88
+665b150b-fbd3-42a7-b899-3770ef2b285a          False              False               0.48435    -1.00, 0.13
+</pre></div>
+</div>
+</section>
+<section id="example-network">
+<h2>Example Network<a class="headerlink" href="#example-network" title="Permalink to this heading"></a></h2>
+<p>Here we will create the corporate network that is used as a fixture in the Yawning-Titan tests (<cite>tests.conftest.corporate_network</cite>).</p>
+<p>Names are added to each of the nodes for when they’re displayed in a network graph.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Instantiate the Network</span>
+<span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="p">(</span>
+    <span class="n">set_random_entry_nodes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">num_of_random_entry_nodes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">set_random_high_value_nodes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">num_of_random_high_value_nodes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">set_random_vulnerabilities</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Instantiate the Node&#39;s and add them to the Network</span>
+<span class="n">router_1</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Router 1&quot;</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">router_1</span><span class="p">)</span>
+
+<span class="n">switch_1</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Switch 1&quot;</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">switch_1</span><span class="p">)</span>
+
+<span class="n">switch_2</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Switch 2&quot;</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">switch_2</span><span class="p">)</span>
+
+<span class="n">pc_1</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;PC 1&quot;</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">pc_1</span><span class="p">)</span>
+
+<span class="n">pc_2</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;PC 2&quot;</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">pc_2</span><span class="p">)</span>
+
+<span class="n">pc_3</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;PC 3&quot;</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">pc_3</span><span class="p">)</span>
+
+<span class="n">pc_4</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;PC 4&quot;</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">pc_4</span><span class="p">)</span>
+
+<span class="n">pc_5</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;PC 5&quot;</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">pc_5</span><span class="p">)</span>
+
+<span class="n">pc_6</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;PC 6&quot;</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">pc_6</span><span class="p">)</span>
+
+<span class="n">server_1</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Server 1&quot;</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">server_1</span><span class="p">)</span>
+
+<span class="n">server_2</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Server 2&quot;</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">server_2</span><span class="p">)</span>
+
+<span class="c1"># Add the edges between Node&#39;s</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">router_1</span><span class="p">,</span> <span class="n">switch_1</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_1</span><span class="p">,</span> <span class="n">server_1</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_1</span><span class="p">,</span> <span class="n">pc_1</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_1</span><span class="p">,</span> <span class="n">pc_2</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_1</span><span class="p">,</span> <span class="n">pc_3</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">router_1</span><span class="p">,</span> <span class="n">switch_2</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_2</span><span class="p">,</span> <span class="n">server_2</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_2</span><span class="p">,</span> <span class="n">pc_4</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_2</span><span class="p">,</span> <span class="n">pc_5</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_2</span><span class="p">,</span> <span class="n">pc_6</span><span class="p">)</span>
+
+<span class="c1"># Reset the entry nodes, high value nodes, and vulnerability scores by calling .setup()</span>
+<span class="n">network</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+<span class="c1"># View the Networks Node Details</span>
+<span class="n">network</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Gives:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>UUID                                  Name      High Value Node    Entry Node      Vulnerability  Position (x,y)
+------------------------------------  --------  -----------------  ------------  ---------------  ----------------
+c883596b-1d86-44f5-b4de-331292d8e3d5  Router 1  False              False               0.320496   0.00, -0.00
+b2bd683b-a773-40de-85e8-36c21e66613d  Switch 1  False              False               0.889044   0.01, 0.61
+68d9689b-5365-4022-b3bd-92bdc5a1627b  Switch 2  True               False               0.0671795  -0.00, -0.62
+3554ed26-9480-487b-9d3c-57975654a2af  PC 1      False              False               0.400729   -0.38, 0.69
+89700b3f-8be2-4b70-a21e-a0772551a6bc  PC 2      True               False               0.0807914  0.18, 1.00
+82e91c52-5458-493a-a7cd-00fb702d6af1  PC 3      False              True                0.86676    0.39, 0.70
+91edf896-f004-4ca7-9587-cc8417c4a26b  PC 4      False              False               0.967413   -0.39, -0.69
+ebbc79f7-9a52-4a08-8b56-fee816284b54  PC 5      False              True                0.684436   0.38, -0.69
+2cdaaf06-9b4a-41e9-ba6f-129aec634080  PC 6      False              False               0.727421   -0.19, -1.00
+b81ad769-688a-4d02-ae7b-a64f0984b101  Server 1  False              False               0.630726   -0.17, 0.99
+52cbd8ec-b063-40c5-a73e-a51291347e8f  Server 2  False              True                0.789554   0.17, -1.00
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="db.html" class="btn btn-neutral float-right" title="Yawning-Titan DB" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

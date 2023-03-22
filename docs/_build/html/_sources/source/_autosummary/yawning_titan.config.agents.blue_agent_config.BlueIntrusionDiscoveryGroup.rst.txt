@@ -1,0 +1,37 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.agents.blue\_agent\_config.BlueIntrusionDiscoveryGroup
+============================================================================
+
+.. currentmodule:: yawning_titan.config.agents.blue_agent_config
+
+.. autoclass:: BlueIntrusionDiscoveryGroup
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BlueIntrusionDiscoveryGroup.get_config_elements
+      ~BlueIntrusionDiscoveryGroup.get_non_config_elements
+      ~BlueIntrusionDiscoveryGroup.set_from_dict
+      ~BlueIntrusionDiscoveryGroup.set_from_yaml
+      ~BlueIntrusionDiscoveryGroup.stringify
+      ~BlueIntrusionDiscoveryGroup.to_dict
+      ~BlueIntrusionDiscoveryGroup.to_legacy_dict
+      ~BlueIntrusionDiscoveryGroup.to_yaml
+      ~BlueIntrusionDiscoveryGroup.validate
+      ~BlueIntrusionDiscoveryGroup.validate_elements
+   
+   
+
+   
+   
+   

@@ -1,0 +1,39 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.db.compatibility\_query.HighValueNodeCompatibilityQuery
+======================================================================
+
+.. currentmodule:: yawning_titan.db.compatibility_query
+
+.. autoclass:: HighValueNodeCompatibilityQuery
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~HighValueNodeCompatibilityQuery.all
+      ~HighValueNodeCompatibilityQuery.any
+      ~HighValueNodeCompatibilityQuery.exists
+      ~HighValueNodeCompatibilityQuery.fragment
+      ~HighValueNodeCompatibilityQuery.is_cacheable
+      ~HighValueNodeCompatibilityQuery.map
+      ~HighValueNodeCompatibilityQuery.matches
+      ~HighValueNodeCompatibilityQuery.noop
+      ~HighValueNodeCompatibilityQuery.one_of
+      ~HighValueNodeCompatibilityQuery.search
+      ~HighValueNodeCompatibilityQuery.test
+      ~HighValueNodeCompatibilityQuery.works_with
+   
+   
+
+   
+   
+   

@@ -1,0 +1,6 @@
+tests.conftest.corporate\_network
+=================================
+
+.. currentmodule:: tests.conftest
+
+.. autofunction:: corporate_network

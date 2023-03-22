@@ -1,0 +1,27 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.db.yawning\_titan\_db.YawningTitanDBSchema
+=========================================================
+
+.. currentmodule:: yawning_titan.db.yawning_titan_db
+
+.. autoclass:: YawningTitanDBSchema
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   

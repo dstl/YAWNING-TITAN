@@ -1,0 +1,6 @@
+yawning\_titan.exceptions.NetworkError
+======================================
+
+.. currentmodule:: yawning_titan.exceptions
+
+.. autoexception:: NetworkError

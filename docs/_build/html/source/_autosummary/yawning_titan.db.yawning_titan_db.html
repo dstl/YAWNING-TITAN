@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.db.yawning_titan_db &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.db.yawning_titan_db.YawningTitanDB" href="yawning_titan.db.yawning_titan_db.YawningTitanDB.html" />
+    <link rel="prev" title="yawning_titan.db.schemas.ZeroDaySchema" href="yawning_titan.db.schemas.ZeroDaySchema.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.db.compatibility_query.html">yawning_titan.db.compatibility_query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.db.doc_metadata.html">yawning_titan.db.doc_metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.db.query.html">yawning_titan.db.query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.db.schemas.html">yawning_titan.db.schemas</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">yawning_titan.db.yawning_titan_db</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.yawning_titan_db.YawningTitanDB.html">yawning_titan.db.yawning_titan_db.YawningTitanDB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.yawning_titan_db.YawningTitanDBSchema.html">yawning_titan.db.yawning_titan_db.YawningTitanDBSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yawning_titan.db.yawning_titan_db.YawningTitanDBSchema"><code class="docutils literal notranslate"><span class="pre">YawningTitanDBSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB"><code class="docutils literal notranslate"><span class="pre">YawningTitanDB</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.html">yawning_titan</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.db.html">yawning_titan.db</a></li>
+      <li class="breadcrumb-item active">yawning_titan.db.yawning_titan_db</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-yawning_titan.db.yawning_titan_db">
+<span id="yawning-titan-db-yawning-titan-db"></span><h1>yawning_titan.db.yawning_titan_db<a class="headerlink" href="#module-yawning_titan.db.yawning_titan_db" title="Permalink to this heading"></a></h1>
+<p>Provides an extended implementation of a TinyDB class as an ABC.</p>
+<p>Makes use of uuid and locked values to ensure duplicates are not possible, and
+locked files (system defaults) cannot be updated or removed.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.1.0.</span></p>
+</div>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB" title="yawning_titan.db.yawning_titan_db.YawningTitanDB"><code class="xref py py-obj docutils literal notranslate"><span class="pre">YawningTitanDB</span></code></a></p></td>
+<td><p>An <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></a> that implements and extends the <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.database.TinyDB" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TinyDB</span></code></a> query functions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.db.yawning_titan_db.YawningTitanDBSchema.html#yawning_titan.db.yawning_titan_db.YawningTitanDBSchema" title="yawning_titan.db.yawning_titan_db.YawningTitanDBSchema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">YawningTitanDBSchema</span></code></a></p></td>
+<td><p>YawningTitanDBSchema ABC that is implemented by all schema classes.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDBSchema">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.db.yawning_titan_db.</span></span><span class="sig-name descname"><span class="pre">YawningTitanDBSchema</span></span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDBSchema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDBSchema" title="Permalink to this definition"></a></dt>
+<dd><p>YawningTitanDBSchema ABC that is implemented by all schema classes.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.db.yawning_titan_db.</span></span><span class="sig-name descname"><span class="pre">YawningTitanDB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDB"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB" title="Permalink to this definition"></a></dt>
+<dd><p>An <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></a> that implements and extends the <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.database.TinyDB" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TinyDB</span></code></a> query functions.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDB.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDB.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.close" title="Permalink to this definition"></a></dt>
+<dd><p>Close the db.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.is_locked">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_locked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDB.is_locked"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.is_locked" title="Permalink to this definition"></a></dt>
+<dd><p>Check whether a doc is locked for editing or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc</strong> – A doc.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the doc is locked, otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.name" title="Permalink to this definition"></a></dt>
+<dd><p>The DB name.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.db">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">db</span></span><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.db" title="Permalink to this definition"></a></dt>
+<dd><p>The instance of <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.database.TinyDB" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TinyDB</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDB.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.count" title="Permalink to this definition"></a></dt>
+<dd><p>Count how many docs are in the db. Extends <code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.table.Table.count</span></code>.</p>
+<p>A <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a> can be used to
+filter the count.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cond</strong> – An optional <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a>.
+Has a default value of <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The number of docs counted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.all">
+<span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDB.all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.all" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for <code class="xref py py-func docutils literal notranslate"><span class="pre">tinydb.table.Table.all()</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDB.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.show" title="Permalink to this definition"></a></dt>
+<dd><p>Show details of all entries in the db.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – If True, all doc metadata details are shown,
+otherwise just the name is shown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDB.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.get" title="Permalink to this definition"></a></dt>
+<dd><p>Get a doc from its uuid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uuid</strong> – A uuid.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The matching doc if it exists, otherwise <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><a class="reference internal" href="yawning_titan.exceptions.YawningTitanDBCriticalError.html#yawning_titan.exceptions.YawningTitanDBCriticalError" title="yawning_titan.exceptions.YawningTitanDBCriticalError"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDBCriticalError</span></code></a>
+when the search returns multiple docs with the same uuid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDB.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.search" title="Permalink to this definition"></a></dt>
+<dd><p>A wrapper for <code class="xref py py-func docutils literal notranslate"><span class="pre">tinydb.table.Table.search()</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDB.insert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.insert" title="Permalink to this definition"></a></dt>
+<dd><p>An extension of <code class="xref py py-func docutils literal notranslate"><span class="pre">tinydb.table.Table.insert()</span></code>.</p>
+<p>If a doc doesn’t have DocMetadata, the default DocMetadata is set.</p>
+<p>If a doc already exists with the same uuid, the insert is blocked and
+a <a class="reference internal" href="yawning_titan.exceptions.YawningTitanDBCriticalError.html#yawning_titan.exceptions.YawningTitanDBCriticalError" title="yawning_titan.exceptions.YawningTitanDBCriticalError"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDBCriticalError</span></code></a> is
+raised alongside a log as <code class="docutils literal notranslate"><span class="pre">CRITICAL</span></code> level, as this would indicate
+db file is corrupted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doc</strong> – A doc.</p></li>
+<li><p><strong>name</strong> – The doc name.</p></li>
+<li><p><strong>description</strong> – The doc description.</p></li>
+<li><p><strong>author</strong> – The docs author.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The inserted doc.</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><a class="reference internal" href="yawning_titan.exceptions.YawningTitanDBCriticalError.html#yawning_titan.exceptions.YawningTitanDBCriticalError" title="yawning_titan.exceptions.YawningTitanDBCriticalError"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDBCriticalError</span></code></a>
+when a doc already exists with the same uuid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDB.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.update" title="Permalink to this definition"></a></dt>
+<dd><p>An extension of <code class="xref py py-func docutils literal notranslate"><span class="pre">tinydb.table.Table.update()</span></code>.</p>
+<p>Performs a check that prevents locked files from being updated and raises
+<a class="reference internal" href="yawning_titan.exceptions.YawningTitanDBError.html#yawning_titan.exceptions.YawningTitanDBError" title="yawning_titan.exceptions.YawningTitanDBError"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDBError</span></code></a> alongside a log at
+<code class="docutils literal notranslate"><span class="pre">INFO</span></code> level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doc</strong> – A doc.</p></li>
+<li><p><strong>uuid</strong> – The docs uuid.</p></li>
+<li><p><strong>name</strong> – The doc name.</p></li>
+<li><p><strong>description</strong> – The doc description.</p></li>
+<li><p><strong>author</strong> – The docs author.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The updated doc.</p>
+</dd>
+<dt class="field-odd">Raise</dt>
+<dd class="field-odd"><p><a class="reference internal" href="yawning_titan.exceptions.YawningTitanDBError.html#yawning_titan.exceptions.YawningTitanDBError" title="yawning_titan.exceptions.YawningTitanDBError"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDBError</span></code></a> if
+the doc is locked.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.upsert">
+<span class="sig-name descname"><span class="pre">upsert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDB.upsert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.upsert" title="Permalink to this definition"></a></dt>
+<dd><p>A manual upsert method in place of <code class="xref py py-func docutils literal notranslate"><span class="pre">tinydb.table.Table.upsert()</span></code>.</p>
+<p>If the docs uuid already exists, the args are passed to
+<a class="reference internal" href="yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.update" title="yawning_titan.db.yawning_titan_db.YawningTitanDB.update"><code class="xref py py-func docutils literal notranslate"><span class="pre">yawning_titan.db.yawning_titan_db.YawningTitanDB.update()</span></code></a> to
+perform an update, otherwise they’re passed to
+<a class="reference internal" href="yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB.insert" title="yawning_titan.db.yawning_titan_db.YawningTitanDB.insert"><code class="xref py py-func docutils literal notranslate"><span class="pre">insert()</span></code></a> to
+perform an insert. This is done to make use of the existing uuid and
+locked file handling in the two methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>doc</strong> – A doc.</p></li>
+<li><p><strong>uuid</strong> – The docs uuid.</p></li>
+<li><p><strong>name</strong> – The doc name.</p></li>
+<li><p><strong>description</strong> – The doc description.</p></li>
+<li><p><strong>author</strong> – The docs author.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The updated doc.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.remove_by_cond">
+<span class="sig-name descname"><span class="pre">remove_by_cond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDB.remove_by_cond"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.remove_by_cond" title="Permalink to this definition"></a></dt>
+<dd><p>Remove documents that match a query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cond</strong> – A:class:<cite>~yawning_titan.db.query.YawningTitanQuery</cite>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The list of uuids from documents removed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.yawning_titan_db.YawningTitanDB.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/yawning_titan_db.html#YawningTitanDB.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.yawning_titan_db.YawningTitanDB.remove" title="Permalink to this definition"></a></dt>
+<dd><p>Remove a document with a given _doc_metadata.uuid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uuid</strong> – A documents _doc_metadata.uuid.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The uuid of the removed document.</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference internal" href="yawning_titan.exceptions.YawningTitanDBCriticalError.html#yawning_titan.exceptions.YawningTitanDBCriticalError" title="yawning_titan.exceptions.YawningTitanDBCriticalError"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDBCriticalError</span></code></a>
+when there is more than one doc with the same uuid to remove.
+<a class="reference internal" href="yawning_titan.exceptions.YawningTitanDBError.html#yawning_titan.exceptions.YawningTitanDBError" title="yawning_titan.exceptions.YawningTitanDBError"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDBError</span></code></a> when
+an attempt to remove a locked doc is made.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="yawning_titan.db.schemas.ZeroDaySchema.html" class="btn btn-neutral float-left" title="yawning_titan.db.schemas.ZeroDaySchema" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.db.yawning_titan_db.YawningTitanDB.html" class="btn btn-neutral float-right" title="yawning_titan.db.yawning_titan_db.YawningTitanDB" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.conftest.Group &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="tests.conftest.GroupTier1" href="tests.conftest.GroupTier1.html" />
+    <link rel="prev" title="tests.conftest.test_group" href="tests.conftest.test_group.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="tests.conftest.html">tests.conftest</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.basic_2_agent_loop.html">tests.conftest.basic_2_agent_loop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.corporate_network.html">tests.conftest.corporate_network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.create_yawning_titan_run.html">tests.conftest.create_yawning_titan_run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.default_game_mode.html">tests.conftest.default_game_mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.default_network.html">tests.conftest.default_network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.game_mode_db.html">tests.conftest.game_mode_db</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.game_mode_manager.html">tests.conftest.game_mode_manager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.legacy_default_game_mode_dict.html">tests.conftest.legacy_default_game_mode_dict</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.multi_tier_test_group.html">tests.conftest.multi_tier_test_group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.network_db.html">tests.conftest.network_db</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.network_manager.html">tests.conftest.network_manager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.not_raises.html">tests.conftest.not_raises</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.temp_networks.html">tests.conftest.temp_networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.test_group.html">tests.conftest.test_group</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">tests.conftest.Group</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tests.conftest.Group"><code class="docutils literal notranslate"><span class="pre">Group</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.GroupTier1.html">tests.conftest.GroupTier1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.GroupTier2.html">tests.conftest.GroupTier2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.not_raises"><code class="docutils literal notranslate"><span class="pre">not_raises()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.game_mode_db"><code class="docutils literal notranslate"><span class="pre">game_mode_db()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.game_mode_manager"><code class="docutils literal notranslate"><span class="pre">game_mode_manager()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.network_manager"><code class="docutils literal notranslate"><span class="pre">network_manager()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.default_game_mode"><code class="docutils literal notranslate"><span class="pre">default_game_mode()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.network_db"><code class="docutils literal notranslate"><span class="pre">network_db()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.default_network"><code class="docutils literal notranslate"><span class="pre">default_network()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.temp_networks"><code class="docutils literal notranslate"><span class="pre">temp_networks()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.corporate_network"><code class="docutils literal notranslate"><span class="pre">corporate_network()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.legacy_default_game_mode_dict"><code class="docutils literal notranslate"><span class="pre">legacy_default_game_mode_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.create_yawning_titan_run"><code class="docutils literal notranslate"><span class="pre">create_yawning_titan_run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.basic_2_agent_loop"><code class="docutils literal notranslate"><span class="pre">basic_2_agent_loop()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.Group"><code class="docutils literal notranslate"><span class="pre">Group</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.GroupTier1"><code class="docutils literal notranslate"><span class="pre">GroupTier1</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.GroupTier2"><code class="docutils literal notranslate"><span class="pre">GroupTier2</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.test_group"><code class="docutils literal notranslate"><span class="pre">test_group()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.conftest.html#tests.conftest.multi_tier_test_group"><code class="docutils literal notranslate"><span class="pre">multi_tier_test_group()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.e2e_integration_tests.html">tests.e2e_integration_tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.game_mode_db_patch.html">tests.game_mode_db_patch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.gui.html">tests.gui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.integration_tests.html">tests.integration_tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.network_db_patch.html">tests.network_db_patch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.test_pipeline_markers.html">tests.test_pipeline_markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.unit_tests.html">tests.unit_tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.yawning_titan_db_patch.html">tests.yawning_titan_db_patch</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="tests.html">tests</a></li>
+          <li class="breadcrumb-item"><a href="tests.conftest.html">tests.conftest</a></li>
+      <li class="breadcrumb-item active">tests.conftest.Group</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tests-conftest-group">
+<h1>tests.conftest.Group<a class="headerlink" href="#tests-conftest-group" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.conftest.Group">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.conftest.</span></span><span class="sig-name descname"><span class="pre">Group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/conftest.html#Group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.conftest.Group" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="yawning_titan.config.core.ConfigGroup.html#yawning_titan.config.core.ConfigGroup" title="yawning_titan.config.core.ConfigGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigGroup</span></code></a></p>
+<p>Basic implementation of a :class: <cite>~yawning_titan.config.core.ConfigGroup</cite>.</p>
+<p>The ConfigGroup constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc</strong> – The groups doc.</p>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.conftest.Group.get_config_elements" title="tests.conftest.Group.get_config_elements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_config_elements</span></code></a></p></td>
+<td><p>Get the attributes of the class that are either :class: <cite>ConfigGroup</cite> or <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigItem</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.conftest.Group.get_non_config_elements" title="tests.conftest.Group.get_non_config_elements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_non_config_elements</span></code></a></p></td>
+<td><p>Get all attributes of the class that are not :class: <cite>ConfigGroup</cite> or :class: <cite>ConfigItem</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.conftest.Group.set_from_dict" title="tests.conftest.Group.set_from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_from_dict</span></code></a></p></td>
+<td><p>Set the values of all :class: <cite>ConfigGroup</cite> or <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigItem</span></code> elements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.conftest.Group.set_from_yaml" title="tests.conftest.Group.set_from_yaml"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_from_yaml</span></code></a></p></td>
+<td><p>Set the elements of the group from a .yaml file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.conftest.Group.stringify" title="tests.conftest.Group.stringify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stringify</span></code></a></p></td>
+<td><p>Represent the class as a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.conftest.Group.to_dict" title="tests.conftest.Group.to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dict</span></code></a></p></td>
+<td><p>Return the ConfigGroup as a dict.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.conftest.Group.to_legacy_dict" title="tests.conftest.Group.to_legacy_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_legacy_dict</span></code></a></p></td>
+<td><p>Convert the group into a unitary depth dictionary of legacy config value (aliases) to :class: <cite>ConfigItem</cite>'s.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.conftest.Group.to_yaml" title="tests.conftest.Group.to_yaml"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_yaml</span></code></a></p></td>
+<td><p>Save the values of the elements of the group to a .yaml file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.conftest.Group.validate" title="tests.conftest.Group.validate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code></a></p></td>
+<td><p>Validate the grouped items against their properties.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.conftest.Group.validate_elements" title="tests.conftest.Group.validate_elements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_elements</span></code></a></p></td>
+<td><p>Call the .validate() method on each of the elements in the group.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.conftest.Group.config_groups" title="tests.conftest.Group.config_groups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config_groups</span></code></a></p></td>
+<td><p><cite>~yawning_titan.config.core.ConfigGroup</cite> children of the group.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.conftest.Group.config_items" title="tests.conftest.Group.config_items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config_items</span></code></a></p></td>
+<td><p><cite>~yawning_titan.config.core.ConfigItem</cite> children of the group.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py property">
+<dt class="sig sig-object py" id="tests.conftest.Group.config_groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">config_groups</span></span><a class="headerlink" href="#tests.conftest.Group.config_groups" title="Permalink to this definition"></a></dt>
+<dd><p><cite>~yawning_titan.config.core.ConfigGroup</cite> children of the group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Property to represent the</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tests.conftest.Group.config_items">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">config_items</span></span><a class="headerlink" href="#tests.conftest.Group.config_items" title="Permalink to this definition"></a></dt>
+<dd><p><cite>~yawning_titan.config.core.ConfigItem</cite> children of the group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Property to represent the</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.conftest.Group.get_config_elements">
+<span class="sig-name descname"><span class="pre">get_config_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.conftest.Group.get_config_elements" title="Permalink to this definition"></a></dt>
+<dd><p>Get the attributes of the class that are either :class: <cite>ConfigGroup</cite> or <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigItem</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>_type</strong> – An optional type for a specific type of config element.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary of names to config elements.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.conftest.Group.get_non_config_elements">
+<span class="sig-name descname"><span class="pre">get_non_config_elements</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.conftest.Group.get_non_config_elements" title="Permalink to this definition"></a></dt>
+<dd><p>Get all attributes of the class that are not :class: <cite>ConfigGroup</cite> or :class: <cite>ConfigItem</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A dictionary of names to attributes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.conftest.Group.set_from_dict">
+<span class="sig-name descname"><span class="pre">set_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legacy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infer_legacy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.conftest.Group.set_from_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Set the values of all :class: <cite>ConfigGroup</cite> or <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigItem</span></code> elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_dict</strong> – A dictionary representing values of all config elements.</p></li>
+<li><p><strong>legacy</strong> – Whether to use the alias names for config elements to construct the config from a legacy dictionary.</p></li>
+<li><p><strong>infer_legacy</strong> – Attempt to recognise if a config is of a legacy type.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>kwargs can contain 2 parameters:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>root: Whether the element is a base level element or not.</dt><dd><p>if the element is a root then it should validate all of its descendants.</p>
+</dd>
+</dl>
+</li>
+<li><p>legacy_lookup: The current flattened dictionary representation of the class by its legacy keys.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.conftest.Group.set_from_yaml">
+<span class="sig-name descname"><span class="pre">set_from_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legacy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infer_legacy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.conftest.Group.set_from_yaml" title="Permalink to this definition"></a></dt>
+<dd><p>Set the elements of the group from a .yaml file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> – The path to the .yaml file.</p></li>
+<li><p><strong>legacy</strong> – Whether to use the alias names for config elements to construct the config from a legacy dictionary.</p></li>
+<li><p><strong>infer_legacy</strong> – Attempt to recognise if a config is of a legacy type.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.conftest.Group.stringify">
+<span class="sig-name descname"><span class="pre">stringify</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.conftest.Group.stringify" title="Permalink to this definition"></a></dt>
+<dd><p>Represent the class as a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.conftest.Group.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legacy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_none</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.conftest.Group.to_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Return the ConfigGroup as a dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>values_only</strong> – Create a dictionary containing only the value of :class: <cite>ConfigItem</cite>’s</p></li>
+<li><p><strong>legacy</strong> – Convert the group into a unitary depth dictionary of legacy config value (aliases) to :class: <cite>ConfigItem</cite>’s
+by calling :method: <cite>ConfigGroup.to_legacy</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The ConfigGroup as a dict.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.conftest.Group.to_legacy_dict">
+<span class="sig-name descname"><span class="pre">to_legacy_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flattened_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.conftest.Group.to_legacy_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Convert the group into a unitary depth dictionary of legacy config value (aliases) to :class: <cite>ConfigItem</cite>’s.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.conftest.Group.to_yaml">
+<span class="sig-name descname"><span class="pre">to_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.conftest.Group.to_yaml" title="Permalink to this definition"></a></dt>
+<dd><p>Save the values of the elements of the group to a .yaml file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> – The path to the .yaml file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.conftest.Group.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raise_overall_exception</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.conftest.Group.validate" title="Permalink to this definition"></a></dt>
+<dd><p>Validate the grouped items against their properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An instance of <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigGroupValidation</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.conftest.Group.validate_elements">
+<span class="sig-name descname"><span class="pre">validate_elements</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.conftest.Group.validate_elements" title="Permalink to this definition"></a></dt>
+<dd><p>Call the .validate() method on each of the elements in the group.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests.conftest.test_group.html" class="btn btn-neutral float-left" title="tests.conftest.test_group" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.conftest.GroupTier1.html" class="btn btn-neutral float-right" title="tests.conftest.GroupTier1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

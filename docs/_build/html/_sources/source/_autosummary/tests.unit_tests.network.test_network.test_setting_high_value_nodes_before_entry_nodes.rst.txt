@@ -1,0 +1,6 @@
+tests.unit\_tests.network.test\_network.test\_setting\_high\_value\_nodes\_before\_entry\_nodes
+===============================================================================================
+
+.. currentmodule:: tests.unit_tests.network.test_network
+
+.. autofunction:: test_setting_high_value_nodes_before_entry_nodes

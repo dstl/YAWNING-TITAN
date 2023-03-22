@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.envs.generic.core.reward_functions &mdash; YAWNING TITAN 1.1.0
+ documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.0
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.envs.generic.core.reward_functions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for yawning_titan.envs.generic.core.reward_functions</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A collection of reward functions used be the generic network environment.</span>
+
+<span class="sd">You can select the reward function that you wish to use in the config file under settings.</span>
+<span class="sd">The reward functions take in a parameter called args. args is a dictionary that contains the</span>
+<span class="sd">following information:</span>
+<span class="sd">    -network_interface: Interface with the network</span>
+<span class="sd">    -blue_action: The action that the blue agent has taken this turn</span>
+<span class="sd">    -blue_node: The node that the blue agent has targeted for their action</span>
+<span class="sd">    -start_state: The state of the nodes before the blue agent has taken their action</span>
+<span class="sd">    -end_state: The state of the nodes after the blue agent has taken their action</span>
+<span class="sd">    -start_vulnerabilities: The vulnerabilities before blue agents turn</span>
+<span class="sd">    -end_vulnerabilities: The vulnerabilities after the blue agents turn</span>
+<span class="sd">    -start_isolation: The isolation status of all the nodes at the start of a turn</span>
+<span class="sd">    -end_isolation: The isolation status of all the nodes at the end of a turn</span>
+<span class="sd">    -start_blue: The env as the blue agent can see it before the blue agents turn</span>
+<span class="sd">    -end_blue: The env as the blue agent can see it after the blue agents turn</span>
+
+<span class="sd">The reward function returns a single number (integer or float) that is the blue agents reward for that turn.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Functions:</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.core.network_interface</span> <span class="kn">import</span> <span class="n">NetworkInterface</span>
+
+<span class="n">REMOVE_RED_POINTS</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">101</span><span class="p">):</span>
+    <span class="n">REMOVE_RED_POINTS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.004</span> <span class="o">*</span> <span class="n">i</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="n">REDUCE_VULNERABILITY_POINTS</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">):</span>
+    <span class="n">REDUCE_VULNERABILITY_POINTS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">10</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">4</span> <span class="o">-</span> <span class="mi">10</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="mi">20</span><span class="p">)))</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">SCANNING_USAGE_POINTS</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
+    <span class="n">SCANNING_USAGE_POINTS</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="standard_rewards"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.reward_functions.standard_rewards.html#yawning_titan.envs.generic.core.reward_functions.standard_rewards">[docs]</a><span class="k">def</span> <span class="nf">standard_rewards</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the reward for the current state of the environment.</span>
+
+<span class="sd">    Actions cost a certain amount and blue gets rewarded for removing red nodes and</span>
+<span class="sd">    reducing the vulnerability of nodes</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        args: A dictionary containing the following items:</span>
+<span class="sd">            network_interface: Interface with the network</span>
+<span class="sd">            blue_action: The action that the blue agent has taken this turn</span>
+<span class="sd">            blue_node: The node that the blue agent has targeted for their action</span>
+<span class="sd">            start_state: The state of the nodes before the blue agent has taken their action</span>
+<span class="sd">            end_state: The state of the nodes after the blue agent has taken their action</span>
+<span class="sd">            start_vulnerabilities: The vulnerabilities before blue agents turn</span>
+<span class="sd">            end_vulnerabilities: The vulnerabilities after the blue agents turn</span>
+<span class="sd">            start_isolation: The isolation status of all the nodes at the start of a turn</span>
+<span class="sd">            end_isolation: The isolation status of all the nodes at the end of a turn</span>
+<span class="sd">            start_blue: The env as the blue agent can see it before the blue agents turn</span>
+<span class="sd">            end_blue: The env as the blue agent can see it after the blue agents turn</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The reward earned for this specific turn for the blue agent</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get information about the current state of the environment</span>
+    <span class="n">network_interface</span><span class="p">:</span> <span class="n">NetworkInterface</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;network_interface&quot;</span><span class="p">]</span>
+    <span class="n">blue_action</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span>
+    <span class="n">start_state</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;start_state&quot;</span><span class="p">]</span>
+    <span class="n">end_state</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">]</span>
+    <span class="n">start_vulnerabilities</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;start_vulnerabilities&quot;</span><span class="p">]</span>
+    <span class="n">end_vulnerabilities</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;end_vulnerabilities&quot;</span><span class="p">]</span>
+    <span class="n">start_isolation</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;start_isolation&quot;</span><span class="p">]</span>
+    <span class="n">end_isolation</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;end_isolation&quot;</span><span class="p">]</span>
+    <span class="n">start_blue</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;start_blue&quot;</span><span class="p">]</span>
+    <span class="n">end_blue</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;end_blue&quot;</span><span class="p">]</span>
+
+    <span class="c1"># cost for actions</span>
+    <span class="n">action_cost</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;reduce_vulnerability&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="s2">&quot;restore_node&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;make_node_safe&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="s2">&quot;scan&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;isolate&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;connect&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;do_nothing&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="s2">&quot;add_deceptive_node&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># prevent isolate reward from being duplicated</span>
+    <span class="n">reward</span> <span class="o">=</span> <span class="o">-</span><span class="n">action_cost</span><span class="p">[</span><span class="n">blue_action</span><span class="p">]</span> <span class="k">if</span> <span class="n">blue_action</span> <span class="o">!=</span> <span class="s2">&quot;isolate&quot;</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="c1"># punish agent for every node it has isolated</span>
+    <span class="n">reward</span> <span class="o">+=</span> <span class="o">-</span><span class="n">action_cost</span><span class="p">[</span><span class="s2">&quot;isolate&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">end_isolation</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="c1"># calculating number of red nodes before and after the blue agents turn</span>
+    <span class="n">initial_cumulative_states</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">start_state</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">final_cumulative_states</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">end_state</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="c1"># punish agent for doing nothing if there are large numbers or red controlled nodes in the environment</span>
+    <span class="k">if</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;do_nothing&quot;</span><span class="p">:</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">final_cumulative_states</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;connect&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">end_isolation</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">&lt;</span> <span class="nb">sum</span><span class="p">(</span><span class="n">start_isolation</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="n">reward</span> <span class="o">+=</span> <span class="mi">5</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">reward</span> <span class="o">-=</span> <span class="mi">5</span>
+
+    <span class="c1"># rewards for removing red nodes</span>
+    <span class="k">if</span> <span class="n">initial_cumulative_states</span> <span class="o">&gt;</span> <span class="n">final_cumulative_states</span><span class="p">:</span>
+        <span class="n">reward</span> <span class="o">+=</span> <span class="n">REMOVE_RED_POINTS</span><span class="p">[</span>
+            <span class="nb">round</span><span class="p">(</span>
+                <span class="mi">100</span>
+                <span class="o">*</span> <span class="n">final_cumulative_states</span>
+                <span class="o">/</span> <span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+
+    <span class="c1"># punish agent for doing nothing if there are large numbers or red controlled nodes in the environment</span>
+    <span class="k">if</span> <span class="n">blue_action</span> <span class="o">!=</span> <span class="s2">&quot;make_node_safe&quot;</span> <span class="ow">and</span> <span class="n">blue_action</span> <span class="o">!=</span> <span class="s2">&quot;restore_node&quot;</span><span class="p">:</span>
+        <span class="n">amount</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">final_cumulative_states</span> <span class="o">/</span> <span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">amount</span> <span class="o">&gt;</span> <span class="mf">0.3</span><span class="p">:</span>
+            <span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">-</span> <span class="n">amount</span> <span class="o">+</span> <span class="mf">0.3</span>
+
+    <span class="c1"># punish the blue agent for patching nodes that are already safe</span>
+    <span class="k">if</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;make_node_safe&quot;</span> <span class="ow">or</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;restore_node&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">initial_cumulative_states</span> <span class="o">==</span> <span class="n">final_cumulative_states</span><span class="p">:</span>
+            <span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">-</span> <span class="mi">3</span>
+
+    <span class="c1"># punish the blue agent for reducing the vulnerability of a node that is already at minimum vulnerability</span>
+    <span class="k">if</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;reduce_vulnerability&quot;</span> <span class="ow">or</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;restore_node&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">start_vulnerabilities</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">==</span> <span class="nb">sum</span><span class="p">(</span><span class="n">end_vulnerabilities</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">-</span> <span class="mf">0.5</span>
+
+    <span class="c1"># reward for revealing red</span>
+    <span class="k">if</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;scan&quot;</span><span class="p">:</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">end_blue</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">start_blue</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">start_state</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">number</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">number</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="n">reward</span> <span class="o">+=</span> <span class="mf">2.5</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">reward</span> <span class="o">+=</span> <span class="n">number</span> <span class="o">*</span> <span class="mf">0.5</span>
+
+    <span class="c1"># rewards for reducing node vulnerabilities</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">ignores_defences</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">False</span>
+        <span class="ow">and</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;reduce_vulnerability&quot;</span>
+    <span class="p">):</span>
+        <span class="n">initial_cumulative_vuln</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">start_vulnerabilities</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">final_cumulative_vuln</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">end_vulnerabilities</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">+</span> <span class="p">(</span><span class="n">initial_cumulative_vuln</span> <span class="o">-</span> <span class="n">final_cumulative_vuln</span><span class="p">)</span> <span class="o">*</span> <span class="mi">4</span>
+
+    <span class="k">if</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;add_deceptive_node&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">network_interface</span><span class="o">.</span><span class="n">reached_max_deceptive_nodes</span><span class="p">:</span>
+            <span class="n">reward</span> <span class="o">-=</span> <span class="mi">5</span>
+
+    <span class="k">return</span> <span class="n">reward</span></div>
+
+
+<div class="viewcode-block" id="experimental_rewards"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.reward_functions.experimental_rewards.html#yawning_titan.envs.generic.core.reward_functions.experimental_rewards">[docs]</a><span class="k">def</span> <span class="nf">experimental_rewards</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the reward for the current state of the environment.</span>
+
+<span class="sd">    Actions cost a certain amount and blue gets rewarded for removing red nodes and</span>
+<span class="sd">    reducing the vulnerability of nodes</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        args: A dictionary containing the following items:</span>
+<span class="sd">            network_interface: Interface with the network</span>
+<span class="sd">            blue_action: The action that the blue agent has taken this turn</span>
+<span class="sd">            blue_node: The node that the blue agent has targeted for their action</span>
+<span class="sd">            start_state: The state of the nodes before the blue agent has taken their action</span>
+<span class="sd">            end_state: The state of the nodes after the blue agent has taken their action</span>
+<span class="sd">            start_vulnerabilities: The vulnerabilities before blue agents turn</span>
+<span class="sd">            end_vulnerabilities: The vulnerabilities after the blue agents turn</span>
+<span class="sd">            start_isolation: The isolation status of all the nodes at the start of a turn</span>
+<span class="sd">            end_isolation: The isolation status of all the nodes at the end of a turn</span>
+<span class="sd">            start_blue: The env as the blue agent can see it before the blue agents turn</span>
+<span class="sd">            end_blue: The env as the blue agent can see it after the blue agents turn</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The reward earned for this specific turn for the blue agent</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get information about the current state of the environment</span>
+    <span class="n">network_interface</span><span class="p">:</span> <span class="n">NetworkInterface</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;network_interface&quot;</span><span class="p">]</span>
+    <span class="n">blue_action</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span>
+    <span class="n">start_state</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;start_state&quot;</span><span class="p">]</span>
+    <span class="n">end_state</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">]</span>
+    <span class="n">start_blue</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;start_blue&quot;</span><span class="p">]</span>
+    <span class="n">end_blue</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;end_blue&quot;</span><span class="p">]</span>
+
+    <span class="c1"># cost for actions</span>
+    <span class="n">action_cost</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;reduce_vulnerability&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;restore_node&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;make_node_safe&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;scan&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;isolate&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s2">&quot;connect&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;do_nothing&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="s2">&quot;add_deceptive_node&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">reward</span> <span class="o">=</span> <span class="o">-</span><span class="n">action_cost</span><span class="p">[</span><span class="n">blue_action</span><span class="p">]</span>
+    <span class="c1"># calculating number of red nodes before and after the blue agents turn</span>
+    <span class="n">initial_cumulative_states</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">start_state</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">final_cumulative_states</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">end_state</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="c1"># calculating the vulnerability of all the nodes before and after the blue agents turn</span>
+    <span class="c1"># blue&#39;s view</span>
+    <span class="n">initial_blue_states</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">start_blue</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">final_blue_states</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">end_blue</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="c1"># rewards for removing red nodes</span>
+    <span class="c1"># gives between 0.5 and 1</span>
+    <span class="k">if</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;make_node_safe&quot;</span> <span class="ow">or</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;restore_node&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">initial_blue_states</span> <span class="o">&gt;</span> <span class="n">final_blue_states</span><span class="p">:</span>
+            <span class="n">reward</span> <span class="o">+=</span> <span class="n">REMOVE_RED_POINTS</span><span class="p">[</span>
+                <span class="nb">round</span><span class="p">(</span>
+                    <span class="mi">100</span>
+                    <span class="o">*</span> <span class="n">final_cumulative_states</span>
+                    <span class="o">/</span> <span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="p">]</span>
+        <span class="k">elif</span> <span class="n">initial_cumulative_states</span> <span class="o">&gt;</span> <span class="n">final_cumulative_states</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">reward</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="c1"># punish agent for doing nothing if there are large numbers or red controlled nodes in the environment</span>
+    <span class="k">if</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;do_nothing&quot;</span><span class="p">:</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">final_cumulative_states</span><span class="p">)</span>
+
+    <span class="n">vision_score</span> <span class="o">=</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="p">(</span><span class="n">final_cumulative_states</span> <span class="o">-</span> <span class="n">final_blue_states</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+    <span class="n">reward</span> <span class="o">-=</span> <span class="n">vision_score</span>
+
+    <span class="k">return</span> <span class="n">reward</span></div>
+
+
+<span class="c1"># A very simple example reward function</span>
+<div class="viewcode-block" id="one_per_timestep"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.reward_functions.one_per_timestep.html#yawning_titan.envs.generic.core.reward_functions.one_per_timestep">[docs]</a><span class="k">def</span> <span class="nf">one_per_timestep</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Give a reward for 0.1 for every timestep that the blue agent is alive.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        args: A dictionary containing the following items:</span>
+<span class="sd">            network_interface: Interface with the network</span>
+<span class="sd">            blue_action: The action that the blue agent has taken this turn</span>
+<span class="sd">            blue_node: The node that the blue agent has targeted for their action</span>
+<span class="sd">            start_state: The state of the nodes before the blue agent has taken their action</span>
+<span class="sd">            end_state: The state of the nodes after the blue agent has taken their action</span>
+<span class="sd">            start_vulnerabilities: The vulnerabilities before blue agents turn</span>
+<span class="sd">            end_vulnerabilities: The vulnerabilities after the blue agents turn</span>
+<span class="sd">            start_isolation: The isolation status of all the nodes at the start of a turn</span>
+<span class="sd">            end_isolation: The isolation status of all the nodes at the end of a turn</span>
+<span class="sd">            start_blue: The env as the blue agent can see it before the blue agents turn</span>
+<span class="sd">            end_blue: The env as the blue agent can see it after the blue agents turn</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        0.1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mf">0.1</span></div>
+
+
+<div class="viewcode-block" id="zero_reward"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.reward_functions.zero_reward.html#yawning_titan.envs.generic.core.reward_functions.zero_reward">[docs]</a><span class="k">def</span> <span class="nf">zero_reward</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return zero reward per timestep.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        args: A dictionary containing the following items:</span>
+<span class="sd">            network_interface: Interface with the network</span>
+<span class="sd">            blue_action: The action that the blue agent has taken this turn</span>
+<span class="sd">            blue_node: The node that the blue agent has targeted for their action</span>
+<span class="sd">            start_state: The state of the nodes before the blue agent has taken their action</span>
+<span class="sd">            end_state: The state of the nodes after the blue agent has taken their action</span>
+<span class="sd">            start_vulnerabilities: The vulnerabilities before blue agents turn</span>
+<span class="sd">            end_vulnerabilities: The vulnerabilities after the blue agents turn</span>
+<span class="sd">            start_isolation: The isolation status of all the nodes at the start of a turn</span>
+<span class="sd">            end_isolation: The isolation status of all the nodes at the end of a turn</span>
+<span class="sd">            start_blue: The env as the blue agent can see it before the blue agents turn</span>
+<span class="sd">            end_blue: The env as the blue agent can see it after the blue agents turn</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="safe_nodes_give_rewards"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.reward_functions.safe_nodes_give_rewards.html#yawning_titan.envs.generic.core.reward_functions.safe_nodes_give_rewards">[docs]</a><span class="k">def</span> <span class="nf">safe_nodes_give_rewards</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Give 1 reward for every safe node at that timestep.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        args: A dictionary containing the following items:</span>
+<span class="sd">            network_interface: Interface with the network</span>
+<span class="sd">            blue_action: The action that the blue agent has taken this turn</span>
+<span class="sd">            blue_node: The node that the blue agent has targeted for their action</span>
+<span class="sd">            start_state: The state of the nodes before the blue agent has taken their action</span>
+<span class="sd">            end_state: The state of the nodes after the blue agent has taken their action</span>
+<span class="sd">            start_vulnerabilities: The vulnerabilities before blue agents turn</span>
+<span class="sd">            end_vulnerabilities: The vulnerabilities after the blue agents turn</span>
+<span class="sd">            start_isolation: The isolation status of all the nodes at the start of a turn</span>
+<span class="sd">            end_isolation: The isolation status of all the nodes at the end of a turn</span>
+<span class="sd">            start_blue: The env as the blue agent can see it before the blue agents turn</span>
+<span class="sd">            end_blue: The env as the blue agent can see it after the blue agents turn</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The reward earned for this specific turn for the blue agent</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get information about the current state of the environment</span>
+    <span class="n">end_state</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">]</span>
+
+    <span class="n">final_cumulative_states</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">end_state</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="c1"># reward is equal to the number of safe nodes</span>
+    <span class="n">reward</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">end_state</span><span class="p">)</span> <span class="o">-</span> <span class="n">final_cumulative_states</span>
+
+    <span class="k">return</span> <span class="n">reward</span></div>
+
+
+<div class="viewcode-block" id="punish_bad_actions"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.reward_functions.punish_bad_actions.html#yawning_titan.envs.generic.core.reward_functions.punish_bad_actions">[docs]</a><span class="k">def</span> <span class="nf">punish_bad_actions</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Just punishes bad actions bad moves.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        args: A dictionary containing the following items:</span>
+<span class="sd">            network_interface: Interface with the network</span>
+<span class="sd">            blue_action: The action that the blue agent has taken this turn</span>
+<span class="sd">            blue_node: The node that the blue agent has targeted for their action</span>
+<span class="sd">            start_state: The state of the nodes before the blue agent has taken their action</span>
+<span class="sd">            end_state: The state of the nodes after the blue agent has taken their action</span>
+<span class="sd">            start_vulnerabilities: The vulnerabilities before blue agents turn</span>
+<span class="sd">            end_vulnerabilities: The vulnerabilities after the blue agents turn</span>
+<span class="sd">            start_isolation: The isolation status of all the nodes at the start of a turn</span>
+<span class="sd">            end_isolation: The isolation status of all the nodes at the end of a turn</span>
+<span class="sd">            start_blue: The env as the blue agent can see it before the blue agents turn</span>
+<span class="sd">            end_blue: The env as the blue agent can see it after the blue agents turn</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The reward earned for this specific turn for the blue agent</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get information about the current state of the game</span>
+    <span class="n">network_interface</span><span class="p">:</span> <span class="n">NetworkInterface</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;network_interface&quot;</span><span class="p">]</span>
+    <span class="n">blue_action</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span>
+    <span class="n">start_state</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;start_state&quot;</span><span class="p">]</span>
+    <span class="n">end_state</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">]</span>
+    <span class="n">start_vulnerabilities</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;start_vulnerabilities&quot;</span><span class="p">]</span>
+    <span class="n">end_vulnerabilities</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;end_vulnerabilities&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Get number of safe states before and after the blue agents turn</span>
+    <span class="n">initial_cumulative_states</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">start_state</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">final_cumulative_states</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">end_state</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="n">reward</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># punish agent for doing nothing if there are large numbers or red controlled nodes in the environment</span>
+    <span class="k">if</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;do_nothing&quot;</span><span class="p">:</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">final_cumulative_states</span><span class="p">)</span>
+    <span class="c1"># punish the blue agent for patching nodes that are already safe</span>
+    <span class="k">if</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;make_node_safe&quot;</span> <span class="ow">or</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;restore_node&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">initial_cumulative_states</span> <span class="o">==</span> <span class="n">final_cumulative_states</span><span class="p">:</span>
+            <span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">initial_cumulative_states</span><span class="p">)</span>
+
+    <span class="c1"># punish the blue agent for reducing the vulnerability of a node that is already at minimum vulnerability</span>
+    <span class="k">if</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;reduce_vulnerability&quot;</span> <span class="ow">and</span> <span class="p">(</span>
+        <span class="nb">sum</span><span class="p">(</span><span class="n">start_vulnerabilities</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">==</span> <span class="nb">sum</span><span class="p">(</span><span class="n">end_vulnerabilities</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="p">):</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="c1"># punish for relocating deceptive nodes (after it has already been placed)</span>
+    <span class="k">if</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;add_deceptive_node&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">network_interface</span><span class="o">.</span><span class="n">reached_max_deceptive_nodes</span><span class="p">:</span>
+            <span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">-</span> <span class="mi">5</span>
+
+    <span class="k">return</span> <span class="n">reward</span></div>
+
+
+<div class="viewcode-block" id="num_nodes_safe"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.reward_functions.num_nodes_safe.html#yawning_titan.envs.generic.core.reward_functions.num_nodes_safe">[docs]</a><span class="k">def</span> <span class="nf">num_nodes_safe</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provide reward based on the proportion of nodes safe within the environment.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        args: A dictionary containing information from the</span>
+<span class="sd">        environment for the given timestep</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The calculated reward</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">total_n_nodes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">n_compromised</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">n_safe</span> <span class="o">=</span> <span class="n">total_n_nodes</span> <span class="o">-</span> <span class="n">n_compromised</span>
+
+    <span class="k">return</span> <span class="n">n_safe</span> <span class="o">/</span> <span class="n">total_n_nodes</span></div>
+
+
+<div class="viewcode-block" id="dcbo_cost_func"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.reward_functions.dcbo_cost_func.html#yawning_titan.envs.generic.core.reward_functions.dcbo_cost_func">[docs]</a><span class="k">def</span> <span class="nf">dcbo_cost_func</span><span class="p">(</span><span class="n">args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the cost function for DCBO using a set of fixed action cost values.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        args: A dictionary containing the following items:</span>
+<span class="sd">            network_interface: Interface with the network</span>
+<span class="sd">            blue_action: The action that the blue agent has taken this turn</span>
+<span class="sd">            blue_node: The node that the blue agent has targeted for their action</span>
+<span class="sd">            start_state: The state of the nodes before the blue agent has taken their action</span>
+<span class="sd">            end_state: The state of the nodes after the blue agent has taken their action</span>
+<span class="sd">            start_vulnerabilities: The vulnerabilities before blue agents turn</span>
+<span class="sd">            end_vulnerabilities: The vulnerabilities after the blue agents turn</span>
+<span class="sd">            start_isolation: The isolation status of all the nodes at the start of a turn</span>
+<span class="sd">            end_isolation: The isolation status of all the nodes at the end of a turn</span>
+<span class="sd">            start_blue: The env as the blue agent can see it before the blue agents turn</span>
+<span class="sd">            end_blue: The env as the blue agent can see it after the blue agents turn</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The cost for DCBO</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get information about the current state of the environment</span>
+    <span class="n">blue_action</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span>
+    <span class="n">end_state</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">]</span>
+
+    <span class="c1"># cost for actions</span>
+    <span class="n">action_cost</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;reduce_vulnerability&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;restore_node&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;make_node_safe&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;scan&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;isolate&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;connect&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;do_nothing&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;add_deceptive_node&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">reward</span> <span class="o">=</span> <span class="n">action_cost</span><span class="p">[</span><span class="n">blue_action</span><span class="p">]</span>
+    <span class="c1"># calculating number of red nodes before and after the blue agents turn</span>
+    <span class="n">final_cumulative_states</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">end_state</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="n">cost</span> <span class="o">=</span> <span class="n">final_cumulative_states</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">reward</span>
+
+    <span class="k">return</span> <span class="mi">0</span> <span class="o">-</span> <span class="n">cost</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

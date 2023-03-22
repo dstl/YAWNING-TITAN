@@ -1,0 +1,6 @@
+tests.unit\_tests.config.game\_config.test\_game\_mode.test\_create\_from\_factory
+==================================================================================
+
+.. currentmodule:: tests.unit_tests.config.game_config.test_game_mode
+
+.. autofunction:: test_create_from_factory

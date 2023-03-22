@@ -1,0 +1,42 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.unit\_tests.game\_modes.agents.test\_blue\_agent\_config
+==============================================================
+
+.. automodule:: tests.unit_tests.game_modes.agents.test_blue_agent_config
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      default_blue
+      test_default_blue_from_legacy
+      test_lower_chance_detecting_deceptive_node_intrusion_on_scan_fail
+      test_lower_chance_detecting_deceptive_node_intrusion_on_scan_pass
+      test_make_node_safe_increase_and_randomise_vulnerability
+      test_no_max_number_deceptive_nodes
+      test_not_using_scan_without_assured_immediate_detection
+      test_reconnect_isolate_config
+      test_using_scan_with_assured_immediate_detection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
