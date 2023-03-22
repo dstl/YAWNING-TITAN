@@ -1,0 +1,44 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.game\_modes.components.game\_rules.BlueLossConditionGroup
+========================================================================
+
+.. currentmodule:: yawning_titan.game_modes.components.game_rules
+
+.. autoclass:: BlueLossConditionGroup
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BlueLossConditionGroup.get_config_elements
+      ~BlueLossConditionGroup.get_non_config_elements
+      ~BlueLossConditionGroup.set_from_dict
+      ~BlueLossConditionGroup.set_from_yaml
+      ~BlueLossConditionGroup.stringify
+      ~BlueLossConditionGroup.to_dict
+      ~BlueLossConditionGroup.to_legacy_dict
+      ~BlueLossConditionGroup.to_yaml
+      ~BlueLossConditionGroup.validate
+      ~BlueLossConditionGroup.validate_elements
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BlueLossConditionGroup.config_groups
+      ~BlueLossConditionGroup.config_items
+   
+   

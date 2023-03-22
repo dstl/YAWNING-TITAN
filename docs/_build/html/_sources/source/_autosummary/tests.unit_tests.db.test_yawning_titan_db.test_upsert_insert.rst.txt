@@ -1,0 +1,6 @@
+tests.unit\_tests.db.test\_yawning\_titan\_db.test\_upsert\_insert
+==================================================================
+
+.. currentmodule:: tests.unit_tests.db.test_yawning_titan_db
+
+.. autofunction:: test_upsert_insert

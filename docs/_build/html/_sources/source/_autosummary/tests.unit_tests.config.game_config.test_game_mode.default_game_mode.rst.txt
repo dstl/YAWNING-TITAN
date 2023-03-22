@@ -1,0 +1,6 @@
+tests.unit\_tests.config.game\_config.test\_game\_mode.default\_game\_mode
+==========================================================================
+
+.. currentmodule:: tests.unit_tests.config.game_config.test_game_mode
+
+.. autofunction:: default_game_mode

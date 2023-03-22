@@ -1,0 +1,38 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.gui.test\_game\_mode\_section
+===================================
+
+.. automodule:: tests.gui.test_game_mode_section
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      test_config_class_instance_persisted
+      test_game_mode_section_multiple_forms
+      test_game_mode_section_only_relevant_errors_returned
+      test_game_mode_section_single_form
+      test_game_mode_section_single_form_errors
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

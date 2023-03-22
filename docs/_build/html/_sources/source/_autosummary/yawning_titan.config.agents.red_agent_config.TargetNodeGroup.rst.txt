@@ -1,0 +1,37 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.agents.red\_agent\_config.TargetNodeGroup
+===============================================================
+
+.. currentmodule:: yawning_titan.config.agents.red_agent_config
+
+.. autoclass:: TargetNodeGroup
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TargetNodeGroup.get_config_elements
+      ~TargetNodeGroup.get_non_config_elements
+      ~TargetNodeGroup.set_from_dict
+      ~TargetNodeGroup.set_from_yaml
+      ~TargetNodeGroup.stringify
+      ~TargetNodeGroup.to_dict
+      ~TargetNodeGroup.to_legacy_dict
+      ~TargetNodeGroup.to_yaml
+      ~TargetNodeGroup.validate
+      ~TargetNodeGroup.validate_elements
+   
+   
+
+   
+   
+   

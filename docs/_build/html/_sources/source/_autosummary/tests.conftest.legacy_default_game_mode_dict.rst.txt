@@ -1,0 +1,6 @@
+tests.conftest.legacy\_default\_game\_mode\_dict
+================================================
+
+.. currentmodule:: tests.conftest
+
+.. autofunction:: legacy_default_game_mode_dict

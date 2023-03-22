@@ -1,0 +1,6 @@
+tests.conftest.test\_group
+==========================
+
+.. currentmodule:: tests.conftest
+
+.. autofunction:: test_group

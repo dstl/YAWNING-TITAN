@@ -1,0 +1,6 @@
+tests.unit\_tests.game\_modes.agents.test\_blue\_agent\_config.test\_using\_scan\_with\_assured\_immediate\_detection
+=====================================================================================================================
+
+.. currentmodule:: tests.unit_tests.game_modes.agents.test_blue_agent_config
+
+.. autofunction:: test_using_scan_with_assured_immediate_detection

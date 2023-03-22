@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Config File Explained &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">The Config File Explained</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-config-file-explained">
+<span id="config-file"></span><h1>The Config File Explained<a class="headerlink" href="#the-config-file-explained" title="Permalink to this heading"></a></h1>
+<section id="red-agent-settings">
+<h2>Red agent settings:<a class="headerlink" href="#red-agent-settings" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><ul>
+<li><dl class="simple">
+<dt><strong>red_skill:</strong></dt><dd><p>The red agents skill level. Higher means that red is more likely to succeed in attacks</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>red_uses_skill:</strong></dt><dd><p>Red uses its skill modifier when attacking nodes</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>red_ignores_defences:</strong></dt><dd><p>The red agent ignores the defences of nodes</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>red_always_succeeds:</strong></dt><dd><p>Reds attacks always succeed</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>red_can_only_attack_from_red_agent_node:</strong></dt><dd><p>The agent has a central “command” node. the red agent can only attack from its command node and so has to move around the environment to be able to be able to conquer the whole thing</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>red_can_attack_from_any_red_node:</strong></dt><dd><p>The red agent can act from and control any node that it has compromised</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>red_can_naturally_spread:</strong></dt><dd><p>The red agent naturally spreads its influence every time-step</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>chance_to_spread_to_connected_node:</strong></dt><dd><p>If a node is connected to a compromised node what chance does it have to become compromised every turn through natural spreading</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>chance_to_spread_to_unconnected_node:</strong></dt><dd><p>If a node is not connected to a compromised node what chance does it have to become randomly infected through natural spreading</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>Red Actions</strong></dt><dd><ul>
+<li><p><strong>red_uses_spread_action:</strong></p>
+<blockquote>
+<div><p>Every compromised node has a chance to infect every neighbouring safe node</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><strong>spread_action_likelihood:</strong></dt><dd><p>The weighting for the action - how often the red agent performs the action</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>chance_for_red_to_spread:</strong></dt><dd><p>The chance for each “spread” to occur</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p><strong>red_uses_random_infect_action:</strong></p>
+<blockquote>
+<div><p>Red has a chance to infect every safe node irrespective of its position in the network</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><strong>random_infect_action_likelihood:</strong></dt><dd><p>The weighting for the action - how often the red agent performs the action</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>chance_for_red_to_random_compromise:</strong></dt><dd><p>The chance for each “infect” to succeed</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p><strong>red_uses_basic_attack_action:</strong></p>
+<blockquote>
+<div><p>The red agent picks a single node connected to an infected node and tries to attack and take over that node</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><strong>basic_attack_action_likelihood:</strong></dt><dd><p>The weighting for the action - how often the red agent performs the action</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p><strong>red_uses_do_nothing_action:</strong></p>
+<blockquote>
+<div><p>The red agent does nothing on this turn</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><strong>do_nothing_action_likelihood:</strong></dt><dd><p>The weighting for the action - how often the red agent performs the action</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p><strong>red_uses_move_action:</strong></p>
+<blockquote>
+<div><p>The red agent moves it central “control” node to a connected compromised node</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><strong>move_action_likelihood:</strong></dt><dd><p>The weighting for the action - how often the red agent performs the action</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><p><strong>red_uses_zero_day_action:</strong></p>
+<blockquote>
+<div><p>Red builds up and uses an attack that has a 100% success chance to compromise a single node</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><strong>zero_day_start_amount:</strong></dt><dd><p>The number of zero day attacks the red agent starts with</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>days_required_for_zero_day:</strong></dt><dd><p>The number of progress “points” that the red agent needs to earn to perform a zero day action</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>Red Targeting methods</strong></dt><dd><ul>
+<li><dl class="simple">
+<dt><strong>red_chooses_target_at_random:</strong></dt><dd><p>Red picks nodes to attack at random</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>red_prioritises_connected_nodes:</strong></dt><dd><p>Red sorts the nodes it can attack and chooses the one that has the most connections</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>red_prioritises_un_connected_nodes:</strong></dt><dd><p>Red sorts the nodes it can attack and chooses the one that has the least connections</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>red_prioritises_vulnerable_nodes:</strong></dt><dd><p>Red sorts the nodes is can attack and chooses the one that is the most vulnerable</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>red_prioritises_resilient_nodes:</strong></dt><dd><p>Red sorts the nodes is can attack and chooses the one that is the least vulnerable</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="observation-space-settings">
+<h2>Observation Space settings<a class="headerlink" href="#observation-space-settings" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><strong>compromised_status:</strong></dt><dd><p>The blue agent can see the compromised status of all the nodes</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>vulnerabilities:</strong></dt><dd><p>The blue agent can see the vulnerability scores of all the nodes</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>node_connections:</strong></dt><dd><p>The blue agent can see what nodes are connected to what other nodes</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>average_vulnerability:</strong></dt><dd><p>The blue agent can see the average vulnerability of all the nodes</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>graph_connectivity:</strong></dt><dd><p>The blue agent can see a graph connectivity score</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>attacking_nodes:</strong></dt><dd><p>The blue agent can see all of the nodes that have recently attacked a safe node</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>attacked_nodes:</strong></dt><dd><p>The blue agent can see all the nodes that have recently been attacked</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>special_nodes:</strong></dt><dd><p>The blue agent can see all of the special nodes (entry nodes, high value nodes)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>red_agent_skill:</strong></dt><dd><p>The blue agent can see the skill level of the red agent</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="blue-agent-settings">
+<h2>Blue Agent settings<a class="headerlink" href="#blue-agent-settings" title="Permalink to this heading"></a></h2>
+<p>The blue agent does not have to have perfect detection. In these settings you can change how much information blue
+can gain from the red agents actions. There are two different pieces of information blue can get: intrusions and
+attacks.</p>
+<p><strong>Intrusions</strong></p>
+<p>An intrusion is when the red agent takes over a node and compromises it. You can change the chance that blue has to
+be able to detect this using the “chance_to_immediately_discover_intrusion”. If blue does not detect an intrusion
+then it can use the scan action to try and discover these intrusions with “chance_to_discover_intrusion_on_scan”.</p>
+<p>There are also deceptive nodes that blue can place down. These nodes are used as detectors to inform blue when they
+are compromised. They should have a chance to detect of 1 so that they can detect everything (at the very least
+they should have a chance to detect higher than the normal chance to detect) but you can modify it if you so wish
+with “chance_to_immediately_discover_intrusion_deceptive_node” and “chance_to_discover_intrusion_on_scan_deceptive_node”</p>
+<p><strong>Attacks</strong></p>
+<p>Attacks are the actual attacks that the red agent does to compromise the nodes. For example you may be able to see
+that node 14 is compromised but using the attack detection, the blue agent may be able to see that it was node 12
+that attacked node 14. You can modify the chance for blue to see attacks that failed, succeeded (and blue was able
+to detect that the node was compromised) and attacks that succeeded and the blue agent did not detect the intrusion.</p>
+<p>Again there are settings to change the likelihood that a deceptive node can detect an attack. While this should
+remain at 1, it is open for you to change.</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><strong>max_number_deceptive_nodes:</strong></dt><dd><p>The number of deceptive nodes that blue can place down. Deceptive nodes are special nodes that have a higher chance (usually 100%) of being able to detect when they are being attacked/compromised.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>can_discover_failed_attacks:</strong></dt><dd><p>If the blue agent can detect attacks that have failed</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Intrusions</strong></dt><dd><ul>
+<li><dl class="simple">
+<dt><strong>chance_to_immediately_discover_intrusion:</strong></dt><dd><p>Chance for blue to discover when red compromises a node the instant it is taken</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>chance_to_discover_intrusion_on_scan:</strong></dt><dd><p>Chance for blue to find a node red has compromised during the scan action</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>chance_to_immediately_discover_intrusion_deceptive_node:</strong></dt><dd><p>Chance for blue to discover when red compromises a deceptive node the instant it is taken</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>chance_to_discover_intrusion_on_scan_deceptive_node:</strong></dt><dd><p>Chance for blue to find a deceptive node red has compromised during the scan action</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Attacks</strong></dt><dd><ul>
+<li><dl class="simple">
+<dt><strong>chance_to_discover_failed_attack:</strong></dt><dd><p>Chance for blue to discover a red attack that did not compromise a node</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>can_discover_succeeded_attacks_if_compromise_is_discovered:</strong></dt><dd><p>If an attack compromises a node and blue detected the intrusion can blue detect the attack</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>can_discover_succeeded_attacks_if_compromise_is_not_discovered:</strong></dt><dd><p>If an attack compromises a node and blue did not detect the intrusion can blue detect the attack</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>chance_to_discover_succeeded_attack_compromise_known:</strong></dt><dd><p>Chance for blue to discover a successful attack the blue can see has compromised the node</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>chance_to_discover_succeeded_attack_compromise_not_known:</strong></dt><dd><p>Chance for blue to discover a successful attack the blue cannot see has compromised the node</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>chance_to_discover_failed_attack_deceptive_node</strong></dt><dd><p>Chance for blue to discover an attack that failed to compromise a deceptive node</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>chance_to_discover_succeeded_attack_deceptive_node:</strong></dt><dd><p>Chance for blue to discover an attack that succeeded to compromise a deceptive node</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>making_node_safe_modifies_vulnerability:</strong></dt><dd><p>Using the make_node_safe action also modifies the vulnerability of a node by a fixed amount</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>vulnerability_change_during_fix:</strong></dt><dd><p>The vulnerability change the occurs during the make_node_safe action</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>making_node_safe_gives_random_vulnerability:</strong></dt><dd><p>Using the make_node_safe action modifies the vulnerability to a new random number</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Blue Actions</strong></dt><dd><ul>
+<li><dl class="simple">
+<dt><strong>blue_uses_reduce_vulnerability:</strong></dt><dd><p>Blue can use the reduce vulnerability of a node</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>blue_uses_restore_node:</strong></dt><dd><p>Blue can restore a node to its default (initial) state</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>blue_uses_make_node_safe:</strong></dt><dd><p>Blue patches a node and removes the red agent from it</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>blue_uses_scan:</strong></dt><dd><p>Blue tries to check the status of all of the nodes to detect and red intrusions</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>blue_uses_isolate_node:</strong></dt><dd><p>Blue isolates a node and removes all connections to and from the node</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>blue_uses_reconnect_node:</strong></dt><dd><p>Blue reconnects a node adding back any lost connections</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>blue_uses_do_nothing:</strong></dt><dd><p>Blue does nothing</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>blue_uses_deceptive_nodes:</strong></dt><dd><p>Blue can place down deceptive nodes on an existing edge. Deceptive nodes can more accurately detect when red tries to compromise them</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="game-rules">
+<h2>Game Rules<a class="headerlink" href="#game-rules" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><ul>
+<li><dl class="simple">
+<dt><strong>node_vulnerability_lower_bound:</strong></dt><dd><p>The lowest value that could be generated (or reached) for vulnerability (lower means more resilient nodes)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>node_vulnerability_upper_bound:</strong></dt><dd><p>The highest value that could be generated (or reached) for vulnerability (higher means easier to compromise nodes)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>max_steps:</strong></dt><dd><p>How many steps blue has to survive for before winning</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>lose_when_all_nodes_lost:</strong></p>
+<blockquote>
+<div><p>Does the red agent win if it takes all of the nodes</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><strong>lose_when_n_percent_of_nodes_lost:</strong></dt><dd><p>Does the red agent win if it takes n% of all the nodes</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><dl class="simple">
+<dt><strong>percentage_of_nodes_compromised_equals_loss:</strong></dt><dd><p>If red wins if it takes n% of nodes what value is n</p>
+</dd>
+</dl>
+</li>
+<li><p><strong>lose_when_high_value_node_lost:</strong></p>
+<blockquote>
+<div><p>Does red win if a special “high value” node is taken</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><strong>number_of_high_value_nodes:</strong></dt><dd><p>How many “high value” nodes will be chosen</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>choose_high_value_nodes_placement_at_random:</strong></dt><dd><p>Choose the “high value” node at random</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>choose_high_value_nodes_furthest_away_from_entry:</strong></dt><dd><p>Choose the “high value” to be one of the nodes furthest from all of the entry points</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+</li>
+<li><dl class="simple">
+<dt><strong>choose_entry_nodes_randomly:</strong></dt><dd><p>If no entry nodes are supplied choose some at random</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>number_of_entry_nodes:</strong></dt><dd><p>If no entry nodes are supplied and are automatically generated, how many should be generated</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>prefer_central_nodes_for_entry_nodes:</strong></dt><dd><p>If no entry nodes are supplied then when auto-generating new entry nodes apply a bias towards more central/connected nodes</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>prefer_edge_nodes_for_entry_nodes:</strong></dt><dd><p>If no entry nodes are supplied then when auto-generating new entry nodes apply a bias towards more edge/outer nodes</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>grace_period_length:</strong></dt><dd><p>The length of a grace period at the start of the game. During this time the red agent cannot act. This gives the blue agent a chance to “prepare” (A length of 0 means that there is no grace period)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="reset">
+<h2>Reset<a class="headerlink" href="#reset" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><strong>randomise_vulnerabilities_on_reset:</strong></dt><dd><p>Pick new vulnerabilities for all the nodes on every reset</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>choose_new_high_value_nodes_on_reset:</strong></dt><dd><p>Pick new high value nodes on every reset</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>choose_new_entry_nodes_on_reset:</strong></dt><dd><p>Pick new entry nodes every reset</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="rewards">
+<h2>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><ul>
+<li><dl class="simple">
+<dt><strong>rewards_for_loss:</strong></dt><dd><p>The reward blue gets for losing</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>rewards_for_reaching_max_steps:</strong></dt><dd><p>The reward blue gets for winning</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>reward_function:</strong></dt><dd><p>Choose the reward method. There are several built in example reward methods that you can choose from (shown below) You can also create your own reward method by copying one of the built in methods and calling it here</p>
+<dl class="simple">
+<dt>Built in reward methods:</dt><dd><ul class="simple">
+<li><p>standard_rewards</p></li>
+<li><p>one_per_timestep</p></li>
+<li><p>safe_nodes_give_rewards</p></li>
+<li><p>punish_bad_actions</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</section>
+<section id="miscellaneous">
+<h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this heading"></a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt><strong>output_timestep_data_to_json:</strong></dt><dd><p>Toggle to output a json file for each step that contains the connections between nodes, the states of the nodes and the attacks that blue saw in that turn</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

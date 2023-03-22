@@ -1,0 +1,34 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.integration\_tests.generic\_env.test\_new\_vulnerabilities
+================================================================
+
+.. automodule:: tests.integration_tests.generic_env.test_new_vulnerabilities
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      test_new_vulnerabilities
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

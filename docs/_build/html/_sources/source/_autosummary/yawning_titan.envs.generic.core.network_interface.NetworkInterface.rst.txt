@@ -1,0 +1,57 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.envs.generic.core.network\_interface.NetworkInterface
+====================================================================
+
+.. currentmodule:: yawning_titan.envs.generic.core.network_interface
+
+.. autoclass:: NetworkInterface
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~NetworkInterface.add_deceptive_node
+      ~NetworkInterface.attack_node
+      ~NetworkInterface.create_json_time_step
+      ~NetworkInterface.get_all_isolation
+      ~NetworkInterface.get_all_node_blue_view_compromised_states
+      ~NetworkInterface.get_all_node_compromised_states
+      ~NetworkInterface.get_all_node_positions
+      ~NetworkInterface.get_all_vulnerabilities
+      ~NetworkInterface.get_attributes_from_key
+      ~NetworkInterface.get_base_connected_nodes
+      ~NetworkInterface.get_current_connected_nodes
+      ~NetworkInterface.get_current_graph_as_dict
+      ~NetworkInterface.get_current_observation
+      ~NetworkInterface.get_midpoint
+      ~NetworkInterface.get_number_unused_deceptive_nodes
+      ~NetworkInterface.get_observation_size
+      ~NetworkInterface.get_observation_size_base
+      ~NetworkInterface.get_shortest_distances_to_target
+      ~NetworkInterface.get_target_node
+      ~NetworkInterface.get_total_num_nodes
+      ~NetworkInterface.initialise_deceptive_nodes
+      ~NetworkInterface.initialise_edge_map
+      ~NetworkInterface.isolate_node
+      ~NetworkInterface.make_node_safe
+      ~NetworkInterface.reconnect_node
+      ~NetworkInterface.reset
+      ~NetworkInterface.reset_stored_attacks
+      ~NetworkInterface.save_json
+      ~NetworkInterface.scan_node
+      ~NetworkInterface.update_stored_attacks
+   
+   
+
+   
+   
+   

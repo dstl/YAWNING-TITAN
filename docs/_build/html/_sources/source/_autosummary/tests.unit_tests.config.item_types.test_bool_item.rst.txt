@@ -1,0 +1,35 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.unit\_tests.config.item\_types.test\_bool\_item
+=====================================================
+
+.. automodule:: tests.unit_tests.config.item_types.test_bool_item
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      test_bool_item_incorrect_properties_type
+      test_bool_properties_validation
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

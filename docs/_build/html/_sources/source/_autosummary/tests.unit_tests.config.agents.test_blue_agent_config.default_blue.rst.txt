@@ -1,0 +1,6 @@
+tests.unit\_tests.config.agents.test\_blue\_agent\_config.default\_blue
+=======================================================================
+
+.. currentmodule:: tests.unit_tests.config.agents.test_blue_agent_config
+
+.. autofunction:: default_blue

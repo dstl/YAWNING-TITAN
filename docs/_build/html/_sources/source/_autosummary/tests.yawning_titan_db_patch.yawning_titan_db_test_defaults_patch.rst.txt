@@ -1,0 +1,6 @@
+tests.yawning\_titan\_db\_patch.yawning\_titan\_db\_test\_defaults\_patch
+=========================================================================
+
+.. currentmodule:: tests.yawning_titan_db_patch
+
+.. autofunction:: yawning_titan_db_test_defaults_patch

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.game_modes.components.game_rules.GameRules &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.game_modes.components.game_rules.NetworkCompatibilityGroup" href="yawning_titan.game_modes.components.game_rules.NetworkCompatibilityGroup.html" />
+    <link rel="prev" title="yawning_titan.game_modes.components.game_rules.BlueLossConditionGroup" href="yawning_titan.game_modes.components.game_rules.BlueLossConditionGroup.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="yawning_titan.game_modes.components.html">yawning_titan.game_modes.components</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.game_modes.components.blue_agent.html">yawning_titan.game_modes.components.blue_agent</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="yawning_titan.game_modes.components.game_rules.html">yawning_titan.game_modes.components.game_rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.game_modes.components.miscellaneous.html">yawning_titan.game_modes.components.miscellaneous</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.game_modes.components.observation_space.html">yawning_titan.game_modes.components.observation_space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.game_modes.components.red_agent.html">yawning_titan.game_modes.components.red_agent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.game_modes.components.reset.html">yawning_titan.game_modes.components.reset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.game_modes.components.rewards.html">yawning_titan.game_modes.components.rewards</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.game_modes.game_mode.html">yawning_titan.game_modes.game_mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.game_modes.game_mode_db.html">yawning_titan.game_modes.game_mode_db</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.html">yawning_titan</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.game_modes.components.html">yawning_titan.game_modes.components</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.game_modes.components.game_rules.html">yawning_titan.game_modes.components.game_rules</a></li>
+      <li class="breadcrumb-item active">yawning_titan.game_modes.components.game_rules.GameRules</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="yawning-titan-game-modes-components-game-rules-gamerules">
+<h1>yawning_titan.game_modes.components.game_rules.GameRules<a class="headerlink" href="#yawning-titan-game-modes-components-game-rules-gamerules" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.game_modes.components.game_rules.GameRules">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.game_modes.components.game_rules.</span></span><span class="sig-name descname"><span class="pre">GameRules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grace_period_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blue_loss_condition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network_compatibility</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/game_modes/components/game_rules.html#GameRules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.game_modes.components.game_rules.GameRules" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="yawning_titan.config.core.ConfigGroup.html#yawning_titan.config.core.ConfigGroup" title="yawning_titan.config.core.ConfigGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigGroup</span></code></a></p>
+<p>The overall rules of the game mode.</p>
+<p>The ConfigGroup constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc</strong> – The groups doc.</p>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.game_modes.components.game_rules.GameRules.get_config_elements" title="yawning_titan.game_modes.components.game_rules.GameRules.get_config_elements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_config_elements</span></code></a></p></td>
+<td><p>Get the attributes of the class that are either :class: <cite>ConfigGroup</cite> or <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigItem</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.game_modes.components.game_rules.GameRules.get_non_config_elements" title="yawning_titan.game_modes.components.game_rules.GameRules.get_non_config_elements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_non_config_elements</span></code></a></p></td>
+<td><p>Get all attributes of the class that are not :class: <cite>ConfigGroup</cite> or :class: <cite>ConfigItem</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.game_modes.components.game_rules.GameRules.set_from_dict" title="yawning_titan.game_modes.components.game_rules.GameRules.set_from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_from_dict</span></code></a></p></td>
+<td><p>Set the values of all :class: <cite>ConfigGroup</cite> or <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigItem</span></code> elements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.game_modes.components.game_rules.GameRules.set_from_yaml" title="yawning_titan.game_modes.components.game_rules.GameRules.set_from_yaml"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_from_yaml</span></code></a></p></td>
+<td><p>Set the elements of the group from a .yaml file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.game_modes.components.game_rules.GameRules.stringify" title="yawning_titan.game_modes.components.game_rules.GameRules.stringify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stringify</span></code></a></p></td>
+<td><p>Represent the class as a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.game_modes.components.game_rules.GameRules.to_dict" title="yawning_titan.game_modes.components.game_rules.GameRules.to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dict</span></code></a></p></td>
+<td><p>Return the ConfigGroup as a dict.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.game_modes.components.game_rules.GameRules.to_legacy_dict" title="yawning_titan.game_modes.components.game_rules.GameRules.to_legacy_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_legacy_dict</span></code></a></p></td>
+<td><p>Convert the group into a unitary depth dictionary of legacy config value (aliases) to :class: <cite>ConfigItem</cite>'s.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.game_modes.components.game_rules.GameRules.to_yaml" title="yawning_titan.game_modes.components.game_rules.GameRules.to_yaml"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_yaml</span></code></a></p></td>
+<td><p>Save the values of the elements of the group to a .yaml file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.game_modes.components.game_rules.GameRules.validate" title="yawning_titan.game_modes.components.game_rules.GameRules.validate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code></a></p></td>
+<td><p>Extend the parent validation with additional rules specific to this :class: <cite>~yawning_titan.config.core.ConfigGroup</cite>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.game_modes.components.game_rules.GameRules.validate_elements" title="yawning_titan.game_modes.components.game_rules.GameRules.validate_elements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_elements</span></code></a></p></td>
+<td><p>Call the .validate() method on each of the elements in the group.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.game_modes.components.game_rules.GameRules.config_groups" title="yawning_titan.game_modes.components.game_rules.GameRules.config_groups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config_groups</span></code></a></p></td>
+<td><p><cite>~yawning_titan.config.core.ConfigGroup</cite> children of the group.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.game_modes.components.game_rules.GameRules.config_items" title="yawning_titan.game_modes.components.game_rules.GameRules.config_items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config_items</span></code></a></p></td>
+<td><p><cite>~yawning_titan.config.core.ConfigItem</cite> children of the group.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.game_modes.components.game_rules.GameRules.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/game_modes/components/game_rules.html#GameRules.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.game_modes.components.game_rules.GameRules.validate" title="Permalink to this definition"></a></dt>
+<dd><p>Extend the parent validation with additional rules specific to this :class: <cite>~yawning_titan.config.core.ConfigGroup</cite>.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.game_modes.components.game_rules.GameRules.config_groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">config_groups</span></span><a class="headerlink" href="#yawning_titan.game_modes.components.game_rules.GameRules.config_groups" title="Permalink to this definition"></a></dt>
+<dd><p><cite>~yawning_titan.config.core.ConfigGroup</cite> children of the group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Property to represent the</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.game_modes.components.game_rules.GameRules.config_items">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">config_items</span></span><a class="headerlink" href="#yawning_titan.game_modes.components.game_rules.GameRules.config_items" title="Permalink to this definition"></a></dt>
+<dd><p><cite>~yawning_titan.config.core.ConfigItem</cite> children of the group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Property to represent the</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.game_modes.components.game_rules.GameRules.get_config_elements">
+<span class="sig-name descname"><span class="pre">get_config_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.game_modes.components.game_rules.GameRules.get_config_elements" title="Permalink to this definition"></a></dt>
+<dd><p>Get the attributes of the class that are either :class: <cite>ConfigGroup</cite> or <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigItem</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>_type</strong> – An optional type for a specific type of config element.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary of names to config elements.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.game_modes.components.game_rules.GameRules.get_non_config_elements">
+<span class="sig-name descname"><span class="pre">get_non_config_elements</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.game_modes.components.game_rules.GameRules.get_non_config_elements" title="Permalink to this definition"></a></dt>
+<dd><p>Get all attributes of the class that are not :class: <cite>ConfigGroup</cite> or :class: <cite>ConfigItem</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A dictionary of names to attributes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.game_modes.components.game_rules.GameRules.set_from_dict">
+<span class="sig-name descname"><span class="pre">set_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legacy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infer_legacy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.game_modes.components.game_rules.GameRules.set_from_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Set the values of all :class: <cite>ConfigGroup</cite> or <code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigItem</span></code> elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_dict</strong> – A dictionary representing values of all config elements.</p></li>
+<li><p><strong>legacy</strong> – Whether to use the alias names for config elements to construct the config from a legacy dictionary.</p></li>
+<li><p><strong>infer_legacy</strong> – Attempt to recognise if a config is of a legacy type.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>kwargs can contain 2 parameters:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>root: Whether the element is a base level element or not.</dt><dd><p>if the element is a root then it should validate all of its descendants.</p>
+</dd>
+</dl>
+</li>
+<li><p>legacy_lookup: The current flattened dictionary representation of the class by its legacy keys.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.game_modes.components.game_rules.GameRules.set_from_yaml">
+<span class="sig-name descname"><span class="pre">set_from_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legacy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infer_legacy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.game_modes.components.game_rules.GameRules.set_from_yaml" title="Permalink to this definition"></a></dt>
+<dd><p>Set the elements of the group from a .yaml file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> – The path to the .yaml file.</p></li>
+<li><p><strong>legacy</strong> – Whether to use the alias names for config elements to construct the config from a legacy dictionary.</p></li>
+<li><p><strong>infer_legacy</strong> – Attempt to recognise if a config is of a legacy type.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.game_modes.components.game_rules.GameRules.stringify">
+<span class="sig-name descname"><span class="pre">stringify</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.game_modes.components.game_rules.GameRules.stringify" title="Permalink to this definition"></a></dt>
+<dd><p>Represent the class as a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.game_modes.components.game_rules.GameRules.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legacy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_none</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.game_modes.components.game_rules.GameRules.to_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Return the ConfigGroup as a dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>values_only</strong> – Create a dictionary containing only the value of :class: <cite>ConfigItem</cite>’s</p></li>
+<li><p><strong>legacy</strong> – Convert the group into a unitary depth dictionary of legacy config value (aliases) to :class: <cite>ConfigItem</cite>’s
+by calling :method: <cite>ConfigGroup.to_legacy</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The ConfigGroup as a dict.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.game_modes.components.game_rules.GameRules.to_legacy_dict">
+<span class="sig-name descname"><span class="pre">to_legacy_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flattened_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.game_modes.components.game_rules.GameRules.to_legacy_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Convert the group into a unitary depth dictionary of legacy config value (aliases) to :class: <cite>ConfigItem</cite>’s.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.game_modes.components.game_rules.GameRules.to_yaml">
+<span class="sig-name descname"><span class="pre">to_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.game_modes.components.game_rules.GameRules.to_yaml" title="Permalink to this definition"></a></dt>
+<dd><p>Save the values of the elements of the group to a .yaml file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> – The path to the .yaml file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.game_modes.components.game_rules.GameRules.validate_elements">
+<span class="sig-name descname"><span class="pre">validate_elements</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.game_modes.components.game_rules.GameRules.validate_elements" title="Permalink to this definition"></a></dt>
+<dd><p>Call the .validate() method on each of the elements in the group.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="yawning_titan.game_modes.components.game_rules.BlueLossConditionGroup.html" class="btn btn-neutral float-left" title="yawning_titan.game_modes.components.game_rules.BlueLossConditionGroup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.game_modes.components.game_rules.NetworkCompatibilityGroup.html" class="btn btn-neutral float-right" title="yawning_titan.game_modes.components.game_rules.NetworkCompatibilityGroup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

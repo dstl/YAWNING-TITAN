@@ -1,0 +1,46 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.unit\_tests.db.test\_yawning\_titan\_db.DemoDB
+====================================================
+
+.. currentmodule:: tests.unit_tests.db.test_yawning_titan_db
+
+.. autoclass:: DemoDB
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DemoDB.all
+      ~DemoDB.close
+      ~DemoDB.count
+      ~DemoDB.get
+      ~DemoDB.insert
+      ~DemoDB.is_locked
+      ~DemoDB.remove
+      ~DemoDB.remove_by_cond
+      ~DemoDB.search
+      ~DemoDB.show
+      ~DemoDB.update
+      ~DemoDB.upsert
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DemoDB.db
+      ~DemoDB.name
+   
+   

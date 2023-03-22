@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.db.schemas &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.db.schemas</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for yawning_titan.db.schemas</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan.db.query</span> <span class="kn">import</span> <span class="n">YawningTitanQuery</span>
+
+<span class="c1"># generic</span>
+
+
+<span class="c1"># Game Rules</span>
+<div class="viewcode-block" id="NodeCountSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.NodeCountSchema.html#yawning_titan.db.schemas.NodeCountSchema">[docs]</a><span class="k">class</span> <span class="nc">NodeCountSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">RESTRICT</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">network_compatibility</span><span class="o">.</span><span class="n">node_count</span><span class="o">.</span><span class="n">restrict</span>
+    <span class="n">MIN</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">network_compatibility</span><span class="o">.</span><span class="n">node_count</span><span class="o">.</span><span class="n">min</span>
+    <span class="n">MAX</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">network_compatibility</span><span class="o">.</span><span class="n">node_count</span><span class="o">.</span><span class="n">max</span></div>
+
+
+<div class="viewcode-block" id="EntryNodeCountSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.EntryNodeCountSchema.html#yawning_titan.db.schemas.EntryNodeCountSchema">[docs]</a><span class="k">class</span> <span class="nc">EntryNodeCountSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">RESTRICT</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">network_compatibility</span><span class="o">.</span><span class="n">entry_node_count</span><span class="o">.</span><span class="n">restrict</span>
+    <span class="n">MIN</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">network_compatibility</span><span class="o">.</span><span class="n">entry_node_count</span><span class="o">.</span><span class="n">min</span>
+    <span class="n">MAX</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">network_compatibility</span><span class="o">.</span><span class="n">entry_node_count</span><span class="o">.</span><span class="n">max</span></div>
+
+
+<div class="viewcode-block" id="HighValueNodeCountSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.HighValueNodeCountSchema.html#yawning_titan.db.schemas.HighValueNodeCountSchema">[docs]</a><span class="k">class</span> <span class="nc">HighValueNodeCountSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">RESTRICT</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">network_compatibility</span><span class="o">.</span><span class="n">high_value_node_count</span><span class="o">.</span><span class="n">restrict</span>
+    <span class="p">)</span>
+    <span class="n">MIN</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">network_compatibility</span><span class="o">.</span><span class="n">high_value_node_count</span><span class="o">.</span><span class="n">min</span>
+    <span class="n">MAX</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">network_compatibility</span><span class="o">.</span><span class="n">high_value_node_count</span><span class="o">.</span><span class="n">max</span></div>
+
+
+<div class="viewcode-block" id="NetworkCompatibilitySchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.NetworkCompatibilitySchema.html#yawning_titan.db.schemas.NetworkCompatibilitySchema">[docs]</a><span class="k">class</span> <span class="nc">NetworkCompatibilitySchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">NODE_COUNT</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">NodeCountSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">NodeCountSchema</span>
+    <span class="n">ENTRY_NODE_COUNT</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">EntryNodeCountSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">EntryNodeCountSchema</span>
+    <span class="n">HIGH_VALUE_NODE_COUNT</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">HighValueNodeCountSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">HighValueNodeCountSchema</span></div>
+
+
+<div class="viewcode-block" id="NPercentNodesLostSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.NPercentNodesLostSchema.html#yawning_titan.db.schemas.NPercentNodesLostSchema">[docs]</a><span class="k">class</span> <span class="nc">NPercentNodesLostSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">USE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">n_percent_nodes_lost</span><span class="o">.</span><span class="n">use</span>
+    <span class="n">VALUE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">n_percent_nodes_lost</span><span class="o">.</span><span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="BlueLossConditionSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.BlueLossConditionSchema.html#yawning_titan.db.schemas.BlueLossConditionSchema">[docs]</a><span class="k">class</span> <span class="nc">BlueLossConditionSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">ALL_NODES_LOST</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">all_nodes_lost</span>
+    <span class="n">HIGH_VALUE_NODE_LOST</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">high_value_node_lost</span>
+    <span class="n">TARGET_NODE_LOST</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">target_node_lost</span>
+    <span class="n">N_PERCENT_NODES_LOST</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">NPercentNodesLostSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">NPercentNodesLostSchema</span></div>
+
+
+<span class="c1"># Blue Agent</span>
+
+
+<div class="viewcode-block" id="MakeNodeSafeSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.MakeNodeSafeSchema.html#yawning_titan.db.schemas.MakeNodeSafeSchema">[docs]</a><span class="k">class</span> <span class="nc">MakeNodeSafeSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">USE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">make_node_safe</span><span class="o">.</span><span class="n">use</span>
+    <span class="n">INCREASES_VULNERABILITY</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">make_node_safe</span><span class="o">.</span><span class="n">increases_vulnerability</span>
+    <span class="n">GIVES_RANDOM_VULNERABILITY</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">make_node_safe</span><span class="o">.</span><span class="n">gives_random_vulnerability</span>
+    <span class="n">VULNERABILITY_CHANGE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">make_node_safe</span><span class="o">.</span><span class="n">vulnerability_change</span></div>
+
+
+<div class="viewcode-block" id="DeceptiveNodeSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.DeceptiveNodeSchema.html#yawning_titan.db.schemas.DeceptiveNodeSchema">[docs]</a><span class="k">class</span> <span class="nc">DeceptiveNodeSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">USE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">use</span>
+    <span class="n">MAX_NUMBER</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">max_number</span>
+    <span class="n">NEW_NODE_ON_RELOCATE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">new_node_on_relocate</span></div>
+
+
+<div class="viewcode-block" id="BlueActionSetSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.BlueActionSetSchema.html#yawning_titan.db.schemas.BlueActionSetSchema">[docs]</a><span class="k">class</span> <span class="nc">BlueActionSetSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">REDUCE_VULNERABILITY</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">reduce_vulnerability</span>
+    <span class="n">RESTORE_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">restore_node</span>
+    <span class="n">SCAN</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">scan</span>
+    <span class="n">ISOLATE_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">isolate_node</span>
+    <span class="n">RECONNECT_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">reconnect_node</span>
+    <span class="n">DO_NOTHING</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">do_nothing</span>
+    <span class="n">MAKE_NODE_SAFE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">MakeNodeSafeSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">MakeNodeSafeSchema</span>
+    <span class="n">DECEPTIVE_NODES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">DeceptiveNodeSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">DeceptiveNodeSchema</span></div>
+
+
+<div class="viewcode-block" id="OnScanSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.OnScanSchema.html#yawning_titan.db.schemas.OnScanSchema">[docs]</a><span class="k">class</span> <span class="nc">OnScanSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">STANDARD_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">on_scan</span><span class="o">.</span><span class="n">standard_node</span>
+    <span class="n">DECEPTIVE_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">on_scan</span><span class="o">.</span><span class="n">deceptive_node</span></div>
+
+
+<div class="viewcode-block" id="ImmediateSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.ImmediateSchema.html#yawning_titan.db.schemas.ImmediateSchema">[docs]</a><span class="k">class</span> <span class="nc">ImmediateSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">STANDARD_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">immediate</span><span class="o">.</span><span class="n">standard_node</span>
+    <span class="n">DECEPTIVE_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">immediate</span><span class="o">.</span><span class="n">deceptive_node</span></div>
+
+
+<div class="viewcode-block" id="BlueIntrusionDiscoverySchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.BlueIntrusionDiscoverySchema.html#yawning_titan.db.schemas.BlueIntrusionDiscoverySchema">[docs]</a><span class="k">class</span> <span class="nc">BlueIntrusionDiscoverySchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">IMMEDIATE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ImmediateSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">ImmediateSchema</span>
+    <span class="n">ON_SCAN</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">OnScanSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">OnScanSchema</span></div>
+
+
+<div class="viewcode-block" id="FailedAttackChanceSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.FailedAttackChanceSchema.html#yawning_titan.db.schemas.FailedAttackChanceSchema">[docs]</a><span class="k">class</span> <span class="nc">FailedAttackChanceSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">STANDARD_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">failed_attacks</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">standard_node</span>
+    <span class="n">DECEPTIVE_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">failed_attacks</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">deceptive_node</span></div>
+
+
+<div class="viewcode-block" id="FailedAttackSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.FailedAttackSchema.html#yawning_titan.db.schemas.FailedAttackSchema">[docs]</a><span class="k">class</span> <span class="nc">FailedAttackSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">USE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">failed_attacks</span><span class="o">.</span><span class="n">use</span>
+    <span class="n">CHANCE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">FailedAttackChanceSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">FailedAttackChanceSchema</span></div>
+
+
+<div class="viewcode-block" id="SucceededAttackKnownCompromiseChanceSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.SucceededAttackKnownCompromiseChanceSchema.html#yawning_titan.db.schemas.SucceededAttackKnownCompromiseChanceSchema">[docs]</a><span class="k">class</span> <span class="nc">SucceededAttackKnownCompromiseChanceSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">STANDARD_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">succeeded_attacks_known_compromise</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">standard_node</span>
+    <span class="p">)</span>
+    <span class="n">DECEPTIVE_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">succeeded_attacks_known_compromise</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">deceptive_node</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SucceededAttackKnownCompromiseSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.SucceededAttackKnownCompromiseSchema.html#yawning_titan.db.schemas.SucceededAttackKnownCompromiseSchema">[docs]</a><span class="k">class</span> <span class="nc">SucceededAttackKnownCompromiseSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">USE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">succeeded_attacks_known_compromise</span><span class="o">.</span><span class="n">use</span>
+    <span class="n">CHANCE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">SucceededAttackKnownCompromiseChanceSchema</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">SucceededAttackKnownCompromiseChanceSchema</span></div>
+
+
+<div class="viewcode-block" id="SucceededAttackUnknownCompromiseChanceSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.SucceededAttackUnknownCompromiseChanceSchema.html#yawning_titan.db.schemas.SucceededAttackUnknownCompromiseChanceSchema">[docs]</a><span class="k">class</span> <span class="nc">SucceededAttackUnknownCompromiseChanceSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">STANDARD_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">succeeded_attacks_unknown_compromise</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">standard_node</span>
+    <span class="p">)</span>
+    <span class="n">DECEPTIVE_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">succeeded_attacks_unknown_compromise</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">deceptive_node</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SucceededAttackUnknownCompromiseSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.SucceededAttackUnknownCompromiseSchema.html#yawning_titan.db.schemas.SucceededAttackUnknownCompromiseSchema">[docs]</a><span class="k">class</span> <span class="nc">SucceededAttackUnknownCompromiseSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">USE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">succeeded_attacks_unknown_compromise</span><span class="o">.</span><span class="n">use</span>
+    <span class="p">)</span>
+    <span class="n">CHANCE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">SucceededAttackUnknownCompromiseChanceSchema</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">SucceededAttackUnknownCompromiseChanceSchema</span></div>
+
+
+<div class="viewcode-block" id="BlueAttackDiscoverySchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.BlueAttackDiscoverySchema.html#yawning_titan.db.schemas.BlueAttackDiscoverySchema">[docs]</a><span class="k">class</span> <span class="nc">BlueAttackDiscoverySchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">FAILED_ATTACKS</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">FailedAttackSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">FailedAttackSchema</span>
+    <span class="n">SUCCEEDED_ATTACKS_KNOWN_COMPROMISE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">SucceededAttackKnownCompromiseSchema</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">SucceededAttackKnownCompromiseSchema</span>
+    <span class="n">SUCCEEDED_ATTACKS_UNKNOWN_COMPROMISE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">SucceededAttackUnknownCompromiseSchema</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">SucceededAttackUnknownCompromiseSchema</span></div>
+
+
+<span class="c1"># Red Agent</span>
+<div class="viewcode-block" id="ZeroDaySchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.ZeroDaySchema.html#yawning_titan.db.schemas.ZeroDaySchema">[docs]</a><span class="k">class</span> <span class="nc">ZeroDaySchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">USE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">zero_day</span><span class="o">.</span><span class="n">use</span>
+    <span class="n">START_AMOUNT</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">zero_day</span><span class="o">.</span><span class="n">start_amount</span>
+    <span class="n">DAYS_REQUIRED</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">zero_day</span><span class="o">.</span><span class="n">days_required</span></div>
+
+
+<div class="viewcode-block" id="AttackSourceSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.AttackSourceSchema.html#yawning_titan.db.schemas.AttackSourceSchema">[docs]</a><span class="k">class</span> <span class="nc">AttackSourceSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">ONLY_MAIN_RED_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">attack_from</span><span class="o">.</span><span class="n">only_main_red_node</span>
+    <span class="n">ANY_RED_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">attack_from</span><span class="o">.</span><span class="n">any_red_node</span></div>
+
+
+<div class="viewcode-block" id="NaturalSpreadChanceSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.NaturalSpreadChanceSchema.html#yawning_titan.db.schemas.NaturalSpreadChanceSchema">[docs]</a><span class="k">class</span> <span class="nc">NaturalSpreadChanceSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">TO_CONNECTED_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">natural_spreading</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">to_connected_node</span>
+    <span class="n">TO_UNCONNECTED_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">natural_spreading</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">to_unconnected_node</span></div>
+
+
+<div class="viewcode-block" id="TargetNodeSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.TargetNodeSchema.html#yawning_titan.db.schemas.TargetNodeSchema">[docs]</a><span class="k">class</span> <span class="nc">TargetNodeSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">USE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">target_specific_node</span><span class="o">.</span><span class="n">use</span>
+    <span class="n">TARGET</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">target_specific_node</span><span class="o">.</span><span class="n">target</span>
+    <span class="n">ALWAYS_CHOOSE_SHORTEST_DISTANCE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">target_specific_node</span><span class="o">.</span><span class="n">always_choose_shortest_distance</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SpreadSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.SpreadSchema.html#yawning_titan.db.schemas.SpreadSchema">[docs]</a><span class="k">class</span> <span class="nc">SpreadSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">USE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">spread</span><span class="o">.</span><span class="n">use</span>
+    <span class="n">LIKELIHOOD</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">spread</span><span class="o">.</span><span class="n">likelihood</span>
+    <span class="n">CHANCE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">spread</span><span class="o">.</span><span class="n">chance</span></div>
+
+
+<div class="viewcode-block" id="RandomInfectSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.RandomInfectSchema.html#yawning_titan.db.schemas.RandomInfectSchema">[docs]</a><span class="k">class</span> <span class="nc">RandomInfectSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">USE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">random_infect</span><span class="o">.</span><span class="n">use</span>
+    <span class="n">LIKELIHOOD</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">random_infect</span><span class="o">.</span><span class="n">likelihood</span>
+    <span class="n">CHANCE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">random_infect</span><span class="o">.</span><span class="n">chance</span></div>
+
+
+<div class="viewcode-block" id="MoveSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.MoveSchema.html#yawning_titan.db.schemas.MoveSchema">[docs]</a><span class="k">class</span> <span class="nc">MoveSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">USE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">move</span><span class="o">.</span><span class="n">use</span>
+    <span class="n">LIKELIHOOD</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">move</span><span class="o">.</span><span class="n">likelihood</span></div>
+
+
+<div class="viewcode-block" id="BasicAttackSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.BasicAttackSchema.html#yawning_titan.db.schemas.BasicAttackSchema">[docs]</a><span class="k">class</span> <span class="nc">BasicAttackSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">USE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">basic_attack</span><span class="o">.</span><span class="n">use</span>
+    <span class="n">LIKELIHOOD</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">basic_attack</span><span class="o">.</span><span class="n">likelihood</span></div>
+
+
+<div class="viewcode-block" id="DoNothingSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.DoNothingSchema.html#yawning_titan.db.schemas.DoNothingSchema">[docs]</a><span class="k">class</span> <span class="nc">DoNothingSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">USE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">do_nothing</span><span class="o">.</span><span class="n">use</span>
+    <span class="n">LIKELIHOOD</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">do_nothing</span><span class="o">.</span><span class="n">likelihood</span></div>
+
+
+<div class="viewcode-block" id="RedActionSetSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.RedActionSetSchema.html#yawning_titan.db.schemas.RedActionSetSchema">[docs]</a><span class="k">class</span> <span class="nc">RedActionSetSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">SPREAD</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">SpreadSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">SpreadSchema</span>
+    <span class="n">RANDOM_INFECT</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">RandomInfectSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">RandomInfectSchema</span>
+    <span class="n">MOVE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">MoveSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">MoveSchema</span>
+    <span class="n">BASIC_ATTACK</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">BasicAttackSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">BasicAttackSchema</span>
+    <span class="n">DO_NOTHING</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">DoNothingSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">DoNothingSchema</span>
+    <span class="n">ZERO_DAY</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">ZeroDaySchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">ZeroDaySchema</span></div>
+
+
+<div class="viewcode-block" id="SkillSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.SkillSchema.html#yawning_titan.db.schemas.SkillSchema">[docs]</a><span class="k">class</span> <span class="nc">SkillSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">USE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">use</span>
+    <span class="n">VALUE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="RedAgentAttackSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.RedAgentAttackSchema.html#yawning_titan.db.schemas.RedAgentAttackSchema">[docs]</a><span class="k">class</span> <span class="nc">RedAgentAttackSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">IGNORES_DEFENCES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">ignores_defences</span>
+    <span class="n">ALWAYS_SUCCEEDS</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">always_succeeds</span>
+    <span class="n">SKILL</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">SkillSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">SkillSchema</span>
+    <span class="n">ATTACK_FROM</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">AttackSourceSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">AttackSourceSchema</span></div>
+
+
+<div class="viewcode-block" id="RedNaturalSpreadingSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.RedNaturalSpreadingSchema.html#yawning_titan.db.schemas.RedNaturalSpreadingSchema">[docs]</a><span class="k">class</span> <span class="nc">RedNaturalSpreadingSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">CAPABLE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">natural_spreading</span><span class="o">.</span><span class="n">capable</span>
+    <span class="n">CHANCE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">NaturalSpreadChanceSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">NaturalSpreadChanceSchema</span></div>
+
+
+<div class="viewcode-block" id="RedTargetMechanismSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.RedTargetMechanismSchema.html#yawning_titan.db.schemas.RedTargetMechanismSchema">[docs]</a><span class="k">class</span> <span class="nc">RedTargetMechanismSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">RANDOM</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">random</span>
+    <span class="n">PRIORITISE_CONNECTED_NODES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">prioritise_connected_nodes</span>
+    <span class="n">PRIORITISE_UNCONNECTED_NODES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">prioritise_unconnected_nodes</span>
+    <span class="n">PRIORITISE_VULNERABLE_NODES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">prioritise_vulnerable_nodes</span>
+    <span class="n">PRIORITISE_RESILIENT_NODES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">prioritise_resilient_nodes</span>
+    <span class="n">TARGET_SPECIFIC_NODE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">TargetNodeSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">TargetNodeSchema</span></div>
+
+
+<span class="c1"># Game Mode Sections</span>
+
+
+<div class="viewcode-block" id="ResetSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.ResetSchema.html#yawning_titan.db.schemas.ResetSchema">[docs]</a><span class="k">class</span> <span class="nc">ResetSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">RANDOMISE_VULNERABILITIES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">on_reset</span><span class="o">.</span><span class="n">randomise_vulnerabilities</span>
+    <span class="n">CHOOSE_NEW_HIGH_VALUE_NODES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">on_reset</span><span class="o">.</span><span class="n">choose_new_high_value_nodes</span>
+    <span class="n">CHOOSE_NEW_ENTRY_NODES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">on_reset</span><span class="o">.</span><span class="n">choose_new_entry_nodes</span></div>
+
+
+<div class="viewcode-block" id="RewardsSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.RewardsSchema.html#yawning_titan.db.schemas.RewardsSchema">[docs]</a><span class="k">class</span> <span class="nc">RewardsSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">FOR_LOSS</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">reward</span><span class="o">.</span><span class="n">for_loss</span>
+    <span class="n">FOR_REACHING_MAX_STEPS</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">reward</span><span class="o">.</span><span class="n">for_reaching_max_steps</span>
+    <span class="n">END_REWARDS_ARE_MULTIPLIED_BY_END_STATE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">reward</span><span class="o">.</span><span class="n">end_rewards_are_multiplied_by_end_state</span>
+    <span class="n">REDUCE_NEGATIVE_REWARDS_FOR_CLOSER_FAILS</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">reward</span><span class="o">.</span><span class="n">reduce_negative_rewards_for_closer_fails</span>
+    <span class="n">FUNCTION</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">reward</span><span class="o">.</span><span class="n">function</span></div>
+
+
+<div class="viewcode-block" id="MiscellaneousSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.MiscellaneousSchema.html#yawning_titan.db.schemas.MiscellaneousSchema">[docs]</a><span class="k">class</span> <span class="nc">MiscellaneousSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">RANDOM_SEED</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">miscellaneous</span><span class="o">.</span><span class="n">for_loss</span>
+    <span class="n">OUTPUT_TIMESTEP_DATA_TO_JSON</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">miscellaneous</span><span class="o">.</span><span class="n">for_loss</span></div>
+
+
+<div class="viewcode-block" id="ObservationSpaceSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.ObservationSpaceSchema.html#yawning_titan.db.schemas.ObservationSpaceSchema">[docs]</a><span class="k">class</span> <span class="nc">ObservationSpaceSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">COMPROMISED_STATUS</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">compromised_status</span>
+    <span class="n">VULNERABILITIES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">vulnerabilities</span>
+    <span class="n">NODE_CONNECTIONS</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">node_connections</span>
+    <span class="n">AVERAGE_VULNERABILITY</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">average_vulnerability</span>
+    <span class="n">GRAPH_CONNECTIVITY</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">graph_connectivity</span>
+    <span class="n">ATTACKING_NODES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">attacking_nodes</span>
+    <span class="n">ATTACKED_NODES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">attacked_nodes</span>
+    <span class="n">SPECIAL_NODES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">special_nodes</span>
+    <span class="n">RED_AGENT_SKILL</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">red_agent_skill</span></div>
+
+
+<div class="viewcode-block" id="GameRulesSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.GameRulesSchema.html#yawning_titan.db.schemas.GameRulesSchema">[docs]</a><span class="k">class</span> <span class="nc">GameRulesSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">GRACE_PERIOD_LENGTH</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">YawningTitanQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">grace_period_length</span>
+    <span class="n">MAX_STEPS</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">max_steps</span>
+    <span class="n">BLUE_LOSS_CONDITION</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">BlueLossConditionSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">BlueLossConditionSchema</span>
+    <span class="n">NETWORK_COMPATIBILITY</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">NetworkCompatibilitySchema</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">NetworkCompatibilitySchema</span></div>
+
+
+<div class="viewcode-block" id="BlueSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.BlueSchema.html#yawning_titan.db.schemas.BlueSchema">[docs]</a><span class="k">class</span> <span class="nc">BlueSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">ACTION_SET</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">BlueActionSetSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">BlueActionSetSchema</span>
+    <span class="n">INTRUSION_DISCOVERY_CHANCE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">BlueIntrusionDiscoverySchema</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">BlueIntrusionDiscoverySchema</span>
+    <span class="n">ATTACK_DISCOVERY</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">BlueAttackDiscoverySchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">BlueAttackDiscoverySchema</span></div>
+
+
+<div class="viewcode-block" id="RedSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.RedSchema.html#yawning_titan.db.schemas.RedSchema">[docs]</a><span class="k">class</span> <span class="nc">RedSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">AGENT_ATTACK</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">RedAgentAttackSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">RedAgentAttackSchema</span>
+    <span class="n">ACTION_SET</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">RedActionSetSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">RedActionSetSchema</span>
+    <span class="n">NATURAL_SPREADING</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">RedNaturalSpreadingSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">RedNaturalSpreadingSchema</span>
+    <span class="n">TARGET_MECHANISM</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">RedTargetMechanismSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">RedTargetMechanismSchema</span></div>
+
+
+<div class="viewcode-block" id="GameModeConfigurationSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.db.schemas.GameModeConfigurationSchema.html#yawning_titan.db.schemas.GameModeConfigurationSchema">[docs]</a><span class="k">class</span> <span class="nc">GameModeConfigurationSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schema to describe a `~yawning_titan.config.core.ConfigGroup` object.&quot;&quot;&quot;</span>
+
+    <span class="n">RED</span><span class="p">:</span> <span class="n">RedSchema</span> <span class="o">=</span> <span class="n">RedSchema</span>
+    <span class="n">BLUE</span><span class="p">:</span> <span class="n">BlueSchema</span> <span class="o">=</span> <span class="n">BlueSchema</span>
+    <span class="n">GAME_RULES</span><span class="p">:</span> <span class="n">GameRulesSchema</span> <span class="o">=</span> <span class="n">GameRulesSchema</span>
+    <span class="n">BLUE_CAN_OBSERVE</span><span class="p">:</span> <span class="n">ObservationSpaceSchema</span> <span class="o">=</span> <span class="n">ObservationSpaceSchema</span>
+    <span class="n">ON_RESET</span><span class="p">:</span> <span class="n">ResetSchema</span> <span class="o">=</span> <span class="n">ResetSchema</span>
+    <span class="n">REWARD</span><span class="p">:</span> <span class="n">RewardsSchema</span> <span class="o">=</span> <span class="n">RewardsSchema</span>
+    <span class="n">MISCELLANEOUS</span><span class="p">:</span> <span class="n">MiscellaneousSchema</span> <span class="o">=</span> <span class="n">MiscellaneousSchema</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

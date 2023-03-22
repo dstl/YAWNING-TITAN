@@ -1,0 +1,42 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.toolbox.item\_types.str\_item.StrItem
+===========================================================
+
+.. currentmodule:: yawning_titan.config.toolbox.item_types.str_item
+
+.. autoclass:: StrItem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~StrItem.set_value
+      ~StrItem.stringify
+      ~StrItem.to_dict
+      ~StrItem.validate
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~StrItem.alias
+      ~StrItem.doc
+      ~StrItem.properties
+      ~StrItem.validation
+      ~StrItem.value
+      ~StrItem.depends_on
+   
+   

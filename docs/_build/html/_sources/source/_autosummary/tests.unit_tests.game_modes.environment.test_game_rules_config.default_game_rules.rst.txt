@@ -1,0 +1,6 @@
+tests.unit\_tests.game\_modes.environment.test\_game\_rules\_config.default\_game\_rules
+========================================================================================
+
+.. currentmodule:: tests.unit_tests.game_modes.environment.test_game_rules_config
+
+.. autofunction:: default_game_rules

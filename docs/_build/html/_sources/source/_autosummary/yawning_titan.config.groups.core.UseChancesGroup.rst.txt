@@ -1,0 +1,44 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.groups.core.UseChancesGroup
+=================================================
+
+.. currentmodule:: yawning_titan.config.groups.core
+
+.. autoclass:: UseChancesGroup
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~UseChancesGroup.get_config_elements
+      ~UseChancesGroup.get_non_config_elements
+      ~UseChancesGroup.set_from_dict
+      ~UseChancesGroup.set_from_yaml
+      ~UseChancesGroup.stringify
+      ~UseChancesGroup.to_dict
+      ~UseChancesGroup.to_legacy_dict
+      ~UseChancesGroup.to_yaml
+      ~UseChancesGroup.validate
+      ~UseChancesGroup.validate_elements
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~UseChancesGroup.config_groups
+      ~UseChancesGroup.config_items
+   
+   

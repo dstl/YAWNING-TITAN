@@ -1,0 +1,40 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.game\_modes.game\_mode\_db.GameModeDB
+====================================================
+
+.. currentmodule:: yawning_titan.game_modes.game_mode_db
+
+.. autoclass:: GameModeDB
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GameModeDB.add_yaml_game_modes_to_db
+      ~GameModeDB.all
+      ~GameModeDB.count
+      ~GameModeDB.get
+      ~GameModeDB.insert
+      ~GameModeDB.rebuild_db
+      ~GameModeDB.remove
+      ~GameModeDB.remove_by_cond
+      ~GameModeDB.reset_default_game_modes_in_db
+      ~GameModeDB.search
+      ~GameModeDB.show
+      ~GameModeDB.update
+      ~GameModeDB.upsert
+   
+   
+
+   
+   
+   

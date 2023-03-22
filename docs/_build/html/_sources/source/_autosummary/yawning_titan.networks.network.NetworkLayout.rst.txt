@@ -1,0 +1,45 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.networks.network.NetworkLayout
+=============================================
+
+.. currentmodule:: yawning_titan.networks.network
+
+.. autoclass:: NetworkLayout
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~NetworkLayout.as_layout_func
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NetworkLayout.BIPARTITE
+      ~NetworkLayout.CIRCULAR
+      ~NetworkLayout.FRUCHTERMAN_REINGOLD
+      ~NetworkLayout.KAMADA_KAWAI
+      ~NetworkLayout.MULTIPARTITE
+      ~NetworkLayout.PLANAR
+      ~NetworkLayout.RANDOM
+      ~NetworkLayout.RESCALE
+      ~NetworkLayout.SHELL
+      ~NetworkLayout.SPECTRAL
+      ~NetworkLayout.SPIRAL
+      ~NetworkLayout.SPRING
+   
+   

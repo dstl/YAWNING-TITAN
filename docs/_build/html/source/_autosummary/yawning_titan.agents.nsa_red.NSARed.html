@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.agents.nsa_red.NSARed &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.agents.random" href="yawning_titan.agents.random.html" />
+    <link rel="prev" title="yawning_titan.agents.nsa_red" href="yawning_titan.agents.nsa_red.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.agents.fixed_red.html">yawning_titan.agents.fixed_red</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.agents.keyboard.html">yawning_titan.agents.keyboard</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="yawning_titan.agents.nsa_red.html">yawning_titan.agents.nsa_red</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">yawning_titan.agents.nsa_red.NSARed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.agents.nsa_red.html#yawning_titan.agents.nsa_red.NSARed"><code class="docutils literal notranslate"><span class="pre">NSARed</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.agents.random.html">yawning_titan.agents.random</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.agents.simple_blue.html">yawning_titan.agents.simple_blue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.agents.sinewave_red.html">yawning_titan.agents.sinewave_red</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.html">yawning_titan</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.agents.nsa_red.html">yawning_titan.agents.nsa_red</a></li>
+      <li class="breadcrumb-item active">yawning_titan.agents.nsa_red.NSARed</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="yawning-titan-agents-nsa-red-nsared">
+<h1>yawning_titan.agents.nsa_red.NSARed<a class="headerlink" href="#yawning-titan-agents-nsa-red-nsared" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.agents.nsa_red.NSARed">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.agents.nsa_red.</span></span><span class="sig-name descname"><span class="pre">NSARed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skill</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_set</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_probabilities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_set</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zd_start_amount</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zd_gain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zd_required</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/agents/nsa_red.html#NSARed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.agents.nsa_red.NSARed" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<blockquote>
+<div><p>Provides the red agent behaviour within the <cite>18-node-def</cite> environment.</p>
+<p>The agent is a loose replication of:</p>
+</div></blockquote>
+<p><a class="reference external" href="https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9">https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf#page=9</a></p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.agents.nsa_red.NSARed.basic_attack" title="yawning_titan.agents.nsa_red.NSARed.basic_attack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">basic_attack</span></code></a></p></td>
+<td><p>Perform a basic attack on a targetted node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.agents.nsa_red.NSARed.check_zd_available" title="yawning_titan.agents.nsa_red.NSARed.check_zd_available"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_zd_available</span></code></a></p></td>
+<td><p>Check if a zero day is available .</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.agents.nsa_red.NSARed.choose_action" title="yawning_titan.agents.nsa_red.NSARed.choose_action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choose_action</span></code></a></p></td>
+<td><p>Choose an action to perform.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.agents.nsa_red.NSARed.choose_node" title="yawning_titan.agents.nsa_red.NSARed.choose_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choose_node</span></code></a></p></td>
+<td><p>Choose a node to act on.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.agents.nsa_red.NSARed.do_action" title="yawning_titan.agents.nsa_red.NSARed.do_action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">do_action</span></code></a></p></td>
+<td><p>Perform the selected action on the given target nodes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.agents.nsa_red.NSARed.increment_day" title="yawning_titan.agents.nsa_red.NSARed.increment_day"><code class="xref py py-obj docutils literal notranslate"><span class="pre">increment_day</span></code></a></p></td>
+<td><p>Increment the day related to zero day development.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.agents.nsa_red.NSARed.intrude" title="yawning_titan.agents.nsa_red.NSARed.intrude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intrude</span></code></a></p></td>
+<td><p>Attempt to randomly intrude every uncompromised node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.agents.nsa_red.NSARed.move" title="yawning_titan.agents.nsa_red.NSARed.move"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move</span></code></a></p></td>
+<td><p>Move the red agent from one node to another.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.agents.nsa_red.NSARed.spread" title="yawning_titan.agents.nsa_red.NSARed.spread"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spread</span></code></a></p></td>
+<td><p>Attempt to spread to all nodes connected to a compromised node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.agents.nsa_red.NSARed.update_actions" title="yawning_titan.agents.nsa_red.NSARed.update_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_actions</span></code></a></p></td>
+<td><p>Update the set of actions and the corresponding probabilities.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.agents.nsa_red.NSARed.update_location" title="yawning_titan.agents.nsa_red.NSARed.update_location"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_location</span></code></a></p></td>
+<td><p>Update the current location of the red agent.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.agents.nsa_red.NSARed.update_node_set" title="yawning_titan.agents.nsa_red.NSARed.update_node_set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_node_set</span></code></a></p></td>
+<td><p>Update the set of nodes the agent can act upon.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.agents.nsa_red.NSARed.zd_attack" title="yawning_titan.agents.nsa_red.NSARed.zd_attack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zd_attack</span></code></a></p></td>
+<td><p>Perform a zd attack on a targetted node.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.agents.nsa_red.NSARed.update_node_set">
+<span class="sig-name descname"><span class="pre">update_node_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/agents/nsa_red.html#NSARed.update_node_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.agents.nsa_red.NSARed.update_node_set" title="Permalink to this definition"></a></dt>
+<dd><p>Update the set of nodes the agent can act upon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>nodes</strong> – A list containing the nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.agents.nsa_red.NSARed.update_actions">
+<span class="sig-name descname"><span class="pre">update_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probabilities</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/agents/nsa_red.html#NSARed.update_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.agents.nsa_red.NSARed.update_actions" title="Permalink to this definition"></a></dt>
+<dd><p>Update the set of actions and the corresponding probabilities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>actions</strong> – the new set of actions the agent can take</p></li>
+<li><p><strong>probabilities</strong> – the weights associated with the actions</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.agents.nsa_red.NSARed.choose_node">
+<span class="sig-name descname"><span class="pre">choose_node</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/agents/nsa_red.html#NSARed.choose_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.agents.nsa_red.NSARed.choose_node" title="Permalink to this definition"></a></dt>
+<dd><p>Choose a node to act on.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The node to act on</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.agents.nsa_red.NSARed.choose_action">
+<span class="sig-name descname"><span class="pre">choose_action</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/agents/nsa_red.html#NSARed.choose_action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.agents.nsa_red.NSARed.choose_action" title="Permalink to this definition"></a></dt>
+<dd><p>Choose an action to perform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The action to perform on</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.agents.nsa_red.NSARed.update_location">
+<span class="sig-name descname"><span class="pre">update_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">red_current_node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/agents/nsa_red.html#NSARed.update_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.agents.nsa_red.NSARed.update_location" title="Permalink to this definition"></a></dt>
+<dd><p>Update the current location of the red agent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target</strong> – the location to move to</p></li>
+<li><p><strong>red_current_node</strong> – red agents current node</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Reds previous node
+The node red is currently in</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.agents.nsa_red.NSARed.increment_day">
+<span class="sig-name descname"><span class="pre">increment_day</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/agents/nsa_red.html#NSARed.increment_day"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.agents.nsa_red.NSARed.increment_day" title="Permalink to this definition"></a></dt>
+<dd><p>Increment the day related to zero day development.</p>
+<p>If the day has reached a threshold for a zero day then add 1 to the number of available
+zero days.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.agents.nsa_red.NSARed.check_zd_available">
+<span class="sig-name descname"><span class="pre">check_zd_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/agents/nsa_red.html#NSARed.check_zd_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.agents.nsa_red.NSARed.check_zd_available" title="Permalink to this definition"></a></dt>
+<dd><p>Check if a zero day is available .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if a zero day is available to use
+False if no zero day is available to use</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.agents.nsa_red.NSARed.zd_attack">
+<span class="sig-name descname"><span class="pre">zd_attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/agents/nsa_red.html#NSARed.zd_attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.agents.nsa_red.NSARed.zd_attack" title="Permalink to this definition"></a></dt>
+<dd><p>Perform a zd attack on a targetted node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target</strong> – the target node</p></li>
+<li><p><strong>args</strong> – A tuple containing:
+* “machine_states”: the current state of the machines
+* “red_current_node”: the red agents current node
+* “able_to_move”: if the red agent is able to move</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.agents.nsa_red.NSARed.basic_attack">
+<span class="sig-name descname"><span class="pre">basic_attack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/agents/nsa_red.html#NSARed.basic_attack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.agents.nsa_red.NSARed.basic_attack" title="Permalink to this definition"></a></dt>
+<dd><p>Perform a basic attack on a targetted node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target</strong> – The target node</p></li>
+<li><p><strong>args</strong> – A tuple containing:
+* “machine_states”: the current state of the machines
+* “skill_level”: The skill level of the attack
+* “attack_success_threshold”: A threshold to determine if the attack succeeds
+* “red_current_node”: The current position of the red agent
+* “able_to_move”: if the red agent is able to move</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.agents.nsa_red.NSARed.move">
+<span class="sig-name descname"><span class="pre">move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/agents/nsa_red.html#NSARed.move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.agents.nsa_red.NSARed.move" title="Permalink to this definition"></a></dt>
+<dd><p>Move the red agent from one node to another.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target</strong> – the node the agent is moving to</p></li>
+<li><p><strong>args</strong> – A tuple containing the following:
+* “red_current_node”: the current node of the agent
+* “able_to_move”: if the agent is able to move</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.agents.nsa_red.NSARed.spread">
+<span class="sig-name descname"><span class="pre">spread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/agents/nsa_red.html#NSARed.spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.agents.nsa_red.NSARed.spread" title="Permalink to this definition"></a></dt>
+<dd><p>Attempt to spread to all nodes connected to a compromised node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – the current state of the environment</p></li>
+<li><p><strong>args</strong> – A tuple containing:
+* “chance_to_spread”: the chance to spread from one node to another
+* “chance_to_randomly_compromise”: chance to randomly infect a node</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.agents.nsa_red.NSARed.intrude">
+<span class="sig-name descname"><span class="pre">intrude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/agents/nsa_red.html#NSARed.intrude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.agents.nsa_red.NSARed.intrude" title="Permalink to this definition"></a></dt>
+<dd><p>Attempt to randomly intrude every uncompromised node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – the current state of the environment</p></li>
+<li><p><strong>args</strong> – A tuple containing:
+* “chance_to_spread”: the chance to spread from one node to another
+* “chance_to_randomly_compromise”: chance to randomly infect a node</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.agents.nsa_red.NSARed.do_action">
+<span class="sig-name descname"><span class="pre">do_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/agents/nsa_red.html#NSARed.do_action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.agents.nsa_red.NSARed.do_action" title="Permalink to this definition"></a></dt>
+<dd><p>Perform the selected action on the given target nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes</strong> – the nodes to perform the action on</p></li>
+<li><p><strong>action</strong> – the action to perform
+0* - actions for the 5 node env
+1* - actions for the new node env</p></li>
+<li><p><strong>args</strong> – any parameters needed to perform the action</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="yawning_titan.agents.nsa_red.html" class="btn btn-neutral float-left" title="yawning_titan.agents.nsa_red" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.agents.random.html" class="btn btn-neutral float-right" title="yawning_titan.agents.random" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

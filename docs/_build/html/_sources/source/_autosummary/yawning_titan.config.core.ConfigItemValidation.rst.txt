@@ -1,0 +1,39 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.core.ConfigItemValidation
+===============================================
+
+.. currentmodule:: yawning_titan.config.core
+
+.. autoclass:: ConfigItemValidation
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ConfigItemValidation.add_validation
+      ~ConfigItemValidation.get_config_elements
+      ~ConfigItemValidation.get_non_config_elements
+      ~ConfigItemValidation.stringify
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ConfigItemValidation.config_groups
+      ~ConfigItemValidation.config_items
+      ~ConfigItemValidation.passed
+   
+   

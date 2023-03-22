@@ -1,0 +1,37 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.agents.red\_agent\_config.RedAgentAttackGroup
+===================================================================
+
+.. currentmodule:: yawning_titan.config.agents.red_agent_config
+
+.. autoclass:: RedAgentAttackGroup
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RedAgentAttackGroup.get_config_elements
+      ~RedAgentAttackGroup.get_non_config_elements
+      ~RedAgentAttackGroup.set_from_dict
+      ~RedAgentAttackGroup.set_from_yaml
+      ~RedAgentAttackGroup.stringify
+      ~RedAgentAttackGroup.to_dict
+      ~RedAgentAttackGroup.to_legacy_dict
+      ~RedAgentAttackGroup.to_yaml
+      ~RedAgentAttackGroup.validate
+      ~RedAgentAttackGroup.validate_elements
+   
+   
+
+   
+   
+   

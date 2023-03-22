@@ -1,0 +1,6 @@
+tests.unit\_tests.config.environment.test\_observation\_space\_config.test\_default\_observation\_space\_from\_legacy
+=====================================================================================================================
+
+.. currentmodule:: tests.unit_tests.config.environment.test_observation_space_config
+
+.. autofunction:: test_default_observation_space_from_legacy

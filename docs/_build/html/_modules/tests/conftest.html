@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.conftest &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tests.conftest</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tests.conftest</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Final</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
+
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="kn">from</span> <span class="nn">tests</span> <span class="kn">import</span> <span class="n">TEST_PACKAGE_DATA_PATH</span>
+<span class="kn">from</span> <span class="nn">tests.game_mode_db_patch</span> <span class="kn">import</span> <span class="n">game_mode_db_init_patch</span>
+<span class="kn">from</span> <span class="nn">tests.network_db_patch</span> <span class="kn">import</span> <span class="n">network_db_init_patch</span>
+<span class="kn">from</span> <span class="nn">tests.yawning_titan_db_patch</span> <span class="kn">import</span> <span class="n">yawning_titan_db_init_patch</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.config.core</span> <span class="kn">import</span> <span class="n">ConfigGroup</span><span class="p">,</span> <span class="n">ConfigGroupValidation</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.config.item_types.bool_item</span> <span class="kn">import</span> <span class="n">BoolItem</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.config.item_types.float_item</span> <span class="kn">import</span> <span class="n">FloatItem</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.config.item_types.int_item</span> <span class="kn">import</span> <span class="n">IntItem</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.config.item_types.str_item</span> <span class="kn">import</span> <span class="n">StrItem</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.db.doc_metadata</span> <span class="kn">import</span> <span class="n">DocMetadata</span><span class="p">,</span> <span class="n">DocMetadataSchema</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.db.yawning_titan_db</span> <span class="kn">import</span> <span class="n">YawningTitanDB</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.core.action_loops</span> <span class="kn">import</span> <span class="n">ActionLoop</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.exceptions</span> <span class="kn">import</span> <span class="n">ConfigGroupValidationError</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.game_modes.game_mode</span> <span class="kn">import</span> <span class="n">GameMode</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.game_modes.game_mode_db</span> <span class="kn">import</span> <span class="n">GameModeDB</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.network</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.network_db</span> <span class="kn">import</span> <span class="n">NetworkDB</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.node</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.yawning_titan_run</span> <span class="kn">import</span> <span class="n">YawningTitanRun</span>
+<span class="kn">from</span> <span class="nn">yawning_titan_gui.helpers</span> <span class="kn">import</span> <span class="n">GameModeManager</span><span class="p">,</span> <span class="n">NetworkManager</span>
+
+<span class="n">TOLERANCE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">N_TIME_STEPS</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">N_TIME_STEPS_LONG</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10000</span>
+
+
+<div class="viewcode-block" id="not_raises"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.not_raises.html#tests.conftest.not_raises">[docs]</a><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">not_raises</span><span class="p">(</span><span class="n">expected_exception</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to test whether a function does not raise an exception.</span>
+
+<span class="sd">    A &#39;good&#39; function test.</span>
+
+<span class="sd">    Example of a &#39;good&#39; test:</span>
+
+<span class="sd">    .. code::python::</span>
+
+<span class="sd">        a_list = [&#39;This is a good test&#39;]</span>
+<span class="sd">        with not_raises(IndexError):</span>
+<span class="sd">            print(a_list[0])</span>
+
+<span class="sd">    Example of a &#39;bad&#39; test:</span>
+
+<span class="sd">    .. code::python::</span>
+
+<span class="sd">        a_list = [&#39;This is a bad test&#39;]</span>
+<span class="sd">        with not_raises(IndexError):</span>
+<span class="sd">            print(a_list[1])</span>
+
+<span class="sd">    :param expected_exception: The type of Exception being tested for.</span>
+<span class="sd">    :raise AssertionError: When the exception is raised expectedly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+
+    <span class="k">except</span> <span class="n">expected_exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Raised exception </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2"> when it should not!&quot;</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;An unexpected exception </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2"> raised.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="game_mode_db"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.game_mode_db.html#tests.conftest.game_mode_db">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">game_mode_db</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">GameModeDB</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A patched GameModeDB that uses tests/_package_data/game_modes.json.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">GameModeDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">game_mode_db_init_patch</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">GameModeDB</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="game_mode_manager"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.game_mode_manager.html#tests.conftest.game_mode_manager">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">game_mode_manager</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">GameModeManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A patched GameModeManager that uses tests/_package_data/game_modes.json.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">GameModeManager</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">GameModeDB</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">GameModeManager</span></div>
+
+
+<div class="viewcode-block" id="network_manager"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.network_manager.html#tests.conftest.network_manager">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">network_manager</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">NetworkManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A patched NetworkManager that uses tests/_package_data/networks.json.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">NetworkManager</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">NetworkDB</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">NetworkManager</span></div>
+
+
+<div class="viewcode-block" id="default_game_mode"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.default_game_mode.html#tests.conftest.default_game_mode">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">default_game_mode</span><span class="p">(</span><span class="n">game_mode_db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GameMode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the default game mode.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">game_mode_db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">DocMetadataSchema</span><span class="o">.</span><span class="n">NAME</span> <span class="o">==</span> <span class="s2">&quot;Default Game Mode&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="network_db"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.network_db.html#tests.conftest.network_db">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;session&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">network_db</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">NetworkDB</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A patched NetworkDB that uses tests/_package_data/networks.json.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">NetworkDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">network_db_init_patch</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">NetworkDB</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="default_network"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.default_network.html#tests.conftest.default_network">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">default_network</span><span class="p">(</span><span class="n">network_db</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Network</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the default network.&quot;&quot;&quot;</span>
+    <span class="n">network</span> <span class="o">=</span> <span class="n">network_db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">DocMetadataSchema</span><span class="o">.</span><span class="n">NAME</span> <span class="o">==</span> <span class="s2">&quot;Default 18-node network&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">set_node_positions</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">network</span></div>
+
+
+<div class="viewcode-block" id="temp_networks"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.temp_networks.html#tests.conftest.temp_networks">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">temp_networks</span><span class="p">(</span><span class="n">network_manager</span><span class="p">:</span> <span class="n">NetworkManager</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a number of temporary networks as copies of an existing network.</span>
+
+<span class="sd">    :param source_network: The network id to copy</span>
+<span class="sd">    :param n: The number of networks to create</span>
+
+<span class="sd">    :return: a list of created network Ids.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_temp_networks</span><span class="p">(</span><span class="n">source_network_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">network</span> <span class="o">=</span> <span class="n">network_manager</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">source_network_id</span><span class="p">)</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;locked&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">network</span><span class="o">.</span><span class="n">_doc_metadata</span> <span class="o">=</span> <span class="n">DocMetadata</span><span class="p">(</span><span class="o">**</span><span class="n">meta</span><span class="p">)</span>
+            <span class="n">network_manager</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">network</span><span class="o">=</span><span class="n">network</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;temp&quot;</span><span class="p">)</span>
+            <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ids</span>
+
+    <span class="k">return</span> <span class="n">_temp_networks</span></div>
+
+
+<div class="viewcode-block" id="corporate_network"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.corporate_network.html#tests.conftest.corporate_network">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">corporate_network</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Network</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An example network with components akin to that of a basic corporate network.&quot;&quot;&quot;</span>
+    <span class="n">router_1</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+    <span class="n">switch_1</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+    <span class="n">switch_2</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+    <span class="n">pc_1</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+    <span class="n">pc_2</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+    <span class="n">pc_3</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+    <span class="n">pc_4</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+    <span class="n">pc_5</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+    <span class="n">pc_6</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+    <span class="n">server_1</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+    <span class="n">server_2</span> <span class="o">=</span> <span class="n">Node</span><span class="p">()</span>
+    <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="p">(</span>
+        <span class="n">set_random_entry_nodes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">num_of_random_entry_nodes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">set_random_high_value_nodes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">num_of_random_high_value_nodes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">set_random_vulnerabilities</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">router_1</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">switch_1</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">switch_2</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">pc_1</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">pc_2</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">pc_3</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">pc_4</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">pc_5</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">pc_6</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">server_1</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">server_2</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">router_1</span><span class="p">,</span> <span class="n">switch_1</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_1</span><span class="p">,</span> <span class="n">server_1</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_1</span><span class="p">,</span> <span class="n">pc_1</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_1</span><span class="p">,</span> <span class="n">pc_2</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_1</span><span class="p">,</span> <span class="n">pc_3</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">router_1</span><span class="p">,</span> <span class="n">switch_2</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_2</span><span class="p">,</span> <span class="n">server_2</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_2</span><span class="p">,</span> <span class="n">pc_4</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_2</span><span class="p">,</span> <span class="n">pc_5</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">switch_2</span><span class="p">,</span> <span class="n">pc_6</span><span class="p">)</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">reset_random_entry_nodes</span><span class="p">()</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">reset_random_high_value_nodes</span><span class="p">()</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">reset_random_vulnerabilities</span><span class="p">()</span>
+    <span class="n">network</span><span class="o">.</span><span class="n">set_node_positions</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">network</span></div>
+
+
+<div class="viewcode-block" id="legacy_default_game_mode_dict"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.legacy_default_game_mode_dict.html#tests.conftest.legacy_default_game_mode_dict">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">legacy_default_game_mode_dict</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The legacy default game mode yaml file.</span>
+
+<span class="sd">    :returns: The path to the legacy_default_game_mode.yaml as an instance of</span>
+<span class="sd">        pathlib.Path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">filepath</span> <span class="o">=</span> <span class="n">TEST_PACKAGE_DATA_PATH</span> <span class="o">/</span> <span class="s2">&quot;legacy_default_game_mode.yaml&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_yawning_titan_run"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.create_yawning_titan_run.html#tests.conftest.create_yawning_titan_run">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="s2">&quot;function&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">create_yawning_titan_run</span><span class="p">(</span><span class="n">network_db</span><span class="p">:</span> <span class="n">NetworkDB</span><span class="p">,</span> <span class="n">game_mode_db</span><span class="p">:</span> <span class="n">GameModeDB</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an initialised and setup YawningTitanRun.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_create_yawning_titan_run</span><span class="p">(</span>
+        <span class="n">game_mode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">network_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">timesteps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">eval_freq</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">deterministic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">YawningTitanRun</span><span class="p">:</span>
+        <span class="n">network</span> <span class="o">=</span> <span class="n">network_db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">DocMetadataSchema</span><span class="o">.</span><span class="n">NAME</span> <span class="o">==</span> <span class="n">network_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">game_mode</span> <span class="o">=</span> <span class="n">game_mode_db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">DocMetadataSchema</span><span class="o">.</span><span class="n">NAME</span> <span class="o">==</span> <span class="n">game_mode_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">yt_run</span> <span class="o">=</span> <span class="n">YawningTitanRun</span><span class="p">(</span>
+            <span class="n">network</span><span class="o">=</span><span class="n">network</span><span class="p">,</span>
+            <span class="n">game_mode</span><span class="o">=</span><span class="n">game_mode</span><span class="p">,</span>
+            <span class="n">collect_additional_per_ts_data</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">auto</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">total_timesteps</span><span class="o">=</span><span class="n">timesteps</span><span class="p">,</span>
+            <span class="n">eval_freq</span><span class="o">=</span><span class="n">eval_freq</span><span class="p">,</span>
+            <span class="n">deterministic</span><span class="o">=</span><span class="n">deterministic</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">yt_run</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">yt_run</span>
+
+    <span class="k">return</span> <span class="n">_create_yawning_titan_run</span></div>
+
+
+<div class="viewcode-block" id="basic_2_agent_loop"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.basic_2_agent_loop.html#tests.conftest.basic_2_agent_loop">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">basic_2_agent_loop</span><span class="p">(</span><span class="n">create_yawning_titan_run</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a basic 2-agent `ActionLoop`.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_basic_2_agent_loop</span><span class="p">(</span>
+        <span class="n">yt_run</span><span class="p">:</span> <span class="n">YawningTitanRun</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">num_episodes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ActionLoop</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use parameterized settings to return a configured ActionLoop.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">yt_run</span><span class="p">:</span>
+            <span class="n">yt_run</span> <span class="o">=</span> <span class="n">create_yawning_titan_run</span><span class="p">(</span>
+                <span class="n">game_mode_name</span><span class="o">=</span><span class="s2">&quot;Default Game Mode&quot;</span><span class="p">,</span>
+                <span class="n">network_name</span><span class="o">=</span><span class="s2">&quot;Default 18-node network&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ActionLoop</span><span class="p">(</span><span class="n">yt_run</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">yt_run</span><span class="o">.</span><span class="n">agent</span><span class="p">,</span> <span class="n">episode_count</span><span class="o">=</span><span class="n">num_episodes</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_basic_2_agent_loop</span></div>
+
+
+<div class="viewcode-block" id="Group"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.Group.html#tests.conftest.Group">[docs]</a><span class="k">class</span> <span class="nc">Group</span><span class="p">(</span><span class="n">ConfigGroup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Basic implementation of a :class: `~yawning_titan.config.core.ConfigGroup`.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Group.__init__"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.html#tests.conftest.Group.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">:</span> <span class="n">BoolItem</span> <span class="o">=</span> <span class="n">BoolItem</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;legacy_a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">:</span> <span class="n">FloatItem</span> <span class="o">=</span> <span class="n">FloatItem</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;legacy_b&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">:</span> <span class="n">StrItem</span> <span class="o">=</span> <span class="n">StrItem</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;legacy_c&quot;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="GroupTier1"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.GroupTier1.html#tests.conftest.GroupTier1">[docs]</a><span class="k">class</span> <span class="nc">GroupTier1</span><span class="p">(</span><span class="n">ConfigGroup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Basic implementation of a nested :class: `~yawning_titan.config.core.ConfigGroup`.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GroupTier1.__init__"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.html#tests.conftest.GroupTier1.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bool</span><span class="p">:</span> <span class="n">BoolItem</span> <span class="o">=</span> <span class="n">BoolItem</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">float</span><span class="p">:</span> <span class="n">FloatItem</span> <span class="o">=</span> <span class="n">FloatItem</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GroupTier1.validate"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.GroupTier1.html#tests.conftest.GroupTier1.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConfigGroupValidation</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bool</span><span class="o">.</span><span class="n">value</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">float</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;test error tier 1&quot;</span>
+                <span class="k">raise</span> <span class="n">ConfigGroupValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ConfigGroupValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">add_validation</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bool</span><span class="o">.</span><span class="n">value</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">float</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;test error tier 1 b&quot;</span>
+                <span class="k">raise</span> <span class="n">ConfigGroupValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ConfigGroupValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">add_validation</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span></div></div>
+
+
+<div class="viewcode-block" id="GroupTier2"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.GroupTier2.html#tests.conftest.GroupTier2">[docs]</a><span class="k">class</span> <span class="nc">GroupTier2</span><span class="p">(</span><span class="n">ConfigGroup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Basic implementation of a nested :class: `~yawning_titan.config.core.ConfigGroup`.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GroupTier2.__init__"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.html#tests.conftest.GroupTier2.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bool</span><span class="p">:</span> <span class="n">BoolItem</span> <span class="o">=</span> <span class="n">BoolItem</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">int</span><span class="p">:</span> <span class="n">IntItem</span> <span class="o">=</span> <span class="n">IntItem</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tier_1</span><span class="p">:</span> <span class="n">GroupTier1</span> <span class="o">=</span> <span class="n">GroupTier1</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GroupTier2.validate"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.GroupTier2.html#tests.conftest.GroupTier2.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConfigGroupValidation</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bool</span><span class="o">.</span><span class="n">value</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">int</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;test error tier 2&quot;</span>
+                <span class="k">raise</span> <span class="n">ConfigGroupValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ConfigGroupValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">add_validation</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span></div></div>
+
+
+<div class="viewcode-block" id="test_group"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.test_group.html#tests.conftest.test_group">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">test_group</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Group</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A test instance of :class: `~yawning_titan.config.core.ConfigGroup`.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Group</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="multi_tier_test_group"><a class="viewcode-back" href="../../source/_autosummary/tests.conftest.multi_tier_test_group.html#tests.conftest.multi_tier_test_group">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">multi_tier_test_group</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">GroupTier2</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A nested test instance of :class: `~yawning_titan.config.core.ConfigGroup`.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">GroupTier2</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

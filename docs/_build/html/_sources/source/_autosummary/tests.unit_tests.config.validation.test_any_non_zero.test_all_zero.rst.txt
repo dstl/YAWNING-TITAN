@@ -1,0 +1,6 @@
+tests.unit\_tests.config.validation.test\_any\_non\_zero.test\_all\_zero
+========================================================================
+
+.. currentmodule:: tests.unit_tests.config.validation.test_any_non_zero
+
+.. autofunction:: test_all_zero

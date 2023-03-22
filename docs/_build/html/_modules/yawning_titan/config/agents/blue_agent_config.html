@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.config.agents.blue_agent_config &mdash; YAWNING TITAN 1.0.1 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/game_mode_config_explained.html">The Game Mode Config UML Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/network_config_explained.html">The Network Config UML Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.config.agents.blue_agent_config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for yawning_titan.config.agents.blue_agent_config</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan.config.game_config.config_abc</span> <span class="kn">import</span> <span class="n">ConfigABC</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.helpers.environment_input_validation</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">check_type</span><span class="p">,</span>
+    <span class="n">check_within_range</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="BlueAgentConfig"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.agents.blue_agent_config.BlueAgentConfig.html#yawning_titan.config.agents.blue_agent_config.BlueAgentConfig">[docs]</a><span class="nd">@dataclass</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">BlueAgentConfig</span><span class="p">(</span><span class="n">ConfigABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class that validates and stores the Blue Agent Configuration.</span>
+
+<span class="sd">    Notes from the DSTL</span>
+<span class="sd">    -------------------</span>
+<span class="sd">    The blue agent does not have to have perfect detection. In these settings</span>
+<span class="sd">    you can change how much information blue can gain from the red agents</span>
+<span class="sd">    actions. There are two different pieces of information blue can get:</span>
+<span class="sd">    intrusions and attacks.</span>
+
+<span class="sd">    Intrusions</span>
+<span class="sd">        An intrusion is when the red agent takes over a node and compromises</span>
+<span class="sd">        it. You can change the chance that blue has to be able to detect</span>
+<span class="sd">        this using the &quot;chance_to_immediately_discover_intrusion&quot;. If blue</span>
+<span class="sd">        does not detect an intrusion then it can use the scan action to try</span>
+<span class="sd">        and discover these intrusions with</span>
+<span class="sd">        are used as detectors to inform blue when they are compromised. They</span>
+<span class="sd">        should have a chance to detect of 1 so that they can detect</span>
+<span class="sd">        everything (at the very least they should have a chance to detect</span>
+<span class="sd">        higher than the normal chance to detect) but you can modify it if</span>
+<span class="sd">        you so wish  with</span>
+<span class="sd">        &quot;chance_to_immediately_discover_intrusion_deceptive_node&quot; and</span>
+<span class="sd">        &quot;chance_to_discover_intrusion_on_scan_deceptive_node&quot;.</span>
+
+<span class="sd">    Attacks</span>
+<span class="sd">        Attacks are the actual attacks that the red agent does to compromise</span>
+<span class="sd">        the nodes. For example you may be able to see that node 14 is</span>
+<span class="sd">        compromised but using the attack detection, the blue agent may be</span>
+<span class="sd">        able to see that it was node 12 that attacked node 14. You can</span>
+<span class="sd">        modify the chance for blue to see attacks that failed, succeeded (</span>
+<span class="sd">        and blue was able to detect that the node was compromised) and</span>
+<span class="sd">        attacks that succeeded and the blue agent did not detect the intrusion.</span>
+
+<span class="sd">    Again there are settings to change the likelihood that a deceptive node</span>
+<span class="sd">    can detect an attack. While this should remain at 1, it is open for you</span>
+<span class="sd">    to change.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_max_number_deceptive_nodes</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">_can_discover_failed_attacks</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_chance_to_immediately_discover_intrusion</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">_chance_to_discover_intrusion_on_scan</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">_chance_to_immediately_discover_intrusion_deceptive_node</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">_chance_to_discover_intrusion_on_scan_deceptive_node</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">_chance_to_discover_failed_attack</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">_can_discover_succeeded_attacks_if_compromise_is_discovered</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_can_discover_succeeded_attacks_if_compromise_is_not_discovered</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_chance_to_discover_succeeded_attack_compromise_known</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">_chance_to_discover_succeeded_attack_compromise_not_known</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">_chance_to_discover_failed_attack_deceptive_node</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">_chance_to_discover_succeeded_attack_deceptive_node</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">_making_node_safe_modifies_vulnerability</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_vulnerability_change_during_node_patch</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">_making_node_safe_gives_random_vulnerability</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_blue_uses_reduce_vulnerability</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_blue_uses_restore_node</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_blue_uses_make_node_safe</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_blue_uses_scan</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_blue_uses_isolate_node</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_blue_uses_reconnect_node</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_blue_uses_do_nothing</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_blue_uses_deceptive_nodes</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_relocating_deceptive_nodes_generates_a_new_node</span><span class="p">:</span> <span class="nb">bool</span>
+
+    <span class="c1"># region Getters</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">max_number_deceptive_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The max number of deceptive nodes that blue can place.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_number_deceptive_nodes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">can_discover_failed_attacks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Can discover the location an attack came from if the attack failed.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_discover_failed_attacks</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chance_to_immediately_discover_intrusion</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Chance for blue to discover a node that red has compromised the instant red compromises the node.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_immediately_discover_intrusion</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chance_to_discover_intrusion_on_scan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;When blue performs the scan action this is the chance that a red intrusion is discovered.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_discover_intrusion_on_scan</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chance_to_immediately_discover_intrusion_deceptive_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Chance for blue to discover a deceptive node that red has compromised the instant it is compromised.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_immediately_discover_intrusion_deceptive_node</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chance_to_discover_intrusion_on_scan_deceptive_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;When blue uses the scan action what is the chance that blue will detect an intrusion in a deceptive node.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_discover_intrusion_on_scan_deceptive_node</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chance_to_discover_failed_attack</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Chance for blue to discover information about a failed attack.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_discover_failed_attack</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">can_discover_succeeded_attacks_if_compromise_is_discovered</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Can blue learn information about an attack that succeeds if the compromise is known.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_discover_succeeded_attacks_if_compromise_is_discovered</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">can_discover_succeeded_attacks_if_compromise_is_not_discovered</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Can blue learn information about an attack that succeeds if the compromise is NOT known.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_can_discover_succeeded_attacks_if_compromise_is_not_discovered</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chance_to_discover_succeeded_attack_compromise_known</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Chance for blue to discover information about an attack that succeeded and the compromise was known.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_discover_succeeded_attack_compromise_known</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chance_to_discover_succeeded_attack_compromise_not_known</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Chance for blue to discover information about an attack that succeeded and the compromise was NOT known.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_discover_succeeded_attack_compromise_not_known</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chance_to_discover_failed_attack_deceptive_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Chance to discover the location of a failed attack on a deceptive node.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_discover_failed_attack_deceptive_node</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">chance_to_discover_succeeded_attack_deceptive_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Chance to discover the location of a succeeded attack against a deceptive node.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_discover_succeeded_attack_deceptive_node</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">making_node_safe_modifies_vulnerability</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If blue fixes a node then the vulnerability score of that node increases.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_making_node_safe_modifies_vulnerability</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vulnerability_change_during_node_patch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The amount that the vulnerability of a node changes when it is made safe.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vulnerability_change_during_node_patch</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">making_node_safe_gives_random_vulnerability</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;When fixing a node the vulnerability score is randomised.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_making_node_safe_gives_random_vulnerability</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">blue_uses_reduce_vulnerability</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Blue picks a node and reduces the vulnerability score.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_reduce_vulnerability</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">blue_uses_restore_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Blue picks a node and restores everything about the node to its starting state.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_restore_node</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">blue_uses_make_node_safe</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Blue fixes a node but does not restore it to its initial state.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_make_node_safe</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">blue_uses_scan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Blue scans all the nodes to try and detect any red intrusions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_scan</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">blue_uses_isolate_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Blue disables all the connections to and from a node.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_isolate_node</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">blue_uses_reconnect_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Blue re-connects all the connections to and from a node.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_reconnect_node</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">blue_uses_do_nothing</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Blue agent does nothing.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_do_nothing</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">blue_uses_deceptive_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Blue agent can place down deceptive nodes.</span>
+
+<span class="sd">        These nodes act as just another node in the network but have a</span>
+<span class="sd">        different chance of spotting attacks and always show when they</span>
+<span class="sd">        are compromised.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_deceptive_nodes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">relocating_deceptive_nodes_generates_a_new_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Relocating deceptive nodes generates a new node.</span>
+
+<span class="sd">        When the blue agent places a deceptive node and it has none left in</span>
+<span class="sd">        stock it will &quot;pick up&quot; the first deceptive node that it used and</span>
+<span class="sd">        &quot;relocate it&quot; When relocating a node will the stats for the node (</span>
+<span class="sd">        such as the vulnerability and compromised status) be re-generated as</span>
+<span class="sd">        if adding a new node or will they carry over from the &quot;old&quot; node.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_relocating_deceptive_nodes_generates_a_new_node</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Setters</span>
+    <span class="nd">@max_number_deceptive_nodes</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">max_number_deceptive_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_number_deceptive_nodes</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@can_discover_failed_attacks</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">can_discover_failed_attacks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_can_discover_failed_attacks</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@chance_to_immediately_discover_intrusion</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">chance_to_immediately_discover_intrusion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_immediately_discover_intrusion</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@chance_to_discover_intrusion_on_scan</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">chance_to_discover_intrusion_on_scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_discover_intrusion_on_scan</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@chance_to_immediately_discover_intrusion_deceptive_node</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">chance_to_immediately_discover_intrusion_deceptive_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_immediately_discover_intrusion_deceptive_node</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@chance_to_discover_intrusion_on_scan_deceptive_node</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">chance_to_discover_intrusion_on_scan_deceptive_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_discover_intrusion_on_scan_deceptive_node</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@chance_to_discover_failed_attack</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">chance_to_discover_failed_attack</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_discover_failed_attack</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@can_discover_succeeded_attacks_if_compromise_is_discovered</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">can_discover_succeeded_attacks_if_compromise_is_discovered</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_can_discover_succeeded_attacks_if_compromise_is_discovered</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@can_discover_succeeded_attacks_if_compromise_is_not_discovered</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">can_discover_succeeded_attacks_if_compromise_is_not_discovered</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_can_discover_succeeded_attacks_if_compromise_is_not_discovered</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@chance_to_discover_succeeded_attack_compromise_known</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">chance_to_discover_succeeded_attack_compromise_known</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_discover_succeeded_attack_compromise_known</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@chance_to_discover_succeeded_attack_compromise_not_known</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">chance_to_discover_succeeded_attack_compromise_not_known</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_discover_succeeded_attack_compromise_not_known</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@chance_to_discover_failed_attack_deceptive_node</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">chance_to_discover_failed_attack_deceptive_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_discover_failed_attack_deceptive_node</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@chance_to_discover_succeeded_attack_deceptive_node</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">chance_to_discover_succeeded_attack_deceptive_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chance_to_discover_succeeded_attack_deceptive_node</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@making_node_safe_modifies_vulnerability</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">making_node_safe_modifies_vulnerability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_making_node_safe_modifies_vulnerability</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@vulnerability_change_during_node_patch</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">vulnerability_change_during_node_patch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vulnerability_change_during_node_patch</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@making_node_safe_gives_random_vulnerability</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">making_node_safe_gives_random_vulnerability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_making_node_safe_gives_random_vulnerability</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@blue_uses_reduce_vulnerability</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">blue_uses_reduce_vulnerability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_reduce_vulnerability</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@blue_uses_restore_node</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">blue_uses_restore_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_restore_node</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@blue_uses_make_node_safe</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">blue_uses_make_node_safe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_make_node_safe</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@blue_uses_scan</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">blue_uses_scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_scan</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@blue_uses_isolate_node</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">blue_uses_isolate_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_isolate_node</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@blue_uses_reconnect_node</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">blue_uses_reconnect_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_reconnect_node</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@blue_uses_do_nothing</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">blue_uses_do_nothing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_do_nothing</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@blue_uses_deceptive_nodes</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">blue_uses_deceptive_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blue_uses_deceptive_nodes</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@relocating_deceptive_nodes_generates_a_new_node</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">relocating_deceptive_nodes_generates_a_new_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_relocating_deceptive_nodes_generates_a_new_node</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1"># endregion</span>
+
+<div class="viewcode-block" id="BlueAgentConfig.create"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.agents.blue_agent_config.BlueAgentConfig.html#yawning_titan.config.agents.blue_agent_config.BlueAgentConfig.create">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">BlueAgentConfig</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates an instance of `BlueAgentConfig` after calling `.validate`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            config_dict: A config dict with the required key/values pairs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">config_dict</span><span class="p">)</span>
+        <span class="n">blue_agent_config</span> <span class="o">=</span> <span class="n">BlueAgentConfig</span><span class="p">(</span>
+            <span class="n">_max_number_deceptive_nodes</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;max_number_deceptive_nodes&quot;</span><span class="p">],</span>
+            <span class="n">_can_discover_failed_attacks</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;can_discover_failed_attacks&quot;</span><span class="p">],</span>
+            <span class="n">_chance_to_immediately_discover_intrusion</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;chance_to_immediately_discover_intrusion&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_chance_to_discover_intrusion_on_scan</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;chance_to_discover_intrusion_on_scan&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_chance_to_immediately_discover_intrusion_deceptive_node</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;chance_to_immediately_discover_intrusion_deceptive_node&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_chance_to_discover_intrusion_on_scan_deceptive_node</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;chance_to_discover_intrusion_on_scan_deceptive_node&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_chance_to_discover_failed_attack</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;chance_to_discover_failed_attack&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_can_discover_succeeded_attacks_if_compromise_is_discovered</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;can_discover_succeeded_attacks_if_compromise_is_discovered&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_can_discover_succeeded_attacks_if_compromise_is_not_discovered</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;can_discover_succeeded_attacks_if_compromise_is_not_discovered&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_chance_to_discover_succeeded_attack_compromise_known</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;chance_to_discover_succeeded_attack_compromise_known&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_chance_to_discover_succeeded_attack_compromise_not_known</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;chance_to_discover_succeeded_attack_compromise_not_known&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_chance_to_discover_failed_attack_deceptive_node</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;chance_to_discover_failed_attack_deceptive_node&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_chance_to_discover_succeeded_attack_deceptive_node</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;chance_to_discover_succeeded_attack_deceptive_node&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_making_node_safe_modifies_vulnerability</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;making_node_safe_modifies_vulnerability&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_vulnerability_change_during_node_patch</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;vulnerability_change_during_node_patch&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_making_node_safe_gives_random_vulnerability</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;making_node_safe_gives_random_vulnerability&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_blue_uses_reduce_vulnerability</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;blue_uses_reduce_vulnerability&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_blue_uses_restore_node</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_restore_node&quot;</span><span class="p">],</span>
+            <span class="n">_blue_uses_make_node_safe</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_make_node_safe&quot;</span><span class="p">],</span>
+            <span class="n">_blue_uses_scan</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_scan&quot;</span><span class="p">],</span>
+            <span class="n">_blue_uses_isolate_node</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_isolate_node&quot;</span><span class="p">],</span>
+            <span class="n">_blue_uses_reconnect_node</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_reconnect_node&quot;</span><span class="p">],</span>
+            <span class="n">_blue_uses_do_nothing</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_do_nothing&quot;</span><span class="p">],</span>
+            <span class="n">_blue_uses_deceptive_nodes</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_deceptive_nodes&quot;</span><span class="p">],</span>
+            <span class="n">_relocating_deceptive_nodes_generates_a_new_node</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;relocating_deceptive_nodes_generates_a_new_node&quot;</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">blue_agent_config</span></div>
+
+<div class="viewcode-block" id="BlueAgentConfig.validate"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.agents.blue_agent_config.BlueAgentConfig.html#yawning_titan.config.agents.blue_agent_config.BlueAgentConfig.validate">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates the blue agent config dict.</span>
+
+<span class="sd">        :param: config_dict: A config dict with the required key/values pairs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># data is int or float</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="s2">&quot;chance_to_immediately_discover_intrusion&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_discover_intrusion_on_scan&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;vulnerability_change_during_node_patch&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_discover_failed_attack&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_discover_succeeded_attack_compromise_known&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_discover_succeeded_attack_compromise_not_known&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_immediately_discover_intrusion_deceptive_node&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_discover_intrusion_on_scan_deceptive_node&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_discover_failed_attack_deceptive_node&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_discover_succeeded_attack_deceptive_node&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;vulnerability_change_during_node_patch&quot;</span><span class="p">,</span>
+        <span class="p">]:</span>
+            <span class="n">check_type</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span>
+        <span class="c1"># data is int</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;max_number_deceptive_nodes&quot;</span><span class="p">]:</span>
+            <span class="n">check_type</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">])</span>
+
+        <span class="c1"># data is bool</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="s2">&quot;making_node_safe_modifies_vulnerability&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;making_node_safe_gives_random_vulnerability&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;blue_uses_reduce_vulnerability&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;blue_uses_restore_node&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;blue_uses_make_node_safe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;blue_uses_scan&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;blue_uses_isolate_node&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;blue_uses_reconnect_node&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;blue_uses_do_nothing&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;blue_uses_deceptive_nodes&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;can_discover_failed_attacks&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;can_discover_succeeded_attacks_if_compromise_is_discovered&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;can_discover_succeeded_attacks_if_compromise_is_not_discovered&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;relocating_deceptive_nodes_generates_a_new_node&quot;</span><span class="p">,</span>
+        <span class="p">]:</span>
+            <span class="n">check_type</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="nb">bool</span><span class="p">])</span>
+
+        <span class="c1"># data is between 0 and 1 inclusive</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="s2">&quot;chance_to_immediately_discover_intrusion&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_immediately_discover_intrusion_deceptive_node&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_discover_intrusion_on_scan_deceptive_node&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_discover_intrusion_on_scan&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_discover_failed_attack&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_discover_succeeded_attack_compromise_known&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_discover_succeeded_attack_compromise_not_known&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_discover_failed_attack_deceptive_node&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;chance_to_discover_succeeded_attack_deceptive_node&quot;</span><span class="p">,</span>
+        <span class="p">]:</span>
+            <span class="n">check_within_range</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">check_within_range</span><span class="p">(</span>
+            <span class="n">config_dict</span><span class="p">,</span> <span class="s2">&quot;vulnerability_change_during_node_patch&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="c1"># misc</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_reduce_vulnerability&quot;</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_restore_node&quot;</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_make_node_safe&quot;</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_scan&quot;</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_isolate_node&quot;</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_reconnect_node&quot;</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_do_nothing&quot;</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_deceptive_nodes&quot;</span><span class="p">])</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;blue_uses_****&#39; -&gt; Blue must have at least one action selected. If &quot;</span>
+                <span class="s2">&quot;you want blue to do nothing set &#39;blue_uses_do_nothing&#39; to True.&quot;</span>
+                <span class="c1"># noqa</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_isolate_node&quot;</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_reconnect_node&quot;</span><span class="p">])</span>
+        <span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="p">(</span><span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_isolate_node&quot;</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_reconnect_node&quot;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;blue_uses_isolate_node&#39;, &#39;blue_uses_reconnect_node&#39; -&gt; Blue should &quot;</span>
+                <span class="s2">&quot;be able to reconnect or isolate nodes if the other is true.&quot;</span>
+                <span class="c1"># noqa</span>
+            <span class="p">)</span>
+
+        <span class="n">check_within_range</span><span class="p">(</span>
+            <span class="n">config_dict</span><span class="p">,</span> <span class="s2">&quot;max_number_deceptive_nodes&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_deceptive_nodes&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="mi">0</span> <span class="o">==</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;max_number_deceptive_nodes&quot;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;blue_uses_deceptive_nodes&#39;, &#39;max_number_deceptive_nodes&#39; -&gt; If blue &quot;</span>
+                <span class="s2">&quot;can use deceptive nodes then max_number_deceptive_nodes.&quot;</span>
+                <span class="c1"># noqa</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;blue_uses_scan&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_immediately_discover_intrusion&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;blue_uses_scan&#39;, &#39;chance_to_immediately_discover_intrusion&#39; -&gt; &quot;</span>
+                    <span class="s2">&quot;The scan action is selected yet blue has 100</span><span class="si">% c</span><span class="s2">hance to spot &quot;</span>
+                    <span class="s2">&quot;detections. There is no need for the blue to have the scan &quot;</span>
+                    <span class="s2">&quot;action in this case &quot;</span>
+                    <span class="c1"># noqa</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_immediately_discover_intrusion&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;blue_uses_scan&#39;, &#39;chance_to_immediately_discover_intrusion&#39; -&gt; &quot;</span>
+                    <span class="s2">&quot;If the blue agent cannot scan nodes then it should be able to &quot;</span>
+                    <span class="s2">&quot;automtically detect the intrusions &quot;</span>
+                    <span class="c1"># noqa</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_discover_intrusion_on_scan_deceptive_node&quot;</span><span class="p">]</span>
+            <span class="o">&lt;=</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_discover_intrusion_on_scan&quot;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_discover_intrusion_on_scan_deceptive_node&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;chance_to_discover_intrusion_on_scan_deceptive_node&#39;, &quot;</span>
+                    <span class="s2">&quot;&#39;chance_to_discover_intrusion_on_scan&#39; -&gt; The deceptive nodes &quot;</span>
+                    <span class="s2">&quot;should have a higher chance at detecting intrusions that the &quot;</span>
+                    <span class="s2">&quot;regular nodes &quot;</span>
+                    <span class="c1"># noqa</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_discover_failed_attack_deceptive_node&quot;</span><span class="p">]</span>
+            <span class="o">&lt;=</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_discover_failed_attack&quot;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_discover_failed_attack_deceptive_node&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;chance_to_discover_failed_attack_deceptive_node&#39;, &quot;</span>
+                    <span class="s2">&quot;&#39;chance_to_discover_failed_attack&#39; -&gt; The deceptive nodes should &quot;</span>
+                    <span class="s2">&quot;have a higher chance at detecting intrusions that the regular &quot;</span>
+                    <span class="s2">&quot;nodes &quot;</span>
+                    <span class="c1"># noqa</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_discover_succeeded_attack_deceptive_node&quot;</span><span class="p">]</span>
+            <span class="o">&lt;=</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_discover_succeeded_attack_compromise_known&quot;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_discover_succeeded_attack_deceptive_node&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;chance_to_discover_succeeded_attack_deceptive_node&#39;, &quot;</span>
+                    <span class="s2">&quot;&#39;chance_to_discover_succeeded_attack_compromise_known&#39; -&gt; The &quot;</span>
+                    <span class="s2">&quot;deceptive nodes should have a higher chance at detecting &quot;</span>
+                    <span class="s2">&quot;intrusions that the regular nodes &quot;</span>
+                    <span class="c1"># noqa</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_discover_succeeded_attack_deceptive_node&quot;</span><span class="p">]</span>
+            <span class="o">&lt;=</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_discover_succeeded_attack_compromise_not_known&quot;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_discover_succeeded_attack_deceptive_node&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;chance_to_discover_succeeded_attack_deceptive_node&#39;, &quot;</span>
+                    <span class="s2">&quot;&#39;chance_to_discover_succeeded_attack_compromise_not_known&#39; -&gt; &quot;</span>
+                    <span class="s2">&quot;The deceptive nodes should have a higher chance at detecting &quot;</span>
+                    <span class="s2">&quot;intrusions that the regular nodes &quot;</span>
+                    <span class="c1"># noqa</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;making_node_safe_gives_random_vulnerability&quot;</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;making_node_safe_modifies_vulnerability&quot;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;making_node_safe_gives_random_vulnerability&#39;, &quot;</span>
+                <span class="s2">&quot;&#39;making_node_safe_modifies_vulnerability&#39; -&gt; Does not make sense to &quot;</span>
+                <span class="s2">&quot;give a node a random vulnerability and to increase its vulnerability &quot;</span>
+                <span class="s2">&quot;when a node is made safe &quot;</span>
+                <span class="c1"># noqa</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_immediately_discover_intrusion_deceptive_node&quot;</span><span class="p">]</span>
+            <span class="o">&lt;=</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_immediately_discover_intrusion&quot;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;chance_to_immediately_discover_intrusion_deceptive_node&quot;</span><span class="p">]</span>
+                <span class="o">!=</span> <span class="mi">1</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;chance_to_immediately_discover_intrusion_deceptive_node&#39;, &quot;</span>
+                    <span class="s2">&quot;&#39;chance_to_immediately_discover_intrusion&#39; -&gt; The deceptive &quot;</span>
+                    <span class="s2">&quot;nodes should have a higher chance at detecting intrusions that &quot;</span>
+                    <span class="s2">&quot;the regular nodes &quot;</span>
+                    <span class="c1"># noqa</span>
+                <span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

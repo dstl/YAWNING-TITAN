@@ -1,0 +1,6 @@
+tests.unit\_tests.network.test\_network.test\_config\_properties
+================================================================
+
+.. currentmodule:: tests.unit_tests.network.test_network
+
+.. autofunction:: test_config_properties

@@ -1,0 +1,6 @@
+tests.unit\_tests.game\_modes.environment.test\_reset\_config.default\_reset
+============================================================================
+
+.. currentmodule:: tests.unit_tests.game_modes.environment.test_reset_config
+
+.. autofunction:: default_reset

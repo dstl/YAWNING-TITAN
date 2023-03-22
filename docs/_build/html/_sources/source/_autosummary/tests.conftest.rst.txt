@@ -1,0 +1,58 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.conftest
+==============
+
+.. automodule:: tests.conftest
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      basic_2_agent_loop
+      corporate_network
+      create_yawning_titan_run
+      default_game_mode
+      default_network
+      game_mode_db
+      game_mode_manager
+      legacy_default_game_mode_dict
+      multi_tier_test_group
+      network_db
+      network_manager
+      not_raises
+      temp_networks
+      test_group
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      Group
+      GroupTier1
+      GroupTier2
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.config.environment.game_rules_config &mdash; YAWNING TITAN 1.0.1 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/game_mode_config_explained.html">The Game Mode Config UML Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/network_config_explained.html">The Network Config UML Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/license.html">MIT License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.config.environment.game_rules_config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for yawning_titan.config.environment.game_rules_config</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan.config.game_config.config_abc</span> <span class="kn">import</span> <span class="n">ConfigABC</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.helpers.environment_input_validation</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">check_type</span><span class="p">,</span>
+    <span class="n">check_within_range</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="GameRulesConfig"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.environment.game_rules_config.GameRulesConfig.html#yawning_titan.config.environment.game_rules_config.GameRulesConfig">[docs]</a><span class="nd">@dataclass</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">GameRulesConfig</span><span class="p">(</span><span class="n">ConfigABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class that validates and stores Game Rules Configuration.&quot;&quot;&quot;</span>
+
+    <span class="n">_min_number_of_network_nodes</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">_node_vulnerability_lower_bound</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">_node_vulnerability_upper_bound</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">_max_steps</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">_lose_when_all_nodes_lost</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_lose_when_n_percent_of_nodes_lost</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_percentage_of_nodes_compromised_equals_loss</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">_lose_when_high_value_node_lost</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_lose_when_target_node_lost</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_number_of_high_value_nodes</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">_choose_high_value_nodes_placement_at_random</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_choose_high_value_nodes_furthest_away_from_entry</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_choose_entry_nodes_randomly</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_number_of_entry_nodes</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">_prefer_central_nodes_for_entry_nodes</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_prefer_edge_nodes_for_entry_nodes</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">_grace_period_length</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="c1"># region Getters</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">min_number_of_network_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Minimum number of nodes the network this game mode is allowed to run on.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min_number_of_network_nodes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">node_vulnerability_lower_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A lower vulnerability means that a node is less likely to be compromised.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_node_vulnerability_lower_bound</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">node_vulnerability_upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A higher vulnerability means that a node is more vulnerable.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_node_vulnerability_upper_bound</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">max_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The max steps that a game can go on for. If the blue agent reaches this they win.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max_steps</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lose_when_all_nodes_lost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The blue agent loses if all the nodes become compromised.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lose_when_all_nodes_lost</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lose_when_n_percent_of_nodes_lost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The blue agent loses if n% of the nodes become compromised.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lose_when_n_percent_of_nodes_lost</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">percentage_of_nodes_compromised_equals_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The percentage of nodes that need to be lost for blue to lose.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_percentage_of_nodes_compromised_equals_loss</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lose_when_high_value_node_lost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Blue loses if a special &#39;high value&#39; target is lost (a node picked in the environment).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lose_when_high_value_node_lost</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lose_when_target_node_lost</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Blue loses if the target node is lost (a node picked in the environment).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lose_when_target_node_lost</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">number_of_high_value_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If no high value nodes are supplied, how many should be chosen.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_high_value_nodes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">choose_high_value_nodes_placement_at_random</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The high value node is picked at random.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choose_high_value_nodes_placement_at_random</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">choose_high_value_nodes_furthest_away_from_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The node the furthest away from the entry points to the network is picked as the target.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choose_high_value_nodes_furthest_away_from_entry</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">choose_entry_nodes_randomly</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If no entry nodes are supplied choose some at random.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choose_entry_nodes_randomly</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">number_of_entry_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If no entry nodes are supplied then how many should be chosen.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_entry_nodes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">prefer_central_nodes_for_entry_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If no entry nodes are supplied then what bias is applied to the  nodes when choosing random entry nodes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prefer_central_nodes_for_entry_nodes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">prefer_edge_nodes_for_entry_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If no entry nodes are supplied then what bias is applied to the nodes when choosing random entry nodes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prefer_edge_nodes_for_entry_nodes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">grace_period_length</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The length of a grace period at the start of the game.</span>
+
+<span class="sd">        During this time the red agent cannot act. This gives the blue agent a chance to &quot;prepare&quot; (A length of 0</span>
+<span class="sd">        means that there is no grace period).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grace_period_length</span>
+
+    <span class="c1"># endregion</span>
+
+    <span class="c1"># region Setters</span>
+    <span class="nd">@min_number_of_network_nodes</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">min_number_of_network_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min_number_of_network_nodes</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@node_vulnerability_lower_bound</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">node_vulnerability_lower_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_node_vulnerability_lower_bound</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@node_vulnerability_upper_bound</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">node_vulnerability_upper_bound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_node_vulnerability_upper_bound</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@max_steps</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">max_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_steps</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@lose_when_all_nodes_lost</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">lose_when_all_nodes_lost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lose_when_all_nodes_lost</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@lose_when_n_percent_of_nodes_lost</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">lose_when_n_percent_of_nodes_lost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lose_when_n_percent_of_nodes_lost</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@percentage_of_nodes_compromised_equals_loss</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">percentage_of_nodes_compromised_equals_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_percentage_of_nodes_compromised_equals_loss</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@lose_when_high_value_node_lost</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">lose_when_high_value_node_lost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lose_when_high_value_node_lost</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@lose_when_target_node_lost</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">lose_when_target_node_lost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lose_when_target_node_lost</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@number_of_high_value_nodes</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">number_of_high_value_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_high_value_nodes</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@choose_high_value_nodes_placement_at_random</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">choose_high_value_nodes_placement_at_random</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_choose_high_value_nodes_placement_at_random</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@choose_high_value_nodes_furthest_away_from_entry</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">choose_high_value_nodes_furthest_away_from_entry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_choose_high_value_nodes_furthest_away_from_entry</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@choose_entry_nodes_randomly</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">choose_entry_nodes_randomly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_choose_entry_nodes_randomly</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@number_of_entry_nodes</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">number_of_entry_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_entry_nodes</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@prefer_central_nodes_for_entry_nodes</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">prefer_central_nodes_for_entry_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prefer_central_nodes_for_entry_nodes</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@prefer_edge_nodes_for_entry_nodes</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">prefer_edge_nodes_for_entry_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prefer_edge_nodes_for_entry_nodes</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@grace_period_length</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">grace_period_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grace_period_length</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1"># endregion</span>
+
+<div class="viewcode-block" id="GameRulesConfig.create"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.environment.game_rules_config.GameRulesConfig.html#yawning_titan.config.environment.game_rules_config.GameRulesConfig.create">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">GameRulesConfig</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates an instance of `GameRulesConfig` after calling `.validate`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            config_dict: A config dict with the required key/values pairs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">config_dict</span><span class="p">)</span>
+
+        <span class="n">game_rule_config</span> <span class="o">=</span> <span class="n">GameRulesConfig</span><span class="p">(</span>
+            <span class="n">_min_number_of_network_nodes</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;min_number_of_network_nodes&quot;</span><span class="p">],</span>
+            <span class="n">_node_vulnerability_lower_bound</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;node_vulnerability_lower_bound&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_node_vulnerability_upper_bound</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;node_vulnerability_upper_bound&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_max_steps</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;max_steps&quot;</span><span class="p">],</span>
+            <span class="n">_lose_when_all_nodes_lost</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;lose_when_all_nodes_lost&quot;</span><span class="p">],</span>
+            <span class="n">_lose_when_n_percent_of_nodes_lost</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;lose_when_n_percent_of_nodes_lost&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_percentage_of_nodes_compromised_equals_loss</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;percentage_of_nodes_compromised_equals_loss&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_lose_when_high_value_node_lost</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;lose_when_high_value_node_lost&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_lose_when_target_node_lost</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;lose_when_target_node_lost&quot;</span><span class="p">],</span>
+            <span class="n">_number_of_high_value_nodes</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;number_of_high_value_nodes&quot;</span><span class="p">],</span>
+            <span class="n">_choose_high_value_nodes_placement_at_random</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;choose_high_value_nodes_placement_at_random&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_choose_high_value_nodes_furthest_away_from_entry</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;choose_high_value_nodes_furthest_away_from_entry&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_choose_entry_nodes_randomly</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;choose_entry_nodes_randomly&quot;</span><span class="p">],</span>
+            <span class="n">_number_of_entry_nodes</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;number_of_entry_nodes&quot;</span><span class="p">],</span>
+            <span class="n">_prefer_central_nodes_for_entry_nodes</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;prefer_central_nodes_for_entry_nodes&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_prefer_edge_nodes_for_entry_nodes</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span>
+                <span class="s2">&quot;prefer_edge_nodes_for_entry_nodes&quot;</span>
+            <span class="p">],</span>
+            <span class="n">_grace_period_length</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;grace_period_length&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">game_rule_config</span></div>
+
+<div class="viewcode-block" id="GameRulesConfig.validate"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.environment.game_rules_config.GameRulesConfig.html#yawning_titan.config.environment.game_rules_config.GameRulesConfig.validate">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">config_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validates the game rules config dict.</span>
+
+<span class="sd">        :param: config_dict: A config dict with the required key/values pairs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># data is int or float</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="s2">&quot;node_vulnerability_lower_bound&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;node_vulnerability_upper_bound&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;percentage_of_nodes_compromised_equals_loss&quot;</span><span class="p">,</span>
+        <span class="p">]:</span>
+            <span class="n">check_type</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span>
+        <span class="c1"># data s between 0 and 1 inclusive</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="s2">&quot;node_vulnerability_lower_bound&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;node_vulnerability_upper_bound&quot;</span><span class="p">,</span>
+        <span class="p">]:</span>
+            <span class="n">check_within_range</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;node_vulnerability_lower_bound&quot;</span><span class="p">]</span>
+            <span class="o">&gt;</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;node_vulnerability_upper_bound&quot;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;node_vulnerability_lower_bound&#39;, &#39;node_vulnerability_upper_bound&#39; -&gt; The lower bound for the node &quot;</span>
+                <span class="s2">&quot;vulnerabilities should be less than the upper bound &quot;</span>
+            <span class="p">)</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="s2">&quot;max_steps&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">])</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="s2">&quot;number_of_entry_nodes&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">])</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="s2">&quot;grace_period_length&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">])</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="s2">&quot;min_number_of_network_nodes&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">])</span>
+        <span class="n">check_type</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="s2">&quot;number_of_high_value_nodes&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">])</span>
+        <span class="c1"># make sure high value nodes is not more than the number of minimum number of nodes in network</span>
+        <span class="n">check_within_range</span><span class="p">(</span>
+            <span class="n">config_dict</span><span class="p">,</span>
+            <span class="s2">&quot;number_of_high_value_nodes&quot;</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;min_number_of_network_nodes&quot;</span><span class="p">],</span>
+            <span class="kc">True</span><span class="p">,</span>
+            <span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">check_within_range</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="s2">&quot;grace_period_length&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">check_within_range</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="s2">&quot;max_steps&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10000000</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># make sure entry nodes is not more than the number of minimum number of nodes in network</span>
+        <span class="n">check_within_range</span><span class="p">(</span>
+            <span class="n">config_dict</span><span class="p">,</span>
+            <span class="s2">&quot;number_of_entry_nodes&quot;</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;min_number_of_network_nodes&quot;</span><span class="p">],</span>
+            <span class="kc">False</span><span class="p">,</span>
+            <span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># data is boolean</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="s2">&quot;lose_when_all_nodes_lost&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lose_when_n_percent_of_nodes_lost&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lose_when_high_value_node_lost&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;lose_when_target_node_lost&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;choose_high_value_nodes_placement_at_random&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;choose_high_value_nodes_furthest_away_from_entry&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;choose_entry_nodes_randomly&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;prefer_central_nodes_for_entry_nodes&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;prefer_edge_nodes_for_entry_nodes&quot;</span><span class="p">,</span>
+        <span class="p">]:</span>
+            <span class="n">check_type</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="p">[</span><span class="nb">bool</span><span class="p">])</span>
+
+        <span class="n">check_within_range</span><span class="p">(</span>
+            <span class="n">config_dict</span><span class="p">,</span>
+            <span class="s2">&quot;percentage_of_nodes_compromised_equals_loss&quot;</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">,</span>
+            <span class="kc">False</span><span class="p">,</span>
+            <span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;prefer_central_nodes_for_entry_nodes&quot;</span><span class="p">]</span>
+            <span class="ow">and</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;prefer_edge_nodes_for_entry_nodes&quot;</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;prefer_central_nodes_for_entry_nodes&#39;, &#39;prefer_edge_nodes_for_entry_nodes&#39; -&gt; cannot prefer both &quot;</span>
+                <span class="s2">&quot;central and edge nodes &quot;</span>
+                <span class="c1"># noqa</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="p">(</span><span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;lose_when_all_nodes_lost&quot;</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;lose_when_n_percent_of_nodes_lost&quot;</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;lose_when_high_value_node_lost&quot;</span><span class="p">])</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;lose_when_target_node_lost&quot;</span><span class="p">])</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;lose_when_target_node_lost&#39;, &#39;lose_when_all_nodes_lost&#39;, &#39;lose_when_n_percent_of_nodes_lost&#39;, &quot;</span>
+                <span class="s2">&quot;&#39;lose_when_high_value_node_lost&#39; -&gt; At least one loose condition must be turned on &quot;</span>
+                <span class="c1"># noqa</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;lose_when_high_value_node_lost&quot;</span><span class="p">]:</span>
+            <span class="c1"># if there is no way to set high value nodes</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;choose_high_value_nodes_placement_at_random&quot;</span><span class="p">]</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;choose_high_value_nodes_furthest_away_from_entry&quot;</span><span class="p">]</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;choose_high_value_nodes_placement_at_random&#39;, &quot;</span>
+                    <span class="s2">&quot;&#39;choose_high_value_nodes_furthest_away_from_entry&#39; -&gt; A method of selecting a high value node &quot;</span>
+                    <span class="s2">&quot;must be chosen &quot;</span>
+                    <span class="c1"># noqa</span>
+                <span class="p">)</span>
+            <span class="c1"># if there are conflicting configurations</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;choose_high_value_nodes_placement_at_random&quot;</span><span class="p">]</span>
+                <span class="ow">and</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;choose_high_value_nodes_furthest_away_from_entry&quot;</span><span class="p">]</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;&#39;choose_high_value_nodes_placement_at_random&#39;, &quot;</span>
+                    <span class="s2">&quot;&#39;choose_high_value_nodes_furthest_away_from_entry&#39; -&gt; Only one method of selecting a high value &quot;</span>
+                    <span class="s2">&quot;node should be selected &quot;</span>
+                    <span class="c1"># noqa</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;grace_period_length&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;max_steps&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;&#39;grace_period_length&#39;, &#39;max_steps&#39; -&gt; The grace period cannot be the entire length of the game&quot;</span>
+            <span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

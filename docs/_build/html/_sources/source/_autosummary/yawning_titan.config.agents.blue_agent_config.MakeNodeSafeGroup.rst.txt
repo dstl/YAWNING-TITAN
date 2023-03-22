@@ -1,0 +1,37 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.agents.blue\_agent\_config.MakeNodeSafeGroup
+==================================================================
+
+.. currentmodule:: yawning_titan.config.agents.blue_agent_config
+
+.. autoclass:: MakeNodeSafeGroup
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MakeNodeSafeGroup.get_config_elements
+      ~MakeNodeSafeGroup.get_non_config_elements
+      ~MakeNodeSafeGroup.set_from_dict
+      ~MakeNodeSafeGroup.set_from_yaml
+      ~MakeNodeSafeGroup.stringify
+      ~MakeNodeSafeGroup.to_dict
+      ~MakeNodeSafeGroup.to_legacy_dict
+      ~MakeNodeSafeGroup.to_yaml
+      ~MakeNodeSafeGroup.validate
+      ~MakeNodeSafeGroup.validate_elements
+   
+   
+
+   
+   
+   
