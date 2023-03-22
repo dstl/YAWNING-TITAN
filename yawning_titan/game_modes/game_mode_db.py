@@ -173,6 +173,7 @@ class GameModeDB:
         doc = self._db.get(uuid)
         if doc:
             return self._doc_to_game_mode(doc)
+        return None
 
     def search(self, query: YawningTitanQuery) -> List[GameMode]:
         """
@@ -282,7 +283,7 @@ class GameModeDB:
         """
         return self._db.remove_by_cond(cond)
 
-    def reset_default_game_modes_in_db(self):
+    def reset_default_game_modes_in_db(self, force=False):
         """
         Reset the default game_mode in the db.
 
@@ -290,6 +291,9 @@ class GameModeDB:
         `yawning_titan/game_modes/_package_data/game_mode.json` db file into TinyDB,
         then iterating over all docs and forcing an update of each one in the main
         game_modes db from its uuid if they do not match.
+
+        :param force: Forces a reset without checking for equality when
+            True. Has a default value of False.
         """
         # Obtain the path to the default db file in package data
         self._db.db.clear_cache()
@@ -308,17 +312,15 @@ class GameModeDB:
             name = game_mode["_doc_metadata"]["name"]
 
             # Get the matching game_mode from the game_modes db
-            db_game_mode = self.get(uuid)
+            try:
+                db_game_mode = self.get(uuid)
+            except KeyError:
+                db_game_mode = None
 
             # If the game_mode doesn't match the default, or it doesn't exist,
             # perform an upsert.
-            if db_game_mode:
-                reset = (
-                    db_game_mode.to_dict(
-                        json_serializable=True, include_none=True, values_only=True
-                    )
-                    != game_mode
-                )
+            if not force and db_game_mode:
+                reset = False
             else:
                 reset = True
             if reset:

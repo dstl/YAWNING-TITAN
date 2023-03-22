@@ -94,6 +94,13 @@ def test_to_dict(test_group: Group):
 
 
 @pytest.mark.unit_test
+def test_set_config_item_to_value(test_group: Group):
+    """Test the to_dict method produces a dictionary with the values as set."""
+    test_group.a = "test"
+    assert test_group.a.value == "test"
+
+
+@pytest.mark.unit_test
 def test_create_from_legacy(test_group: Group):
     """Test the group can be created using legacy config names."""
     d1 = {"legacy_a": True, "legacy_b": 2, "legacy_c": "set"}

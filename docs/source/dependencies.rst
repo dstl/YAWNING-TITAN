@@ -5,7 +5,15 @@ Dependencies
 ===========
 
 ***************
-YAWNING TITAN
+Yawning-Titan
 ***************
 
 .. include:: yt-dependencies.rst
+
+***************
+Network Editor
+***************
+
+.. csv-table::
+   :align: center
+   :file: network-editor-dependencies.csv
