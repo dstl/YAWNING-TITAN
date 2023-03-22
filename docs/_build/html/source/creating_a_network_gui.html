@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create a Network &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Create a Network</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="create-a-network">
+<h1>Create a Network<a class="headerlink" href="#create-a-network" title="Permalink to this heading"></a></h1>
+<section id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this heading"></a></h2>
+<p>To get started, Navigate to the network manager page from the sidebar or main menu</p>
+<a class="reference internal image-reference" href="../_images/create_template_network.gif"><img alt="create alternative network" src="../_images/create_template_network.gif" style="width: 800px;" /></a>
+</section>
+<section id="network-instantiation">
+<h2>Network Instantiation<a class="headerlink" href="#network-instantiation" title="Permalink to this heading"></a></h2>
+<p>Networks are created from the network manager page. Networks can either be created from a template or from scratch using
+the cytoscape network editor.</p>
+<section id="template">
+<h3>Template<a class="headerlink" href="#template" title="Permalink to this heading"></a></h3>
+<p>Template networks are created by choosing a named layout representing a certain
+network topology and a series of configurable parameters dependent on that topology.</p>
+<p>Launch the <em>Template network creator</em> by clicking the <em>Template network</em> button on the <em>Network management</em> page.</p>
+</section>
+<section id="node-editor">
+<h3>Node editor<a class="headerlink" href="#node-editor" title="Permalink to this heading"></a></h3>
+<p>Networks can be created from scratch in the network editor by manually adding nodes and edges.
+When the network is updated the changes will automatically be saved to the network in the database.</p>
+<p>Launch the <em>Node editor</em> by clicking the <em>Custom network</em> button on the <em>Network management</em> page.</p>
+<section id="menus">
+<h4>Menus<a class="headerlink" href="#menus" title="Permalink to this heading"></a></h4>
+<section id="node-colour-key">
+<h5>Node colour key<a class="headerlink" href="#node-colour-key" title="Permalink to this heading"></a></h5>
+<p>This dropdown menu contains a key indicating the meaning of each of the colours that a node can appear within the network</p>
+</section>
+<section id="network-toolbars">
+<h5>Network toolbars<a class="headerlink" href="#network-toolbars" title="Permalink to this heading"></a></h5>
+<p>This dropdown menu allows for the selection of the menu which will display on the left side of the window.
+Either the <em>Node list</em> or <em>Network randomisation</em> options can be chosen</p>
+</section>
+</section>
+<section id="node-instantiation">
+<h4>Node Instantiation<a class="headerlink" href="#node-instantiation" title="Permalink to this heading"></a></h4>
+<p>To add an node you must double click a the point you wish for the node to spawn.</p>
+</section>
+<section id="adding-edges-between-nodes">
+<h4>Adding Edges Between Nodes<a class="headerlink" href="#adding-edges-between-nodes" title="Permalink to this heading"></a></h4>
+<p>To add an edge you must click on a node then subsequently click on a different node to join the two with an edge.</p>
+</section>
+<section id="setting-entry-nodes">
+<h4>Setting Entry Nodes<a class="headerlink" href="#setting-entry-nodes" title="Permalink to this heading"></a></h4>
+<section id="manually">
+<h5>Manually<a class="headerlink" href="#manually" title="Permalink to this heading"></a></h5>
+<p>By selecting a node the attributes menu will open to the right of the window;
+here the entry node status of the node can be toggled</p>
+</section>
+<section id="randomly">
+<h5>Randomly<a class="headerlink" href="#randomly" title="Permalink to this heading"></a></h5>
+<p>Entry nodes can be set randomly by opening the <em>Network randomisation</em> menu and toggling on <em>set random entry nodes</em>.
+From here the location preference of the random entry nodes can also be selected</p>
+</section>
+</section>
+<section id="setting-high-value-nodes">
+<h4>Setting High Value Nodes<a class="headerlink" href="#setting-high-value-nodes" title="Permalink to this heading"></a></h4>
+<section id="id1">
+<h5>Manually<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h5>
+<p>By selecting a node the attributes menu will open to the right of the window;
+here the high value node status of the node can be toggled</p>
+</section>
+<section id="id2">
+<h5>Randomly<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h5>
+<p>High value nodes can be set randomly by opening the <em>Network randomisation</em> menu and toggling on <em>set random high value nodes</em>.
+From here the location preference of the random entry nodes can also be selected</p>
+</section>
+</section>
+<section id="setting-node-vulnerability">
+<h4>Setting Node Vulnerability<a class="headerlink" href="#setting-node-vulnerability" title="Permalink to this heading"></a></h4>
+<section id="id3">
+<h5>Manually<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h5>
+<p>By selecting a node the attributes menu will open to the right of the window;
+here vulnerability of the node can be set using a slider</p>
+</section>
+<section id="id4">
+<h5>Randomly<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h5>
+<p>Vulnerability can be set randomly by opening the <em>Network randomisation</em> menu and toggling on <em>set random vulnerability</em>.
+From here the range of random values that the node vulnerability can take must be set</p>
+</section>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

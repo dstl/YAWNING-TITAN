@@ -1,0 +1,6 @@
+tests.conftest.create\_test\_network
+====================================
+
+.. currentmodule:: tests.conftest
+
+.. autofunction:: create_test_network

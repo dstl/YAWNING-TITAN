@@ -1,0 +1,6 @@
+tests.generic\_environment.test\_new\_entry\_nodes.test\_new\_entry\_nodes
+==========================================================================
+
+.. currentmodule:: tests.generic_environment.test_new_entry_nodes
+
+.. autofunction:: test_new_entry_nodes

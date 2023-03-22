@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.integration_tests.gui.test_game_mode_config_view &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tests.integration_tests.gui.test_game_mode_config_view</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for tests.integration_tests.gui.test_game_mode_config_view</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
+
+<span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">reverse</span>
+
+<span class="kn">from</span> <span class="nn">tests.yawning_titan_db_patch</span> <span class="kn">import</span> <span class="n">yawning_titan_db_init_patch</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.db.doc_metadata</span> <span class="kn">import</span> <span class="n">DocMetadata</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.db.yawning_titan_db</span> <span class="kn">import</span> <span class="n">YawningTitanDB</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.game_modes.game_mode_db</span> <span class="kn">import</span> <span class="n">GameModeDB</span><span class="p">,</span> <span class="n">default_game_mode</span>
+<span class="kn">from</span> <span class="nn">yawning_titan_gui.forms.game_mode_forms</span> <span class="kn">import</span> <span class="n">GameModeFormManager</span>
+<span class="kn">from</span> <span class="nn">yawning_titan_gui.helpers</span> <span class="kn">import</span> <span class="n">GameModeManager</span>
+
+
+<div class="viewcode-block" id="TestGameModeConfigView"><a class="viewcode-back" href="../../../../source/_autosummary/tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.html#tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView">[docs]</a><span class="k">class</span> <span class="nc">TestGameModeConfigView</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Test processes executed through requests to the &#39;game mode config&#39; and &#39;update config&#39; endpoints.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TestGameModeConfigView.setup_class"><a class="viewcode-back" href="../../../../source/_autosummary/tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.html#tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.setup_class">[docs]</a>    <span class="k">def</span> <span class="nf">setup_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Setup the components required to test the management of yawning titan networks.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+            <span class="n">GameModeManager</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">GameModeDB</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_game_mode_id</span> <span class="o">=</span> <span class="n">default_game_mode</span><span class="p">()</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">uuid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span>
+            <span class="s2">&quot;game mode config&quot;</span><span class="p">,</span>
+            <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;game_mode_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_game_mode_id</span><span class="p">,</span>
+                <span class="s2">&quot;section_name&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;update config&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestGameModeConfigView.teardown_class"><a class="viewcode-back" href="../../../../source/_autosummary/tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.html#tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.teardown_class">[docs]</a>    <span class="k">def</span> <span class="nf">teardown_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reset the components required to test the management of yawning titan networks.&quot;&quot;&quot;</span>
+        <span class="n">GameModeManager</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TestGameModeConfigView.create_temp_game_modes"><a class="viewcode-back" href="../../../../source/_autosummary/tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.html#tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.create_temp_game_modes">[docs]</a>    <span class="k">def</span> <span class="nf">create_temp_game_modes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_game_mode_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Create a number of temporary networks as copies of an existing network.</span>
+
+<span class="sd">        :param source_network: The network id to copy</span>
+<span class="sd">        :param n: The number of networks to create</span>
+
+<span class="sd">        :return: a list of created network Ids.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">game_mode</span> <span class="o">=</span> <span class="n">GameModeManager</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">source_game_mode_id</span><span class="p">)</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="n">game_mode</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;locked&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">game_mode</span><span class="o">.</span><span class="n">_doc_metadata</span> <span class="o">=</span> <span class="n">DocMetadata</span><span class="p">(</span><span class="o">**</span><span class="n">meta</span><span class="p">)</span>
+            <span class="n">GameModeManager</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">game_mode</span><span class="o">=</span><span class="n">game_mode</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;temp&quot;</span><span class="p">)</span>
+            <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">game_mode</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ids</span></div>
+
+<div class="viewcode-block" id="TestGameModeConfigView.test_get_with_no_args"><a class="viewcode-back" href="../../../../source/_autosummary/tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.html#tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.test_get_with_no_args">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_with_no_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">Client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that a game mode config cannot be retrieved without a _game_mode_id.&quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;game mode config&quot;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span></div>
+
+<div class="viewcode-block" id="TestGameModeConfigView.test_get"><a class="viewcode-back" href="../../../../source/_autosummary/tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.html#tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.test_get">[docs]</a>    <span class="k">def</span> <span class="nf">test_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">Client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that a valid game mode config url responds successfully to a get request.&quot;&quot;&quot;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+        <span class="k">assert</span> <span class="s2">&quot;game_mode_config.html&quot;</span> <span class="ow">in</span> <span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">templates</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">default_game_mode</span><span class="p">()</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">uuid</span> <span class="ow">in</span> <span class="n">GameModeFormManager</span><span class="o">.</span><span class="n">game_mode_forms</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestGameModeConfigView.test_finish"><a class="viewcode-back" href="../../../../source/_autosummary/tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.html#tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.test_finish">[docs]</a>    <span class="k">def</span> <span class="nf">test_finish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">Client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that when the last game mode section is updated the return is a redirect to the game mode manager.&quot;&quot;&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">reverse</span><span class="p">(</span>
+            <span class="s2">&quot;game mode config&quot;</span><span class="p">,</span>
+            <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;game_mode_id&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_game_mode_id</span><span class="p">,</span>
+                <span class="s2">&quot;section_name&quot;</span><span class="p">:</span> <span class="s2">&quot;miscellaneous&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+        <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Manage game modes&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">GameModeManager</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">default_game_mode_id</span><span class="p">)</span></div>
+        <span class="c1"># TODO add check that game mode saved</span>
+
+<div class="viewcode-block" id="TestGameModeConfigView.test_next_section"><a class="viewcode-back" href="../../../../source/_autosummary/tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.html#tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.test_next_section">[docs]</a>    <span class="k">def</span> <span class="nf">test_next_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">Client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test the next section is correctly chosen when a valid config is posted to the endpoint.&quot;&quot;&quot;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">302</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;blue&quot;</span></div>
+
+<div class="viewcode-block" id="TestGameModeConfigView.test_save"><a class="viewcode-back" href="../../../../source/_autosummary/tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.html#tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.test_save">[docs]</a>    <span class="k">def</span> <span class="nf">test_save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">Client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that a save operation results in a file being created in the correct location.&quot;&quot;&quot;</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_temp_game_modes</span><span class="p">(</span><span class="n">default_game_mode</span><span class="p">()</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_url</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;_game_mode_id&quot;</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span>
+                <span class="s2">&quot;_section_name&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;_form_id&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;_operation&quot;</span><span class="p">:</span> <span class="s2">&quot;save&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span> <span class="o">==</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;saved&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">GameModeManager</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestGameModeConfigView.test_update_fail"><a class="viewcode-back" href="../../../../source/_autosummary/tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.html#tests.integration_tests.gui.test_game_mode_config_view.TestGameModeConfigView.test_update_fail">[docs]</a>    <span class="k">def</span> <span class="nf">test_update_fail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">:</span> <span class="n">Client</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Test that when a config is updates and becomes invalid that an appropriate error message is returned.&quot;&quot;&quot;</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_temp_game_modes</span><span class="p">(</span><span class="n">default_game_mode</span><span class="p">()</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_url</span><span class="p">,</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;_game_mode_id&quot;</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span>
+                <span class="s2">&quot;_section_name&quot;</span><span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;_form_id&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;_operation&quot;</span><span class="p">:</span> <span class="s2">&quot;update&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;only_main_red_node&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">&quot;any_red_node&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span> <span class="o">==</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;errors&quot;</span><span class="p">:</span> <span class="s1">&#39;{&quot;3&quot;: {&quot;group&quot;: [&quot;The red agent cannot attack from multiple sources simultaneously.&quot;], &quot;items&quot;: {&quot;only_main_red_node&quot;: [], &quot;any_red_node&quot;: []}}}&#39;</span>
+            <span class="p">}</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="s2">&quot;The red agent cannot attack from multiple sources simultaneously.&quot;</span>
+            <span class="ow">in</span> <span class="n">GameModeFormManager</span><span class="o">.</span><span class="n">game_mode_forms</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+            <span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="s2">&quot;red&quot;</span><span class="p">]</span>
+            <span class="o">.</span><span class="n">forms</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="o">.</span><span class="n">config_class</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fail_reasons</span>
+        <span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

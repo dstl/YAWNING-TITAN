@@ -1,0 +1,6 @@
+tests.unit\_tests.config.toolbox.core.test\_config\_group.test\_multi\_tier\_group\_validation\_passed
+======================================================================================================
+
+.. currentmodule:: tests.unit_tests.config.toolbox.core.test_config_group
+
+.. autofunction:: test_multi_tier_group_validation_passed

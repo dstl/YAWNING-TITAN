@@ -1,0 +1,6 @@
+tests.generic\_environment.test\_e2e.check\_blue\_add\_deceptive\_node\_action
+==============================================================================
+
+.. currentmodule:: tests.generic_environment.test_e2e
+
+.. autofunction:: check_blue_add_deceptive_node_action

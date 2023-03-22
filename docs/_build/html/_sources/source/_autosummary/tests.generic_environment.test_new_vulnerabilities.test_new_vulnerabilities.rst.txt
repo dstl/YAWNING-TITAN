@@ -1,0 +1,6 @@
+tests.generic\_environment.test\_new\_vulnerabilities.test\_new\_vulnerabilities
+================================================================================
+
+.. currentmodule:: tests.generic_environment.test_new_vulnerabilities
+
+.. autofunction:: test_new_vulnerabilities

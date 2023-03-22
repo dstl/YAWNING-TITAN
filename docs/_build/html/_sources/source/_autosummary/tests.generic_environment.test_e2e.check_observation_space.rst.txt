@@ -1,0 +1,6 @@
+tests.generic\_environment.test\_e2e.check\_observation\_space
+==============================================================
+
+.. currentmodule:: tests.generic_environment.test_e2e
+
+.. autofunction:: check_observation_space

@@ -1,0 +1,6 @@
+tests.integration\_tests.gui.test\_game\_mode\_section.test\_config\_class\_instance\_persisted
+===============================================================================================
+
+.. currentmodule:: tests.integration_tests.gui.test_game_mode_section
+
+.. autofunction:: test_config_class_instance_persisted

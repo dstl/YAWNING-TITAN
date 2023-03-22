@@ -1,0 +1,6 @@
+tests.generic\_environment.test\_e2e.open\_config\_file
+=======================================================
+
+.. currentmodule:: tests.generic_environment.test_e2e
+
+.. autofunction:: open_config_file

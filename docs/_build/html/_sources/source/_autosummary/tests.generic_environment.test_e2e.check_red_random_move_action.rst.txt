@@ -1,0 +1,6 @@
+tests.generic\_environment.test\_e2e.check\_red\_random\_move\_action
+=====================================================================
+
+.. currentmodule:: tests.generic_environment.test_e2e
+
+.. autofunction:: check_red_random_move_action

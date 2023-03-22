@@ -1,0 +1,6 @@
+tests.generic\_environment.test\_natural\_spreading.test\_natural\_spreading
+============================================================================
+
+.. currentmodule:: tests.generic_environment.test_natural_spreading
+
+.. autofunction:: test_natural_spreading

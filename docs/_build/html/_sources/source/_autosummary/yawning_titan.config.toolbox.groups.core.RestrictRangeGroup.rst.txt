@@ -1,0 +1,31 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.toolbox.groups.core.RestrictRangeGroup
+============================================================
+
+.. currentmodule:: yawning_titan.config.toolbox.groups.core
+
+.. autoclass:: RestrictRangeGroup
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~RestrictRangeGroup.get_config_elements
+      ~RestrictRangeGroup.get_non_config_elements
+      ~RestrictRangeGroup.set_from_dict
+      ~RestrictRangeGroup.set_from_yaml
+      ~RestrictRangeGroup.stringify
+      ~RestrictRangeGroup.to_dict
+      ~RestrictRangeGroup.to_legacy_dict
+      ~RestrictRangeGroup.to_yaml
+      ~RestrictRangeGroup.validate
+      ~RestrictRangeGroup.validate_elements

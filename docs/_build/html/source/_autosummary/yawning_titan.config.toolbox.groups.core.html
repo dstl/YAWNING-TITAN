@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.config.toolbox.groups.core &mdash; YAWNING TITAN 1.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.config.toolbox.groups.core.ActionLikelihoodChanceGroup" href="yawning_titan.config.toolbox.groups.core.ActionLikelihoodChanceGroup.html" />
+    <link rel="prev" title="yawning_titan.config.toolbox.groups" href="yawning_titan.config.toolbox.groups.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_mode_config_explained.html">The Game Mode Config UML Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network_config_explained.html">The Network Config UML Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="yawning_titan.config.toolbox.html">yawning_titan.config.toolbox</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.config.toolbox.core.html">yawning_titan.config.toolbox.core</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="yawning_titan.config.toolbox.groups.html">yawning_titan.config.toolbox.groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.config.toolbox.item_types.html">yawning_titan.config.toolbox.item_types</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.html">yawning_titan</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.config.html">yawning_titan.config</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.config.toolbox.html">yawning_titan.config.toolbox</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.config.toolbox.groups.html">yawning_titan.config.toolbox.groups</a></li>
+      <li class="breadcrumb-item active">yawning_titan.config.toolbox.groups.core</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="module-yawning_titan.config.toolbox.groups.core">
+<span id="yawning-titan-config-toolbox-groups-core"></span><h1>yawning_titan.config.toolbox.groups.core<a class="headerlink" href="#module-yawning_titan.config.toolbox.groups.core" title="Permalink to this heading"></a></h1>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.config.toolbox.groups.core.ActionLikelihoodChanceGroup.html#yawning_titan.config.toolbox.groups.core.ActionLikelihoodChanceGroup" title="yawning_titan.config.toolbox.groups.core.ActionLikelihoodChanceGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ActionLikelihoodChanceGroup</span></code></a></p></td>
+<td><p>Group to represent an action, likelihood, and chance common config group.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.config.toolbox.groups.core.ActionLikelihoodGroup.html#yawning_titan.config.toolbox.groups.core.ActionLikelihoodGroup" title="yawning_titan.config.toolbox.groups.core.ActionLikelihoodGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ActionLikelihoodGroup</span></code></a></p></td>
+<td><p>Group to represent an action, likelihood common config group.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.config.toolbox.groups.core.NodeChanceGroup.html#yawning_titan.config.toolbox.groups.core.NodeChanceGroup" title="yawning_titan.config.toolbox.groups.core.NodeChanceGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NodeChanceGroup</span></code></a></p></td>
+<td><p>Group to indicate chances of success for different node types.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.config.toolbox.groups.core.RestrictRangeGroup.html#yawning_titan.config.toolbox.groups.core.RestrictRangeGroup" title="yawning_titan.config.toolbox.groups.core.RestrictRangeGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RestrictRangeGroup</span></code></a></p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigGroup</span></code> to restrict the range of a given attribute to within :attribute: <cite>min</cite> and :attribute: <cite>max</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.config.toolbox.groups.core.UseChancesGroup.html#yawning_titan.config.toolbox.groups.core.UseChancesGroup" title="yawning_titan.config.toolbox.groups.core.UseChancesGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UseChancesGroup</span></code></a></p></td>
+<td><p>Group to indicate whether an element is used and its associated chance of success for different node types.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.config.toolbox.groups.core.UseValueGroup.html#yawning_titan.config.toolbox.groups.core.UseValueGroup" title="yawning_titan.config.toolbox.groups.core.UseValueGroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UseValueGroup</span></code></a></p></td>
+<td><p>Group of values that collectively describe whether an item is used and if so what value to use with.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.ActionLikelihoodGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.config.toolbox.groups.core.</span></span><span class="sig-name descname"><span class="pre">ActionLikelihoodGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#ActionLikelihoodGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.ActionLikelihoodGroup" title="Permalink to this definition"></a></dt>
+<dd><p>Group to represent an action, likelihood common config group.</p>
+<p>The <cite>ActionLikelihoodGroup</cite> constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>use</strong> – Whether to use the action or not.</p></li>
+<li><p><strong>likelihood</strong> – The likelihood of the action.</p></li>
+<li><p><strong>doc</strong> – An optional descriptor.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.ActionLikelihoodGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#ActionLikelihoodGroup.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.ActionLikelihoodGroup.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>The <cite>ActionLikelihoodGroup</cite> constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>use</strong> – Whether to use the action or not.</p></li>
+<li><p><strong>likelihood</strong> – The likelihood of the action.</p></li>
+<li><p><strong>doc</strong> – An optional descriptor.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.ActionLikelihoodGroup.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#ActionLikelihoodGroup.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.ActionLikelihoodGroup.validate" title="Permalink to this definition"></a></dt>
+<dd><p>Validate the <cite>ActionLikelihoodGroup</cite>.</p>
+<dl class="simple">
+<dt>This is done at two levels:</dt><dd><p>1. A group level validation is performed that checks if likelihood
+and chance are provided when use is True.
+2. An item level validation is performed by calling .validate on
+the use and likelihood config items.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An instance of ConfigGroupValidation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.ActionLikelihoodChanceGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.config.toolbox.groups.core.</span></span><span class="sig-name descname"><span class="pre">ActionLikelihoodChanceGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#ActionLikelihoodChanceGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.ActionLikelihoodChanceGroup" title="Permalink to this definition"></a></dt>
+<dd><p>Group to represent an action, likelihood, and chance common config group.</p>
+<p>The <cite>ActionLikelihoodChanceGroup</cite> constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>use</strong> – Whether to use the action or not.</p></li>
+<li><p><strong>likelihood</strong> – The likelihood of the action.</p></li>
+<li><p><strong>chance</strong> – The chance of the action.</p></li>
+<li><p><strong>doc</strong> – An optional descriptor.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.ActionLikelihoodChanceGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">likelihood</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#ActionLikelihoodChanceGroup.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.ActionLikelihoodChanceGroup.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>The <cite>ActionLikelihoodChanceGroup</cite> constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>use</strong> – Whether to use the action or not.</p></li>
+<li><p><strong>likelihood</strong> – The likelihood of the action.</p></li>
+<li><p><strong>chance</strong> – The chance of the action.</p></li>
+<li><p><strong>doc</strong> – An optional descriptor.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.ActionLikelihoodChanceGroup.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#ActionLikelihoodChanceGroup.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.ActionLikelihoodChanceGroup.validate" title="Permalink to this definition"></a></dt>
+<dd><p>Validate the <cite>ActionLikelihoodChanceGroup</cite>.</p>
+<dl class="simple">
+<dt>This is done at two levels:</dt><dd><p>1. A group level validation is performed that checks if likelihood
+and chance are provided when use is True.
+2. An item level validation is performed by calling .validate on
+the use, likelihood, and chance config items.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An instance of ConfigGroupValidation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.UseValueGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.config.toolbox.groups.core.</span></span><span class="sig-name descname"><span class="pre">UseValueGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#UseValueGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.UseValueGroup" title="Permalink to this definition"></a></dt>
+<dd><p>Group of values that collectively describe whether an item is used and if so what value to use with.</p>
+<p>The <cite>UseValueGroup</cite> constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>use</strong> – Whether to use the action or not.</p></li>
+<li><p><strong>value</strong> – The value of the item.</p></li>
+<li><p><strong>doc</strong> – An optional descriptor.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.UseValueGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#UseValueGroup.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.UseValueGroup.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>The <cite>UseValueGroup</cite> constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>use</strong> – Whether to use the action or not.</p></li>
+<li><p><strong>value</strong> – The value of the item.</p></li>
+<li><p><strong>doc</strong> – An optional descriptor.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.NodeChanceGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.config.toolbox.groups.core.</span></span><span class="sig-name descname"><span class="pre">NodeChanceGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deceptive_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#NodeChanceGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.NodeChanceGroup" title="Permalink to this definition"></a></dt>
+<dd><p>Group to indicate chances of success for different node types.</p>
+<p>The ConfigGroup constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc</strong> – The groups doc.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.NodeChanceGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deceptive_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#NodeChanceGroup.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.NodeChanceGroup.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>The ConfigGroup constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc</strong> – The groups doc.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.UseChancesGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.config.toolbox.groups.core.</span></span><span class="sig-name descname"><span class="pre">UseChancesGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#UseChancesGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.UseChancesGroup" title="Permalink to this definition"></a></dt>
+<dd><p>Group to indicate whether an element is used and its associated chance of success for different node types.</p>
+<p>The ConfigGroup constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc</strong> – The groups doc.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.UseChancesGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#UseChancesGroup.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.UseChancesGroup.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>The ConfigGroup constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc</strong> – The groups doc.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.UseChancesGroup.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#UseChancesGroup.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.UseChancesGroup.validate" title="Permalink to this definition"></a></dt>
+<dd><p>Extend the parent validation with additional rules specific to this :class: <cite>~yawning_titan.config.toolbox.core.ConfigGroup</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.RestrictRangeGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.config.toolbox.groups.core.</span></span><span class="sig-name descname"><span class="pre">RestrictRangeGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restrict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#RestrictRangeGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.RestrictRangeGroup" title="Permalink to this definition"></a></dt>
+<dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfigGroup</span></code> to restrict the range of a given attribute to within :attribute: <cite>min</cite> and :attribute: <cite>max</cite>.</p>
+<p>The ConfigGroup constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc</strong> – The groups doc.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.RestrictRangeGroup.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">restrict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#RestrictRangeGroup.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.RestrictRangeGroup.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>The ConfigGroup constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc</strong> – The groups doc.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.config.toolbox.groups.core.RestrictRangeGroup.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/config/toolbox/groups/core.html#RestrictRangeGroup.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.config.toolbox.groups.core.RestrictRangeGroup.validate" title="Permalink to this definition"></a></dt>
+<dd><p>Extend the parent validation with additional rules specific to this :class: <cite>~yawning_titan.config.toolbox.core.ConfigGroup</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="yawning_titan.config.toolbox.groups.html" class="btn btn-neutral float-left" title="yawning_titan.config.toolbox.groups" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.config.toolbox.groups.core.ActionLikelihoodChanceGroup.html" class="btn btn-neutral float-right" title="yawning_titan.config.toolbox.groups.core.ActionLikelihoodChanceGroup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

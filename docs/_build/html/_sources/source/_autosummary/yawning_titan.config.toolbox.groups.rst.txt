@@ -1,0 +1,34 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.toolbox.groups
+====================================
+
+.. automodule:: yawning_titan.config.toolbox.groups
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   yawning_titan.config.toolbox.groups.core
+   yawning_titan.config.toolbox.groups.test_groups
+   yawning_titan.config.toolbox.groups.validation

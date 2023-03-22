@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.integration_tests.gui.test_game_mode_view &mdash; YAWNING TITAN 1.1.1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView" href="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.html" />
+    <link rel="prev" title="tests.integration_tests.gui.test_game_mode_section.test_game_mode_section_single_form_errors" href="tests.integration_tests.gui.test_game_mode_section.test_game_mode_section_single_form_errors.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.1.1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_mode_config_explained.html">GameMode UML</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tests.conftest.html">tests.conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.e2e_integration_tests.html">tests.e2e_integration_tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.game_mode_db_patch.html">tests.game_mode_db_patch</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="tests.integration_tests.html">tests.integration_tests</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tests.integration_tests.db.html">tests.integration_tests.db</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.integration_tests.env.html">tests.integration_tests.env</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.integration_tests.generic_env.html">tests.integration_tests.generic_env</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="tests.integration_tests.gui.html">tests.integration_tests.gui</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="tests.integration_tests.gui.test_game_mode_config_view.html">tests.integration_tests.gui.test_game_mode_config_view</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.integration_tests.gui.test_game_mode_section.html">tests.integration_tests.gui.test_game_mode_section</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">tests.integration_tests.gui.test_game_mode_view</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.integration_tests.gui.test_network_creator_view.html">tests.integration_tests.gui.test_network_creator_view</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.integration_tests.gui.test_network_editor_view.html">tests.integration_tests.gui.test_network_editor_view</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.integration_tests.gui.test_network_view.html">tests.integration_tests.gui.test_network_view</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.integration_tests.network.html">tests.integration_tests.network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.integration_tests.test_network_interface.html">tests.integration_tests.test_network_interface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.network_db_patch.html">tests.network_db_patch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.test_pipeline_markers.html">tests.test_pipeline_markers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.unit_tests.html">tests.unit_tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.yawning_titan_db_patch.html">tests.yawning_titan_db_patch</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="tests.html">tests</a></li>
+          <li class="breadcrumb-item"><a href="tests.integration_tests.html">tests.integration_tests</a></li>
+          <li class="breadcrumb-item"><a href="tests.integration_tests.gui.html">tests.integration_tests.gui</a></li>
+      <li class="breadcrumb-item active">tests.integration_tests.gui.test_game_mode_view</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="module-tests.integration_tests.gui.test_game_mode_view">
+<span id="tests-integration-tests-gui-test-game-mode-view"></span><h1>tests.integration_tests.gui.test_game_mode_view<a class="headerlink" href="#module-tests.integration_tests.gui.test_game_mode_view" title="Permalink to this heading"></a></h1>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.html#tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView" title="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TestGameModeManagerView</span></code></a></p></td>
+<td><p>Test processes executed through requests to the 'Manage game modes' and 'db manager' endpoints.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.integration_tests.gui.test_game_mode_view.</span></span><span class="sig-name descname"><span class="pre">TestGameModeManagerView</span></span><a class="reference internal" href="../../_modules/tests/integration_tests/gui/test_game_mode_view.html#TestGameModeManagerView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView" title="Permalink to this definition"></a></dt>
+<dd><p>Test processes executed through requests to the ‘Manage game modes’ and ‘db manager’ endpoints.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.setup_class">
+<span class="sig-name descname"><span class="pre">setup_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/integration_tests/gui/test_game_mode_view.html#TestGameModeManagerView.setup_class"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.setup_class" title="Permalink to this definition"></a></dt>
+<dd><p>Setup the components required to test the management of yawning titan networks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.teardown_class">
+<span class="sig-name descname"><span class="pre">teardown_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/integration_tests/gui/test_game_mode_view.html#TestGameModeManagerView.teardown_class"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.teardown_class" title="Permalink to this definition"></a></dt>
+<dd><p>Reset the components required to test the management of yawning titan networks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.assert_correct_response_and_game_mode">
+<span class="sig-name descname"><span class="pre">assert_correct_response_and_game_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">game_mode_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/integration_tests/gui/test_game_mode_view.html#TestGameModeManagerView.assert_correct_response_and_game_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.assert_correct_response_and_game_mode" title="Permalink to this definition"></a></dt>
+<dd><p>A method to execute some generic assertions that the view reports.</p>
+<ul class="simple">
+<li><p>Status code is success (200)</p></li>
+<li><p>The correct game mode config url is returned</p></li>
+<li><p>The game mode exists in the :class: <cite>~yawning_titan_gui.helpers.GameModeManager</cite></p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.test_get">
+<span class="sig-name descname"><span class="pre">test_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/integration_tests/gui/test_game_mode_view.html#TestGameModeManagerView.test_get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.test_get" title="Permalink to this definition"></a></dt>
+<dd><p>Test that the <cite>db manager</cite> view cannot accept get requests.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.test_game_modes_view_get">
+<span class="sig-name descname"><span class="pre">test_game_modes_view_get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/integration_tests/gui/test_game_mode_view.html#TestGameModeManagerView.test_game_modes_view_get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.test_game_modes_view_get" title="Permalink to this definition"></a></dt>
+<dd><p>Test that the Manage game modes view can accept GET requests.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.test_game_modes_view_post">
+<span class="sig-name descname"><span class="pre">test_game_modes_view_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/integration_tests/gui/test_game_mode_view.html#TestGameModeManagerView.test_game_modes_view_post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.test_game_modes_view_post" title="Permalink to this definition"></a></dt>
+<dd><p>Test that the Manage game modes view can accept POST requests.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.test_post_invalid_operation">
+<span class="sig-name descname"><span class="pre">test_post_invalid_operation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/integration_tests/gui/test_game_mode_view.html#TestGameModeManagerView.test_post_invalid_operation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.test_post_invalid_operation" title="Permalink to this definition"></a></dt>
+<dd><p>Test the function that processes gui requests when given an invalid operation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.test_create">
+<span class="sig-name descname"><span class="pre">test_create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/integration_tests/gui/test_game_mode_view.html#TestGameModeManagerView.test_create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.test_create" title="Permalink to this definition"></a></dt>
+<dd><p>Test the function that processes gui requests to :method: <cite>~yawning_titan_gui.helpers.GameModeManager.create_game_mode</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.test_create_from">
+<span class="sig-name descname"><span class="pre">test_create_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/integration_tests/gui/test_game_mode_view.html#TestGameModeManagerView.test_create_from"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.test_create_from" title="Permalink to this definition"></a></dt>
+<dd><p>Test the function that processes gui requests to :method: <cite>~yawning_titan_gui.helpers.GameModeManager.create_game_mode_from</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.test_delete">
+<span class="sig-name descname"><span class="pre">test_delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/integration_tests/gui/test_game_mode_view.html#TestGameModeManagerView.test_delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.test_delete" title="Permalink to this definition"></a></dt>
+<dd><p>Test that a request to delete a game mode results in the correct game mode file being remove from the directory.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests.integration_tests.gui.test_game_mode_section.test_game_mode_section_single_form_errors.html" class="btn btn-neutral float-left" title="tests.integration_tests.gui.test_game_mode_section.test_game_mode_section_single_form_errors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView.html" class="btn btn-neutral float-right" title="tests.integration_tests.gui.test_game_mode_view.TestGameModeManagerView" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

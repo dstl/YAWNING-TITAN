@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.TestGameModeDB &mdash; YAWNING TITAN 1.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="tests.config_test_utils" href="tests.config_test_utils.html" />
+    <link rel="prev" title="tests" href="tests.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../game_mode_config_explained.html">The Game Mode Config UML Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../network_config_explained.html">The Network Config UML Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">tests.TestGameModeDB</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tests.TestGameModeDB"><code class="docutils literal notranslate"><span class="pre">TestGameModeDB</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tests.TestGameModeDB.add_yaml_game_modes_to_db"><code class="docutils literal notranslate"><span class="pre">TestGameModeDB.add_yaml_game_modes_to_db()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tests.TestGameModeDB.all"><code class="docutils literal notranslate"><span class="pre">TestGameModeDB.all()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tests.TestGameModeDB.count"><code class="docutils literal notranslate"><span class="pre">TestGameModeDB.count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tests.TestGameModeDB.get"><code class="docutils literal notranslate"><span class="pre">TestGameModeDB.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tests.TestGameModeDB.insert"><code class="docutils literal notranslate"><span class="pre">TestGameModeDB.insert()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tests.TestGameModeDB.rebuild_db"><code class="docutils literal notranslate"><span class="pre">TestGameModeDB.rebuild_db()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tests.TestGameModeDB.remove"><code class="docutils literal notranslate"><span class="pre">TestGameModeDB.remove()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tests.TestGameModeDB.remove_by_cond"><code class="docutils literal notranslate"><span class="pre">TestGameModeDB.remove_by_cond()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tests.TestGameModeDB.reset_default_game_modes_in_db"><code class="docutils literal notranslate"><span class="pre">TestGameModeDB.reset_default_game_modes_in_db()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tests.TestGameModeDB.search"><code class="docutils literal notranslate"><span class="pre">TestGameModeDB.search()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tests.TestGameModeDB.update"><code class="docutils literal notranslate"><span class="pre">TestGameModeDB.update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tests.TestGameModeDB.upsert"><code class="docutils literal notranslate"><span class="pre">TestGameModeDB.upsert()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#tests.TestGameModeDB"><code class="docutils literal notranslate"><span class="pre">TestGameModeDB</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.config_test_utils.html">tests.config_test_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.conftest.html">tests.conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.e2e_integration_tests.html">tests.e2e_integration_tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.fixtures.html">tests.fixtures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.generic_environment.html">tests.generic_environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.integration_tests.html">tests.integration_tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.mock_and_patch.html">tests.mock_and_patch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.test_dcbo_utils.html">tests.test_dcbo_utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.test_five_node_def.html">tests.test_five_node_def</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.test_graph_embedding_observations.html">tests.test_graph_embedding_observations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.test_graph_metrics.html">tests.test_graph_metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.test_nsa_node_env.html">tests.test_nsa_node_env</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.test_red_target_mechanisms.html">tests.test_red_target_mechanisms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.test_repeatable_episodic_output.html">tests.test_repeatable_episodic_output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.test_reward_functions.html">tests.test_reward_functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.test_stable_baselines_compliance.html">tests.test_stable_baselines_compliance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.test_yawning_titan_run.html">tests.test_yawning_titan_run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.unit_tests.html">tests.unit_tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="tests.html">tests</a></li>
+      <li class="breadcrumb-item active">tests.TestGameModeDB</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="tests-testgamemodedb">
+<h1>tests.TestGameModeDB<a class="headerlink" href="#tests-testgamemodedb" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.TestGameModeDB">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.</span></span><span class="sig-name descname"><span class="pre">TestGameModeDB</span></span><a class="reference internal" href="../../_modules/tests.html#TestGameModeDB"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.TestGameModeDB" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB" title="yawning_titan.game_modes.game_mode_db.GameModeDB"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameModeDB</span></code></a></p>
+<p>An subclass of :class: <cite>~yawning_titan.game_modes.game_mode_db.GameModeDB</cite> to point to the test GameMode data.</p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.TestGameModeDB.add_yaml_game_modes_to_db" title="tests.TestGameModeDB.add_yaml_game_modes_to_db"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_yaml_game_modes_to_db</span></code></a></p></td>
+<td><p>Add all yaml game modes in a given directory to the database.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.TestGameModeDB.all" title="tests.TestGameModeDB.all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a></p></td>
+<td><p>Get all <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a> from the game mode DB.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.TestGameModeDB.count" title="tests.TestGameModeDB.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a></p></td>
+<td><p>Count how many docs are in the db.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.TestGameModeDB.get" title="tests.TestGameModeDB.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a></p></td>
+<td><p>Get a game_mode config document from its uuid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.TestGameModeDB.insert" title="tests.TestGameModeDB.insert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert</span></code></a></p></td>
+<td><p>Insert a <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a> into the DB as <code class="docutils literal notranslate"><span class="pre">.json</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.TestGameModeDB.rebuild_db" title="tests.TestGameModeDB.rebuild_db"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rebuild_db</span></code></a></p></td>
+<td><p>Rebuild the db.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.TestGameModeDB.remove" title="tests.TestGameModeDB.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
+<td><p>Remove a <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.TestGameModeDB.remove_by_cond" title="tests.TestGameModeDB.remove_by_cond"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_by_cond</span></code></a></p></td>
+<td><p>Remove <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.TestGameModeDB.reset_default_game_modes_in_db" title="tests.TestGameModeDB.reset_default_game_modes_in_db"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_default_game_modes_in_db</span></code></a></p></td>
+<td><p>Reset the default game_mode in the db.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.TestGameModeDB.search" title="tests.TestGameModeDB.search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search</span></code></a></p></td>
+<td><p>Searches the <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a> with a <code class="xref py py-class docutils literal notranslate"><span class="pre">GameModeSchema</span></code> query.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.TestGameModeDB.update" title="tests.TestGameModeDB.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a></p></td>
+<td><p>Update a <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.TestGameModeDB.upsert" title="tests.TestGameModeDB.upsert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">upsert</span></code></a></p></td>
+<td><p>Upsert a <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.TestGameModeDB.add_yaml_game_modes_to_db">
+<span class="sig-name descname"><span class="pre">add_yaml_game_modes_to_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.TestGameModeDB.add_yaml_game_modes_to_db" title="Permalink to this definition"></a></dt>
+<dd><p>Add all yaml game modes in a given directory to the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>directory</strong> – The directory containing the files to add as a Path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.TestGameModeDB.all">
+<span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.TestGameModeDB.all" title="Permalink to this definition"></a></dt>
+<dd><p>Get all <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a> from the game mode DB.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.TestGameModeDB.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.TestGameModeDB.count" title="Permalink to this definition"></a></dt>
+<dd><p>Count how many docs are in the db. Extends <code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.table.Table.count</span></code>.</p>
+<p>A <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a> can be used to
+filter the count.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cond</strong> – An optional <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a>.
+Has a default value of <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The number of docs counted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.TestGameModeDB.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.TestGameModeDB.get" title="Permalink to this definition"></a></dt>
+<dd><p>Get a game_mode config document from its uuid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uuid</strong> – A target document uuid.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The game_mode config document as an instance of
+:class:~yawning_titan.game_modes.game_mode.GameMode` if the uuid exists,
+otherwise <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.TestGameModeDB.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">game_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.TestGameModeDB.insert" title="Permalink to this definition"></a></dt>
+<dd><p>Insert a <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a> into the DB as <code class="docutils literal notranslate"><span class="pre">.json</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>game_mode</strong> – An instance of <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>
+<a class="reference internal" href="yawning_titan.db.doc_metadata.DocMetadata.html#yawning_titan.db.doc_metadata.DocMetadata" title="yawning_titan.db.doc_metadata.DocMetadata"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocMetadata</span></code></a>.
+<a class="reference internal" href="yawning_titan.db.doc_metadata.DocMetadata.html#yawning_titan.db.doc_metadata.DocMetadata" title="yawning_titan.db.doc_metadata.DocMetadata"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocMetadata</span></code></a>.
+<a class="reference internal" href="yawning_titan.db.doc_metadata.DocMetadata.html#yawning_titan.db.doc_metadata.DocMetadata" title="yawning_titan.db.doc_metadata.DocMetadata"><code class="xref py py-class docutils literal notranslate"><span class="pre">DocMetadata</span></code></a>.</p></li>
+<li><p><strong>name</strong> – The config name.</p></li>
+<li><p><strong>description</strong> – The config description.</p></li>
+<li><p><strong>author</strong> – The config author.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The inserted <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.TestGameModeDB.rebuild_db">
+<span class="sig-name descname"><span class="pre">rebuild_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.TestGameModeDB.rebuild_db" title="Permalink to this definition"></a></dt>
+<dd><p>Rebuild the db.</p>
+<dl class="simple">
+<dt>Actions taken:</dt><dd><ul class="simple">
+<li><p>clear the query cache</p></li>
+<li><p>truncate the db</p></li>
+<li><p>call <a class="reference internal" href="yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.reset_default_game_modes_in_db" title="yawning_titan.game_modes.game_mode_db.GameModeDB.reset_default_game_modes_in_db"><code class="xref py py-func docutils literal notranslate"><span class="pre">reset_default_game_modes_in_db()</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function completely rebuilds the database. Any custom game_modes
+saved in the db will be lost. The default game_modes can be reset
+using the <a class="reference internal" href="yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.reset_default_game_modes_in_db" title="yawning_titan.game_modes.game_mode_db.GameModeDB.reset_default_game_modes_in_db"><code class="xref py py-func docutils literal notranslate"><span class="pre">reset_default_game_modes_in_db()</span></code></a>
+function.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.TestGameModeDB.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">game_mode</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.TestGameModeDB.remove" title="Permalink to this definition"></a></dt>
+<dd><p>Remove a <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>. from the db.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>game_mode</strong> – An instance of <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The uuid of the removed <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.TestGameModeDB.remove_by_cond">
+<span class="sig-name descname"><span class="pre">remove_by_cond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.TestGameModeDB.remove_by_cond" title="Permalink to this definition"></a></dt>
+<dd><p>Remove <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>. from the db that match the query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cond</strong> – A <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The list of uuids of the removed <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.TestGameModeDB.reset_default_game_modes_in_db">
+<span class="sig-name descname"><span class="pre">reset_default_game_modes_in_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.TestGameModeDB.reset_default_game_modes_in_db" title="Permalink to this definition"></a></dt>
+<dd><p>Reset the default game_mode in the db.</p>
+<p>Achieves this by loading the default
+<cite>yawning_titan/game_modes/_package_data/game_mode.json</cite> db file into TinyDB,
+then iterating over all docs and forcing an update of each one in the main
+game_modes db from its uuid if they do not match.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.TestGameModeDB.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.TestGameModeDB.search" title="Permalink to this definition"></a></dt>
+<dd><p>Searches the <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a> with a <code class="xref py py-class docutils literal notranslate"><span class="pre">GameModeSchema</span></code> query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> – A <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.TestGameModeDB.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">game_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.TestGameModeDB.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update a <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>. in the db.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>game_mode</strong> – An instance of <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.</p></li>
+<li><p><strong>name</strong> – The config name.</p></li>
+<li><p><strong>description</strong> – The config description.</p></li>
+<li><p><strong>author</strong> – The config author.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The updated <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.TestGameModeDB.upsert">
+<span class="sig-name descname"><span class="pre">upsert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">game_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.TestGameModeDB.upsert" title="Permalink to this definition"></a></dt>
+<dd><p>Upsert a <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>. in the db.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>game_mode</strong> – An instance of <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.</p></li>
+<li><p><strong>name</strong> – The config name.</p></li>
+<li><p><strong>description</strong> – The config description.</p></li>
+<li><p><strong>author</strong> – The config author.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The upserted <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests.html" class="btn btn-neutral float-left" title="tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.config_test_utils.html" class="btn btn-neutral float-right" title="tests.config_test_utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

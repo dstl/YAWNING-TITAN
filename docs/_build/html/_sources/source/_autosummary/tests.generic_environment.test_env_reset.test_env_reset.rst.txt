@@ -1,0 +1,6 @@
+tests.generic\_environment.test\_env\_reset.test\_env\_reset
+============================================================
+
+.. currentmodule:: tests.generic_environment.test_env_reset
+
+.. autofunction:: test_env_reset

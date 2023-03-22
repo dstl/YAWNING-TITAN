@@ -1,0 +1,26 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.integration\_tests.gui.test\_game\_mode\_config\_view
+===========================================================
+
+.. automodule:: tests.integration_tests.gui.test_game_mode_config_view
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+
+      TestGameModeConfigView

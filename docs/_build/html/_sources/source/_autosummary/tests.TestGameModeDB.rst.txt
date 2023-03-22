@@ -1,0 +1,33 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.TestGameModeDB
+====================
+
+.. currentmodule:: tests
+
+.. autoclass:: TestGameModeDB
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~TestGameModeDB.add_yaml_game_modes_to_db
+      ~TestGameModeDB.all
+      ~TestGameModeDB.count
+      ~TestGameModeDB.get
+      ~TestGameModeDB.insert
+      ~TestGameModeDB.rebuild_db
+      ~TestGameModeDB.remove
+      ~TestGameModeDB.remove_by_cond
+      ~TestGameModeDB.reset_default_game_modes_in_db
+      ~TestGameModeDB.search
+      ~TestGameModeDB.update
+      ~TestGameModeDB.upsert

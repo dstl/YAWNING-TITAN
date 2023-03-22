@@ -1,0 +1,6 @@
+tests.test\_red\_target\_mechanisms.test\_target\_node\_capture\_ends\_game
+===========================================================================
+
+.. currentmodule:: tests.test_red_target_mechanisms
+
+.. autofunction:: test_target_node_capture_ends_game

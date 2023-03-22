@@ -1,0 +1,6 @@
+tests.generic\_environment.test\_high\_value\_node\_and\_entry\_nodes\_matching.test\_high\_value\_node\_and\_entry\_nodes\_matching
+====================================================================================================================================
+
+.. currentmodule:: tests.generic_environment.test_high_value_node_and_entry_nodes_matching
+
+.. autofunction:: test_high_value_node_and_entry_nodes_matching

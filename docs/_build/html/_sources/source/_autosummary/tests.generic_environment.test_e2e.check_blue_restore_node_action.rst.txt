@@ -1,0 +1,6 @@
+tests.generic\_environment.test\_e2e.check\_blue\_restore\_node\_action
+=======================================================================
+
+.. currentmodule:: tests.generic_environment.test_e2e
+
+.. autofunction:: check_blue_restore_node_action

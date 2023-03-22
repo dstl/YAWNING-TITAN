@@ -1,0 +1,31 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.integration\_tests.gui.test\_network\_view.TestNetworkView
+================================================================
+
+.. currentmodule:: tests.integration_tests.gui.test_network_view
+
+.. autoclass:: TestNetworkView
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~TestNetworkView.assert_correct_response_and_network
+      ~TestNetworkView.create_temp_networks
+      ~TestNetworkView.setup_class
+      ~TestNetworkView.teardown_class
+      ~TestNetworkView.test_create
+      ~TestNetworkView.test_create_from
+      ~TestNetworkView.test_delete_multiple
+      ~TestNetworkView.test_delete_single
+      ~TestNetworkView.test_get
+      ~TestNetworkView.test_post_invalid_operation

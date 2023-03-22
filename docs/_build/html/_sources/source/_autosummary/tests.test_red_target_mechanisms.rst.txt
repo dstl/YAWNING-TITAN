@@ -1,0 +1,23 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.test\_red\_target\_mechanisms
+===================================
+
+.. automodule:: tests.test_red_target_mechanisms
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+
+      test_target_node_capture_doesnt_end_game
+      test_target_node_capture_ends_game
+      test_target_specific_node

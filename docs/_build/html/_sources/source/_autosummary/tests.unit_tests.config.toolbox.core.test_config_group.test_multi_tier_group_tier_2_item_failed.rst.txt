@@ -1,0 +1,6 @@
+tests.unit\_tests.config.toolbox.core.test\_config\_group.test\_multi\_tier\_group\_tier\_2\_item\_failed
+=========================================================================================================
+
+.. currentmodule:: tests.unit_tests.config.toolbox.core.test_config_group
+
+.. autofunction:: test_multi_tier_group_tier_2_item_failed

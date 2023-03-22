@@ -1,0 +1,6 @@
+tests.generic\_environment.test\_end\_rewards\_are\_multiplied\_by\_end\_state.test\_end\_rewards\_multiplier
+=============================================================================================================
+
+.. currentmodule:: tests.generic_environment.test_end_rewards_are_multiplied_by_end_state
+
+.. autofunction:: test_end_rewards_multiplier

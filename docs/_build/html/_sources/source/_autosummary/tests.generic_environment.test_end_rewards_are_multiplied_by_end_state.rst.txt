@@ -1,0 +1,21 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.generic\_environment.test\_end\_rewards\_are\_multiplied\_by\_end\_state
+==============================================================================
+
+.. automodule:: tests.generic_environment.test_end_rewards_are_multiplied_by_end_state
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+
+      test_end_rewards_multiplier

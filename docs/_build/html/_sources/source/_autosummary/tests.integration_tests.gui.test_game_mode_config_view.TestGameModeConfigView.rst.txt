@@ -1,0 +1,30 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.integration\_tests.gui.test\_game\_mode\_config\_view.TestGameModeConfigView
+==================================================================================
+
+.. currentmodule:: tests.integration_tests.gui.test_game_mode_config_view
+
+.. autoclass:: TestGameModeConfigView
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~TestGameModeConfigView.create_temp_game_modes
+      ~TestGameModeConfigView.setup_class
+      ~TestGameModeConfigView.teardown_class
+      ~TestGameModeConfigView.test_finish
+      ~TestGameModeConfigView.test_get
+      ~TestGameModeConfigView.test_get_with_no_args
+      ~TestGameModeConfigView.test_next_section
+      ~TestGameModeConfigView.test_save
+      ~TestGameModeConfigView.test_update_fail

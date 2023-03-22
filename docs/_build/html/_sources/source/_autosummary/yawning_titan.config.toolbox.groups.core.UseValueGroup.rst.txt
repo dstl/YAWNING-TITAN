@@ -1,0 +1,31 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.toolbox.groups.core.UseValueGroup
+=======================================================
+
+.. currentmodule:: yawning_titan.config.toolbox.groups.core
+
+.. autoclass:: UseValueGroup
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~UseValueGroup.get_config_elements
+      ~UseValueGroup.get_non_config_elements
+      ~UseValueGroup.set_from_dict
+      ~UseValueGroup.set_from_yaml
+      ~UseValueGroup.stringify
+      ~UseValueGroup.to_dict
+      ~UseValueGroup.to_legacy_dict
+      ~UseValueGroup.to_yaml
+      ~UseValueGroup.validate
+      ~UseValueGroup.validate_elements

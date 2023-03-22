@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.test_yawning_titan_run &mdash; YAWNING TITAN 1.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                1.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/game_mode_config_explained.html">The Game Mode Config UML Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/network_config_explained.html">The Network Config UML Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/experiments.html">Monitoring Experiments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../tests.html">tests</a></li>
+      <li class="breadcrumb-item active">tests.test_yawning_titan_run</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for tests.test_yawning_titan_run</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.core.action_loops</span> <span class="kn">import</span> <span class="n">ActionLoop</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.yawning_titan_run</span> <span class="kn">import</span> <span class="n">YawningTitanRun</span>
+
+
+<div class="viewcode-block" id="test_yawning_titan_run_with_no_args"><a class="viewcode-back" href="../../source/_autosummary/tests.test_yawning_titan_run.test_yawning_titan_run_with_no_args.html#tests.test_yawning_titan_run.test_yawning_titan_run_with_no_args">[docs]</a><span class="k">def</span> <span class="nf">test_yawning_titan_run_with_no_args</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Tests that actions undertaken by the red agent are repeatable with a set random_seed value.&quot;&quot;&quot;</span>
+    <span class="n">YawningTitanRun</span><span class="p">(</span><span class="n">total_timesteps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">eval_freq</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_rendering_an_action_loop"><a class="viewcode-back" href="../../source/_autosummary/tests.test_yawning_titan_run.test_rendering_an_action_loop.html#tests.test_yawning_titan_run.test_rendering_an_action_loop">[docs]</a><span class="k">def</span> <span class="nf">test_rendering_an_action_loop</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Test that creating a gif action loop correctly produces a .gif file.&quot;&quot;&quot;</span>
+    <span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span>
+    <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="n">yt_run</span> <span class="o">=</span> <span class="n">YawningTitanRun</span><span class="p">(</span>
+        <span class="n">total_timesteps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">eval_freq</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">ActionLoop</span><span class="p">(</span><span class="n">yt_run</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">yt_run</span><span class="o">.</span><span class="n">agent</span><span class="p">,</span> <span class="n">episode_count</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">gif_action_loop</span><span class="p">(</span><span class="n">save_gif</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">render_network</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_directory</span><span class="o">=</span><span class="n">tmp_path</span><span class="p">)</span>
+
+    <span class="n">gifs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tmp_path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">())</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">gifs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="n">gifs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.gif&quot;</span>
+    <span class="n">tmp_dir</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>
