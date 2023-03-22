@@ -32,16 +32,16 @@ function update_network(form_element,operation){
     config = new FormData($(form_element)[0]);
     config.append("_network_id",NETWORK_ID);
     config.append('_operation',operation);
-    
+
     /**
      * The network editor listens to NETWORK_SETTINGS
      * for any changes in the network metadata and the
      * randomisation settings
-     * 
+     *
      * Any updates to the form here will be reflected on the
      * POST body that the angular network editor sends to
      * .../network_editor/
-     * 
+     *
      * Don't do double requests - we can cause race conditions
      */
     proxy.NETWORK_SETTINGS = config;
