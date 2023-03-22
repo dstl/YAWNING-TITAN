@@ -1,0 +1,6 @@
+tests.unit\_tests.config.core.test\_config\_item.test\_assign\_incorrect\_properties
+====================================================================================
+
+.. currentmodule:: tests.unit_tests.config.core.test_config_item
+
+.. autofunction:: test_assign_incorrect_properties

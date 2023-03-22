@@ -1,0 +1,6 @@
+tests.integration\_tests.network.test\_graph\_metrics.test\_flatten\_list
+=========================================================================
+
+.. currentmodule:: tests.integration_tests.network.test_graph_metrics
+
+.. autofunction:: test_flatten_list

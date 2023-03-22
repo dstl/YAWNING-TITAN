@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.unit_tests.db.test_yawning_titan_db.DemoDB &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="tests.unit_tests.db.test_yawning_titan_db.DemoSchema" href="tests.unit_tests.db.test_yawning_titan_db.DemoSchema.html" />
+    <link rel="prev" title="tests.unit_tests.db.test_yawning_titan_db.test_upsert_update" href="tests.unit_tests.db.test_yawning_titan_db.test_upsert_update.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tests.conftest.html">tests.conftest</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.e2e_integration_tests.html">tests.e2e_integration_tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.game_mode_db_patch.html">tests.game_mode_db_patch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.gui.html">tests.gui</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.integration_tests.html">tests.integration_tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.network_db_patch.html">tests.network_db_patch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tests.test_pipeline_markers.html">tests.test_pipeline_markers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="tests.unit_tests.html">tests.unit_tests</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tests.unit_tests.config.html">tests.unit_tests.config</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="tests.unit_tests.db.html">tests.unit_tests.db</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="tests.unit_tests.db.test_yawning_titan_db.html">tests.unit_tests.db.test_yawning_titan_db</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.unit_tests.game_modes.html">tests.unit_tests.game_modes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.unit_tests.integrations.html">tests.unit_tests.integrations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.unit_tests.network.html">tests.unit_tests.network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.unit_tests.test_application_logging.html">tests.unit_tests.test_application_logging</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.yawning_titan_db_patch.html">tests.yawning_titan_db_patch</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="tests.html">tests</a></li>
+          <li class="breadcrumb-item"><a href="tests.unit_tests.html">tests.unit_tests</a></li>
+          <li class="breadcrumb-item"><a href="tests.unit_tests.db.html">tests.unit_tests.db</a></li>
+          <li class="breadcrumb-item"><a href="tests.unit_tests.db.test_yawning_titan_db.html">tests.unit_tests.db.test_yawning_titan_db</a></li>
+      <li class="breadcrumb-item active">tests.unit_tests.db.test_yawning_titan_db.DemoDB</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="tests-unit-tests-db-test-yawning-titan-db-demodb">
+<h1>tests.unit_tests.db.test_yawning_titan_db.DemoDB<a class="headerlink" href="#tests-unit-tests-db-test-yawning-titan-db-demodb" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.unit_tests.db.test_yawning_titan_db.</span></span><span class="sig-name descname"><span class="pre">DemoDB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/unit_tests/db/test_yawning_titan_db.html#DemoDB"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB" title="yawning_titan.db.yawning_titan_db.YawningTitanDB"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDB</span></code></a></p>
+<p>An implementation of <a class="reference internal" href="yawning_titan.db.yawning_titan_db.YawningTitanDB.html#yawning_titan.db.yawning_titan_db.YawningTitanDB" title="yawning_titan.db.yawning_titan_db.YawningTitanDB"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDB</span></code></a>.</p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.all" title="tests.unit_tests.db.test_yawning_titan_db.DemoDB.all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a></p></td>
+<td><p>Get all docs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.close" title="tests.unit_tests.db.test_yawning_titan_db.DemoDB.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a></p></td>
+<td><p>Close the db.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.count" title="tests.unit_tests.db.test_yawning_titan_db.DemoDB.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a></p></td>
+<td><p>Count how many docs are in the db.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.get" title="tests.unit_tests.db.test_yawning_titan_db.DemoDB.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a></p></td>
+<td><p>Get a dog from its uuid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.insert" title="tests.unit_tests.db.test_yawning_titan_db.DemoDB.insert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert</span></code></a></p></td>
+<td><p>Insert a doc and return the inserted doc.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.is_locked" title="tests.unit_tests.db.test_yawning_titan_db.DemoDB.is_locked"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_locked</span></code></a></p></td>
+<td><p>Check whether a doc is locked for editing or not.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.remove" title="tests.unit_tests.db.test_yawning_titan_db.DemoDB.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a></p></td>
+<td><p>Remove a document with a given uuid.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.remove_by_cond" title="tests.unit_tests.db.test_yawning_titan_db.DemoDB.remove_by_cond"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_by_cond</span></code></a></p></td>
+<td><p>Remove documents matching a query.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.search" title="tests.unit_tests.db.test_yawning_titan_db.DemoDB.search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search</span></code></a></p></td>
+<td><p>Search for docs using Query.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.show" title="tests.unit_tests.db.test_yawning_titan_db.DemoDB.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a></p></td>
+<td><p>Show details of all entries in the db.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.update" title="tests.unit_tests.db.test_yawning_titan_db.DemoDB.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a></p></td>
+<td><p>Update a doc by uuid.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.upsert" title="tests.unit_tests.db.test_yawning_titan_db.DemoDB.upsert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">upsert</span></code></a></p></td>
+<td><p>Upsert a doc by uuid.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.db" title="tests.unit_tests.db.test_yawning_titan_db.DemoDB.db"><code class="xref py py-obj docutils literal notranslate"><span class="pre">db</span></code></a></p></td>
+<td><p>The instance of <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.database.TinyDB" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TinyDB</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.name" title="tests.unit_tests.db.test_yawning_titan_db.DemoDB.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>The DB name.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/unit_tests/db/test_yawning_titan_db.html#DemoDB.insert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.insert" title="Permalink to this definition"></a></dt>
+<dd><p>Insert a doc and return the inserted doc.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB.all">
+<span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/unit_tests/db/test_yawning_titan_db.html#DemoDB.all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.all" title="Permalink to this definition"></a></dt>
+<dd><p>Get all docs.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/unit_tests/db/test_yawning_titan_db.html#DemoDB.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.get" title="Permalink to this definition"></a></dt>
+<dd><p>Get a dog from its uuid.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/unit_tests/db/test_yawning_titan_db.html#DemoDB.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.search" title="Permalink to this definition"></a></dt>
+<dd><p>Search for docs using Query.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/unit_tests/db/test_yawning_titan_db.html#DemoDB.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update a doc by uuid.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB.upsert">
+<span class="sig-name descname"><span class="pre">upsert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/unit_tests/db/test_yawning_titan_db.html#DemoDB.upsert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.upsert" title="Permalink to this definition"></a></dt>
+<dd><p>Upsert a doc by uuid.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB.remove_by_cond">
+<span class="sig-name descname"><span class="pre">remove_by_cond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/unit_tests/db/test_yawning_titan_db.html#DemoDB.remove_by_cond"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.remove_by_cond" title="Permalink to this definition"></a></dt>
+<dd><p>Remove documents matching a query.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/tests/unit_tests/db/test_yawning_titan_db.html#DemoDB.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.remove" title="Permalink to this definition"></a></dt>
+<dd><p>Remove a document with a given uuid.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.close" title="Permalink to this definition"></a></dt>
+<dd><p>Close the db.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.count" title="Permalink to this definition"></a></dt>
+<dd><p>Count how many docs are in the db. Extends <code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.table.Table.count</span></code>.</p>
+<p>A <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a> can be used to
+filter the count.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cond</strong> – An optional <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a>.
+Has a default value of <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The number of docs counted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB.db">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">db</span></span><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.db" title="Permalink to this definition"></a></dt>
+<dd><p>The instance of <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.database.TinyDB" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TinyDB</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB.is_locked">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_locked</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.is_locked" title="Permalink to this definition"></a></dt>
+<dd><p>Check whether a doc is locked for editing or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>doc</strong> – A doc.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the doc is locked, otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.name" title="Permalink to this definition"></a></dt>
+<dd><p>The DB name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.unit_tests.db.test_yawning_titan_db.DemoDB.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tests.unit_tests.db.test_yawning_titan_db.DemoDB.show" title="Permalink to this definition"></a></dt>
+<dd><p>Show details of all entries in the db.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – If True, all doc metadata details are shown,
+otherwise just the name is shown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests.unit_tests.db.test_yawning_titan_db.test_upsert_update.html" class="btn btn-neutral float-left" title="tests.unit_tests.db.test_yawning_titan_db.test_upsert_update" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.unit_tests.db.test_yawning_titan_db.DemoSchema.html" class="btn btn-neutral float-right" title="tests.unit_tests.db.test_yawning_titan_db.DemoSchema" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

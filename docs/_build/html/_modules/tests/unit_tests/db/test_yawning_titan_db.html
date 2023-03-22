@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.unit_tests.db.test_yawning_titan_db &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tests.unit_tests.db.test_yawning_titan_db</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for tests.unit_tests.db.test_yawning_titan_db</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This test module tests the YawningTitanDB class using the DemoDB subclass.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Final</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
+
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">tinydb.queries</span> <span class="kn">import</span> <span class="n">QueryInstance</span>
+<span class="kn">from</span> <span class="nn">tinydb.table</span> <span class="kn">import</span> <span class="n">Document</span>
+
+<span class="kn">from</span> <span class="nn">tests.yawning_titan_db_patch</span> <span class="kn">import</span> <span class="n">yawning_titan_db_init_patch</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.db.doc_metadata</span> <span class="kn">import</span> <span class="n">DocMetadata</span><span class="p">,</span> <span class="n">DocMetadataSchema</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.db.query</span> <span class="kn">import</span> <span class="n">YawningTitanQuery</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.db.yawning_titan_db</span> <span class="kn">import</span> <span class="n">YawningTitanDB</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.exceptions</span> <span class="kn">import</span> <span class="n">YawningTitanDBCriticalError</span><span class="p">,</span> <span class="n">YawningTitanDBError</span>
+
+
+<div class="viewcode-block" id="demo_db_docs"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.demo_db_docs.html#tests.unit_tests.db.test_yawning_titan_db.demo_db_docs">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">demo_db_docs</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A basic list of docs with the structure.</span>
+
+<span class="sd">    - forename: str</span>
+<span class="sd">    - surname: str</span>
+<span class="sd">    - age: int</span>
+<span class="sd">    - hobbies: List[str]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;forename&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Doe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+            <span class="s2">&quot;hobbies&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Cats&quot;</span><span class="p">,</span> <span class="s2">&quot;Books&quot;</span><span class="p">,</span> <span class="s2">&quot;Food&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;_doc_metadata&quot;</span><span class="p">:</span> <span class="n">DocMetadata</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;forename&quot;</span><span class="p">:</span> <span class="s2">&quot;Jane&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Doe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">26</span><span class="p">,</span>
+            <span class="s2">&quot;hobbies&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Cats&quot;</span><span class="p">,</span> <span class="s2">&quot;Books&quot;</span><span class="p">,</span> <span class="s2">&quot;Food&quot;</span><span class="p">,</span> <span class="s2">&quot;Walks&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;_doc_metadata&quot;</span><span class="p">:</span> <span class="n">DocMetadata</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;forename&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Smith&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">264</span><span class="p">,</span>
+            <span class="s2">&quot;hobbies&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;Water&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Malted Barley&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Glucose Syrup&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Barley&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Hops&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Hop Extract&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Nitrogen&quot;</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;_doc_metadata&quot;</span><span class="p">:</span> <span class="n">DocMetadata</span><span class="p">(</span><span class="n">locked</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span>
+        <span class="p">},</span>
+    <span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="DemoSchema"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.DemoSchema.html#tests.unit_tests.db.test_yawning_titan_db.DemoSchema">[docs]</a><span class="k">class</span> <span class="nc">DemoSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A schema-like class that defines the DB fields in ``demo_db_docs()``.&quot;&quot;&quot;</span>
+
+    <span class="n">FORENAME</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">forename</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapped to ``demo_db_docs()[&quot;forename&quot;]``.&quot;&quot;&quot;</span>
+    <span class="n">SURNAME</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">surname</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapped to ``demo_db_docs()[&quot;surname&quot;]``.&quot;&quot;&quot;</span>
+    <span class="n">AGE</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">age</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapped to ``demo_db_docs()[&quot;age&quot;]``.&quot;&quot;&quot;</span>
+    <span class="n">HOBBIES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">YawningTitanQuery</span><span class="p">]</span> <span class="o">=</span> <span class="n">YawningTitanQuery</span><span class="p">()</span><span class="o">.</span><span class="n">hobbies</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapped to ``demo_db_docs()[&quot;hobbies&quot;]``.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="DemoDB"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.DemoDB.html#tests.unit_tests.db.test_yawning_titan_db.DemoDB">[docs]</a><span class="k">class</span> <span class="nc">DemoDB</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An implementation of :class:`~yawning_titan.db.yawning_titan_db.YawningTitanDB`.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DemoDB.__init__"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.html#tests.unit_tests.db.test_yawning_titan_db.DemoDB.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DemoDB.insert"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.DemoDB.html#tests.unit_tests.db.test_yawning_titan_db.DemoDB.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">doc</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">author</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Document</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Insert a doc and return the inserted doc.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">author</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DemoDB.all"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.DemoDB.html#tests.unit_tests.db.test_yawning_titan_db.DemoDB.all">[docs]</a>    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get all docs.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DemoDB.get"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.DemoDB.html#tests.unit_tests.db.test_yawning_titan_db.DemoDB.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a dog from its uuid.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DemoDB.search"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.DemoDB.html#tests.unit_tests.db.test_yawning_titan_db.DemoDB.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="n">QueryInstance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Search for docs using Query.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DemoDB.update"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.DemoDB.html#tests.unit_tests.db.test_yawning_titan_db.DemoDB.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">doc</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">author</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Document</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update a doc by uuid.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">author</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DemoDB.upsert"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.DemoDB.html#tests.unit_tests.db.test_yawning_titan_db.DemoDB.upsert">[docs]</a>    <span class="k">def</span> <span class="nf">upsert</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">doc</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">,</span>
+        <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">author</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Document</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Upsert a doc by uuid.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">author</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DemoDB.remove_by_cond"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.DemoDB.html#tests.unit_tests.db.test_yawning_titan_db.DemoDB.remove_by_cond">[docs]</a>    <span class="k">def</span> <span class="nf">remove_by_cond</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cond</span><span class="p">:</span> <span class="n">QueryInstance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove documents matching a query.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">remove_by_cond</span><span class="p">(</span><span class="n">cond</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DemoDB.remove"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.DemoDB.html#tests.unit_tests.db.test_yawning_titan_db.DemoDB.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove a document with a given uuid.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="test_all"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_all.html#tests.unit_tests.db.test_yawning_titan_db.test_all">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_all</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the YawningTitanDB.insert and YawningTitanDB.all functions.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">demo_db_docs</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="n">results</span> <span class="o">==</span> <span class="n">demo_db_docs</span></div>
+
+
+<div class="viewcode-block" id="test_get"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_get.html#tests.unit_tests.db.test_yawning_titan_db.test_get">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_get</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the awningTitanDB.get function.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">])</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="n">results</span> <span class="o">==</span> <span class="n">item</span></div>
+
+
+<div class="viewcode-block" id="test_search"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_search.html#tests.unit_tests.db.test_yawning_titan_db.test_search">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_search</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the YawningTitanDB.search function.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">uuid</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">DocMetadataSchema</span><span class="o">.</span><span class="n">UUID</span> <span class="o">==</span> <span class="n">uuid</span><span class="p">)</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="n">results</span> <span class="o">==</span> <span class="p">[</span><span class="n">item</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="test_count"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_count.html#tests.unit_tests.db.test_yawning_titan_db.test_count">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_count</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the YawningTitanDB.count function.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">demo_db_docs</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="n">count</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_insert_existing_uuid_fails"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_insert_existing_uuid_fails.html#tests.unit_tests.db.test_yawning_titan_db.test_insert_existing_uuid_fails">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_insert_existing_uuid_fails</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test YawningTitanDB.insert function fails with duplicate uuid&#39;s.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s2">&quot;Ignore me I&#39;m from a unit test!&quot;</span>
+        <span class="n">item</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">YawningTitanDBCriticalError</span><span class="p">):</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="test_get_with_uuid_multiple_fails"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_get_with_uuid_multiple_fails.html#tests.unit_tests.db.test_yawning_titan_db.test_get_with_uuid_multiple_fails">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_get_with_uuid_multiple_fails</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test YawningTitanDB.get_with_uuid function fails with duplicate uuid&#39;s.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="n">item_1</span> <span class="o">=</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">item_2</span> <span class="o">=</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s2">&quot;Ignore me I&#39;m from a unit test!&quot;</span>
+        <span class="n">item_1</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item_1</span><span class="p">)</span>
+
+        <span class="c1"># Have to go this way around as inserting both with same uuid won&#39;t work.</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item_2</span><span class="p">)</span>
+        <span class="n">item_2_original_uuid</span> <span class="o">=</span> <span class="n">item_2</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span>
+        <span class="n">item_2</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">item_2</span><span class="p">,</span> <span class="n">item_2_original_uuid</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">YawningTitanDBCriticalError</span><span class="p">):</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+
+    <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="test_update"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_update.html#tests.unit_tests.db.test_yawning_titan_db.test_update">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_update</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the YawningTitanDB.insert and YawningTitanDB.update functions.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">updated_item</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">updated_item</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">30</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="n">updated_item</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">updated_item</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">])</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">updated_item</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">])</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">30</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;created_at&quot;</span><span class="p">]</span>
+            <span class="o">&lt;</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;updated_at&quot;</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_update_metadata"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_update_metadata.html#tests.unit_tests.db.test_yawning_titan_db.test_update_metadata">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_update_metadata</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the YawningTitanDB.update function with new metadata.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">item</span><span class="p">,</span>
+            <span class="n">uuid</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Johns file&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A description of Johns file&quot;</span><span class="p">,</span>
+            <span class="n">author</span><span class="o">=</span><span class="s2">&quot;Jane Doe&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">])</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Johns file&quot;</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;A description of Johns file&quot;</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;author&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Jane Doe&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;created_at&quot;</span><span class="p">]</span>
+            <span class="o">&lt;</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;updated_at&quot;</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_update_locked_fails"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_update_locked_fails.html#tests.unit_tests.db.test_yawning_titan_db.test_update_locked_fails">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_update_locked_fails</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the YawningTitanDB.update function fails when updating a locked entry.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">YawningTitanDBError</span><span class="p">):</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="n">doc</span><span class="o">=</span><span class="n">item</span><span class="p">,</span>
+                <span class="n">uuid</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">],</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Johns file&quot;</span><span class="p">,</span>
+                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A description of Johns file&quot;</span><span class="p">,</span>
+                <span class="n">author</span><span class="o">=</span><span class="s2">&quot;Jane Doe&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="test_upsert_insert"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_upsert_insert.html#tests.unit_tests.db.test_yawning_titan_db.test_upsert_insert">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_upsert_insert</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the YawningTitanDB.upsert function with a new insert.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">])</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">assert</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">item</span></div>
+
+
+<div class="viewcode-block" id="test_upsert_update"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_upsert_update.html#tests.unit_tests.db.test_yawning_titan_db.test_upsert_update">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_upsert_update</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the YawningTitanDB.upsert function with an update.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">updated_item</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">updated_item</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">30</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="n">updated_item</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">updated_item</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">])</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">updated_item</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">])</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">30</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;created_at&quot;</span><span class="p">]</span>
+            <span class="o">&lt;</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;updated_at&quot;</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_remove"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_remove.html#tests.unit_tests.db.test_yawning_titan_db.test_remove">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_remove</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the YawningTitanDB.remove function.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">demo_db_docs</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">uuid</span> <span class="o">=</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span>
+        <span class="n">removed_uuids</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">remove_by_cond</span><span class="p">(</span><span class="n">DemoSchema</span><span class="o">.</span><span class="n">AGE</span> <span class="o">==</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;age&quot;</span><span class="p">])</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="k">assert</span> <span class="n">results</span> <span class="o">==</span> <span class="p">[</span><span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+        <span class="k">assert</span> <span class="n">removed_uuids</span> <span class="o">==</span> <span class="p">[</span><span class="n">uuid</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="test_remove_with_uuid"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_remove_with_uuid.html#tests.unit_tests.db.test_yawning_titan_db.test_remove_with_uuid">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_remove_with_uuid</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the YawningTitanDB.remove_with_uuid function.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">demo_db_docs</span><span class="p">:</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">uuid</span> <span class="o">=</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span>
+        <span class="n">removed_uuid</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="k">assert</span> <span class="n">results</span> <span class="o">==</span> <span class="p">[</span><span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+        <span class="k">assert</span> <span class="n">removed_uuid</span> <span class="o">==</span> <span class="n">uuid</span></div>
+
+
+<div class="viewcode-block" id="test_remove_with_uuid_multiple_fails"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_remove_with_uuid_multiple_fails.html#tests.unit_tests.db.test_yawning_titan_db.test_remove_with_uuid_multiple_fails">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_remove_with_uuid_multiple_fails</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test YawningTitanDB.remove_with_uuid function fails with duplicate uuid&#39;s.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="n">item_1</span> <span class="o">=</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">item_1_original_uuid</span> <span class="o">=</span> <span class="n">item_1</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item_1</span><span class="p">)</span>
+
+        <span class="c1"># Have to go this way around as inserting both with same uuid won&#39;t work.</span>
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s2">&quot;Ignore me I&#39;m from a unit test!&quot;</span>
+        <span class="n">item_1</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">uuid</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item_1</span><span class="p">)</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">item_1</span><span class="p">,</span> <span class="n">item_1_original_uuid</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">YawningTitanDBCriticalError</span><span class="p">):</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+
+    <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="test_remove_locked_fails"><a class="viewcode-back" href="../../../../source/_autosummary/tests.unit_tests.db.test_yawning_titan_db.test_remove_locked_fails.html#tests.unit_tests.db.test_yawning_titan_db.test_remove_locked_fails">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_remove_locked_fails</span><span class="p">(</span><span class="n">demo_db_docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the YawningTitanDB.remove function fails when removing a locked entry.&quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="o">.</span><span class="n">object</span><span class="p">(</span><span class="n">YawningTitanDB</span><span class="p">,</span> <span class="s2">&quot;__init__&quot;</span><span class="p">,</span> <span class="n">yawning_titan_db_init_patch</span><span class="p">):</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">DemoDB</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">demo_db_docs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">YawningTitanDBError</span><span class="p">):</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">])</span>
+
+        <span class="n">db</span><span class="o">.</span><span class="n">close_and_delete_temp_db</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

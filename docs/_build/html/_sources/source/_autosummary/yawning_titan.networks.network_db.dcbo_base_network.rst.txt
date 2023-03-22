@@ -1,0 +1,6 @@
+yawning\_titan.networks.network\_db.dcbo\_base\_network
+=======================================================
+
+.. currentmodule:: yawning_titan.networks.network_db
+
+.. autofunction:: dcbo_base_network

@@ -1,0 +1,6 @@
+tests.unit\_tests.config.core.test\_config\_group.test\_repeat\_group\_validation
+=================================================================================
+
+.. currentmodule:: tests.unit_tests.config.core.test_config_group
+
+.. autofunction:: test_repeat_group_validation

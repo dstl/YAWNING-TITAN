@@ -1,0 +1,6 @@
+tests.conftest.network\_manager
+===============================
+
+.. currentmodule:: tests.conftest
+
+.. autofunction:: network_manager

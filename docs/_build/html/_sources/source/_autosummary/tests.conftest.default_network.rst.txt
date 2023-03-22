@@ -1,0 +1,6 @@
+tests.conftest.default\_network
+===============================
+
+.. currentmodule:: tests.conftest
+
+.. autofunction:: default_network

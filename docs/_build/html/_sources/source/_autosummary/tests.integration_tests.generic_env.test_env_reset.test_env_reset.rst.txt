@@ -1,0 +1,6 @@
+tests.integration\_tests.generic\_env.test\_env\_reset.test\_env\_reset
+=======================================================================
+
+.. currentmodule:: tests.integration_tests.generic_env.test_env_reset
+
+.. autofunction:: test_env_reset

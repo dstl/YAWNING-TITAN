@@ -1,0 +1,6 @@
+yawning\_titan.networks.network\_creator.get\_network\_from\_matrix\_and\_positions
+===================================================================================
+
+.. currentmodule:: yawning_titan.networks.network_creator
+
+.. autofunction:: get_network_from_matrix_and_positions

@@ -1,0 +1,7 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.unit\_tests.game\_modes.test\_game\_mode
+==============================================
+
+.. automodule:: tests.unit_tests.game_modes.test_game_mode

@@ -1,0 +1,24 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.unit\_tests.game\_modes.agents.test\_red\_agent\_config
+=============================================================
+
+.. automodule:: tests.unit_tests.game_modes.agents.test_red_agent_config
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+
+      default_red
+      test_default_red_from_legacy
+      test_setting_target_without_using
+      test_targeting_vulnerable_nodes_when_defences_are_ignored

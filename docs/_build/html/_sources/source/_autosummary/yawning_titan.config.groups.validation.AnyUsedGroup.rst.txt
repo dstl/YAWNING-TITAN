@@ -1,0 +1,42 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.groups.validation.AnyUsedGroup
+====================================================
+
+.. currentmodule:: yawning_titan.config.groups.validation
+
+.. autoclass:: AnyUsedGroup
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~AnyUsedGroup.get_config_elements
+      ~AnyUsedGroup.get_non_config_elements
+      ~AnyUsedGroup.set_from_dict
+      ~AnyUsedGroup.set_from_yaml
+      ~AnyUsedGroup.stringify
+      ~AnyUsedGroup.to_dict
+      ~AnyUsedGroup.to_legacy_dict
+      ~AnyUsedGroup.to_yaml
+      ~AnyUsedGroup.validate
+      ~AnyUsedGroup.validate_elements
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~AnyUsedGroup.config_groups
+      ~AnyUsedGroup.config_items

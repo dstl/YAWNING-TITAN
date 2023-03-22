@@ -1,0 +1,39 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.db.schemas.ObservationSpaceSchema
+================================================
+
+.. currentmodule:: yawning_titan.db.schemas
+
+.. autoclass:: ObservationSpaceSchema
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~ObservationSpaceSchema.ATTACKED_NODES
+      ~ObservationSpaceSchema.ATTACKING_NODES
+      ~ObservationSpaceSchema.AVERAGE_VULNERABILITY
+      ~ObservationSpaceSchema.COMPROMISED_STATUS
+      ~ObservationSpaceSchema.GRAPH_CONNECTIVITY
+      ~ObservationSpaceSchema.NODE_CONNECTIONS
+      ~ObservationSpaceSchema.RED_AGENT_SKILL
+      ~ObservationSpaceSchema.SPECIAL_NODES
+      ~ObservationSpaceSchema.VULNERABILITIES

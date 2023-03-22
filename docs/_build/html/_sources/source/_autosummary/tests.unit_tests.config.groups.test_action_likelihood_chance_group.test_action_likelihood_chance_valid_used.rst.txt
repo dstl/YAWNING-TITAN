@@ -1,0 +1,6 @@
+tests.unit\_tests.config.groups.test\_action\_likelihood\_chance\_group.test\_action\_likelihood\_chance\_valid\_used
+=====================================================================================================================
+
+.. currentmodule:: tests.unit_tests.config.groups.test_action_likelihood_chance_group
+
+.. autofunction:: test_action_likelihood_chance_valid_used

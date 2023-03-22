@@ -1,0 +1,42 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.game\_modes.components.rewards.Rewards
+=====================================================
+
+.. currentmodule:: yawning_titan.game_modes.components.rewards
+
+.. autoclass:: Rewards
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~Rewards.get_config_elements
+      ~Rewards.get_non_config_elements
+      ~Rewards.set_from_dict
+      ~Rewards.set_from_yaml
+      ~Rewards.stringify
+      ~Rewards.to_dict
+      ~Rewards.to_legacy_dict
+      ~Rewards.to_yaml
+      ~Rewards.validate
+      ~Rewards.validate_elements
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~Rewards.config_groups
+      ~Rewards.config_items

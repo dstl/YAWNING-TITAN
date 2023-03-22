@@ -1,0 +1,49 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.unit\_tests.config.core.test\_config\_group
+=================================================
+
+.. automodule:: tests.unit_tests.config.core.test_config_group
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+
+      multi_tier_test_group
+      test_create_from_legacy
+      test_group
+      test_multi_tier_group_tier_1_item_failed
+      test_multi_tier_group_tier_1_validation_group_failed
+      test_multi_tier_group_tier_2_item_failed
+      test_multi_tier_group_tier_2_validation_group_failed
+      test_multi_tier_group_validation_passed
+      test_repeat_group_validation
+      test_repeat_item_validation
+      test_set_config_item_to_value
+      test_stringify
+      test_to_dict
+      test_yaml_round_trip
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+
+      Group
+      GroupTier1
+      GroupTier2

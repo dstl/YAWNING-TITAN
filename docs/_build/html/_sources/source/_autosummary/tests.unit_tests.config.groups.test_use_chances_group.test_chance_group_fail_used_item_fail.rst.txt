@@ -1,0 +1,6 @@
+tests.unit\_tests.config.groups.test\_use\_chances\_group.test\_chance\_group\_fail\_used\_item\_fail
+=====================================================================================================
+
+.. currentmodule:: tests.unit_tests.config.groups.test_use_chances_group
+
+.. autofunction:: test_chance_group_fail_used_item_fail

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.envs.specific.nsa_node_def &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.envs.specific.nsa_node_def</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for yawning_titan.envs.specific.nsa_node_def</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">A new node network that can be configured for multiple different configurations.</span>
+
+<span class="sd">Paper:</span>
+<span class="sd">https://www.nsa.gov/portals/70/documents/resources/everyone/digital-media-center/publications/the-next-wave/TNW-22-1.pdf</span>
+
+<span class="sd">Currently suppports:</span>
+<span class="sd">    - 18 node network from the research paper.</span>
+<span class="sd">    - a network creator that allows you to use multiple topologies and change the connectivity of the network.</span>
+
+<span class="sd">Red agent actions:</span>
+<span class="sd">    Spread:</span>
+<span class="sd">        Tries to spread to each node connected to a compromised node.</span>
+<span class="sd">    Randomly infect:</span>
+<span class="sd">        Tries to randomly infect every currently un-compromised node.</span>
+
+<span class="sd">Configurable parameters:</span>
+<span class="sd">    chance_to_spread</span>
+<span class="sd">        This is the chance for the red agent to spread between nodes</span>
+<span class="sd">    chance_to_spread_during_patch</span>
+<span class="sd">        There is a chance that when a compromised node is patched the red agent &quot;escapes&quot; to neaby nodes and compromises</span>
+<span class="sd">        them.</span>
+<span class="sd">    chance_to_randomly_compromise</span>
+<span class="sd">        This is the chance that the red agent randomly infects a un-compromised node.</span>
+<span class="sd">    cost_of_isolate</span>
+<span class="sd">        The cost (negative reward) associated with performing the isolate action (initially set to 10 based on data</span>
+<span class="sd">        from the paper).</span>
+<span class="sd">    cost_of_patch</span>
+<span class="sd">        The cost (negative reward) associated with performing the patch action (initially set to 5 based on data from</span>
+<span class="sd">        the paper).</span>
+<span class="sd">    cost_of_nothing</span>
+<span class="sd">        The cost (negative reward) associated with performing the do nothing action (initially set to 0</span>
+<span class="sd">        based on data from the paper).</span>
+<span class="sd">    end</span>
+<span class="sd">        The number of steps that the blue agent must survive for to win.</span>
+<span class="sd">    spread_vs_random_intrusio</span>
+<span class="sd">        The chance that the red agent will choose the spread action on its turn as apposed to the random intrusion</span>
+<span class="sd">        action.</span>
+<span class="sd">    punish_for_isolate</span>
+<span class="sd">        Either True or False. If True then each step the agent is punished based on the number of isolated nodes there</span>
+<span class="sd">        are.</span>
+<span class="sd">    reward_method</span>
+<span class="sd">        Either 0, 1 or 2. Each constitutes a different method of rewarding the agent:</span>
+<span class="sd">            - 0 is the papers reward system.</span>
+<span class="sd">            - 1 is my reward system rewarding based on number of un-compromised nodes.</span>
+<span class="sd">            - 2 is the minimal reward system. The agent gets 1 for a win or -1 for a loss.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">gym</span> <span class="kn">import</span> <span class="n">spaces</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan.agents.nsa_red</span> <span class="kn">import</span> <span class="n">NSARed</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.helpers.graph2plot</span> <span class="kn">import</span> <span class="n">CustomEnvGraph</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.specific.core.nsa_node_collection</span> <span class="kn">import</span> <span class="n">NodeCollection</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.network</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.network_db</span> <span class="kn">import</span> <span class="n">default_18_node_network</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="NodeEnv"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.specific.nsa_node_def.NodeEnv.html#yawning_titan.envs.specific.nsa_node_def.NodeEnv">[docs]</a><span class="k">class</span> <span class="nc">NodeEnv</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Class that creates a similar environments to that presented in Ridley 17 (Ref above).&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="NodeEnv.__init__"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.specific.nsa_node_def.html#yawning_titan.envs.specific.nsa_node_def.NodeEnv.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">chance_to_spread</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">chance_to_spread_during_patch</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">chance_to_randomly_compromise</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">,</span>
+        <span class="n">cost_of_isolate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">cost_of_patch</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">cost_of_nothing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">end</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">spread_vs_random_intrusion</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">punish_for_isolate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">reward_method</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">network</span><span class="p">:</span> <span class="n">Network</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">NodeEnv</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># sets up the configuration for the env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chance_to_spread</span> <span class="o">=</span> <span class="n">chance_to_spread</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chance_to_spread_during_patch</span> <span class="o">=</span> <span class="n">chance_to_spread_during_patch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chance_to_randomly_compromise</span> <span class="o">=</span> <span class="n">chance_to_randomly_compromise</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost_of_isolate</span> <span class="o">=</span> <span class="n">cost_of_isolate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost_of_patch</span> <span class="o">=</span> <span class="n">cost_of_patch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost_of_nothing</span> <span class="o">=</span> <span class="n">cost_of_nothing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spread_vs_random_intrusion</span> <span class="o">=</span> <span class="n">spread_vs_random_intrusion</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">punish_for_isolate</span> <span class="o">=</span> <span class="n">punish_for_isolate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reward_method</span> <span class="o">=</span> <span class="n">reward_method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph_plotter</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># TODO: replace this with a full implementation of networkx Network</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">default_18_node_network</span><span class="p">()</span><span class="o">.</span><span class="n">to_adj_matrix_and_positions</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">NodeCollection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chance_to_spread_during_patch</span><span class="p">)</span>
+        <span class="c1"># skill, action_set, action_probabilities, node_set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RED</span> <span class="o">=</span> <span class="n">NSARed</span><span class="p">(</span>
+            <span class="mi">1</span><span class="p">,</span>
+            <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">spread_vs_random_intrusion</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">spread_vs_random_intrusion</span><span class="p">],</span>
+            <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_number_of_nodes</span><span class="p">())],</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span> <span class="o">=</span> <span class="n">spaces</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_number_of_nodes</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="o">=</span> <span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+            <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">high</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_number_of_nodes</span><span class="p">()</span>
+                <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_number_of_nodes</span><span class="p">()</span> <span class="o">+</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">env_observation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_observation</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Experiment Started&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting State: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_observation</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NodeEnv.reset"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.specific.nsa_node_def.NodeEnv.html#yawning_titan.envs.specific.nsa_node_def.NodeEnv.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reset the environment to the default state.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A new starting observation (numpy array)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">NodeCollection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">network</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chance_to_spread_during_patch</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env_observation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_observation</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RED</span> <span class="o">=</span> <span class="n">NSARed</span><span class="p">(</span>
+            <span class="mi">1</span><span class="p">,</span>
+            <span class="p">[</span><span class="s2">&quot;10&quot;</span><span class="p">,</span> <span class="s2">&quot;11&quot;</span><span class="p">],</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">spread_vs_random_intrusion</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">spread_vs_random_intrusion</span><span class="p">],</span>
+            <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_number_of_nodes</span><span class="p">())],</span>
+        <span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Environment Reset&quot;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting State: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_observation</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env_observation</span></div>
+
+<div class="viewcode-block" id="NodeEnv.step"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.specific.nsa_node_def.NodeEnv.html#yawning_titan.envs.specific.nsa_node_def.NodeEnv.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Take one timestep within the environment.</span>
+
+<span class="sd">        Execute the actions for both Blue RL agent and</span>
+<span class="sd">        hard-hard coded Red agent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            action: The action value generated from the Blue RL agent (int)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            observation: The next environment observation (numpy array)</span>
+<span class="sd">            reward: The reward value for that timestep (int)</span>
+<span class="sd">            done: Whether the epsiode is done (bool)</span>
+<span class="sd">            info: a dictionary containing info about the current state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Timestep: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;RED AGENTS TURN&quot;&quot;&quot;</span>
+        <span class="n">red_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RED</span><span class="o">.</span><span class="n">choose_action</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">RED</span><span class="o">.</span><span class="n">do_action</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+            <span class="n">red_action</span><span class="p">,</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">chance_to_spread</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chance_to_randomly_compromise</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="n">number_uncompromised</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_number_of_un_compromised</span><span class="p">()</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;BLUE AGENTS TURN&quot;&quot;&quot;</span>
+        <span class="c1"># checks if there are no safe nodes left --&gt; blue agent loss</span>
+        <span class="k">if</span> <span class="n">number_uncompromised</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;All states taken - Game Over&quot;</span><span class="p">)</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward_method</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward_method</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">reward</span> <span class="o">=</span> <span class="o">-</span><span class="mi">500</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">reward</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="c1"># if there are still some safe nodes then the blue agent takes their go</span>
+            <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># blue agent does nothing</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Blue Action: DO NOTHING&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward_method</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">reward</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">cost_of_nothing</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">reward</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># converts the single number for the action into a node and action value</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="n">action</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">action_node</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">action</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="n">action_taken</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">action</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">action_taken</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># blue agent changes the isolation status on a node (if true then makes it false ect)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Blue Action: ISOLATE NODE </span><span class="si">{</span><span class="n">action_node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">modify_node</span><span class="p">(</span><span class="n">action_node</span><span class="p">,</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+                    <span class="c1"># rewards for the action</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward_method</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">reward</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">cost_of_isolate</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">reward</span> <span class="o">=</span> <span class="mi">0</span>
+
+                <span class="k">elif</span> <span class="n">action_taken</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="c1"># blue patches a node</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Blue Action: PATCH NODE </span><span class="si">{</span><span class="n">action_node</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">modify_node</span><span class="p">(</span><span class="n">action_node</span><span class="p">,</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                    <span class="c1"># if a node is infected and patched then the red agent can spread to connected nodes</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">spread</span><span class="p">(</span><span class="n">action_node</span><span class="p">)</span>
+
+                    <span class="c1"># rewards for the action</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward_method</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">reward</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">cost_of_patch</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">reward</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="c1"># rewards for the current step</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward_method</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">calculate_reward</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward_method</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">calculate_reward</span><span class="p">()</span>
+
+        <span class="c1"># gets the current observation from the environment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env_observation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_observation</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># if the total number of steps reaches the set end then the blue agent wins and is rewarded accordingly</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">:</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward_method</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">reward_method</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">reward</span> <span class="o">=</span> <span class="mi">500</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">reward</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># If turned on then the agent is punished for keeping nodes isolated</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">punish_for_isolate</span><span class="p">:</span>
+            <span class="n">reward</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_number_of_isolated</span><span class="p">()</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Total Reward: </span><span class="si">{</span><span class="n">reward</span><span class="si">}</span><span class="s2"> Total No. of Steps : </span><span class="si">{</span><span class="n">reward</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;No. of Compromised Machines: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_compromised_nodes</span><span class="p">())</span><span class="si">}</span><span class="s2"> &quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env_observation</span><span class="p">,</span>
+            <span class="n">reward</span><span class="p">,</span>
+            <span class="n">done</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_number_of_un_compromised</span><span class="p">()},</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="NodeEnv.render"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.specific.nsa_node_def.NodeEnv.html#yawning_titan.envs.specific.nsa_node_def.NodeEnv.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;human&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Render the network using the graph2plot class.</span>
+
+<span class="sd">        This uses a networkx representation of the network.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mode: the mode of the rendering</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_plotter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph_plotter</span> <span class="o">=</span> <span class="n">CustomEnvGraph</span><span class="p">()</span>
+        <span class="n">comp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_compromised_nodes</span><span class="p">()))</span>
+        <span class="n">safe</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_un_compromised_nodes</span><span class="p">()))</span>
+        <span class="n">main_graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_netx_graph</span><span class="p">()</span>
+        <span class="n">main_graph_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">get_netx_pos</span><span class="p">()</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">calculate_reward</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph_plotter</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span>
+            <span class="n">main_graph</span><span class="p">,</span>
+            <span class="n">main_graph_pos</span><span class="p">,</span>
+            <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">comp</span><span class="p">},</span>
+            <span class="n">safe</span><span class="p">,</span>
+            <span class="p">[],</span>
+            <span class="n">reward</span><span class="p">,</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="mf">0.5</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">main_graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">},</span>
+            <span class="p">[],</span>
+            <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.db.compatibility_query.NetworkCompatibilityQuery &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.db.compatibility_query.NetworkNodeCompatibilityQuery" href="yawning_titan.db.compatibility_query.NetworkNodeCompatibilityQuery.html" />
+    <link rel="prev" title="yawning_titan.db.compatibility_query.HighValueNodeCompatibilityQuery" href="yawning_titan.db.compatibility_query.HighValueNodeCompatibilityQuery.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="yawning_titan.db.compatibility_query.html">yawning_titan.db.compatibility_query</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.compatibility_query.check_element.html">yawning_titan.db.compatibility_query.check_element</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.compatibility_query.EntryNodeCompatibilityQuery.html">yawning_titan.db.compatibility_query.EntryNodeCompatibilityQuery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.compatibility_query.HighValueNodeCompatibilityQuery.html">yawning_titan.db.compatibility_query.HighValueNodeCompatibilityQuery</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">yawning_titan.db.compatibility_query.NetworkCompatibilityQuery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.compatibility_query.NetworkNodeCompatibilityQuery.html">yawning_titan.db.compatibility_query.NetworkNodeCompatibilityQuery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.compatibility_query.html#yawning_titan.db.compatibility_query.check_element"><code class="docutils literal notranslate"><span class="pre">check_element()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.compatibility_query.html#yawning_titan.db.compatibility_query.EntryNodeCompatibilityQuery"><code class="docutils literal notranslate"><span class="pre">EntryNodeCompatibilityQuery</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.compatibility_query.html#yawning_titan.db.compatibility_query.HighValueNodeCompatibilityQuery"><code class="docutils literal notranslate"><span class="pre">HighValueNodeCompatibilityQuery</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.compatibility_query.html#yawning_titan.db.compatibility_query.NetworkNodeCompatibilityQuery"><code class="docutils literal notranslate"><span class="pre">NetworkNodeCompatibilityQuery</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.compatibility_query.html#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery"><code class="docutils literal notranslate"><span class="pre">NetworkCompatibilityQuery</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.db.doc_metadata.html">yawning_titan.db.doc_metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.db.query.html">yawning_titan.db.query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.db.schemas.html">yawning_titan.db.schemas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.db.yawning_titan_db.html">yawning_titan.db.yawning_titan_db</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.html">yawning_titan</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.db.html">yawning_titan.db</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.db.compatibility_query.html">yawning_titan.db.compatibility_query</a></li>
+      <li class="breadcrumb-item active">yawning_titan.db.compatibility_query.NetworkCompatibilityQuery</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="yawning-titan-db-compatibility-query-networkcompatibilityquery">
+<h1>yawning_titan.db.compatibility_query.NetworkCompatibilityQuery<a class="headerlink" href="#yawning-titan-db-compatibility-query-networkcompatibilityquery" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.db.compatibility_query.</span></span><span class="sig-name descname"><span class="pre">NetworkCompatibilityQuery</span></span><a class="reference internal" href="../../_modules/yawning_titan/db/compatibility_query.html#NetworkCompatibilityQuery"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.queries.Query" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code></a></p>
+<p>The <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a> class extends <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.queries.Query" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.queries.Query</span></code></a>.</p>
+<p>Extended to provide common pre-defined test functions that call <code class="xref py py-func docutils literal notranslate"><span class="pre">tinydb.queries.Query.test()</span></code>, These functions
+are specific to the compatibility of :class: <cite>~yawning_titan.game_modes.game_mode.GameMode</cite>
+and :class: <cite>~yawning_titan.networks.network.Network</cite> objects.</p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.all" title="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span></code></a></p></td>
+<td><p>Check if a condition is met by all documents in a list, where a condition can also be a sequence (e.g.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.any" title="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.any"><code class="xref py py-obj docutils literal notranslate"><span class="pre">any</span></code></a></p></td>
+<td><p>Check if a condition is met by any document in a list, where a condition can also be a sequence (e.g.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.compatible_with" title="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.compatible_with"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compatible_with</span></code></a></p></td>
+<td><p>Tests the game mode can work with a specified network <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.exists" title="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.exists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exists</span></code></a></p></td>
+<td><p>Test for a dict where a provided key exists.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.fragment" title="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.fragment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fragment</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.is_cacheable" title="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.is_cacheable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_cacheable</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.map" title="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map</span></code></a></p></td>
+<td><p>Add a function to the query path.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.matches" title="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.matches"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matches</span></code></a></p></td>
+<td><p>Run a regex test against a dict value (whole string has to match).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.noop" title="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.noop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">noop</span></code></a></p></td>
+<td><p>Always evaluate to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.one_of" title="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.one_of"><code class="xref py py-obj docutils literal notranslate"><span class="pre">one_of</span></code></a></p></td>
+<td><p>Check if the value is contained in a list or generator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.search" title="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search</span></code></a></p></td>
+<td><p>Run a regex test against a dict value (only substring string has to match).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.test" title="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">test</span></code></a></p></td>
+<td><p>Run a user-defined test function against a dict value.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.compatible_with">
+<span class="sig-name descname"><span class="pre">compatible_with</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_unbounded</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/db/compatibility_query.html#NetworkCompatibilityQuery.compatible_with"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.compatible_with" title="Permalink to this definition"></a></dt>
+<dd><p>Tests the game mode can work with a specified network <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
+<p>Fields where all network parameter restrictions are satisfied or unrestricted are returned in the search.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">yawning_titan.game_modes.game_mode_db</span> <span class="kn">import</span> <span class="n">GameModeDB</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">yawning_titan.db.query</span> <span class="kn">import</span> <span class="n">YawningTitanQuery</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">GameModeDB</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">YawningTitanQuery</span><span class="o">.</span><span class="n">GAME_MODE</span><span class="o">.</span><span class="n">compatible_with</span><span class="p">(</span><span class="n">network</span><span class="p">)))</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> – The target value of a field as an instance of :class: <cite>~yawning_titan.networks.network.Network</cite>.</p></li>
+<li><p><strong>include_unbounded</strong> – Whether to include fields where part of the range is unbounded.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if it does exist, otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.__call__" title="Permalink to this definition"></a></dt>
+<dd><p>Evaluate the query to check if it matches a specified value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> – The value to check.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Whether the value matches this query.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.all">
+<span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.all" title="Permalink to this definition"></a></dt>
+<dd><p>Check if a condition is met by all documents in a list,
+where a condition can also be a sequence (e.g. list).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">f1</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">f2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Matches:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;f1&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;f2&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;f2&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}]}</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">f1</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Matches:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;f1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cond</strong> – Either a query that all documents have to match or a list
+which has to be contained in the tested document.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.any">
+<span class="sig-name descname"><span class="pre">any</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.any" title="Permalink to this definition"></a></dt>
+<dd><p>Check if a condition is met by any document in a list,
+where a condition can also be a sequence (e.g. list).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">f1</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">f2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Matches:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;f1&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;f2&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;f2&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}]}</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">f1</span><span class="o">.</span><span class="n">any</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Matches:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;f1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]}</span>
+<span class="p">{</span><span class="s1">&#39;f1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cond</strong> – Either a query that at least one document has to match or
+a list of which at least one document has to be contained
+in the tested document.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.exists">
+<span class="sig-name descname"><span class="pre">exists</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.exists" title="Permalink to this definition"></a></dt>
+<dd><p>Test for a dict where a provided key exists.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">f1</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.fragment">
+<span class="sig-name descname"><span class="pre">fragment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.fragment" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.is_cacheable">
+<span class="sig-name descname"><span class="pre">is_cacheable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.is_cacheable" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.map">
+<span class="sig-name descname"><span class="pre">map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.map" title="Permalink to this definition"></a></dt>
+<dd><p>Add a function to the query path. Similar to __getattr__ but for
+arbitrary functions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.matches">
+<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.matches" title="Permalink to this definition"></a></dt>
+<dd><p>Run a regex test against a dict value (whole string has to match).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">f1</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\w+$&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>regex</strong> – The regular expression to use for matching</p></li>
+<li><p><strong>flags</strong> – regex flags to pass to <code class="docutils literal notranslate"><span class="pre">re.match</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.noop">
+<span class="sig-name descname"><span class="pre">noop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.noop" title="Permalink to this definition"></a></dt>
+<dd><p>Always evaluate to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>Useful for having a base value when composing queries dynamically.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.one_of">
+<span class="sig-name descname"><span class="pre">one_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.one_of" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the value is contained in a list or generator.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">f1</span><span class="o">.</span><span class="n">one_of</span><span class="p">([</span><span class="s1">&#39;value 1&#39;</span><span class="p">,</span> <span class="s1">&#39;value 2&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>items</strong> – The list of items to check with</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flags</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.search" title="Permalink to this definition"></a></dt>
+<dd><p>Run a regex test against a dict value (only substring string has to
+match).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">f1</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\w+$&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>regex</strong> – The regular expression to use for matching</p></li>
+<li><p><strong>flags</strong> – regex flags to pass to <code class="docutils literal notranslate"><span class="pre">re.match</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.test">
+<span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.test" title="Permalink to this definition"></a></dt>
+<dd><p>Run a user-defined test function against a dict value.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">test_func</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">val</span> <span class="o">==</span> <span class="mi">42</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Query</span><span class="p">()</span><span class="o">.</span><span class="n">f1</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">test_func</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The test fuction provided needs to be deterministic (returning the
+same value when provided with the same arguments), otherwise this
+may mess up the query cache that <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.table.Table" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a>
+implements.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> – The function to call, passing the dict as the first
+argument</p></li>
+<li><p><strong>args</strong> – Additional arguments to pass to the test function</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="yawning_titan.db.compatibility_query.HighValueNodeCompatibilityQuery.html" class="btn btn-neutral float-left" title="yawning_titan.db.compatibility_query.HighValueNodeCompatibilityQuery" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.db.compatibility_query.NetworkNodeCompatibilityQuery.html" class="btn btn-neutral float-right" title="yawning_titan.db.compatibility_query.NetworkNodeCompatibilityQuery" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

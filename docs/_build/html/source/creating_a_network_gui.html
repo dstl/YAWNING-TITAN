@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create a Network &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Running a session" href="running_a_session_gui.html" />
+    <link rel="prev" title="Create a game mode" href="creating_a_game_mode_gui.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yt_gui.html">Yawning-Titan GUI</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="creating_a_game_mode_gui.html">Create a game mode</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Create a Network</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gettting-started">Gettting started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#copying-a-network">Copying a network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-new-network">Creating a new network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deleting-a-network">Deleting a network</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#template">Template</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#node-editor">Node editor</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="running_a_session_gui.html">Running a session</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yt_gui.html">Yawning-Titan GUI</a></li>
+      <li class="breadcrumb-item active">Create a Network</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="create-a-network">
+<h1>Create a Network<a class="headerlink" href="#create-a-network" title="Permalink to this heading"></a></h1>
+<section id="gettting-started">
+<h2>Gettting started<a class="headerlink" href="#gettting-started" title="Permalink to this heading"></a></h2>
+<p>To get started, Navigate to the network manager (node tree icon) page from the sidebar or main menu</p>
+<a class="reference internal image-reference" href="../_images/create_template_network.gif"><img alt="create network" src="../_images/create_template_network.gif" style="width: 800px;" /></a>
+</section>
+<section id="copying-a-network">
+<h2>Copying a network<a class="headerlink" href="#copying-a-network" title="Permalink to this heading"></a></h2>
+<p>Existing networks can be copied by clicking the <em>clipboard icon</em> of the network that should be copied and entering
+a name for the resultant network in the popup prompt.</p>
+</section>
+<section id="creating-a-new-network">
+<h2>Creating a new network<a class="headerlink" href="#creating-a-new-network" title="Permalink to this heading"></a></h2>
+<p>Networks are created from the network manager page. Networks can either be created from a template or from scratch using
+the cytoscape network editor. To create a network click the <em>New network</em> button and follow the popup prompt.</p>
+</section>
+<section id="deleting-a-network">
+<h2>Deleting a network<a class="headerlink" href="#deleting-a-network" title="Permalink to this heading"></a></h2>
+<p>Networks can be deleted singularly or on mass. To delete a single network click on the <em>trash bin icon</em>.
+To delete multiple networks select multiple networks then with each of these networks show as selected click the
+<em>Delete all</em> button on the bottom right of the window and respond to the prompt.</p>
+<section id="template">
+<h3>Template<a class="headerlink" href="#template" title="Permalink to this heading"></a></h3>
+<p>Template networks are created by choosing a named layout representing a certain
+network topology and a series of configurable parameters dependent on that topology.</p>
+<p>Launch the <em>Template network creator</em> by clicking the <em>Template network</em> button on the <em>Network management</em> page.</p>
+</section>
+<section id="node-editor">
+<h3>Node editor<a class="headerlink" href="#node-editor" title="Permalink to this heading"></a></h3>
+<p>Networks can be created from scratch in the network editor by manually adding nodes and edges.
+Launch the <em>Node editor</em> by clicking the <em>Custom network</em> button on the <em>Network management</em> page.</p>
+<section id="saving-changes">
+<h4>Saving changes<a class="headerlink" href="#saving-changes" title="Permalink to this heading"></a></h4>
+<p>By default when the network is updated the changes will automatically be saved to the network in the database.</p>
+</section>
+<section id="menus">
+<h4>Menus<a class="headerlink" href="#menus" title="Permalink to this heading"></a></h4>
+<section id="node-colour-key">
+<h5>Node colour key<a class="headerlink" href="#node-colour-key" title="Permalink to this heading"></a></h5>
+<p>This dropdown menu contains a key indicating the meaning of each of the colours that a node can appear within the network</p>
+</section>
+<section id="network-toolbars">
+<h5>Network toolbars<a class="headerlink" href="#network-toolbars" title="Permalink to this heading"></a></h5>
+<p>This dropdown menu allows for the selection of the menu which will display on the left side of the window.
+Either the <em>Node list</em> or <em>Network randomisation</em> options can be chosen</p>
+</section>
+</section>
+<section id="node-instantiation">
+<h4>Node Instantiation<a class="headerlink" href="#node-instantiation" title="Permalink to this heading"></a></h4>
+<p>To add an node you must double click a the point you wish for the node to spawn.</p>
+</section>
+<section id="adding-edges-between-nodes">
+<h4>Adding Edges Between Nodes<a class="headerlink" href="#adding-edges-between-nodes" title="Permalink to this heading"></a></h4>
+<p>To add an edge you must click on a node then subsequently click on a different node to join the two with an edge.</p>
+</section>
+<section id="setting-entry-nodes">
+<h4>Setting Entry Nodes<a class="headerlink" href="#setting-entry-nodes" title="Permalink to this heading"></a></h4>
+<section id="manually">
+<h5>Manually<a class="headerlink" href="#manually" title="Permalink to this heading"></a></h5>
+<p>By selecting a node the attributes menu will open to the right of the window;
+here the entry node status of the node can be toggled</p>
+</section>
+<section id="randomly">
+<h5>Randomly<a class="headerlink" href="#randomly" title="Permalink to this heading"></a></h5>
+<p>Entry nodes can be set randomly by opening the <em>Network randomisation</em> menu and toggling on <em>set random entry nodes</em>.
+From here the location preference of the random entry nodes can also be selected</p>
+</section>
+</section>
+<section id="setting-high-value-nodes">
+<h4>Setting High Value Nodes<a class="headerlink" href="#setting-high-value-nodes" title="Permalink to this heading"></a></h4>
+<section id="id1">
+<h5>Manually<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h5>
+<p>By selecting a node the attributes menu will open to the right of the window;
+here the high value node status of the node can be toggled</p>
+</section>
+<section id="id2">
+<h5>Randomly<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h5>
+<p>High value nodes can be set randomly by opening the <em>Network randomisation</em> menu and toggling on <em>set random high value nodes</em>.
+From here the location preference of the random entry nodes can also be selected</p>
+</section>
+</section>
+<section id="setting-node-vulnerability">
+<h4>Setting Node Vulnerability<a class="headerlink" href="#setting-node-vulnerability" title="Permalink to this heading"></a></h4>
+<section id="id3">
+<h5>Manually<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h5>
+<p>By selecting a node the attributes menu will open to the right of the window;
+here vulnerability of the node can be set using a slider</p>
+</section>
+<section id="id4">
+<h5>Randomly<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h5>
+<p>Vulnerability can be set randomly by opening the <em>Network randomisation</em> menu and toggling on <em>set random vulnerability</em>.
+From here the range of random values that the node vulnerability can take must be set</p>
+</section>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="creating_a_game_mode_gui.html" class="btn btn-neutral float-left" title="Create a game mode" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="running_a_session_gui.html" class="btn btn-neutral float-right" title="Running a session" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

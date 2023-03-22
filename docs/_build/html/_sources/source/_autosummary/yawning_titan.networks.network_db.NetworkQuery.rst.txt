@@ -1,0 +1,45 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.networks.network\_db.NetworkQuery
+================================================
+
+.. currentmodule:: yawning_titan.networks.network_db
+
+.. autoclass:: NetworkQuery
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~NetworkQuery.all
+      ~NetworkQuery.any
+      ~NetworkQuery.bt
+      ~NetworkQuery.exists
+      ~NetworkQuery.fragment
+      ~NetworkQuery.is_cacheable
+      ~NetworkQuery.len_bt
+      ~NetworkQuery.len_eq
+      ~NetworkQuery.len_ge
+      ~NetworkQuery.len_gt
+      ~NetworkQuery.len_le
+      ~NetworkQuery.len_lt
+      ~NetworkQuery.map
+      ~NetworkQuery.matches
+      ~NetworkQuery.noop
+      ~NetworkQuery.num_of_entry_nodes
+      ~NetworkQuery.num_of_entry_nodes_between
+      ~NetworkQuery.num_of_high_value_nodes
+      ~NetworkQuery.num_of_high_value_nodes_between
+      ~NetworkQuery.num_of_nodes
+      ~NetworkQuery.num_of_nodes_between
+      ~NetworkQuery.one_of
+      ~NetworkQuery.search
+      ~NetworkQuery.test

@@ -1,0 +1,6 @@
+tests.conftest.game\_mode\_db
+=============================
+
+.. currentmodule:: tests.conftest
+
+.. autofunction:: game_mode_db

@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.networks.network &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.networks.network.Network" href="yawning_titan.networks.network.Network.html" />
+    <link rel="prev" title="yawning_titan.networks" href="yawning_titan.networks.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">yawning_titan.networks.network</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.Network.html">yawning_titan.networks.network.Network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.NetworkLayout.html">yawning_titan.networks.network.NetworkLayout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.RandomEntryNodePreference.html">yawning_titan.networks.network.RandomEntryNodePreference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.RandomHighValueNodePreference.html">yawning_titan.networks.network.RandomHighValueNodePreference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yawning_titan.networks.network.choice"><code class="docutils literal notranslate"><span class="pre">choice()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yawning_titan.networks.network.NetworkLayout"><code class="docutils literal notranslate"><span class="pre">NetworkLayout</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yawning_titan.networks.network.RandomHighValueNodePreference"><code class="docutils literal notranslate"><span class="pre">RandomHighValueNodePreference</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yawning_titan.networks.network.RandomEntryNodePreference"><code class="docutils literal notranslate"><span class="pre">RandomEntryNodePreference</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yawning_titan.networks.network.Network"><code class="docutils literal notranslate"><span class="pre">Network</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.networks.network_creator.html">yawning_titan.networks.network_creator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.networks.network_db.html">yawning_titan.networks.network_db</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.networks.node.html">yawning_titan.networks.node</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.html">yawning_titan</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+      <li class="breadcrumb-item active">yawning_titan.networks.network</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="module-yawning_titan.networks.network">
+<span id="yawning-titan-networks-network"></span><h1>yawning_titan.networks.network<a class="headerlink" href="#module-yawning_titan.networks.network" title="Permalink to this heading"></a></h1>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Network</span></code></a></p></td>
+<td><p>A Network that the NetworkInterface interacts with.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.networks.network.NetworkLayout.html#yawning_titan.networks.network.NetworkLayout" title="yawning_titan.networks.network.NetworkLayout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkLayout</span></code></a></p></td>
+<td><p>An enum class that maps to layout functions in networkx.drawing.layout.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.networks.network.RandomEntryNodePreference.html#yawning_titan.networks.network.RandomEntryNodePreference" title="yawning_titan.networks.network.RandomEntryNodePreference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RandomEntryNodePreference</span></code></a></p></td>
+<td><p>Preference of hw the random entry nodes are placed.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.networks.network.RandomHighValueNodePreference.html#yawning_titan.networks.network.RandomHighValueNodePreference" title="yawning_titan.networks.network.RandomHighValueNodePreference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RandomHighValueNodePreference</span></code></a></p></td>
+<td><p>Preference of how the random high value nodes are placed.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.choice">
+<span class="sig-prename descclassname"><span class="pre">yawning_titan.networks.network.</span></span><span class="sig-name descname"><span class="pre">choice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.choice" title="Permalink to this definition"></a></dt>
+<dd><p>Generates a random sample from a given 1-D array</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.7.0.</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>New code should use the <code class="docutils literal notranslate"><span class="pre">choice</span></code> method of a <code class="docutils literal notranslate"><span class="pre">default_rng()</span></code>
+instance instead; please see the <a class="reference external" href="https://numpy.org/doc/stable/reference/random/index.html#random-quick-start" title="(in NumPy v1.24)"><span>Quick Start</span></a>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>1-D array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – If an ndarray, a random sample is generated from its elements.
+If an int, the random sample is generated as if it were <code class="docutils literal notranslate"><span class="pre">np.arange(a)</span></code></p></li>
+<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em> of </em><em>ints</em><em>, </em><em>optional</em>) – Output shape.  If the given shape is, e.g., <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n,</span> <span class="pre">k)</span></code>, then
+<code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">*</span> <span class="pre">n</span> <span class="pre">*</span> <span class="pre">k</span></code> samples are drawn.  Default is None, in which case a
+single value is returned.</p></li>
+<li><p><strong>replace</strong> (<em>boolean</em><em>, </em><em>optional</em>) – Whether the sample is with or without replacement. Default is True,
+meaning that a value of <code class="docutils literal notranslate"><span class="pre">a</span></code> can be selected multiple times.</p></li>
+<li><p><strong>p</strong> (<em>1-D array-like</em><em>, </em><em>optional</em>) – The probabilities associated with each entry in a.
+If not given, the sample assumes a uniform distribution over all
+entries in <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>samples</strong> – The generated random samples</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>single item or ndarray</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.11)"><strong>ValueError</strong></a> – If a is an int and less than zero, if a or p are not 1-dimensional,
+    if a is an array-like of size 0, if p is not a vector of
+    probabilities, if a and p have different lengths, or if
+    replace=False and the sample size is greater than the population
+    size</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">randint</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">shuffle</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">permutation</span></code></p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">random.Generator.choice</span></code></dt><dd><p>which should be used in new code</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>Setting user-specified probabilities through <code class="docutils literal notranslate"><span class="pre">p</span></code> uses a more general but less
+efficient sampler than the default. The general sampler produces a different sample
+than the optimized sampler even if each element of <code class="docutils literal notranslate"><span class="pre">p</span></code> is 1 / len(a).</p>
+<p>Sampling random rows from a 2-D array is not possible with this function,
+but is possible with <cite>Generator.choice</cite> through its <code class="docutils literal notranslate"><span class="pre">axis</span></code> keyword.</p>
+<p class="rubric">Examples</p>
+<p>Generate a uniform random sample from np.arange(5) of size 3:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">array([0, 3, 4]) # random</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#This is equivalent to np.random.randint(0,5,3)</span>
+</pre></div>
+</div>
+<p>Generate a non-uniform random sample from np.arange(5) of size 3:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">array([3, 3, 0]) # random</span>
+</pre></div>
+</div>
+<p>Generate a uniform random sample from np.arange(5) of size 3 without
+replacement:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">array([3,1,0]) # random</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#This is equivalent to np.random.permutation(np.arange(5))[:3]</span>
+</pre></div>
+</div>
+<p>Generate a non-uniform random sample from np.arange(5) of size
+3 without replacement:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">array([2, 3, 0]) # random</span>
+</pre></div>
+</div>
+<p>Any of the above can be repeated with an arbitrary array-like
+instead of just integers. For instance:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aa_milne_arr</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pooh&#39;</span><span class="p">,</span> <span class="s1">&#39;rabbit&#39;</span><span class="p">,</span> <span class="s1">&#39;piglet&#39;</span><span class="p">,</span> <span class="s1">&#39;Christopher&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">aa_milne_arr</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="go">array([&#39;pooh&#39;, &#39;pooh&#39;, &#39;pooh&#39;, &#39;Christopher&#39;, &#39;piglet&#39;], # random</span>
+<span class="go">      dtype=&#39;&lt;U11&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.networks.network.</span></span><span class="sig-name descname"><span class="pre">NetworkLayout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#NetworkLayout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout" title="Permalink to this definition"></a></dt>
+<dd><p>An enum class that maps to layout functions in networkx.drawing.layout.</p>
+<p>See: <a class="reference external" href="https://networkx.org/documentation/stable/reference/drawing.html#module-networkx.drawing.layout">https://networkx.org/documentation/stable/reference/drawing.html#module-networkx.drawing.layout</a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.BIPARTITE">
+<span class="sig-name descname"><span class="pre">BIPARTITE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'bipartite'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.BIPARTITE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.CIRCULAR">
+<span class="sig-name descname"><span class="pre">CIRCULAR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'circular'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.CIRCULAR" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.FRUCHTERMAN_REINGOLD">
+<span class="sig-name descname"><span class="pre">FRUCHTERMAN_REINGOLD</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'fruchterman_reingold'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.FRUCHTERMAN_REINGOLD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.KAMADA_KAWAI">
+<span class="sig-name descname"><span class="pre">KAMADA_KAWAI</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'kamada_kawai'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.KAMADA_KAWAI" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.MULTIPARTITE">
+<span class="sig-name descname"><span class="pre">MULTIPARTITE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'multipartite'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.MULTIPARTITE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.PLANAR">
+<span class="sig-name descname"><span class="pre">PLANAR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'planar'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.PLANAR" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.RANDOM">
+<span class="sig-name descname"><span class="pre">RANDOM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'random'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.RANDOM" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.RESCALE">
+<span class="sig-name descname"><span class="pre">RESCALE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'rescale'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.RESCALE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.SHELL">
+<span class="sig-name descname"><span class="pre">SHELL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'shell'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.SHELL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.SPECTRAL">
+<span class="sig-name descname"><span class="pre">SPECTRAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'spectral'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.SPECTRAL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.SPIRAL">
+<span class="sig-name descname"><span class="pre">SPIRAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'spiral'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.SPIRAL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.SPRING">
+<span class="sig-name descname"><span class="pre">SPRING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'spring'</span></em><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.SPRING" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.NetworkLayout.as_layout_func">
+<span class="sig-name descname"><span class="pre">as_layout_func</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#NetworkLayout.as_layout_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.NetworkLayout.as_layout_func" title="Permalink to this definition"></a></dt>
+<dd><p>Maps the NetworkLayout to a function in networkx.drawing.layout.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.RandomHighValueNodePreference">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.networks.network.</span></span><span class="sig-name descname"><span class="pre">RandomHighValueNodePreference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#RandomHighValueNodePreference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.RandomHighValueNodePreference" title="Permalink to this definition"></a></dt>
+<dd><p>Preference of how the random high value nodes are placed.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.RandomHighValueNodePreference.FURTHEST_AWAY_FROM_ENTRY">
+<span class="sig-name descname"><span class="pre">FURTHEST_AWAY_FROM_ENTRY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'FURTHEST_AWAY_FROM_ENTRY'</span></em><a class="headerlink" href="#yawning_titan.networks.network.RandomHighValueNodePreference.FURTHEST_AWAY_FROM_ENTRY" title="Permalink to this definition"></a></dt>
+<dd><p>Prefer nodes furthest away from entry nodes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.RandomHighValueNodePreference.NONE">
+<span class="sig-name descname"><span class="pre">NONE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'NONE'</span></em><a class="headerlink" href="#yawning_titan.networks.network.RandomHighValueNodePreference.NONE" title="Permalink to this definition"></a></dt>
+<dd><p>No preference.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.RandomEntryNodePreference">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.networks.network.</span></span><span class="sig-name descname"><span class="pre">RandomEntryNodePreference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#RandomEntryNodePreference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.RandomEntryNodePreference" title="Permalink to this definition"></a></dt>
+<dd><p>Preference of hw the random entry nodes are placed.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.RandomEntryNodePreference.CENTRAL">
+<span class="sig-name descname"><span class="pre">CENTRAL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'CENTRAL'</span></em><a class="headerlink" href="#yawning_titan.networks.network.RandomEntryNodePreference.CENTRAL" title="Permalink to this definition"></a></dt>
+<dd><p>Prefer central nodes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.RandomEntryNodePreference.EDGE">
+<span class="sig-name descname"><span class="pre">EDGE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'EDGE'</span></em><a class="headerlink" href="#yawning_titan.networks.network.RandomEntryNodePreference.EDGE" title="Permalink to this definition"></a></dt>
+<dd><p>Prefer edge nodes.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.RandomEntryNodePreference.NONE">
+<span class="sig-name descname"><span class="pre">NONE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'NONE'</span></em><a class="headerlink" href="#yawning_titan.networks.network.RandomEntryNodePreference.NONE" title="Permalink to this definition"></a></dt>
+<dd><p>No preference.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.networks.network.</span></span><span class="sig-name descname"><span class="pre">Network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_random_entry_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_entry_node_preference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">RandomEntryNodePreference.NONE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_of_random_entry_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_random_high_value_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_high_value_node_preference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">RandomHighValueNodePreference.NONE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_of_random_high_value_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_random_vulnerabilities</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_vulnerability_lower_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_vulnerability_upper_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network" title="Permalink to this definition"></a></dt>
+<dd><p>A Network that the NetworkInterface interacts with.</p>
+<p>Network extends networkx.Graph.</p>
+<p class="rubric">Example</p>
+<p>The Network constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>set_random_entry_nodes</strong> – Whether entry nodes are set at random
+if not set in nodes. Default value of False.</p></li>
+<li><p><strong>random_entry_node_preference</strong> – The random entry node placement
+preference as an instance of
+yawning_titan.networks.network.RandomEntryNodePreference.
+Default value of RandomEntryNodePreference.NONE.</p></li>
+<li><p><strong>num_of_random_entry_nodes</strong> – The number of random entry nodes
+that will be attempted to be set.</p></li>
+<li><p><strong>set_random_high_value_nodes</strong> – Whether high value nodes are set
+at random if not set in nodes. Default value of False.</p></li>
+<li><p><strong>random_high_value_node_preference</strong> – The random high value node
+placement preference as an instance of
+yawning_titan.networks.network.RandomHighValueNodePreference.
+Default value of RandomHighValueNodePreference.NONE.</p></li>
+<li><p><strong>num_of_random_high_value_nodes</strong> – The number of random high value
+nodes that will be attempted to be set.</p></li>
+<li><p><strong>set_random_vulnerabilities</strong> – Whether node vulnerability scores
+are set at random.</p></li>
+<li><p><strong>node_vulnerability_lower_bound</strong> – The lower-bound of a nodes
+vulnerability score. Default value of 0.01.</p></li>
+<li><p><strong>node_vulnerability_upper_bound</strong> – The upper-bound of a nodes
+vulnerability score. Default value of 0.01.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_random_entry_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_entry_node_preference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">RandomEntryNodePreference.NONE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_of_random_entry_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_random_high_value_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_high_value_node_preference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">RandomHighValueNodePreference.NONE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_of_random_high_value_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_random_vulnerabilities</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_vulnerability_lower_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_vulnerability_upper_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>The Network constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>set_random_entry_nodes</strong> – Whether entry nodes are set at random
+if not set in nodes. Default value of False.</p></li>
+<li><p><strong>random_entry_node_preference</strong> – The random entry node placement
+preference as an instance of
+yawning_titan.networks.network.RandomEntryNodePreference.
+Default value of RandomEntryNodePreference.NONE.</p></li>
+<li><p><strong>num_of_random_entry_nodes</strong> – The number of random entry nodes
+that will be attempted to be set.</p></li>
+<li><p><strong>set_random_high_value_nodes</strong> – Whether high value nodes are set
+at random if not set in nodes. Default value of False.</p></li>
+<li><p><strong>random_high_value_node_preference</strong> – The random high value node
+placement preference as an instance of
+yawning_titan.networks.network.RandomHighValueNodePreference.
+Default value of RandomHighValueNodePreference.NONE.</p></li>
+<li><p><strong>num_of_random_high_value_nodes</strong> – The number of random high value
+nodes that will be attempted to be set.</p></li>
+<li><p><strong>set_random_vulnerabilities</strong> – Whether node vulnerability scores
+are set at random.</p></li>
+<li><p><strong>node_vulnerability_lower_bound</strong> – The lower-bound of a nodes
+vulnerability score. Default value of 0.01.</p></li>
+<li><p><strong>node_vulnerability_upper_bound</strong> – The upper-bound of a nodes
+vulnerability score. Default value of 0.01.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.set_random_entry_nodes">
+<span class="sig-name descname"><span class="pre">set_random_entry_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.set_random_entry_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>If no entry nodes are added, set them at random. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.random_entry_node_preference">
+<span class="sig-name descname"><span class="pre">random_entry_node_preference</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.random_entry_node_preference" title="Permalink to this definition"></a></dt>
+<dd><p>The type of random entry node preference.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.num_of_random_entry_nodes">
+<span class="sig-name descname"><span class="pre">num_of_random_entry_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.num_of_random_entry_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>The number of random entry nodes to be generated.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.set_random_high_value_nodes">
+<span class="sig-name descname"><span class="pre">set_random_high_value_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.set_random_high_value_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>If no high value nodes are added, set them at random. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.random_high_value_node_preference">
+<span class="sig-name descname"><span class="pre">random_high_value_node_preference</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.random_high_value_node_preference" title="Permalink to this definition"></a></dt>
+<dd><p>The type of random high value node preference.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.num_of_random_high_value_nodes">
+<span class="sig-name descname"><span class="pre">num_of_random_high_value_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.num_of_random_high_value_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>The number of random high_value nodes to be generated.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.set_random_vulnerabilities">
+<span class="sig-name descname"><span class="pre">set_random_vulnerabilities</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.set_random_vulnerabilities" title="Permalink to this definition"></a></dt>
+<dd><p>If True, random vulnerability is set for each node using the upper and lower bounds.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.node_vulnerability_upper_bound">
+<span class="sig-name descname"><span class="pre">node_vulnerability_upper_bound</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.node_vulnerability_upper_bound" title="Permalink to this definition"></a></dt>
+<dd><p>A higher vulnerability means that a node is more vulnerable. Default value is 1.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.high_value_nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">high_value_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.high_value_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>A list of the high value nodes in the network.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.entry_nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">entry_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.entry_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>A list of the entry nodes in the network.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.deceptive_nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deceptive_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.deceptive_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>A list of the deceptive nodes in the network.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.num_possible_high_value_nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_possible_high_value_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.num_possible_high_value_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum number of allowed high value nodes in the network.</p>
+<p>Number of possible high value nodes calculated by seeing how many nodes there are minus the entry
+nodes, then only having 15% of the nodes left over to be high value nodes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.node_vulnerability_lower_bound">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">node_vulnerability_lower_bound</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.node_vulnerability_lower_bound" title="Permalink to this definition"></a></dt>
+<dd><p>A lower vulnerability means that a node is less likely to be compromised. Default value is 0.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.doc_metadata">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">doc_metadata</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.doc_metadata" title="Permalink to this definition"></a></dt>
+<dd><p>The configs document metadata.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.add_node">
+<span class="sig-name descname"><span class="pre">add_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_for_adding</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.add_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.add_node" title="Permalink to this definition"></a></dt>
+<dd><p>Add a node to the network.</p>
+<p>Extend the <cite>add_node</cite> method of the superclass.</p>
+<p>if the <cite>node_for_adding</cite> is a special node then check that there are no intersections between hvn and entry_node’s.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.remove_node">
+<span class="sig-name descname"><span class="pre">remove_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.remove_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.remove_node" title="Permalink to this definition"></a></dt>
+<dd><p>Remove a node from the network.</p>
+<p>Extend the <cite>remove_node</cite> method of the superclass.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.add_edge">
+<span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u_of_edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_of_edge</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.add_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.add_edge" title="Permalink to this definition"></a></dt>
+<dd><p>Add an edge between 2 nodes in the network.</p>
+<p>Extend the <cite>add_edge</cite> method of the superclass.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.remove_edge">
+<span class="sig-name descname"><span class="pre">remove_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.remove_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.remove_edge" title="Permalink to this definition"></a></dt>
+<dd><p>Remove an edge between 2 nodes in the network.</p>
+<p>Extend the <cite>remove_edge</cite> method of the superclass.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Resets the network.</p>
+<p>This is done by calling:</p>
+<ul class="simple">
+<li><p>reset_random_entry_nodes()</p></li>
+<li><p>reset_random_high_value_nodes</p></li>
+<li><p>reset_random_vulnerabilities()</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.show" title="Permalink to this definition"></a></dt>
+<dd><p>Show details of all Nodes in the Network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – If True, all Node attributes are shown, otherwise
+just the uuid is shown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.get_nodes">
+<span class="sig-name descname"><span class="pre">get_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_true_compromised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_blue_view_compromised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_true_safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_blue_view_safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_isolated</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_non_isolated</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_deceptive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_non_deceptive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_by_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.get_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.get_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Get all of the nodes from the network and apply a filter(s) to extract a specific subset of the nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filter_true_compromised</strong> – Filter so only nodes that are compromised remain</p></li>
+<li><p><strong>filter_blue_view_compromised</strong> – Filter so only nodes that blue can see are compromised remain</p></li>
+<li><p><strong>filter_true_safe</strong> – Filter so only nodes that are safe remain</p></li>
+<li><p><strong>filter_blue_view_safe</strong> – Filter so only nodes that blue can see are safe remain</p></li>
+<li><p><strong>filter_isolated</strong> – Filter so only isolated nodes remain</p></li>
+<li><p><strong>filter_non_isolated</strong> – Filter so only connected nodes remain</p></li>
+<li><p><strong>filter_deceptive</strong> – Filter so only deceptive nodes remain</p></li>
+<li><p><strong>filter_non_deceptive</strong> – Filter so only non-deceptive nodes remain</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.get_node_from_uuid">
+<span class="sig-name descname"><span class="pre">get_node_from_uuid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.get_node_from_uuid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.get_node_from_uuid" title="Permalink to this definition"></a></dt>
+<dd><p>Return the first node that has a given uuid.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.get_node_from_name">
+<span class="sig-name descname"><span class="pre">get_node_from_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.get_node_from_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.get_node_from_name" title="Permalink to this definition"></a></dt>
+<dd><p>Return the first node that has a given name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.set_from_dict">
+<span class="sig-name descname"><span class="pre">set_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_existing_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_existing_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear_special_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.set_from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.set_from_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Set the values of existing network attributes from those contained in a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_dict</strong> – A dictionary of network attribute name value pairs</p></li>
+<li><p><strong>remove_existing_edges</strong> – Whether to remove existing edges</p></li>
+<li><p><strong>remove_existing_nodes</strong> – Whether to remove existing nodes</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.clear_special_nodes">
+<span class="sig-name descname"><span class="pre">clear_special_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.clear_special_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.clear_special_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Remove all special node designations.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.set_node_positions">
+<span class="sig-name descname"><span class="pre">set_node_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network_layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NetworkLayout.SPRING</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.set_node_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.set_node_positions" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the Node positions of the current Network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>network_layout</strong> – A member of NetworkLayout. Default is
+NetworkLayout.SPRING.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.add_nodes_from_dict">
+<span class="sig-name descname"><span class="pre">add_nodes_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_existing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.add_nodes_from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.add_nodes_from_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Add nodes to the graph with properties defined from a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes_dict</strong> – a dictionary of node uuids to properties</p></li>
+<li><p><strong>remove_existing</strong> – a boolean to indicate whether to remove existing nodes</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.add_edges_from_dict">
+<span class="sig-name descname"><span class="pre">add_edges_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_existing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.add_edges_from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.add_edges_from_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Add edges to the graph with properties defined from a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>edges_dict</strong> – a dictionary of edge uuids to properties</p></li>
+<li><p><strong>remove_existing</strong> – a boolean to indicate whether to remove existing edges</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.reset_random_entry_nodes">
+<span class="sig-name descname"><span class="pre">reset_random_entry_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.reset_random_entry_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.reset_random_entry_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Set the entry nodes.</p>
+<p>If no entry nodes supplied then the first node in the network is chosen as the initial node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.reset_random_high_value_nodes">
+<span class="sig-name descname"><span class="pre">reset_random_high_value_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.reset_random_high_value_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.reset_random_high_value_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Sets up the high value nodes (HVNs) to be used by the training environment.</p>
+<p>If HVNs are supplied in the <cite>Network</cite>, they are used. However, if they are not supplied, the following
+logic is applied:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>If game_mode.game_rules.lose_when_high_value_node_lost is True:</dt><dd><p>An acceptable amount (math.ceil((len(current_graph.nodes) - len(entry_nodes) + 1) * 0.15) of
+HVNs are defined from a list of potential HVSn at random after steps are taken to ensure that HVNs are
+not entry nodes.</p>
+</dd>
+<dt>Otherwise:</dt><dd><p>HVNs are set to an empty list.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.reset_random_vulnerabilities">
+<span class="sig-name descname"><span class="pre">reset_random_vulnerabilities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.reset_random_vulnerabilities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.reset_random_vulnerabilities" title="Permalink to this definition"></a></dt>
+<dd><p>Regenerate random vulnerabilities for every node in the network.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_serializable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.to_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Represent the <cite>Network</cite> as a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.to_adj_matrix_and_positions">
+<span class="sig-name descname"><span class="pre">to_adj_matrix_and_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.to_adj_matrix_and_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.to_adj_matrix_and_positions" title="Permalink to this definition"></a></dt>
+<dd><p>Represent the network by its adjacency matrix and a dictionary of node names to positions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.create">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.create" title="Permalink to this definition"></a></dt>
+<dd><p>Create an instance on :class: <cite>Network</cite> from a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>network_dict</strong> – a dictionary describing a <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of :class: <cite>Network</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="yawning_titan.networks.html" class="btn btn-neutral float-left" title="yawning_titan.networks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.networks.network.Network.html" class="btn btn-neutral float-right" title="yawning_titan.networks.network.Network" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

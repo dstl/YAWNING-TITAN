@@ -1,0 +1,6 @@
+tests.unit\_tests.config.groups.test\_restrict\_range\_group.test\_restrict\_range\_min\_greater\_than\_max
+===========================================================================================================
+
+.. currentmodule:: tests.unit_tests.config.groups.test_restrict_range_group
+
+.. autofunction:: test_restrict_range_min_greater_than_max

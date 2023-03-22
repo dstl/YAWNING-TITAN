@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tags %}
+<!-- <!DOCTYPE html> -->
+
+{% block top-buttons %}
+    <a id="back" href="{% url 'Home' %}"><i class="bi bi-arrow-90deg-left"></i></a>
+{% endblock %}
+
+{% block main %}
+<div id="center-container" class="stretch clear">
+    <div id="search-container" class="border-bottom">
+        <div class="input-group rounded" style="{% if range_bound_items %}margin-bottom: calc(3*var(--increment));{% endif %}">
+            <input data-cy="manager-page-filter-input" id="filter-list-items" type="search" class="form-control rounded" placeholder="Filter" aria-label="Search" aria-describedby="search-addon" />
+            <span class="input-group-text border-0" id="search-addon">
+                <i class="bi bi-search"></i>
+            </span>
+        </div>
+        {% if search_form %}
+        <div id="search-accordion" class="accordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="advanced-search-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#advanced-search-items" aria-expanded="false">
+                        Advanced search
+                    </button>
+                </h2>
+                <div id="advanced-search-items" class="accordion-collapse collapse" aria-labelledby="advanced-search-header" data-bs-parent="#search-accordion">
+                    <div class="accordion-body">
+                        <!-- {% if item_type == "game_mode" %}
+                            {% include 'elements/el_game_mode_dropdown_parent.html' with element=game_mode %}
+                        {% endif %} -->
+                       <form id="search-form">
+                            {% include 'elements/el_form_fields.html' with fields=search_form.visible_fields protected=False %}
+                       </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div data-cy="item-list-container" id="list-items" class="border-bottom">
+        {% block items %}
+        {% endblock %}
+    </div>
+</div>
+
+<div id="bottom-buttons">
+    {% block bottom-buttons %}
+    {% endblock %}
+</div>
+
+{% endblock %}

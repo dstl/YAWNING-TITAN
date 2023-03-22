@@ -1,0 +1,6 @@
+tests.conftest.not\_raises
+==========================
+
+.. currentmodule:: tests.conftest
+
+.. autofunction:: not_raises

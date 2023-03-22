@@ -1,0 +1,42 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.game\_modes.components.red\_agent.ZeroDayGroup
+=============================================================
+
+.. currentmodule:: yawning_titan.game_modes.components.red_agent
+
+.. autoclass:: ZeroDayGroup
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~ZeroDayGroup.get_config_elements
+      ~ZeroDayGroup.get_non_config_elements
+      ~ZeroDayGroup.set_from_dict
+      ~ZeroDayGroup.set_from_yaml
+      ~ZeroDayGroup.stringify
+      ~ZeroDayGroup.to_dict
+      ~ZeroDayGroup.to_legacy_dict
+      ~ZeroDayGroup.to_yaml
+      ~ZeroDayGroup.validate
+      ~ZeroDayGroup.validate_elements
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~ZeroDayGroup.config_groups
+      ~ZeroDayGroup.config_items

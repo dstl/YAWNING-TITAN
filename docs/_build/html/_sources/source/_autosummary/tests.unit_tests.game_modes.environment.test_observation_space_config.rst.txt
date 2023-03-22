@@ -1,0 +1,22 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.unit\_tests.game\_modes.environment.test\_observation\_space\_config
+==========================================================================
+
+.. automodule:: tests.unit_tests.game_modes.environment.test_observation_space_config
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+
+      default_observation_space
+      test_default_observation_space_from_legacy

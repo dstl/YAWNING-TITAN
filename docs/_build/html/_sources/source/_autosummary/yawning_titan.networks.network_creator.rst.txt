@@ -1,0 +1,31 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.networks.network\_creator
+========================================
+
+.. automodule:: yawning_titan.networks.network_creator
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+
+      check_if_nearby
+      create_mesh
+      create_p2p
+      create_ring
+      create_star
+      custom_network
+      dcbo_base_network
+      generate_node_positions
+      get_18_node_network_mesh
+      get_network_from_matrix_and_positions
+      gnp_random_connected_graph

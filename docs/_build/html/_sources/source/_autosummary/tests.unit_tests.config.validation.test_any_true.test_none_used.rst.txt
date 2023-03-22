@@ -1,0 +1,6 @@
+tests.unit\_tests.config.validation.test\_any\_true.test\_none\_used
+====================================================================
+
+.. currentmodule:: tests.unit_tests.config.validation.test_any_true
+
+.. autofunction:: test_none_used

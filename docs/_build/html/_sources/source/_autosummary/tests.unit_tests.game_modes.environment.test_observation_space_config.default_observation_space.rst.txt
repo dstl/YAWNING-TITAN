@@ -1,0 +1,6 @@
+tests.unit\_tests.game\_modes.environment.test\_observation\_space\_config.default\_observation\_space
+======================================================================================================
+
+.. currentmodule:: tests.unit_tests.game_modes.environment.test_observation_space_config
+
+.. autofunction:: default_observation_space

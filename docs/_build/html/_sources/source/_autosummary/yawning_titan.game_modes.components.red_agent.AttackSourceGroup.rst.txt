@@ -1,0 +1,42 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.game\_modes.components.red\_agent.AttackSourceGroup
+==================================================================
+
+.. currentmodule:: yawning_titan.game_modes.components.red_agent
+
+.. autoclass:: AttackSourceGroup
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~AttackSourceGroup.get_config_elements
+      ~AttackSourceGroup.get_non_config_elements
+      ~AttackSourceGroup.set_from_dict
+      ~AttackSourceGroup.set_from_yaml
+      ~AttackSourceGroup.stringify
+      ~AttackSourceGroup.to_dict
+      ~AttackSourceGroup.to_legacy_dict
+      ~AttackSourceGroup.to_yaml
+      ~AttackSourceGroup.validate
+      ~AttackSourceGroup.validate_elements
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~AttackSourceGroup.config_groups
+      ~AttackSourceGroup.config_items

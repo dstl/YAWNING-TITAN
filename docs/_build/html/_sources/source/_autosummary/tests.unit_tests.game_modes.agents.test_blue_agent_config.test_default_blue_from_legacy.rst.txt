@@ -1,0 +1,6 @@
+tests.unit\_tests.game\_modes.agents.test\_blue\_agent\_config.test\_default\_blue\_from\_legacy
+================================================================================================
+
+.. currentmodule:: tests.unit_tests.game_modes.agents.test_blue_agent_config
+
+.. autofunction:: test_default_blue_from_legacy

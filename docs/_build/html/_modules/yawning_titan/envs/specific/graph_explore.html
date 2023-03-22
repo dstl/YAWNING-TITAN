@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.envs.specific.graph_explore &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.envs.specific.graph_explore</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for yawning_titan.envs.specific.graph_explore</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.helpers.graph2plot</span> <span class="kn">import</span> <span class="n">CustomEnvGraph</span>
+
+
+<div class="viewcode-block" id="GraphExplore"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.specific.graph_explore.GraphExplore.html#yawning_titan.envs.specific.graph_explore.GraphExplore">[docs]</a><span class="k">class</span> <span class="nc">GraphExplore</span><span class="p">(</span><span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A custom environment that follows the gym interface spec.</span>
+
+<span class="sd">    This environment emulates a network and enables an agent to select which node</span>
+<span class="sd">    to visit, if it is not possible to move to the node the agent is denied</span>
+<span class="sd">    the move.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;render.modes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;human&quot;</span><span class="p">]}</span>
+    <span class="n">NODES</span> <span class="o">=</span> <span class="mi">10</span>  <span class="c1"># the number of nodes within the network</span>
+    <span class="n">random_seed</span> <span class="o">=</span> <span class="mi">1010</span>  <span class="c1"># the initial random_seed of the random network generated</span>
+    <span class="n">GAME_MAX</span> <span class="o">=</span> <span class="mi">1000</span>  <span class="c1"># the number of game moves allowed</span>
+    <span class="n">visualisation</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="GraphExplore.__init__"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.specific.graph_explore.html#yawning_titan.envs.specific.graph_explore.GraphExplore.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise environment.&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GAME INIT&quot;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GraphExplore</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># Define action and observation space</span>
+        <span class="c1"># They must be gym.spaces objects</span>
+
+        <span class="c1"># Example when using discrete actions:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">random_internet_as_graph</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NODES</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_seed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_space</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NODES</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Example for using image as input:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">observation_space</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">spaces</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+            <span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NODES</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span>
+        <span class="p">)</span>
+        <span class="c1"># all can communicate, or none can</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reward_range</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NODES</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">NODES</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">NODES</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">NODES</span><span class="p">)</span>
+
+        <span class="c1"># start blue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">INITIAL_BLUE</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">POS_BLUE</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">INITIAL_BLUE</span>
+
+        <span class="c1"># blue visit list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BLUE_VISIT</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">INITIAL_BLUE</span><span class="p">]</span>
+
+        <span class="c1"># current step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CURRENT_STEP</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># score</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BLUE_SCORE</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="GraphExplore.step"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.specific.graph_explore.GraphExplore.html#yawning_titan.envs.specific.graph_explore.GraphExplore.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Execute one time step within the environment.&quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;GAME STEP </span><span class="si">{_step}</span><span class="s2"> of </span><span class="si">{_max}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">_step</span><span class="o">=</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">CURRENT_STEP</span><span class="p">,</span> <span class="n">_max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">GAME_MAX</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_take_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">CURRENT_STEP</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_reward</span><span class="p">()</span>
+
+        <span class="n">obs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_observation</span><span class="p">()</span>
+
+        <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BLUE_VISIT</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">NODES</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CURRENT_STEP</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">GAME_MAX</span><span class="p">):</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">obs</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="p">{}</span></div>
+
+    <span class="k">def</span> <span class="nf">_take_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Take an action withint the environment from the node chosen to be visited.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">NODES</span><span class="p">:</span>
+            <span class="c1"># do nothing</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Passing turn&quot;</span><span class="p">)</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># attempt to visit node</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;Currently at node:</span><span class="si">{current}</span><span class="s2"> and want to move to: </span><span class="si">{future}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">current</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">POS_BLUE</span><span class="p">,</span> <span class="n">future</span><span class="o">=</span><span class="n">action</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="c1"># is possible?</span>
+            <span class="k">if</span> <span class="n">action</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">POS_BLUE</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">action</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">POS_BLUE</span>
+            <span class="p">):</span>
+                <span class="c1"># move</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Moved to: </span><span class="si">{future}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">future</span><span class="o">=</span><span class="n">action</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">POS_BLUE</span> <span class="o">=</span> <span class="n">action</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">BLUE_VISIT</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>  <span class="c1"># noqa</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Never visited node </span><span class="si">{future}</span><span class="s2"> before&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">future</span><span class="o">=</span><span class="n">action</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">BLUE_VISIT</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># do not move</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot move to: </span><span class="si">{future}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">future</span><span class="o">=</span><span class="n">action</span><span class="p">))</span>
+                <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">_calc_reward</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate agent reward.</span>
+
+<span class="sd">        The defined reward as the total number of nodes visited with</span>
+<span class="sd">        some penalty to try and coax the the agent into moving.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BLUE_VISIT</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CURRENT_STEP</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">GAME_MAX</span><span class="p">))</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BLUE_VISIT</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_next_observation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the next observation.</span>
+
+<span class="sd">        The observation space is just a list of nodes visited and therefore</span>
+<span class="sd">        the agent is blind to the connectivity space</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># return has blue visited nodes?</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NODES</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">BLUE_VISIT</span><span class="p">:</span>
+            <span class="n">obs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NODES</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">obs</span>
+
+<div class="viewcode-block" id="GraphExplore.reset"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.specific.graph_explore.GraphExplore.html#yawning_titan.envs.specific.graph_explore.GraphExplore.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the initial game configurations.&quot;&quot;&quot;</span>
+        <span class="c1"># Reset the state of the environment to an initial state</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GAME RESET&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CURRENT_STEP</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">random_internet_as_graph</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NODES</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">random_seed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">INITIAL_BLUE</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">POS_BLUE</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">INITIAL_BLUE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CURRENT_STEP</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BLUE_SCORE</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BLUE_VISIT</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">INITIAL_BLUE</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_next_observation</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="GraphExplore.render"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.specific.graph_explore.GraphExplore.html#yawning_titan.envs.specific.graph_explore.GraphExplore.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;live&quot;</span><span class="p">,</span> <span class="n">close</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render the environment to the screen so that it can be played in realtime.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;file&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;live&quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;rendering..&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualisation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">visualisation</span> <span class="o">=</span> <span class="n">CustomEnvGraph</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Network Visualisation&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">CURRENT_STEP</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">CURRENT_STEP</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">,</span>
+                    <span class="p">{},</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">BLUE_VISIT</span><span class="p">,</span>
+                    <span class="p">[],</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_calc_reward</span><span class="p">(),</span>
+                    <span class="kc">None</span><span class="p">,</span>
+                    <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="mf">0.5</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">))},</span>
+                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">POS_BLUE</span><span class="p">],</span>
+                    <span class="s2">&quot;Graph explore&quot;</span><span class="p">,</span>
+                <span class="p">)</span></div>
+
+<div class="viewcode-block" id="GraphExplore.close"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.envs.specific.graph_explore.GraphExplore.html#yawning_titan.envs.specific.graph_explore.GraphExplore.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove all open visualisations.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualisation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visualisation</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">visualisation</span> <span class="o">=</span> <span class="kc">None</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

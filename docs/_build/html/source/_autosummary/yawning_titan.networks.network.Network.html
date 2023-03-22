@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.networks.network.Network &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.networks.network.NetworkLayout" href="yawning_titan.networks.network.NetworkLayout.html" />
+    <link rel="prev" title="yawning_titan.networks.network" href="yawning_titan.networks.network.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="yawning_titan.networks.network.html">yawning_titan.networks.network</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">yawning_titan.networks.network.Network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.NetworkLayout.html">yawning_titan.networks.network.NetworkLayout</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.RandomEntryNodePreference.html">yawning_titan.networks.network.RandomEntryNodePreference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.RandomHighValueNodePreference.html">yawning_titan.networks.network.RandomHighValueNodePreference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.html#yawning_titan.networks.network.choice"><code class="docutils literal notranslate"><span class="pre">choice()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.html#yawning_titan.networks.network.NetworkLayout"><code class="docutils literal notranslate"><span class="pre">NetworkLayout</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.html#yawning_titan.networks.network.RandomHighValueNodePreference"><code class="docutils literal notranslate"><span class="pre">RandomHighValueNodePreference</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.html#yawning_titan.networks.network.RandomEntryNodePreference"><code class="docutils literal notranslate"><span class="pre">RandomEntryNodePreference</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network.html#yawning_titan.networks.network.Network"><code class="docutils literal notranslate"><span class="pre">Network</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.networks.network_creator.html">yawning_titan.networks.network_creator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.networks.network_db.html">yawning_titan.networks.network_db</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.networks.node.html">yawning_titan.networks.node</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.html">yawning_titan</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.networks.network.html">yawning_titan.networks.network</a></li>
+      <li class="breadcrumb-item active">yawning_titan.networks.network.Network</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="yawning-titan-networks-network-network">
+<h1>yawning_titan.networks.network.Network<a class="headerlink" href="#yawning-titan-networks-network-network" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.networks.network.</span></span><span class="sig-name descname"><span class="pre">Network</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_random_entry_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_entry_node_preference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">RandomEntryNodePreference.NONE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_of_random_entry_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_random_high_value_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_high_value_node_preference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">RandomHighValueNodePreference.NONE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_of_random_high_value_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">set_random_vulnerabilities</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_vulnerability_lower_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_vulnerability_upper_bound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Graph</span></code></p>
+<p>A Network that the NetworkInterface interacts with.</p>
+<p>Network extends networkx.Graph.</p>
+<p class="rubric">Example</p>
+<p>The Network constructor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>set_random_entry_nodes</strong> – Whether entry nodes are set at random
+if not set in nodes. Default value of False.</p></li>
+<li><p><strong>random_entry_node_preference</strong> – The random entry node placement
+preference as an instance of
+yawning_titan.networks.network.RandomEntryNodePreference.
+Default value of RandomEntryNodePreference.NONE.</p></li>
+<li><p><strong>num_of_random_entry_nodes</strong> – The number of random entry nodes
+that will be attempted to be set.</p></li>
+<li><p><strong>set_random_high_value_nodes</strong> – Whether high value nodes are set
+at random if not set in nodes. Default value of False.</p></li>
+<li><p><strong>random_high_value_node_preference</strong> – The random high value node
+placement preference as an instance of
+yawning_titan.networks.network.RandomHighValueNodePreference.
+Default value of RandomHighValueNodePreference.NONE.</p></li>
+<li><p><strong>num_of_random_high_value_nodes</strong> – The number of random high value
+nodes that will be attempted to be set.</p></li>
+<li><p><strong>set_random_vulnerabilities</strong> – Whether node vulnerability scores
+are set at random.</p></li>
+<li><p><strong>node_vulnerability_lower_bound</strong> – The lower-bound of a nodes
+vulnerability score. Default value of 0.01.</p></li>
+<li><p><strong>node_vulnerability_upper_bound</strong> – The upper-bound of a nodes
+vulnerability score. Default value of 0.01.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.add_edge" title="yawning_titan.networks.network.Network.add_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edge</span></code></a></p></td>
+<td><p>Add an edge between 2 nodes in the network.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.add_edges_from" title="yawning_titan.networks.network.Network.add_edges_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edges_from</span></code></a></p></td>
+<td><p>Add all the edges in ebunch_to_add.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.add_edges_from_dict" title="yawning_titan.networks.network.Network.add_edges_from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edges_from_dict</span></code></a></p></td>
+<td><p>Add edges to the graph with properties defined from a dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.add_node" title="yawning_titan.networks.network.Network.add_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_node</span></code></a></p></td>
+<td><p>Add a node to the network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.add_nodes_from" title="yawning_titan.networks.network.Network.add_nodes_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_nodes_from</span></code></a></p></td>
+<td><p>Add multiple nodes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.add_nodes_from_dict" title="yawning_titan.networks.network.Network.add_nodes_from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_nodes_from_dict</span></code></a></p></td>
+<td><p>Add nodes to the graph with properties defined from a dictionary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.add_weighted_edges_from" title="yawning_titan.networks.network.Network.add_weighted_edges_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_weighted_edges_from</span></code></a></p></td>
+<td><p>Add weighted edges in <cite>ebunch_to_add</cite> with specified weight attr</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.adjacency" title="yawning_titan.networks.network.Network.adjacency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adjacency</span></code></a></p></td>
+<td><p>Returns an iterator over (node, adjacency dict) tuples for all nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.clear" title="yawning_titan.networks.network.Network.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a></p></td>
+<td><p>Remove all nodes and edges from the graph.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.clear_edges" title="yawning_titan.networks.network.Network.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a></p></td>
+<td><p>Remove all edges from the graph without altering nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.clear_special_nodes" title="yawning_titan.networks.network.Network.clear_special_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_special_nodes</span></code></a></p></td>
+<td><p>Remove all special node designations.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.copy" title="yawning_titan.networks.network.Network.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a></p></td>
+<td><p>Returns a copy of the graph.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.create" title="yawning_titan.networks.network.Network.create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create</span></code></a></p></td>
+<td><p>Create an instance on :class: <cite>Network</cite> from a dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.edge_subgraph" title="yawning_titan.networks.network.Network.edge_subgraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_subgraph</span></code></a></p></td>
+<td><p>Returns the subgraph induced by the specified edges.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.get_edge_data" title="yawning_titan.networks.network.Network.get_edge_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edge_data</span></code></a></p></td>
+<td><p>Returns the attribute dictionary associated with edge (u, v).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.get_node_from_name" title="yawning_titan.networks.network.Network.get_node_from_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_node_from_name</span></code></a></p></td>
+<td><p>Return the first node that has a given name.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.get_node_from_uuid" title="yawning_titan.networks.network.Network.get_node_from_uuid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_node_from_uuid</span></code></a></p></td>
+<td><p>Return the first node that has a given uuid.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.get_nodes" title="yawning_titan.networks.network.Network.get_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_nodes</span></code></a></p></td>
+<td><p>Get all of the nodes from the network and apply a filter(s) to extract a specific subset of the nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.has_edge" title="yawning_titan.networks.network.Network.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a></p></td>
+<td><p>Returns True if the edge (u, v) is in the graph.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.has_node" title="yawning_titan.networks.network.Network.has_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_node</span></code></a></p></td>
+<td><p>Returns True if the graph contains the node n.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.is_directed" title="yawning_titan.networks.network.Network.is_directed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_directed</span></code></a></p></td>
+<td><p>Returns True if graph is directed, False otherwise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.is_multigraph" title="yawning_titan.networks.network.Network.is_multigraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_multigraph</span></code></a></p></td>
+<td><p>Returns True if graph is a multigraph, False otherwise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.nbunch_iter" title="yawning_titan.networks.network.Network.nbunch_iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nbunch_iter</span></code></a></p></td>
+<td><p>Returns an iterator over nodes contained in nbunch that are also in the graph.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.neighbors" title="yawning_titan.networks.network.Network.neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">neighbors</span></code></a></p></td>
+<td><p>Returns an iterator over all neighbors of node n.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.number_of_edges" title="yawning_titan.networks.network.Network.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a></p></td>
+<td><p>Returns the number of edges between two nodes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.number_of_nodes" title="yawning_titan.networks.network.Network.number_of_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_nodes</span></code></a></p></td>
+<td><p>Returns the number of nodes in the graph.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.order" title="yawning_titan.networks.network.Network.order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">order</span></code></a></p></td>
+<td><p>Returns the number of nodes in the graph.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.remove_edge" title="yawning_titan.networks.network.Network.remove_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edge</span></code></a></p></td>
+<td><p>Remove an edge between 2 nodes in the network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.remove_edges_from" title="yawning_titan.networks.network.Network.remove_edges_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edges_from</span></code></a></p></td>
+<td><p>Remove all edges specified in ebunch.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.remove_node" title="yawning_titan.networks.network.Network.remove_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_node</span></code></a></p></td>
+<td><p>Remove a node from the network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.remove_nodes_from" title="yawning_titan.networks.network.Network.remove_nodes_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_nodes_from</span></code></a></p></td>
+<td><p>Remove multiple nodes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.reset" title="yawning_titan.networks.network.Network.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a></p></td>
+<td><p>Resets the network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.reset_random_entry_nodes" title="yawning_titan.networks.network.Network.reset_random_entry_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_random_entry_nodes</span></code></a></p></td>
+<td><p>Set the entry nodes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.reset_random_high_value_nodes" title="yawning_titan.networks.network.Network.reset_random_high_value_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_random_high_value_nodes</span></code></a></p></td>
+<td><p>Sets up the high value nodes (HVNs) to be used by the training environment.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.reset_random_vulnerabilities" title="yawning_titan.networks.network.Network.reset_random_vulnerabilities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_random_vulnerabilities</span></code></a></p></td>
+<td><p>Regenerate random vulnerabilities for every node in the network.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.set_from_dict" title="yawning_titan.networks.network.Network.set_from_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_from_dict</span></code></a></p></td>
+<td><p>Set the values of existing network attributes from those contained in a dictionary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.set_node_positions" title="yawning_titan.networks.network.Network.set_node_positions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_node_positions</span></code></a></p></td>
+<td><p>Sets the Node positions of the current Network.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.show" title="yawning_titan.networks.network.Network.show"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show</span></code></a></p></td>
+<td><p>Show details of all Nodes in the Network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.size" title="yawning_titan.networks.network.Network.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></p></td>
+<td><p>Returns the number of edges or total of all edge weights.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.subgraph" title="yawning_titan.networks.network.Network.subgraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subgraph</span></code></a></p></td>
+<td><p>Returns a SubGraph view of the subgraph induced on <cite>nodes</cite>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.to_adj_matrix_and_positions" title="yawning_titan.networks.network.Network.to_adj_matrix_and_positions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_adj_matrix_and_positions</span></code></a></p></td>
+<td><p>Represent the network by its adjacency matrix and a dictionary of node names to positions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.to_dict" title="yawning_titan.networks.network.Network.to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dict</span></code></a></p></td>
+<td><p>Represent the <cite>Network</cite> as a dictionary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.to_directed" title="yawning_titan.networks.network.Network.to_directed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_directed</span></code></a></p></td>
+<td><p>Returns a directed representation of the graph.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.to_directed_class" title="yawning_titan.networks.network.Network.to_directed_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_directed_class</span></code></a></p></td>
+<td><p>Returns the class to use for empty directed copies.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.to_undirected" title="yawning_titan.networks.network.Network.to_undirected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_undirected</span></code></a></p></td>
+<td><p>Returns an undirected copy of the graph.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.to_undirected_class" title="yawning_titan.networks.network.Network.to_undirected_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_undirected_class</span></code></a></p></td>
+<td><p>Returns the class to use for empty undirected copies.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.update" title="yawning_titan.networks.network.Network.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a></p></td>
+<td><p>Update the graph using nodes/edges/graphs as input.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.adj" title="yawning_titan.networks.network.Network.adj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">adj</span></code></a></p></td>
+<td><p>Graph adjacency object holding the neighbors of each node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.deceptive_nodes" title="yawning_titan.networks.network.Network.deceptive_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deceptive_nodes</span></code></a></p></td>
+<td><p>A list of the deceptive nodes in the network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.degree" title="yawning_titan.networks.network.Network.degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degree</span></code></a></p></td>
+<td><p>A DegreeView for the Graph as G.degree or G.degree().</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.doc_metadata" title="yawning_titan.networks.network.Network.doc_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">doc_metadata</span></code></a></p></td>
+<td><p>The configs document metadata.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.edges" title="yawning_titan.networks.network.Network.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a></p></td>
+<td><p>An EdgeView of the Graph as G.edges or G.edges().</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.entry_nodes" title="yawning_titan.networks.network.Network.entry_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">entry_nodes</span></code></a></p></td>
+<td><p>A list of the entry nodes in the network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.high_value_nodes" title="yawning_titan.networks.network.Network.high_value_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">high_value_nodes</span></code></a></p></td>
+<td><p>A list of the high value nodes in the network.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.name" title="yawning_titan.networks.network.Network.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>String identifier of the graph.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.node_vulnerability_lower_bound" title="yawning_titan.networks.network.Network.node_vulnerability_lower_bound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_vulnerability_lower_bound</span></code></a></p></td>
+<td><p>A lower vulnerability means that a node is less likely to be compromised.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.nodes" title="yawning_titan.networks.network.Network.nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nodes</span></code></a></p></td>
+<td><p>Access the <cite>nodes</cite> property from the superclass which has <cite>list</cite> properties but is a <cite>NodeView</cite> instance</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.num_possible_high_value_nodes" title="yawning_titan.networks.network.Network.num_possible_high_value_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_possible_high_value_nodes</span></code></a></p></td>
+<td><p>Maximum number of allowed high value nodes in the network.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.set_random_entry_nodes" title="yawning_titan.networks.network.Network.set_random_entry_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_random_entry_nodes</span></code></a></p></td>
+<td><p>If no entry nodes are added, set them at random.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.random_entry_node_preference" title="yawning_titan.networks.network.Network.random_entry_node_preference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_entry_node_preference</span></code></a></p></td>
+<td><p>The type of random entry node preference.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.num_of_random_entry_nodes" title="yawning_titan.networks.network.Network.num_of_random_entry_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_of_random_entry_nodes</span></code></a></p></td>
+<td><p>The number of random entry nodes to be generated.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.set_random_high_value_nodes" title="yawning_titan.networks.network.Network.set_random_high_value_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_random_high_value_nodes</span></code></a></p></td>
+<td><p>If no high value nodes are added, set them at random.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.random_high_value_node_preference" title="yawning_titan.networks.network.Network.random_high_value_node_preference"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_high_value_node_preference</span></code></a></p></td>
+<td><p>The type of random high value node preference.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.num_of_random_high_value_nodes" title="yawning_titan.networks.network.Network.num_of_random_high_value_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_of_random_high_value_nodes</span></code></a></p></td>
+<td><p>The number of random high_value nodes to be generated.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.set_random_vulnerabilities" title="yawning_titan.networks.network.Network.set_random_vulnerabilities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_random_vulnerabilities</span></code></a></p></td>
+<td><p>If True, random vulnerability is set for each node using the upper and lower bounds.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.networks.network.Network.node_vulnerability_upper_bound" title="yawning_titan.networks.network.Network.node_vulnerability_upper_bound"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_vulnerability_upper_bound</span></code></a></p></td>
+<td><p>A higher vulnerability means that a node is more vulnerable.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.set_random_entry_nodes">
+<span class="sig-name descname"><span class="pre">set_random_entry_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.set_random_entry_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>If no entry nodes are added, set them at random. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.random_entry_node_preference">
+<span class="sig-name descname"><span class="pre">random_entry_node_preference</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.random_entry_node_preference" title="Permalink to this definition"></a></dt>
+<dd><p>The type of random entry node preference.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.num_of_random_entry_nodes">
+<span class="sig-name descname"><span class="pre">num_of_random_entry_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.num_of_random_entry_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>The number of random entry nodes to be generated.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.set_random_high_value_nodes">
+<span class="sig-name descname"><span class="pre">set_random_high_value_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.set_random_high_value_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>If no high value nodes are added, set them at random. Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.random_high_value_node_preference">
+<span class="sig-name descname"><span class="pre">random_high_value_node_preference</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.random_high_value_node_preference" title="Permalink to this definition"></a></dt>
+<dd><p>The type of random high value node preference.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.num_of_random_high_value_nodes">
+<span class="sig-name descname"><span class="pre">num_of_random_high_value_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.num_of_random_high_value_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>The number of random high_value nodes to be generated.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.set_random_vulnerabilities">
+<span class="sig-name descname"><span class="pre">set_random_vulnerabilities</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.set_random_vulnerabilities" title="Permalink to this definition"></a></dt>
+<dd><p>If True, random vulnerability is set for each node using the upper and lower bounds.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.node_vulnerability_upper_bound">
+<span class="sig-name descname"><span class="pre">node_vulnerability_upper_bound</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.node_vulnerability_upper_bound" title="Permalink to this definition"></a></dt>
+<dd><p>A higher vulnerability means that a node is more vulnerable. Default value is 1.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Access the <cite>nodes</cite> property from the superclass which has <cite>list</cite> properties but is a <cite>NodeView</cite> instance</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.high_value_nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">high_value_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.high_value_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>A list of the high value nodes in the network.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.entry_nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">entry_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.entry_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>A list of the entry nodes in the network.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.deceptive_nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deceptive_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.deceptive_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>A list of the deceptive nodes in the network.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.num_possible_high_value_nodes">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">num_possible_high_value_nodes</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.num_possible_high_value_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Maximum number of allowed high value nodes in the network.</p>
+<p>Number of possible high value nodes calculated by seeing how many nodes there are minus the entry
+nodes, then only having 15% of the nodes left over to be high value nodes.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.node_vulnerability_lower_bound">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">node_vulnerability_lower_bound</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.node_vulnerability_lower_bound" title="Permalink to this definition"></a></dt>
+<dd><p>A lower vulnerability means that a node is less likely to be compromised. Default value is 0.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.doc_metadata">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">doc_metadata</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.doc_metadata" title="Permalink to this definition"></a></dt>
+<dd><p>The configs document metadata.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.add_node">
+<span class="sig-name descname"><span class="pre">add_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_for_adding</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.add_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.add_node" title="Permalink to this definition"></a></dt>
+<dd><p>Add a node to the network.</p>
+<p>Extend the <cite>add_node</cite> method of the superclass.</p>
+<p>if the <cite>node_for_adding</cite> is a special node then check that there are no intersections between hvn and entry_node’s.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.remove_node">
+<span class="sig-name descname"><span class="pre">remove_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.remove_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.remove_node" title="Permalink to this definition"></a></dt>
+<dd><p>Remove a node from the network.</p>
+<p>Extend the <cite>remove_node</cite> method of the superclass.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.add_edge">
+<span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u_of_edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_of_edge</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.add_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.add_edge" title="Permalink to this definition"></a></dt>
+<dd><p>Add an edge between 2 nodes in the network.</p>
+<p>Extend the <cite>add_edge</cite> method of the superclass.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.remove_edge">
+<span class="sig-name descname"><span class="pre">remove_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.remove_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.remove_edge" title="Permalink to this definition"></a></dt>
+<dd><p>Remove an edge between 2 nodes in the network.</p>
+<p>Extend the <cite>remove_edge</cite> method of the superclass.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Resets the network.</p>
+<p>This is done by calling:</p>
+<ul class="simple">
+<li><p>reset_random_entry_nodes()</p></li>
+<li><p>reset_random_high_value_nodes</p></li>
+<li><p>reset_random_vulnerabilities()</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.show" title="Permalink to this definition"></a></dt>
+<dd><p>Show details of all Nodes in the Network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – If True, all Node attributes are shown, otherwise
+just the uuid is shown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.get_nodes">
+<span class="sig-name descname"><span class="pre">get_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_true_compromised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_blue_view_compromised</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_true_safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_blue_view_safe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_isolated</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_non_isolated</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_deceptive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_non_deceptive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_by_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.get_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.get_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Get all of the nodes from the network and apply a filter(s) to extract a specific subset of the nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filter_true_compromised</strong> – Filter so only nodes that are compromised remain</p></li>
+<li><p><strong>filter_blue_view_compromised</strong> – Filter so only nodes that blue can see are compromised remain</p></li>
+<li><p><strong>filter_true_safe</strong> – Filter so only nodes that are safe remain</p></li>
+<li><p><strong>filter_blue_view_safe</strong> – Filter so only nodes that blue can see are safe remain</p></li>
+<li><p><strong>filter_isolated</strong> – Filter so only isolated nodes remain</p></li>
+<li><p><strong>filter_non_isolated</strong> – Filter so only connected nodes remain</p></li>
+<li><p><strong>filter_deceptive</strong> – Filter so only deceptive nodes remain</p></li>
+<li><p><strong>filter_non_deceptive</strong> – Filter so only non-deceptive nodes remain</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.add_edges_from">
+<span class="sig-name descname"><span class="pre">add_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch_to_add</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.add_edges_from" title="Permalink to this definition"></a></dt>
+<dd><p>Add all the edges in ebunch_to_add.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ebunch_to_add</strong> (<em>container</em><em> of </em><em>edges</em>) – Each edge given in the container will be added to the
+graph. The edges must be given as as 2-tuples (u, v) or
+3-tuples (u, v, d) where d is a dictionary containing edge data.</p></li>
+<li><p><strong>attr</strong> (<em>keyword arguments</em><em>, </em><em>optional</em>) – Edge data (or labels or objects) can be assigned using
+keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#yawning_titan.networks.network.Network.add_edge" title="yawning_titan.networks.network.Network.add_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edge</span></code></a></dt><dd><p>add a single edge</p>
+</dd>
+<dt><a class="reference internal" href="#yawning_titan.networks.network.Network.add_weighted_edges_from" title="yawning_titan.networks.network.Network.add_weighted_edges_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_weighted_edges_from</span></code></a></dt><dd><p>convenient way to add weighted edges</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>Adding the same edge twice has no effect but any edge data
+will be updated when each duplicate edge is added.</p>
+<p>Edge attributes specified in an ebunch take precedence over
+attributes specified via keyword arguments.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>  <span class="c1"># using a list of edge tuples</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>  <span class="c1"># Add the path graph 0-1-2-3</span>
+</pre></div>
+</div>
+<p>Associate data to edges</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)],</span> <span class="n">weight</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;WN2898&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.add_nodes_from">
+<span class="sig-name descname"><span class="pre">add_nodes_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes_for_adding</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.add_nodes_from" title="Permalink to this definition"></a></dt>
+<dd><p>Add multiple nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes_for_adding</strong> (<em>iterable container</em>) – A container of nodes (list, dict, set, etc.).
+OR
+A container of (node, attribute dict) tuples.
+Node attributes are updated using the attribute dict.</p></li>
+<li><p><strong>attr</strong> (<em>keyword arguments</em><em>, </em><em>optional</em><em> (</em><em>default= no attributes</em><em>)</em>) – Update attributes for all nodes in nodes.
+Node attributes specified in nodes as a tuple take
+precedence over attributes specified via keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#yawning_titan.networks.network.Network.add_node" title="yawning_titan.networks.network.Network.add_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_node</span></code></a></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">K3</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">K3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+<span class="go">[0, 1, 2, &#39;H&#39;, &#39;e&#39;, &#39;l&#39;, &#39;o&#39;]</span>
+</pre></div>
+</div>
+<p>Use keywords to update specific node attributes for every node.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">weight</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Use (node, attrdict) tuples to update attributes for specific nodes.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">([(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">11</span><span class="p">)),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;blue&quot;</span><span class="p">})])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">]</span>
+<span class="go">11</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;size&quot;</span><span class="p">]</span>
+<span class="go">11</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.add_weighted_edges_from">
+<span class="sig-name descname"><span class="pre">add_weighted_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch_to_add</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'weight'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">attr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.add_weighted_edges_from" title="Permalink to this definition"></a></dt>
+<dd><p>Add weighted edges in <cite>ebunch_to_add</cite> with specified weight attr</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ebunch_to_add</strong> (<em>container</em><em> of </em><em>edges</em>) – Each edge given in the list or container will be added
+to the graph. The edges must be given as 3-tuples (u, v, w)
+where w is a number.</p></li>
+<li><p><strong>weight</strong> (<em>string</em><em>, </em><em>optional</em><em> (</em><em>default= 'weight'</em><em>)</em>) – The attribute name for the edge weights to be added.</p></li>
+<li><p><strong>attr</strong> (<em>keyword arguments</em><em>, </em><em>optional</em><em> (</em><em>default= no attributes</em><em>)</em>) – Edge attributes to add/update for all edges.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#yawning_titan.networks.network.Network.add_edge" title="yawning_titan.networks.network.Network.add_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edge</span></code></a></dt><dd><p>add a single edge</p>
+</dd>
+<dt><a class="reference internal" href="#yawning_titan.networks.network.Network.add_edges_from" title="yawning_titan.networks.network.Network.add_edges_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edges_from</span></code></a></dt><dd><p>add multiple edges</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>Adding the same edge twice for Graph/DiGraph simply updates
+the edge data. For MultiGraph/MultiDiGraph, duplicate edges
+are stored.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_weighted_edges_from</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">)])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.adj">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">adj</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.adj" title="Permalink to this definition"></a></dt>
+<dd><p>Graph adjacency object holding the neighbors of each node.</p>
+<p>This object is a read-only dict-like structure with node keys
+and neighbor-dict values.  The neighbor-dict is keyed by neighbor
+to the edge-data-dict.  So <cite>G.adj[3][2][‘color’] = ‘blue’</cite> sets
+the color of the edge <cite>(3, 2)</cite> to <cite>“blue”</cite>.</p>
+<p>Iterating over G.adj behaves like a dict. Useful idioms include
+<cite>for nbr, datadict in G.adj[n].items():</cite>.</p>
+<p>The neighbor information is also provided by subscripting the graph.
+So <cite>for nbr, foovalue in G[node].data(‘foo’, default=1):</cite> works.</p>
+<p>For directed graphs, <cite>G.adj</cite> holds outgoing (successor) info.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.adjacency">
+<span class="sig-name descname"><span class="pre">adjacency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.adjacency" title="Permalink to this definition"></a></dt>
+<dd><p>Returns an iterator over (node, adjacency dict) tuples for all nodes.</p>
+<p>For directed graphs, only outgoing neighbors/adjacencies are included.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>adj_iter</strong> – An iterator over (node, adjacency dictionary) for all nodes in
+the graph.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>iterator</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="n">nbrdict</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">nbrdict</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">adjacency</span><span class="p">()]</span>
+<span class="go">[(0, {1: {}}), (1, {0: {}, 2: {}}), (2, {1: {}, 3: {}}), (3, {2: {}})]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.adjlist_inner_dict_factory">
+<span class="sig-name descname"><span class="pre">adjlist_inner_dict_factory</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.adjlist_inner_dict_factory" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.adjlist_outer_dict_factory">
+<span class="sig-name descname"><span class="pre">adjlist_outer_dict_factory</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.adjlist_outer_dict_factory" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.clear" title="Permalink to this definition"></a></dt>
+<dd><p>Remove all nodes and edges from the graph.</p>
+<p>This also removes the name, and all graph, node, and edge attributes.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+<span class="go">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.clear_edges">
+<span class="sig-name descname"><span class="pre">clear_edges</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.clear_edges" title="Permalink to this definition"></a></dt>
+<dd><p>Remove all edges from the graph without altering nodes.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">clear_edges</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+<span class="go">[0, 1, 2, 3]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_view</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.copy" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a copy of the graph.</p>
+<p>The copy method by default returns an independent shallow copy
+of the graph and attributes. That is, if an attribute is a
+container, that container is shared by the original an the copy.
+Use Python’s <cite>copy.deepcopy</cite> for new containers.</p>
+<p>If <cite>as_view</cite> is True then a view is returned instead of a copy.</p>
+<p class="rubric">Notes</p>
+<p>All copies reproduce the graph structure, but data attributes
+may be handled in different ways. There are four types of copies
+of a graph that people might want.</p>
+<p>Deepcopy – A “deepcopy” copies the graph structure as well as
+all data attributes and any objects they might contain.
+The entire graph object is new so that changes in the copy
+do not affect the original object. (see Python’s copy.deepcopy)</p>
+<p>Data Reference (Shallow) – For a shallow copy the graph structure
+is copied but the edge, node and graph attribute dicts are
+references to those in the original graph. This saves
+time and memory but could cause confusion if you change an attribute
+in one graph and it changes the attribute in the other.
+NetworkX does not provide this level of shallow copy.</p>
+<p>Independent Shallow – This copy creates new independent attribute
+dicts and then does a shallow copy of the attributes. That is, any
+attributes that are containers are shared between the new graph
+and the original. This is exactly what <cite>dict.copy()</cite> provides.
+You can obtain this style copy using:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">as_view</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Fresh Data – For fresh data, the graph structure is copied while
+new empty data attribute dicts are created. The resulting graph
+is independent of the original and it has no edge, node or graph
+attributes. Fresh copies are not enabled. Instead use:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="vm">__class__</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>View – Inspired by dict-views, graph-views act like read-only
+versions of the original graph, providing a copy of the original
+structure without requiring any memory for copying the information.</p>
+<p>See the Python copy module for more information on shallow
+and deep copies, <a class="reference external" href="https://docs.python.org/3/library/copy.html">https://docs.python.org/3/library/copy.html</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>as_view</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=False</em><em>)</em>) – If True, the returned graph-view provides a read-only view
+of the original graph without actually copying any data.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>G</strong> – A copy of the graph.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Graph</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#yawning_titan.networks.network.Network.to_directed" title="yawning_titan.networks.network.Network.to_directed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_directed</span></code></a></dt><dd><p>return a directed copy of the graph.</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.degree">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">degree</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.degree" title="Permalink to this definition"></a></dt>
+<dd><p>A DegreeView for the Graph as G.degree or G.degree().</p>
+<p>The node degree is the number of edges adjacent to the node.
+The weighted node degree is the sum of the edge weights for
+edges incident to that node.</p>
+<p>This object provides an iterator for (node, degree) as well as
+lookup for the degree for a single node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nbunch</strong> (<em>single node</em><em>, </em><em>container</em><em>, or </em><em>all nodes</em><em> (</em><em>default= all nodes</em><em>)</em>) – The view will only report edges incident to these nodes.</p></li>
+<li><p><strong>weight</strong> (<em>string</em><em> or </em><em>None</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – The name of an edge attribute that holds the numerical value used
+as a weight.  If None, then each edge has weight 1.
+The degree is the sum of the edge weights adjacent to the node.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>If a single node is requested</em></p></li>
+<li><p><strong>deg</strong> (<em>int</em>) – Degree of the node</p></li>
+<li><p><em>OR if multiple nodes are requested</em></p></li>
+<li><p><strong>nd_view</strong> (<em>A DegreeView object capable of iterating (node, degree) pairs</em>)</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">degree</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># node 0 has degree 1</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">degree</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
+<span class="go">[(0, 1), (1, 2), (2, 2)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.edge_attr_dict_factory">
+<span class="sig-name descname"><span class="pre">edge_attr_dict_factory</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.edge_attr_dict_factory" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.edge_subgraph">
+<span class="sig-name descname"><span class="pre">edge_subgraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.edge_subgraph" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the subgraph induced by the specified edges.</p>
+<p>The induced subgraph contains each edge in <cite>edges</cite> and each
+node incident to any one of those edges.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>edges</strong> (<em>iterable</em>) – An iterable of edges in this graph.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>G</strong> – An edge-induced subgraph of this graph with the same edge
+attributes.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Graph</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The graph, edge, and node attributes in the returned subgraph
+view are references to the corresponding attributes in the original
+graph. The view is read-only.</p>
+<p>To create a full graph version of the subgraph with its own copy
+of the edge or node attributes, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">edge_subgraph</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">edge_subgraph</span><span class="p">([(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+<span class="go">[0, 1, 3, 4]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+<span class="go">[(0, 1), (3, 4)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.edges">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edges</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.edges" title="Permalink to this definition"></a></dt>
+<dd><p>An EdgeView of the Graph as G.edges or G.edges().</p>
+<p>edges(self, nbunch=None, data=False, default=None)</p>
+<p>The EdgeView provides set-like operations on the edge-tuples
+as well as edge attribute lookup. When called, it also provides
+an EdgeDataView object which allows control of access to edge
+attributes (but does not provide set-like operations).
+Hence, <cite>G.edges[u, v][‘color’]</cite> provides the value of the color
+attribute for edge <cite>(u, v)</cite> while
+<cite>for (u, v, c) in G.edges.data(‘color’, default=’red’):</cite>
+iterates through all the edges yielding the color attribute
+with default <cite>‘red’</cite> if no color attribute exists.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nbunch</strong> (<em>single node</em><em>, </em><em>container</em><em>, or </em><em>all nodes</em><em> (</em><em>default= all nodes</em><em>)</em>) – The view will only report edges incident to these nodes.</p></li>
+<li><p><strong>data</strong> (<em>string</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=False</em><em>)</em>) – The edge attribute returned in 3-tuple (u, v, ddict[data]).
+If True, return edge attribute dict in 3-tuple (u, v, ddict).
+If False, return 2-tuple (u, v).</p></li>
+<li><p><strong>default</strong> (<em>value</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Value used for edges that don’t have the requested attribute.
+Only relevant if data is not True or False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>edges</strong> – A view of edge attributes, usually it iterates over (u, v)
+or (u, v, d) tuples of edges, but can also be used for
+attribute lookup as <cite>edges[u, v][‘foo’]</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>EdgeView</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Nodes in nbunch that are not in the graph will be (quietly) ignored.
+For directed graphs this returns the out-edges.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># or MultiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">]</span>
+<span class="go">[(0, 1), (1, 2), (2, 3)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>  <span class="c1"># default data is {} (empty dict)</span>
+<span class="go">EdgeDataView([(0, 1, {}), (1, 2, {}), (2, 3, {&#39;weight&#39;: 5})])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">EdgeDataView([(0, 1, 1), (1, 2, 1), (2, 3, 5)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>  <span class="c1"># only edges incident to these nodes</span>
+<span class="go">EdgeDataView([(0, 1), (3, 2)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># only edges incident to a single node (use G.adj[0]?)</span>
+<span class="go">EdgeDataView([(0, 1)])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.get_edge_data">
+<span class="sig-name descname"><span class="pre">get_edge_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.get_edge_data" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the attribute dictionary associated with edge (u, v).</p>
+<p>This is identical to <cite>G[u][v]</cite> except the default is returned
+instead of an exception if the edge doesn’t exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>nodes</em>) – </p></li>
+<li><p><strong>v</strong> (<em>nodes</em>) – </p></li>
+<li><p><strong>default</strong> (<em>any Python object</em><em> (</em><em>default=None</em><em>)</em>) – Value to return if the edge (u, v) is not found.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>edge_dict</strong> – The edge attribute dictionary.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dictionary</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">{}</span>
+</pre></div>
+</div>
+<p>Warning: Assigning to <cite>G[u][v]</cite> is not permitted.
+But it is safe to assign attributes <cite>G[u][v][‘foo’]</cite></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span>
+<span class="go">7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;weight&quot;</span><span class="p">]</span>
+<span class="go">7</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># default edge data is {}</span>
+<span class="go">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="p">)</span>  <span class="c1"># tuple form</span>
+<span class="go">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># edge not in graph, return 0</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.get_node_from_uuid">
+<span class="sig-name descname"><span class="pre">get_node_from_uuid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.get_node_from_uuid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.get_node_from_uuid" title="Permalink to this definition"></a></dt>
+<dd><p>Return the first node that has a given uuid.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.graph_attr_dict_factory">
+<span class="sig-name descname"><span class="pre">graph_attr_dict_factory</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.graph_attr_dict_factory" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.has_edge">
+<span class="sig-name descname"><span class="pre">has_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.has_edge" title="Permalink to this definition"></a></dt>
+<dd><p>Returns True if the edge (u, v) is in the graph.</p>
+<p>This is the same as <cite>v in G[u]</cite> without KeyError exceptions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>nodes</em>) – Nodes can be, for example, strings or numbers.
+Nodes must be hashable (and not None) Python objects.</p></li>
+<li><p><strong>v</strong> (<em>nodes</em>) – Nodes can be, for example, strings or numbers.
+Nodes must be hashable (and not None) Python objects.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>edge_ind</strong> – True if edge is in the graph, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)">bool</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># using two nodes</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="p">)</span>  <span class="c1">#  e is a 2-tuple (u, v)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>  <span class="c1"># e is a 3-tuple (u, v, data_dictionary)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The following syntax are equivalent:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">1</span> <span class="ow">in</span> <span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># though this gives KeyError if 0 not in G</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.has_node">
+<span class="sig-name descname"><span class="pre">has_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.has_node" title="Permalink to this definition"></a></dt>
+<dd><p>Returns True if the graph contains the node n.</p>
+<p>Identical to <cite>n in G</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>node</em>) – </p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>It is more readable and simpler to use</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="mi">0</span> <span class="ow">in</span> <span class="n">G</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.is_directed">
+<span class="sig-name descname"><span class="pre">is_directed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.is_directed" title="Permalink to this definition"></a></dt>
+<dd><p>Returns True if graph is directed, False otherwise.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.is_multigraph">
+<span class="sig-name descname"><span class="pre">is_multigraph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.is_multigraph" title="Permalink to this definition"></a></dt>
+<dd><p>Returns True if graph is a multigraph, False otherwise.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.name" title="Permalink to this definition"></a></dt>
+<dd><p>String identifier of the graph.</p>
+<p>This graph attribute appears in the attribute dict G.graph
+keyed by the string <cite>“name”</cite>. as well as an attribute (technically
+a property) <cite>G.name</cite>. This is entirely user controlled.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.nbunch_iter">
+<span class="sig-name descname"><span class="pre">nbunch_iter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nbunch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.nbunch_iter" title="Permalink to this definition"></a></dt>
+<dd><p>Returns an iterator over nodes contained in nbunch that are
+also in the graph.</p>
+<p>The nodes in nbunch are checked for membership in the graph
+and if not are silently ignored.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>nbunch</strong> (<em>single node</em><em>, </em><em>container</em><em>, or </em><em>all nodes</em><em> (</em><em>default= all nodes</em><em>)</em>) – The view will only report edges incident to these nodes.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>niter</strong> – An iterator over nodes in nbunch that are also in the graph.
+If nbunch is None, iterate over all nodes in the graph.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>iterator</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>NetworkXError</strong> – If nbunch is not a node or or sequence of nodes.
+    If a node in nbunch is not hashable.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph.__iter__</span></code></p>
+</div>
+<p class="rubric">Notes</p>
+<p>When nbunch is an iterator, the returned iterator yields values
+directly from nbunch, becoming exhausted when nbunch is exhausted.</p>
+<p>To test whether nbunch is a single node, one can use
+“if nbunch in self:”, even after processing with this routine.</p>
+<p>If nbunch is not a node or a (possibly empty) sequence/iterator
+or None, a <code class="xref py py-exc docutils literal notranslate"><span class="pre">NetworkXError</span></code> is raised.  Also, if any object in
+nbunch is not hashable, a <code class="xref py py-exc docutils literal notranslate"><span class="pre">NetworkXError</span></code> is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.neighbors">
+<span class="sig-name descname"><span class="pre">neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.neighbors" title="Permalink to this definition"></a></dt>
+<dd><p>Returns an iterator over all neighbors of node n.</p>
+<p>This is identical to <cite>iter(G[n])</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>node</em>) – A node in the graph</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>neighbors</strong> – An iterator over all neighbors of node n</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>iterator</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>NetworkXError</strong> – If the node n is not in the graph.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span>
+<span class="go">[1]</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<p>Alternate ways to access the neighbors are <code class="docutils literal notranslate"><span class="pre">G.adj[n]</span></code> or <code class="docutils literal notranslate"><span class="pre">G[n]</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span>
+<span class="go">AtlasView({&#39;b&#39;: {&#39;weight&#39;: 7}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+<span class="go">[1]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.node_attr_dict_factory">
+<span class="sig-name descname"><span class="pre">node_attr_dict_factory</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.node_attr_dict_factory" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.node_dict_factory">
+<span class="sig-name descname"><span class="pre">node_dict_factory</span></span><a class="headerlink" href="#yawning_titan.networks.network.Network.node_dict_factory" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.number_of_edges">
+<span class="sig-name descname"><span class="pre">number_of_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">u</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.number_of_edges" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the number of edges between two nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>nodes</em><em>, </em><em>optional</em><em> (</em><em>default=all edges</em><em>)</em>) – If u and v are specified, return the number of edges between
+u and v. Otherwise return the total number of all edges.</p></li>
+<li><p><strong>v</strong> (<em>nodes</em><em>, </em><em>optional</em><em> (</em><em>default=all edges</em><em>)</em>) – If u and v are specified, return the number of edges between
+u and v. Otherwise return the total number of all edges.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>nedges</strong> – The number of edges in the graph.  If nodes <cite>u</cite> and <cite>v</cite> are
+specified return the number of edges between those nodes. If
+the graph is directed, this only returns the number of edges
+from <cite>u</cite> to <cite>v</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#yawning_titan.networks.network.Network.size" title="yawning_titan.networks.network.Network.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></p>
+</div>
+<p class="rubric">Examples</p>
+<p>For undirected graphs, this method counts the total number of
+edges in the graph:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<p>If you specify two nodes, this counts the total number of edges
+joining the two nodes:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+<p>For directed graphs, this method can count the total number of
+directed edges from <cite>u</cite> to <cite>v</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.number_of_nodes">
+<span class="sig-name descname"><span class="pre">number_of_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.number_of_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the number of nodes in the graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>nnodes</strong> – The number of nodes in the graph.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#yawning_titan.networks.network.Network.order" title="yawning_titan.networks.network.Network.order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">order</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">__len__</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.order">
+<span class="sig-name descname"><span class="pre">order</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.order" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the number of nodes in the graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>nnodes</strong> – The number of nodes in the graph.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)">int</a></p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#yawning_titan.networks.network.Network.number_of_nodes" title="yawning_titan.networks.network.Network.number_of_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_nodes</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">__len__</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">order</span><span class="p">()</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.remove_edges_from">
+<span class="sig-name descname"><span class="pre">remove_edges_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ebunch</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.remove_edges_from" title="Permalink to this definition"></a></dt>
+<dd><p>Remove all edges specified in ebunch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ebunch</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> or </em><em>container</em><em> of </em><em>edge tuples</em>) – <p>Each edge given in the list or container will be removed
+from the graph. The edges can be:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>2-tuples (u, v) edge between u and v.</p></li>
+<li><p>3-tuples (u, v, k) where k is ignored.</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#yawning_titan.networks.network.Network.remove_edge" title="yawning_titan.networks.network.Network.remove_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_edge</span></code></a></dt><dd><p>remove a single edge</p>
+</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>Will fail silently if an edge in ebunch is not in the graph.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ebunch</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">remove_edges_from</span><span class="p">(</span><span class="n">ebunch</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.remove_nodes_from">
+<span class="sig-name descname"><span class="pre">remove_nodes_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.remove_nodes_from" title="Permalink to this definition"></a></dt>
+<dd><p>Remove multiple nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>nodes</strong> (<em>iterable container</em>) – A container of nodes (list, dict, set, etc.).  If a node
+in the container is not in the graph it is silently
+ignored.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#yawning_titan.networks.network.Network.remove_node" title="yawning_titan.networks.network.Network.remove_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_node</span></code></a></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span>
+<span class="go">[0, 1, 2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">remove_nodes_from</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.size">
+<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.size" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the number of edges or total of all edge weights.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>weight</strong> (<em>string</em><em> or </em><em>None</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – The edge attribute that holds the numerical value used
+as a weight. If None, then each edge has weight 1.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>size</strong> – The number of edges or
+(if weight keyword is provided) the total weight sum.</p>
+<p>If weight is None, returns an int. Otherwise a float
+(or more general numeric if the weights are more general).</p>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>numeric</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#yawning_titan.networks.network.Network.number_of_edges" title="yawning_titan.networks.network.Network.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="s2">&quot;weight&quot;</span><span class="p">)</span>
+<span class="go">6.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.subgraph">
+<span class="sig-name descname"><span class="pre">subgraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.subgraph" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a SubGraph view of the subgraph induced on <cite>nodes</cite>.</p>
+<p>The induced subgraph of the graph contains the nodes in <cite>nodes</cite>
+and the edges between those nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>nodes</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em>, </em><em>iterable</em>) – A container of nodes which will be iterated through once.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>G</strong> – A subgraph view of the graph. The graph structure cannot be
+changed but node/edge attributes can and are shared with the
+original graph.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>SubGraph View</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The graph, edge and node attributes are shared with the original graph.
+Changes to the graph structure is ruled out by the view, but changes
+to attributes are reflected in the original graph.</p>
+<p>To create a subgraph with its own copy of the edge/node attributes use:
+G.subgraph(nodes).copy()</p>
+<p>For an inplace reduction of a graph to a subgraph you can remove nodes:
+G.remove_nodes_from([n for n in G if n not in set(nodes)])</p>
+<p>Subgraph views are sometimes NOT what you want. In most cases where
+you want to do more than simply look at the induced edges, it makes
+more sense to just create the subgraph as its own graph with code like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a subgraph SG based on a (possibly multigraph) G</span>
+<span class="n">SG</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="vm">__class__</span><span class="p">()</span>
+<span class="n">SG</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">n</span><span class="p">])</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">largest_wcc</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">SG</span><span class="o">.</span><span class="n">is_multigraph</span><span class="p">():</span>
+    <span class="n">SG</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">nbr</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">largest_wcc</span>
+        <span class="k">for</span> <span class="n">nbr</span><span class="p">,</span> <span class="n">keydict</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">largest_wcc</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">keydict</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">SG</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">nbr</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">largest_wcc</span>
+        <span class="k">for</span> <span class="n">nbr</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">largest_wcc</span><span class="p">)</span>
+<span class="n">SG</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># or DiGraph, MultiGraph, MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">subgraph</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+<span class="go">[(0, 1), (1, 2)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.to_directed">
+<span class="sig-name descname"><span class="pre">to_directed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_view</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.to_directed" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a directed representation of the graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>G</strong> – A directed graph with the same name, same nodes, and with
+each edge (u, v, data) replaced by two directed edges
+(u, v, data) and (v, u, data).</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>DiGraph</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This returns a “deepcopy” of the edge, node, and
+graph attributes which attempts to completely copy
+all of the data and references.</p>
+<p>This is in contrast to the similar D=DiGraph(G) which returns a
+shallow copy of the data.</p>
+<p>See the Python copy module for more information on shallow
+and deep copies, <a class="reference external" href="https://docs.python.org/3/library/copy.html">https://docs.python.org/3/library/copy.html</a>.</p>
+<p>Warning: If you have subclassed Graph to use dict-like objects
+in the data structure, those changes do not transfer to the
+DiGraph created by this method.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">()</span>  <span class="c1"># or MultiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+<span class="go">[(0, 1), (1, 0)]</span>
+</pre></div>
+</div>
+<p>If already directed, return a (deep) copy</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>  <span class="c1"># or MultiDiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+<span class="go">[(0, 1)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.to_directed_class">
+<span class="sig-name descname"><span class="pre">to_directed_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.to_directed_class" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the class to use for empty directed copies.</p>
+<p>If you subclass the base classes, use this to designate
+what directed class to use for <cite>to_directed()</cite> copies.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.to_undirected">
+<span class="sig-name descname"><span class="pre">to_undirected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_view</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.to_undirected" title="Permalink to this definition"></a></dt>
+<dd><p>Returns an undirected copy of the graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>as_view</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a><em> (</em><em>optional</em><em>, </em><em>default=False</em><em>)</em>) – If True return a view of the original undirected graph.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>G</strong> – A deepcopy of the graph.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Graph/MultiGraph</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Graph</span></code>, <a class="reference internal" href="#yawning_titan.networks.network.Network.copy" title="yawning_titan.networks.network.Network.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>, <a class="reference internal" href="#yawning_titan.networks.network.Network.add_edge" title="yawning_titan.networks.network.Network.add_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edge</span></code></a>, <a class="reference internal" href="#yawning_titan.networks.network.Network.add_edges_from" title="yawning_titan.networks.network.Network.add_edges_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edges_from</span></code></a></p>
+</div>
+<p class="rubric">Notes</p>
+<p>This returns a “deepcopy” of the edge, node, and
+graph attributes which attempts to completely copy
+all of the data and references.</p>
+<p>This is in contrast to the similar <cite>G = nx.DiGraph(D)</cite> which returns a
+shallow copy of the data.</p>
+<p>See the Python copy module for more information on shallow
+and deep copies, <a class="reference external" href="https://docs.python.org/3/library/copy.html">https://docs.python.org/3/library/copy.html</a>.</p>
+<p>Warning: If you have subclassed DiGraph to use dict-like objects
+in the data structure, those changes do not transfer to the
+Graph created by this method.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># or MultiGraph, etc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">to_directed</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+<span class="go">[(0, 1), (1, 0)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G2</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">to_undirected</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">G2</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+<span class="go">[(0, 1)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.to_undirected_class">
+<span class="sig-name descname"><span class="pre">to_undirected_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.to_undirected_class" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the class to use for empty undirected copies.</p>
+<p>If you subclass the base classes, use this to designate
+what directed class to use for <cite>to_directed()</cite> copies.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.networks.network.Network.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update the graph using nodes/edges/graphs as input.</p>
+<p>Like dict.update, this method takes a graph as input, adding the
+graph’s nodes and edges to this graph. It can also take two inputs:
+edges and nodes. Finally it can take either edges or nodes.
+To specify only nodes the keyword <cite>nodes</cite> must be used.</p>
+<p>The collections of edges and nodes are treated similarly to
+the add_edges_from/add_nodes_from methods. When iterated, they
+should yield 2-tuples (u, v) or 3-tuples (u, v, datadict).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>edges</strong> (<em>Graph object</em><em>, </em><em>collection</em><em> of </em><em>edges</em><em>, or </em><em>None</em>) – The first parameter can be a graph or some edges. If it has
+attributes <cite>nodes</cite> and <cite>edges</cite>, then it is taken to be a
+Graph-like object and those attributes are used as collections
+of nodes and edges to be added to the graph.
+If the first parameter does not have those attributes, it is
+treated as a collection of edges and added to the graph.
+If the first argument is None, no edges are added.</p></li>
+<li><p><strong>nodes</strong> (<em>collection</em><em> of </em><em>nodes</em><em>, or </em><em>None</em>) – The second parameter is treated as a collection of nodes
+to be added to the graph unless it is None.
+If <cite>edges is None</cite> and <cite>nodes is None</cite> an exception is raised.
+If the first parameter is a Graph, then <cite>nodes</cite> is ignored.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">path_graph</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">complete_graph</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edges</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;power&quot;</span><span class="p">:</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v</span><span class="p">})</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">u</span> <span class="o">*</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">225</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1000</span><span class="p">]</span>  <span class="c1"># for singleton, use a container</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<p>It you want to update the graph using an adjacency structure
+it is straightforward to obtain the edges/nodes from adjacency.
+The following examples provide common cases, your adjacency may
+be slightly different and require tweaks of these examples.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># dict-of-set/list/tuple</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="mi">2</span><span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="mi">3</span><span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">edges</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="n">adj</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">DG</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># dict-of-dict-of-attribute</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="mf">1.3</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">},</span> <span class="mi">2</span><span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mf">1.4</span><span class="p">},</span> <span class="mi">3</span><span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">d</span><span class="p">})</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DG</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">edges</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="n">adj</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># dict-of-dict-of-dict</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mf">1.3</span><span class="p">},</span> <span class="mi">3</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">}}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="n">d</span><span class="p">})</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DG</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">edges</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">nodes</span><span class="o">=</span><span class="n">adj</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># predecessor adjacency (dict-of-set)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pred</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span> <span class="mi">2</span><span class="p">:</span> <span class="p">{</span><span class="mi">3</span><span class="p">},</span> <span class="mi">3</span><span class="p">:</span> <span class="p">{</span><span class="mi">3</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">[(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">pred</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># MultiGraph dict-of-dict-of-dict-of-attribute</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">MDG</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">MultiDiGraph</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adj</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mf">1.3</span><span class="p">},</span> <span class="mi">1</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">}}},</span>
+<span class="gp">... </span>    <span class="mi">3</span><span class="p">:</span> <span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">}}},</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">ekey</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">nbrs</span> <span class="ow">in</span> <span class="n">adj</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">keydict</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">ekey</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">keydict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">MDG</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">edges</span><span class="o">=</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#yawning_titan.networks.network.Network.add_edges_from" title="yawning_titan.networks.network.Network.add_edges_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_edges_from</span></code></a></dt><dd><p>add multiple edges to a graph</p>
+</dd>
+<dt><a class="reference internal" href="#yawning_titan.networks.network.Network.add_nodes_from" title="yawning_titan.networks.network.Network.add_nodes_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_nodes_from</span></code></a></dt><dd><p>add multiple nodes to a graph</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.get_node_from_name">
+<span class="sig-name descname"><span class="pre">get_node_from_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.get_node_from_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.get_node_from_name" title="Permalink to this definition"></a></dt>
+<dd><p>Return the first node that has a given name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.set_from_dict">
+<span class="sig-name descname"><span class="pre">set_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_existing_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_existing_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clear_special_nodes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.set_from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.set_from_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Set the values of existing network attributes from those contained in a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config_dict</strong> – A dictionary of network attribute name value pairs</p></li>
+<li><p><strong>remove_existing_edges</strong> – Whether to remove existing edges</p></li>
+<li><p><strong>remove_existing_nodes</strong> – Whether to remove existing nodes</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.clear_special_nodes">
+<span class="sig-name descname"><span class="pre">clear_special_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.clear_special_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.clear_special_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Remove all special node designations.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.set_node_positions">
+<span class="sig-name descname"><span class="pre">set_node_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network_layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NetworkLayout.SPRING</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.set_node_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.set_node_positions" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the Node positions of the current Network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>network_layout</strong> – A member of NetworkLayout. Default is
+NetworkLayout.SPRING.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.add_nodes_from_dict">
+<span class="sig-name descname"><span class="pre">add_nodes_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_existing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.add_nodes_from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.add_nodes_from_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Add nodes to the graph with properties defined from a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes_dict</strong> – a dictionary of node uuids to properties</p></li>
+<li><p><strong>remove_existing</strong> – a boolean to indicate whether to remove existing nodes</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.add_edges_from_dict">
+<span class="sig-name descname"><span class="pre">add_edges_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_existing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.add_edges_from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.add_edges_from_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Add edges to the graph with properties defined from a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>edges_dict</strong> – a dictionary of edge uuids to properties</p></li>
+<li><p><strong>remove_existing</strong> – a boolean to indicate whether to remove existing edges</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.reset_random_entry_nodes">
+<span class="sig-name descname"><span class="pre">reset_random_entry_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.reset_random_entry_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.reset_random_entry_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Set the entry nodes.</p>
+<p>If no entry nodes supplied then the first node in the network is chosen as the initial node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.reset_random_high_value_nodes">
+<span class="sig-name descname"><span class="pre">reset_random_high_value_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.reset_random_high_value_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.reset_random_high_value_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Sets up the high value nodes (HVNs) to be used by the training environment.</p>
+<p>If HVNs are supplied in the <cite>Network</cite>, they are used. However, if they are not supplied, the following
+logic is applied:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>If game_mode.game_rules.lose_when_high_value_node_lost is True:</dt><dd><p>An acceptable amount (math.ceil((len(current_graph.nodes) - len(entry_nodes) + 1) * 0.15) of
+HVNs are defined from a list of potential HVSn at random after steps are taken to ensure that HVNs are
+not entry nodes.</p>
+</dd>
+<dt>Otherwise:</dt><dd><p>HVNs are set to an empty list.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.reset_random_vulnerabilities">
+<span class="sig-name descname"><span class="pre">reset_random_vulnerabilities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.reset_random_vulnerabilities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.reset_random_vulnerabilities" title="Permalink to this definition"></a></dt>
+<dd><p>Regenerate random vulnerabilities for every node in the network.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json_serializable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.to_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Represent the <cite>Network</cite> as a dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.to_adj_matrix_and_positions">
+<span class="sig-name descname"><span class="pre">to_adj_matrix_and_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.to_adj_matrix_and_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.to_adj_matrix_and_positions" title="Permalink to this definition"></a></dt>
+<dd><p>Represent the network by its adjacency matrix and a dictionary of node names to positions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network.Network.create">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network.html#Network.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network.Network.create" title="Permalink to this definition"></a></dt>
+<dd><p>Create an instance on :class: <cite>Network</cite> from a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>network_dict</strong> – a dictionary describing a <a class="reference internal" href="#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance of :class: <cite>Network</cite>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="yawning_titan.networks.network.html" class="btn btn-neutral float-left" title="yawning_titan.networks.network" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.networks.network.NetworkLayout.html" class="btn btn-neutral float-right" title="yawning_titan.networks.network.NetworkLayout" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

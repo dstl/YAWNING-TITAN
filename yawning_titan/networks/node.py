@@ -30,10 +30,10 @@ class Node:
         self._high_value_node: bool = high_value_node
         self._entry_node: bool = entry_node
         self._vulnerability = vulnerability
-        self._x_pos: float = 0.0
-        self._y_pos: float = 0.0
 
         # Default node attributes
+        self._x_pos: float = 0.0
+        self._y_pos: float = 0.0
         self.vulnerability_score = vulnerability
         self.true_compromised_status = 0
         self.blue_view_compromised_status = 0

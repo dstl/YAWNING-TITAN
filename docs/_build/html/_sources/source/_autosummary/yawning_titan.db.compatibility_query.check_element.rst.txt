@@ -1,0 +1,6 @@
+yawning\_titan.db.compatibility\_query.check\_element
+=====================================================
+
+.. currentmodule:: yawning_titan.db.compatibility_query
+
+.. autofunction:: check_element

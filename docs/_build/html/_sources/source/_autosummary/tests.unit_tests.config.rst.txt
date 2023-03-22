@@ -1,0 +1,35 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.unit\_tests.config
+========================
+
+.. automodule:: tests.unit_tests.config
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   tests.unit_tests.config.core
+   tests.unit_tests.config.groups
+   tests.unit_tests.config.item_types
+   tests.unit_tests.config.validation

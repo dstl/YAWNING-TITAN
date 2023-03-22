@@ -1,0 +1,6 @@
+tests.unit\_tests.config.core.test\_config\_group.test\_group
+=============================================================
+
+.. currentmodule:: tests.unit_tests.config.core.test_config_group
+
+.. autofunction:: test_group

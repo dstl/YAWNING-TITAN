@@ -1,0 +1,6 @@
+tests.unit\_tests.config.core.test\_config\_group.multi\_tier\_test\_group
+==========================================================================
+
+.. currentmodule:: tests.unit_tests.config.core.test_config_group
+
+.. autofunction:: multi_tier_test_group

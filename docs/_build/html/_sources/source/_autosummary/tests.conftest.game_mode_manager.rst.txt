@@ -1,0 +1,6 @@
+tests.conftest.game\_mode\_manager
+==================================
+
+.. currentmodule:: tests.conftest
+
+.. autofunction:: game_mode_manager

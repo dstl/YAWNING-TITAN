@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.envs.generic.core.blue_interface.BlueInterface &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.envs.generic.core.network_interface" href="yawning_titan.envs.generic.core.network_interface.html" />
+    <link rel="prev" title="yawning_titan.envs.generic.core.blue_interface" href="yawning_titan.envs.generic.core.blue_interface.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="yawning_titan.envs.generic.html">yawning_titan.envs.generic</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="yawning_titan.envs.generic.core.html">yawning_titan.envs.generic.core</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.envs.generic.generic_env.html">yawning_titan.envs.generic.generic_env</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.envs.generic.helpers.html">yawning_titan.envs.generic.helpers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.envs.generic.wrappers.html">yawning_titan.envs.generic.wrappers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.envs.specific.html">yawning_titan.envs.specific</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.html">yawning_titan</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.generic.html">yawning_titan.envs.generic</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.generic.core.html">yawning_titan.envs.generic.core</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.generic.core.blue_interface.html">yawning_titan.envs.generic.core.blue_interface</a></li>
+      <li class="breadcrumb-item active">yawning_titan.envs.generic.core.blue_interface.BlueInterface</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="yawning-titan-envs-generic-core-blue-interface-blueinterface">
+<h1>yawning_titan.envs.generic.core.blue_interface.BlueInterface<a class="headerlink" href="#yawning-titan-envs-generic-core-blue-interface-blueinterface" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.blue_interface.BlueInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.envs.generic.core.blue_interface.</span></span><span class="sig-name descname"><span class="pre">BlueInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network_interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/blue_interface.html#BlueInterface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="yawning_titan.envs.generic.core.blue_action_set.BlueActionSet.html#yawning_titan.envs.generic.core.blue_action_set.BlueActionSet" title="yawning_titan.envs.generic.core.blue_action_set.BlueActionSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">BlueActionSet</span></code></a></p>
+<p>The interface used by the Blue Agents to act within the environment.</p>
+<p>Initialise the blue interface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>network_interface</strong> – Object from the NetworkInterface class</p>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.add_deceptive_node" title="yawning_titan.envs.generic.core.blue_interface.BlueInterface.add_deceptive_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_deceptive_node</span></code></a></p></td>
+<td><p>Add a deceptive node into the environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.do_nothing" title="yawning_titan.envs.generic.core.blue_interface.BlueInterface.do_nothing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">do_nothing</span></code></a></p></td>
+<td><p>Do Nothing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.get_number_of_actions" title="yawning_titan.envs.generic.core.blue_interface.BlueInterface.get_number_of_actions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_number_of_actions</span></code></a></p></td>
+<td><p>Get the number of actions that this blue agent can perform.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.isolate_node" title="yawning_titan.envs.generic.core.blue_interface.BlueInterface.isolate_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isolate_node</span></code></a></p></td>
+<td><p>Isolate a node by disabling all of its connections to other nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.make_safe_node" title="yawning_titan.envs.generic.core.blue_interface.BlueInterface.make_safe_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_safe_node</span></code></a></p></td>
+<td><p>Make a target node safe.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.perform_action" title="yawning_titan.envs.generic.core.blue_interface.BlueInterface.perform_action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">perform_action</span></code></a></p></td>
+<td><p>Perform an action within the environment.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.reconnect_node" title="yawning_titan.envs.generic.core.blue_interface.BlueInterface.reconnect_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reconnect_node</span></code></a></p></td>
+<td><p>Enable all of the connections to and from a node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.reduce_node_vulnerability" title="yawning_titan.envs.generic.core.blue_interface.BlueInterface.reduce_node_vulnerability"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduce_node_vulnerability</span></code></a></p></td>
+<td><p>Reduce the vulnerability of the target node.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.restore_node" title="yawning_titan.envs.generic.core.blue_interface.BlueInterface.restore_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">restore_node</span></code></a></p></td>
+<td><p>Restore a node to its starting state: safe and with its starting vulnerability.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.scan_all_nodes" title="yawning_titan.envs.generic.core.blue_interface.BlueInterface.scan_all_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scan_all_nodes</span></code></a></p></td>
+<td><p>Scan all of the nodes within the environment and attempt to get their states.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.blue_interface.BlueInterface.perform_action">
+<span class="sig-name descname"><span class="pre">perform_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/blue_interface.html#BlueInterface.perform_action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.perform_action" title="Permalink to this definition"></a></dt>
+<dd><p>Perform an action within the environment.</p>
+<p>Takes in an action number and then maps this to the correct action to perform. There are 3 different item_types of
+actions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>standard actions</p></li>
+<li><p>deceptive actions</p></li>
+<li><p>global actions</p></li>
+</ul>
+</div></blockquote>
+<p>–standard actions–
+Standard actions are actions that can apply to all nodes. For each standard action there are n actions (where n
+is the number of nodes in the network). An example of this action would be to isolate a node. The agent has to
+pick the isolate action and then the node it is being applied to.</p>
+<p>–deceptive actions–
+Actions relating to deceptive nodes. Since the number of deceptive actions relate to the edges not the nodes
+(see deceptive nodes for more info), the deceptive actions cannot come under the standard actions. An example
+would be to place a deceptive node. The deceptive nodes can only be placed on an edge so the agent has to pick
+the “place deceptive node” action and then the edge to place it on.</p>
+<p>–global actions–
+Global actions are actions where the agent does not need to pick any sub action other than the action. For
+example an action that applies to all nodes so the agent does not need to pick a specific node to apply the
+action to. “Do nothing” is an example of a global action as there is no secondary choice to be made.</p>
+<p>The function also maps any actions outside of the action space to the “do nothing” action.</p>
+<p>Order of operations:
+1- check if the action is inside the action space –&gt; perform “do nothing”
+2- check if the action is a deceptive action –&gt; perform action
+3- check if the action is a global action –&gt; perform action
+4- perform the standard action</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>action</strong> – the action to perform</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The action that has been taken
+The node the action was performed on</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.blue_interface.BlueInterface.add_deceptive_node">
+<span class="sig-name descname"><span class="pre">add_deceptive_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.add_deceptive_node" title="Permalink to this definition"></a></dt>
+<dd><p>Add a deceptive node into the environment.</p>
+<p>Deceptive nodes are the same as standard nodes except they have a 100% chance (by default)
+to be able to detect attacks from the red agent. A deceptive node is added on an edge between two nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>edge</strong> – The edge to place the deceptive node on</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The name of the action performed (“add_deceptive_node” or “do_nothing” depending on if action is valid)
+A pair of nodes that the deceptive node was placed between (or None if no action performed)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.blue_interface.BlueInterface.do_nothing">
+<span class="sig-name descname"><span class="pre">do_nothing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.do_nothing" title="Permalink to this definition"></a></dt>
+<dd><p>Do Nothing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the action (“do_nothing”)
+The nodes affected (None: as do nothing affects no nodes)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.blue_interface.BlueInterface.get_number_of_actions">
+<span class="sig-name descname"><span class="pre">get_number_of_actions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/blue_interface.html#BlueInterface.get_number_of_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.get_number_of_actions" title="Permalink to this definition"></a></dt>
+<dd><p>Get the number of actions that this blue agent can perform.</p>
+<dl class="simple">
+<dt>There are three item_types of actions:</dt><dd><ul class="simple">
+<li><p>global actions (apply to all nodes) - need 1 action space</p></li>
+<li><p>deceptive actions (Add new nodes to environment)</p></li>
+<li><p>standard actions (apply to a single node) - need 2 action space (action and node to perform on)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The number of actions that this agent can perform</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.blue_interface.BlueInterface.isolate_node">
+<span class="sig-name descname"><span class="pre">isolate_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.isolate_node" title="Permalink to this definition"></a></dt>
+<dd><p>Isolate a node by disabling all of its connections to other nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> – the node to disable</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The name of the action (“isolate”)
+The node affected</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.blue_interface.BlueInterface.make_safe_node">
+<span class="sig-name descname"><span class="pre">make_safe_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.make_safe_node" title="Permalink to this definition"></a></dt>
+<dd><p>Make a target node safe.</p>
+<p>Can also affect the vulnerability of the node. There are settings that can change how this
+action works in the configuration file:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>BLUE: making_node_safe_modifies_vulnerability</p></li>
+<li><p>BLUE: vulnerability_change</p></li>
+<li><p>BLUE: making_node_safe_gives_random_vulnerability</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>action</strong> (<em>The name</em><em> of </em><em>the</em>) – </p></li>
+<li><p><strong>safe</strong> (<em>The name</em><em> of </em><em>the node to make</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.blue_interface.BlueInterface.reconnect_node">
+<span class="sig-name descname"><span class="pre">reconnect_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.reconnect_node" title="Permalink to this definition"></a></dt>
+<dd><p>Enable all of the connections to and from a node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> – the node to enable to connections to</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The name of the action (“connect”)
+The node affected</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.blue_interface.BlueInterface.reduce_node_vulnerability">
+<span class="sig-name descname"><span class="pre">reduce_node_vulnerability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.reduce_node_vulnerability" title="Permalink to this definition"></a></dt>
+<dd><p>Reduce the vulnerability of the target node.</p>
+<p>Will not reduce the vulnerability past the lower bound setting in the
+configuration file:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>BLUE: node_vulnerability_min</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> – The node to reduce the vulnerability of as an instance of <code class="docutils literal notranslate"><span class="pre">Node</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The name of the action taken (“reduce_vulnerability”) and the <code class="docutils literal notranslate"><span class="pre">Node</span></code> the action was taken on.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.blue_interface.BlueInterface.restore_node">
+<span class="sig-name descname"><span class="pre">restore_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.restore_node" title="Permalink to this definition"></a></dt>
+<dd><p>Restore a node to its starting state: safe and with its starting vulnerability.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> – the node to restore</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The name of the action (“restore_node”)
+The name of the node the action was taken on</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.blue_interface.BlueInterface.scan_all_nodes">
+<span class="sig-name descname"><span class="pre">scan_all_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.blue_interface.BlueInterface.scan_all_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Scan all of the nodes within the environment and attempt to get their states.</p>
+<dl class="simple">
+<dt>The blue agents ability to see intrusions is based on the values in the config file:</dt><dd><ul class="simple">
+<li><p>BLUE: chance_to_discover_intrusion_on_scan</p></li>
+<li><p>BLUE: chance_to_discover_intrusion_on_scan_deceptive_node</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the action (“scan”)
+The node the action was performed on (None: as scan affects all nodes, not just 1)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="yawning_titan.envs.generic.core.blue_interface.html" class="btn btn-neutral float-left" title="yawning_titan.envs.generic.core.blue_interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.envs.generic.core.network_interface.html" class="btn btn-neutral float-right" title="yawning_titan.envs.generic.core.network_interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+tests.conftest.temp\_networks
+=============================
+
+.. currentmodule:: tests.conftest
+
+.. autofunction:: temp_networks

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.agents.keyboard &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.agents.keyboard</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for yawning_titan.agents.keyboard</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.generic_env</span> <span class="kn">import</span> <span class="n">GenericNetworkEnv</span>
+
+
+<div class="viewcode-block" id="KeyboardAgent"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.agents.keyboard.KeyboardAgent.html#yawning_titan.agents.keyboard.KeyboardAgent">[docs]</a><span class="k">class</span> <span class="nc">KeyboardAgent</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A means for a human player to play the YAWNING-TITAN simulation.</span>
+
+<span class="sd">    The keyboard agent provides a basic means for a human player to play the</span>
+<span class="sd">    YAWNING-TITAN simulation.</span>
+
+<span class="sd">    An example of using this class can be found within the `notebooks/Creating and</span>
+<span class="sd">    playing as a Keyboard Agent.ipynb`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="KeyboardAgent.__init__"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.agents.keyboard.html#yawning_titan.agents.keyboard.KeyboardAgent.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span></div>
+
+<div class="viewcode-block" id="KeyboardAgent.get_move_set"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.agents.keyboard.KeyboardAgent.html#yawning_titan.agents.keyboard.KeyboardAgent.get_move_set">[docs]</a>    <span class="k">def</span> <span class="nf">get_move_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the action set mapped to action numbers.</span>
+
+<span class="sd">        Get the action set for the given environment and map it to the action numbers</span>
+<span class="sd">        used by the open AI gym env.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            An action mask for top level actions to the first action number in the</span>
+<span class="sd">            environment. A full dictionary of all the actions that can be taken. The</span>
+<span class="sd">            action number where the standard actions start (actions that can be applied</span>
+<span class="sd">            to every node). The number of standard actions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">network_interface</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">network_interface</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span>
+        <span class="n">full_action_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">top_level_action_mask</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">actions</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">standard_actions</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># checks the settings for the currently active blue actions</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="c1"># If the actions are active then creates a map using dictionaries between</span>
+            <span class="c1"># the AI gym action number and the</span>
+            <span class="c1"># action name and any sub actions that this action has</span>
+            <span class="n">edge_list</span> <span class="o">=</span> <span class="n">network_interface</span><span class="o">.</span><span class="n">edge_map</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="n">full_action_dict</span><span class="p">[</span><span class="s2">&quot;add_deceptive_node&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">edge_list</span>
+            <span class="n">top_level_action_mask</span><span class="p">[</span><span class="s2">&quot;add_deceptive_node&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span>
+            <span class="n">actions</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span>
+            <span class="n">standard_actions</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">scan</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">full_action_dict</span><span class="p">[</span><span class="s2">&quot;scan&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">top_level_action_mask</span><span class="p">[</span><span class="s2">&quot;scan&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span>
+            <span class="n">actions</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">standard_actions</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">do_nothing</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">full_action_dict</span><span class="p">[</span><span class="s2">&quot;do_nothing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">top_level_action_mask</span><span class="p">[</span><span class="s2">&quot;do_nothing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span>
+            <span class="n">actions</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">standard_actions</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">node_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Node &quot;</span> <span class="o">+</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">reduce_vulnerability</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">full_action_dict</span><span class="p">[</span><span class="s2">&quot;reduce_vulnerability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_list</span>
+            <span class="n">top_level_action_mask</span><span class="p">[</span><span class="s2">&quot;reduce_vulnerability&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span>
+            <span class="n">actions</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">restore_node</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">full_action_dict</span><span class="p">[</span><span class="s2">&quot;restore_node&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_list</span>
+            <span class="n">top_level_action_mask</span><span class="p">[</span><span class="s2">&quot;restore_node&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span>
+            <span class="n">actions</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">make_node_safe</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">full_action_dict</span><span class="p">[</span><span class="s2">&quot;make_node_safe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_list</span>
+            <span class="n">top_level_action_mask</span><span class="p">[</span><span class="s2">&quot;make_node_safe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span>
+            <span class="n">actions</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">isolate_node</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">full_action_dict</span><span class="p">[</span><span class="s2">&quot;isolate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_list</span>
+            <span class="n">top_level_action_mask</span><span class="p">[</span><span class="s2">&quot;isolate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span>
+            <span class="n">actions</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">reconnect_node</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">full_action_dict</span><span class="p">[</span><span class="s2">&quot;connect&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_list</span>
+            <span class="n">top_level_action_mask</span><span class="p">[</span><span class="s2">&quot;connect&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">actions</span>
+            <span class="n">actions</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">number_standard_actions</span> <span class="o">=</span> <span class="n">actions</span> <span class="o">-</span> <span class="n">standard_actions</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">top_level_action_mask</span><span class="p">,</span>
+            <span class="n">full_action_dict</span><span class="p">,</span>
+            <span class="n">standard_actions</span><span class="p">,</span>
+            <span class="n">number_standard_actions</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="KeyboardAgent.play"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.agents.keyboard.KeyboardAgent.html#yawning_titan.agents.keyboard.KeyboardAgent.play">[docs]</a>    <span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">render_graphically</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Play the game as a keyboard agent.</span>
+
+<span class="sd">        Allows the user to select an action using the console and displays the</span>
+<span class="sd">        effect of the action on the environment.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            render_graphically: If True render using the matplotlib renderer, if False</span>
+<span class="sd">                display if state of the environment in the console.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">notes</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Runs until the game has been won</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+            <span class="c1"># Gets the possible top level actions</span>
+            <span class="p">(</span>
+                <span class="n">top</span><span class="p">,</span>
+                <span class="n">move_set</span><span class="p">,</span>
+                <span class="n">start_of_standard_actions</span><span class="p">,</span>
+                <span class="n">number_of_standard_actions</span><span class="p">,</span>
+            <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_move_set</span><span class="p">()</span>
+            <span class="n">possible_top_actions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">top</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Current possible actions:&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">counter</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">possible_top_actions</span><span class="p">):</span>
+                <span class="c1"># Displays the possible actions to the user</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">counter</span><span class="p">,</span> <span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+            <span class="n">top_action_legal</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">chosen_top_action</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="c1"># If the user does not input a legal action then they are forced to retry</span>
+            <span class="c1"># until they do</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">top_action_legal</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">chosen_top_action</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Chosen Action: &quot;</span><span class="p">))</span>
+                    <span class="c1"># Checks if the action is legal</span>
+                    <span class="k">if</span> <span class="n">chosen_top_action</span> <span class="ow">in</span> <span class="p">[</span>
+                        <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">possible_top_actions</span><span class="p">))</span>
+                    <span class="p">]:</span>
+                        <span class="n">top_action_legal</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># Informs the user if they input an invalid action</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid Input&quot;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid Input&quot;</span><span class="p">)</span>
+            <span class="c1"># Checks if there are any secondary actions for this chosen top action</span>
+            <span class="n">secondary_actions</span> <span class="o">=</span> <span class="n">move_set</span><span class="p">[</span><span class="n">possible_top_actions</span><span class="p">[</span><span class="n">chosen_top_action</span><span class="p">]]</span>
+            <span class="n">chosen_secondary_action</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">if</span> <span class="n">secondary_actions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># Prints out all of the possible secondary actions</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Action Location:&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">counter</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">secondary_actions</span><span class="p">):</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">counter</span><span class="p">,</span> <span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                <span class="n">secondary_action_legal</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">chosen_secondary_action</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+                <span class="k">while</span> <span class="ow">not</span> <span class="n">secondary_action_legal</span><span class="p">:</span>
+                    <span class="c1"># Runs until the user inputs a legal action</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">chosen_secondary_action</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Chosen Location: &quot;</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="n">chosen_secondary_action</span> <span class="ow">in</span> <span class="p">[</span>
+                            <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">secondary_actions</span><span class="p">))</span>
+                        <span class="p">]:</span>
+                            <span class="n">secondary_action_legal</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid Input&quot;</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid Input&quot;</span><span class="p">)</span>
+
+            <span class="c1"># calculates the final action number</span>
+            <span class="n">final_action</span> <span class="o">=</span> <span class="n">top</span><span class="p">[</span><span class="n">possible_top_actions</span><span class="p">[</span><span class="n">chosen_top_action</span><span class="p">]]</span>
+            <span class="k">if</span> <span class="n">chosen_secondary_action</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">final_action</span> <span class="o">&gt;=</span> <span class="n">start_of_standard_actions</span><span class="p">:</span>
+                    <span class="n">final_action</span> <span class="o">+=</span> <span class="n">chosen_secondary_action</span> <span class="o">*</span> <span class="n">number_of_standard_actions</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">final_action</span> <span class="o">+=</span> <span class="n">chosen_secondary_action</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="n">final_action</span><span class="p">)</span>
+            <span class="c1"># steps the environment 1 step forward using the chosen blue action</span>
+            <span class="n">obs</span><span class="p">,</span> <span class="n">rew</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">notes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">final_action</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">possible_top_actions</span><span class="p">[</span><span class="n">chosen_top_action</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
+                    <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;do_nothing&quot;</span>
+                    <span class="ow">and</span> <span class="n">possible_top_actions</span><span class="p">[</span><span class="n">chosen_top_action</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;add_deceptive_node&quot;</span>
+                <span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span>
+                        <span class="s2">&quot;Action selected was not the action taken by the environment&quot;</span>
+                    <span class="p">)</span>
+            <span class="c1"># renders the environment to show the effect of the action and the red</span>
+            <span class="c1"># agents turn</span>
+            <span class="k">if</span> <span class="n">render_graphically</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">show_only_blue_view</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_node_names</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;end_blue_view&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Node: &quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="s2">&quot; State: &quot;</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+
+        <span class="c1"># checks if the red or blue agent won</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">current_duration</span>
+            <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">max_steps</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---Blue agent wins---&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---Red agent wins---&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Renders the final true state of the environment</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final True State: &quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">render_graphically</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">notes</span><span class="p">[</span><span class="s2">&quot;end_blue_view&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Node: &quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="s2">&quot; State: &quot;</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

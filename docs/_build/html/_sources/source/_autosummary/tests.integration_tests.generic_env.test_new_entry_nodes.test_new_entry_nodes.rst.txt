@@ -1,0 +1,6 @@
+tests.integration\_tests.generic\_env.test\_new\_entry\_nodes.test\_new\_entry\_nodes
+=====================================================================================
+
+.. currentmodule:: tests.integration_tests.generic_env.test_new_entry_nodes
+
+.. autofunction:: test_new_entry_nodes

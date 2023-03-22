@@ -1,0 +1,28 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.groups.validation
+=======================================
+
+.. automodule:: yawning_titan.config.groups.validation
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+
+      AnyNonZeroGroup
+      AnyTrueGroup
+      AnyUsedGroup

@@ -1,0 +1,6 @@
+tests.integration\_tests.generic\_env.test\_reward\_functions.test\_punish\_bad\_actions
+========================================================================================
+
+.. currentmodule:: tests.integration_tests.generic_env.test_reward_functions
+
+.. autofunction:: test_punish_bad_actions

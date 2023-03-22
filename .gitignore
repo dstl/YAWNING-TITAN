@@ -11,17 +11,24 @@ logs/*
 
 .logs/
 yawning_titan/envs/generic/core/images/
-*.gif
+yawning_titan/*.gif
+yawning_titan_gui/*.gif
 notebooks/.ipynb_checkpoints
 *.ipynb_checkpoints
 .coverage
 *.csv
+# keep track of the angular dependencies
+!**/network-editor-dependencies.csv
+
+# network editor built files
+!**/static/dist/
 
 # generated RST files for documentation
-**/source/_autosummary/
-docs/source/yt-dependencies.rst
+**/docs/source/_autosummary/
 
 # Remove tensorboard logs starting with ppo-
 ppo-*/
 **.pkl
-docs/_build
+
+# docs
+!**/docs/_build/

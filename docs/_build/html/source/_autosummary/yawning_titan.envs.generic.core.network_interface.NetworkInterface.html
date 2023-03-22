@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.envs.generic.core.network_interface.NetworkInterface &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.envs.generic.core.red_action_set" href="yawning_titan.envs.generic.core.red_action_set.html" />
+    <link rel="prev" title="yawning_titan.envs.generic.core.network_interface" href="yawning_titan.envs.generic.core.network_interface.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="yawning_titan.envs.generic.html">yawning_titan.envs.generic</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="yawning_titan.envs.generic.core.html">yawning_titan.envs.generic.core</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.envs.generic.generic_env.html">yawning_titan.envs.generic.generic_env</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.envs.generic.helpers.html">yawning_titan.envs.generic.helpers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.envs.generic.wrappers.html">yawning_titan.envs.generic.wrappers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.envs.specific.html">yawning_titan.envs.specific</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.html">yawning_titan</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.generic.html">yawning_titan.envs.generic</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.generic.core.html">yawning_titan.envs.generic.core</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.generic.core.network_interface.html">yawning_titan.envs.generic.core.network_interface</a></li>
+      <li class="breadcrumb-item active">yawning_titan.envs.generic.core.network_interface.NetworkInterface</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="yawning-titan-envs-generic-core-network-interface-networkinterface">
+<h1>yawning_titan.envs.generic.core.network_interface.NetworkInterface<a class="headerlink" href="#yawning-titan-envs-generic-core-network-interface-networkinterface" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.envs.generic.core.network_interface.</span></span><span class="sig-name descname"><span class="pre">NetworkInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">game_mode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">network</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>The primary interface between both red and blue agents and the underlying environment.</p>
+<p>Initialise the Network Interface and initialises all the necessary components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>game_mode</strong> – the <a class="reference internal" href="yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a> that defines the abilities of the agents.</p></li>
+<li><p><strong>network</strong> – the <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> that defines the network within which the agents act.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.add_deceptive_node" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.add_deceptive_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_deceptive_node</span></code></a></p></td>
+<td><p>Add a deceptive node into the network.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.attack_node" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.attack_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">attack_node</span></code></a></p></td>
+<td><p>Attack a target node.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.create_json_time_step" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.create_json_time_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_json_time_step</span></code></a></p></td>
+<td><p>Create a dictionary that contains the current state of the environment and returns it.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_isolation" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_isolation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_all_isolation</span></code></a></p></td>
+<td><p>Get a dictionary of the isolation status of all the nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_blue_view_compromised_states" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_blue_view_compromised_states"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_all_node_blue_view_compromised_states</span></code></a></p></td>
+<td><p>Get a dictionary of compromised states.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_compromised_states" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_compromised_states"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_all_node_compromised_states</span></code></a></p></td>
+<td><p>Get a dictionary of compromised states.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_positions" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_positions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_all_node_positions</span></code></a></p></td>
+<td><p>Get a dictionary of node positions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_vulnerabilities" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_vulnerabilities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_all_vulnerabilities</span></code></a></p></td>
+<td><p>Get a dictionary of vulnerability scores.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_attributes_from_key" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_attributes_from_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_attributes_from_key</span></code></a></p></td>
+<td><p>Take in a key and return a dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_base_connected_nodes" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_base_connected_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_base_connected_nodes</span></code></a></p></td>
+<td><p>Get all of the nodes connected to the given node in the base graph.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_connected_nodes" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_connected_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_current_connected_nodes</span></code></a></p></td>
+<td><p>Get all of the nodes currently connected to a target node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_graph_as_dict" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_graph_as_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_current_graph_as_dict</span></code></a></p></td>
+<td><p>Get the current networkx graph for the environment and convert it to a dict of dicts.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_observation" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_observation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_current_observation</span></code></a></p></td>
+<td><p>Get the current observation of the environment.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_midpoint" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_midpoint"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_midpoint</span></code></a></p></td>
+<td><p>Get the midpoint between the position of two nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_number_unused_deceptive_nodes" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_number_unused_deceptive_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_number_unused_deceptive_nodes</span></code></a></p></td>
+<td><p>Get the current number of unused deceptive nodes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_observation_size" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_observation_size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_observation_size</span></code></a></p></td>
+<td><p>Use base observation size calculator with feather switched off.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_observation_size_base" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_observation_size_base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_observation_size_base</span></code></a></p></td>
+<td><p>Get the size of the observation space.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_shortest_distances_to_target" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_shortest_distances_to_target"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_shortest_distances_to_target</span></code></a></p></td>
+<td><p>Get a list of the shortest distances from each node to the target.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_target_node" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_target_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_target_node</span></code></a></p></td>
+<td><p>Get the node which is being targeted in the config.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_total_num_nodes" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_total_num_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_total_num_nodes</span></code></a></p></td>
+<td><p>Get the total number of nodes including any yet to be placed deceptive nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.initialise_deceptive_nodes" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.initialise_deceptive_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialise_deceptive_nodes</span></code></a></p></td>
+<td><p>Create a separate list of :class: <cite>~yawning_titan.networks.node.Node</cite> objects take represent deceptive nodes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.initialise_edge_map" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.initialise_edge_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">initialise_edge_map</span></code></a></p></td>
+<td><p>Create a lookup that maps a unique integer key to an networkx edge (node pair).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.isolate_node" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.isolate_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isolate_node</span></code></a></p></td>
+<td><p>Isolate a node (disable all of the nodes connections).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.make_node_safe" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.make_node_safe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_node_safe</span></code></a></p></td>
+<td><p>Make the state for a given node safe.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.reconnect_node" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.reconnect_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reconnect_node</span></code></a></p></td>
+<td><p>Re-enable any connections that may have previously been disabled.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.reset" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a></p></td>
+<td><p>Reset the network back to its default state.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.reset_stored_attacks" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.reset_stored_attacks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_stored_attacks</span></code></a></p></td>
+<td><p>Reset the attacks list.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.save_json" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.save_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_json</span></code></a></p></td>
+<td><p>Save a given dictionary to a json file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.scan_node" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.scan_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scan_node</span></code></a></p></td>
+<td><p>Scan a target node to determine compromise based on the chance of discovery of compromise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.update_stored_attacks" title="yawning_titan.envs.generic.core.network_interface.NetworkInterface.update_stored_attacks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_stored_attacks</span></code></a></p></td>
+<td><p>Update this turns current attacks.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_shortest_distances_to_target">
+<span class="sig-name descname"><span class="pre">get_shortest_distances_to_target</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_shortest_distances_to_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_shortest_distances_to_target" title="Permalink to this definition"></a></dt>
+<dd><p>Get a list of the shortest distances from each node to the target.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_target_node">
+<span class="sig-name descname"><span class="pre">get_target_node</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_target_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_target_node" title="Permalink to this definition"></a></dt>
+<dd><p>Get the node which is being targeted in the config.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The target node if it exists</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_total_num_nodes">
+<span class="sig-name descname"><span class="pre">get_total_num_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_total_num_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_total_num_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Get the total number of nodes including any yet to be placed deceptive nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The number of nodes that there are including deceptive nodes that may not have been placed yet</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_midpoint">
+<span class="sig-name descname"><span class="pre">get_midpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_midpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_midpoint" title="Permalink to this definition"></a></dt>
+<dd><p>Get the midpoint between the position of two nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node1</strong> – the name of the first node to get the midpoint from</p></li>
+<li><p><strong>node2</strong> – the name of the second node to get the midpoint from</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The x and y coordinates of the midpoint between two nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_connected_nodes">
+<span class="sig-name descname"><span class="pre">get_current_connected_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_current_connected_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_connected_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Get all of the nodes currently connected to a target node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> – The name of the node to get the current connections of</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_base_connected_nodes">
+<span class="sig-name descname"><span class="pre">get_base_connected_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_base_connected_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_base_connected_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Get all of the nodes connected to the given node in the base graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> – The name of the node to get the current connections of</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list of nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_graph_as_dict">
+<span class="sig-name descname"><span class="pre">get_current_graph_as_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_current_graph_as_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_graph_as_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Get the current networkx graph for the environment and convert it to a dict of dicts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The networkx graph as a dict  of dicts</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_attributes_from_key">
+<span class="sig-name descname"><span class="pre">get_attributes_from_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_by_uuid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_attributes_from_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_attributes_from_key" title="Permalink to this definition"></a></dt>
+<dd><p>Take in a key and return a dictionary.</p>
+<p>The keys are the names of the nodes and the values are the attribute values that are stored for
+that node under the specified key</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key</strong> – The name of the attribute to extract</p></li>
+<li><p><strong>key_by_uuid</strong> – Use the nodes uuid attribute as the key if True otherwise use the node object itself.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A dictionary of attributes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_vulnerabilities">
+<span class="sig-name descname"><span class="pre">get_all_vulnerabilities</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_all_vulnerabilities"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_vulnerabilities" title="Permalink to this definition"></a></dt>
+<dd><p>Get a dictionary of vulnerability scores.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_isolation">
+<span class="sig-name descname"><span class="pre">get_all_isolation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_all_isolation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_isolation" title="Permalink to this definition"></a></dt>
+<dd><p>Get a dictionary of the isolation status of all the nodes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_compromised_states">
+<span class="sig-name descname"><span class="pre">get_all_node_compromised_states</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_all_node_compromised_states"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_compromised_states" title="Permalink to this definition"></a></dt>
+<dd><p>Get a dictionary of compromised states.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_blue_view_compromised_states">
+<span class="sig-name descname"><span class="pre">get_all_node_blue_view_compromised_states</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_all_node_blue_view_compromised_states"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_blue_view_compromised_states" title="Permalink to this definition"></a></dt>
+<dd><p>Get a dictionary of compromised states.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_positions">
+<span class="sig-name descname"><span class="pre">get_all_node_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_all_node_positions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_positions" title="Permalink to this definition"></a></dt>
+<dd><p>Get a dictionary of node positions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_number_unused_deceptive_nodes">
+<span class="sig-name descname"><span class="pre">get_number_unused_deceptive_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_number_unused_deceptive_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_number_unused_deceptive_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Get the current number of unused deceptive nodes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_observation">
+<span class="sig-name descname"><span class="pre">get_current_observation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_current_observation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_observation" title="Permalink to this definition"></a></dt>
+<dd><p>Get the current observation of the environment.</p>
+<p>The composition of the observation space is based on the configuration file used for the scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>numpy array containing the above details</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_observation_size_base">
+<span class="sig-name descname"><span class="pre">get_observation_size_base</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">with_feather</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_observation_size_base"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_observation_size_base" title="Permalink to this definition"></a></dt>
+<dd><p>Get the size of the observation space.</p>
+<p>This is based on the game_mode that are turned on/off.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The size of the observation space</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_observation_size">
+<span class="sig-name descname"><span class="pre">get_observation_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.get_observation_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_observation_size" title="Permalink to this definition"></a></dt>
+<dd><p>Use base observation size calculator with feather switched off.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.initialise_deceptive_nodes">
+<span class="sig-name descname"><span class="pre">initialise_deceptive_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.initialise_deceptive_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.initialise_deceptive_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Create a separate list of :class: <cite>~yawning_titan.networks.node.Node</cite> objects take represent deceptive nodes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.initialise_edge_map">
+<span class="sig-name descname"><span class="pre">initialise_edge_map</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.initialise_edge_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.initialise_edge_map" title="Permalink to this definition"></a></dt>
+<dd><p>Create a lookup that maps a unique integer key to an networkx edge (node pair).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.update_stored_attacks">
+<span class="sig-name descname"><span class="pre">update_stored_attacks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attacking_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">success</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.update_stored_attacks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.update_stored_attacks" title="Permalink to this definition"></a></dt>
+<dd><p>Update this turns current attacks.</p>
+<p>This function collects all of the failed attacks and stores them for the
+blue agent to use in their action decision</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>attacking_nodes</strong> – Nodes red has attacked from</p></li>
+<li><p><strong>target_nodes</strong> – Nodes red is attacking</p></li>
+<li><p><strong>success</strong> – If the attacks were a success or not</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.reset_stored_attacks">
+<span class="sig-name descname"><span class="pre">reset_stored_attacks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.reset_stored_attacks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.reset_stored_attacks" title="Permalink to this definition"></a></dt>
+<dd><p>Reset the attacks list.</p>
+<p>This needs to be called every timestep to ensure that only the current attacks are contained.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Reset the network back to its default state.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.add_deceptive_node">
+<span class="sig-name descname"><span class="pre">add_deceptive_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.add_deceptive_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.add_deceptive_node" title="Permalink to this definition"></a></dt>
+<dd><p>Add a deceptive node into the network.</p>
+<p>The deceptive node will sit between two actual nodes and act as a normal node in all
+regards other than the fact that it give more information when it is attacked</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node1</strong> – Name of the first node to connect to the deceptive node</p></li>
+<li><p><strong>node2</strong> – Name of the second to connect to the deceptive node</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>False if failed, the name of the new node if succeeded</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.isolate_node">
+<span class="sig-name descname"><span class="pre">isolate_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.isolate_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.isolate_node" title="Permalink to this definition"></a></dt>
+<dd><p>Isolate a node (disable all of the nodes connections).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> – the node to disable the connections of</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.reconnect_node">
+<span class="sig-name descname"><span class="pre">reconnect_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.reconnect_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.reconnect_node" title="Permalink to this definition"></a></dt>
+<dd><p>Re-enable any connections that may have previously been disabled.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> – the node to re-enable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.attack_node">
+<span class="sig-name descname"><span class="pre">attack_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skill</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_skill</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_vulnerability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guarantee</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.attack_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.attack_node" title="Permalink to this definition"></a></dt>
+<dd><p>Attack a target node.</p>
+<p>Uses a random chance to succeed that is modified by the skill of the attack and the
+vulnerability of the node. Both the skill and the vulnerability can be toggled to either be used or not</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> – The name of the node to target</p></li>
+<li><p><strong>skill</strong> – The skill of the attacker</p></li>
+<li><p><strong>use_skill</strong> – A boolean value that is used to determine if skill is used in the calculation to check if the
+attack succeeds</p></li>
+<li><p><strong>use_vulnerability</strong> – A boolean value that is used to determine if vulnerability is used in the calculation to
+check if the attack succeeds</p></li>
+<li><p><strong>guarantee</strong> – If True then attack automatically succeeds</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A boolean value that represents if the attack succeeded or not</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.make_node_safe">
+<span class="sig-name descname"><span class="pre">make_node_safe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.make_node_safe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.make_node_safe" title="Permalink to this definition"></a></dt>
+<dd><p>Make the state for a given node safe.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> – the node to make safe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.scan_node">
+<span class="sig-name descname"><span class="pre">scan_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.scan_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.scan_node" title="Permalink to this definition"></a></dt>
+<dd><p>Scan a target node to determine compromise based on the chance of discovery of compromise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node</strong> – The node to be scanned</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.save_json">
+<span class="sig-name descname"><span class="pre">save_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.save_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.save_json" title="Permalink to this definition"></a></dt>
+<dd><p>Save a given dictionary to a json file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_dict</strong> – Data to save to the json file</p></li>
+<li><p><strong>ts</strong> – The current timestamp of the data</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.network_interface.NetworkInterface.create_json_time_step">
+<span class="sig-name descname"><span class="pre">create_json_time_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/network_interface.html#NetworkInterface.create_json_time_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.network_interface.NetworkInterface.create_json_time_step" title="Permalink to this definition"></a></dt>
+<dd><p>Create a dictionary that contains the current state of the environment and returns it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A dictionary containing the node connections, states and vulnerability scores</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="yawning_titan.envs.generic.core.network_interface.html" class="btn btn-neutral float-left" title="yawning_titan.envs.generic.core.network_interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.envs.generic.core.red_action_set.html" class="btn btn-neutral float-right" title="yawning_titan.envs.generic.core.red_action_set" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

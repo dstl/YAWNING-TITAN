@@ -1,0 +1,6 @@
+tests.unit\_tests.game\_modes.agents.test\_blue\_agent\_config.test\_no\_max\_number\_deceptive\_nodes
+======================================================================================================
+
+.. currentmodule:: tests.unit_tests.game_modes.agents.test_blue_agent_config
+
+.. autofunction:: test_no_max_number_deceptive_nodes

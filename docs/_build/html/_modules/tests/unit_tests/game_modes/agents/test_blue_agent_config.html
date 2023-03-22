@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.unit_tests.game_modes.agents.test_blue_agent_config &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tests.unit_tests.game_modes.agents.test_blue_agent_config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for tests.unit_tests.game_modes.agents.test_blue_agent_config</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="kn">from</span> <span class="nn">tests.conftest</span> <span class="kn">import</span> <span class="n">not_raises</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.exceptions</span> <span class="kn">import</span> <span class="n">ConfigGroupValidationError</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.game_modes.components.blue_agent</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Blue</span><span class="p">,</span>
+    <span class="n">BlueActionSetGroup</span><span class="p">,</span>
+    <span class="n">BlueIntrusionDiscoveryGroup</span><span class="p">,</span>
+    <span class="n">DeceptiveNodeGroup</span><span class="p">,</span>
+    <span class="n">MakeNodeSafeGroup</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="default_blue"><a class="viewcode-back" href="../../../../../source/_autosummary/tests.unit_tests.game_modes.agents.test_blue_agent_config.default_blue.html#tests.unit_tests.game_modes.agents.test_blue_agent_config.default_blue">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">default_blue</span><span class="p">(</span><span class="n">default_game_mode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Blue</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get blue from default game mode.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">default_game_mode</span><span class="o">.</span><span class="n">blue</span></div>
+
+
+<span class="c1"># --- Tier 1 groups ---</span>
+
+
+<div class="viewcode-block" id="test_make_node_safe_increase_and_randomise_vulnerability"><a class="viewcode-back" href="../../../../../source/_autosummary/tests.unit_tests.game_modes.agents.test_blue_agent_config.test_make_node_safe_increase_and_randomise_vulnerability.html#tests.unit_tests.game_modes.agents.test_blue_agent_config.test_make_node_safe_increase_and_randomise_vulnerability">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_make_node_safe_increase_and_randomise_vulnerability</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests that making node safe cannot increase and randomise vulnerability.&quot;&quot;&quot;</span>
+    <span class="n">make_node_safe</span> <span class="o">=</span> <span class="n">MakeNodeSafeGroup</span><span class="p">()</span>
+
+    <span class="n">make_node_safe</span><span class="o">.</span><span class="n">increases_vulnerability</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">make_node_safe</span><span class="o">.</span><span class="n">gives_random_vulnerability</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">make_node_safe</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">make_node_safe</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">group_passed</span>
+
+    <span class="c1"># assert that the error message is as expected</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="s2">&quot;Making a node safe cannot simultaneously increase the nodes vulnerability by a set amount and randomly set the vulnerability&quot;</span>
+        <span class="ow">in</span> <span class="n">make_node_safe</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fail_reasons</span>
+    <span class="p">)</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">ConfigGroupValidationError</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">make_node_safe</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fail_exceptions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="test_no_max_number_deceptive_nodes"><a class="viewcode-back" href="../../../../../source/_autosummary/tests.unit_tests.game_modes.agents.test_blue_agent_config.test_no_max_number_deceptive_nodes.html#tests.unit_tests.game_modes.agents.test_blue_agent_config.test_no_max_number_deceptive_nodes">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_no_max_number_deceptive_nodes</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests using deceptive nodes but there being 0 as the max number.&quot;&quot;&quot;</span>
+    <span class="n">deceptive_nodes</span> <span class="o">=</span> <span class="n">DeceptiveNodeGroup</span><span class="p">()</span>
+    <span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">max_number</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">group_passed</span>
+
+    <span class="c1"># assert that the error message is as expected</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="s2">&quot;if the blue agent can use deceptive nodes then it must be able to create at least 1.&quot;</span>
+        <span class="ow">in</span> <span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fail_reasons</span>
+    <span class="p">)</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">ConfigGroupValidationError</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fail_exceptions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<span class="c1"># --- Tier 2 groups ---</span>
+
+
+<div class="viewcode-block" id="test_reconnect_isolate_config"><a class="viewcode-back" href="../../../../../source/_autosummary/tests.unit_tests.game_modes.agents.test_blue_agent_config.test_reconnect_isolate_config.html#tests.unit_tests.game_modes.agents.test_blue_agent_config.test_reconnect_isolate_config">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+    <span class="p">(</span><span class="s2">&quot;reconnect_node&quot;</span><span class="p">,</span> <span class="s2">&quot;isolate_node&quot;</span><span class="p">),</span> <span class="p">((</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_reconnect_isolate_config</span><span class="p">(</span><span class="n">reconnect_node</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">isolate_node</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests use isolate node while reconnect node is False.&quot;&quot;&quot;</span>
+    <span class="n">action_set</span> <span class="o">=</span> <span class="n">BlueActionSetGroup</span><span class="p">()</span>
+    <span class="n">action_set</span><span class="o">.</span><span class="n">isolate_node</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">isolate_node</span>
+    <span class="n">action_set</span><span class="o">.</span><span class="n">reconnect_node</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">reconnect_node</span>
+
+    <span class="n">action_set</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">action_set</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">group_passed</span>
+
+    <span class="c1"># assert that the error message is as expected</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="s2">&quot;Blue should be able to reconnect or isolate nodes if the other is true.&quot;</span>
+        <span class="ow">in</span> <span class="n">action_set</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fail_reasons</span>
+    <span class="p">)</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">ConfigGroupValidationError</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">action_set</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fail_exceptions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="test_lower_chance_detecting_deceptive_node_intrusion_on_scan_fail"><a class="viewcode-back" href="../../../../../source/_autosummary/tests.unit_tests.game_modes.agents.test_blue_agent_config.test_lower_chance_detecting_deceptive_node_intrusion_on_scan_fail.html#tests.unit_tests.game_modes.agents.test_blue_agent_config.test_lower_chance_detecting_deceptive_node_intrusion_on_scan_fail">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+    <span class="p">(</span><span class="s2">&quot;on_scan_deceptive_node&quot;</span><span class="p">,</span> <span class="s2">&quot;on_scan&quot;</span><span class="p">),</span> <span class="p">((</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_lower_chance_detecting_deceptive_node_intrusion_on_scan_fail</span><span class="p">(</span>
+    <span class="n">on_scan_deceptive_node</span><span class="p">,</span> <span class="n">on_scan</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests a lower detection chance cannot be set for deceptive nodes than standard nodes when network is scanned.&quot;&quot;&quot;</span>
+    <span class="n">intrusion_discovery</span> <span class="o">=</span> <span class="n">BlueIntrusionDiscoveryGroup</span><span class="p">()</span>
+
+    <span class="c1"># check cannot be lower</span>
+    <span class="n">intrusion_discovery</span><span class="o">.</span><span class="n">on_scan</span><span class="o">.</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">on_scan_deceptive_node</span>
+    <span class="n">intrusion_discovery</span><span class="o">.</span><span class="n">on_scan</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">on_scan</span>
+
+    <span class="n">intrusion_discovery</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">intrusion_discovery</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">group_passed</span>
+
+    <span class="c1"># assert that the error message is as expected</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="s2">&quot;there should be a higher chance at detecting intrusions on deceptive nodes than standard nodes.&quot;</span>
+        <span class="ow">in</span> <span class="n">intrusion_discovery</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fail_reasons</span>
+    <span class="p">)</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">ConfigGroupValidationError</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">intrusion_discovery</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fail_exceptions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="test_lower_chance_detecting_deceptive_node_intrusion_on_scan_pass"><a class="viewcode-back" href="../../../../../source/_autosummary/tests.unit_tests.game_modes.agents.test_blue_agent_config.test_lower_chance_detecting_deceptive_node_intrusion_on_scan_pass.html#tests.unit_tests.game_modes.agents.test_blue_agent_config.test_lower_chance_detecting_deceptive_node_intrusion_on_scan_pass">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_lower_chance_detecting_deceptive_node_intrusion_on_scan_pass</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests that the validation passes when detection chances for deceptive and standard nodes are both 1.&quot;&quot;&quot;</span>
+    <span class="n">intrusion_discovery</span> <span class="o">=</span> <span class="n">BlueIntrusionDiscoveryGroup</span><span class="p">()</span>
+
+    <span class="n">intrusion_discovery</span><span class="o">.</span><span class="n">on_scan</span><span class="o">.</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">intrusion_discovery</span><span class="o">.</span><span class="n">on_scan</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">intrusion_discovery</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">intrusion_discovery</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">passed</span></div>
+
+
+<span class="c1"># --- Tier 3 groups ---</span>
+
+
+<div class="viewcode-block" id="test_using_scan_with_assured_immediate_detection"><a class="viewcode-back" href="../../../../../source/_autosummary/tests.unit_tests.game_modes.agents.test_blue_agent_config.test_using_scan_with_assured_immediate_detection.html#tests.unit_tests.game_modes.agents.test_blue_agent_config.test_using_scan_with_assured_immediate_detection">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_using_scan_with_assured_immediate_detection</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests that if the &#39;scan&#39; action is used then an intrusion cannot be immediately detected.&quot;&quot;&quot;</span>
+    <span class="n">blue</span> <span class="o">=</span> <span class="n">Blue</span><span class="p">()</span>
+
+    <span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">scan</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">immediate</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">blue</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">blue</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">group_passed</span>
+
+    <span class="c1"># assert that the error message is as expected</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="s2">&quot;The scan action is selected yet blue has 100</span><span class="si">% c</span><span class="s2">hance to spot &quot;</span>
+        <span class="s2">&quot;detections. There is no need for the blue to have the scan &quot;</span>
+        <span class="s2">&quot;action in this case.&quot;</span>
+    <span class="p">)</span> <span class="ow">in</span> <span class="n">blue</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fail_reasons</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">ConfigGroupValidationError</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">blue</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fail_exceptions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="test_not_using_scan_without_assured_immediate_detection"><a class="viewcode-back" href="../../../../../source/_autosummary/tests.unit_tests.game_modes.agents.test_blue_agent_config.test_not_using_scan_without_assured_immediate_detection.html#tests.unit_tests.game_modes.agents.test_blue_agent_config.test_not_using_scan_without_assured_immediate_detection">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_not_using_scan_without_assured_immediate_detection</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests that if the &#39;scan&#39; action is not used then an intrusion must be immediately detected.&quot;&quot;&quot;</span>
+    <span class="n">blue</span> <span class="o">=</span> <span class="n">Blue</span><span class="p">()</span>
+
+    <span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">scan</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">immediate</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+    <span class="n">blue</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">blue</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">group_passed</span>
+
+    <span class="c1"># assert that the error message is as expected</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="s2">&quot;If the blue agent cannot scan nodes then it should be able to &quot;</span>
+        <span class="s2">&quot;automatically detect the intrusions.&quot;</span>
+    <span class="p">)</span> <span class="ow">in</span> <span class="n">blue</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fail_reasons</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">ConfigGroupValidationError</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">blue</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">fail_exceptions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="test_default_blue_from_legacy"><a class="viewcode-back" href="../../../../../source/_autosummary/tests.unit_tests.game_modes.agents.test_blue_agent_config.test_default_blue_from_legacy.html#tests.unit_tests.game_modes.agents.test_blue_agent_config.test_default_blue_from_legacy">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">unit_test</span>
+<span class="k">def</span> <span class="nf">test_default_blue_from_legacy</span><span class="p">(</span><span class="n">default_blue</span><span class="p">:</span> <span class="n">Blue</span><span class="p">,</span> <span class="n">legacy_default_game_mode_dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a blue agent using the default config file.&quot;&quot;&quot;</span>
+    <span class="n">blue</span> <span class="o">=</span> <span class="n">Blue</span><span class="p">()</span>
+
+    <span class="k">with</span> <span class="n">not_raises</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+        <span class="n">blue</span><span class="o">.</span><span class="n">set_from_dict</span><span class="p">(</span><span class="n">legacy_default_game_mode_dict</span><span class="p">[</span><span class="s2">&quot;BLUE&quot;</span><span class="p">],</span> <span class="n">legacy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.e2e\_integration\_tests.test\_generic\_env\_e2e.RandomGen
+===============================================================
+
+.. currentmodule:: tests.e2e_integration_tests.test_generic_env_e2e
+
+.. autoclass:: RandomGen
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~RandomGen.get_action

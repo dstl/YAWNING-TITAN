@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.networks.network_db &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.networks.network_db.dcbo_base_network" href="yawning_titan.networks.network_db.dcbo_base_network.html" />
+    <link rel="prev" title="yawning_titan.networks.network_creator.gnp_random_connected_graph" href="yawning_titan.networks.network_creator.gnp_random_connected_graph.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.networks.network.html">yawning_titan.networks.network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.networks.network_creator.html">yawning_titan.networks.network_creator</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">yawning_titan.networks.network_db</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network_db.dcbo_base_network.html">yawning_titan.networks.network_db.dcbo_base_network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network_db.default_18_node_network.html">yawning_titan.networks.network_db.default_18_node_network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network_db.NetworkDB.html">yawning_titan.networks.network_db.NetworkDB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network_db.NetworkQuery.html">yawning_titan.networks.network_db.NetworkQuery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.networks.network_db.NetworkSchema.html">yawning_titan.networks.network_db.NetworkSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yawning_titan.networks.network_db.NetworkDB"><code class="docutils literal notranslate"><span class="pre">NetworkDB</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yawning_titan.networks.network_db.NetworkSchema"><code class="docutils literal notranslate"><span class="pre">NetworkSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#yawning_titan.networks.network_db.default_18_node_network"><code class="docutils literal notranslate"><span class="pre">default_18_node_network()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.networks.node.html">yawning_titan.networks.node</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.html">yawning_titan</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+      <li class="breadcrumb-item active">yawning_titan.networks.network_db</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="module-yawning_titan.networks.network_db">
+<span id="yawning-titan-networks-network-db"></span><h1>yawning_titan.networks.network_db<a class="headerlink" href="#module-yawning_titan.networks.network_db" title="Permalink to this heading"></a></h1>
+<p>Provides an API for the <code class="docutils literal notranslate"><span class="pre">network.json</span></code> TinyDB file, and a Schema class that defines the network DB fields.</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.networks.network_db.dcbo_base_network.html#yawning_titan.networks.network_db.dcbo_base_network" title="yawning_titan.networks.network_db.dcbo_base_network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dcbo_base_network</span></code></a></p></td>
+<td><p>Creates the same network used to generated DCBO data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.networks.network_db.default_18_node_network.html#yawning_titan.networks.network_db.default_18_node_network" title="yawning_titan.networks.network_db.default_18_node_network"><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_18_node_network</span></code></a></p></td>
+<td><p>The standard 18-node network found in the Ridley, A.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.networks.network_db.NetworkDB.html#yawning_titan.networks.network_db.NetworkDB" title="yawning_titan.networks.network_db.NetworkDB"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkDB</span></code></a></p></td>
+<td><p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkDB</span></code> class extends <code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDB</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="yawning_titan.networks.network_db.NetworkQuery.html#yawning_titan.networks.network_db.NetworkQuery" title="yawning_titan.networks.network_db.NetworkQuery"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkQuery</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="yawning_titan.networks.network_db.NetworkSchema.html#yawning_titan.networks.network_db.NetworkSchema" title="yawning_titan.networks.network_db.NetworkSchema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkSchema</span></code></a></p></td>
+<td><p>A schema-like class that defines the network DB fields.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkDB">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.networks.network_db.</span></span><span class="sig-name descname"><span class="pre">NetworkDB</span></span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkDB"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkDB" title="Permalink to this definition"></a></dt>
+<dd><p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkDB</span></code> class extends <code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDB</span></code>.</p>
+<p>The below code blocks demonstrate how to use the <code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkDB</span></code> class.</p>
+<ul>
+<li><p>Instantiate the Network DB:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">yawning_titan.networks.network_db</span> <span class="kn">import</span> <span class="n">NetworkDB</span><span class="p">,</span> <span class="n">NetworkSchema</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">NetworkDB</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Search for all network that have set_random_entry_nodes == True.</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">NetworkSchema</span><span class="o">.</span><span class="n">SET_RANDOM_ENTRY_NODES</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkDB.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkDB.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkDB.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkDB.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkDB.insert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkDB.insert" title="Permalink to this definition"></a></dt>
+<dd><p>Insert a <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> into the DB as <code class="docutils literal notranslate"><span class="pre">.json</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network</strong> – An instance of <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DocMetadata</span></code>.
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DocMetadata</span></code>.
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DocMetadata</span></code>.</p></li>
+<li><p><strong>name</strong> – The config name.</p></li>
+<li><p><strong>description</strong> – The config description.</p></li>
+<li><p><strong>author</strong> – The config author.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The inserted <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkDB.all">
+<span class="sig-name descname"><span class="pre">all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkDB.all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkDB.all" title="Permalink to this definition"></a></dt>
+<dd><p>Get all <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> from the network DB.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkDB.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkDB.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkDB.show" title="Permalink to this definition"></a></dt>
+<dd><p>Show details of all entries in the db.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – If True, all doc metadata details are shown,
+otherwise just the name is shown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkDB.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uuid</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkDB.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkDB.get" title="Permalink to this definition"></a></dt>
+<dd><p>Get a network config document from its uuid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>uuid</strong> – A target document uuid.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The network config document as an instance of
+<a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> if the uuid exists,
+otherwise <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkDB.search">
+<span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkDB.search"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkDB.search" title="Permalink to this definition"></a></dt>
+<dd><p>Searches the <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> with a <a class="reference internal" href="yawning_titan.networks.network_db.NetworkSchema.html#yawning_titan.networks.network_db.NetworkSchema" title="yawning_titan.networks.network_db.NetworkSchema"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkSchema</span></code></a> query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>query</strong> – A <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a> of <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkDB.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkDB.count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkDB.count" title="Permalink to this definition"></a></dt>
+<dd><p>Count how many docs are in the db. Extends <code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.table.Table.count</span></code>.</p>
+<p>A <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a> can be used to
+filter the count.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cond</strong> – An optional <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a>.
+Has a default value of <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The number of docs counted.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkDB.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkDB.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkDB.update" title="Permalink to this definition"></a></dt>
+<dd><p>Update a <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>. in the db.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network</strong> – An instance of <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>.</p></li>
+<li><p><strong>name</strong> – The config name.</p></li>
+<li><p><strong>description</strong> – The config description.</p></li>
+<li><p><strong>author</strong> – The config author.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The updated <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkDB.upsert">
+<span class="sig-name descname"><span class="pre">upsert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">author</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkDB.upsert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkDB.upsert" title="Permalink to this definition"></a></dt>
+<dd><p>Upsert a <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>. in the db.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network</strong> – An instance of <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>.</p></li>
+<li><p><strong>name</strong> – The config name.</p></li>
+<li><p><strong>description</strong> – The config description.</p></li>
+<li><p><strong>author</strong> – The config author.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The upserted <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkDB.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkDB.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkDB.remove" title="Permalink to this definition"></a></dt>
+<dd><p>Remove a <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>. from the db.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>network</strong> – An instance of <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The uuid of the removed <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkDB.remove_by_cond">
+<span class="sig-name descname"><span class="pre">remove_by_cond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cond</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkDB.remove_by_cond"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkDB.remove_by_cond" title="Permalink to this definition"></a></dt>
+<dd><p>Remove <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>. from the db that match the query.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cond</strong> – A <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The list of uuids of the removed <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkDB.reset_default_networks_in_db">
+<span class="sig-name descname"><span class="pre">reset_default_networks_in_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkDB.reset_default_networks_in_db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkDB.reset_default_networks_in_db" title="Permalink to this definition"></a></dt>
+<dd><p>Reset the default network in the db.</p>
+<p>Achieves this by loading the default
+<cite>yawning_titan/networks/_package_data/network.json</cite> db file into TinyDB,
+then iterating over all docs and forcing an update of each one in the main
+networks db from its uuid if they do not match.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>force</strong> – Forces a reset without checking for equality when
+True. Has a default value of False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkDB.rebuild_db">
+<span class="sig-name descname"><span class="pre">rebuild_db</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkDB.rebuild_db"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkDB.rebuild_db" title="Permalink to this definition"></a></dt>
+<dd><p>Rebuild the db.</p>
+<dl class="simple">
+<dt>Actions taken:</dt><dd><ul class="simple">
+<li><p>clear the query cache</p></li>
+<li><p>truncate the db</p></li>
+<li><p>call <a class="reference internal" href="yawning_titan.networks.network_db.NetworkDB.html#yawning_titan.networks.network_db.NetworkDB.reset_default_networks_in_db" title="yawning_titan.networks.network_db.NetworkDB.reset_default_networks_in_db"><code class="xref py py-func docutils literal notranslate"><span class="pre">reset_default_networks_in_db()</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function completely rebuilds the database. Any custom networks
+saved in the db will be lost. The default networks can be reset
+using the <a class="reference internal" href="yawning_titan.networks.network_db.NetworkDB.html#yawning_titan.networks.network_db.NetworkDB.reset_default_networks_in_db" title="yawning_titan.networks.network_db.NetworkDB.reset_default_networks_in_db"><code class="xref py py-func docutils literal notranslate"><span class="pre">reset_default_networks_in_db()</span></code></a>
+function.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.NetworkSchema">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.networks.network_db.</span></span><span class="sig-name descname"><span class="pre">NetworkSchema</span></span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#NetworkSchema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.NetworkSchema" title="Permalink to this definition"></a></dt>
+<dd><p>A schema-like class that defines the network DB fields.</p>
+<p>Fields are defined using the <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a> class
+so that schema paths can be used directly within <code class="xref py py-func docutils literal notranslate"><span class="pre">tinydb.table.Table.search()</span></code>
+function calls. All fields are mapped to a property in the
+<a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">yawning_titan.networks.network_db</span> <span class="kn">import</span> <span class="n">NetworkDB</span><span class="p">,</span> <span class="n">NetworkSchema</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">NetworkDB</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network_configs</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">NetworkSchema</span><span class="o">.</span><span class="n">SET_RANDOM_ENTRY_NODES</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="yawning_titan.networks.network_db.default_18_node_network">
+<span class="sig-prename descclassname"><span class="pre">yawning_titan.networks.network_db.</span></span><span class="sig-name descname"><span class="pre">default_18_node_network</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/networks/network_db.html#default_18_node_network"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.networks.network_db.default_18_node_network" title="Permalink to this definition"></a></dt>
+<dd><p>The standard 18-node network found in the Ridley, A. (2017) research paper.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An instance of <a class="reference internal" href="yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="yawning_titan.networks.network_creator.gnp_random_connected_graph.html" class="btn btn-neutral float-left" title="yawning_titan.networks.network_creator.gnp_random_connected_graph" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.networks.network_db.dcbo_base_network.html" class="btn btn-neutral float-right" title="yawning_titan.networks.network_db.dcbo_base_network" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.unit\_tests.config.validation.test\_any\_true
+===================================================
+
+.. automodule:: tests.unit_tests.config.validation.test_any_true
+
+
+
+
+
+
+
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+
+      test_bool_item_multiple_true
+      test_bool_item_true
+      test_group
+      test_non_numeric_type
+      test_none_used
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+
+      Group

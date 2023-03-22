@@ -1,0 +1,6 @@
+yawning\_titan.exceptions.YawningTitanRunError
+==============================================
+
+.. currentmodule:: yawning_titan.exceptions
+
+.. autoexception:: YawningTitanRunError

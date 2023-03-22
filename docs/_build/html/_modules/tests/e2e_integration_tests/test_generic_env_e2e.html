@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.e2e_integration_tests.test_generic_env_e2e &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tests.e2e_integration_tests.test_generic_env_e2e</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for tests.e2e_integration_tests.test_generic_env_e2e</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Used to test the GenericEnv() class and the associated agent interfaces.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="kn">from</span> <span class="nn">tests.conftest</span> <span class="kn">import</span> <span class="n">N_TIME_STEPS</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.generic_env</span> <span class="kn">import</span> <span class="n">GenericNetworkEnv</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.node</span> <span class="kn">import</span> <span class="n">Node</span>
+
+
+<div class="viewcode-block" id="RandomGen"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.RandomGen.html#tests.e2e_integration_tests.test_generic_env_e2e.RandomGen">[docs]</a><span class="k">class</span> <span class="nc">RandomGen</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Used to ensure that every action is chosen but also that there are random actions chosen.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RandomGen.__init__"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.html#tests.e2e_integration_tests.test_generic_env_e2e.RandomGen.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_actions</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">number_of_actions</span> <span class="o">=</span> <span class="n">number_actions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">possible_actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">number_actions</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_repeat</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">repeat_action</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="RandomGen.get_action"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.RandomGen.html#tests.e2e_integration_tests.test_generic_env_e2e.RandomGen.get_action">[docs]</a>    <span class="k">def</span> <span class="nf">get_action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an action.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_repeat</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">19</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">test_repeat</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">repeat_action</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_actions</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_repeat</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">amount</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">amount</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">test_repeat</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">amount</span> <span class="o">=</span> <span class="mi">5</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">repeat_action</span>
+
+        <span class="n">chosen_action</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">possible_actions</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">possible_actions</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">chosen_action</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">possible_actions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">possible_actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_actions</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">chosen_action</span></div></div>
+
+
+<div class="viewcode-block" id="test_generic_env_e2e"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.test_generic_env_e2e.html#tests.e2e_integration_tests.test_generic_env_e2e.test_generic_env_e2e">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">e2e_integration_test</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span>
+    <span class="p">(</span><span class="s2">&quot;game_mode_name&quot;</span><span class="p">,</span> <span class="s2">&quot;network_name&quot;</span><span class="p">),</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;Default Game Mode&quot;</span><span class="p">,</span> <span class="s2">&quot;Default 18-node network&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;Default Game Mode&quot;</span><span class="p">,</span> <span class="s2">&quot;mesh_18&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;Default Game Mode&quot;</span><span class="p">,</span> <span class="s2">&quot;mesh_50&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;red_config_test_1&quot;</span><span class="p">,</span> <span class="s2">&quot;mesh_50&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;red_config_test_2&quot;</span><span class="p">,</span> <span class="s2">&quot;mesh_50&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;red_config_test_3&quot;</span><span class="p">,</span> <span class="s2">&quot;mesh_50&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;red_config_test_4&quot;</span><span class="p">,</span> <span class="s2">&quot;mesh_5&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;red_config_test_5&quot;</span><span class="p">,</span> <span class="s2">&quot;mesh_24&quot;</span><span class="p">),</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_generic_env_e2e</span><span class="p">(</span>
+    <span class="n">game_mode_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">network_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">create_yawning_titan_run</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the generic environment end to end.&quot;&quot;&quot;</span>
+    <span class="c1"># Counters for later</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;red_action_count&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="kc">True</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="kc">False</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;multi_attack&quot;</span><span class="p">:</span> <span class="p">{</span><span class="kc">True</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">),</span> <span class="kc">False</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)},</span>
+        <span class="s2">&quot;blue_action_count&quot;</span><span class="p">:</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="s2">&quot;discovered_from_scanning&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;discovered_immediately_counter&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;nodes_missed_scan&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;number_of_resets&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;deceptive_counter&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;wins&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;scan_used&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">yt_run</span> <span class="o">=</span> <span class="n">create_yawning_titan_run</span><span class="p">(</span><span class="n">game_mode_name</span><span class="p">,</span> <span class="n">network_name</span><span class="p">)</span>
+
+    <span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span> <span class="o">=</span> <span class="n">yt_run</span><span class="o">.</span><span class="n">env</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+    <span class="n">random_action_generator</span> <span class="o">=</span> <span class="n">RandomGen</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">BLUE</span><span class="o">.</span><span class="n">get_number_of_actions</span><span class="p">())</span>
+
+    <span class="n">prev_high_value</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_TIME_STEPS</span><span class="p">):</span>
+        <span class="n">current_chosen_action</span> <span class="o">=</span> <span class="n">random_action_generator</span><span class="o">.</span><span class="n">get_action</span><span class="p">()</span>
+        <span class="n">obs</span><span class="p">,</span> <span class="n">rew</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">episode</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">current_chosen_action</span><span class="p">)</span>
+
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">calculate_counts</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">done</span><span class="p">)</span>
+
+        <span class="n">check_network_characteristics</span><span class="p">(</span><span class="n">done</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">episode</span><span class="p">,</span> <span class="n">prev_high_value</span><span class="p">)</span>
+        <span class="n">check_observation_space</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">obs</span><span class="p">)</span>
+        <span class="n">check_attacks_come_from_connected_node</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">episode</span><span class="p">)</span>
+        <span class="n">check_blue_actions</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">episode</span><span class="p">,</span> <span class="n">current_chosen_action</span><span class="p">)</span>
+
+        <span class="c1"># Blue actions</span>
+
+        <span class="k">if</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;restore_node&quot;</span><span class="p">,</span> <span class="s2">&quot;make_node_safe&quot;</span><span class="p">]:</span>
+            <span class="n">counts</span> <span class="o">=</span> <span class="n">check_blue_restore_node_action</span><span class="p">(</span><span class="n">episode</span><span class="p">,</span> <span class="n">counts</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;isolate&quot;</span><span class="p">:</span>
+            <span class="n">check_blue_isolate_action</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">episode</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;connect&quot;</span><span class="p">:</span>
+            <span class="n">check_blue_connect_action</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">episode</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;reduce_vulnerability&quot;</span><span class="p">:</span>
+            <span class="n">check_blue_reduce_vulnerability_action</span><span class="p">(</span><span class="n">episode</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;scan&quot;</span><span class="p">:</span>
+            <span class="n">counts</span> <span class="o">=</span> <span class="n">check_blue_scan_action</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">episode</span><span class="p">,</span> <span class="n">counts</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;add_deceptive_node&quot;</span><span class="p">:</span>
+            <span class="n">check_blue_add_deceptive_node_action</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">episode</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;do_nothing&quot;</span><span class="p">,</span> <span class="s2">&quot;failed&quot;</span><span class="p">]:</span>
+            <span class="n">check_blue_do_nothing_or_fail_action</span><span class="p">(</span><span class="n">episode</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;Missing blue action:&quot;</span> <span class="o">+</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">])</span>
+
+        <span class="c1"># Red actions</span>
+
+        <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;red_info&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;basic_attack&quot;</span><span class="p">:</span>
+                <span class="n">counts</span> <span class="o">=</span> <span class="n">check_red_basic_attack</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">episode</span><span class="p">,</span> <span class="n">counts</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;zero_day&quot;</span><span class="p">:</span>
+                <span class="n">counts</span> <span class="o">=</span> <span class="n">check_red_zero_day_action</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">episode</span><span class="p">,</span> <span class="n">counts</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Action&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;spread&quot;</span><span class="p">,</span> <span class="s2">&quot;intrude&quot;</span><span class="p">]:</span>
+                <span class="n">counts</span> <span class="o">=</span> <span class="n">check_red_spread_or_intrude_action</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">episode</span><span class="p">,</span> <span class="n">counts</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;random_move&quot;</span><span class="p">:</span>
+                <span class="n">check_red_random_move_action</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">episode</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;do_nothing&quot;</span><span class="p">:</span>
+                <span class="n">check_red_do_nothing_action</span><span class="p">(</span><span class="n">episode</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;no_possible_targets&quot;</span><span class="p">:</span>
+                <span class="n">check_red_no_possible_targets</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">episode</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Action&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;natural_spread&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;Missing red action:&quot;</span> <span class="o">+</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Action&quot;</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+            <span class="n">counts</span> <span class="o">=</span> <span class="n">check_when_done</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">counts</span><span class="p">)</span>
+            <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_when_not_done</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+    <span class="n">check_when_complete</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">N_TIME_STEPS</span><span class="p">)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="calculate_counts"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.calculate_counts.html#tests.e2e_integration_tests.test_generic_env_e2e.calculate_counts">[docs]</a><span class="k">def</span> <span class="nf">calculate_counts</span><span class="p">(</span>
+    <span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">counts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">done</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Populate the counts dictionary.&quot;&quot;&quot;</span>
+    <span class="c1"># used to calculate number of successes and failures for different actions</span>
+    <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;blue_action_count&quot;</span><span class="p">][</span><span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">done</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;failed&quot;</span><span class="p">:</span>
+        <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;wins&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;red_info&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">red_action</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Action&quot;</span><span class="p">]</span>
+        <span class="n">red_success</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Successes&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">red_action</span> <span class="o">!=</span> <span class="s2">&quot;natural_spread&quot;</span> <span class="ow">and</span> <span class="n">red_action</span> <span class="o">!=</span> <span class="s2">&quot;no_possible_targets&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">red_action</span> <span class="o">!=</span> <span class="s2">&quot;spread&quot;</span> <span class="ow">and</span> <span class="n">red_action</span> <span class="o">!=</span> <span class="s2">&quot;intrude&quot;</span><span class="p">:</span>
+                <span class="c1"># if a action that targets a single node succeeds or fails</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">red_success</span><span class="p">:</span>
+                    <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;red_action_count&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="n">red_action</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># multi-node target</span>
+                <span class="n">overall_success</span> <span class="o">=</span> <span class="kc">True</span> <span class="ow">in</span> <span class="n">red_success</span>
+
+                <span class="c1"># adds one attack action to the red action count (this is so actions can easily be counted to max</span>
+                <span class="c1"># timesteps)</span>
+
+                <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;red_action_count&quot;</span><span class="p">][</span><span class="n">overall_success</span><span class="p">][</span><span class="n">red_action</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="c1"># counts all the individual successes and failures against the nodes</span>
+                <span class="k">for</span> <span class="n">success</span> <span class="ow">in</span> <span class="n">red_success</span><span class="p">:</span>
+                    <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;multi_attack&quot;</span><span class="p">][</span><span class="n">success</span><span class="p">][</span><span class="n">red_action</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">counts</span></div>
+
+
+<div class="viewcode-block" id="check_network_characteristics"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_network_characteristics.html#tests.e2e_integration_tests.test_generic_env_e2e.check_network_characteristics">[docs]</a><span class="k">def</span> <span class="nf">check_network_characteristics</span><span class="p">(</span>
+    <span class="n">done</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">,</span> <span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">prev_high_value</span><span class="p">:</span> <span class="n">Node</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the attributes of the `Network` in the given episode.&quot;&quot;&quot;</span>
+    <span class="n">red_info</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;red_info&quot;</span><span class="p">]</span>
+    <span class="n">initial_edges</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">base_graph</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
+    <span class="n">post_red_state</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_state&quot;</span><span class="p">]</span>
+
+    <span class="c1"># natural spreading</span>
+    <span class="n">ns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;Action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;natural_spread&quot;</span><span class="p">,</span> <span class="n">red_info</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ns</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">ns</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ns</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">ns</span> <span class="o">=</span> <span class="n">ns</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">target_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="n">ns</span><span class="p">[</span><span class="s2">&quot;Target_Nodes&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="n">index</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">attack_success</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ns</span><span class="p">[</span><span class="s2">&quot;Successes&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">attack_success</span>
+        <span class="p">]:</span>
+            <span class="k">assert</span> <span class="n">post_red_state</span><span class="p">[</span><span class="n">target_nodes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="c1"># random high value node placement</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">set_random_high_value_nodes</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">high_value_nodes</span> <span class="o">==</span> <span class="n">prev_high_value</span>
+                <span class="ow">or</span> <span class="n">prev_high_value</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">adj_matrix</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="o">==</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_numpy_array</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="c1"># cannot place too many deceptive nodes</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">initial_edges</span>
+        <span class="o">&lt;=</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">base_graph</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
+        <span class="o">&lt;=</span> <span class="p">(</span>
+            <span class="n">initial_edges</span>
+            <span class="o">+</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">max_number</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">)</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_attacks_come_from_connected_node"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_attacks_come_from_connected_node.html#tests.e2e_integration_tests.test_generic_env_e2e.check_attacks_come_from_connected_node">[docs]</a><span class="k">def</span> <span class="nf">check_attacks_come_from_connected_node</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">,</span> <span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test that attacks come from a connected node.&quot;&quot;&quot;</span>
+    <span class="n">attacks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;attacks&quot;</span><span class="p">]</span>
+    <span class="n">initial_state</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;initial_state&quot;</span><span class="p">]</span>
+    <span class="n">blue_action</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span>
+    <span class="n">blue_node</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">]</span>
+
+    <span class="n">red_info</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;red_info&quot;</span><span class="p">]</span>
+    <span class="n">initial_graph</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;initial_graph&quot;</span><span class="p">]</span>
+
+    <span class="n">prev_attacks</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">nodes</span> <span class="ow">in</span> <span class="n">attacks</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="n">initial_state</span><span class="p">[</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="ow">or</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">prev_attacks</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">initial_state</span><span class="p">[</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="n">prev_attacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">blue_action</span> <span class="o">!=</span> <span class="s2">&quot;isolate&quot;</span> <span class="ow">and</span> <span class="n">blue_action</span> <span class="o">!=</span> <span class="s2">&quot;add_deceptive_node&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span>
+                <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="kc">None</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
+                    <span class="n">nodes</span><span class="p">,</span>
+                    <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                    <span class="n">blue_action</span><span class="p">,</span>
+                    <span class="n">blue_node</span><span class="p">,</span>
+                    <span class="n">red_info</span><span class="p">,</span>
+                <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;isolate&quot;</span> <span class="ow">and</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">blue_node</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">initial_graph</span><span class="p">)</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">blue_node</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;add_deceptive_node&quot;</span> <span class="ow">and</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">blue_node</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">blue_node</span> <span class="ow">in</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">initial_graph</span><span class="p">):</span>
+                <span class="k">assert</span> <span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="n">initial_graph</span><span class="p">)</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">blue_node</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span></div>
+
+
+<div class="viewcode-block" id="check_observation_space"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_observation_space.html#tests.e2e_integration_tests.test_generic_env_e2e.check_observation_space">[docs]</a><span class="k">def</span> <span class="nf">check_observation_space</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">,</span> <span class="n">obs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the observation space in the environments current episode.&quot;&quot;&quot;</span>
+    <span class="c1"># observation space is correct</span>
+    <span class="n">adj_matrix</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_numpy_array</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="p">)</span>
+    <span class="n">open_spaces</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_number_unused_deceptive_nodes</span><span class="p">()</span>
+    <span class="n">adj_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">adj_matrix</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">open_spaces</span><span class="p">),</span> <span class="s2">&quot;constant&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">node_connections</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">obs</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">adj_matrix</span><span class="p">)],</span> <span class="n">adj_matrix</span><span class="p">)</span>
+
+    <span class="n">observation_size</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">calculate_observation_space_size</span><span class="p">(</span><span class="n">with_feather</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># assert the observation space is the correct size</span>
+    <span class="k">assert</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_observation_size</span><span class="p">()</span> <span class="o">==</span> <span class="n">observation_size</span></div>
+
+
+<div class="viewcode-block" id="check_when_done"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_when_done.html#tests.e2e_integration_tests.test_generic_env_e2e.check_when_done">[docs]</a><span class="k">def</span> <span class="nf">check_when_done</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">,</span> <span class="n">counts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct when the game mode is done.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">current_duration</span> <span class="o">&gt;</span> <span class="mi">500</span>
+        <span class="ow">and</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">15</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">make_node_safe</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span>
+            <span class="ow">or</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">restore_node</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+                <span class="n">n</span><span class="o">.</span><span class="n">deceptive_node</span>
+                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">()</span>
+            <span class="p">):</span>
+                <span class="k">assert</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;deceptive_counter&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">current_duration</span>
+        <span class="o">!=</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">max_steps</span><span class="o">.</span><span class="n">value</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">all_nodes_lost</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span>
+                    <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span><span class="n">filter_true_safe</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="o">==</span> <span class="mi">0</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">n_percent_nodes_lost</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="nb">len</span><span class="p">(</span>
+                        <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
+                            <span class="n">filter_true_compromised</span><span class="o">=</span><span class="kc">True</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                    <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">())</span>
+                <span class="p">)</span>
+                <span class="o">&gt;=</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">n_percent_nodes_lost</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">high_value_node_lost</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="c1"># the game ends when a high value node is compromised, this needs to be checked</span>
+            <span class="n">compromised_hvn</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">high_value_nodes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">compromised_hvn</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">break</span>
+
+            <span class="k">assert</span> <span class="n">compromised_hvn</span> <span class="ow">is</span> <span class="kc">True</span>
+    <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;number_of_resets&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">counts</span></div>
+
+
+<div class="viewcode-block" id="check_when_not_done"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_when_not_done.html#tests.e2e_integration_tests.test_generic_env_e2e.check_when_not_done">[docs]</a><span class="k">def</span> <span class="nf">check_when_not_done</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct when the game mode is not done.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">all_nodes_lost</span><span class="o">.</span><span class="n">value</span>
+    <span class="p">):</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span><span class="n">filter_true_safe</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="o">!=</span> <span class="mi">0</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">n_percent_nodes_lost</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span>
+    <span class="p">):</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span>
+                    <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
+                        <span class="n">filter_true_compromised</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+                <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">())</span>
+            <span class="p">)</span>
+            <span class="o">&lt;</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">n_percent_nodes_lost</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">high_value_node_lost</span><span class="o">.</span><span class="n">value</span>
+    <span class="p">):</span>
+        <span class="c1"># the game would end if a high value node was compromised, this needs to be checked</span>
+        <span class="n">compromised_hvn</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># check that none of the high value nodes are compromised</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">high_value_nodes</span><span class="p">:</span>
+            <span class="c1"># get_single_node_state returns 1 if compromised</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">compromised_hvn</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">assert</span> <span class="n">compromised_hvn</span> <span class="ow">is</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="check_when_complete"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_when_complete.html#tests.e2e_integration_tests.test_generic_env_e2e.check_when_complete">[docs]</a><span class="k">def</span> <span class="nf">check_when_complete</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">,</span> <span class="n">counts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">timesteps</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct when the game mode is complete.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="ow">not</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span>
+        <span class="ow">and</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;scan_used&quot;</span><span class="p">]</span>
+        <span class="ow">and</span> <span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="s2">&quot;nodes_missed_scan&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;discovered_from_scanning&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="p">):</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="p">(</span>
+                <span class="mf">0.95</span>
+                <span class="o">*</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">on_scan</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span>
+            <span class="p">)</span>
+            <span class="o">&lt;</span> <span class="p">(</span>
+                <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;discovered_from_scanning&quot;</span><span class="p">]</span>
+                <span class="o">/</span> <span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="s2">&quot;nodes_missed_scan&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;discovered_from_scanning&quot;</span><span class="p">])</span>
+            <span class="p">)</span>
+            <span class="o">&lt;</span> <span class="p">(</span>
+                <span class="mf">1.05</span>
+                <span class="o">*</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">on_scan</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="nb">sum</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="s2">&quot;red_action_count&quot;</span><span class="p">][</span><span class="kc">True</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="s2">&quot;red_action_count&quot;</span><span class="p">][</span><span class="kc">False</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="o">==</span> <span class="n">timesteps</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">sum</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="s2">&quot;blue_action_count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">==</span> <span class="n">timesteps</span>
+
+    <span class="k">if</span> <span class="s2">&quot;failed&quot;</span> <span class="ow">in</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;blue_action_count&quot;</span><span class="p">]:</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;number_of_resets&quot;</span><span class="p">]</span>
+            <span class="o">==</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;blue_action_count&quot;</span><span class="p">][</span><span class="s2">&quot;failed&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;wins&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;wins&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;number_of_resets&quot;</span><span class="p">]</span></div>
+
+
+<span class="c1"># Blue action checks</span>
+
+
+<div class="viewcode-block" id="check_blue_actions"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_blue_actions.html#tests.e2e_integration_tests.test_generic_env_e2e.check_blue_actions">[docs]</a><span class="k">def</span> <span class="nf">check_blue_actions</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">,</span> <span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">current_chosen_action</span><span class="p">:</span> <span class="nb">int</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct for an episode after a generic Blue agent action.&quot;&quot;&quot;</span>
+    <span class="n">blue_action</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span>
+    <span class="n">blue_node</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">]</span>  <span class="c1"># TODO: return blue_node uuid</span>
+    <span class="n">initial_state</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;initial_state&quot;</span><span class="p">]</span>
+    <span class="n">initial_red_location</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;initial_red_location&quot;</span><span class="p">]</span>
+    <span class="n">post_red_red_location</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_red_location&quot;</span><span class="p">]</span>
+    <span class="n">final_red_location</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;final_red_location&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">current_chosen_action</span> <span class="o">&gt;</span> <span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;do_nothing&quot;</span>
+
+        <span class="c1"># red location (if using the red can only attack from central red node)</span>
+        <span class="k">if</span> <span class="n">initial_red_location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">post_red_red_location</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">entry_nodes</span>
+                <span class="ow">or</span> <span class="n">post_red_red_location</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">post_red_red_location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">final_red_location</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">blue_action</span> <span class="o">!=</span> <span class="s2">&quot;add_deceptive_node&quot;</span><span class="p">:</span>
+                <span class="n">connected</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span>
+                    <span class="n">post_red_red_location</span>
+                <span class="p">)</span>
+                <span class="n">connected</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">connected</span> <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">connected</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="n">final_red_location</span> <span class="o">==</span> <span class="n">post_red_red_location</span> <span class="ow">or</span> <span class="p">(</span>
+                        <span class="p">(</span>
+                            <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;restore_node&quot;</span>
+                            <span class="ow">or</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;make_node_safe&quot;</span>
+                        <span class="p">)</span>
+                        <span class="ow">and</span> <span class="n">blue_node</span> <span class="o">==</span> <span class="n">post_red_red_location</span>
+                        <span class="ow">and</span> <span class="n">final_red_location</span> <span class="ow">is</span> <span class="kc">None</span>
+                    <span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;restore_node&quot;</span> <span class="ow">or</span> <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;make_node_safe&quot;</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">blue_node</span> <span class="o">==</span> <span class="n">post_red_red_location</span><span class="p">:</span>
+                            <span class="k">assert</span> <span class="n">final_red_location</span> <span class="ow">in</span> <span class="n">connected</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">assert</span> <span class="n">post_red_red_location</span> <span class="o">==</span> <span class="n">final_red_location</span>
+        <span class="k">if</span> <span class="n">initial_red_location</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">connected</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">entry_nodes</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">connected</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span>
+                <span class="n">initial_red_location</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">blue_action</span> <span class="o">!=</span> <span class="s2">&quot;isolate&quot;</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="n">blue_node</span> <span class="o">!=</span> <span class="n">post_red_red_location</span> <span class="ow">and</span> <span class="n">blue_node</span> <span class="o">!=</span> <span class="n">initial_red_location</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">blue_action</span> <span class="o">!=</span> <span class="s2">&quot;add_deceptive_node&quot;</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="p">(</span>
+                    <span class="n">post_red_red_location</span> <span class="ow">in</span> <span class="n">connected</span>
+                    <span class="ow">or</span> <span class="n">post_red_red_location</span> <span class="o">==</span> <span class="n">initial_red_location</span>
+                <span class="p">)</span>
+
+        <span class="k">assert</span> <span class="mi">0</span> <span class="ow">in</span> <span class="n">initial_state</span><span class="o">.</span><span class="n">values</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="check_blue_restore_node_action"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_blue_restore_node_action.html#tests.e2e_integration_tests.test_generic_env_e2e.check_blue_restore_node_action">[docs]</a><span class="k">def</span> <span class="nf">check_blue_restore_node_action</span><span class="p">(</span><span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">counts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct for an episode where the Blue agent restores a nodes vulnerability state.&quot;&quot;&quot;</span>
+    <span class="n">blue_node</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">][</span><span class="n">blue_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">blue_node</span><span class="o">.</span><span class="n">deceptive_node</span><span class="p">:</span>
+        <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;deceptive_counter&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">counts</span></div>
+
+
+<div class="viewcode-block" id="check_blue_isolate_action"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_blue_isolate_action.html#tests.e2e_integration_tests.test_generic_env_e2e.check_blue_isolate_action">[docs]</a><span class="k">def</span> <span class="nf">check_blue_isolate_action</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">,</span> <span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct for an episode where the Blue agent isolates a node.&quot;&quot;&quot;</span>
+    <span class="n">blue_node</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span><span class="n">blue_node</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="n">blue_node</span><span class="o">.</span><span class="n">isolated</span></div>
+
+
+<div class="viewcode-block" id="check_blue_connect_action"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_blue_connect_action.html#tests.e2e_integration_tests.test_generic_env_e2e.check_blue_connect_action">[docs]</a><span class="k">def</span> <span class="nf">check_blue_connect_action</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">,</span> <span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct for an episode where the Blue agent reconnects 2 nodes.&quot;&quot;&quot;</span>
+    <span class="n">blue_node</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">cn</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span><span class="n">blue_node</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">cn</span><span class="o">.</span><span class="n">isolated</span>
+    <span class="k">for</span> <span class="n">bn</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_base_connected_nodes</span><span class="p">(</span><span class="n">blue_node</span><span class="p">):</span>
+        <span class="n">cn</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_node_from_uuid</span><span class="p">(</span><span class="n">bn</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cn</span><span class="o">.</span><span class="n">isolated</span><span class="p">:</span>  <span class="c1"># check corresponding node on current graph</span>
+            <span class="k">assert</span> <span class="n">cn</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span><span class="n">blue_node</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">blue_node</span><span class="o">.</span><span class="n">isolated</span></div>
+
+
+<div class="viewcode-block" id="check_blue_reduce_vulnerability_action"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_blue_reduce_vulnerability_action.html#tests.e2e_integration_tests.test_generic_env_e2e.check_blue_reduce_vulnerability_action">[docs]</a><span class="k">def</span> <span class="nf">check_blue_reduce_vulnerability_action</span><span class="p">(</span><span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct for an episode where the Blue agent reduces a nodes vulnerability.&quot;&quot;&quot;</span>
+    <span class="n">blue_node</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;final_vulnerabilities&quot;</span><span class="p">][</span><span class="n">blue_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;final_vulnerabilities&quot;</span><span class="p">][</span><span class="n">blue_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span>
+        <span class="o">&lt;=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;final_vulnerabilities&quot;</span><span class="p">][</span><span class="n">blue_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_blue_scan_action"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_blue_scan_action.html#tests.e2e_integration_tests.test_generic_env_e2e.check_blue_scan_action">[docs]</a><span class="k">def</span> <span class="nf">check_blue_scan_action</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">,</span> <span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">counts</span><span class="p">:</span> <span class="nb">dict</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct for an episode where the Blue agent scans.&quot;&quot;&quot;</span>
+    <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;scan_used&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;initial_blue_view&quot;</span><span class="p">][</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_blue_view&quot;</span><span class="p">][</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_blue_view&quot;</span><span class="p">][</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="ow">and</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_blue_view&quot;</span><span class="p">][</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="p">):</span>
+            <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;discovered_from_scanning&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">][</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">!=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_blue_view&quot;</span><span class="p">][</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]:</span>
+            <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;nodes_missed_scan&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">deceptive_node</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">on_scan</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span>
+                <span class="o">==</span> <span class="mi">1</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">][</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_blue_view&quot;</span><span class="p">][</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">on_scan</span><span class="o">.</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">value</span>
+                <span class="o">==</span> <span class="mi">1</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">][</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_blue_view&quot;</span><span class="p">][</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">counts</span></div>
+
+
+<div class="viewcode-block" id="check_blue_add_deceptive_node_action"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_blue_add_deceptive_node_action.html#tests.e2e_integration_tests.test_generic_env_e2e.check_blue_add_deceptive_node_action">[docs]</a><span class="k">def</span> <span class="nf">check_blue_add_deceptive_node_action</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">,</span> <span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct for an episode where the Blue uses a deceptive node.&quot;&quot;&quot;</span>
+    <span class="n">blue_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">]</span>
+    <span class="n">deceptive_node</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_node_from_uuid</span><span class="p">(</span>
+        <span class="n">blue_nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">uuid</span>
+    <span class="p">)</span>
+    <span class="n">node1</span> <span class="o">=</span> <span class="n">blue_nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">node2</span> <span class="o">=</span> <span class="n">blue_nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">node2</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_base_connected_nodes</span><span class="p">(</span><span class="n">node1</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">[</span>
+        <span class="n">i</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_base_connected_nodes</span><span class="p">(</span><span class="n">deceptive_node</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">node1</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">node2</span>
+    <span class="p">]</span> <span class="o">==</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="n">node1</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">!=</span> <span class="n">node2</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">deceptive_node</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_base_connected_nodes</span><span class="p">(</span>
+                <span class="n">n</span>
+            <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_deceptive_nodes</span> <span class="o">!=</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="n">deceptive_node</span><span class="o">.</span><span class="n">vulnerability_score</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">assert</span> <span class="n">deceptive_node</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">deceptive_node</span><span class="o">.</span><span class="n">uuid</span> <span class="ow">in</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_state&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">new_node_on_relocate</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_state&quot;</span><span class="p">][</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">][</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+                <span class="k">assert</span> <span class="ow">not</span> <span class="n">deceptive_node</span><span class="o">.</span><span class="n">isolated</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">][</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span>
+                <span class="o">==</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_state&quot;</span><span class="p">][</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;final_vulnerabilities&quot;</span><span class="p">][</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span>
+                <span class="o">==</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_vulnerabilities&quot;</span><span class="p">][</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_blue_view&quot;</span><span class="p">][</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span>
+                <span class="o">==</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_blue_view&quot;</span><span class="p">][</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">][</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">deceptive_node</span><span class="o">.</span><span class="n">isolated</span>
+    <span class="k">assert</span> <span class="n">deceptive_node</span><span class="o">.</span><span class="n">node_position</span> <span class="o">!=</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="check_blue_do_nothing_or_fail_action"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_blue_do_nothing_or_fail_action.html#tests.e2e_integration_tests.test_generic_env_e2e.check_blue_do_nothing_or_fail_action">[docs]</a><span class="k">def</span> <span class="nf">check_blue_do_nothing_or_fail_action</span><span class="p">(</span><span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct for an episode where the Blue agent does nothing.&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_state&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_state&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_blue_view&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;end_blue_view&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_vulnerabilities&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;final_vulnerabilities&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_red_location&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;final_red_location&quot;</span><span class="p">]</span></div>
+
+
+<span class="c1"># Red action checks</span>
+
+
+<div class="viewcode-block" id="check_red_basic_attack"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_red_basic_attack.html#tests.e2e_integration_tests.test_generic_env_e2e.check_red_basic_attack">[docs]</a><span class="k">def</span> <span class="nf">check_red_basic_attack</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">,</span>
+    <span class="n">action</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span>
+    <span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span>
+    <span class="n">counts</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct for an episode where the Red agent performs a basic attack.&quot;&quot;&quot;</span>
+    <span class="n">red_success</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Successes&quot;</span><span class="p">]</span>
+    <span class="n">red_target_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Target_Nodes&quot;</span><span class="p">]</span>
+    <span class="n">red_attacking_node</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">]</span>
+    <span class="n">blue_action</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span>
+    <span class="n">blue_node</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">]</span>
+    <span class="n">post_red_state</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_state&quot;</span><span class="p">]</span>
+    <span class="n">post_red_blue_view</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_blue_view&quot;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">counter</span><span class="p">,</span> <span class="n">current_success</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">red_success</span><span class="p">):</span>
+        <span class="n">target_node</span> <span class="o">=</span> <span class="n">red_target_nodes</span><span class="p">[</span><span class="n">counter</span><span class="p">]</span>
+        <span class="n">attacking_node</span> <span class="o">=</span> <span class="n">red_attacking_node</span><span class="p">[</span><span class="n">counter</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">natural_spreading</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">to_unconnected_node</span><span class="o">.</span><span class="n">value</span>
+            <span class="o">==</span> <span class="mi">0</span>
+        <span class="p">):</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="n">target_node</span><span class="o">.</span><span class="n">isolated</span>
+        <span class="k">if</span> <span class="n">current_success</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">blue_action</span> <span class="o">!=</span> <span class="s2">&quot;isolate&quot;</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;isolate&quot;</span>
+                <span class="ow">and</span> <span class="n">blue_node</span> <span class="o">!=</span> <span class="n">attacking_node</span>
+                <span class="ow">and</span> <span class="n">blue_node</span> <span class="o">!=</span> <span class="n">target_node</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="n">blue_action</span> <span class="o">!=</span> <span class="s2">&quot;add_deceptive_node&quot;</span> <span class="ow">or</span> <span class="p">(</span>
+                    <span class="n">blue_action</span> <span class="o">==</span> <span class="s2">&quot;add_deceptive_node&quot;</span>
+                    <span class="ow">and</span> <span class="n">target_node</span> <span class="o">!=</span> <span class="n">blue_node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="ow">and</span> <span class="n">attacking_node</span> <span class="o">!=</span> <span class="n">blue_node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span>
+                        <span class="n">target_node</span> <span class="ow">in</span> <span class="n">blue_node</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">attacking_node</span> <span class="ow">in</span> <span class="n">blue_node</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="n">target_node</span>
+                        <span class="ow">not</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">entry_nodes</span>
+                    <span class="p">):</span>
+                        <span class="k">assert</span> <span class="n">red_target_nodes</span><span class="p">[</span>
+                            <span class="n">counter</span>
+                        <span class="p">]</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span>
+                            <span class="n">attacking_node</span>
+                        <span class="p">)</span>
+            <span class="k">assert</span> <span class="n">post_red_state</span><span class="p">[</span><span class="n">target_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">post_red_blue_view</span><span class="p">[</span><span class="n">target_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;discovered_immediately_counter&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">target_node</span><span class="o">.</span><span class="n">deceptive_node</span>
+                <span class="ow">and</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">immediate</span><span class="o">.</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">value</span>
+                <span class="o">==</span> <span class="mi">1</span>
+            <span class="p">):</span>
+                <span class="k">assert</span> <span class="n">post_red_blue_view</span><span class="p">[</span><span class="n">target_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">immediate</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span>
+                <span class="o">==</span> <span class="mi">0</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="n">target_node</span><span class="o">.</span><span class="n">deceptive_node</span>
+            <span class="p">):</span>
+                <span class="k">assert</span> <span class="n">post_red_blue_view</span><span class="p">[</span><span class="n">target_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">immediate</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span>
+                <span class="o">==</span> <span class="mi">1</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="n">target_node</span><span class="o">.</span><span class="n">deceptive_node</span>
+            <span class="p">):</span>
+                <span class="k">assert</span> <span class="n">post_red_blue_view</span><span class="p">[</span><span class="n">target_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">counts</span></div>
+
+
+<div class="viewcode-block" id="check_red_zero_day_action"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_red_zero_day_action.html#tests.e2e_integration_tests.test_generic_env_e2e.check_red_zero_day_action">[docs]</a><span class="k">def</span> <span class="nf">check_red_zero_day_action</span><span class="p">(</span>
+    <span class="n">action</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">counts</span><span class="p">:</span> <span class="nb">dict</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct for an episode where the Red agent performs a zero day attack.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Successes&quot;</span><span class="p">]:</span>
+        <span class="k">assert</span> <span class="n">i</span>
+    <span class="n">target_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Target_Nodes&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">target_nodes</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_state&quot;</span><span class="p">][</span><span class="n">n</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_blue_view&quot;</span><span class="p">][</span><span class="n">n</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;discovered_immediately_counter&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">counts</span></div>
+
+
+<div class="viewcode-block" id="check_red_spread_or_intrude_action"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_red_spread_or_intrude_action.html#tests.e2e_integration_tests.test_generic_env_e2e.check_red_spread_or_intrude_action">[docs]</a><span class="k">def</span> <span class="nf">check_red_spread_or_intrude_action</span><span class="p">(</span>
+    <span class="n">action</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">counts</span><span class="p">:</span> <span class="nb">dict</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct for an episode where the Red agent spreads.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">counter</span><span class="p">,</span> <span class="n">success</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">action</span><span class="p">[</span><span class="s2">&quot;Successes&quot;</span><span class="p">]):</span>
+        <span class="n">target_node</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Target_Nodes&quot;</span><span class="p">][</span><span class="n">counter</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_state&quot;</span><span class="p">][</span><span class="n">target_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_blue_view&quot;</span><span class="p">][</span><span class="n">target_node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">counts</span><span class="p">[</span><span class="s2">&quot;discovered_immediately_counter&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">counts</span></div>
+
+
+<div class="viewcode-block" id="check_red_random_move_action"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_red_random_move_action.html#tests.e2e_integration_tests.test_generic_env_e2e.check_red_random_move_action">[docs]</a><span class="k">def</span> <span class="nf">check_red_random_move_action</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span> <span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct for an episode where the Red agent moves randomly.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">counter</span><span class="p">,</span> <span class="n">current_success</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">action</span><span class="p">[</span><span class="s2">&quot;Successes&quot;</span><span class="p">]):</span>
+        <span class="n">target_node</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Target_Nodes&quot;</span><span class="p">][</span><span class="n">counter</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">current_success</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;isolate&quot;</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;isolate&quot;</span>
+                <span class="ow">and</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">][</span><span class="n">counter</span><span class="p">]</span>
+                <span class="ow">and</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">target_node</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;add_deceptive_node&quot;</span> <span class="ow">or</span> <span class="p">(</span>
+                    <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;add_deceptive_node&quot;</span>
+                    <span class="ow">and</span> <span class="n">target_node</span> <span class="o">!=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="ow">and</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">][</span><span class="n">counter</span><span class="p">]</span> <span class="o">!=</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span>
+                        <span class="n">target_node</span> <span class="ow">in</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">][</span><span class="n">counter</span><span class="p">]</span>
+                        <span class="ow">in</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;blue_node&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="k">if</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">][</span><span class="n">counter</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">assert</span> <span class="p">(</span>
+                            <span class="n">target_node</span>
+                            <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">entry_nodes</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">assert</span> <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Target_Nodes&quot;</span><span class="p">][</span>
+                            <span class="n">counter</span>
+                        <span class="p">]</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span>
+                            <span class="n">action</span><span class="p">[</span><span class="s2">&quot;Attacking_Nodes&quot;</span><span class="p">][</span><span class="n">counter</span><span class="p">]</span>
+                        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_red_do_nothing_action"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_red_do_nothing_action.html#tests.e2e_integration_tests.test_generic_env_e2e.check_red_do_nothing_action">[docs]</a><span class="k">def</span> <span class="nf">check_red_do_nothing_action</span><span class="p">(</span><span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct for an episode where the Red agent does nothing.&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;initial_red_location&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_red_location&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;initial_vulnerabilities&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_vulnerabilities&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">episode</span><span class="p">[</span><span class="s2">&quot;red_info&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;initial_state&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_state&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;initial_blue_view&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_blue_view&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="check_red_no_possible_targets"><a class="viewcode-back" href="../../../source/_autosummary/tests.e2e_integration_tests.test_generic_env_e2e.check_red_no_possible_targets.html#tests.e2e_integration_tests.test_generic_env_e2e.check_red_no_possible_targets">[docs]</a><span class="k">def</span> <span class="nf">check_red_no_possible_targets</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">GenericNetworkEnv</span><span class="p">,</span> <span class="n">episode</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the state of the environment is correct for an episode where the Red agent has no possible targets.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">attack_from</span><span class="o">.</span><span class="n">any_red_node</span><span class="o">.</span><span class="n">value</span>
+        <span class="ow">and</span> <span class="ow">not</span> <span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">isolate_node</span><span class="o">.</span><span class="n">value</span>
+    <span class="p">):</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span><span class="n">filter_true_safe</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="o">==</span> <span class="mi">0</span>
+        <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;initial_vulnerabilities&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">episode</span><span class="p">[</span><span class="s2">&quot;post_red_vulnerabilities&quot;</span><span class="p">]</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

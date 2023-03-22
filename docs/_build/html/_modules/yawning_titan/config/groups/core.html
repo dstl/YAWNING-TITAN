@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.config.groups.core &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.config.groups.core</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for yawning_titan.config.groups.core</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan.config.core</span> <span class="kn">import</span> <span class="n">ConfigGroup</span><span class="p">,</span> <span class="n">ConfigGroupValidation</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.config.groups.validation</span> <span class="kn">import</span> <span class="n">AnyNonZeroGroup</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.config.item_types.bool_item</span> <span class="kn">import</span> <span class="n">BoolItem</span><span class="p">,</span> <span class="n">BoolProperties</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.config.item_types.float_item</span> <span class="kn">import</span> <span class="n">FloatItem</span><span class="p">,</span> <span class="n">FloatProperties</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.config.item_types.int_item</span> <span class="kn">import</span> <span class="n">IntItem</span><span class="p">,</span> <span class="n">IntProperties</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.exceptions</span> <span class="kn">import</span> <span class="n">ConfigGroupValidationError</span>
+
+<span class="c1"># TODO: make a factory class for actionX group</span>
+
+
+<div class="viewcode-block" id="ActionLikelihoodGroup"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.ActionLikelihoodGroup.html#yawning_titan.config.groups.core.ActionLikelihoodGroup">[docs]</a><span class="k">class</span> <span class="nc">ActionLikelihoodGroup</span><span class="p">(</span><span class="n">ConfigGroup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Group to represent an action, likelihood common config group.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ActionLikelihoodGroup.__init__"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.html#yawning_titan.config.groups.core.ActionLikelihoodGroup.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">doc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">use</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">likelihood</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The `ActionLikelihoodGroup` constructor.</span>
+
+<span class="sd">        :param use: Whether to use the action or not.</span>
+<span class="sd">        :param likelihood: The likelihood of the action.</span>
+<span class="sd">        :param doc: An optional descriptor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use</span><span class="p">:</span> <span class="n">BoolItem</span> <span class="o">=</span> <span class="n">BoolItem</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">use</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Whether to use the action or not.&quot;</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">BoolProperties</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">:</span> <span class="n">FloatItem</span> <span class="o">=</span> <span class="n">FloatItem</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">likelihood</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The likelihood of the action.&quot;</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">FloatProperties</span><span class="p">(</span>
+                <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">min_val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">inclusive_min</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ActionLikelihoodGroup.validate"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.ActionLikelihoodGroup.html#yawning_titan.config.groups.core.ActionLikelihoodGroup.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConfigGroupValidation</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate the `ActionLikelihoodGroup`.</span>
+
+<span class="sd">        This is done at two levels:</span>
+<span class="sd">            1. A group level validation is performed that checks if likelihood</span>
+<span class="sd">            and chance are provided when use is True.</span>
+<span class="sd">            2. An item level validation is performed by calling .validate on</span>
+<span class="sd">            the use and likelihood config items.</span>
+
+<span class="sd">        :return: An instance of ConfigGroupValidation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Likelihood cannot be null when use=True&quot;</span>
+                    <span class="k">raise</span> <span class="n">ConfigGroupValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">ConfigGroupValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">add_validation</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span></div></div>
+
+
+<div class="viewcode-block" id="ActionLikelihoodChanceGroup"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.ActionLikelihoodChanceGroup.html#yawning_titan.config.groups.core.ActionLikelihoodChanceGroup">[docs]</a><span class="k">class</span> <span class="nc">ActionLikelihoodChanceGroup</span><span class="p">(</span><span class="n">ActionLikelihoodGroup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Group to represent an action, likelihood, and chance common config group.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ActionLikelihoodChanceGroup.__init__"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.html#yawning_titan.config.groups.core.ActionLikelihoodChanceGroup.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">doc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">use</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">likelihood</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">chance</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The `ActionLikelihoodChanceGroup` constructor.</span>
+
+<span class="sd">        :param use: Whether to use the action or not.</span>
+<span class="sd">        :param likelihood: The likelihood of the action.</span>
+<span class="sd">        :param chance: The chance of the action.</span>
+<span class="sd">        :param doc: An optional descriptor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chance</span><span class="p">:</span> <span class="n">FloatItem</span> <span class="o">=</span> <span class="n">FloatItem</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">chance</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The chance of the action.&quot;</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">FloatProperties</span><span class="p">(</span>
+                <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">min_val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">inclusive_min</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">inclusive_max</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">use</span><span class="p">,</span> <span class="n">likelihood</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ActionLikelihoodChanceGroup.validate"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.ActionLikelihoodChanceGroup.html#yawning_titan.config.groups.core.ActionLikelihoodChanceGroup.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConfigGroupValidation</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validate the `ActionLikelihoodChanceGroup`.</span>
+
+<span class="sd">        This is done at two levels:</span>
+<span class="sd">            1. A group level validation is performed that checks if likelihood</span>
+<span class="sd">            and chance are provided when use is True.</span>
+<span class="sd">            2. An item level validation is performed by calling .validate on</span>
+<span class="sd">            the use, likelihood, and chance config items.</span>
+
+<span class="sd">        :return: An instance of ConfigGroupValidation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Chance cannot be null when use=True&quot;</span>
+                    <span class="k">raise</span> <span class="n">ConfigGroupValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">ConfigGroupValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">add_validation</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span></div></div>
+
+
+<div class="viewcode-block" id="UseValueGroup"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.UseValueGroup.html#yawning_titan.config.groups.core.UseValueGroup">[docs]</a><span class="k">class</span> <span class="nc">UseValueGroup</span><span class="p">(</span><span class="n">ConfigGroup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Group of values that collectively describe whether an item is used and if so what value to use with.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="UseValueGroup.__init__"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.html#yawning_titan.config.groups.core.UseValueGroup.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">use</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The `UseValueGroup` constructor.</span>
+
+<span class="sd">        :param use: Whether to use the action or not.</span>
+<span class="sd">        :param value: The value of the item.</span>
+<span class="sd">        :param doc: An optional descriptor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use</span><span class="p">:</span> <span class="n">BoolItem</span> <span class="o">=</span> <span class="n">BoolItem</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">use</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Whether to use the action or not.&quot;</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">BoolProperties</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">:</span> <span class="n">FloatItem</span> <span class="o">=</span> <span class="n">FloatItem</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The value of the item.&quot;</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">FloatProperties</span><span class="p">(</span>
+                <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">min_val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">inclusive_min</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">inclusive_max</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="NodeChanceGroup"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.NodeChanceGroup.html#yawning_titan.config.groups.core.NodeChanceGroup">[docs]</a><span class="k">class</span> <span class="nc">NodeChanceGroup</span><span class="p">(</span><span class="n">AnyNonZeroGroup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Group to indicate chances of success for different node types.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="NodeChanceGroup.__init__"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.html#yawning_titan.config.groups.core.NodeChanceGroup.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">doc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">standard_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">deceptive_node</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">standard_node</span> <span class="o">=</span> <span class="n">FloatItem</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">standard_node</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The chance of the action succeeding for a standard node&quot;</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">FloatProperties</span><span class="p">(</span>
+                <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">min_val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">inclusive_min</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">inclusive_max</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deceptive_node</span> <span class="o">=</span> <span class="n">FloatItem</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">deceptive_node</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The chance of the action succeeding for a deceptive node&quot;</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">FloatProperties</span><span class="p">(</span>
+                <span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">min_val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">max_val</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">inclusive_min</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">inclusive_max</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="UseChancesGroup"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.UseChancesGroup.html#yawning_titan.config.groups.core.UseChancesGroup">[docs]</a><span class="k">class</span> <span class="nc">UseChancesGroup</span><span class="p">(</span><span class="n">ConfigGroup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Group to indicate whether an element is used and its associated chance of success for different node types.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="UseChancesGroup.__init__"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.html#yawning_titan.config.groups.core.UseChancesGroup.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">doc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">use</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">chance</span><span class="p">:</span> <span class="n">NodeChanceGroup</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use</span><span class="p">:</span> <span class="n">BoolItem</span> <span class="o">=</span> <span class="n">BoolItem</span><span class="p">(</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Whether the element is used&quot;</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">use</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">BoolProperties</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chance</span><span class="p">:</span> <span class="n">NodeChanceGroup</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">chance</span>
+            <span class="k">if</span> <span class="n">chance</span>
+            <span class="k">else</span> <span class="n">NodeChanceGroup</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The chance(s) of the result occurring.&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="UseChancesGroup.validate"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.UseChancesGroup.html#yawning_titan.config.groups.core.UseChancesGroup.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConfigGroupValidation</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span>
+                <span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;the detection chance of an attack on a deceptive node should be greater than that of a standard node.&quot;</span>
+                    <span class="k">raise</span> <span class="n">ConfigGroupValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">ConfigGroupValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">add_validation</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span></div></div>
+
+
+<div class="viewcode-block" id="RestrictRangeGroup"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.RestrictRangeGroup.html#yawning_titan.config.groups.core.RestrictRangeGroup">[docs]</a><span class="k">class</span> <span class="nc">RestrictRangeGroup</span><span class="p">(</span><span class="n">ConfigGroup</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;:class:`~yawning_titan.config.base.core.ConfigGroup` to restrict the range of a given attribute to within :attribute: `min` and :attribute: `max`.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RestrictRangeGroup.__init__"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.html#yawning_titan.config.groups.core.RestrictRangeGroup.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">doc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">restrict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="nb">min</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">max</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restrict</span> <span class="o">=</span> <span class="n">BoolItem</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">restrict</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Whether to restrict this attribute.&quot;</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">BoolProperties</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">:</span> <span class="n">IntItem</span> <span class="o">=</span> <span class="n">IntItem</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="nb">min</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The minimum value of the attribute to restrict.&quot;</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">IntProperties</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inclusive_min</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">:</span> <span class="n">IntItem</span> <span class="o">=</span> <span class="n">IntItem</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="nb">max</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;The maximum value of the attribute to restrict.&quot;</span><span class="p">,</span>
+            <span class="n">properties</span><span class="o">=</span><span class="n">IntProperties</span><span class="p">(</span><span class="n">allow_null</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_val</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inclusive_min</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RestrictRangeGroup.validate"><a class="viewcode-back" href="../../../../source/_autosummary/yawning_titan.config.groups.core.RestrictRangeGroup.html#yawning_titan.config.groups.core.RestrictRangeGroup.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConfigGroupValidation</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">restrict</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">e</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">value</span><span class="p">]):</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;If an element is to be range bound either the min or max bounds must be set.&quot;</span>
+                    <span class="k">raise</span> <span class="n">ConfigGroupValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">ConfigGroupValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">add_validation</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="nb">all</span><span class="p">(</span><span class="n">e</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">value</span><span class="p">])</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">value</span>
+                <span class="p">):</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;The minimum value of a range bound item (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">) cannot be larger than the maximum value (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">).&quot;</span>
+                    <span class="k">raise</span> <span class="n">ConfigGroupValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">ConfigGroupValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">add_validation</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

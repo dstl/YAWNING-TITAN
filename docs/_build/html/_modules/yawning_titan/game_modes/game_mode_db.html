@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.game_modes.game_mode_db &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.game_modes.game_mode_db</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for yawning_titan.game_modes.game_mode_db</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Provides an API for the ``game_mode.json`` TinyDB file, and a Schema class that defines the game_mode DB fields.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Final</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">tinydb</span> <span class="kn">import</span> <span class="n">TinyDB</span>
+<span class="kn">from</span> <span class="nn">tinydb.queries</span> <span class="kn">import</span> <span class="n">QueryInstance</span>
+<span class="kn">from</span> <span class="nn">tinydb.table</span> <span class="kn">import</span> <span class="n">Document</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan.config</span> <span class="kn">import</span> <span class="n">_LIB_CONFIG_ROOT_PATH</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.db.compatibility_query</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">EntryNodeCompatibilityQuery</span><span class="p">,</span>
+    <span class="n">HighValueNodeCompatibilityQuery</span><span class="p">,</span>
+    <span class="n">NetworkCompatibilityQuery</span><span class="p">,</span>
+    <span class="n">NetworkNodeCompatibilityQuery</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.db.doc_metadata</span> <span class="kn">import</span> <span class="n">DocMetadata</span><span class="p">,</span> <span class="n">DocMetadataSchema</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.db.query</span> <span class="kn">import</span> <span class="n">YawningTitanQuery</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.db.schemas</span> <span class="kn">import</span> <span class="n">GameModeConfigurationSchema</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.db.yawning_titan_db</span> <span class="kn">import</span> <span class="n">YawningTitanDB</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.game_modes.game_mode</span> <span class="kn">import</span> <span class="n">GameMode</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;GameModeDB&quot;</span><span class="p">,</span> <span class="s2">&quot;GameModeSchema&quot;</span><span class="p">]</span>
+
+<span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="GameModeSchema"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeSchema.html#yawning_titan.game_modes.game_mode_db.GameModeSchema">[docs]</a><span class="k">class</span> <span class="nc">GameModeSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A schema-like class that defines the game_mode DB fields.</span>
+
+<span class="sd">    Fields are defined using the :class:`~yawning_titan.db.query.YawningTitanQuery` class</span>
+<span class="sd">    so that schema paths can be used directly within :func:`tinydb.table.Table.search`</span>
+<span class="sd">    function calls. All fields are mapped to a property in the</span>
+<span class="sd">    :class:~`yawning_titan.game_modes.game_mode.GameMode` class.</span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from yawning_titan.game_modes.game_mode_db import GameModeDB, GameModeSchema</span>
+<span class="sd">    &gt;&gt;&gt; db = GameModeDB()</span>
+<span class="sd">    &gt;&gt;&gt; game_modes = db.search(GameModeSchema.NODE_COUNT.min(18))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">NETWORK_NODES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">NetworkNodeCompatibilityQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">NetworkNodeCompatibilityQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">network_compatibility</span><span class="o">.</span><span class="n">node_count</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapped to :attr:`~yawning_titan.game_modes.game_mode.GameMode.game_rules.network_compatibility.node_count`.&quot;&quot;&quot;</span>
+
+    <span class="n">ENTRY_NODES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">EntryNodeCompatibilityQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">EntryNodeCompatibilityQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">network_compatibility</span><span class="o">.</span><span class="n">entry_node_count</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapped to :attr:`~yawning_titan.game_modes.game_mode.GameMode.game_rules.network_compatibility.entry_node_count``.&quot;&quot;&quot;</span>
+
+    <span class="n">HIGH_VALUE_NODES</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">HighValueNodeCompatibilityQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">HighValueNodeCompatibilityQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">network_compatibility</span><span class="o">.</span><span class="n">high_value_node_count</span>
+    <span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapped to :attr:`~yawning_titan.game_modes.game_mode.GameMode.game_rules.network_compatibility.high_value_node_count`.&quot;&quot;&quot;</span>
+
+    <span class="n">NETWORK_COMPATIBILITY</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span>
+        <span class="n">NetworkCompatibilityQuery</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">NetworkCompatibilityQuery</span><span class="p">()</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">network_compatibility</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapped to :attr:`~yawning_titan.game_modes.game_mode.GameMode.game_rules.network_compatibility`.&quot;&quot;&quot;</span>
+
+    <span class="n">CONFIGURATION</span><span class="p">:</span> <span class="n">Final</span><span class="p">[</span><span class="n">GameModeConfigurationSchema</span><span class="p">]</span> <span class="o">=</span> <span class="n">GameModeConfigurationSchema</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use this to access the full schema of the database structured in the same nested format as :class:~`yawning_titan.game_modes.game_mode.GameMode`.&quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="GameModeDB"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB">[docs]</a><span class="k">class</span> <span class="nc">GameModeDB</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The :class:`~yawning_titan.config.game_modes.GameModeDB` class extends :class:`~yawning_titan.db.YawningTitanDB`.</span>
+
+<span class="sd">    The below code blocks demonstrate how to use the :class:`~yawning_titan.config.game_modes.GameModeDB` class.</span>
+
+<span class="sd">    - Instantiate the GameMode DB:</span>
+
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; from yawning_titan.game_modes.game_mode_db import GameModeDB, GameModeSchema</span>
+<span class="sd">            &gt;&gt;&gt; db = GameModeDB()</span>
+
+<span class="sd">    - Search for all game modes that work with a minimum of 18 nodes in the game_mode:</span>
+
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            &gt;&gt;&gt; db.search(GameModeSchema.NODE_COUNT.min(18))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GameModeDB.__init__"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.html#yawning_titan.game_modes.game_mode_db.GameModeDB.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span> <span class="o">=</span> <span class="n">YawningTitanDB</span><span class="p">(</span><span class="s2">&quot;game_modes&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_default_game_modes_in_db</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GameModeDB</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">GameModeDB</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_doc_to_game_mode</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">Document</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the document.</span>
+
+<span class="sd">        Converts a :class:`tinydb.table.Document` from the :class:`~yawning_titan.config.game_modes.GameModeDB` to an instance</span>
+<span class="sd">        of :class:~yawning_titan.game_modes.game_mode.GameMode`.</span>
+
+<span class="sd">        :param doc: A :class:`tinydb.table.Document`.</span>
+<span class="sd">        :return: The doc as a :class:`~yawning_titan.game_modes.game_mode.GameMode`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DocMetadata</span><span class="p">(</span><span class="o">**</span><span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">])</span>
+        <span class="n">game_mode</span><span class="p">:</span> <span class="n">GameMode</span> <span class="o">=</span> <span class="n">GameMode</span><span class="p">()</span>
+        <span class="n">game_mode</span><span class="o">.</span><span class="n">set_from_dict</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">game_mode</span>
+
+<div class="viewcode-block" id="GameModeDB.insert"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">game_mode</span><span class="p">:</span> <span class="n">GameMode</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">author</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GameMode</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Insert a :class:`~yawning_titan.game_modes.game_mode.GameMode` into the DB as ``.json``.</span>
+
+<span class="sd">        :param game_mode: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`</span>
+<span class="sd">            :class:`~yawning_titan.db.doc_metadata.DocMetadata`.</span>
+<span class="sd">            :class:`~yawning_titan.db.doc_metadata.DocMetadata`.</span>
+<span class="sd">            :class:`~yawning_titan.db.doc_metadata.DocMetadata`.</span>
+<span class="sd">        :param name: The config name.</span>
+<span class="sd">        :param description: The config description.</span>
+<span class="sd">        :param author: The config author.</span>
+<span class="sd">        :return: The inserted :class:`~yawning_titan.game_modes.game_mode.GameMode`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">game_mode</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">author</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+            <span class="n">game_mode</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span>
+                <span class="n">json_serializable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">values_only</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">game_mode</span></div>
+
+<div class="viewcode-block" id="GameModeDB.all"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.all">[docs]</a>    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">GameMode</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all :class:`~yawning_titan.game_modes.game_mode.GameMode` from the game mode DB.</span>
+
+<span class="sd">        :return: A :class:`list` of :class:`~yawning_titan.game_modes.game_mode.GameMode`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_doc_to_game_mode</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">all</span><span class="p">()]</span></div>
+
+<div class="viewcode-block" id="GameModeDB.show"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Show details of all entries in the db.</span>
+
+<span class="sd">        :param verbose: If True, all doc metadata details are shown,</span>
+<span class="sd">            otherwise just the name is shown.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GameModeDB.get"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uuid</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">GameMode</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a game_mode config document from its uuid.</span>
+
+<span class="sd">        :param uuid: A target document uuid.</span>
+<span class="sd">        :return: The game_mode config document as an instance of</span>
+<span class="sd">            :class:~yawning_titan.game_modes.game_mode.GameMode` if the uuid exists,</span>
+<span class="sd">            otherwise :class:`None`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># self._db.db.clear_cache()</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">doc</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_doc_to_game_mode</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="GameModeDB.search"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.search">[docs]</a>    <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="n">YawningTitanQuery</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">GameMode</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Searches the :class:`~yawning_titan.game_modes.game_mode.GameMode` with a :class:`GameModeSchema` query.</span>
+
+<span class="sd">        :param query: A :class:`~yawning_titan.db.query.YawningTitanQuery`.</span>
+<span class="sd">        :return: A :class:`list` of :class:`~yawning_titan.game_modes.game_mode.GameMode`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">game_mode_configs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+            <span class="n">game_mode_configs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_doc_to_game_mode</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">game_mode_configs</span></div>
+
+<div class="viewcode-block" id="GameModeDB.count"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.count">[docs]</a>    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cond</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QueryInstance</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Count how many docs are in the db. Extends :class:`tinydb.table.Table.count`.</span>
+
+<span class="sd">        A :class:`~yawning_titan.db.query.YawningTitanQuery` can be used to</span>
+<span class="sd">        filter the count.</span>
+
+<span class="sd">        :param cond: An optional :class:`~yawning_titan.db.query.YawningTitanQuery`.</span>
+<span class="sd">            Has a default value of ``None``.</span>
+<span class="sd">        :return: The number of docs counted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cond</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">cond</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">all</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="GameModeDB.update"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">game_mode</span><span class="p">:</span> <span class="n">GameMode</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">author</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GameMode</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update a :class:`~yawning_titan.game_modes.game_mode.GameMode`. in the db.</span>
+
+<span class="sd">        :param game_mode: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`.</span>
+<span class="sd">        :param name: The config name.</span>
+<span class="sd">        :param description: The config description.</span>
+<span class="sd">        :param author: The config author.</span>
+<span class="sd">        :return: The updated :class:`~yawning_titan.game_modes.game_mode.GameMode`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Update the configs metadata</span>
+        <span class="n">game_mode</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">author</span><span class="p">)</span>
+        <span class="c1"># Perform the update and retrieve the returned doc</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="n">game_mode</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">json_serializable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">game_mode</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="n">description</span><span class="p">,</span>
+            <span class="n">author</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">doc</span><span class="p">:</span>
+            <span class="c1"># Update the configs metadata created at</span>
+            <span class="n">game_mode</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;updated_at&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">game_mode</span></div>
+
+<div class="viewcode-block" id="GameModeDB.upsert"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.upsert">[docs]</a>    <span class="k">def</span> <span class="nf">upsert</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">game_mode</span><span class="p">:</span> <span class="n">GameMode</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">author</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GameMode</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Upsert a :class:`~yawning_titan.game_modes.game_mode.GameMode`. in the db.</span>
+
+<span class="sd">        :param game_mode: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`.</span>
+<span class="sd">        :param name: The config name.</span>
+<span class="sd">        :param description: The config description.</span>
+<span class="sd">        :param author: The config author.</span>
+<span class="sd">        :return: The upserted :class:`~yawning_titan.game_modes.game_mode.GameMode`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">game_mode</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">author</span><span class="p">)</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+            <span class="n">game_mode</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">json_serializable</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">game_mode</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="n">description</span><span class="p">,</span>
+            <span class="n">author</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Update the configs metadata created at</span>
+        <span class="k">if</span> <span class="n">doc</span> <span class="ow">and</span> <span class="s2">&quot;updated_at&quot;</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">]:</span>
+            <span class="n">game_mode</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;updated_at&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">game_mode</span></div>
+
+<div class="viewcode-block" id="GameModeDB.remove"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">game_mode</span><span class="p">:</span> <span class="n">GameMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove a :class:`~yawning_titan.game_modes.game_mode.GameMode`. from the db.</span>
+
+<span class="sd">        :param game_mode: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`.</span>
+<span class="sd">        :return: The uuid of the removed :class:`~yawning_titan.game_modes.game_mode.GameMode`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">game_mode</span><span class="o">.</span><span class="n">doc_metadata</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GameModeDB.remove_by_cond"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.remove_by_cond">[docs]</a>    <span class="k">def</span> <span class="nf">remove_by_cond</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cond</span><span class="p">:</span> <span class="n">QueryInstance</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove :class:`~yawning_titan.game_modes.game_mode.GameMode`. from the db that match the query.</span>
+
+<span class="sd">        :param cond: A :class:`~yawning_titan.db.query.YawningTitanQuery`.</span>
+<span class="sd">        :return: The list of uuids of the removed :class:`~yawning_titan.game_modes.game_mode.GameMode`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">remove_by_cond</span><span class="p">(</span><span class="n">cond</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GameModeDB.reset_default_game_modes_in_db"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.reset_default_game_modes_in_db">[docs]</a>    <span class="k">def</span> <span class="nf">reset_default_game_modes_in_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reset the default game_mode in the db.</span>
+
+<span class="sd">        Achieves this by loading the default</span>
+<span class="sd">        `yawning_titan/game_modes/_package_data/game_mode.json` db file into TinyDB,</span>
+<span class="sd">        then iterating over all docs and forcing an update of each one in the main</span>
+<span class="sd">        game_modes db from its uuid if they do not match.</span>
+
+<span class="sd">        :param force: Forces a reset without checking for equality when</span>
+<span class="sd">            True. Has a default value of False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Obtain the path to the default db file in package data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">clear_cache</span><span class="p">()</span>
+        <span class="n">game_mode_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="n">default_game_mode_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">game_mode_root</span><span class="p">,</span> <span class="s2">&quot;_package_data&quot;</span><span class="p">,</span> <span class="s2">&quot;game_modes.json&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Load the default db file into TinyDB</span>
+        <span class="n">default_db</span> <span class="o">=</span> <span class="n">TinyDB</span><span class="p">(</span><span class="n">default_game_mode_path</span><span class="p">)</span>
+
+        <span class="c1"># Iterate over all default game_modes, and force an update in the</span>
+        <span class="c1"># main GameModeDB by uuid.</span>
+        <span class="k">for</span> <span class="n">game_mode</span> <span class="ow">in</span> <span class="n">default_db</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">uuid</span> <span class="o">=</span> <span class="n">game_mode</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;uuid&quot;</span><span class="p">]</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">game_mode</span><span class="p">[</span><span class="s2">&quot;_doc_metadata&quot;</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+
+            <span class="c1"># Get the matching game_mode from the game_modes db</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">db_game_mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">uuid</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">db_game_mode</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="c1"># If the game_mode doesn&#39;t match the default, or it doesn&#39;t exist,</span>
+            <span class="c1"># perform an upsert.</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">force</span> <span class="ow">and</span> <span class="n">db_game_mode</span><span class="p">:</span>
+                <span class="n">reset</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">reset</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="n">reset</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span><span class="n">game_mode</span><span class="p">,</span> <span class="n">DocMetadataSchema</span><span class="o">.</span><span class="n">UUID</span> <span class="o">==</span> <span class="n">uuid</span><span class="p">)</span>
+                <span class="n">_LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Reset default game_mode &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; in the &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> db with uuid=&#39;</span><span class="si">{</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Clear the default db cache and close the file.</span>
+        <span class="n">default_db</span><span class="o">.</span><span class="n">clear_cache</span><span class="p">()</span>
+        <span class="n">default_db</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="GameModeDB.rebuild_db"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.rebuild_db">[docs]</a>    <span class="k">def</span> <span class="nf">rebuild_db</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Rebuild the db.</span>
+
+<span class="sd">        Actions taken:</span>
+<span class="sd">            - clear the query cache</span>
+<span class="sd">            - truncate the db</span>
+<span class="sd">            - call :func:`~yawning_titan.game_modes.game_mode_db.GameModeDB.reset_default_game_modes_in_db`</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">                This function completely rebuilds the database. Any custom game_modes</span>
+<span class="sd">                saved in the db will be lost. The default game_modes can be reset</span>
+<span class="sd">                using the :func:`~yawning_titan.game_modes.game_mode_db.GameModeDB.reset_default_game_modes_in_db`</span>
+<span class="sd">                function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Rebuilding the </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> db.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">clear_cache</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">truncate</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_default_game_modes_in_db</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="GameModeDB.add_yaml_game_modes_to_db"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.add_yaml_game_modes_to_db">[docs]</a>    <span class="k">def</span> <span class="nf">add_yaml_game_modes_to_db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add all yaml game modes in a given directory to the database.</span>
+
+<span class="sd">        :param directory: The directory containing the files to add as a Path.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">directory</span> <span class="o">=</span> <span class="n">_LIB_CONFIG_ROOT_PATH</span> <span class="o">/</span> <span class="s2">&quot;_package_data&quot;</span> <span class="o">/</span> <span class="s2">&quot;game_modes&quot;</span>
+        <span class="k">for</span> <span class="n">game_mode_path</span> <span class="ow">in</span> <span class="n">directory</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+            <span class="n">game_mode</span> <span class="o">=</span> <span class="n">GameMode</span><span class="p">()</span>
+            <span class="n">game_mode</span><span class="o">.</span><span class="n">set_from_yaml</span><span class="p">(</span><span class="n">game_mode_path</span><span class="p">,</span> <span class="n">infer_legacy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">game_mode</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">game_mode_path</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="default_game_mode"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.default_game_mode.html#yawning_titan.game_modes.game_mode_db.default_game_mode">[docs]</a><span class="k">def</span> <span class="nf">default_game_mode</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">GameMode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The default Yawning Titan game mode.</span>
+
+<span class="sd">    :return: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">GameModeDB</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;900a704f-6271-4994-ade7-40b74d3199b1&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="dcbo_game_mode"><a class="viewcode-back" href="../../../source/_autosummary/yawning_titan.game_modes.game_mode_db.dcbo_game_mode.html#yawning_titan.game_modes.game_mode_db.dcbo_game_mode">[docs]</a><span class="k">def</span> <span class="nf">dcbo_game_mode</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">GameMode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The DCBO game mode.</span>
+
+<span class="sd">    :return: An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">GameModeDB</span><span class="p">()</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;bac2cb9d-b24b-426c-88a5-5edd0c2de4131&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

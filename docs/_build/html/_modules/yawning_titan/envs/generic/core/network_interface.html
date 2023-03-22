@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.envs.generic.core.network_interface &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.envs.generic.core.network_interface</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for yawning_titan.envs.generic.core.network_interface</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan.game_modes.game_mode</span> <span class="kn">import</span> <span class="n">GameMode</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.network</span> <span class="kn">import</span> <span class="n">Network</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.node</span> <span class="kn">import</span> <span class="n">Node</span>
+
+<span class="n">_LOGGER</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="NetworkInterface"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface">[docs]</a><span class="k">class</span> <span class="nc">NetworkInterface</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The primary interface between both red and blue agents and the underlying environment.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="NetworkInterface.__init__"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">game_mode</span><span class="p">:</span> <span class="n">GameMode</span><span class="p">,</span> <span class="n">network</span><span class="p">:</span> <span class="n">Network</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialise the Network Interface and initialises all the necessary components.</span>
+
+<span class="sd">        :param game_mode: the :class:`~yawning_titan.game_modes.game_mode.GameMode` that defines the abilities of the agents.</span>
+<span class="sd">        :param network: the :class:`~yawning_titan.networks.network.Network` that defines the network within which the agents act.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># opens the fle the user has specified to be the location of the game_mode</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="p">:</span> <span class="n">GameMode</span> <span class="o">=</span> <span class="n">game_mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="p">:</span> <span class="n">Network</span> <span class="o">=</span> <span class="n">network</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">random_seed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">miscellaneous</span><span class="o">.</span><span class="n">random_seed</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="c1"># initialise the base graph</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_graph</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_base_graph</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="p">)</span>
+
+        <span class="c1"># initialises the deceptive nodes and their names and amount</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialise_deceptive_nodes</span><span class="p">()</span>
+
+        <span class="c1"># a pointer to to point to the current deceptive node (when a new node is added but the max is reached the</span>
+        <span class="c1"># oldest node is replaced)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deceptive_node_pointer</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_deceptive_nodes</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reached_max_deceptive_nodes</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># a edge dictionary to give each edge a unique single number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialise_edge_map</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">red_current_location</span><span class="p">:</span> <span class="n">Node</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># a list of all of the failed attacks that occurred on this turn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">true_attacks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># a list of all the failed attacks that blue has been able to detect</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">detected_attacks</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">edges_per_node</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">connectivity</span> <span class="o">=</span> <span class="o">-</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">edges_per_node</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">adj_matrix</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_numpy_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    GETTERS</span>
+<span class="sd">    The following block of code contains the getters for the network interface. Getters are methods that (given</span>
+<span class="sd">    parameters) will return some attribute from the class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="NetworkInterface.get_shortest_distances_to_target"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_shortest_distances_to_target">[docs]</a>    <span class="k">def</span> <span class="nf">get_shortest_distances_to_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a list of the shortest distances from each node to the target.&quot;&quot;&quot;</span>
+        <span class="c1"># TODO: add option where only shortest distance provided</span>
+
+        <span class="n">dist_matrix</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">nx</span><span class="o">.</span><span class="n">single_source_shortest_path_length</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_target_node</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="p">[</span><span class="n">dist_matrix</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">distances</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_target_node"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_target_node">[docs]</a>    <span class="k">def</span> <span class="nf">get_target_node</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Node</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the node which is being targeted in the config.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The target node if it exists</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_node_from_name</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">target_mechanism</span><span class="o">.</span><span class="n">target_specific_node</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_total_num_nodes"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_total_num_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_num_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the total number of nodes including any yet to be placed deceptive nodes.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The number of nodes that there are including deceptive nodes that may not have been placed yet</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_number_unused_deceptive_nodes</span><span class="p">()</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_midpoint"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_midpoint">[docs]</a>    <span class="k">def</span> <span class="nf">get_midpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node1</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node2</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the midpoint between the position of two nodes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            node1: the name of the first node to get the midpoint from</span>
+<span class="sd">            node2: the name of the second node to get the midpoint from</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The x and y coordinates of the midpoint between two nodes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># calculate midpoint</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">node1</span><span class="o">.</span><span class="n">x_pos</span><span class="p">)</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">node2</span><span class="o">.</span><span class="n">x_pos</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">node1</span><span class="o">.</span><span class="n">y_pos</span><span class="p">)</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">node2</span><span class="o">.</span><span class="n">y_pos</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_current_connected_nodes"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_connected_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_connected_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all of the nodes currently connected to a target node.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            node: The name of the node to get the current connections of</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of nodes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_node_from_uuid</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="p">]</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_base_connected_nodes"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_base_connected_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">get_base_connected_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all of the nodes connected to the given node in the base graph.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            node: The name of the node to get the current connections of</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of nodes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">base_graph</span><span class="o">.</span><span class="n">get_node_from_uuid</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_graph</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="p">]</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_current_graph_as_dict"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_graph_as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_graph_as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the current networkx graph for the environment and convert it to a dict of dicts.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The networkx graph as a dict  of dicts</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_dict_of_dicts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_attributes_from_key"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_attributes_from_key">[docs]</a>    <span class="k">def</span> <span class="nf">get_attributes_from_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">key_by_uuid</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Take in a key and return a dictionary.</span>
+
+<span class="sd">        The keys are the names of the nodes and the values are the attribute values that are stored for</span>
+<span class="sd">        that node under the specified key</span>
+
+<span class="sd">        :param key: The name of the attribute to extract</span>
+<span class="sd">        :param key_by_uuid: Use the nodes uuid attribute as the key if True otherwise use the node object itself.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary of attributes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">key_by_uuid</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">n</span><span class="o">.</span><span class="n">uuid</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">()}</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_all_vulnerabilities"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_vulnerabilities">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_vulnerabilities</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a dictionary of vulnerability scores.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attributes_from_key</span><span class="p">(</span><span class="s2">&quot;vulnerability_score&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_all_isolation"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_isolation">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_isolation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a dictionary of the isolation status of all the nodes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attributes_from_key</span><span class="p">(</span><span class="s2">&quot;isolated&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_all_node_compromised_states"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_compromised_states">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_node_compromised_states</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a dictionary of compromised states.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attributes_from_key</span><span class="p">(</span><span class="s2">&quot;true_compromised_status&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_all_node_blue_view_compromised_states"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_blue_view_compromised_states">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_node_blue_view_compromised_states</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a dictionary of compromised states.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attributes_from_key</span><span class="p">(</span><span class="s2">&quot;blue_view_compromised_status&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_all_node_positions"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_all_node_positions">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_node_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a dictionary of node positions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attributes_from_key</span><span class="p">(</span><span class="s2">&quot;node_position&quot;</span><span class="p">,</span> <span class="n">key_by_uuid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_number_unused_deceptive_nodes"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_number_unused_deceptive_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">get_number_unused_deceptive_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the current number of unused deceptive nodes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">max_number</span><span class="o">.</span><span class="n">value</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_deceptive_nodes</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_current_observation"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_current_observation">[docs]</a>    <span class="k">def</span> <span class="nf">get_current_observation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the current observation of the environment.</span>
+
+<span class="sd">        The composition of the observation space is based on the configuration file used for the scenario.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            numpy array containing the above details</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># number of spaces open for deceptive nodes</span>
+        <span class="n">open_spaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_number_unused_deceptive_nodes</span><span class="p">()</span>
+
+        <span class="c1"># Builds the observation space using multiple different metrics from the env</span>
+
+        <span class="c1"># Gets the adj matrix for the current graph</span>
+        <span class="n">node_connections</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Gets the isolation states for each node</span>
+        <span class="n">isolated_state</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">node_connections</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">node_connections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adj_matrix</span>
+            <span class="c1"># pads the array to account for any missing deceptive nodes that may not have been placed yet</span>
+            <span class="n">node_connections</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">node_connections</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">open_spaces</span><span class="p">),</span> <span class="s2">&quot;constant&quot;</span><span class="p">)</span>
+
+            <span class="c1"># array used to keep track of which nodes are being isolated</span>
+            <span class="n">isolated_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+                <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_attributes_from_key</span><span class="p">(</span><span class="s2">&quot;isolated&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+            <span class="c1"># pad array to account for deceptive nodes</span>
+            <span class="n">isolated_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">isolated_state</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">open_spaces</span><span class="p">),</span> <span class="s2">&quot;constant&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Gets the current safe/compromised status of all of the nodes</span>
+        <span class="n">compromised_state</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">compromised_status</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">compromised_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+                <span class="nb">list</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">get_attributes_from_key</span><span class="p">(</span>
+                        <span class="s2">&quot;blue_view_compromised_status&quot;</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">compromised_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">compromised_state</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">open_spaces</span><span class="p">),</span> <span class="s2">&quot;constant&quot;</span><span class="p">)</span>
+        <span class="c1"># Gets the vulnerability score of all of the nodes</span>
+        <span class="n">vulnerabilities</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">vulnerabilities</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">vulnerabilities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+                <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_attributes_from_key</span><span class="p">(</span><span class="s2">&quot;vulnerability_score&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="p">)</span>
+            <span class="n">vulnerabilities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">vulnerabilities</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">open_spaces</span><span class="p">),</span> <span class="s2">&quot;constant&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Gets the average vulnerability of all the nodes</span>
+        <span class="n">avg_vuln</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">average_vulnerability</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">all_vuln</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attributes_from_key</span><span class="p">(</span><span class="s2">&quot;vulnerability_score&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="n">avg_vuln</span> <span class="o">=</span> <span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">all_vuln</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_vuln</span><span class="p">)]</span>
+
+        <span class="c1"># Gets the connectivity of the graph, closer to 1 means more edges per node</span>
+        <span class="n">connectivity</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">graph_connectivity</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">connectivity</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">connectivity</span><span class="p">]</span>
+
+        <span class="c1"># Gets the attacks that the blue agent detected</span>
+        <span class="n">attacking_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">attacked_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">attacking_nodes</span><span class="o">.</span><span class="n">value</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">attacked_nodes</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">):</span>
+            <span class="n">attacking</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">()}</span>
+            <span class="n">attacked</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">()}</span>
+            <span class="k">for</span> <span class="n">node_set</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">detected_attacks</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">node_set</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># extract the attacking node (as long as the attacking node is not None)</span>
+                    <span class="n">attacking</span><span class="p">[</span><span class="n">node_set</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="c1"># extract the node that was attacked</span>
+                <span class="n">attacked</span><span class="p">[</span><span class="n">node_set</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">attacking_nodes</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="c1"># attacking nodes</span>
+                <span class="n">attacking_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">attacking</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="n">attacking_nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">attacking_nodes</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">open_spaces</span><span class="p">),</span> <span class="s2">&quot;constant&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">attacked_nodes</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="c1"># nodes attacked</span>
+                <span class="n">attacked_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">attacked</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="n">attacked_nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">attacked_nodes</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">open_spaces</span><span class="p">),</span> <span class="s2">&quot;constant&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Gets the locations of any special nodes in the network (entry nodes and high value nodes)</span>
+        <span class="n">entry_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">target_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">special_nodes</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="c1"># gets the entry nodes</span>
+            <span class="n">entry_nodes</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">()}</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">entry_nodes</span><span class="p">:</span>
+                <span class="n">entry_nodes</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">entry_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">entry_nodes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="n">entry_nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">entry_nodes</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">open_spaces</span><span class="p">),</span> <span class="s2">&quot;constant&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">target_node_lost</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="c1"># gets the target node</span>
+                <span class="n">target_nodes</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">()}</span>
+                <span class="n">target_nodes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_target_node</span><span class="p">()]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">target_nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">target_nodes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="n">target_nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">target_nodes</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">open_spaces</span><span class="p">),</span> <span class="s2">&quot;constant&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">high_value_node_lost</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="c1"># gets the high value node nodes</span>
+                <span class="n">nodes</span> <span class="o">=</span> <span class="p">{</span><span class="n">n</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">()}</span>
+
+                <span class="c1"># set high value nodes to 1</span>
+                <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">high_value_nodes</span><span class="p">:</span>
+                    <span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+                <span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">nodes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="n">nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">open_spaces</span><span class="p">),</span> <span class="s2">&quot;constant&quot;</span><span class="p">)</span>
+
+        <span class="c1"># gets the skill of the red agent</span>
+        <span class="n">skill</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">red_agent_skill</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">skill</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">red</span><span class="o">.</span><span class="n">agent_attack</span><span class="o">.</span><span class="n">skill</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">value</span><span class="p">]</span>
+
+        <span class="c1"># combines all of the env observations together to create the observation that the blue agent gets</span>
+        <span class="n">obs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">node_connections</span><span class="p">,</span>
+                <span class="n">isolated_state</span><span class="p">,</span>
+                <span class="n">compromised_state</span><span class="p">,</span>
+                <span class="n">vulnerabilities</span><span class="p">,</span>
+                <span class="n">avg_vuln</span><span class="p">,</span>
+                <span class="n">connectivity</span><span class="p">,</span>
+                <span class="n">attacking_nodes</span><span class="p">,</span>
+                <span class="n">attacked_nodes</span><span class="p">,</span>
+                <span class="n">entry_nodes</span><span class="p">,</span>
+                <span class="n">nodes</span><span class="p">,</span>
+                <span class="n">target_nodes</span><span class="p">,</span>
+                <span class="n">skill</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">obs</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_observation_size_base"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_observation_size_base">[docs]</a>    <span class="k">def</span> <span class="nf">get_observation_size_base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_feather</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the size of the observation space.</span>
+
+<span class="sd">        This is based on the game_mode that are turned on/off.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The size of the observation space</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># gets the max number of nodes in the env (including deceptive nodes)</span>
+        <span class="n">observation_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_number_of_nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_total_num_nodes</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">with_feather</span><span class="p">:</span>
+            <span class="n">node_connections</span> <span class="o">=</span> <span class="mi">500</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">node_connections</span> <span class="o">=</span> <span class="n">max_number_of_nodes</span> <span class="o">*</span> <span class="n">max_number_of_nodes</span>
+
+        <span class="c1"># calculate the size of the observation space</span>
+        <span class="c1"># the size depends on what observations are turned on/off in the config file</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">node_connections</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="c1"># add node connections to observation size</span>
+            <span class="n">observation_size</span> <span class="o">+=</span> <span class="n">node_connections</span>
+            <span class="c1"># add isolated nodes to observation size</span>
+            <span class="n">observation_size</span> <span class="o">+=</span> <span class="n">max_number_of_nodes</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">compromised_status</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">observation_size</span> <span class="o">+=</span> <span class="n">max_number_of_nodes</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">vulnerabilities</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">observation_size</span> <span class="o">+=</span> <span class="n">max_number_of_nodes</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">average_vulnerability</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">observation_size</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">graph_connectivity</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">observation_size</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">attacking_nodes</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">observation_size</span> <span class="o">+=</span> <span class="n">max_number_of_nodes</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">attacked_nodes</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">observation_size</span> <span class="o">+=</span> <span class="n">max_number_of_nodes</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">special_nodes</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">observation_size</span> <span class="o">+=</span> <span class="n">max_number_of_nodes</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">target_node_lost</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="n">observation_size</span> <span class="o">+=</span> <span class="n">max_number_of_nodes</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">game_rules</span><span class="o">.</span><span class="n">blue_loss_condition</span><span class="o">.</span><span class="n">high_value_node_lost</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="n">observation_size</span> <span class="o">+=</span> <span class="n">max_number_of_nodes</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">red_agent_skill</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="n">observation_size</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">observation_size</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.get_observation_size"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.get_observation_size">[docs]</a>    <span class="k">def</span> <span class="nf">get_observation_size</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Use base observation size calculator with feather switched off.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_observation_size_base</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SETTERS</span>
+<span class="sd">    The following block of code contains the setters for the network_interface. Setters are a type of method that update</span>
+<span class="sd">    or change a class attribute</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="NetworkInterface.initialise_deceptive_nodes"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.initialise_deceptive_nodes">[docs]</a>    <span class="k">def</span> <span class="nf">initialise_deceptive_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a separate list of :class: `~yawning_titan.networks.node.Node` objects take represent deceptive nodes.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">available_deceptive_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">max_number</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;d&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">deceptive_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">vulnerability</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">_generate_random_vulnerability</span><span class="p">(),</span>
+            <span class="p">)</span>
+            <span class="n">deceptive_node</span><span class="o">.</span><span class="n">deceptive_node</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">available_deceptive_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">deceptive_node</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.initialise_edge_map"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.initialise_edge_map">[docs]</a>    <span class="k">def</span> <span class="nf">initialise_edge_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a lookup that maps a unique integer key to an networkx edge (node pair).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edge_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">edges</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Node</span><span class="p">,</span> <span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">edges</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node_pair</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">edges</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">edge_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_pair</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.update_stored_attacks"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.update_stored_attacks">[docs]</a>    <span class="k">def</span> <span class="nf">update_stored_attacks</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">attacking_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">target_nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">],</span> <span class="n">success</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update this turns current attacks.</span>
+
+<span class="sd">        This function collects all of the failed attacks and stores them for the</span>
+<span class="sd">        blue agent to use in their action decision</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            attacking_nodes: Nodes red has attacked from</span>
+<span class="sd">            target_nodes: Nodes red is attacking</span>
+<span class="sd">            success: If the attacks were a success or not</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Runs through all the nodes attacked</span>
+        <span class="k">for</span> <span class="n">attacking_node</span><span class="p">,</span> <span class="n">target_node</span><span class="p">,</span> <span class="n">success</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">attacking_nodes</span><span class="p">,</span> <span class="n">target_nodes</span><span class="p">,</span> <span class="n">success</span>
+        <span class="p">):</span>
+            <span class="c1"># Deceptive nodes have a different chance of detecting attacks</span>
+            <span class="k">if</span> <span class="n">target_node</span><span class="o">.</span><span class="n">deceptive_node</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+                    <span class="c1"># chance of seeing the attack if the attack succeeded</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="mi">100</span>
+                        <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">succeeded_attacks_known_compromise</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">value</span>
+                        <span class="o">&gt;</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+                    <span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">detected_attacks</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">attacking_node</span><span class="p">,</span> <span class="n">target_node</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># chance of seeing the attack if the attack fails</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="mi">100</span>
+                        <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">failed_attacks</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">deceptive_node</span><span class="o">.</span><span class="n">value</span>
+                        <span class="o">&gt;</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+                    <span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">detected_attacks</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">attacking_node</span><span class="p">,</span> <span class="n">target_node</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># If the attack did not succeed</span>
+                <span class="k">if</span> <span class="n">success</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">failed_attacks</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="mi">100</span>
+                            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">failed_attacks</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span>
+                            <span class="o">&gt;</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+                        <span class="p">):</span>
+                            <span class="c1"># Adds the attack to the list of current attacks for this turn</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">detected_attacks</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">attacking_node</span><span class="p">,</span> <span class="n">target_node</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># If the attack succeeded and the blue agent detected it</span>
+                    <span class="k">if</span> <span class="n">target_node</span><span class="o">.</span><span class="n">blue_view_compromised_status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">succeeded_attacks_known_compromise</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span>
+                        <span class="p">):</span>
+                            <span class="k">if</span> <span class="p">(</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">succeeded_attacks_known_compromise</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span>
+                                <span class="o">&gt;</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+                            <span class="p">):</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">detected_attacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                    <span class="p">[</span><span class="n">attacking_node</span><span class="p">,</span> <span class="n">target_node</span><span class="p">]</span>
+                                <span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># If the attack succeeded but blue did not detect it</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">succeeded_attacks_unknown_compromise</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span>
+                        <span class="p">):</span>
+                            <span class="k">if</span> <span class="p">(</span>
+                                <span class="mi">100</span>
+                                <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">attack_discovery</span><span class="o">.</span><span class="n">succeeded_attacks_unknown_compromise</span><span class="o">.</span><span class="n">chance</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span>
+                                <span class="o">&gt;</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+                            <span class="p">):</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">detected_attacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                    <span class="p">[</span><span class="n">attacking_node</span><span class="p">,</span> <span class="n">target_node</span><span class="p">]</span>
+                                <span class="p">)</span>
+            <span class="c1"># Also compiles a list of all the attacks even those that blue did not &quot;see&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">true_attacks</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">attacking_node</span><span class="p">,</span> <span class="n">target_node</span><span class="p">])</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    RESET METHODS</span>
+<span class="sd">    The following block of code contains the methods that are used to reset some portion of the network interface</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="NetworkInterface.reset_stored_attacks"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.reset_stored_attacks">[docs]</a>    <span class="k">def</span> <span class="nf">reset_stored_attacks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reset the attacks list.</span>
+
+<span class="sd">        This needs to be called every timestep to ensure that only the current attacks are contained.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">true_attacks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">detected_attacks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Node</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.reset"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the network back to its default state.&quot;&quot;&quot;</span>
+        <span class="c1"># red location</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">red_current_location</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># resets the network graph from the saved base graph</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_base_graph</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_graph</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_base_graph</span><span class="p">)</span>
+
+        <span class="c1"># resets the edge map to match the new current graph</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialise_edge_map</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialise_deceptive_nodes</span><span class="p">()</span>
+
+        <span class="c1"># pointers and helpers for deceptive nodes are reset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deceptive_node_pointer</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_deceptive_nodes</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reached_max_deceptive_nodes</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># any previous attacks are removed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_stored_attacks</span><span class="p">()</span>
+
+        <span class="c1"># updates the stored adj matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adj_matrix</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_numpy_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">on_reset</span><span class="o">.</span><span class="n">choose_new_entry_nodes</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">reset_random_entry_nodes</span><span class="p">()</span>
+
+        <span class="c1"># set high value nodes</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">on_reset</span><span class="o">.</span><span class="n">choose_new_high_value_nodes</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">reset_random_high_value_nodes</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">on_reset</span><span class="o">.</span><span class="n">randomise_vulnerabilities</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">reset_random_vulnerabilities</span><span class="p">()</span></div>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    STANDARD METHODS</span>
+<span class="sd">    The following block of code contains the standard methods that are used to interact with the network interface in</span>
+<span class="sd">    in some complex way.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__push_red</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove red from the target node and move to a new location.</span>
+
+<span class="sd">        If the blue agent patches the node that the red agent is in the red agent will be pushed to a connected</span>
+<span class="sd">        compromised node. If there are none then the red agent will be pushed out of the network</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">connected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">red_current_location</span><span class="p">)</span>
+        <span class="c1"># Randomises the order of the nodes to pick a random one</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">connected</span><span class="p">)</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">connected</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">red_current_location</span> <span class="o">=</span> <span class="n">node</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">done</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="c1"># If there were no nodes then the agent is removed from the network</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">red_current_location</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="NetworkInterface.add_deceptive_node"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.add_deceptive_node">[docs]</a>    <span class="k">def</span> <span class="nf">add_deceptive_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node1</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node2</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">Node</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a deceptive node into the network.</span>
+
+<span class="sd">        The deceptive node will sit between two actual nodes and act as a normal node in all</span>
+<span class="sd">        regards other than the fact that it give more information when it is attacked</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            node1: Name of the first node to connect to the deceptive node</span>
+<span class="sd">            node2: Name of the second to connect to the deceptive node</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            False if failed, the name of the new node if succeeded</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Check if there exists an edge between the two nodes</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">):</span>
+            <span class="c1"># If the red agent is in the deceptive node at its old position, push it out to a surrounding node</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">red_current_location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">red_current_location</span><span class="o">.</span><span class="n">deceptive_node</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__push_red</span><span class="p">()</span>
+
+            <span class="c1"># get the new node and add the new node</span>
+            <span class="n">deceptive_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_deceptive_nodes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">deceptive_node_pointer</span><span class="p">]</span>
+
+            <span class="c1"># If the node is already in use, remove it from the base graph</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_graph</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="n">deceptive_node</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__remove_node_yt</span><span class="p">(</span><span class="n">deceptive_node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_graph</span><span class="p">)</span>
+
+            <span class="c1"># inserts a new node on the base graph</span>
+            <span class="c1"># self.__insert_node_between(copy.deepcopy(deceptive_node), node1, node2, self.base_graph)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__insert_node_between</span><span class="p">(</span><span class="n">deceptive_node</span><span class="p">,</span> <span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_graph</span><span class="p">)</span>
+
+            <span class="c1"># If the node is already in use, remove it from the current graph</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="n">deceptive_node</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__remove_node_yt</span><span class="p">(</span><span class="n">deceptive_node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="p">)</span>
+
+            <span class="c1"># check the isolation status of the nodes</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">node1</span><span class="o">.</span><span class="n">isolated</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">node2</span><span class="o">.</span><span class="n">isolated</span><span class="p">:</span>
+                <span class="c1"># neither are isolated: use the insert between method to insert the new node on the current graph</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__insert_node_between</span><span class="p">(</span>
+                    <span class="n">deceptive_node</span><span class="p">,</span> <span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">node1</span><span class="o">.</span><span class="n">isolated</span><span class="p">:</span>
+                <span class="c1"># one node is isolated: add the node to the graph and add a single edge to the non-isolated node</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">deceptive_node</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">deceptive_node</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">node2</span><span class="o">.</span><span class="n">isolated</span><span class="p">:</span>
+                <span class="c1"># one node is isolated: add the node to the graph and add a single edge to the non-isolated node</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">deceptive_node</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">node2</span><span class="p">,</span> <span class="n">deceptive_node</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># both nodes are isolated: add the node to the graph</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">deceptive_node</span><span class="p">)</span>
+
+            <span class="c1"># increase the pointer to point to the next element in the list (the next deceptive node to use)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">deceptive_node_pointer</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">reached_max_deceptive_nodes</span><span class="p">:</span>
+                <span class="c1"># checks if all the deceptive nodes are in play</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_deceptive_nodes</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">deceptive_node_pointer</span>
+                <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">max_number</span><span class="o">.</span><span class="n">value</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">deceptive_node_pointer</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_deceptive_nodes</span>
+                <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">max_number</span><span class="o">.</span><span class="n">value</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reached_max_deceptive_nodes</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">new_node_on_relocate</span><span class="o">.</span><span class="n">value</span>
+            <span class="p">):</span>
+                <span class="c1"># TODO: check if the following can be replaced by a node reset method</span>
+                <span class="n">deceptive_node</span><span class="o">.</span><span class="n">vulnerability</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">_generate_random_vulnerability</span><span class="p">()</span>
+                <span class="p">)</span>
+                <span class="n">deceptive_node</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">deceptive_node</span><span class="o">.</span><span class="n">blue_view_compromised_status</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">deceptive_node</span><span class="o">.</span><span class="n">node_position</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="n">deceptive_node</span><span class="o">.</span><span class="n">deceptive_node</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">deceptive_node</span><span class="o">.</span><span class="n">blue_knows_intrusion</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">deceptive_node</span><span class="o">.</span><span class="n">isolated</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="c1"># updates the position of the node based on its new location</span>
+            <span class="n">deceptive_node</span><span class="o">.</span><span class="n">node_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_midpoint</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">)</span>
+            <span class="c1"># updates the current adjacency matrix</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">adj_matrix</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_numpy_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">deceptive_node</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># If no edge return false as the deceptive node cannot be put here</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">__remove_node_yt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">nx</span><span class="o">.</span><span class="n">Graph</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove a node from a graph.</span>
+
+<span class="sd">        Removing a node removes all connections to and from that node</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            node: the name of the node to remove</span>
+<span class="sd">            graph: the networkx graph to remove the node from</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reconnect_node</span><span class="p">(</span>
+            <span class="n">node</span>
+        <span class="p">)</span>  <span class="c1"># TODO: check this is correct. This is a workaround to reattach connections to the node to delete so as to establish</span>
+        <span class="c1"># the correct paths to reform.</span>
+
+        <span class="c1"># extracts the 0th element from a list where a variable &quot;to_remove&quot; has been removed</span>
+        <span class="n">extract_connections</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">to_remove</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span>  <span class="c1"># noqa</span>
+            <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">z</span><span class="p">:</span> <span class="n">z</span> <span class="o">!=</span> <span class="n">to_remove</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>  <span class="c1"># noqa</span>
+        <span class="p">)[</span>
+            <span class="mi">0</span>
+        <span class="p">]</span>  <span class="c1"># noqa</span>
+
+        <span class="c1"># gets all of the edges from a node</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+        <span class="c1"># gets the connections to this node using the extract_connections lambda function</span>
+        <span class="n">connections</span> <span class="o">=</span> <span class="p">[</span><span class="n">extract_connections</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">links</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">connections</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># generates the new connections</span>
+            <span class="n">new_links</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">connections</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="c1"># adds the new edges</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">new_links</span><span class="p">)</span>
+        <span class="c1"># removes the old node</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">remove_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__insert_node_between</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">new_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node1</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">node2</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">Network</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Insert a node in between two nodes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            new_node: the name of the new node</span>
+<span class="sd">            node1: the name of the first node the new node will be connected to</span>
+<span class="sd">            node2: the name of the second node the new node will be connected to</span>
+<span class="sd">            graph: the networkx graph to add the new node to</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># removes the old edge between the nodes</span>
+        <span class="k">if</span> <span class="n">graph</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">):</span>
+            <span class="n">graph</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">node2</span><span class="p">)</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>
+        <span class="c1"># adds the new node in and updates the edges</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">node1</span><span class="p">,</span> <span class="n">new_node</span><span class="p">)</span>
+        <span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">new_node</span><span class="p">,</span> <span class="n">node2</span><span class="p">)</span>
+
+<div class="viewcode-block" id="NetworkInterface.isolate_node"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.isolate_node">[docs]</a>    <span class="k">def</span> <span class="nf">isolate_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Isolate a node (disable all of the nodes connections).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            node: the node to disable the connections of</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">isolated</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">current_connections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_connected_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">cn</span> <span class="ow">in</span> <span class="n">current_connections</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">remove_edge</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">cn</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">adj_matrix</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_numpy_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.reconnect_node"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.reconnect_node">[docs]</a>    <span class="k">def</span> <span class="nf">reconnect_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Re-enable any connections that may have previously been disabled.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            node: the node to re-enable</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">isolated</span><span class="p">:</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">isolated</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">base_connections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_base_connected_nodes</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">bn</span> <span class="ow">in</span> <span class="n">base_connections</span><span class="p">:</span>
+                <span class="n">cn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_node_from_uuid</span><span class="p">(</span><span class="n">bn</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="ow">not</span> <span class="n">cn</span><span class="o">.</span><span class="n">isolated</span>
+                <span class="p">):</span>  <span class="c1"># ensure a different isolated node cannot be reconnected</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">cn</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">adj_matrix</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">to_numpy_array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.attack_node"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.attack_node">[docs]</a>    <span class="k">def</span> <span class="nf">attack_node</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
+        <span class="n">skill</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">use_skill</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">use_vulnerability</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">guarantee</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Attack a target node.</span>
+
+<span class="sd">        Uses a random chance to succeed that is modified by the skill of the attack and the</span>
+<span class="sd">        vulnerability of the node. Both the skill and the vulnerability can be toggled to either be used or not</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            node: The name of the node to target</span>
+<span class="sd">            skill: The skill of the attacker</span>
+<span class="sd">            use_skill: A boolean value that is used to determine if skill is used in the calculation to check if the</span>
+<span class="sd">                       attack succeeds</span>
+<span class="sd">            use_vulnerability: A boolean value that is used to determine if vulnerability is used in the calculation to</span>
+<span class="sd">                               check if the attack succeeds</span>
+<span class="sd">            guarantee: If True then attack automatically succeeds</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A boolean value that represents if the attack succeeded or not</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check if vulnerability and score are being used. If they are not then select a value</span>
+        <span class="k">if</span> <span class="n">use_vulnerability</span><span class="p">:</span>
+            <span class="n">defence</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">node</span><span class="o">.</span><span class="n">vulnerability_score</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">defence</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">use_skill</span><span class="p">:</span>
+            <span class="n">skill</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># calculate the attack score, the higher the score the more likely the attack is to succeed</span>
+        <span class="n">attack_score</span> <span class="o">=</span> <span class="p">((</span><span class="n">skill</span> <span class="o">*</span> <span class="n">skill</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">skill</span> <span class="o">+</span> <span class="n">defence</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="c1"># check if the attack hits based on the attack score</span>
+        <span class="k">if</span> <span class="n">guarantee</span> <span class="ow">or</span> <span class="p">(</span><span class="n">attack_score</span> <span class="o">&gt;</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)):</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__immediate_attempt_view_update</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.make_node_safe"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.make_node_safe">[docs]</a>    <span class="k">def</span> <span class="nf">make_node_safe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make the state for a given node safe.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            node: the node to make safe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">blue_view_compromised_status</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">red_current_location</span> <span class="o">==</span> <span class="n">node</span><span class="p">:</span>
+            <span class="c1"># If the red agent is in the node that just got made safe then the red agent needs to be pushed back</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__push_red</span><span class="p">()</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">blue_knows_intrusion</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">__immediate_attempt_view_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">chance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Attempt to update the view of a specific node for the blue agent.</span>
+
+<span class="sd">        There is a chance that intrusions will not be detected.</span>
+
+<span class="sd">        :param node: the node to try and update the view for</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">blue_knows_intrusion</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1"># if we have seen the intrusion before we don&#39;t want to forget about it</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">blue_view_compromised_status</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">true_compromised_status</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">chance</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+                <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">immediate</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span>
+                <span class="o">*</span> <span class="mi">100</span>
+                <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">deceptive_node</span>
+            <span class="p">):</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">blue_view_compromised_status</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">true_compromised_status</span>
+                <span class="c1"># remember this intrusion so we don&#39;t forget about it</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">blue_knows_intrusion</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">chance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">chance</span> <span class="o">*</span> <span class="mi">100</span><span class="p">):</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">blue_view_compromised_status</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">true_compromised_status</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">blue_view_compromised_status</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">true_compromised_status</span>
+
+<div class="viewcode-block" id="NetworkInterface.scan_node"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.scan_node">[docs]</a>    <span class="k">def</span> <span class="nf">scan_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Scan a target node to determine compromise based on the chance of discovery of compromise.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            node: The node to be scanned</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">blue_knows_intrusion</span><span class="p">:</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">blue_view_compromised_status</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="n">node</span><span class="o">.</span><span class="n">true_compromised_status</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">99</span><span class="p">)</span>
+                <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">intrusion_discovery_chance</span><span class="o">.</span><span class="n">on_scan</span><span class="o">.</span><span class="n">standard_node</span><span class="o">.</span><span class="n">value</span>
+                <span class="o">*</span> <span class="mi">100</span>
+                <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">deceptive_node</span>
+            <span class="p">):</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">blue_knows_intrusion</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">blue_view_compromised_status</span> <span class="o">=</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.save_json"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.save_json">[docs]</a>    <span class="k">def</span> <span class="nf">save_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">ts</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save a given dictionary to a json file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data_dict: Data to save to the json file</span>
+<span class="sd">            ts: The current timestamp of the data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">time_stamp</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;yawning_titan/envs/helpers/json_timesteps/output_&quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;_&quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">time_stamp</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;.json&quot;</span>
+        <span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">json_file</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data_dict</span><span class="p">,</span> <span class="n">json_file</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NetworkInterface.create_json_time_step"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.network_interface.NetworkInterface.html#yawning_titan.envs.generic.core.network_interface.NetworkInterface.create_json_time_step">[docs]</a>    <span class="k">def</span> <span class="nf">create_json_time_step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a dictionary that contains the current state of the environment and returns it.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary containing the node connections, states and vulnerability scores</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">convert_str</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>  <span class="c1"># noqa</span>
+
+        <span class="c1"># Gets the edges from the networkx object</span>
+        <span class="n">connections</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">convert_str</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">edges</span>
+        <span class="p">]</span>
+        <span class="c1"># Gets the vulnerability and compromised status</span>
+        <span class="n">node_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_node_compromised_states</span><span class="p">()</span>
+        <span class="n">node_vulnerabilities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_vulnerabilities</span><span class="p">()</span>
+
+        <span class="c1"># Combines the features into a defaultdict and then returns a dictionary</span>
+        <span class="n">combined_features</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="p">(</span><span class="n">node_states</span><span class="p">,</span> <span class="n">node_vulnerabilities</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">feature</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">combined_features</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="n">current_state_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;edges&quot;</span><span class="p">:</span> <span class="n">connections</span><span class="p">,</span> <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="n">combined_features</span><span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">current_state_dict</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

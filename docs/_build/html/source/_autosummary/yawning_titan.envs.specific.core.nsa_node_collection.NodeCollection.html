@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.envs.specific.five_node_def" href="yawning_titan.envs.specific.five_node_def.html" />
+    <link rel="prev" title="yawning_titan.envs.specific.core.nsa_node_collection" href="yawning_titan.envs.specific.core.nsa_node_collection.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.envs.generic.html">yawning_titan.envs.generic</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="yawning_titan.envs.specific.html">yawning_titan.envs.specific</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="yawning_titan.envs.specific.core.html">yawning_titan.envs.specific.core</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.envs.specific.five_node_def.html">yawning_titan.envs.specific.five_node_def</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.envs.specific.four_node_def.html">yawning_titan.envs.specific.four_node_def</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.envs.specific.graph_explore.html">yawning_titan.envs.specific.graph_explore</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.envs.specific.nsa_node_def.html">yawning_titan.envs.specific.nsa_node_def</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.html">yawning_titan</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.specific.html">yawning_titan.envs.specific</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.specific.core.html">yawning_titan.envs.specific.core</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.specific.core.nsa_node_collection.html">yawning_titan.envs.specific.core.nsa_node_collection</a></li>
+      <li class="breadcrumb-item active">yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="yawning-titan-envs-specific-core-nsa-node-collection-nodecollection">
+<h1>yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection<a class="headerlink" href="#yawning-titan-envs-specific-core-nsa-node-collection-nodecollection" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.envs.specific.core.nsa_node_collection.</span></span><span class="sig-name descname"><span class="pre">NodeCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chance_to_spread_during_patch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/specific/core/nsa_node_collection.html#NodeCollection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class representing a collection of nodes for the 18-node Ridley Environment.</p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.calculate_reward" title="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.calculate_reward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calculate_reward</span></code></a></p></td>
+<td><p>Calculate a reward for the current network state.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_compromised_nodes" title="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_compromised_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_compromised_nodes</span></code></a></p></td>
+<td><p>Create a list of all the nodes in the network that are compromised.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_connected_nodes" title="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_connected_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_connected_nodes</span></code></a></p></td>
+<td><p>When given a node returns a list of all of the nodes connected to that node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_isolated_nodes" title="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_isolated_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_isolated_nodes</span></code></a></p></td>
+<td><p>Create a list of all the isolated nodes in the network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_netx_graph" title="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_netx_graph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_netx_graph</span></code></a></p></td>
+<td><p>Get the underlying networkx graph.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_netx_pos" title="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_netx_pos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_netx_pos</span></code></a></p></td>
+<td><p>Get graph positions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_number_of_isolated" title="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_number_of_isolated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_number_of_isolated</span></code></a></p></td>
+<td><p>Get the number of isolated nodes in the network.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_number_of_nodes" title="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_number_of_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_number_of_nodes</span></code></a></p></td>
+<td><p>Return the number of nodes in the network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_number_of_un_compromised" title="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_number_of_un_compromised"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_number_of_un_compromised</span></code></a></p></td>
+<td><p>Get the number of safe nodes in the network.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_observation" title="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_observation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_observation</span></code></a></p></td>
+<td><p>Get the states of all the nodes in the network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_un_compromised_nodes" title="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_un_compromised_nodes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_un_compromised_nodes</span></code></a></p></td>
+<td><p>Create a list of all the safe nodes in the network.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.modify_node" title="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.modify_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modify_node</span></code></a></p></td>
+<td><p>Change the state of a single node.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.spread" title="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.spread"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spread</span></code></a></p></td>
+<td><p>Spread the red agent through all connected nodes.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_number_of_nodes">
+<span class="sig-name descname"><span class="pre">get_number_of_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/specific/core/nsa_node_collection.html#NodeCollection.get_number_of_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_number_of_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Return the number of nodes in the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The number of nodes in the network (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_observation">
+<span class="sig-name descname"><span class="pre">get_observation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/specific/core/nsa_node_collection.html#NodeCollection.get_observation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_observation" title="Permalink to this definition"></a></dt>
+<dd><p>Get the states of all the nodes in the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The current state of the environment (numpy array)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>observation</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.modify_node">
+<span class="sig-name descname"><span class="pre">modify_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">changes</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/specific/core/nsa_node_collection.html#NodeCollection.modify_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.modify_node" title="Permalink to this definition"></a></dt>
+<dd><p>Change the state of a single node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number</strong> – the number of the node to change</p></li>
+<li><p><strong>changes</strong> – <p>a list with two variables in [isolate, compromise]
+isolate: A boolean that will if true change the isolation status of the node (true -&gt; false,</p>
+<blockquote>
+<div><p>false -&gt; true) (boolean)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>compromise: a mode signal that will change the state of a node. 0 does nothing, 1 makes it safe and</dt><dd><p>2 compromises the node (int)</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_compromised_nodes">
+<span class="sig-name descname"><span class="pre">get_compromised_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/specific/core/nsa_node_collection.html#NodeCollection.get_compromised_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_compromised_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Create a list of all the nodes in the network that are compromised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of nodes that are compromised (list of ints)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>compromised_nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_un_compromised_nodes">
+<span class="sig-name descname"><span class="pre">get_un_compromised_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/specific/core/nsa_node_collection.html#NodeCollection.get_un_compromised_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_un_compromised_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Create a list of all the safe nodes in the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of nodes that are safe (list of ints)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>un_compromised_nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_isolated_nodes">
+<span class="sig-name descname"><span class="pre">get_isolated_nodes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/specific/core/nsa_node_collection.html#NodeCollection.get_isolated_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_isolated_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>Create a list of all the isolated nodes in the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of nodes that are isolated (list of ints)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>isolated_nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_number_of_isolated">
+<span class="sig-name descname"><span class="pre">get_number_of_isolated</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/specific/core/nsa_node_collection.html#NodeCollection.get_number_of_isolated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_number_of_isolated" title="Permalink to this definition"></a></dt>
+<dd><p>Get the number of isolated nodes in the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the number of isolated nodes in the network (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_number_of_un_compromised">
+<span class="sig-name descname"><span class="pre">get_number_of_un_compromised</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/specific/core/nsa_node_collection.html#NodeCollection.get_number_of_un_compromised"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_number_of_un_compromised" title="Permalink to this definition"></a></dt>
+<dd><p>Get the number of safe nodes in the network.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the number of safe nodes in the network (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_connected_nodes">
+<span class="sig-name descname"><span class="pre">get_connected_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/specific/core/nsa_node_collection.html#NodeCollection.get_connected_nodes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_connected_nodes" title="Permalink to this definition"></a></dt>
+<dd><p>When given a node returns a list of all of the nodes connected to that node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>number</strong> – the number of the node to run on</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of all the nodes connected to a specified node (list of ints)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.spread">
+<span class="sig-name descname"><span class="pre">spread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/specific/core/nsa_node_collection.html#NodeCollection.spread"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.spread" title="Permalink to this definition"></a></dt>
+<dd><p>Spread the red agent through all connected nodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>number</strong> – the number of the node to spread from</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.calculate_reward">
+<span class="sig-name descname"><span class="pre">calculate_reward</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/specific/core/nsa_node_collection.html#NodeCollection.calculate_reward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.calculate_reward" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate a reward for the current network state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the reward for being in the current state</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>reward</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_netx_graph">
+<span class="sig-name descname"><span class="pre">get_netx_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/specific/core/nsa_node_collection.html#NodeCollection.get_netx_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_netx_graph" title="Permalink to this definition"></a></dt>
+<dd><p>Get the underlying networkx graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A networkx graph object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_netx_pos">
+<span class="sig-name descname"><span class="pre">get_netx_pos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/specific/core/nsa_node_collection.html#NodeCollection.get_netx_pos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.specific.core.nsa_node_collection.NodeCollection.get_netx_pos" title="Permalink to this definition"></a></dt>
+<dd><p>Get graph positions.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="yawning_titan.envs.specific.core.nsa_node_collection.html" class="btn btn-neutral float-left" title="yawning_titan.envs.specific.core.nsa_node_collection" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.envs.specific.five_node_def.html" class="btn btn-neutral float-right" title="yawning_titan.envs.specific.five_node_def" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

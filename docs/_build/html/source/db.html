@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yawning-Titan DB &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorials" href="tutorials.html" />
+    <link rel="prev" title="Create a Network" href="create_a_network.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Yawning-Titan DB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-yawningtitandb-class">The YawningTitanDB class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-yawningtitanquery-class">The YawningTitanQuery class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-entrynodecompatibilityquery-class">The EntryNodeCompatibilityQuery class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-highvaluenodecompatibilityquery-class">The HighValueNodeCompatibilityQuery class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-networknodecompatibilityquery-class">The NetworkNodeCompatibilityQuery class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-networkcompatibilityquery-class">The NetworkCompatibilityQuery class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-networkdb-and-networkschema-classes">The NetworkDB and NetworkSchema classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-gamemodedb-and-gamemodeschema-classes">The GameModeDB and GameModeSchema classes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Yawning-Titan DB</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="yawning-titan-db">
+<h1>Yawning-Titan DB<a class="headerlink" href="#yawning-titan-db" title="Permalink to this heading"></a></h1>
+<p>YAWNING-TITAN (<strong>YT</strong>) comes packages with a lightweight document database (See: <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/">TinyDB</a>).</p>
+<section id="the-yawningtitandb-class">
+<h2>The YawningTitanDB class<a class="headerlink" href="#the-yawningtitandb-class" title="Permalink to this heading"></a></h2>
+<p>A base class, <code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDB</span></code>, exists that
+provides extended TinyDB functions <code class="xref py py-func docutils literal notranslate"><span class="pre">__init__()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">insert()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">update()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">upsert()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">all()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">get()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">search()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">count()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">remove()</span></code>, and
+<code class="xref py py-func docutils literal notranslate"><span class="pre">close()</span></code>, methods. All methods provided have either direct
+calls to their their <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.database.TinyDB" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TinyDB</span></code></a> counterpart, or some custom <strong>YT</strong> login before the call. Methods have been defined as
+abstract methods to force sub-classes of <code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDB</span></code> to
+implement them. If functionality does not change, the implementations of the abstract methods can simple
+call <code class="docutils literal notranslate"><span class="pre">super()</span></code> to trigger the default logic.</p>
+<p>When <code class="xref py py-func docutils literal notranslate"><span class="pre">YawningTitanDB.__init__</span></code> is called,
+the <code class="docutils literal notranslate"><span class="pre">name</span></code> passed to it is used to generate a filepath using <a class="reference internal" href="_autosummary/yawning_titan.DB_DIR.html#yawning_titan.DB_DIR" title="yawning_titan.DB_DIR"><code class="xref py py-attr docutils literal notranslate"><span class="pre">yawning_titan.DB_DIR</span></code></a>. For example, calling
+<code class="docutils literal notranslate"><span class="pre">YawningTitanDB(&quot;demo&quot;)</span></code> would generate a <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.database.TinyDB" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TinyDB</span></code></a> db <cite>.json</cite> file at:</p>
+<ul class="simple">
+<li><p><strong>Linux</strong> - <cite>~/.local/share/yawning_titan/db/demo.json</cite></p></li>
+<li><p><strong>Windows</strong> - <cite>~/AppData/yawning_titan/yawning_titan/db/demo.json</cite></p></li>
+<li><p><strong>MacOs</strong> - <cite>~/Library/Application Support/yawning_titan/db/demo.json</cite></p></li>
+</ul>
+</section>
+<section id="the-yawningtitanquery-class">
+<h2>The YawningTitanQuery class<a class="headerlink" href="#the-yawningtitanquery-class" title="Permalink to this heading"></a></h2>
+<p>The <a class="reference internal" href="_autosummary/yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a> extends <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.queries.Query" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.queries.Query</span></code></a> by implementing
+<a class="reference internal" href="_autosummary/yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery.len_eq" title="yawning_titan.db.query.YawningTitanQuery.len_eq"><code class="xref py py-func docutils literal notranslate"><span class="pre">len_eq()</span></code></a>, <a class="reference internal" href="_autosummary/yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery.len_gt" title="yawning_titan.db.query.YawningTitanQuery.len_gt"><code class="xref py py-func docutils literal notranslate"><span class="pre">len_gt()</span></code></a>,
+<a class="reference internal" href="_autosummary/yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery.len_ge" title="yawning_titan.db.query.YawningTitanQuery.len_ge"><code class="xref py py-func docutils literal notranslate"><span class="pre">len_ge()</span></code></a>, <a class="reference internal" href="_autosummary/yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery.len_lt" title="yawning_titan.db.query.YawningTitanQuery.len_lt"><code class="xref py py-func docutils literal notranslate"><span class="pre">len_lt()</span></code></a>,
+and <a class="reference internal" href="_autosummary/yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery.len_le" title="yawning_titan.db.query.YawningTitanQuery.len_le"><code class="xref py py-func docutils literal notranslate"><span class="pre">len_le()</span></code></a> functions to test the length of a field.</p>
+</section>
+<section id="the-entrynodecompatibilityquery-class">
+<h2>The EntryNodeCompatibilityQuery class<a class="headerlink" href="#the-entrynodecompatibilityquery-class" title="Permalink to this heading"></a></h2>
+<p>The <a class="reference internal" href="_autosummary/yawning_titan.db.compatibility_query.EntryNodeCompatibilityQuery.html#yawning_titan.db.compatibility_query.EntryNodeCompatibilityQuery" title="yawning_titan.db.compatibility_query.EntryNodeCompatibilityQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">EntryNodeCompatibilityQuery</span></code></a> extends <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.queries.Query" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.queries.Query</span></code></a> by implementing
+<a class="reference internal" href="_autosummary/yawning_titan.db.compatibility_query.EntryNodeCompatibilityQuery.html#yawning_titan.db.compatibility_query.EntryNodeCompatibilityQuery.works_with" title="yawning_titan.db.compatibility_query.EntryNodeCompatibilityQuery.works_with"><code class="xref py py-func docutils literal notranslate"><span class="pre">works_with()</span></code></a>. This function allows for the game mode to
+be checked against a provided <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> or an integer number of entry nodes. Game modes where the number of entry nodes is unrestricted
+or the provided value falls within the restricted range will be returned.</p>
+</section>
+<section id="the-highvaluenodecompatibilityquery-class">
+<h2>The HighValueNodeCompatibilityQuery class<a class="headerlink" href="#the-highvaluenodecompatibilityquery-class" title="Permalink to this heading"></a></h2>
+<p>The <a class="reference internal" href="_autosummary/yawning_titan.db.compatibility_query.HighValueNodeCompatibilityQuery.html#yawning_titan.db.compatibility_query.HighValueNodeCompatibilityQuery" title="yawning_titan.db.compatibility_query.HighValueNodeCompatibilityQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">HighValueNodeCompatibilityQuery</span></code></a> extends <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.queries.Query" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.queries.Query</span></code></a> by implementing
+<a class="reference internal" href="_autosummary/yawning_titan.db.compatibility_query.HighValueNodeCompatibilityQuery.html#yawning_titan.db.compatibility_query.HighValueNodeCompatibilityQuery.works_with" title="yawning_titan.db.compatibility_query.HighValueNodeCompatibilityQuery.works_with"><code class="xref py py-func docutils literal notranslate"><span class="pre">works_with()</span></code></a>. This function allows for the game mode to
+be checked against a provided <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> or an integer number of high value nodes. Game modes where the number of high value nodes is unrestricted
+or the provided value falls within the restricted range will be returned.</p>
+</section>
+<section id="the-networknodecompatibilityquery-class">
+<h2>The NetworkNodeCompatibilityQuery class<a class="headerlink" href="#the-networknodecompatibilityquery-class" title="Permalink to this heading"></a></h2>
+<p>The <a class="reference internal" href="_autosummary/yawning_titan.db.compatibility_query.NetworkNodeCompatibilityQuery.html#yawning_titan.db.compatibility_query.NetworkNodeCompatibilityQuery" title="yawning_titan.db.compatibility_query.NetworkNodeCompatibilityQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkNodeCompatibilityQuery</span></code></a> extends <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.queries.Query" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.queries.Query</span></code></a> by implementing
+<a class="reference internal" href="_autosummary/yawning_titan.db.compatibility_query.NetworkNodeCompatibilityQuery.html#yawning_titan.db.compatibility_query.NetworkNodeCompatibilityQuery.works_with" title="yawning_titan.db.compatibility_query.NetworkNodeCompatibilityQuery.works_with"><code class="xref py py-func docutils literal notranslate"><span class="pre">works_with()</span></code></a>. This function allows for the game mode to
+be checked against a provided <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> or an integer number of total network nodes. Game modes where the number of total network nodes is unrestricted
+or the provided value falls within the restricted range will be returned.</p>
+</section>
+<section id="the-networkcompatibilityquery-class">
+<h2>The NetworkCompatibilityQuery class<a class="headerlink" href="#the-networkcompatibilityquery-class" title="Permalink to this heading"></a></h2>
+<p>The <a class="reference internal" href="_autosummary/yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.html#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery" title="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkCompatibilityQuery</span></code></a> extends <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.queries.Query" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.queries.Query</span></code></a> by implementing
+<a class="reference internal" href="_autosummary/yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.html#yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.compatible_with" title="yawning_titan.db.compatibility_query.NetworkCompatibilityQuery.compatible_with"><code class="xref py py-func docutils literal notranslate"><span class="pre">compatible_with()</span></code></a>. This function allows for the game mode to
+be checked against a provided network. This query will check all restricted network attributes are compatible with the properties of the
+provided <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>.</p>
+</section>
+<section id="the-networkdb-and-networkschema-classes">
+<span id="network-networks-network-db-schema-classes"></span><h2>The NetworkDB and NetworkSchema classes<a class="headerlink" href="#the-networkdb-and-networkschema-classes" title="Permalink to this heading"></a></h2>
+<p>The <a class="reference internal" href="_autosummary/yawning_titan.networks.network_db.NetworkDB.html#yawning_titan.networks.network_db.NetworkDB" title="yawning_titan.networks.network_db.NetworkDB"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkDB</span></code></a> class, used for inserting, querying, updating, and deleting
+instances of <a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>, relies upon
+<code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDB</span></code> at
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">NetworkDB._db</span></code>. It wraps the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDB</span></code> functions,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">insert()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">update()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">upsert()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">all()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">get()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">search()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">count()</span></code>,
+<code class="xref py py-func docutils literal notranslate"><span class="pre">remove()</span></code>, with the return types overridden to return
+<a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a>.
+The <code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkDB</span></code> class writes to a <cite>network.json</cite> file at:</p>
+<ul class="simple">
+<li><p><strong>Linux</strong> - <cite>~/.local/share/yawning_titan/db/network.json</cite></p></li>
+<li><p><strong>Windows</strong> - <cite>~/AppData/yawning_titan/yawning_titan/db/network.json</cite></p></li>
+<li><p><strong>MacOs</strong> - <cite>~/Library/Application Support/yawning_titan/db/network.json</cite></p></li>
+</ul>
+<p>First, we must instantiate the <code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkDB</span></code> with:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">yawning_titan.networks.network_db</span> <span class="kn">import</span> <span class="n">NetworkDB</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">NetworkDB</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Next, we have the option to query the db with either the standard <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.queries.Query" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.queries.Query</span></code></a> class, the extended
+<a class="reference internal" href="_autosummary/yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a> class, or by using the network config specific
+<code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkSchema</span></code> class. Here we will use <a class="reference internal" href="_autosummary/yawning_titan.networks.network_db.NetworkSchema.html#yawning_titan.networks.network_db.NetworkSchema" title="yawning_titan.networks.network_db.NetworkSchema"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkSchema</span></code></a>.
+The <a class="reference internal" href="_autosummary/yawning_titan.networks.network_db.NetworkSchema.html#yawning_titan.networks.network_db.NetworkSchema" title="yawning_titan.networks.network_db.NetworkSchema"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkSchema</span></code></a> class has an attribute mapped to each attribute of
+<a class="reference internal" href="_autosummary/yawning_titan.networks.network.Network.html#yawning_titan.networks.network.Network" title="yawning_titan.networks.network.Network"><code class="xref py py-class docutils literal notranslate"><span class="pre">Network</span></code></a> as an instance of <a class="reference internal" href="_autosummary/yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a>.
+This gives direct access to the specific field within the <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.database.TinyDB" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TinyDB</span></code></a> db file.</p>
+<p>The following code blocks demonstrate how to use combinations of the <a class="reference internal" href="_autosummary/yawning_titan.networks.network_db.NetworkSchema.html#yawning_titan.networks.network_db.NetworkSchema" title="yawning_titan.networks.network_db.NetworkSchema"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkSchema</span></code></a>
+class to build a <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.queries.Query" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code></a> chain to query the <a class="reference internal" href="_autosummary/yawning_titan.networks.network_db.NetworkDB.html#yawning_titan.networks.network_db.NetworkDB" title="yawning_titan.networks.network_db.NetworkDB"><code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkDB</span></code></a>.</p>
+<p><strong>Search for all network configs that have “1” as an entry node:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">NetworkSchema</span><span class="o">.</span><span class="n">ENTRY_NODES</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="s2">&quot;1&quot;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p><strong>Search for all network configs that have “1” as both an entry node and a high value node:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+    <span class="n">NetworkSchema</span><span class="o">.</span><span class="n">ENTRY_NODES</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="s2">&quot;1&quot;</span><span class="p">]))</span>
+    <span class="ow">and</span> <span class="p">(</span><span class="n">NetworkSchema</span><span class="o">.</span><span class="n">HIGH_VALUE_NODES</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="s2">&quot;1&quot;</span><span class="p">])</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Search for all network configs that have at least 3 high value nodes</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">NetworkSchema</span><span class="o">.</span><span class="n">ENTRY_NODES</span><span class="o">.</span><span class="n">len_ge</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">NetworkDB</span></code> comes pre-packaged with default network functions:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_autosummary/yawning_titan.networks.network_db.default_18_node_network.html#yawning_titan.networks.network_db.default_18_node_network" title="yawning_titan.networks.network_db.default_18_node_network"><code class="xref py py-func docutils literal notranslate"><span class="pre">default_18_node_network()</span></code></a></p></li>
+<li><p><a class="reference internal" href="_autosummary/yawning_titan.networks.network_db.dcbo_base_network.html#yawning_titan.networks.network_db.dcbo_base_network" title="yawning_titan.networks.network_db.dcbo_base_network"><code class="xref py py-func docutils literal notranslate"><span class="pre">dcbo_base_network()</span></code></a></p></li>
+</ul>
+<p>There networks are stored in a ‘backup’ <cite>yawning_titan/networks/_package_data/network.json</cite> db file.
+If the default networks become corrupted, they can be reset using the
+<a class="reference internal" href="_autosummary/yawning_titan.networks.network_db.NetworkDB.html#yawning_titan.networks.network_db.NetworkDB.reset_default_networks_in_db" title="yawning_titan.networks.network_db.NetworkDB.reset_default_networks_in_db"><code class="xref py py-func docutils literal notranslate"><span class="pre">reset_default_networks_in_db()</span></code></a> function.</p>
+<p>As a last resort, the entire db can be rebuilt using the <a class="reference internal" href="_autosummary/yawning_titan.networks.network_db.NetworkDB.html#yawning_titan.networks.network_db.NetworkDB.rebuild_db" title="yawning_titan.networks.network_db.NetworkDB.rebuild_db"><code class="xref py py-func docutils literal notranslate"><span class="pre">rebuild_db()</span></code></a>
+function.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function completely rebuilds the database. Any custom networks
+saved in the db will be lost.</p>
+</div>
+</section>
+<section id="the-gamemodedb-and-gamemodeschema-classes">
+<h2>The GameModeDB and GameModeSchema classes<a class="headerlink" href="#the-gamemodedb-and-gamemodeschema-classes" title="Permalink to this heading"></a></h2>
+<p>The <a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB" title="yawning_titan.game_modes.game_mode_db.GameModeDB"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameModeDB</span></code></a> class, used for inserting, querying, updating, and deleting
+instances of <a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>, relies upon
+<code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDB</span></code> at
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">GameModeDB._db</span></code>. It wraps the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanDB</span></code> functions,
+<a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.insert" title="yawning_titan.game_modes.game_mode_db.GameModeDB.insert"><code class="xref py py-func docutils literal notranslate"><span class="pre">insert()</span></code></a>,
+<a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.update" title="yawning_titan.game_modes.game_mode_db.GameModeDB.update"><code class="xref py py-func docutils literal notranslate"><span class="pre">update()</span></code></a>,
+<a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.upsert" title="yawning_titan.game_modes.game_mode_db.GameModeDB.upsert"><code class="xref py py-func docutils literal notranslate"><span class="pre">upsert()</span></code></a>,
+<a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.all" title="yawning_titan.game_modes.game_mode_db.GameModeDB.all"><code class="xref py py-func docutils literal notranslate"><span class="pre">all()</span></code></a>,
+<a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.get" title="yawning_titan.game_modes.game_mode_db.GameModeDB.get"><code class="xref py py-func docutils literal notranslate"><span class="pre">get()</span></code></a>,
+<a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.search" title="yawning_titan.game_modes.game_mode_db.GameModeDB.search"><code class="xref py py-func docutils literal notranslate"><span class="pre">search()</span></code></a>,
+<a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.count" title="yawning_titan.game_modes.game_mode_db.GameModeDB.count"><code class="xref py py-func docutils literal notranslate"><span class="pre">count()</span></code></a>,
+<a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.remove" title="yawning_titan.game_modes.game_mode_db.GameModeDB.remove"><code class="xref py py-func docutils literal notranslate"><span class="pre">remove()</span></code></a>, with the return types overridden to return
+<a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a>.
+The <a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB" title="yawning_titan.game_modes.game_mode_db.GameModeDB"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameModeDB</span></code></a> class writes to a <cite>game_modes.json</cite> file at:</p>
+<ul class="simple">
+<li><p><strong>Linux</strong> - <cite>~/.local/share/yawning_titan/db/game_modes.json</cite></p></li>
+<li><p><strong>Windows</strong> - <cite>~/AppData/yawning_titan/yawning_titan/db/game_modes.json</cite></p></li>
+<li><p><strong>MacOs</strong> - <cite>~/Library/Application Support/yawning_titan/db/game_modes.json</cite></p></li>
+</ul>
+<p>First, we must instantiate the <code class="xref py py-class docutils literal notranslate"><span class="pre">GameModeDB</span></code> with:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">yawning_titan.game_modes.game_mode_db</span> <span class="kn">import</span> <span class="n">GameModeDB</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">GameModeDB</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Next, we have the option to query the db with either the standard <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.queries.Query" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.queries.Query</span></code></a> class, the extended
+<a class="reference internal" href="_autosummary/yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a> class, or by using the game mode specific
+<a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeSchema.html#yawning_titan.game_modes.game_mode_db.GameModeSchema" title="yawning_titan.game_modes.game_mode_db.GameModeSchema"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameModeSchema</span></code></a> class. Here we will use <code class="xref py py-class docutils literal notranslate"><span class="pre">GameModeSchema</span></code>.
+This class has an attribute mapped to each attribute of the attributes of
+<a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode.GameMode.html#yawning_titan.game_modes.game_mode.GameMode" title="yawning_titan.game_modes.game_mode.GameMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameMode</span></code></a> (including all nested descendants) as an instance of <a class="reference internal" href="_autosummary/yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a>.
+This gives direct access to the specific field within the <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.database.TinyDB" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TinyDB</span></code></a> db file.</p>
+<p>The <a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeSchema.html#yawning_titan.game_modes.game_mode_db.GameModeSchema" title="yawning_titan.game_modes.game_mode_db.GameModeSchema"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameModeSchema</span></code></a> also exposes features that allow for</p>
+<p>The following code blocks demonstrate how to use combinations of the <a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeSchema.html#yawning_titan.game_modes.game_mode_db.GameModeSchema" title="yawning_titan.game_modes.game_mode_db.GameModeSchema"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameModeSchema</span></code></a>
+class to build a <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.queries.Query" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Query</span></code></a> chain to query the <a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB" title="yawning_titan.game_modes.game_mode_db.GameModeDB"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameModeDB</span></code></a>.</p>
+<p><strong>Search for all game modes where the red agent ignores defences:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">GameModeSchema</span><span class="o">.</span><span class="n">CONFIGURATION</span><span class="o">.</span><span class="n">RED</span><span class="o">.</span><span class="n">AGENT_ATTACK</span><span class="o">.</span><span class="n">IGNORES_DEFENCES</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="kc">True</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p><strong>Search for all game modes where the red agent ignores defences and where the red agents attack alwys succeeds:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+    <span class="n">GameModeSchema</span><span class="o">.</span><span class="n">CONFIGURATION</span><span class="o">.</span><span class="n">RED</span><span class="o">.</span><span class="n">AGENT_ATTACK</span><span class="o">.</span><span class="n">IGNORES_DEFENCES</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="kc">True</span><span class="p">])</span>
+    <span class="ow">and</span> <span class="p">(</span><span class="n">GameModeSchema</span><span class="o">.</span><span class="n">CONFIGURATION</span><span class="o">.</span><span class="n">RED</span><span class="o">.</span><span class="n">AGENT_ATTACK</span><span class="o">.</span><span class="n">ALWAYS_SUCCEEDS</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="kc">True</span><span class="p">])</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Search for all game modes where the blue agent uses at least 3 deceptive nodes:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">GameModeSchema</span><span class="o">.</span><span class="n">BLUE</span><span class="o">.</span><span class="n">ACTION_SET</span><span class="o">.</span><span class="n">DECEPTIVE_NODES</span><span class="o">.</span><span class="n">MAX_NUMBER</span><span class="o">.</span><span class="n">ge</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB" title="yawning_titan.game_modes.game_mode_db.GameModeDB"><code class="xref py py-class docutils literal notranslate"><span class="pre">GameModeDB</span></code></a> comes pre-packaged with default game mode functions:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.default_game_mode.html#yawning_titan.game_modes.game_mode_db.default_game_mode" title="yawning_titan.game_modes.game_mode_db.default_game_mode"><code class="xref py py-func docutils literal notranslate"><span class="pre">default_game_mode()</span></code></a></p></li>
+<li><p><a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.dcbo_game_mode.html#yawning_titan.game_modes.game_mode_db.dcbo_game_mode" title="yawning_titan.game_modes.game_mode_db.dcbo_game_mode"><code class="xref py py-func docutils literal notranslate"><span class="pre">dcbo_game_mode()</span></code></a></p></li>
+</ul>
+<p>The game modes are stored in a ‘backup’ <cite>yawning_titan/game_modes/_package_data/game_modes.json</cite> db file.
+If the default networks become corrupted, they can be reset using the
+<a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.reset_default_game_modes_in_db" title="yawning_titan.game_modes.game_mode_db.GameModeDB.reset_default_game_modes_in_db"><code class="xref py py-func docutils literal notranslate"><span class="pre">reset_default_game_modes_in_db()</span></code></a> function.</p>
+<p>As a last resort, the entire db can be rebuilt using the <a class="reference internal" href="_autosummary/yawning_titan.game_modes.game_mode_db.GameModeDB.html#yawning_titan.game_modes.game_mode_db.GameModeDB.rebuild_db" title="yawning_titan.game_modes.game_mode_db.GameModeDB.rebuild_db"><code class="xref py py-func docutils literal notranslate"><span class="pre">rebuild_db()</span></code></a>
+function.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This function completely rebuilds the database. Any custom game modes
+saved in the db will be lost.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="create_a_network.html" class="btn btn-neutral float-left" title="Create a Network" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorials.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+tests.conftest.multi\_tier\_test\_group
+=======================================
+
+.. currentmodule:: tests.conftest
+
+.. autofunction:: multi_tier_test_group

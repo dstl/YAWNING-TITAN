@@ -1,0 +1,33 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.db.compatibility\_query.NetworkNodeCompatibilityQuery
+====================================================================
+
+.. currentmodule:: yawning_titan.db.compatibility_query
+
+.. autoclass:: NetworkNodeCompatibilityQuery
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~NetworkNodeCompatibilityQuery.all
+      ~NetworkNodeCompatibilityQuery.any
+      ~NetworkNodeCompatibilityQuery.exists
+      ~NetworkNodeCompatibilityQuery.fragment
+      ~NetworkNodeCompatibilityQuery.is_cacheable
+      ~NetworkNodeCompatibilityQuery.map
+      ~NetworkNodeCompatibilityQuery.matches
+      ~NetworkNodeCompatibilityQuery.noop
+      ~NetworkNodeCompatibilityQuery.one_of
+      ~NetworkNodeCompatibilityQuery.search
+      ~NetworkNodeCompatibilityQuery.test
+      ~NetworkNodeCompatibilityQuery.works_with

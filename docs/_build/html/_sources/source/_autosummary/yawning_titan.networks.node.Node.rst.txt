@@ -1,0 +1,40 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.networks.node.Node
+=================================
+
+.. currentmodule:: yawning_titan.networks.node
+
+.. autoclass:: Node
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~Node.create_from_db
+      ~Node.reset_vulnerability
+      ~Node.to_dict
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~Node.entry_node
+      ~Node.high_value_node
+      ~Node.node_position
+      ~Node.uuid
+      ~Node.vulnerability
+      ~Node.x_pos
+      ~Node.y_pos

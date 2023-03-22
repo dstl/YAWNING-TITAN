@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.envs.generic.core.blue_interface &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/_autosummary/yawning_titan.html">Yawning-Titan API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/_autosummary/tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../source/dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">yawning_titan.envs.generic.core.blue_interface</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <h1>Source code for yawning_titan.envs.generic.core.blue_interface</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.core.blue_action_set</span> <span class="kn">import</span> <span class="n">BlueActionSet</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.envs.generic.core.network_interface</span> <span class="kn">import</span> <span class="n">NetworkInterface</span>
+<span class="kn">from</span> <span class="nn">yawning_titan.networks.node</span> <span class="kn">import</span> <span class="n">Node</span>
+
+
+<div class="viewcode-block" id="BlueInterface"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.blue_interface.BlueInterface.html#yawning_titan.envs.generic.core.blue_interface.BlueInterface">[docs]</a><span class="k">class</span> <span class="nc">BlueInterface</span><span class="p">(</span><span class="n">BlueActionSet</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The interface used by the Blue Agents to act within the environment.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BlueInterface.__init__"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.blue_interface.html#yawning_titan.envs.generic.core.blue_interface.BlueInterface.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network_interface</span><span class="p">:</span> <span class="n">NetworkInterface</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialise the blue interface.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            network_interface: Object from the NetworkInterface class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">network_interface</span><span class="p">)</span>
+
+        <span class="c1"># standard actions (apply to a single node)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">action_number</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deceptive_actions</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># all of the actions that blue can do</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">reduce_vulnerability</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="c1"># Checks if the action is enabled in the settings file</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_dict</span><span class="p">[</span><span class="n">action_number</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reduce_node_vulnerability</span>
+            <span class="n">action_number</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">restore_node</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_dict</span><span class="p">[</span><span class="n">action_number</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restore_node</span>
+            <span class="n">action_number</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">make_node_safe</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_dict</span><span class="p">[</span><span class="n">action_number</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_safe_node</span>
+            <span class="n">action_number</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">isolate_node</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_dict</span><span class="p">[</span><span class="n">action_number</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">isolate_node</span>
+            <span class="n">action_number</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">reconnect_node</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action_dict</span><span class="p">[</span><span class="n">action_number</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reconnect_node</span>
+            <span class="n">action_number</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># deceptive actions -&gt; since the number of edges is not equal to the number of nodes this has to be done</span>
+        <span class="c1"># separately</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">deceptive_nodes</span><span class="o">.</span><span class="n">use</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">deceptive_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">base_graph</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
+
+        <span class="c1"># global actions (don&#39;t apply to a single node)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_action_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">global_action_number</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">scan</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="c1"># scans all of the nodes in the network</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">global_action_dict</span><span class="p">[</span><span class="n">global_action_number</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_all_nodes</span>
+            <span class="n">global_action_number</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">game_mode</span><span class="o">.</span><span class="n">blue</span><span class="o">.</span><span class="n">action_set</span><span class="o">.</span><span class="n">do_nothing</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+            <span class="c1"># does nothing</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">global_action_dict</span><span class="p">[</span><span class="n">global_action_number</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_nothing</span>
+            <span class="n">global_action_number</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">number_of_actions</span> <span class="o">=</span> <span class="n">action_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">number_global_action</span> <span class="o">=</span> <span class="n">global_action_number</span></div>
+
+<div class="viewcode-block" id="BlueInterface.perform_action"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.blue_interface.BlueInterface.html#yawning_titan.envs.generic.core.blue_interface.BlueInterface.perform_action">[docs]</a>    <span class="k">def</span> <span class="nf">perform_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Node</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform an action within the environment.</span>
+
+<span class="sd">        Takes in an action number and then maps this to the correct action to perform. There are 3 different item_types of</span>
+<span class="sd">        actions:</span>
+<span class="sd">            - standard actions</span>
+<span class="sd">            - deceptive actions</span>
+<span class="sd">            - global actions</span>
+
+<span class="sd">        --standard actions--</span>
+<span class="sd">        Standard actions are actions that can apply to all nodes. For each standard action there are n actions (where n</span>
+<span class="sd">        is the number of nodes in the network). An example of this action would be to isolate a node. The agent has to</span>
+<span class="sd">        pick the isolate action and then the node it is being applied to.</span>
+
+<span class="sd">        --deceptive actions--</span>
+<span class="sd">        Actions relating to deceptive nodes. Since the number of deceptive actions relate to the edges not the nodes</span>
+<span class="sd">        (see deceptive nodes for more info), the deceptive actions cannot come under the standard actions. An example</span>
+<span class="sd">        would be to place a deceptive node. The deceptive nodes can only be placed on an edge so the agent has to pick</span>
+<span class="sd">        the &quot;place deceptive node&quot; action and then the edge to place it on.</span>
+
+<span class="sd">        --global actions--</span>
+<span class="sd">        Global actions are actions where the agent does not need to pick any sub action other than the action. For</span>
+<span class="sd">        example an action that applies to all nodes so the agent does not need to pick a specific node to apply the</span>
+<span class="sd">        action to. &quot;Do nothing&quot; is an example of a global action as there is no secondary choice to be made.</span>
+
+
+<span class="sd">        The function also maps any actions outside of the action space to the &quot;do nothing&quot; action.</span>
+
+<span class="sd">        Order of operations:</span>
+<span class="sd">        1- check if the action is inside the action space --&gt; perform &quot;do nothing&quot;</span>
+<span class="sd">        2- check if the action is a deceptive action --&gt; perform action</span>
+<span class="sd">        3- check if the action is a global action --&gt; perform action</span>
+<span class="sd">        4- perform the standard action</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            action: the action to perform</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The action that has been taken</span>
+<span class="sd">            The node the action was performed on</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">action</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_number_of_actions</span><span class="p">():</span>
+            <span class="n">blue_action</span><span class="p">,</span> <span class="n">blue_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_nothing</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">deceptive_actions</span><span class="p">:</span>
+            <span class="c1"># use a deceptive action</span>
+            <span class="n">blue_action</span><span class="p">,</span> <span class="n">blue_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_deceptive_node</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+        <span class="c1"># global actions</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">action</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">deceptive_actions</span>
+            <span class="c1"># global actions</span>
+            <span class="k">if</span> <span class="n">action</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_global_action</span><span class="p">:</span>
+                <span class="n">blue_action</span><span class="p">,</span> <span class="n">blue_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_action_dict</span><span class="p">[</span><span class="n">action</span><span class="p">]()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># standard actions</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="n">action</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_global_action</span>
+                <span class="n">action_node_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">action</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_actions</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">action_node_number</span>
+                    <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+                <span class="p">):</span>
+                    <span class="n">blue_action</span><span class="p">,</span> <span class="n">blue_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_nothing</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">current_graph</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">()</span>
+                    <span class="n">action_node</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">nodes</span><span class="p">)[</span><span class="n">action_node_number</span><span class="p">]</span>
+                    <span class="n">action_taken</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">action</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_actions</span><span class="p">)</span>
+
+                    <span class="n">blue_action</span><span class="p">,</span> <span class="n">blue_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_dict</span><span class="p">[</span><span class="n">action_taken</span><span class="p">](</span><span class="n">action_node</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">blue_action</span><span class="p">,</span> <span class="n">blue_node</span></div>
+
+<div class="viewcode-block" id="BlueInterface.get_number_of_actions"><a class="viewcode-back" href="../../../../../source/_autosummary/yawning_titan.envs.generic.core.blue_interface.BlueInterface.html#yawning_titan.envs.generic.core.blue_interface.BlueInterface.get_number_of_actions">[docs]</a>    <span class="k">def</span> <span class="nf">get_number_of_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the number of actions that this blue agent can perform.</span>
+
+<span class="sd">        There are three item_types of actions:</span>
+<span class="sd">            - global actions (apply to all nodes) - need 1 action space</span>
+<span class="sd">            - deceptive actions (Add new nodes to environment)</span>
+<span class="sd">            - standard actions (apply to a single node) - need 2 action space (action and node to perform on)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The number of actions that this agent can perform</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_actions</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">network_interface</span><span class="o">.</span><span class="n">get_total_num_nodes</span><span class="p">())</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_global_action</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">deceptive_actions</span>
+        <span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.conftest.GroupTier2
+=========================
+
+.. currentmodule:: tests.conftest
+
+.. autoclass:: GroupTier2
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+
+      ~GroupTier2.get_config_elements
+      ~GroupTier2.get_non_config_elements
+      ~GroupTier2.set_from_dict
+      ~GroupTier2.set_from_yaml
+      ~GroupTier2.stringify
+      ~GroupTier2.to_dict
+      ~GroupTier2.to_legacy_dict
+      ~GroupTier2.to_yaml
+      ~GroupTier2.validate
+      ~GroupTier2.validate_elements
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~GroupTier2.config_groups
+      ~GroupTier2.config_items

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.envs.generic.core.red_interface.RedInterface &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.envs.generic.core.reward_functions" href="yawning_titan.envs.generic.core.reward_functions.html" />
+    <link rel="prev" title="yawning_titan.envs.generic.core.red_interface" href="yawning_titan.envs.generic.core.red_interface.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="yawning_titan.envs.generic.html">yawning_titan.envs.generic</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="yawning_titan.envs.generic.core.html">yawning_titan.envs.generic.core</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.envs.generic.generic_env.html">yawning_titan.envs.generic.generic_env</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.envs.generic.helpers.html">yawning_titan.envs.generic.helpers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.envs.generic.wrappers.html">yawning_titan.envs.generic.wrappers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.envs.specific.html">yawning_titan.envs.specific</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.html">yawning_titan</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.generic.html">yawning_titan.envs.generic</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.generic.core.html">yawning_titan.envs.generic.core</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.envs.generic.core.red_interface.html">yawning_titan.envs.generic.core.red_interface</a></li>
+      <li class="breadcrumb-item active">yawning_titan.envs.generic.core.red_interface.RedInterface</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="yawning-titan-envs-generic-core-red-interface-redinterface">
+<h1>yawning_titan.envs.generic.core.red_interface.RedInterface<a class="headerlink" href="#yawning-titan-envs-generic-core-red-interface-redinterface" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.envs.generic.core.red_interface.</span></span><span class="sig-name descname"><span class="pre">RedInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network_interface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/red_interface.html#RedInterface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="yawning_titan.envs.generic.core.red_action_set.RedActionSet.html#yawning_titan.envs.generic.core.red_action_set.RedActionSet" title="yawning_titan.envs.generic.core.red_action_set.RedActionSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">RedActionSet</span></code></a></p>
+<p>The interface used by the Red Agents to act within the environment.</p>
+<p>Initialise the red interface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>network_interface</strong> – Object from the NetworkInterface class</p>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.basic_attack" title="yawning_titan.envs.generic.core.red_interface.RedInterface.basic_attack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">basic_attack</span></code></a></p></td>
+<td><p>Execute a basic attack.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.choose_action" title="yawning_titan.envs.generic.core.red_interface.RedInterface.choose_action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choose_action</span></code></a></p></td>
+<td><p>Choose an action to perform.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.choose_target_node" title="yawning_titan.envs.generic.core.red_interface.RedInterface.choose_target_node"><code class="xref py py-obj docutils literal notranslate"><span class="pre">choose_target_node</span></code></a></p></td>
+<td><p>Choose a target node.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.do_nothing" title="yawning_titan.envs.generic.core.red_interface.RedInterface.do_nothing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">do_nothing</span></code></a></p></td>
+<td><p>No-op.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.get_amount_zero_day" title="yawning_titan.envs.generic.core.red_interface.RedInterface.get_amount_zero_day"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_amount_zero_day</span></code></a></p></td>
+<td><p>Get the amount of zero day attacks that the red agent has stored up.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.increment_day" title="yawning_titan.envs.generic.core.red_interface.RedInterface.increment_day"><code class="xref py py-obj docutils literal notranslate"><span class="pre">increment_day</span></code></a></p></td>
+<td><p>Increment the day for zero day attack generation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.intrude" title="yawning_titan.envs.generic.core.red_interface.RedInterface.intrude"><code class="xref py py-obj docutils literal notranslate"><span class="pre">intrude</span></code></a></p></td>
+<td><p>Execute an attack on all nodes simultaneously.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.natural_spread" title="yawning_titan.envs.generic.core.red_interface.RedInterface.natural_spread"><code class="xref py py-obj docutils literal notranslate"><span class="pre">natural_spread</span></code></a></p></td>
+<td><p>Naturally spread throughout the network.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.perform_action" title="yawning_titan.envs.generic.core.red_interface.RedInterface.perform_action"><code class="xref py py-obj docutils literal notranslate"><span class="pre">perform_action</span></code></a></p></td>
+<td><p>Chooses and then performs an action.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.random_move" title="yawning_titan.envs.generic.core.red_interface.RedInterface.random_move"><code class="xref py py-obj docutils literal notranslate"><span class="pre">random_move</span></code></a></p></td>
+<td><p>Select a random connected compromised node to move to.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.reset" title="yawning_titan.envs.generic.core.red_interface.RedInterface.reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset</span></code></a></p></td>
+<td><p>Reset red agent episode dependent variables to initial value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.spread" title="yawning_titan.envs.generic.core.red_interface.RedInterface.spread"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spread</span></code></a></p></td>
+<td><p>Execute a spread attack.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.zero_day_attack" title="yawning_titan.envs.generic.core.red_interface.RedInterface.zero_day_attack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zero_day_attack</span></code></a></p></td>
+<td><p>Execute a zero-day attack if available.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.action_probabilities" title="yawning_titan.envs.generic.core.red_interface.RedInterface.action_probabilities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_probabilities</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.action_set" title="yawning_titan.envs.generic.core.red_interface.RedInterface.action_set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">action_set</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.node_set" title="yawning_titan.envs.generic.core.red_interface.RedInterface.node_set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">node_set</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.perform_action">
+<span class="sig-name descname"><span class="pre">perform_action</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/yawning_titan/envs/generic/core/red_interface.html#RedInterface.perform_action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.perform_action" title="Permalink to this definition"></a></dt>
+<dd><p>Chooses and then performs an action.</p>
+<p>This is called for every one of the red agents turns</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple containing the name of the action, the success status, the target, the attacking node and any natural spreading attacks</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.action_probabilities">
+<span class="sig-name descname"><span class="pre">action_probabilities</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.action_probabilities" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.action_set">
+<span class="sig-name descname"><span class="pre">action_set</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.action_set" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.basic_attack">
+<span class="sig-name descname"><span class="pre">basic_attack</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.basic_attack" title="Permalink to this definition"></a></dt>
+<dd><p>Execute a basic attack.</p>
+<p>The red agent will attempt to compromise a target node using the predefined attack method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the action taken
+If the action succeeded
+The target node
+The attacking node</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.choose_action">
+<span class="sig-name descname"><span class="pre">choose_action</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.choose_action" title="Permalink to this definition"></a></dt>
+<dd><p>Choose an action to perform.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The chosen action to perform</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.choose_target_node">
+<span class="sig-name descname"><span class="pre">choose_target_node</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.choose_target_node" title="Permalink to this definition"></a></dt>
+<dd><p>Choose a target node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The target node (False if no possible nodes to attack)
+The node attacking the target node (False if no possible nodes to attack)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.do_nothing">
+<span class="sig-name descname"><span class="pre">do_nothing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.do_nothing" title="Permalink to this definition"></a></dt>
+<dd><p>No-op.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the action
+If the move succeeded
+The target node
+The current node</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.get_amount_zero_day">
+<span class="sig-name descname"><span class="pre">get_amount_zero_day</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.get_amount_zero_day" title="Permalink to this definition"></a></dt>
+<dd><p>Get the amount of zero day attacks that the red agent has stored up.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Integer number - amount of zero day attacks</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.increment_day">
+<span class="sig-name descname"><span class="pre">increment_day</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.increment_day" title="Permalink to this definition"></a></dt>
+<dd><p>Increment the day for zero day attack generation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.intrude">
+<span class="sig-name descname"><span class="pre">intrude</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.intrude" title="Permalink to this definition"></a></dt>
+<dd><p>Execute an attack on all nodes simultaneously.</p>
+<p>The red agent will try to infect every safe node at once (regardless of connectivity).
+The chance for the red agent to compromise a node is independent to each of the other nodes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the action
+A list of success status for each node attacked
+A list of the target nodes
+A list of the attacking nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.natural_spread">
+<span class="sig-name descname"><span class="pre">natural_spread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.natural_spread" title="Permalink to this definition"></a></dt>
+<dd><p>Naturally spread throughout the network.</p>
+<p>Nodes that are connected to compromised nodes can have a different chance to become compromised.
+The settings for how likely nodes are to become compromised are in the config file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The success status of all the attacks
+The target nodes
+The attacking nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.node_set">
+<span class="sig-name descname"><span class="pre">node_set</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.node_set" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.random_move">
+<span class="sig-name descname"><span class="pre">random_move</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.random_move" title="Permalink to this definition"></a></dt>
+<dd><p>Select a random connected compromised node to move to.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the action
+If the move succeeded
+The new red location
+The old red location</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>A dictionary containing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Reset red agent episode dependent variables to initial value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.spread">
+<span class="sig-name descname"><span class="pre">spread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.spread" title="Permalink to this definition"></a></dt>
+<dd><p>Execute a spread attack.</p>
+<p>The red agent will try and spread from every infected node to every connected safe node.
+The chance to spread between two nodes is independent of any other spreading.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the action
+A list of success status for each node attacked
+A list of the target nodes
+A list of the attacking nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="yawning_titan.envs.generic.core.red_interface.RedInterface.zero_day_attack">
+<span class="sig-name descname"><span class="pre">zero_day_attack</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#yawning_titan.envs.generic.core.red_interface.RedInterface.zero_day_attack" title="Permalink to this definition"></a></dt>
+<dd><p>Execute a zero-day attack if available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The name of the action taken
+If the action succeeded
+The target node
+The attacking node</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="yawning_titan.envs.generic.core.red_interface.html" class="btn btn-neutral float-left" title="yawning_titan.envs.generic.core.red_interface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.envs.generic.core.reward_functions.html" class="btn btn-neutral float-right" title="yawning_titan.envs.generic.core.reward_functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>

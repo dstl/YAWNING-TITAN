@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tags %}
+
+{% block scripts %}
+    <script text="text/javascript">
+        $(document).ready(function(){
+            $("#about").click(function(e){
+                e.preventDefault();
+                $("#sandwich-icon").toggleClass('open');
+                $($("#sandwich-icon").data("toolbar")).toggleClass("open");
+                $(".toolbar-button").removeClass("show");
+                $("#toolbar-button-about").toggleClass("show");
+            });
+        });
+    </script>
+
+{% endblock %}
+
+{% block main %}
+<div id="center-container" class="small">
+    {% for id, el in toolbar.items %}
+        <a href="{{el.title|get_url}}" id={{el.title|to_id}} data-cy="{{el.cypressRefMenu}}"><i class="bi {{el.icon}}"></i>{{el.title}}</a>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block style %}
+<style>
+    #center-container>a,#center-container>button{
+        position: relative;
+        margin: var(--increment);
+        margin-top: calc((var(--increment)*3));
+        padding: 2px;
+        background-color: transparent;
+        color: var(--text-light);
+        font-size: 1.5rem;
+        border: 3px solid var(--text-light);
+        border-radius: .25rem;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    #center-container>a:hover,#center-container>button:hover{
+        color: var(--primary-light);
+    }
+    #center-container i{
+        display: block;
+        top: -1rem;
+        left: -1rem;
+        position: absolute;
+        background-color: var(--mid);
+        border-radius: 50%;
+        border: 3px solid var(--primary);
+        padding: var(--increment);
+        box-shadow: 0 0 0 var(--increment) var(--mid);
+    }
+</style>
+{% endblock %}

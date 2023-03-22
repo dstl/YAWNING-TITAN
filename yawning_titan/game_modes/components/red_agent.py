@@ -8,7 +8,7 @@ from yawning_titan.config.groups.core import (
     ActionLikelihoodGroup,
     UseValueGroup,
 )
-from yawning_titan.config.groups.validation import AnyNonZeroGroup, AnyUsedGroup
+from yawning_titan.config.groups.validation import AnyUsedGroup
 from yawning_titan.config.item_types.bool_item import BoolItem, BoolProperties
 from yawning_titan.config.item_types.float_item import FloatItem, FloatProperties
 from yawning_titan.config.item_types.int_item import IntItem, IntProperties
@@ -90,7 +90,7 @@ class AttackSourceGroup(ConfigGroup):
         return self.validation
 
 
-class NaturalSpreadChanceGroup(AnyNonZeroGroup):
+class NaturalSpreadChanceGroup(ConfigGroup):
     """The ConfigGroup to represent the chances of reads natural spreading to different node types."""
 
     def __init__(
@@ -99,6 +99,7 @@ class NaturalSpreadChanceGroup(AnyNonZeroGroup):
         to_connected_node: Optional[Union[int, float]] = 0,
         to_unconnected_node: Optional[Union[int, float]] = 0,
     ):
+        self.doc = doc
         self.to_connected_node = FloatItem(
             value=to_connected_node,
             doc=" If a node is connected to a compromised node what chance does it have to become compromised every turn through natural spreading.",
@@ -125,7 +126,7 @@ class NaturalSpreadChanceGroup(AnyNonZeroGroup):
             ),
             alias="chance_to_spread_to_unconnected_node",
         )
-        super().__init__(doc)
+        super().__init__()
 
 
 class TargetNodeGroup(ConfigGroup):
@@ -235,19 +236,29 @@ class RedActionSetGroup(AnyUsedGroup):
         )
 
         self.spread.use.alias = "red_uses_spread_action"
+
         self.random_infect.use.alias = "red_uses_random_infect_action"
+
         self.move.use.alias = "red_uses_move_action"
+
         self.basic_attack.use.alias = "red_uses_basic_attack_action"
+
         self.do_nothing.use.alias = "red_uses_do_nothing_action"
 
         self.spread.likelihood.alias = "spread_action_likelihood"
+
         self.random_infect.likelihood.alias = "random_infect_action_likelihood"
+
         self.move.likelihood.alias = "move_action_likelihood"
+
         self.basic_attack.likelihood.alias = "basic_attack_action_likelihood"
+
         self.do_nothing.likelihood.alias = "do_nothing_action_likelihood"
 
         self.spread.chance.alias = "chance_for_red_to_spread"
+
         self.random_infect.chance.alias = "chance_for_red_to_random_compromise"
+
         super().__init__(doc)
 
 
@@ -293,7 +304,9 @@ class RedAgentAttackGroup(ConfigGroup):
         )
 
         self.skill.use.alias = "red_uses_skill"
+
         self.skill.value.alias = "red_skill"
+
         super().__init__(doc)
 
 
@@ -320,6 +333,25 @@ class RedNaturalSpreadingGroup(ConfigGroup):
             )
         )
         super().__init__(doc)
+
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
+        super().validate()
+        if self.capable.value:
+            try:
+                elements = self.chance.get_config_elements([IntItem, FloatItem])
+                if not any(
+                    e.value > 0
+                    for e in elements.values()
+                    if type(e.value) in [int, float]
+                ):
+                    msg = (
+                        f"At least 1 of {', '.join(elements.keys())} should be above 0"
+                    )
+                    raise ConfigGroupValidationError(msg)
+            except ConfigGroupValidationError as e:
+                self.validation.add_validation(msg, e)
+        return self.validation
 
 
 class RedTargetMechanismGroup(AnyUsedGroup):

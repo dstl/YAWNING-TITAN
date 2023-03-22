@@ -17,8 +17,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 1,
-          "y_pos": 7
+          "x_pos": -120,
+          "y_pos": -200
         },
         "a467a90a-b26b-4a89-a6c5-950e29d196c8": {
           "uuid": "a467a90a-b26b-4a89-a6c5-950e29d196c8",
@@ -26,8 +26,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 3,
-          "y_pos": 6
+          "x_pos": 0,
+          "y_pos": -80
         },
         "9f6c135b-f22d-4513-bb2c-d290eb60cc9e": {
           "uuid": "9f6c135b-f22d-4513-bb2c-d290eb60cc9e",
@@ -35,8 +35,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 2,
-          "y_pos": 7
+          "x_pos": -60,
+          "y_pos": -200
         },
         "fbafbdbe-3922-43ec-b9da-f62b0ae1b2f9": {
           "uuid": "fbafbdbe-3922-43ec-b9da-f62b0ae1b2f9",
@@ -44,8 +44,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 3,
-          "y_pos": 7
+          "x_pos": 0,
+          "y_pos": -200
         },
         "240355b1-bb1d-4f8c-b59b-5ce72bf1fd6a": {
           "uuid": "240355b1-bb1d-4f8c-b59b-5ce72bf1fd6a",
@@ -53,8 +53,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 4,
-          "y_pos": 7
+          "x_pos": 60,
+          "y_pos": -200
         },
         "684c42a5-19ce-4520-933c-09cdd1060084": {
           "uuid": "684c42a5-19ce-4520-933c-09cdd1060084",
@@ -62,8 +62,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 5,
-          "y_pos": 7
+          "x_pos": 120,
+          "y_pos": -200
         },
         "f4f54864-23dc-4bb6-8e3f-2a257fcac81a": {
           "uuid": "f4f54864-23dc-4bb6-8e3f-2a257fcac81a",
@@ -71,8 +71,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 3,
-          "y_pos": 4
+          "x_pos": 0,
+          "y_pos": 0
         },
         "d9a97d82-5d35-4d87-a5e3-eb88d860ee76": {
           "uuid": "d9a97d82-5d35-4d87-a5e3-eb88d860ee76",
@@ -80,8 +80,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 1,
-          "y_pos": 4
+          "x_pos": -100,
+          "y_pos": 0
         },
         "0803dca1-0443-4bb5-b53d-9e47c6777481": {
           "uuid": "0803dca1-0443-4bb5-b53d-9e47c6777481",
@@ -89,8 +89,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 4,
-          "y_pos": 4
+          "x_pos": 100,
+          "y_pos": 0
         },
         "a9ddcf15-09ea-484d-aaa2-1040d6fb9abb": {
           "uuid": "a9ddcf15-09ea-484d-aaa2-1040d6fb9abb",
@@ -98,8 +98,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 3,
-          "y_pos": 2
+          "x_pos": 0,
+          "y_pos": 80
         },
         "4e9c6a59-5871-4af5-8a65-7fe3d9083209": {
           "uuid": "4e9c6a59-5871-4af5-8a65-7fe3d9083209",
@@ -107,8 +107,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 6,
-          "y_pos": 5
+          "x_pos": 200,
+          "y_pos": -60
         },
         "d4b490d1-1699-49b2-95e2-ae69164253ab": {
           "uuid": "d4b490d1-1699-49b2-95e2-ae69164253ab",
@@ -116,8 +116,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 6,
-          "y_pos": 4
+          "x_pos": 200,
+          "y_pos": 0
         },
         "421d4c55-3d5d-4b35-90dc-1dd6bdcc2f81": {
           "uuid": "421d4c55-3d5d-4b35-90dc-1dd6bdcc2f81",
@@ -125,8 +125,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 6,
-          "y_pos": 3
+          "x_pos": 200,
+          "y_pos": 60
         },
         "0f6b5c11-ac0b-4e29-9385-d749a213bbf4": {
           "uuid": "0f6b5c11-ac0b-4e29-9385-d749a213bbf4",
@@ -134,8 +134,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 1,
-          "y_pos": 1
+          "x_pos": -120,
+          "y_pos": 200
         },
         "ee655347-9c43-4d77-baf7-d35b9457331d": {
           "uuid": "ee655347-9c43-4d77-baf7-d35b9457331d",
@@ -143,8 +143,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 2,
-          "y_pos": 1
+          "x_pos": -60,
+          "y_pos": 200
         },
         "e4ce7d15-c081-46ab-945d-792ea16d5a60": {
           "uuid": "e4ce7d15-c081-46ab-945d-792ea16d5a60",
@@ -152,8 +152,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 3,
-          "y_pos": 1
+          "x_pos": 0,
+          "y_pos": 200
         },
         "caa1a3b2-2f59-4c8c-bd75-c5fa2ffb1fa8": {
           "uuid": "caa1a3b2-2f59-4c8c-bd75-c5fa2ffb1fa8",
@@ -161,8 +161,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 4,
-          "y_pos": 1
+          "x_pos": 60,
+          "y_pos": 200
         },
         "0994dfe6-03aa-4774-b993-b8eba84ca5dd": {
           "uuid": "0994dfe6-03aa-4774-b993-b8eba84ca5dd",
@@ -170,8 +170,8 @@
           "high_value_node": false,
           "entry_node": false,
           "vulnerability": 0,
-          "x_pos": 5,
-          "y_pos": 1
+          "x_pos": 120,
+          "y_pos": 200
         }
       },
       "edges": {
@@ -256,9 +256,9 @@
       }
     },
     "2": {
-      "set_random_entry_nodes": false,
+      "set_random_entry_nodes": true,
       "random_entry_node_preference": "NONE",
-      "num_of_random_entry_nodes": 0,
+      "num_of_random_entry_nodes": 3,
       "set_random_high_value_nodes": false,
       "random_high_value_node_preference": "NONE",
       "num_of_random_high_value_nodes": 0,
@@ -269,92 +269,92 @@
         "4180851d-a066-4d97-ba36-ba0c3971000e": {
           "uuid": "4180851d-a066-4d97-ba36-ba0c3971000e",
           "name": "0",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 3.0,
-          "y_pos": 8.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 150,
+          "y_pos": 400
         },
         "b6ab4f5d-0295-4a5a-81e2-6febb26bbac0": {
           "uuid": "b6ab4f5d-0295-4a5a-81e2-6febb26bbac0",
           "name": "1",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 2.0,
-          "y_pos": 9.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 100,
+          "y_pos": 450
         },
         "353e4860-9514-4083-91cd-6a0bbace8cad": {
           "uuid": "353e4860-9514-4083-91cd-6a0bbace8cad",
           "name": "2",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 9.0,
-          "y_pos": 2.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 450,
+          "y_pos": 100
         },
         "b02dfc7e-2369-4a99-804a-130b922d308c": {
           "uuid": "b02dfc7e-2369-4a99-804a-130b922d308c",
           "name": "3",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 7.0,
-          "y_pos": 4.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 350,
+          "y_pos": 200
         },
         "915ce639-307b-454b-86dc-0f9ccf708b38": {
           "uuid": "915ce639-307b-454b-86dc-0f9ccf708b38",
           "name": "4",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 0.0,
-          "y_pos": 3.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 0,
+          "y_pos": 150
         },
         "8d216687-f3cb-4cb1-a533-4ffcadcc439a": {
           "uuid": "8d216687-f3cb-4cb1-a533-4ffcadcc439a",
           "name": "5",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 10.0,
-          "y_pos": 6.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 500,
+          "y_pos": 300
         },
         "8f2e9bf5-0e88-4b21-b5cc-f90a7e9899eb": {
           "uuid": "8f2e9bf5-0e88-4b21-b5cc-f90a7e9899eb",
           "name": "6",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 6.0,
-          "y_pos": 1.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 300,
+          "y_pos": 50
         },
         "10b665bf-c821-4c45-b51c-d80c509cec84": {
           "uuid": "10b665bf-c821-4c45-b51c-d80c509cec84",
           "name": "7",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 9.0,
-          "y_pos": 4.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 450,
+          "y_pos": 200
         },
         "a5f7c102-5bee-4dbd-bea4-90faa9a4f195": {
           "uuid": "a5f7c102-5bee-4dbd-bea4-90faa9a4f195",
           "name": "8",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 7.0,
-          "y_pos": 2.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 350,
+          "y_pos": 100
         },
         "bf53b3ff-75d9-47da-8c57-1ca571dab5ae": {
           "uuid": "bf53b3ff-75d9-47da-8c57-1ca571dab5ae",
           "name": "9",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 3.0,
-          "y_pos": 6.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 150,
+          "y_pos": 300
         }
       },
       "edges": {

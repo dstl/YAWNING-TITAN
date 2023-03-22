@@ -1,0 +1,6 @@
+tests.unit\_tests.config.validation.test\_any\_true.test\_bool\_item\_true
+==========================================================================
+
+.. currentmodule:: tests.unit_tests.config.validation.test_any_true
+
+.. autofunction:: test_bool_item_true

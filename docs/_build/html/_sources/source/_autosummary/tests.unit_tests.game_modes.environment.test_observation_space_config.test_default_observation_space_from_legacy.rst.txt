@@ -1,0 +1,6 @@
+tests.unit\_tests.game\_modes.environment.test\_observation\_space\_config.test\_default\_observation\_space\_from\_legacy
+==========================================================================================================================
+
+.. currentmodule:: tests.unit_tests.game_modes.environment.test_observation_space_config
+
+.. autofunction:: test_default_observation_space_from_legacy

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yawning_titan.db.schemas.DeceptiveNodeSchema &mdash; YAWNING TITAN 2.0.0b1
+ documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/docs.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="yawning_titan.db.schemas.DoNothingSchema" href="yawning_titan.db.schemas.DoNothingSchema.html" />
+    <link rel="prev" title="yawning_titan.db.schemas.BlueSchema" href="yawning_titan.db.schemas.BlueSchema.html" />
+</head>
+
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> YAWNING TITAN
+          </a>
+              <div class="version">
+                2.0.0b1
+
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../create_a_network.html">Create a Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../db.html">Yawning-Titan DB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../yt_gui.html">Yawning-Titan GUI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="yawning_titan.html">Yawning-Titan API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DATA_DIR.html">yawning_titan.DATA_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.CONFIG_DIR.html">yawning_titan.CONFIG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.LOG_DIR.html">yawning_titan.LOG_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DOCS_DIR.html">yawning_titan.DOCS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.DB_DIR.html">yawning_titan.DB_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.APP_IMAGES_DIR.html">yawning_titan.APP_IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.NOTEBOOKS_DIR.html">yawning_titan.NOTEBOOKS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.GAME_MODES_DIR.html">yawning_titan.GAME_MODES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.IMAGES_DIR.html">yawning_titan.IMAGES_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_DIR.html">yawning_titan.AGENTS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.AGENTS_LOGS_DIR.html">yawning_titan.AGENTS_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.PPO_TENSORBOARD_LOGS_DIR.html">yawning_titan.PPO_TENSORBOARD_LOGS_DIR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DATA_DIR"><code class="docutils literal notranslate"><span class="pre">DATA_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.CONFIG_DIR"><code class="docutils literal notranslate"><span class="pre">CONFIG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.LOG_DIR"><code class="docutils literal notranslate"><span class="pre">LOG_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DOCS_DIR"><code class="docutils literal notranslate"><span class="pre">DOCS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.DB_DIR"><code class="docutils literal notranslate"><span class="pre">DB_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.APP_IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">APP_IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.NOTEBOOKS_DIR"><code class="docutils literal notranslate"><span class="pre">NOTEBOOKS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.GAME_MODES_DIR"><code class="docutils literal notranslate"><span class="pre">GAME_MODES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.IMAGES_DIR"><code class="docutils literal notranslate"><span class="pre">IMAGES_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.AGENTS_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">AGENTS_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.html#yawning_titan.PPO_TENSORBOARD_LOGS_DIR"><code class="docutils literal notranslate"><span class="pre">PPO_TENSORBOARD_LOGS_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.agents.html">yawning_titan.agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.config.html">yawning_titan.config</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="yawning_titan.db.html">yawning_titan.db</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.db.compatibility_query.html">yawning_titan.db.compatibility_query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.db.doc_metadata.html">yawning_titan.db.doc_metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.db.query.html">yawning_titan.db.query</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="yawning_titan.db.schemas.html">yawning_titan.db.schemas</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.AttackSourceSchema.html">yawning_titan.db.schemas.AttackSourceSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.BasicAttackSchema.html">yawning_titan.db.schemas.BasicAttackSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.BlueActionSetSchema.html">yawning_titan.db.schemas.BlueActionSetSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.BlueAttackDiscoverySchema.html">yawning_titan.db.schemas.BlueAttackDiscoverySchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.BlueIntrusionDiscoverySchema.html">yawning_titan.db.schemas.BlueIntrusionDiscoverySchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.BlueLossConditionSchema.html">yawning_titan.db.schemas.BlueLossConditionSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.BlueSchema.html">yawning_titan.db.schemas.BlueSchema</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">yawning_titan.db.schemas.DeceptiveNodeSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.DoNothingSchema.html">yawning_titan.db.schemas.DoNothingSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.EntryNodeCountSchema.html">yawning_titan.db.schemas.EntryNodeCountSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.FailedAttackChanceSchema.html">yawning_titan.db.schemas.FailedAttackChanceSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.FailedAttackSchema.html">yawning_titan.db.schemas.FailedAttackSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.GameModeConfigurationSchema.html">yawning_titan.db.schemas.GameModeConfigurationSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.GameRulesSchema.html">yawning_titan.db.schemas.GameRulesSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.HighValueNodeCountSchema.html">yawning_titan.db.schemas.HighValueNodeCountSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.ImmediateSchema.html">yawning_titan.db.schemas.ImmediateSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.MakeNodeSafeSchema.html">yawning_titan.db.schemas.MakeNodeSafeSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.MiscellaneousSchema.html">yawning_titan.db.schemas.MiscellaneousSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.MoveSchema.html">yawning_titan.db.schemas.MoveSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.NPercentNodesLostSchema.html">yawning_titan.db.schemas.NPercentNodesLostSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.NaturalSpreadChanceSchema.html">yawning_titan.db.schemas.NaturalSpreadChanceSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.NetworkCompatibilitySchema.html">yawning_titan.db.schemas.NetworkCompatibilitySchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.NodeCountSchema.html">yawning_titan.db.schemas.NodeCountSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.ObservationSpaceSchema.html">yawning_titan.db.schemas.ObservationSpaceSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.OnScanSchema.html">yawning_titan.db.schemas.OnScanSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.RandomInfectSchema.html">yawning_titan.db.schemas.RandomInfectSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.RedActionSetSchema.html">yawning_titan.db.schemas.RedActionSetSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.RedAgentAttackSchema.html">yawning_titan.db.schemas.RedAgentAttackSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.RedNaturalSpreadingSchema.html">yawning_titan.db.schemas.RedNaturalSpreadingSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.RedSchema.html">yawning_titan.db.schemas.RedSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.RedTargetMechanismSchema.html">yawning_titan.db.schemas.RedTargetMechanismSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.ResetSchema.html">yawning_titan.db.schemas.ResetSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.RewardsSchema.html">yawning_titan.db.schemas.RewardsSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.SkillSchema.html">yawning_titan.db.schemas.SkillSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.SpreadSchema.html">yawning_titan.db.schemas.SpreadSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.SucceededAttackKnownCompromiseChanceSchema.html">yawning_titan.db.schemas.SucceededAttackKnownCompromiseChanceSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.SucceededAttackKnownCompromiseSchema.html">yawning_titan.db.schemas.SucceededAttackKnownCompromiseSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.SucceededAttackUnknownCompromiseChanceSchema.html">yawning_titan.db.schemas.SucceededAttackUnknownCompromiseChanceSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.SucceededAttackUnknownCompromiseSchema.html">yawning_titan.db.schemas.SucceededAttackUnknownCompromiseSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.TargetNodeSchema.html">yawning_titan.db.schemas.TargetNodeSchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.ZeroDaySchema.html">yawning_titan.db.schemas.ZeroDaySchema</a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.NodeCountSchema"><code class="docutils literal notranslate"><span class="pre">NodeCountSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.EntryNodeCountSchema"><code class="docutils literal notranslate"><span class="pre">EntryNodeCountSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.HighValueNodeCountSchema"><code class="docutils literal notranslate"><span class="pre">HighValueNodeCountSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.NetworkCompatibilitySchema"><code class="docutils literal notranslate"><span class="pre">NetworkCompatibilitySchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.NPercentNodesLostSchema"><code class="docutils literal notranslate"><span class="pre">NPercentNodesLostSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.BlueLossConditionSchema"><code class="docutils literal notranslate"><span class="pre">BlueLossConditionSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.MakeNodeSafeSchema"><code class="docutils literal notranslate"><span class="pre">MakeNodeSafeSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.DeceptiveNodeSchema"><code class="docutils literal notranslate"><span class="pre">DeceptiveNodeSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.BlueActionSetSchema"><code class="docutils literal notranslate"><span class="pre">BlueActionSetSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.OnScanSchema"><code class="docutils literal notranslate"><span class="pre">OnScanSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.ImmediateSchema"><code class="docutils literal notranslate"><span class="pre">ImmediateSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.BlueIntrusionDiscoverySchema"><code class="docutils literal notranslate"><span class="pre">BlueIntrusionDiscoverySchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.FailedAttackChanceSchema"><code class="docutils literal notranslate"><span class="pre">FailedAttackChanceSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.FailedAttackSchema"><code class="docutils literal notranslate"><span class="pre">FailedAttackSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.SucceededAttackKnownCompromiseChanceSchema"><code class="docutils literal notranslate"><span class="pre">SucceededAttackKnownCompromiseChanceSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.SucceededAttackKnownCompromiseSchema"><code class="docutils literal notranslate"><span class="pre">SucceededAttackKnownCompromiseSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.SucceededAttackUnknownCompromiseChanceSchema"><code class="docutils literal notranslate"><span class="pre">SucceededAttackUnknownCompromiseChanceSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.SucceededAttackUnknownCompromiseSchema"><code class="docutils literal notranslate"><span class="pre">SucceededAttackUnknownCompromiseSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.BlueAttackDiscoverySchema"><code class="docutils literal notranslate"><span class="pre">BlueAttackDiscoverySchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.ZeroDaySchema"><code class="docutils literal notranslate"><span class="pre">ZeroDaySchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.AttackSourceSchema"><code class="docutils literal notranslate"><span class="pre">AttackSourceSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.NaturalSpreadChanceSchema"><code class="docutils literal notranslate"><span class="pre">NaturalSpreadChanceSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.TargetNodeSchema"><code class="docutils literal notranslate"><span class="pre">TargetNodeSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.SpreadSchema"><code class="docutils literal notranslate"><span class="pre">SpreadSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.RandomInfectSchema"><code class="docutils literal notranslate"><span class="pre">RandomInfectSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.MoveSchema"><code class="docutils literal notranslate"><span class="pre">MoveSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.BasicAttackSchema"><code class="docutils literal notranslate"><span class="pre">BasicAttackSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.DoNothingSchema"><code class="docutils literal notranslate"><span class="pre">DoNothingSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.RedActionSetSchema"><code class="docutils literal notranslate"><span class="pre">RedActionSetSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.SkillSchema"><code class="docutils literal notranslate"><span class="pre">SkillSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.RedAgentAttackSchema"><code class="docutils literal notranslate"><span class="pre">RedAgentAttackSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.RedNaturalSpreadingSchema"><code class="docutils literal notranslate"><span class="pre">RedNaturalSpreadingSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.RedTargetMechanismSchema"><code class="docutils literal notranslate"><span class="pre">RedTargetMechanismSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.ResetSchema"><code class="docutils literal notranslate"><span class="pre">ResetSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.RewardsSchema"><code class="docutils literal notranslate"><span class="pre">RewardsSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.MiscellaneousSchema"><code class="docutils literal notranslate"><span class="pre">MiscellaneousSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.ObservationSpaceSchema"><code class="docutils literal notranslate"><span class="pre">ObservationSpaceSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.GameRulesSchema"><code class="docutils literal notranslate"><span class="pre">GameRulesSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.BlueSchema"><code class="docutils literal notranslate"><span class="pre">BlueSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.RedSchema"><code class="docutils literal notranslate"><span class="pre">RedSchema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="yawning_titan.db.schemas.html#yawning_titan.db.schemas.GameModeConfigurationSchema"><code class="docutils literal notranslate"><span class="pre">GameModeConfigurationSchema</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="yawning_titan.db.yawning_titan_db.html">yawning_titan.db.yawning_titan_db</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.envs.html">yawning_titan.envs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.exceptions.html">yawning_titan.exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.experiment_helpers.html">yawning_titan.experiment_helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.game_modes.html">yawning_titan.game_modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.integrations.html">yawning_titan.integrations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.networks.html">yawning_titan.networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.notebooks.html">yawning_titan.notebooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="yawning_titan.yawning_titan_run.html">yawning_titan.yawning_titan_run</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Yawning-Titan Tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute to YT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">MIT License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dependencies.html">Dependencies</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">YAWNING TITAN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.html">yawning_titan</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.db.html">yawning_titan.db</a></li>
+          <li class="breadcrumb-item"><a href="yawning_titan.db.schemas.html">yawning_titan.db.schemas</a></li>
+      <li class="breadcrumb-item active">yawning_titan.db.schemas.DeceptiveNodeSchema</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+
+  <section id="yawning-titan-db-schemas-deceptivenodeschema">
+<h1>yawning_titan.db.schemas.DeceptiveNodeSchema<a class="headerlink" href="#yawning-titan-db-schemas-deceptivenodeschema" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="yawning_titan.db.schemas.DeceptiveNodeSchema">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">yawning_titan.db.schemas.</span></span><span class="sig-name descname"><span class="pre">DeceptiveNodeSchema</span></span><a class="reference internal" href="../../_modules/yawning_titan/db/schemas.html#DeceptiveNodeSchema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#yawning_titan.db.schemas.DeceptiveNodeSchema" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Schema to describe a <cite>~yawning_titan.config.core.ConfigGroup</cite> object.</p>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAX_NUMBER</span></code></p></td>
+<td><p>The <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a> class extends <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.queries.Query" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.queries.Query</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">NEW_NODE_ON_RELOCATE</span></code></p></td>
+<td><p>The <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a> class extends <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.queries.Query" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.queries.Query</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">USE</span></code></p></td>
+<td><p>The <a class="reference internal" href="yawning_titan.db.query.YawningTitanQuery.html#yawning_titan.db.query.YawningTitanQuery" title="yawning_titan.db.query.YawningTitanQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">YawningTitanQuery</span></code></a> class extends <a class="reference external" href="https://tinydb.readthedocs.io/en/latest/api.html#tinydb.queries.Query" title="(in TinyDB v4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tinydb.queries.Query</span></code></a>.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="yawning_titan.db.schemas.BlueSchema.html" class="btn btn-neutral float-left" title="yawning_titan.db.schemas.BlueSchema" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="yawning_titan.db.schemas.DoNothingSchema.html" class="btn btn-neutral float-right" title="yawning_titan.db.schemas.DoNothingSchema" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Crown Copyright (C) Dstl 2022.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+</body>
+</html>
