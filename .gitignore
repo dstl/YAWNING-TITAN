@@ -11,7 +11,8 @@ logs/*
 
 .logs/
 yawning_titan/envs/generic/core/images/
-*.gif
+yawning_titan/*.gif
+yawning_titan_gui/*.gif
 notebooks/.ipynb_checkpoints
 *.ipynb_checkpoints
 .coverage

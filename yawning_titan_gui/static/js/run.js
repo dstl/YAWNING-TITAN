@@ -31,8 +31,6 @@ $(document).ready(function(){
         $($(this).data("toggle")).show();
     });
 
-    console.log("OUTPUT",OUTPUT_URL);
-
     //setup on start
     $("#view-buttons button:first-child").addClass("selected");
     $(".run-subsection:first-child").show();
@@ -75,7 +73,6 @@ function get_output(){
         cache: false,
         dataType: "json",
         success: function(response){
-            console.log("RESPONSE",response);
             let stderr_out = $("#log-view>.inner"),
                 stdout_out = $("#metric-view>.inner");
 
