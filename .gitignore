@@ -19,11 +19,15 @@ notebooks/.ipynb_checkpoints
 # keep track of the angular dependencies
 !**/network-editor-dependencies.csv
 
+# network editor built files
+!**/static/dist/
+
 # generated RST files for documentation
-**/source/_autosummary/
-docs/source/yt-dependencies.rst
+**/docs/source/_autosummary/
 
 # Remove tensorboard logs starting with ppo-
 ppo-*/
 **.pkl
-docs/_build
+
+# docs
+!**/docs/_build/
