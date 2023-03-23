@@ -29,6 +29,3 @@ notebooks/.ipynb_checkpoints
 # Remove tensorboard logs starting with ppo-
 ppo-*/
 **.pkl
-
-# docs
-!**/docs/_build/
