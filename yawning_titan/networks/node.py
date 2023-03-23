@@ -51,6 +51,7 @@ class Node:
         x_pos: float,
         y_pos: float,
         name: Optional[str] = None,
+        **kwargs,
     ) -> Node:
         """
         Used to create an instance of Node from the NetworkDB.
