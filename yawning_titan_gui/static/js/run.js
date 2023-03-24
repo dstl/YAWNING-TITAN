@@ -31,8 +31,6 @@ $(document).ready(function(){
         $($(this).data("toggle")).show();
     });
 
-    console.log("OUTPUT",OUTPUT_URL);
-
     //setup on start
     $("#view-buttons button:first-child").addClass("selected");
     $(".run-subsection:first-child").show();
@@ -43,6 +41,10 @@ let interval;
 
 // wrapper for async post request for managing YT run instance
 function run(data){
+    // deactivate the input form
+    console.log("RUN");
+    $("#run-form input").prop("disabled", true);
+    $("#run").prop("disabled", true);
     $.ajax({
         type: "POST",
         url: window.location.href,
@@ -51,15 +53,17 @@ function run(data){
         contentType: false,
         cache: false,
         dataType: "json",
-        success: function(response){
-            console.log("FINISHED");
-            // clearInterval(interval);
-        },
         error: function(response){
-            console.log(response.message)
+            console.log(response.message);
+            enable_run_form();
         }
     });
     interval = setInterval(get_output,500);
+}
+
+function enable_run_form(){
+    $("#run-form input").prop("disabled", false);
+    $("#run").prop("disabled", false);
 }
 
 function get_output(){
@@ -69,7 +73,6 @@ function get_output(){
         cache: false,
         dataType: "json",
         success: function(response){
-            console.log("RESPONSE",response);
             let stderr_out = $("#log-view>.inner"),
                 stdout_out = $("#metric-view>.inner");
 
@@ -80,9 +83,13 @@ function get_output(){
             $(stdout_out).scrollTop($(stdout_out).get(0).scrollHeight);
 
             if(!response.active & response.request_count > 100){
-                console.log("FINISHED!!!");
-                $("#gif-output").show();
-                $("#gif-output").attr("src",response.gif);
+                console.log("FINISHED!!!",response.gif);
+                enable_run_form();
+                // show gif only if a gif returned in the payload
+                if(response.gif){
+                    $("#gif-output").show();
+                    $("#gif-output").attr("src",response.gif);
+                }
                 clearInterval(interval);
             }
         }

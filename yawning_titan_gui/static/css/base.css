@@ -283,6 +283,9 @@ option:hover{
     margin-left: var(--increment);
     transition: all .8s ease;
 }
+#toolbar .toolbar-button:hover .icon-text{
+    color: var(--primary-light);
+}
 #toolbar .toolbar-button .icon-text>span{
     display: none;
 }
@@ -303,7 +306,7 @@ option:hover{
 .toolbar-button.active .icon-container>i:last-child{
     display: block !important;
 }
-.toolbar-button.active .icon-container{
+.toolbar-button.active .icon-container,.toolbar-button:hover .icon-container{
     background-color: var(--dark);
     color: var(--primary) !important;
 }

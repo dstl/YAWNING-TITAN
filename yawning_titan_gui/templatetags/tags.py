@@ -116,12 +116,13 @@ def get_title(field: Field, titles: dict):
     """
     return titles.get(field.name)
 
+
 @register.filter
 def set_cypress_ref(field: Field) -> Field:
-    # set cypress ref on widget
+    """Set cypress ref on widget."""
     if hasattr(field.form, "name"):
-        field.field.widget.attrs.update({'data-cy': field.form.name + '_' + field.name })
+        field.field.widget.attrs.update({"data-cy": field.form.name + "_" + field.name})
     else:
-        field.field.widget.attrs.update({'data-cy': field.name})
+        field.field.widget.attrs.update({"data-cy": field.name})
 
     return field

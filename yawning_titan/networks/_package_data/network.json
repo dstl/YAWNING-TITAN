@@ -269,92 +269,92 @@
         "4180851d-a066-4d97-ba36-ba0c3971000e": {
           "uuid": "4180851d-a066-4d97-ba36-ba0c3971000e",
           "name": "0",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 3.0,
-          "y_pos": 8.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 150,
+          "y_pos": 400
         },
         "b6ab4f5d-0295-4a5a-81e2-6febb26bbac0": {
           "uuid": "b6ab4f5d-0295-4a5a-81e2-6febb26bbac0",
           "name": "1",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 2.0,
-          "y_pos": 9.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 100,
+          "y_pos": 450
         },
         "353e4860-9514-4083-91cd-6a0bbace8cad": {
           "uuid": "353e4860-9514-4083-91cd-6a0bbace8cad",
           "name": "2",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 9.0,
-          "y_pos": 2.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 450,
+          "y_pos": 100
         },
         "b02dfc7e-2369-4a99-804a-130b922d308c": {
           "uuid": "b02dfc7e-2369-4a99-804a-130b922d308c",
           "name": "3",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 7.0,
-          "y_pos": 4.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 350,
+          "y_pos": 200
         },
         "915ce639-307b-454b-86dc-0f9ccf708b38": {
           "uuid": "915ce639-307b-454b-86dc-0f9ccf708b38",
           "name": "4",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 0.0,
-          "y_pos": 3.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 0,
+          "y_pos": 150
         },
         "8d216687-f3cb-4cb1-a533-4ffcadcc439a": {
           "uuid": "8d216687-f3cb-4cb1-a533-4ffcadcc439a",
           "name": "5",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 10.0,
-          "y_pos": 6.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 500,
+          "y_pos": 300
         },
         "8f2e9bf5-0e88-4b21-b5cc-f90a7e9899eb": {
           "uuid": "8f2e9bf5-0e88-4b21-b5cc-f90a7e9899eb",
           "name": "6",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 6.0,
-          "y_pos": 1.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 300,
+          "y_pos": 50
         },
         "10b665bf-c821-4c45-b51c-d80c509cec84": {
           "uuid": "10b665bf-c821-4c45-b51c-d80c509cec84",
           "name": "7",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 9.0,
-          "y_pos": 4.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 450,
+          "y_pos": 200
         },
         "a5f7c102-5bee-4dbd-bea4-90faa9a4f195": {
           "uuid": "a5f7c102-5bee-4dbd-bea4-90faa9a4f195",
           "name": "8",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 7.0,
-          "y_pos": 2.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 350,
+          "y_pos": 100
         },
         "bf53b3ff-75d9-47da-8c57-1ca571dab5ae": {
           "uuid": "bf53b3ff-75d9-47da-8c57-1ca571dab5ae",
           "name": "9",
-          "high_value_node": false,
           "entry_node": false,
-          "vulnerability": 0.0,
-          "x_pos": 3.0,
-          "y_pos": 6.0
+          "high_value_node": false,
+          "vulnerability": 0,
+          "x_pos": 150,
+          "y_pos": 300
         }
       },
       "edges": {

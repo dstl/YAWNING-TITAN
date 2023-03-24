@@ -49,6 +49,9 @@ $(document).ready(function(){
             window.location.href = $(this).data("href")
         }
     });
+    $(".toolbar-button .icon-container, .toolbar-button .icon-text").click(function(){
+        window.location.href = $(this).closest(".toolbar-button").data("href")
+    });
 
 
     //close center dialogue

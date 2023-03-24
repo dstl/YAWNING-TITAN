@@ -1,44 +1,33 @@
 repos:
--   repo: http://github.com/pre-commit/pre-commit-hooks
+  - repo: http://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
-    -   id: check-yaml
-    -   id: end-of-file-fixer
-    -   id: trailing-whitespace
-    -   id: check-added-large-files
-    -   id: mixed-line-ending
-    -   id: requirements-txt-fixer
--   repo: http://github.com/psf/black
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: mixed-line-ending
+      - id: requirements-txt-fixer
+  - repo: http://github.com/psf/black
     rev: 23.1.0
     hooks:
-    -   id: black
--   repo: http://github.com/pycqa/isort
+      - id: black
+  - repo: http://github.com/pycqa/isort
     rev: 5.12.0
     hooks:
-    -   id: isort
-        args: ["--profile", "black"]
--   repo: http://github.com/PyCQA/flake8
+      - id: isort
+        args: [ "--profile", "black" ]
+  - repo: http://github.com/PyCQA/flake8
     rev: 6.0.0
     hooks:
-    -   id: flake8
-        additional_dependencies: [flake8-docstrings]
--   repo: local
+      - id: flake8
+        additional_dependencies: [ flake8-docstrings ]
+  - repo: local
     hooks:
-    -   id: jupyter-nb-clear-output
+      - id: jupyter-nb-clear-output
         name: jupyter-nb-clear-output
         files: \.ipynb$
-        stages: [commit]
+        stages: [ commit ]
         language: system
         entry: jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace
-
-ci:
-    autofix_commit_msg: |
-        [pre-commit.ci] auto fixes from pre-commit.com hooks
-
-        for more information, see https://pre-commit.ci
-    autofix_prs: true
-    autoupdate_branch: ''
-    autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
-    autoupdate_schedule: weekly
-    skip: []
-    submodules: false
