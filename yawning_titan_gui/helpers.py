@@ -209,9 +209,9 @@ class GameModeManager:
         if not valid_only:
             return game_modes
         return [g for g in game_modes if g["valid"]]
-    
+
     @classmethod
-    def get_game_modes_compatible_with(cls, network:Network):
+    def get_game_modes_compatible_with(cls, network: Network):
         """Retrieve all game modes compatible with a given network.
 
         :param network: an instance of :class: `~yawning_titan.networks.network.Network`

@@ -17,6 +17,7 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
+
 def startup():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "yawning_titan_server.settings")
     try:
@@ -28,6 +29,7 @@ def startup():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line("python manage.py runserver")
+
 
 if __name__ == "__main__":
     """run from console with no arguments after filename to load headless gui"""
