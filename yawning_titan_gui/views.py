@@ -615,10 +615,11 @@ def db_manager(request: HttpRequest) -> JsonResponse:
     elif request.method == "GET":
         print([n.doc_metadata.uuid for n in NetworkManager.db.all()])
         network = NetworkManager.db.get(request.GET.get("network_id"))
-        print("NETWORK", request.GET.get("network_id"), network)
-        game_modes = GameModeManager.get_game_modes_compatible_with(network)
-        print("-->", game_modes)
-        return JsonResponse({"message": "SUCCESS"})
+        game_modes = [
+            g.doc_metadata.uuid
+            for g in GameModeManager.get_game_modes_compatible_with(network)
+        ]
+        return JsonResponse({"game_mode_ids": game_modes})
     return JsonResponse({"message:": "FAILED"}, status=400)
 
 

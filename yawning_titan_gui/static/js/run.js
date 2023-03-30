@@ -77,7 +77,10 @@ function get_game_modes_compatible_with(network_id){
         // cache: false,
         dataType: "json",
         success: function(response){
-
+            $("#game-modes-container .list-item").hide();
+            for(const id of response.game_mode_ids){
+                $(`.list-item[data-item-id=${id}]`).show()
+            }
         },
         error: function(response){
             console.log(response.message);
