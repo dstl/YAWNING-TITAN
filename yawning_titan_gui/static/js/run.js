@@ -2,7 +2,7 @@ $(document).ready(function(){
     let selected = {
         "game_mode":null,
         "network":null
-    }
+    };
     $("#field-menu button").click(function(){
         $(this).siblings("button").removeClass("btn-primary");
         $(this).addClass("btn-primary");
@@ -12,7 +12,12 @@ $(document).ready(function(){
     $(".list-item").click(function(){
         $(this).closest(".grid-item").find(".list-item").removeClass("selected");
         $(this).addClass("selected");
-        selected[$(this).closest(".grid-item").data("type")] = $(this).data("item-id");
+        let type = $(this).closest(".list-container").data("type");
+        selected[type] = $(this).data("item-id");
+        console.log("000",type,$(this).data("item-id"));
+        if(type == "network"){
+            get_game_modes_compatible_with($(this).data("item-id"))
+        }
     });
     $("#run-form").submit(function(e){
         e.preventDefault();
@@ -59,6 +64,26 @@ function run(data){
         }
     });
     interval = setInterval(get_output,500);
+}
+
+function get_game_modes_compatible_with(network_id){
+    console.log("LOOKING");
+    $.ajax({
+        type: "GET",
+        url: FILE_MANAGER_URL,
+        data: {"network_id":network_id},
+        // processData: false,
+        // contentType: false,
+        // cache: false,
+        dataType: "json",
+        success: function(response){
+
+        },
+        error: function(response){
+            console.log(response.message);
+            enable_run_form();
+        }
+    });
 }
 
 function enable_run_form(){

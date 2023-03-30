@@ -14,7 +14,7 @@
 
 {% block main %}
 <div id="grid-container" class="stretch clear">
-    <div id="game-modes-container" class="grid-item list-container">
+    <div id="game-modes-container" data-type="game_mode" class="grid-item list-container">
         <div id="search-container">
             <div class="input-group rounded">
                 <input id="filter-game-modes" type="search" class="form-control rounded" placeholder="Filter"
@@ -30,7 +30,7 @@
             {% endfor %}
         </div>
     </div>
-    <div id="networks-container" class="grid-item list-container">
+    <div id="networks-container"  data-type="network" class="grid-item list-container">
         <div id="search-container">
             <div class="input-group rounded">
                 <input id="filter-game-modes" type="search" class="form-control rounded" placeholder="Filter"
