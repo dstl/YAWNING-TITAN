@@ -3,20 +3,16 @@ from django.urls import path
 from django.views.generic import TemplateView
 
 from yawning_titan_gui.helpers import get_docs_sections
-from yawning_titan_gui.views import (
-    DocsView,
-    GameModeConfigView,
-    GameModesView,
-    HomeView,
-    NetworkCreator,
-    NetworksView,
-    NodeEditor,
-    RunView,
-    db_manager,
-    get_output,
-    update_game_mode,
-    update_network,
-)
+from yawning_titan_gui.views.docs_view import DocsView
+from yawning_titan_gui.views.game_mode_config_view import GameModeConfigView
+from yawning_titan_gui.views.game_modes_view import GameModesView
+from yawning_titan_gui.views.home_view import HomeView
+from yawning_titan_gui.views.network_creator_view import NetworkCreator
+from yawning_titan_gui.views.network_editor_view import NetworkEditor
+from yawning_titan_gui.views.networks_view import NetworksView
+from yawning_titan_gui.views.run_view import RunView
+from yawning_titan_gui.views.utils import db_manager, update_game_mode, get_output
+
 
 urlpatterns = [
     path("", HomeView.as_view(), name="Home"),
@@ -47,15 +43,14 @@ urlpatterns = [
         GameModeConfigView.as_view(),
         name="game mode config",
     ),
-    path("network_editor/", NodeEditor.as_view(), name="network editor"),
+    path("network_editor/", NetworkEditor.as_view(), name="network editor"),
     path(
-        "network_editor/<str:network_id>", NodeEditor.as_view(), name="network editor"
+        "network_editor/<str:network_id>", NetworkEditor.as_view(), name="network editor"
     ),
     path("manage_db/", db_manager, name="db manager"),
     path("update_game_mode/", update_game_mode, name="update config"),
-    path("update_network/", update_network, name="update network"),
     path("output/", get_output, name="stderr"),
-    path("/", TemplateView.as_view(template_name="index.html"), name="docs index"),
+    path("/", TemplateView.as_view(template_name="docs.html"), name="docs index"),
 ]
 
 urlpatterns += [

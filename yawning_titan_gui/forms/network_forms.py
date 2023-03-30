@@ -18,9 +18,9 @@ class NetworkTemplateForm(django_forms.Form):
     """Form to contain the options for creating a network from a template."""
 
     def __init__(
-        self,
-        *args,
-        **kwargs,
+            self,
+            *args,
+            **kwargs,
     ):
         super(NetworkTemplateForm, self).__init__(*args, **kwargs)
 
@@ -153,6 +153,7 @@ class NetworkForm(django_forms.Form):
         required=False,
         help_text="Number of random entry nodes",
         label="Number of random entry nodes",
+        initial=1,
     )
     random_entry_node_preference = django_forms.ChoiceField(
         widget=django_forms.Select(
@@ -183,6 +184,7 @@ class NetworkForm(django_forms.Form):
         required=False,
         help_text="Number of random high value nodes",
         label="Number of random high value nodes",
+        initial=1,
     )
     random_high_value_node_preference = django_forms.ChoiceField(
         widget=django_forms.Select(
@@ -238,11 +240,11 @@ class NetworkForm(django_forms.Form):
     )
 
     def __init__(
-        self,
-        network: Network,
-        *args,
-        data=None,
-        **kwargs,
+            self,
+            network: Network,
+            *args,
+            data=None,
+            **kwargs,
     ):
         self.name = network.doc_metadata.name
         self.network = network
@@ -251,6 +253,23 @@ class NetworkForm(django_forms.Form):
         )
 
         super(NetworkForm, self).__init__(*args, data=data, **kwargs)
+
+        if self.network:
+            try:
+                # set initial values from network dict
+                self.initial["set_random_entry_nodes"] = self.network.set_random_entry_nodes
+                self.initial["random_entry_node_preference"] = self.network.random_entry_node_preference.value
+                self.initial["num_of_random_entry_nodes"] = self.network.num_of_random_entry_nodes
+
+                self.initial["set_random_high_value_nodes"] = self.network.set_random_high_value_nodes
+                self.initial["random_high_value_node_preference"] = self.network.random_high_value_node_preference.value
+                self.initial["num_of_random_high_value_nodes"] = self.network.num_of_random_high_value_nodes
+
+                self.initial["set_random_vulnerabilities"] = self.network.set_random_vulnerabilities
+                self.initial["node_vulnerability_upper_bound"] = self.network.node_vulnerability_upper_bound
+                self.initial["node_vulnerability_lower_bound"] = self.network.node_vulnerability_lower_bound
+            except Exception as e:
+                print(e)
 
         if self.is_bound:
             if self.is_valid():
@@ -407,8 +426,13 @@ class NetworkFormManager:
             including nodes and edges.
         """
         form = cls.get_or_create_form(network_id)
-        form.network.add_nodes_from_dict(remove_existing=True, nodes_dict=data["nodes"])
-        form.network.add_edges_from_dict(remove_existing=True, edges_dict=data["edges"])
+        # update nodes
+        form.network.set_from_dict(data, True, True, True)
+
+        # update
         if settings.DYNAMIC_UPDATES:
             NetworkManager.db.update(form.network)  # update the network in the database
+
+        # update network form
+        cls.network_forms[data["_doc_metadata"].uuid] = form
         return form
