@@ -147,23 +147,23 @@ class Network(nx.Graph):
             vulnerability score. Default value of 0.01.
         """
         super().__init__()
-        self._set_random_entry_nodes = set_random_entry_nodes
+        self.set_random_entry_nodes = set_random_entry_nodes
         """If no entry nodes are added, set them at random. Default is ``False``."""
-        self._random_entry_node_preference = random_entry_node_preference
+        self.random_entry_node_preference = random_entry_node_preference
         """The type of random entry node preference."""
-        self._num_of_random_entry_nodes = num_of_random_entry_nodes
+        self.num_of_random_entry_nodes = num_of_random_entry_nodes
         """The number of random entry nodes to be generated."""
-        self._set_random_high_value_nodes = set_random_high_value_nodes
+        self.set_random_high_value_nodes = set_random_high_value_nodes
         """If no high value nodes are added, set them at random. Default is ``False``."""
-        self._random_high_value_node_preference = random_high_value_node_preference
+        self.random_high_value_node_preference = random_high_value_node_preference
         """The type of random high value node preference."""
-        self._num_of_random_high_value_nodes = num_of_random_high_value_nodes
+        self.num_of_random_high_value_nodes = num_of_random_high_value_nodes
         """The number of random high_value nodes to be generated."""
-        self._set_random_vulnerabilities = set_random_vulnerabilities
+        self.set_random_vulnerabilities = set_random_vulnerabilities
         """If True, random vulnerability is set for each node using the upper and lower bounds."""
-        self._node_vulnerability_lower_bound = node_vulnerability_lower_bound
+        self.node_vulnerability_lower_bound = node_vulnerability_lower_bound
         """A lower vulnerability means that a node is less likely to be compromised. Default value is 0."""
-        self._node_vulnerability_upper_bound = node_vulnerability_upper_bound
+        self.node_vulnerability_upper_bound = node_vulnerability_upper_bound
         """A higher vulnerability means that a node is more vulnerable. Default value is 1."""
         self._doc_metadata = doc_metadata
 
@@ -172,102 +172,6 @@ class Network(nx.Graph):
 
         if self._doc_metadata is None:
             self._doc_metadata = DocMetadata()
-
-    @property
-    def set_random_entry_nodes(self):
-        """The network will set random entry nodes if true"""
-        return self._set_random_entry_nodes
-
-    @set_random_entry_nodes.setter
-    def set_random_entry_nodes(self, value):
-        """Set the value of _set_random_entry_nodes"""
-        self._set_random_entry_nodes = value
-
-    @property
-    def random_entry_node_preference(self):
-        """Random entry nodes preferences"""
-        return self._random_entry_node_preference
-
-    @random_entry_node_preference.setter
-    def random_entry_node_preference(self, value):
-        """Set the value of _random_entry_node_preference"""
-        try:
-            self._random_entry_node_preference = RandomEntryNodePreference(value)
-        except:
-            self._random_entry_node_preference = RandomEntryNodePreference.NONE
-
-    @property
-    def num_of_random_entry_nodes(self):
-        """Number of random entry nodes"""
-        return self._num_of_random_entry_nodes
-
-    @num_of_random_entry_nodes.setter
-    def num_of_random_entry_nodes(self, value):
-        """Set the value of _num_of_random_entry_nodes"""
-        self._num_of_random_entry_nodes = value
-
-    @property
-    def set_random_high_value_nodes(self):
-        """The network will set random high value nodes if true"""
-        return self._set_random_high_value_nodes
-    
-    @set_random_high_value_nodes.setter
-    def set_random_high_value_nodes(self, value):
-        """Set the value of _set_random_high_value_nodes"""
-        self._set_random_high_value_nodes = value
-
-    @property
-    def random_high_value_node_preference(self):
-        """Random High Value Node preferences"""
-        return self._random_high_value_node_preference
-    
-    @random_high_value_node_preference.setter
-    def random_high_value_node_preference(self, value):
-        """Set the value of _random_high_value_node_preference"""
-        try:
-            self._random_high_value_node_preference = RandomHighValueNodePreference(value)
-        except:
-            self._random_entry_node_preference = RandomHighValueNodePreference.NONE
-
-    @property
-    def num_of_random_high_value_nodes(self):
-        """Number of high value nodes"""
-        return self._num_of_random_high_value_nodes
-    
-    @num_of_random_high_value_nodes.setter
-    def num_of_random_high_value_nodes(self, value):
-        """Set the value of _num_of_random_high_value_nodes"""
-        self._num_of_random_high_value_nodes = value
-
-    @property
-    def set_random_vulnerabilities(self):
-        """The network will set random node vulnerabilities if true"""
-        return self._set_random_vulnerabilities
-    
-    @set_random_vulnerabilities.setter
-    def set_random_vulnerabilities(self, value):
-        """Set the value of _set_random_vulnerabilities"""
-        self._set_random_vulnerabilities = value
-
-    @property
-    def node_vulnerability_upper_bound(self):
-        """The upper bound of randomised vulnerabilities for nodes"""
-        return self._node_vulnerability_upper_bound
-    
-    @node_vulnerability_upper_bound.setter
-    def node_vulnerability_upper_bound(self, value):
-        """Set the value of _node_vulnerability_upper_bound"""
-        self._node_vulnerability_upper_bound = value
-
-    @property
-    def node_vulnerability_lower_bound(self):
-        """The lower bound of randomised vulnerabilities for nodes"""
-        return self._node_vulnerability_lower_bound
-    
-    @node_vulnerability_upper_bound.setter
-    def node_vulnerability_upper_bound(self, value):
-        """Set the value of _node_vulnerability_lower_bound"""
-        self._node_vulnerability_lower_bound = value
 
     @property
     def high_value_nodes(self) -> List[Node]:
@@ -369,11 +273,11 @@ class Network(nx.Graph):
         - reset_random_high_value_nodes
         - reset_random_vulnerabilities()
         """
-        if self._set_random_entry_nodes:
+        if self.set_random_entry_nodes:
             self.reset_random_entry_nodes()
-        if self._set_random_high_value_nodes:
+        if self.set_random_high_value_nodes:
             self.reset_random_high_value_nodes()
-        if self._set_random_vulnerabilities:
+        if self.set_random_vulnerabilities:
             self.reset_random_vulnerabilities()
 
     def show(self, verbose=False):
@@ -496,7 +400,7 @@ class Network(nx.Graph):
         :returns: A single float representing a vulnerability.
         """
         return random.uniform(
-            self._node_vulnerability_lower_bound, self._node_vulnerability_upper_bound
+            self.node_vulnerability_lower_bound, self.node_vulnerability_upper_bound
         )
 
     def _check_intersect(self, node: Node):
@@ -563,13 +467,13 @@ class Network(nx.Graph):
             if hasattr(self, k):
                 setattr(self, k, v)
 
-        if self._set_random_entry_nodes:
+        if self.set_random_entry_nodes:
             self.reset_random_entry_nodes()
 
-        if self._set_random_high_value_nodes:
+        if self.set_random_high_value_nodes:
             self.reset_random_high_value_nodes()
 
-        if self._set_random_vulnerabilities:
+        if self.set_random_vulnerabilities:
             self.reset_random_vulnerabilities()
 
     def clear_special_nodes(self):
@@ -638,18 +542,18 @@ class Network(nx.Graph):
         weights = list(node_dict.values())
         all_nodes = list(node_dict.keys())
 
-        if self._random_entry_node_preference == RandomEntryNodePreference.EDGE:
+        if self.random_entry_node_preference == RandomEntryNodePreference.EDGE:
             weights = list(map(lambda x: (1 / x) ** 4, weights))
-        elif self._random_entry_node_preference == RandomEntryNodePreference.CENTRAL:
+        elif self.random_entry_node_preference == RandomEntryNodePreference.CENTRAL:
             weights = list(map(lambda x: x**4, weights))
-        elif self._random_entry_node_preference == RandomEntryNodePreference.NONE:
+        elif self.random_entry_node_preference == RandomEntryNodePreference.NONE:
             weights = [1] * len(all_nodes)
 
         weights_normal = [float(i) / sum(weights) for i in weights]
 
         entry_nodes = choice(
             all_nodes,
-            self._num_of_random_entry_nodes,
+            self.num_of_random_entry_nodes,
             replace=False,
             p=weights_normal,
         )
@@ -681,32 +585,32 @@ class Network(nx.Graph):
 
         # print warning that the number of high value nodes exceed the above preferably this would be handled
         # elsewhere i.e. configuration.
-        if self._num_of_random_high_value_nodes > self.num_possible_high_value_nodes:
+        if self.num_of_random_high_value_nodes > self.num_possible_high_value_nodes:
             msg = (
                 f"The configured number of high value nodes exceed the allowable number in the given "
                 f"networks. {str(self.num_possible_high_value_nodes)} high value nodes will be created."
             )
             warnings.warn(UserWarning(msg))
             number_of_high_value_nodes = self.num_possible_high_value_nodes
-        elif self._num_of_random_high_value_nodes <= 0:
+        elif self.num_of_random_high_value_nodes <= 0:
             msg = (
-                f"The configured number of high value nodes, {self._num_of_random_high_value_nodes}, "
+                f"The configured number of high value nodes, {self.num_of_random_high_value_nodes}, "
                 f"must be greater than 0. {str(self.num_possible_high_value_nodes)} high value nodes will be created."
             )
             warnings.warn(UserWarning(msg))
             number_of_high_value_nodes = self.num_possible_high_value_nodes
         else:
-            number_of_high_value_nodes = self._num_of_random_high_value_nodes
+            number_of_high_value_nodes = self.num_of_random_high_value_nodes
 
         possible_high_value_nodes = []
         # chooses a random node to be the high value node
-        if self._random_high_value_node_preference == RandomHighValueNodePreference.NONE:
+        if self.random_high_value_node_preference == RandomHighValueNodePreference.NONE:
             possible_high_value_nodes = list(
                 set(self.nodes).difference(set(self.entry_nodes))
             )
         # Choose the node that is the furthest away from the entry points as the high value node
         elif (
-            self._random_high_value_node_preference.FURTHEST_AWAY_FROM_ENTRY
+            self.random_high_value_node_preference.FURTHEST_AWAY_FROM_ENTRY
             == RandomHighValueNodePreference.FURTHEST_AWAY_FROM_ENTRY
         ):
             # gets all the paths between nodes
@@ -740,7 +644,7 @@ class Network(nx.Graph):
         if len(possible_high_value_nodes) < number_of_high_value_nodes:
             number_of_high_value_nodes = len(possible_high_value_nodes)
             msg = (
-                f"The configured number of high value nodes, {self._num_of_random_high_value_nodes}, "
+                f"The configured number of high value nodes, {self.num_of_random_high_value_nodes}, "
                 f"cannot be created with the chosen method. Instead {str(self.num_possible_high_value_nodes)} high value nodes will be created."
             )
             warnings.warn(UserWarning(msg))
@@ -758,30 +662,30 @@ class Network(nx.Graph):
 
     def reset_random_vulnerabilities(self):
         """Regenerate random vulnerabilities for every node in the network."""
-        if self._set_random_vulnerabilities:
+        if self.set_random_vulnerabilities:
             for node in self.nodes:
                 node.vulnerability = self._generate_random_vulnerability()
 
     def to_dict(self, json_serializable: bool = False) -> Dict[str, Any]:
         """Represent the `Network` as a dictionary."""
         random_entry_node_preference = None
-        if self._random_entry_node_preference:
-            random_entry_node_preference = self._random_entry_node_preference.value
+        if self.random_entry_node_preference:
+            random_entry_node_preference = self.random_entry_node_preference.value
 
         random_high_value_node_preference = None
-        if self._random_high_value_node_preference:
-            random_high_value_node_preference = self._random_high_value_node_preference.value
+        if self.random_high_value_node_preference:
+            random_high_value_node_preference = self.random_high_value_node_preference.value
 
         d = {
-            "set_random_entry_nodes": self._set_random_entry_nodes,
+            "set_random_entry_nodes": self.set_random_entry_nodes,
             "random_entry_node_preference": random_entry_node_preference,
-            "num_of_random_entry_nodes": self._num_of_random_entry_nodes,
-            "set_random_high_value_nodes": self._set_random_high_value_nodes,
+            "num_of_random_entry_nodes": self.num_of_random_entry_nodes,
+            "set_random_high_value_nodes": self.set_random_high_value_nodes,
             "random_high_value_node_preference": random_high_value_node_preference,
-            "num_of_random_high_value_nodes": self._num_of_random_high_value_nodes,
-            "set_random_vulnerabilities": self._set_random_vulnerabilities,
-            "node_vulnerability_lower_bound": self._node_vulnerability_lower_bound,
-            "node_vulnerability_upper_bound": self._node_vulnerability_upper_bound,
+            "num_of_random_high_value_nodes": self.num_of_random_high_value_nodes,
+            "set_random_vulnerabilities": self.set_random_vulnerabilities,
+            "node_vulnerability_lower_bound": self.node_vulnerability_lower_bound,
+            "node_vulnerability_upper_bound": self.node_vulnerability_upper_bound,
             "nodes": self.__dict__["_node"],
             "edges": self.__dict__["_adj"],
             "_doc_metadata": self.doc_metadata,
