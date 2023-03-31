@@ -272,12 +272,12 @@ class NetworkForm(django_forms.Form):
                 print(e)
 
         if self.is_bound:
-            if self.is_valid():
-                data: dict = self.cleaned_data
-                try:
-                    self.network.set_from_dict(self.cleaned_data)
-                except Exception as e:
-                    self.add_error(None, str(e))
+            self.is_valid()
+            data: dict = self.cleaned_data
+            try:
+                self.network.set_from_dict(self.cleaned_data)
+            except Exception as e:
+                self.add_error(None, str(e))
 
     def update_doc_meta(self, data: QueryDict):
         """Update the game modes doc metadata."""
@@ -425,14 +425,9 @@ class NetworkFormManager:
         :param data: The python dictionary object containing a full representation of a network
             including nodes and edges.
         """
-        form = cls.get_or_create_form(network_id)
-        # update nodes
-        form.network.set_from_dict(data, True, True, True)
-
-        # update
+        network = NetworkManager.db.get(network_id)
+        form = NetworkForm(network=network, data=data)
+        cls.network_forms[network_id] = form
         if settings.DYNAMIC_UPDATES:
             NetworkManager.db.update(form.network)  # update the network in the database
-
-        # update network form
-        cls.network_forms[data["_doc_metadata"].uuid] = form
-        return form
+        return cls.network_forms[network_id]

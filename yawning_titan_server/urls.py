@@ -11,8 +11,7 @@ from yawning_titan_gui.views.network_creator_view import NetworkCreator
 from yawning_titan_gui.views.network_editor_view import NetworkEditor
 from yawning_titan_gui.views.networks_view import NetworksView
 from yawning_titan_gui.views.run_view import RunView
-from yawning_titan_gui.views.utils import db_manager, update_game_mode, get_output
-
+from yawning_titan_gui.views.utils import db_manager, get_output, update_game_mode
 
 urlpatterns = [
     path("", HomeView.as_view(), name="Home"),
@@ -50,7 +49,7 @@ urlpatterns = [
     path("manage_db/", db_manager, name="db manager"),
     path("update_game_mode/", update_game_mode, name="update config"),
     path("output/", get_output, name="stderr"),
-    path("/", TemplateView.as_view(template_name="docs.html"), name="docs index"),
+    path("/", TemplateView.as_view(template_name="index.html"), name="docs index"),
 ]
 
 urlpatterns += [
