@@ -32,16 +32,19 @@ def check_element(el_dict: dict, n: int, include_unbounded: bool):
     if el_dict["min"] is None:
         if include_unbounded:
             check_min = True
-    elif n > el_dict["min"]:
+    elif n >= el_dict["min"]:
         check_min = True
 
     check_max = False
     if el_dict["max"] is None:
         if include_unbounded:
             check_max = True
-    elif n < el_dict["max"]:
+    elif n <= el_dict["max"]:
         check_max = True
 
+    print("EL", el_dict)
+    print("N", n)
+    print("RES", check_max and check_min)
     return check_min and check_max
 
 
