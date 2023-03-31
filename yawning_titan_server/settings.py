@@ -51,7 +51,7 @@ MIDDLEWARE = [
 
 # Allows the GUI to be used across the local network, not
 # just on the local machine
-ALLOWED_HOSTS=['*']
+ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = "yawning_titan_server.urls"

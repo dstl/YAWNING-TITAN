@@ -1,8 +1,8 @@
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render
 from django.views import View
-from yawning_titan_gui.forms.network_forms import NetworkSearchForm
 
+from yawning_titan_gui.forms.network_forms import NetworkSearchForm
 from yawning_titan_gui.helpers import NetworkManager, get_toolbar
 
 

@@ -44,7 +44,9 @@ urlpatterns = [
     ),
     path("network_editor/", NetworkEditor.as_view(), name="network editor"),
     path(
-        "network_editor/<str:network_id>", NetworkEditor.as_view(), name="network editor"
+        "network_editor/<str:network_id>",
+        NetworkEditor.as_view(),
+        name="network editor",
     ),
     path("manage_db/", db_manager, name="db manager"),
     path("update_game_mode/", update_game_mode, name="update config"),

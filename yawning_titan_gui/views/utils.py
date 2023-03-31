@@ -1,13 +1,13 @@
 import json
+
 from django.http import HttpRequest, JsonResponse
 from django.urls import reverse
+
 from yawning_titan.db.doc_metadata import DocMetadata
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.networks.network import Network
 from yawning_titan_gui.forms.game_mode_forms import GameModeFormManager
-
 from yawning_titan_gui.helpers import GameModeManager, NetworkManager, RunManager
-
 
 default_sidebar = {
     "Documentation": ["Getting started", "Tutorials", "How to configure", "Code"],
@@ -29,6 +29,7 @@ default_toolbar = {
 protected_game_mode_ids = ["base_config.yaml"]
 
 run_config = {}
+
 
 def get_output(request: HttpRequest):
     """Get the output of a :class: `~yawning_titan.yawning_titan_run.YawningTitanRun`."""
@@ -167,4 +168,3 @@ def update_game_mode(request: HttpRequest) -> JsonResponse:
                     {"errors": json.dumps(section.get_form_errors())}, status=400
                 )
     return JsonResponse({"message": "Invalid operation"})
-

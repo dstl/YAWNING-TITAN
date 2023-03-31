@@ -1,10 +1,14 @@
 import json
+
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render
 from django.views import View
-from yawning_titan.networks import network_creator
-from yawning_titan_gui.forms.network_forms import NetworkFormManager, NetworkTemplateForm
 
+from yawning_titan.networks import network_creator
+from yawning_titan_gui.forms.network_forms import (
+    NetworkFormManager,
+    NetworkTemplateForm,
+)
 from yawning_titan_gui.helpers import NetworkManager, get_toolbar
 
 

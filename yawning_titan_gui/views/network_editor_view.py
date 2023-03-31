@@ -1,5 +1,6 @@
-from io import StringIO
 import json
+from io import StringIO
+
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render
 from django.views import View

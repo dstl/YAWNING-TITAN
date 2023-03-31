@@ -674,7 +674,9 @@ class Network(nx.Graph):
 
         random_high_value_node_preference = None
         if self.random_high_value_node_preference:
-            random_high_value_node_preference = self.random_high_value_node_preference.value
+            random_high_value_node_preference = (
+                self.random_high_value_node_preference.value
+            )
 
         d = {
             "set_random_entry_nodes": self.set_random_entry_nodes,

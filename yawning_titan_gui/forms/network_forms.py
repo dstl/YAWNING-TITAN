@@ -18,9 +18,9 @@ class NetworkTemplateForm(django_forms.Form):
     """Form to contain the options for creating a network from a template."""
 
     def __init__(
-            self,
-            *args,
-            **kwargs,
+        self,
+        *args,
+        **kwargs,
     ):
         super(NetworkTemplateForm, self).__init__(*args, **kwargs)
 
@@ -240,11 +240,11 @@ class NetworkForm(django_forms.Form):
     )
 
     def __init__(
-            self,
-            network: Network,
-            *args,
-            data=None,
-            **kwargs,
+        self,
+        network: Network,
+        *args,
+        data=None,
+        **kwargs,
     ):
         self.name = network.doc_metadata.name
         self.network = network
@@ -257,17 +257,35 @@ class NetworkForm(django_forms.Form):
         if self.network:
             try:
                 # set initial values from network dict
-                self.initial["set_random_entry_nodes"] = self.network.set_random_entry_nodes
-                self.initial["random_entry_node_preference"] = self.network.random_entry_node_preference.value
-                self.initial["num_of_random_entry_nodes"] = self.network.num_of_random_entry_nodes
+                self.initial[
+                    "set_random_entry_nodes"
+                ] = self.network.set_random_entry_nodes
+                self.initial[
+                    "random_entry_node_preference"
+                ] = self.network.random_entry_node_preference.value
+                self.initial[
+                    "num_of_random_entry_nodes"
+                ] = self.network.num_of_random_entry_nodes
 
-                self.initial["set_random_high_value_nodes"] = self.network.set_random_high_value_nodes
-                self.initial["random_high_value_node_preference"] = self.network.random_high_value_node_preference.value
-                self.initial["num_of_random_high_value_nodes"] = self.network.num_of_random_high_value_nodes
+                self.initial[
+                    "set_random_high_value_nodes"
+                ] = self.network.set_random_high_value_nodes
+                self.initial[
+                    "random_high_value_node_preference"
+                ] = self.network.random_high_value_node_preference.value
+                self.initial[
+                    "num_of_random_high_value_nodes"
+                ] = self.network.num_of_random_high_value_nodes
 
-                self.initial["set_random_vulnerabilities"] = self.network.set_random_vulnerabilities
-                self.initial["node_vulnerability_upper_bound"] = self.network.node_vulnerability_upper_bound
-                self.initial["node_vulnerability_lower_bound"] = self.network.node_vulnerability_lower_bound
+                self.initial[
+                    "set_random_vulnerabilities"
+                ] = self.network.set_random_vulnerabilities
+                self.initial[
+                    "node_vulnerability_upper_bound"
+                ] = self.network.node_vulnerability_upper_bound
+                self.initial[
+                    "node_vulnerability_lower_bound"
+                ] = self.network.node_vulnerability_lower_bound
             except Exception as e:
                 print(e)
 
