@@ -42,9 +42,6 @@ def check_element(el_dict: dict, n: int, include_unbounded: bool):
     elif n <= el_dict["max"]:
         check_max = True
 
-    print("EL", el_dict)
-    print("N", n)
-    print("RES", check_max and check_min)
     return check_min and check_max
 
 
@@ -57,6 +54,7 @@ class EntryNodeCompatibilityQuery(Query):
     and :class: `~yawning_titan.networks.network.Network` objects.
     """
 
+    @classmethod
     def works_with(
         self, n: Union[int, Network], include_unbounded: Optional[bool] = False
     ) -> QueryInstance:

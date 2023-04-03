@@ -1,6 +1,7 @@
 :root{
     --primary: #00A86B;
     --primary-light: #A8E4A0;
+    --primary-background: rgba(0, 168, 106, 0.10);
     --superlight: #636363;
     --lighter: #535353;
     --light: #323233;
