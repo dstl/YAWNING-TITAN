@@ -48,11 +48,7 @@ $(document).ready(function () {
                     }
 
                     // add tooltip to game mode
-                    el.tooltip({
-                        html: true,
-                        title: "Game Mode is incompatible with selected network",
-                        placement: "bottom"
-                    });
+                    el.tooltip("enable");
 
                     // deselect
                     selected["game_mode"] = null
@@ -87,6 +83,15 @@ $(document).ready(function () {
     $("#view-buttons button:first-child").addClass("selected");
     $(".run-subsection:first-child").show();
 
+    // add tooltip to each game mode item
+    $("#game-modes-container .list-item").each(function(el) {
+        $(this).tooltip({
+            html: true,
+            title: "Game Mode is incompatible with selected network",
+            placement: "bottom"
+        });
+        $(this).tooltip("disable");
+    })
 
     /**
      * Function used to check
