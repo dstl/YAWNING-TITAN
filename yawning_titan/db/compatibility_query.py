@@ -54,7 +54,6 @@ class EntryNodeCompatibilityQuery(Query):
     and :class: `~yawning_titan.networks.network.Network` objects.
     """
 
-    @classmethod
     def works_with(
         self, n: Union[int, Network], include_unbounded: Optional[bool] = False
     ) -> QueryInstance:
@@ -91,7 +90,6 @@ class HighValueNodeCompatibilityQuery(Query):
     and :class: `~yawning_titan.networks.network.Network` objects.
     """
 
-    @classmethod
     def works_with(
         self, n: Union[int, Network], include_unbounded: Optional[bool] = False
     ) -> QueryInstance:

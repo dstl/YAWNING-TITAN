@@ -122,6 +122,6 @@ def test_game_mode_compatibility_query_integer():
 
         # all are compatible as they are either unrestricted or sufficiently sized.
         found = db.search(GameModeSchema.NETWORK_NODES.works_with(18))
-        assert len(found) == len(db.all()) - 1
+        assert len(found) == len(db.all())
 
         db._db.close_and_delete_temp_db()

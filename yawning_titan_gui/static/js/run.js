@@ -151,12 +151,9 @@ function get_game_modes_compatible_with(network_id) {
         type: "GET",
         url: FILE_MANAGER_URL,
         data: { "network_id": network_id },
-        // processData: false,
-        // contentType: false,
-        // cache: false,
         dataType: "json",
         error: function (response) {
-            console.log(response.message);
+            console.error(response.message);
             disable_run_form();
         }
     });
