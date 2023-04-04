@@ -58,8 +58,8 @@ $(document).ready(function () {
                     el.addClass("incompatible");
                 }
             })
+            .then(() => updateRunValidity());
         }
-
         updateRunValidity();
     });
     $("#run-form").submit(function (e) {
@@ -84,7 +84,7 @@ $(document).ready(function () {
     $(".run-subsection:first-child").show();
 
     // add tooltip to each game mode item
-    $("#game-modes-container .list-item").each(function(el) {
+    $("#game-modes-container .list-item").each(function (el) {
         $(this).tooltip({
             html: true,
             title: "Game Mode is incompatible with selected network",
@@ -98,25 +98,25 @@ $(document).ready(function () {
      */
     function updateRunValidity() {
         // check if there are values for game_mode and network
-        if (!!selected["game_mode"] && !!selected["network"]) {
-            disable_run_form();
-        } else {
-            disable_run_form(true);
+        selGameMode = $("#game-modes-container .list-item").hasClass("selected");
+        selNetwork = $("#networks-container .list-item").hasClass("selected");
+        disable_run_form(!(selGameMode && selNetwork));
+    }
+
+    /**
+     * Resets the compatibility status of all game modes
+     */
+    function resetCompatibilities(el) {
+        if (!el) {
+            el = $("#game-modes-container .list-item")
         }
+
+        el.removeClass("incompatible");
+        el.tooltip("disable");
+        updateRunValidity();
     }
 });
 
-/**
- * Resets the compatibility status of all game modes
- */
-function resetCompatibilities(el) {
-    if (!el) {
-        el = $("#game-modes-container .list-item")
-    }
-
-    el.removeClass("incompatible");
-    el.tooltip("disable");
-}
 
 let interval;
 
