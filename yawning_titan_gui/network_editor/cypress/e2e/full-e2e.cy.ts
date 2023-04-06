@@ -21,6 +21,16 @@ describe('End To End', () => {
     // should open the game mode editor
     cy.get('#config-forms').should('be.visible');
 
+    // go to game rules page
+    cy.get('[data-cy="next-game-mode-button"]').click();
+    cy.get('[data-cy="next-game-mode-button"]').click();
+
+    // remove all restrictions
+    cy.get('[data-cy="node_count_restrict"]').click();
+    cy.get('[data-cy="entry_node_count_restrict"]').click();
+    cy.get('[data-cy="high_value_node_count_restrict"]').click();
+    cy.wait(500);
+
     // return to home page
     cy.get('[data-cy="toolbar-home"]').click();
 
