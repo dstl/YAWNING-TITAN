@@ -25,11 +25,12 @@ describe('End To End', () => {
     cy.get('[data-cy="next-game-mode-button"]').click();
     cy.get('[data-cy="next-game-mode-button"]').click();
 
-    // remove all restrictions
-    cy.get('[data-cy="node_count_restrict"]').click();
-    cy.get('[data-cy="entry_node_count_restrict"]').click();
-    cy.get('[data-cy="high_value_node_count_restrict"]').click();
-    cy.wait(500);
+    // sve game mode
+    cy.get('[data-cy="next-game-mode-button"]').click();
+    cy.get('[data-cy="next-game-mode-button"]').click();
+    cy.get('[data-cy="next-game-mode-button"]').click();
+    cy.get('[data-cy="next-game-mode-button"]').click();
+    cy.get('[data-cy="save-game-mode-button"]').click();
 
     // return to home page
     cy.get('[data-cy="toolbar-home"]').click();
@@ -60,15 +61,15 @@ describe('End To End', () => {
     // open page
     cy.get('[data-cy="menu-run-yt"]').click();
 
-    // select the game mode
-    cy.get('#game-modes')
-      .find(`[data-item-name="${gameModeName}"]`)
-      .scrollIntoView()
-      .click();
-
     // select the network
     cy.get('#networks')
       .find(`[data-item-name="${networkName}"]`)
+      .scrollIntoView()
+      .click();
+
+    // select the game mode
+    cy.get('#game-modes')
+      .find(`[data-item-name="${gameModeName}"]`)
       .scrollIntoView()
       .click();
 
@@ -85,7 +86,7 @@ describe('End To End', () => {
     // set training run loops to 10
     cy.get('[data-cy="training_runs"]')
       .scrollIntoView()
-      .type('10');
+      .type('1');
 
     // evaluate every 100 episodes
     cy.get('[data-cy="n_eval_episodes"]')

@@ -99,7 +99,11 @@ describe('Manage Networks Page', () => {
             .type(node3Name);
 
           // intercept the post request
-          cy.intercept('POST', '/network_editor').as('saveRequest');
+          cy.intercept({
+            method: 'POST',
+            url: '/network_editor'
+          }, { log: false })
+            .as('saveRequest');
         })
         .then(() => {
           // check that the changes were saved and that they are correct
