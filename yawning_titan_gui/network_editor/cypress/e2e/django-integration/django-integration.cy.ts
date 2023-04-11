@@ -27,7 +27,11 @@ describe('Django integration', () => {
           })
           .then(() => {
             // intercept the post request
-            cy.intercept('POST', '/network_editor').as('saveRequest');
+            cy.intercept({
+              method: 'POST',
+              url: '/network_editor'
+            }, { log: false })
+              .as('saveRequest');
 
             // open the node list
             cy.get('[data-cy="node-list-nav-button"]').should('be.visible').click();

@@ -315,17 +315,17 @@
        },
        "network_compatibility": {
          "node_count": {
-           "restrict": true,
+           "restrict": false,
            "min": 2,
            "max": 20
          },
          "entry_node_count": {
-           "restrict": true,
+           "restrict": false,
            "min": 2,
            "max": 6
          },
          "high_value_node_count": {
-           "restrict": true,
+           "restrict": false,
            "min": 2,
            "max": 5
          }
@@ -504,7 +504,7 @@
            "max": 20
          },
          "entry_node_count": {
-           "restrict": true,
+           "restrict": false,
            "min": 4,
            "max": 8
          },

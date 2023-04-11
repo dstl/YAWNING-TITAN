@@ -32,14 +32,14 @@ def check_element(el_dict: dict, n: int, include_unbounded: bool):
     if el_dict["min"] is None:
         if include_unbounded:
             check_min = True
-    elif n > el_dict["min"]:
+    elif n >= el_dict["min"]:
         check_min = True
 
     check_max = False
     if el_dict["max"] is None:
         if include_unbounded:
             check_max = True
-    elif n < el_dict["max"]:
+    elif n <= el_dict["max"]:
         check_max = True
 
     return check_min and check_max
@@ -66,7 +66,7 @@ class EntryNodeCompatibilityQuery(Query):
         >>> from yawning_titan.game_modes.game_mode_db import GameModeDB
         >>> from yawning_titan.db.query import YawningTitanQuery
         >>> db = GameModeDB()
-        >>> db.search(YawningTitanQuery.ENTRY_NODES.works_with(18)))
+        >>> db.search(EntryNodeCompatibilityQuery.ENTRY_NODES.works_with(18)))
 
         :param n: The target value of a field as an int or an instance of :class: `~yawning_titan.networks.network.Network`.
         :param include_unbounded: Whether to include fields where part of the range is unbounded.
@@ -102,7 +102,7 @@ class HighValueNodeCompatibilityQuery(Query):
         >>> from yawning_titan.game_modes.game_mode_db import GameModeDB
         >>> from yawning_titan.db.query import YawningTitanQuery
         >>> db = GameModeDB()
-        >>> db.search(YawningTitanQuery.HIGH_VALUE_NODES.works_with(18)))
+        >>> db.search(HighValueNodeCompatibilityQuery.HIGH_VALUE_NODES.works_with(18)))
 
         :param n: The target value of a field as an int or an instance of :class: `~yawning_titan.networks.network.Network`.
         :param include_unbounded: Whether to include fields where part of the range is unbounded.
@@ -142,7 +142,7 @@ class NetworkNodeCompatibilityQuery(Query):
         >>> from yawning_titan.game_modes.game_mode_db import GameModeDB
         >>> from yawning_titan.db.query import YawningTitanQuery
         >>> db = GameModeDB()
-        >>> db.search(YawningTitanQuery.HIGH_VALUE_NODES.works_with(18)))
+        >>> db.search(NetworkNodeCompatibilityQuery.HIGH_VALUE_NODES.works_with(18)))
 
         :param n: The target value of a field as an int or an instance of :class: `~yawning_titan.networks.network.Network`.
         :param include_unbounded: Whether to include fields where part of the range is unbounded.
@@ -179,7 +179,7 @@ class NetworkCompatibilityQuery(Query):
         >>> from yawning_titan.game_modes.game_mode_db import GameModeDB
         >>> from yawning_titan.db.query import YawningTitanQuery
         >>> db = GameModeDB()
-        >>> db.search(YawningTitanQuery.GAME_MODE.compatible_with(network)))
+        >>> db.search(NetworkCompatibilityQuery.compatible_with(network)))
 
         :param n: The target value of a field as an instance of :class: `~yawning_titan.networks.network.Network`.
         :param include_unbounded: Whether to include fields where part of the range is unbounded.
@@ -205,9 +205,12 @@ class NetworkCompatibilityQuery(Query):
                 else n.num_of_random_high_value_nodes,
                 "node_count": len(n.nodes),
             }
+            print("MAP", mapper)
+            print("VAL", val)
             results = [
                 check_element(e, mapper[k], include_unbounded) for k, e in val.items()
             ]
+            print("RESULTS", results)
             return all(results)
 
         return self.test(test_compatible_with, n, include_unbounded)

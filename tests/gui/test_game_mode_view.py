@@ -45,13 +45,6 @@ def assert_correct_response_and_game_mode(game_mode_manager: GameModeManager):
 
 
 @pytest.mark.gui_test
-def test_get(client: Client):
-    """Test that the `db manager` view cannot accept get requests."""
-    response = client.get(MANAGEMENT_URL)
-    assert response.status_code == 400
-
-
-@pytest.mark.gui_test
 def test_game_modes_view_get(client: Client):
     """Test that the Manage game modes view can accept GET requests."""
     response = client.get(URL)

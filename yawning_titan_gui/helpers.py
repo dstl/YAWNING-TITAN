@@ -11,7 +11,7 @@ from django.urls import reverse
 
 from yawning_titan import IMAGES_DIR
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
-from yawning_titan.game_modes.game_mode_db import GameModeDB
+from yawning_titan.game_modes.game_mode_db import GameModeDB, GameModeSchema
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
 from yawning_titan.yawning_titan_run import YawningTitanRun
@@ -208,6 +208,16 @@ class GameModeManager:
         if not valid_only:
             return game_modes
         return [g for g in game_modes if g["valid"]]
+
+    @classmethod
+    def get_game_modes_compatible_with(cls, network: Network):
+        """Retrieve all game modes compatible with a given network.
+
+        :param network: an instance of :class: `~yawning_titan.networks.network.Network`
+        """
+        return cls.db.search(
+            GameModeSchema.NETWORK_COMPATIBILITY.compatible_with(network)
+        )
 
     # @classmethod
     # def filter(cls, filters: dict):
