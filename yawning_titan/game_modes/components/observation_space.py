@@ -26,55 +26,55 @@ class ObservationSpace(AnyTrueGroup):
         doc = "The characteristics of the network and the red agent that the blue agent can observe"
         self.compromised_status = BoolItem(
             value=compromised_status,
-            doc="The blue agent loses if all the nodes become compromised",
+            doc="The blue agent can see the compromised status of all the nodes",
             properties=BoolProperties(allow_null=True, default=False),
             alias="compromised_status",
         )
         self.vulnerabilities = BoolItem(
             value=vulnerabilities,
-            doc="The blue agent loses if all the nodes become compromised",
+            doc="The blue agent can see the vulnerability scores of all the nodes",
             properties=BoolProperties(allow_null=True, default=False),
             alias="vulnerabilities",
         )
         self.node_connections = BoolItem(
             value=node_connections,
-            doc="The blue agent loses if all the nodes become compromised",
+            doc="The blue agent can see what nodes are connected to what other nodes",
             properties=BoolProperties(allow_null=True, default=False),
             alias="node_connections",
         )
         self.average_vulnerability = BoolItem(
             value=average_vulnerability,
-            doc="The blue agent loses if all the nodes become compromised",
+            doc="The blue agent can see the average vulnerability of all the nodes",
             properties=BoolProperties(allow_null=True, default=False),
             alias="average_vulnerability",
         )
         self.graph_connectivity = BoolItem(
             value=graph_connectivity,
-            doc="The blue agent loses if all the nodes become compromised",
+            doc="The blue agent can see a graph connectivity score",
             properties=BoolProperties(allow_null=True, default=False),
             alias="graph_connectivity",
         )
         self.attacking_nodes = BoolItem(
             value=attacking_nodes,
-            doc="The blue agent loses if all the nodes become compromised",
+            doc="The blue agent can see all of the nodes that have recently attacked a safe node",
             properties=BoolProperties(allow_null=True, default=False),
             alias="attacking_nodes",
         )
         self.attacked_nodes = BoolItem(
             value=attacked_nodes,
-            doc="The blue agent loses if all the nodes become compromised",
+            doc="The blue agent can see all the nodes that have recently been attacked",
             properties=BoolProperties(allow_null=True, default=False),
             alias="attacked_nodes",
         )
         self.special_nodes = BoolItem(
             value=special_nodes,
-            doc="The blue agent loses if all the nodes become compromised",
+            doc="The blue agent can see all of the special nodes (entry nodes, high value nodes)",
             properties=BoolProperties(allow_null=True, default=False),
             alias="special_nodes",
         )
         self.red_agent_skill = BoolItem(
             value=red_agent_skill,
-            doc="The blue agent loses if all the nodes become compromised",
+            doc="The blue agent can see the skill level of the red agent",
             properties=BoolProperties(allow_null=True, default=False),
             alias="red_agent_skill",
         )
