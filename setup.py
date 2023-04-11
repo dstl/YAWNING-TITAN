@@ -217,6 +217,7 @@ setup(
     extras_require={
         "dev": [
             "Django==4.1.2",
+            "django-cors-headers==3.14.0",
             "flaskwebgui==1.0.1",
             "pyinstaller>=5.7.0",
             "nbmake==1.3.5",

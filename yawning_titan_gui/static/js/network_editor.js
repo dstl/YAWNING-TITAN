@@ -18,20 +18,45 @@ $(document).ready(function () {
     $(".network-sidenav-navigation-btn:first").trigger("click");
 });
 
-$(window).on("load",function(){
-    $("#random-elements-form").on("change",function(){
-        update_network(this,"UPDATE_NETWORK_DETAILS");
+$(window).on("load", function () {
+    $("#random-elements-form").on("change", function () {
+        checkIfEntryNodesSet()
+        update_network(this, "UPDATE_NETWORK_DETAILS");
     });
-    $("#doc-meta-form").on("change",function(){
-        update_network(this,"UPDATE_NETWORK_METADATA");
+    $("#doc-meta-form").on("change", function () {
+        update_network(this, "UPDATE_NETWORK_METADATA");
     });
 });
 
+/**
+ * Entry nodes must be set for high value nodes to also be set
+ */
+function checkIfEntryNodesSet() {
+    var setEntryNode = $("#id_set_random_entry_nodes")
+    var entryNodeNum = $("#id_num_of_random_entry_nodes")
+    var setHighValueNode = $("#id_set_random_high_value_nodes")
+    var highValueNum = $("#id_num_of_random_high_value_nodes")
+    var highValuePref = $("#id_random_high_value_node_preference")
 
-function update_network(form_element,operation){
+    if (
+        setEntryNode.is(":checked") // check if toggled
+        && Number(entryNodeNum.val()) > 0
+    ) {
+        setHighValueNode.prop("disabled", false);
+    } else {
+        // untoggle high value node and disable
+        setHighValueNode.prop('checked', false).parent().removeClass('active');
+        setHighValueNode.prop("disabled", true);
+        // hide sub items
+        highValueNum.parent().parent().hide();
+        highValuePref.parent().parent().hide();
+    }
+}
+
+function update_network(form_element, operation) {
     config = new FormData($(form_element)[0]);
-    config.append("_network_id",NETWORK_ID);
-    config.append('_operation',operation);
+    config.append("_network_id", NETWORK_ID);
+    config.append('_operation', operation);
 
     /**
      * The network editor listens to NETWORK_SETTINGS
