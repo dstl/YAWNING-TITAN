@@ -41,6 +41,7 @@ import logging.config
 import os
 import sys
 from pathlib import Path, PosixPath
+import traceback
 from typing import Final, Union
 
 import yaml
@@ -236,4 +237,4 @@ config["handlers"]["info_rotating_file_handler"]["filename"] = LOG_FILE_PATH
 try:
     logging.config.dictConfig(config)
 except Exception as e:
-    print(e)
+    print("ERR", e, traceback.print_exc())

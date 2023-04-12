@@ -205,12 +205,9 @@ class NetworkCompatibilityQuery(Query):
                 else n.num_of_random_high_value_nodes,
                 "node_count": len(n.nodes),
             }
-            print("MAP", mapper)
-            print("VAL", val)
             results = [
                 check_element(e, mapper[k], include_unbounded) for k, e in val.items()
             ]
-            print("RESULTS", results)
             return all(results)
 
         return self.test(test_compatible_with, n, include_unbounded)
