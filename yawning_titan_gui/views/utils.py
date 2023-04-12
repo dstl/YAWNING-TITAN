@@ -9,22 +9,6 @@ from yawning_titan.networks.network import Network
 from yawning_titan_gui.forms.game_mode_forms import GameModeFormManager
 from yawning_titan_gui.helpers import GameModeManager, NetworkManager, RunManager
 
-default_sidebar = {
-    "Documentation": ["Getting started", "Tutorials", "How to configure", "Code"],
-    "Configuration": [
-        "Manage game modes",
-    ],
-    "Training runs": ["Setup a training run", "View completed runs"],
-    "About": ["Contributors", "Report bug", "FAQ"],
-}
-
-default_toolbar = {
-    "home": {"icon": "bi-house-door", "title": "Home"},
-    "doc": {"icon": "bi-file-earmark", "title": "Documentation"},
-    "manage_game_modes": {"icon": "bi-gear", "title": "Manage game modes"},
-    "manage_networks": {"icon": "bi-diagram-2", "title": "Manage networks"},
-    "run-view": {"icon": "bi-play", "title": "Run session"},
-}
 
 protected_game_mode_ids = ["base_config.yaml"]
 

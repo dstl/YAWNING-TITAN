@@ -339,6 +339,12 @@ def get_toolbar(current_page_title: str = None):
             "cypressRefToolbar": "toolbar-documentation",
             "cypressRefMenu": "menu-documentation",
         },
+        "jupyter": {
+            "icon": "bi-book",
+            "title": "Jupyter Notebooks",
+            "cypressRefToolbar": "toolbar-jupyter-notebooks",
+            "cypressRefMenu": "menu-jupyter-notebooks",
+        },
         "manage-game_modes": {
             "icon": "bi-gear",
             "title": "Manage game modes",
