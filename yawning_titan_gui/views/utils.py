@@ -115,7 +115,6 @@ def db_manager(request: HttpRequest) -> JsonResponse:
         except KeyError as e:
             return JsonResponse({"message:": str(e)}, status=400)
     elif request.method == "GET":
-        print([n.doc_metadata.uuid for n in NetworkManager.db.all()])
         network = NetworkManager.db.get(request.GET.get("network_id"))
         game_modes = [
             g.doc_metadata.uuid

@@ -1,9 +1,16 @@
+// used to poll for data
+let interval;
+
+// keeps track of whether or not there is a current run
+let isRunning = false;
+
 $(document).ready(function () {
     let selected = {
         "game_mode": null,
         "network": null
     };
-    disable_run_form(true);
+    enable_run_form(true);
+    updateRunValidity();
     $("#field-menu button").click(function () {
         $(this).siblings("button").removeClass("btn-primary");
         $(this).addClass("btn-primary");
@@ -58,7 +65,7 @@ $(document).ready(function () {
                     el.addClass("incompatible");
                 }
             })
-            .then(() => updateRunValidity());
+                .then(() => updateRunValidity());
         }
         updateRunValidity();
     });
@@ -82,6 +89,7 @@ $(document).ready(function () {
     //setup on start
     $("#view-buttons button:first-child").addClass("selected");
     $(".run-subsection:first-child").show();
+    $("#gif-spinner-container").hide();
 
     // add tooltip to each game mode item
     $("#game-modes-container .list-item").each(function (el) {
@@ -100,7 +108,7 @@ $(document).ready(function () {
         // check if there are values for game_mode and network
         selGameMode = $("#game-modes-container .list-item").hasClass("selected");
         selNetwork = $("#networks-container .list-item").hasClass("selected");
-        disable_run_form(!(selGameMode && selNetwork));
+        enable_run_form(!(selGameMode && selNetwork));
     }
 
     /**
@@ -117,11 +125,22 @@ $(document).ready(function () {
     }
 });
 
-
-let interval;
-
-// wrapper for async post request for managing YT run instance
+/**
+ * Function that triggers a YT run
+ * @param {*} data 
+ */
 function run(data) {
+    $("#open-gif").hide();
+    isRunning = true;
+
+    // clear logs
+    $("#log-view>.inner").empty();
+    $("#metric-view>.inner").empty();
+
+    if (data.get("render") == "on") {
+        $("#gif-spinner-container").css({ display: "flex" });
+    }
+
     // deactivate the input form
     $("#run-form input").prop("disabled", true);
     $("#run").prop("disabled", true);
@@ -135,10 +154,10 @@ function run(data) {
         dataType: "json",
         error: function (response) {
             console.error(response.message);
-            disable_run_form();
+            enable_run_form();
         }
-    });
-    interval = setInterval(get_output, 500);
+    })
+        .done(() => interval = setInterval(get_output, 500))
 }
 
 /**
@@ -153,14 +172,14 @@ function get_game_modes_compatible_with(network_id) {
         dataType: "json",
         error: function (response) {
             console.error(response.message);
-            disable_run_form();
+            enable_run_form();
         }
     });
 }
 
-function disable_run_form(disabled = false) {
-    $("#run-form input").prop("disabled", disabled);
-    $("#run").prop("disabled", disabled);
+function enable_run_form(disable) {
+    $("#run-form input").prop("disabled", disable || isRunning);
+    $("#run").prop("disabled", disable || isRunning);
 }
 
 function get_output() {
@@ -178,16 +197,42 @@ function get_output() {
 
             $(stderr_out).scrollTop($(stderr_out).get(0).scrollHeight);
             $(stdout_out).scrollTop($(stdout_out).get(0).scrollHeight);
+        },
+        error: function () {
+            enable_run_form();
 
-            if (!response.active & response.request_count > 100) {
-                disable_run_form();
-                // show gif only if a gif returned in the payload
-                if (response.gif) {
-                    $("#gif-output").show();
-                    $("#gif-output").attr("src", response.gif);
-                }
-                clearInterval(interval);
-            }
+            // stop polling
+            clearInterval(interval);
+            $("#gif-spinner-container").hide();
+            isRunning = false;
         }
-    });
+    })
+        .done(res => {
+            // show gif only if a gif returned in the payload
+            if (res.gif && res.request_count > 20) {
+                $("#gif-spinner-container").hide();
+
+                // stop polling
+                clearInterval(interval);
+
+                $("#gif-output").css({ display: 'flex' });
+                $("#gif-output").css({
+                    backgroundImage: `url(..${res.gif}?${Math.random()})`,
+                    backgroundSize: 'contain',
+                    width: '100%',
+                    height: '100%',
+                });
+
+                $("#open-gif").attr("href", `..${res.gif}?${Math.random()}`)
+                $("#open-gif").show();
+                isRunning = false;
+            }
+
+            if (!res.active && interval) {
+                clearInterval(interval);
+                isRunning = false;
+            }
+
+            enable_run_form();
+        })
 }

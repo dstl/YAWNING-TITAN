@@ -179,7 +179,7 @@ function manage_items(operation,item_names=[],item_ids=[],additional_data={}){
             }
         },
         error: function(response){
-            console.log(response)
+            console.error(response)
         }
     });
 }
@@ -195,7 +195,7 @@ function filter(form_element){
             hide_show_items(response.item_ids)
         },
         error: function(response){
-            console.log("ERR",response.message)
+            console.error("ERR",response.message)
         }
     });
 }
