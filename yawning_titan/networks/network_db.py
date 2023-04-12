@@ -70,7 +70,6 @@ class NetworkQuery(YawningTitanQuery):
         """Helper function for num_of_entry_nodes."""
 
         def test_len(val, min, max, type):
-            print("VAL", val)
             try:
                 nodes = [n for n in val.values() if n[type]]
                 return min <= len(nodes) <= max

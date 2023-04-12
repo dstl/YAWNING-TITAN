@@ -5,6 +5,7 @@ Serves a similar function to library helpers such as Stable Baselines 3 ``evalua
 """
 
 import os
+import re
 from datetime import datetime
 from pathlib import Path
 from uuid import uuid4
@@ -35,15 +36,18 @@ class ActionLoop:
         self.filename = filename
         self.episode_count = episode_count
 
+        # arrange nodes in graph for matplot layout:
+        self.env.network_interface.current_graph.set_node_positions()
+
     def gif_action_loop(
-        self,
-        render_network=True,
-        prompt_to_close=False,
-        save_gif=False,
-        deterministic=False,
-        output_directory: Path = None,
-        *args,
-        **kwargs,
+            self,
+            render_network=True,
+            prompt_to_close=False,
+            save_gif=False,
+            deterministic=False,
+            output_directory: Path = None,
+            *args,
+            **kwargs,
     ):
         """
         Run the agent in evaluation and create a gif from episodes.
@@ -88,20 +92,21 @@ class ActionLoop:
                         APP_IMAGES_DIR, f"{gif_uuid}_{current_image}.png"
                     )
                     current_image += 1
-                    frame_names.append(current_name)
-                    # save the current image
-                    plt.savefig(current_name)
 
-                    current_image += 1
-                    frame_names.append(current_name)
+                    # set the size of the gif image
+                    fig = plt.gcf()
+                    fig.set_size_inches(16, 9)
                     # save the current image
-                    plt.savefig(current_name)
+                    plt.savefig(current_name, dpi=100)
+
+                    frame_names.append(current_name)
 
                 if render_network:
                     self.env.render(*args, **kwargs)
 
             if save_gif:
-                string_time = datetime.now().strftime("%d%m%Y_%H%M%S")
+                # attach the time GIF was generated to gif name
+                string_time = datetime.now().strftime("%d-%m-%Y_%H-%M")
                 if output_directory is None:
                     output_directory = IMAGES_DIR
                 gif_path = os.path.join(
@@ -110,10 +115,26 @@ class ActionLoop:
                 )
                 with imageio.get_writer(gif_path, mode="I") as writer:
                     # create a gif from the images
-                    for filename in frame_names:
+                    def natural_sort_key(s, _nsre=re.compile('([0-9]+)')):
+                        return [int(text) if text.isdigit() else text.lower()
+                                for text in _nsre.split(s)]
+
+                    frame_names = sorted(frame_names, key=natural_sort_key)
+                    for frame_num, filename in enumerate(frame_names):
+                        # skip first frame because it is empty
+                        if filename == frame_names[0]:
+                            continue
+                        # read image
                         image = imageio.imread(filename)
+                        # add image to GIF
                         writer.append_data(image)
 
+                        # if the last frame, add more of it so the result can be seen longer
+                        if frame_num == len(frame_names) - 1:
+                            for _ in range(10):
+                                writer.append_data(image)
+
+                    # delete images
                     for filename in set(frame_names):
                         os.remove(filename)
 

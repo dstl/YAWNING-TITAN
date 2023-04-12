@@ -6,7 +6,6 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
-from django.conf import settings
 from django.urls import reverse
 
 from yawning_titan import IMAGES_DIR
@@ -15,8 +14,8 @@ from yawning_titan.game_modes.game_mode_db import GameModeDB, GameModeSchema
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
 from yawning_titan.yawning_titan_run import YawningTitanRun
-from yawning_titan_gui import YT_GUI_RUN_LOG, YT_GUI_STDOUT, YT_RUN_TEMP_DIR
-from yawning_titan_server.settings import DOCS_ROOT, STATIC_URL
+from yawning_titan_gui import YT_GUI_RUN_LOG, YT_GUI_STDOUT
+from yawning_titan_server.settings.base import STATIC_URL, DOCS_ROOT
 
 
 class RunManager:
@@ -25,6 +24,7 @@ class RunManager:
     gif = None
     process = None
     counter = 0
+    gif_count = len(list(IMAGES_DIR.iterdir()))
     run_args = None
     run_started = False
 
@@ -69,15 +69,12 @@ class RunManager:
                 loop = ActionLoop(
                     env=run.env,
                     agent=run.agent,
-                    filename="test",
+                    filename="gif",
                     episode_count=kwargs.get("num_episodes", run.total_timesteps),
                 )
-                if settings.DEBUG:
-                    output_dir = YT_RUN_TEMP_DIR
-                else:
-                    output_dir = IMAGES_DIR
+
                 loop.gif_action_loop(
-                    output_directory=output_dir,
+                    output_directory=IMAGES_DIR,
                     save_gif=True,
                     render_network=True
                     # TODO: fix bug where network must be rendered to get gif to be produced
@@ -88,21 +85,19 @@ class RunManager:
         """Get the output of a :class: `~yawning_titan.yawning_titan_run.YawningTitanRun`."""
         cls.counter += 1
         output = {
-            "stderr": "",
-            "stdout": "",
+            "stderr": cls.format_file(YT_GUI_RUN_LOG),
+            "stdout": cls.format_file(YT_GUI_STDOUT),
             "gif": "",
-            "active": cls.process.is_alive(),
-            "request_count": cls.counter,
+            "active": cls.process.is_alive() if cls.process else False,
+            "request_count": cls.counter
         }
-        output["stderr"] = cls.format_file(YT_GUI_RUN_LOG)
-        output["stdout"] = cls.format_file(YT_GUI_STDOUT)
         if cls.run_args["render"]:
-            dir = glob.glob(f"{YT_RUN_TEMP_DIR.as_posix()}/*")
-            if dir:
+            dir = glob.glob(f"{IMAGES_DIR.as_posix()}/*")
+            # only update gif path if a new GIF was generated
+            if len(dir) > cls.gif_count:
+                cls.gif_count = len(dir)
                 gif_path = max(dir, key=os.path.getctime)
-                output["gif"] = f"/{STATIC_URL}gifs/{Path(gif_path).name}".replace(
-                    "\\", "/"
-                )
+                output["gif"] = f"/{STATIC_URL}{Path(gif_path).name}".replace("\\", "/")
         return output
 
     @classmethod

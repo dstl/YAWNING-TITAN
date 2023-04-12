@@ -73,7 +73,14 @@
         <div class="inner logs-container"></div>
     </div>
     <div id="action-loop-view" class="grid-item">
-        <img id="gif-output" alt="gif" style="display: none;">
+        <div id="gif-spinner-container" class="spinner-container">
+            <div class="spinner-border" role="status">
+                <span class="sr-only"></span>
+            </div>
+            <div>Generating GIF...</div>
+        </div>
+        <div id="gif-output" style="display: none;"></div>
+        <a id="open-gif" role="button" target="_blank" class="btn btn-primary" data-cy="open-gif" style="display: none;">Open GIF in new tab</a>
     </div>
 </div>
 {% endblock %}
@@ -236,6 +243,24 @@
 
     .list-item.valid {
         border: 1px solid var(--text-light);
+    }
+
+    .spinner-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #action-loop-view {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #open-gif {
+        margin-top: 5px;
     }
 </style>
 {% endblock %}

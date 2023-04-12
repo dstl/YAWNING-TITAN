@@ -1,3 +1,4 @@
+import traceback
 from typing import Dict
 
 from django import forms as django_forms
@@ -287,7 +288,7 @@ class NetworkForm(django_forms.Form):
                     "node_vulnerability_lower_bound"
                 ] = self.network.node_vulnerability_lower_bound
             except Exception as e:
-                print(e)
+                print("ERR", e, traceback.print_exc())
 
         if self.is_bound:
             self.is_valid()
