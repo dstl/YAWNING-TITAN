@@ -7,6 +7,7 @@ from yawning_titan_gui.views.docs_view import DocsView
 from yawning_titan_gui.views.game_mode_config_view import GameModeConfigView
 from yawning_titan_gui.views.game_modes_view import GameModesView
 from yawning_titan_gui.views.home_view import HomeView
+from yawning_titan_gui.views.jupyter_view import JupyterView
 from yawning_titan_gui.views.network_creator_view import NetworkCreator
 from yawning_titan_gui.views.network_editor_view import NetworkEditor
 from yawning_titan_gui.views.networks_view import NetworksView
@@ -18,6 +19,7 @@ urlpatterns = [
     path("docs/", DocsView.as_view(), name="docs"),
     path("run/", RunView.as_view(), name="Run session"),
     path("docs/", DocsView.as_view(), name="Documentation"),
+    path("jupyter/", JupyterView.as_view(), name="Jupyter notebooks"),
     path("docs/<str:section>/", DocsView.as_view(), name="Documentation"),
     path("game_modes/", GameModesView.as_view(), name="Manage game modes"),
     path("networks/", NetworksView.as_view(), name="Manage networks"),

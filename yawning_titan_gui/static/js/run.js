@@ -123,7 +123,6 @@ let interval;
 // wrapper for async post request for managing YT run instance
 function run(data) {
     // deactivate the input form
-    console.log("RUN");
     $("#run-form input").prop("disabled", true);
     $("#run").prop("disabled", true);
     $.ajax({
@@ -181,7 +180,6 @@ function get_output() {
             $(stdout_out).scrollTop($(stdout_out).get(0).scrollHeight);
 
             if (!response.active & response.request_count > 100) {
-                console.log("FINISHED!!!", response.gif);
                 disable_run_form();
                 // show gif only if a gif returned in the payload
                 if (response.gif) {

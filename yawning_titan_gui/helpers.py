@@ -2,14 +2,16 @@ import glob
 import logging
 import multiprocessing
 import os
+import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any, Dict, List
 
 from django.conf import settings
 from django.urls import reverse
 
-from yawning_titan import IMAGES_DIR
+from yawning_titan import _YT_ROOT_DIR, IMAGES_DIR, NOTEBOOKS_DIR
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.game_modes.game_mode_db import GameModeDB, GameModeSchema
 from yawning_titan.networks.network import Network
@@ -388,3 +390,43 @@ def version() -> str:
     """
     with open("VERSION", "r") as file:
         return file.readline()
+
+def open_jupiter_notebook():
+    """Open a jupyter session for the notebooks directory in a subprocess and return the url."""
+    print("OPENING NOTEBOOKS")
+    # look into a project dir for a config
+    os.environ.setdefault(
+        "JUPYTER_CONFIG_PATH", (_YT_ROOT_DIR / "notebooks").as_posix()
+    )
+    # subprocess.call("jupyter trust Create a Network.ipynb",env=os.environ.copy()) # TODO: Delete
+    # see if the required session is active
+    b = subprocess.check_output(
+        "jupyter-lab list".split(), env=os.environ.copy(), stderr=subprocess.STDOUT
+    ).decode("utf-8")
+    print("LIST>>>", b)
+    if "9999" not in b:
+        # if not active create it
+        working_dir = os.getcwd()
+        os.chdir(NOTEBOOKS_DIR)
+        subprocess.Popen(
+            "jupyter-lab  --no-browser --port 9999".split(), env=os.environ.copy()
+        )
+        os.chdir(working_dir)
+    start_time = time.time()
+    unreachable_time = 10
+    while "9999" not in b:
+        # try to find the active session
+        timer = time.time()
+        elapsed_time = timer - start_time
+        b = subprocess.check_output(
+            "jupyter-lab list".split(), env=os.environ.copy(), stderr=subprocess.STDOUT
+        ).decode("utf-8")
+        if "9999" in b:
+            break
+        if elapsed_time > unreachable_time:
+            return None
+    # get the tokenised url
+    paths = [p.split("::", 1)[0] for p in b.split("\n")]
+    paths = [p.split("]")[1].lstrip().rstrip() for p in paths if "http" in p]
+    path = [p for p in paths if "9999" in p][-1]
+    return path

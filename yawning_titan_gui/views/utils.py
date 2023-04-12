@@ -60,6 +60,7 @@ def db_manager(request: HttpRequest) -> JsonResponse:
         item_ids = request.POST.getlist("item_ids[]")
 
         item_name = item_names[0] if item_names else None
+
         # item_id = item_ids[0] if item_ids else None
 
         def create_game_mode():

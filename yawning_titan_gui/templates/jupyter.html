@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tags %}
+
+{% block scripts %}
+<script src="{% static 'js/jupyter.js' %}"></script>
+<script type="text/javascript">
+    const NOTEBOOK_URL="{{notebook_url}}";
+</script>
+{% endblock %}
+
+{% block top-buttons %}
+    <a id="back" href="{% url 'Home' %}"><i class="bi bi-arrow-90deg-left"></i></a>
+{% endblock %}
+
+
+{% block main %}
+<iframe id="jupyter-iframe"></iframe>
+<a id="jupyter-link" style="display: none;" href="{{notebook_url}}">Click this link to open jupyter notebooks if they do not open automatically</a>
+{% endblock %}
+
+{% block style %}
+<style>
+    #main{
+        padding: 0;
+    }
+    iframe{
+        width: 100%;
+        height: 100%;
+    }
+</style>
+{% endblock %}
