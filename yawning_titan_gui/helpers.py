@@ -392,7 +392,7 @@ def version() -> str:
     with open("VERSION", "r") as file:
         return file.readline()
 
-def open_jupiter_notebook():
+def open_jupyter_notebook():
     """Open a jupyter session for the notebooks directory in a subprocess and return the url."""
     print("OPENING NOTEBOOKS")
     # look into a project dir for a config
