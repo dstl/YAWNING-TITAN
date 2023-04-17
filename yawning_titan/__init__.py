@@ -41,7 +41,6 @@ import logging.config
 import os
 import sys
 from pathlib import Path, PosixPath
-import traceback
 from typing import Final, Union
 
 import yaml
@@ -70,6 +69,15 @@ _YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(appname="yawning_titan")
 
 _YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "yawning_titan"
 """The users home space for YT which is located at: ~/yawning_titan."""
+
+
+def _version() -> str:
+    version_path = _YT_ROOT_DIR / "VERSION"
+    with open(version_path, "r") as file:
+        return file.readline().strip()
+
+
+__version__ = _version()
 
 
 def _data_dir() -> Union[Path, PosixPath]:
@@ -237,4 +245,4 @@ config["handlers"]["info_rotating_file_handler"]["filename"] = LOG_FILE_PATH
 try:
     logging.config.dictConfig(config)
 except Exception as e:
-    print("ERR", e, traceback.print_exc())
+    print(e)

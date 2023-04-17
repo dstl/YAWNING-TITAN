@@ -70,7 +70,8 @@ class RunManager:
                     env=run.env,
                     agent=run.agent,
                     filename="gif",
-                    episode_count=kwargs.get("num_episodes", run.total_timesteps),
+                    episode_count=kwargs.get("num_episodes",
+                                             run.total_timesteps),
                 )
 
                 loop.gif_action_loop(
@@ -97,7 +98,8 @@ class RunManager:
             if len(dir) > cls.gif_count:
                 cls.gif_count = len(dir)
                 gif_path = max(dir, key=os.path.getctime)
-                output["gif"] = f"/{STATIC_URL}{Path(gif_path).name}".replace("\\", "/")
+                output["gif"] = f"/{STATIC_URL}{Path(gif_path).name}".replace(
+                    "\\", "/")
         return output
 
     @classmethod
@@ -159,7 +161,8 @@ class NetworkManager:
         """
         return [
             network.doc_metadata.uuid
-            for network in cls.db.search(NetworkQuery.num_of_nodes_between(min, max))
+            for network in
+            cls.db.search(NetworkQuery.num_of_nodes_between(min, max))
         ]
 
     @classmethod
@@ -285,7 +288,8 @@ def get_docs_sections():
     docs_dir = docs_dir / "_autosummary"
     if docs_dir.exists():
         sections = [
-            f"_autosummary/{p.stem}" for p in docs_dir.iterdir() if p.suffix == ".html"
+            f"_autosummary/{p.stem}" for p in docs_dir.iterdir() if
+            p.suffix == ".html"
         ]
         docs_sections = docs_sections + sections
     return docs_sections
@@ -356,7 +360,8 @@ def get_toolbar(current_page_title: str = None):
             "links": [
                 get_url_dict(n, href, True)
                 for n, href in zip(
-                    ["Contributors", "Discussions", "Report bug", "Feature request"],
+                    ["Contributors", "Discussions", "Report bug",
+                     "Feature request"],
                     [
                         "https://github.com/dstl/YAWNING-TITAN/graphs/contributors",
                         "https://github.com/dstl/YAWNING-TITAN/discussions",
@@ -381,5 +386,6 @@ def version() -> str:
 
     :return: The version string.
     """
-    with open("VERSION", "r") as file:
-        return file.readline()
+    import yawning_titan
+
+    return yawning_titan.__version__
