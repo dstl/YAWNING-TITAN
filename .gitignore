@@ -4,7 +4,7 @@ venv/
 *.egg-info
 dist/
 build/
-yawning_titan_gui/network_editor/node_modules
+**/node_modules
 logs/*
 !logs/.gitkeep
 *__pycache__
@@ -17,6 +17,7 @@ notebooks/.ipynb_checkpoints
 *.ipynb_checkpoints
 .coverage
 *.csv
+
 # keep track of the angular dependencies
 !**/network-editor-dependencies.csv
 
