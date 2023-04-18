@@ -13,4 +13,4 @@ let report = fs.readFileSync('license-report.csv', { encoding: 'utf-8' }).split(
 report = report.join('\n').replace(/\n.*$/, '');
 
 // output to file
-fs.writeFileSync('../../docs/source/network-editor-dependencies.csv', `${'Name,Version,License,URL'+'\n'}${report}`)
+fs.writeFileSync('../docs/source/network-editor-dependencies.csv', `${'Name,Version,License,URL'+'\n'}${report}`)

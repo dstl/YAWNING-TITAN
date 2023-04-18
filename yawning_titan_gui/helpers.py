@@ -384,13 +384,14 @@ def get_toolbar(current_page_title: str = None):
 
 
 def version() -> str:
-    """
-    Gets the version from the `VERSION` file.
+    """Gets the version from the `VERSION` file.
 
     :return: The version string.
     """
-    with open("VERSION", "r") as file:
-        return file.readline()
+    import yawning_titan
+
+    return yawning_titan.__version__
+
 
 def open_jupyter_notebook():
     """Open a jupyter session for the notebooks directory in a subprocess and return the url."""

@@ -1,10 +1,8 @@
-import os
 import sys
-from typing import List
 
 from setuptools import find_packages, setup
-from setuptools.command.develop import develop
-from setuptools.command.install import install
+
+from package_data import get_package_data
 
 try:
     from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
@@ -26,101 +24,8 @@ def version() -> str:
 
     :return: The version string.
     """
-    with open("VERSION", "r") as file:
-        return file.readline()
-
-
-def package_data_paths() -> List[str]:
-    """
-    Get the list of package data files.
-
-    :return: A list of string paths.
-    """
-    filepaths = []
-    for root, dirs, files in os.walk("yawning_titan"):
-        if root.split(os.sep)[-1] == "_package_data":
-            for file in files:
-                file_path = os.path.join(root, file)
-                filepaths.append(file_path.split("yawning_titan")[-1][1:])
-    return filepaths
-
-
-def _create_app_dirs():
-    """
-    Handles creation of application directories and user directories.
-
-    Uses `platformdirs.PlatformDirs` and `pathlib.Path` to create the required
-    app directories in the correct locations based on the users OS.
-    """
-    import sys
-    from pathlib import Path, PosixPath
-    from typing import Final, Union
-
-    try:
-        from platformdirs import PlatformDirs
-
-        _YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(appname="yawning_titan")
-        """An instance of `PlatformDirs` set with appname='yawning_titan'."""
-
-        app_dirs = [_YT_PLATFORM_DIRS.user_data_path]
-        if sys.platform == "win32":
-            app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "config")
-            app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "logs")
-            _YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "yawning_titan"
-        else:
-            app_dirs.append(_YT_PLATFORM_DIRS.user_config_path)
-            app_dirs.append(_YT_PLATFORM_DIRS.user_log_path)
-            _YT_USER_DIRS: Final[Union[Path, PosixPath]] = Path.home() / "yawning_titan"
-
-        app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "docs")
-        app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "db")
-        app_dirs.append(_YT_PLATFORM_DIRS.user_data_path / "app_images")
-        app_dirs.append(_YT_USER_DIRS / "notebooks")
-        app_dirs.append(_YT_USER_DIRS / "game_modes")
-        app_dirs.append(_YT_USER_DIRS / "images")
-        app_dirs.append(_YT_USER_DIRS / "agents")
-        app_dirs.append(_YT_USER_DIRS / "agents" / "logs" / "tensorboard")
-
-        for app_dir in app_dirs:
-            app_dir.mkdir(parents=True, exist_ok=True)
-    except ImportError:
-        pass
-
-
-def _copy_package_data_notebooks_to_notebooks_dir():
-    """
-    Call the reset_default_jupyter_notebooks without overwriting if notebooks are already there.
-
-    As this is a post install script, it should be possible to import Yawning-Titan, but it may not. This
-    `ImportError` is handled so that setup doesn't fail.
-    """
-    try:
-        from yawning_titan.notebooks.jupyter import reset_default_jupyter_notebooks
-
-        reset_default_jupyter_notebooks(overwrite_existing=False)
-    except ImportError:
-        # Failed as, although this is a post-install script, YT can't be imported
-        pass
-
-
-class PostDevelopCommand(develop):
-    """Post-installation command class for development mode."""
-
-    def run(self):
-        """Run the installation command then create the app dirs."""
-        develop.run(self)
-        _create_app_dirs()
-        _copy_package_data_notebooks_to_notebooks_dir()
-
-
-class PostInstallCommand(install):
-    """Post-installation command class for installation mode."""
-
-    def run(self):
-        """Run the installation command then create the app dirs."""
-        install.run(self)
-        _create_app_dirs()
-        _copy_package_data_notebooks_to_notebooks_dir()
+    with open("yawning_titan/VERSION", "r") as file:
+        return file.readline().strip()
 
 
 def _ray_3_beta_rllib_py_platform_pip_install() -> str:
@@ -190,7 +95,7 @@ setup(
     python_requires=">=3.8, <3.11",
     version=version(),
     license="MIT License",
-    packages=find_packages(),
+    packages=find_packages(exclude=["network_editor"]),
     install_requires=[
         "dm-tree==0.1.7",
         "gym==0.21.0",
@@ -212,13 +117,14 @@ setup(
         "tensorboard==2.11.0",
         "tinydb==4.7.0",
         "torch==1.13.1",
+        "typer[all]==0.7.0",
         "typing-extensions==4.4.0",
+        "Django==4.2",
+        "flaskwebgui==1.0.1",
+        "django-cors-headers==3.14.0"
     ],
     extras_require={
         "dev": [
-            "Django==4.1.2",
-            "django-cors-headers==3.14.0",
-            "flaskwebgui==1.0.1",
             "pyinstaller>=5.7.0",
             "nbmake==1.3.5",
             "pip-licenses==4.0.2",
@@ -227,18 +133,22 @@ setup(
             "pytest-django==4.5.2",
             "pytest-cov==4.0.0",
             "pytest-flake8==1.1.1",
+            "setuptools==66",
             "sphinx==5.3.0",
             "sphinx_rtd_theme==1.1.1",
             "wheel",
         ],
         "tensorflow": ["tensorflow==2.11.0"],
     },
-    package_data={"yawning_titan": package_data_paths()},
-    data_files=[(".", ["VERSION"])],
+    package_data=get_package_data(),
+    data_files=[("./yawning_titan", ["package_data.py", "yawning_titan/VERSION"])],
     include_package_data=True,
     cmdclass={
-        "install": PostInstallCommand,
-        "develop": PostDevelopCommand,
         "bdist_wheel": bdist_wheel,
+    },
+    entry_points={
+        "console_scripts": [
+            "yawning-titan = yawning_titan.main:app",
+        ],
     },
 )
