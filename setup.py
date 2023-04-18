@@ -141,7 +141,7 @@ setup(
         "tensorflow": ["tensorflow==2.11.0"],
     },
     package_data=get_package_data(),
-    data_files=[("./yawning_titan", ["package_data.py"])],
+    data_files=[("./yawning_titan", ["package_data.py", "yawning_titan/VERSION"])],
     include_package_data=True,
     cmdclass={
         "bdist_wheel": bdist_wheel,
