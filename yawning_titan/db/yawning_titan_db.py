@@ -156,7 +156,7 @@ class YawningTitanDB:
         keys = ["name", "author", "locked", "uuid"]
 
         for doc in docs:
-            d = {key: doc["_doc_metadata"][key] for key in keys}
+            d = {key: doc["_doc_metadata"].get(key) for key in keys}
             row = list(d.values())
             headers = list(d.keys())
             if not verbose:

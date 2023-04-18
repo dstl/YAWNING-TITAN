@@ -48,7 +48,7 @@
                 <div class="toolbar-button{% if el.active %} active{% endif %}" id="toolbar-button-{{el.title|to_id}}" data-href="{{el.title|get_url}}" data-cy="{{el.cypressRefToolbar}}">
                     <div class="flex-row">
                         <div id="{{id}}-icon" class="icon-container {{id}}">
-                            {% if el.active %}
+                            {% if el.active and el.fillable_icon %}
                             <i class="bi {{el.icon}}-fill"></i>
                             {% else %}
                             <i class="bi {{el.icon}}"></i>
