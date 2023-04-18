@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import * as cytoscape from 'cytoscape';
+import * as navigator from 'cytoscape-navigator';
 import { Observable, Subject } from 'rxjs';
 import { Network } from '../../../app/network-class/network';
 import { Node } from '../../../app/network-class/network-interfaces';
@@ -14,10 +15,24 @@ export class CytoscapeService {
     @Inject(NODE_KEY_CONFIG) private nodeKey: NodeColourKey[]
   ) { }
 
+  // default settings for the navigator
+  private navSettings = {
+    container: '#mini-viewport' // string | false | undefined. Supported strings: an element id selector (like "#someId"), or a className selector (like ".someClassName"). Otherwise an element will be created by the library.
+    // container: false // string | false | undefined. Supported strings: an element id selector (like "#someId"), or a className selector (like ".someClassName"). Otherwise an element will be created by the library.
+  , viewLiveFramerate: 0 // set false to update graph pan only on drag end; set 0 to do it instantly; set a number (frames per second) to update not more than N times per second
+  , thumbnailEventFramerate: 30 // max thumbnail's updates per second triggered by graph updates
+  , thumbnailLiveFramerate: false // max thumbnail's updates per second. Set false to disable
+  , dblClickDelay: 200 // milliseconds
+  , removeCustomContainer: false // destroy the container specified by user on plugin destroy
+  , rerenderDelay: 100 // ms to throttle rerender updates to the panzoom for performance
+};
+
   // constant number for padding
   private CYTOSCAPE_GRAPH_PADDING = 50;
 
   private cy: cytoscape.Core = cytoscape();
+
+  private nav: any;
 
   // html element where the graph is rendered
   private renderElement: HTMLElement | undefined;
@@ -52,6 +67,9 @@ export class CytoscapeService {
   public init(
     element: HTMLElement
   ) {
+    // register the navigator extension
+    navigator(cytoscape);
+
     // set the element the network will render on
     this.renderElement = element;
 
@@ -148,6 +166,11 @@ export class CytoscapeService {
       },
       position: { x: x, y: y }
     });
+
+    // create nav if empty
+    if(!this.nav) {
+      this.nav = (<any>this.cy).navigator(this.navSettings);
+    }
   }
 
   /**
@@ -161,6 +184,11 @@ export class CytoscapeService {
 
     // delete node
     item.remove();
+
+    // delete nav if there are no nodes
+    if(!this.cy.elements().length) {
+      this.nav = this.nav.destroy();;
+    }
   }
 
   /**

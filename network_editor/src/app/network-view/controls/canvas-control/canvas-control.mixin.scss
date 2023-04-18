@@ -1,0 +1,16 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+@mixin canvas-control-mixin($theme) {
+  $primary: map-get($theme, primary);
+
+  .mini-viewport-container {
+    border: 1px solid map-get($primary, 700);
+  }
+
+  .cytoscape-navigatorView {
+    border: 1px solid map-get($primary, 700);
+    background-color: rgb(map-get($primary, 700), 0.15);
+  }
+}

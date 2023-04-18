@@ -1,5 +1,103 @@
 .canvas-control-container {
   display: flex;
+  flex-direction: row;
   flex: 1;
   padding: 10px;
+}
+
+.canvas-control-button-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding-left: 20px;
+  justify-content: flex-end;
+}
+
+.mini-viewport-container {
+  display: flex;
+  height: 20vh;
+  width: 20vw;
+  max-width: 300px;
+  max-height: 200px;
+}
+
+#mini-viewport {
+  position: relative;
+  width: 100%;
+  margin: 10px;
+}
+
+// .cytoscape-navigator {
+//   position: absolute;
+//   border: 1px solid #000;
+//   background: #fff;
+//   z-index: 99999;
+//   width: 200px;
+//   height: 150px;
+//   bottom: 0;
+//   left: 0;
+//   overflow: hidden;
+// }
+
+// .cytoscape-navigator>img {
+//   max-width: 100%;
+//   max-height: 100%;
+// }
+
+// .cytoscape-navigator>canvas {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   z-index: 101;
+//   max-width: 100%;
+//   max-height: 100%;
+// }
+
+// .cytoscape-navigatorView {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   cursor: move;
+//   background: #B7E1ED;
+//   -moz-opacity: 0.50;
+//   opacity: 0.50;
+//   z-index: 102;
+//   max-width: 100%;
+//   max-height: 100%;
+// }
+
+// .cytoscape-navigatorOverlay {
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+//   z-index: 103;
+//   max-width: 100%;
+//   max-height: 100%;
+// }
+
+/*Ovveride Navigator border and background:*/
+.cytoscape-navigator {
+  border: 2px solid #bebebe !important;
+  background: white !important;
+  height: 25vh !important;
+  width: 25vw !important;
+  margin-bottom: 24px;
+  margin-right: 24px;
+}
+
+/*Add border to View container:*/
+.cytoscape-navigator .cytoscape-navigatorView {
+  border: 2px solid #124191;
+}
+
+/*Ovveride overlay container when mouse is over Navigator*/
+.cytoscape-navigator:hover .cytoscape-navigatorOverlay {
+  border: 2px solid #124191;
+}
+
+/*Ovveride view's container when mouse is over view*/
+.cytoscape-navigator.mouseover-view .cytoscape-navigatorView {
+  background-color: rgba(18, 65, 145, 0.3);
 }
