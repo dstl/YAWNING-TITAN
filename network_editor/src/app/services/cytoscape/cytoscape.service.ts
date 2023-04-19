@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import * as cytoscape from 'cytoscape';
-import * as navigator from 'cytoscape-navigator';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { Network } from '../../../app/network-class/network';
 import { Node } from '../../../app/network-class/network-interfaces';
 
@@ -15,24 +14,18 @@ export class CytoscapeService {
     @Inject(NODE_KEY_CONFIG) private nodeKey: NodeColourKey[]
   ) { }
 
-  // default settings for the navigator
-  private navSettings = {
-    container: '#mini-viewport' // string | false | undefined. Supported strings: an element id selector (like "#someId"), or a className selector (like ".someClassName"). Otherwise an element will be created by the library.
-    // container: false // string | false | undefined. Supported strings: an element id selector (like "#someId"), or a className selector (like ".someClassName"). Otherwise an element will be created by the library.
-  , viewLiveFramerate: 0 // set false to update graph pan only on drag end; set 0 to do it instantly; set a number (frames per second) to update not more than N times per second
-  , thumbnailEventFramerate: 30 // max thumbnail's updates per second triggered by graph updates
-  , thumbnailLiveFramerate: false // max thumbnail's updates per second. Set false to disable
-  , dblClickDelay: 200 // milliseconds
-  , removeCustomContainer: false // destroy the container specified by user on plugin destroy
-  , rerenderDelay: 100 // ms to throttle rerender updates to the panzoom for performance
-};
-
   // constant number for padding
   private CYTOSCAPE_GRAPH_PADDING = 50;
 
-  private cy: cytoscape.Core = cytoscape();
+  private _cy: cytoscape.Core = cytoscape();
+  get cy(): cytoscape.Core {
+    return this._cy;
+  }
 
-  private nav: any;
+  private cytoscapeInstanceUpdate = new Subject<cytoscape.Core>();
+  get cytoscapeInstance(): Observable<cytoscape.Core> {
+    return this.cytoscapeInstanceUpdate.asObservable();
+  }
 
   // html element where the graph is rendered
   private renderElement: HTMLElement | undefined;
@@ -67,9 +60,6 @@ export class CytoscapeService {
   public init(
     element: HTMLElement
   ) {
-    // register the navigator extension
-    navigator(cytoscape);
-
     // set the element the network will render on
     this.renderElement = element;
 
@@ -87,7 +77,7 @@ export class CytoscapeService {
     }
 
     // reset cytoscape
-    this.cy.elements().remove();
+    this._cy.elements().remove();
 
     // load all nodes
     network.nodeList.forEach(node => this.createCytoscapeNode(node.x_pos, node.y_pos, node));
@@ -96,18 +86,21 @@ export class CytoscapeService {
     network.edgeList.forEach(edge => this.createCytoscapeEdge(edge.edgeId, edge.nodeA, edge.nodeB));
 
     // fit to screen
-    this.cy.fit(null, this.CYTOSCAPE_GRAPH_PADDING);
+    this._cy.fit(null, this.CYTOSCAPE_GRAPH_PADDING);
   }
 
   /**
    * Update the graph render
    */
   private renderUpdate(): void {
-    this.cy = cytoscape({
+    this._cy = cytoscape({
+      headless: false,
       container: this.renderElement, // container to render in
       elements: [],
       style: this.nodeKey.map(key => key.cytoscapeStyleSheet)
     });
+
+    this.cytoscapeInstanceUpdate.next(this._cy);
 
     cytoscape.warnings(false);
 
@@ -121,7 +114,7 @@ export class CytoscapeService {
    * Listens to any events regarding a node being dragged
    */
   private listenToDragEvent(): void {
-    this.cy.on('drag', (evt) => {
+    this._cy.on('drag', (evt) => {
       this.dragSubject.next(evt);
     })
   }
@@ -130,7 +123,7 @@ export class CytoscapeService {
    * Function that listens to double clicks on the canvas
    */
   private listenToCanvasDoubleClick(): void {
-    this.cy.on('dbltap', (evt) => {
+    this._cy.on('dbltap', (evt) => {
       this.doubleClickSubject.next(evt);
     });
   }
@@ -139,7 +132,7 @@ export class CytoscapeService {
    * Function that listens to clicks on the canvas
    */
   private listenToSingleClick(): void {
-    this.cy.bind('tap', (evt) => {
+    this._cy.bind('tap', (evt) => {
       this.singleClickSubject.next(evt);
     });
   }
@@ -148,7 +141,7 @@ export class CytoscapeService {
    * Bring the whole network into view
    */
   public resetView(): void {
-    this.cy.fit(null, this.CYTOSCAPE_GRAPH_PADDING);
+    this._cy.fit(null, this.CYTOSCAPE_GRAPH_PADDING);
   }
 
   /**
@@ -159,18 +152,13 @@ export class CytoscapeService {
    */
   public createCytoscapeNode(x: number, y: number, nodeProp?: Node): void {
     // add the node onto cytoscape
-    this.cy.add({
+    this._cy.add({
       data: {
         id: nodeProp?.uuid,
         name: nodeProp?.name
       },
       position: { x: x, y: y }
     });
-
-    // create nav if empty
-    if(!this.nav) {
-      this.nav = (<any>this.cy).navigator(this.navSettings);
-    }
   }
 
   /**
@@ -178,17 +166,12 @@ export class CytoscapeService {
    * @param id
    */
   public removeCytoscapeNode(id: string): void {
-    const item = this.cy.$id(id);
+    const item = this._cy.$id(id);
     // delete all edges connected to node
     item.connectedEdges().remove();
 
     // delete node
     item.remove();
-
-    // delete nav if there are no nodes
-    if(!this.cy.elements().length) {
-      this.nav = this.nav.destroy();;
-    }
   }
 
   /**
@@ -196,7 +179,7 @@ export class CytoscapeService {
    * @param node
    */
   public updateCytoscapeNode(node: Node) {
-    const cyNode = this.cy.$id(node.uuid);
+    const cyNode = this._cy.$id(node.uuid);
 
     // update position
     cyNode.position('x', Number(node.x_pos));
@@ -214,7 +197,7 @@ export class CytoscapeService {
    */
   public createCytoscapeEdge(edgeId: string, nodeA: string, nodeB: string) {
     // add edge to cytoscape
-    this.cy.add({
+    this._cy.add({
       data: { id: edgeId, source: nodeA, target: nodeB }
     });
   }
@@ -224,7 +207,7 @@ export class CytoscapeService {
    * @param id
    */
   public removeCytoscapeEdge(id: string) {
-    this.cy.$id(id).remove();
+    this._cy.$id(id).remove();
   }
 
   /**
@@ -234,13 +217,13 @@ export class CytoscapeService {
    */
   public selectNode(id: string) {
     // unselect all other nodes
-    this.cy.nodes().unselect();
+    this._cy.nodes().unselect();
 
     // set the given id to selected
-    this.cy.$id(id).select();
+    this._cy.$id(id).select();
 
     // center on the node
-    const viewportZoom = this.cy.animation({
+    const viewportZoom = this._cy.animation({
       zoom: 2,
       center: { eles: `#${id}` },
       easing: 'ease-out-circ'
