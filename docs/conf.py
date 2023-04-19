@@ -14,14 +14,14 @@
 #
 import os
 import sys
-
+import datetime
 sys.path.insert(0, os.path.abspath("../"))
 
 
 # -- Project information -----------------------------------------------------
 
-project = "YAWNING TITAN"
-copyright = "Crown Copyright (C) Dstl 2022"
+project = "Yawning-Titan"
+copyright = f"Crown Copyright (C) DSTL {datetime.date.today().year}"
 author = "Defence Science and Technology Laboratory UK"
 
 # The short Major.Minor.Build version
@@ -48,6 +48,7 @@ extensions = [
     "sphinx.ext.intersphinx",  # Link to other project's documentation (see mapping below)
     "sphinx.ext.viewcode",  # Add a link to the Python source code for classes, functions etc.
     "sphinx.ext.todo",
+    "sphinx_copybutton"  # Adds a copy button to code blocks
 ]
 
 # Mappings for sphinx.ext.intersphinx. Projects have to have Sphinx-generated doc! (.inv file)
@@ -106,7 +107,8 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
+html_theme = "furo"
+html_title = f"{project} v{release} docs"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

@@ -125,6 +125,7 @@ setup(
     ],
     extras_require={
         "dev": [
+            "furo==2023.3.27",
             "pyinstaller>=5.7.0",
             "nbmake==1.3.5",
             "pip-licenses==4.0.2",
@@ -135,7 +136,7 @@ setup(
             "pytest-flake8==1.1.1",
             "setuptools==66",
             "sphinx==5.3.0",
-            "sphinx_rtd_theme==1.1.1",
+            "sphinx-copybutton==0.5.2",
             "wheel",
         ],
         "tensorflow": ["tensorflow==2.11.0"],

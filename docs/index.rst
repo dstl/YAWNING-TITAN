@@ -1,6 +1,34 @@
 Welcome to YAWNING-TITAN's documentation!
 =========================================
 
+.. toctree::
+   :maxdepth: 8
+   :caption: Contents:
+   :hidden:
+
+   source/getting_started
+   source/create_a_network
+   source/db
+   source/tutorials
+   source/experiments
+   GameMode UML <source/game_mode_config_explained>
+   source/yt_gui
+   Yawning-Titan API <source/_autosummary/yawning_titan>
+   Yawning-Titan Tests <source/_autosummary/tests>
+   Contribute to YT <source/contributing>
+   source/glossary
+   source/license
+   source/dependencies
+
+.. toctree::
+   :caption: Project Links:
+   :hidden:
+
+   Code <https://github.com/dstl/YAWNING-TITAN>
+   Issues <https://github.com/dstl/YAWNING-TITAN/issues>
+   Pull Requests <https://github.com/dstl/YAWNING-TITAN/pulls>
+   Discussions <https://github.com/dstl/YAWNING-TITAN/discussions>
+
 What is YAWNING-TITAN?
 ------------------------
 
@@ -59,30 +87,31 @@ Running YAWNING-TITAN-GUI from terminal
 ---------------------------------------
 
 * Set up dependencies
-.. code:: console
+.. code:: bash
 
-    - `npm install -g yarn`
+    npm install -g yarn
 
 * navigate to the root of the network editor project
-.. code:: console
+.. code:: bash
 
-    - `yarn install`
+    yarn install
 
 * navigate to the root of the network editor project (`<YAWNING_TITAN_ROOT_DIRECTORY>/yawning_titan_gui/network_editor/`)
 * Building the network editor files
-.. code:: console
+.. code:: bach
 
-    - `yarn build`
+    yarn build
 
 * navigate to repository root
 * Run the django server:
-.. code:: console
-    - python manage.py runserver
+.. code:: bash
+
+    python manage.py runserver
 
 * Run the django server in a minified chrome window:
-.. code:: console
+.. code:: bash
 
-    - run `python manage.py`
+    python manage.py
 
 What does Django provide
 ---------------------------
@@ -123,26 +152,6 @@ If you would like to include a citation for **YT** in your work, please cite the
      maintitle = {International Confernece on Machine Learning (ICML)},
      booktitle = {Workshop on Machine Learning for Cybersecurity (ML4Cyber)}
     }
-
-
-.. toctree::
-   :maxdepth: 8
-   :caption: Contents:
-
-   source/getting_started
-   source/create_a_network
-   source/db
-   source/tutorials
-   source/experiments
-   GameMode UML <source/game_mode_config_explained>
-   source/yt_gui
-   Yawning-Titan API <source/_autosummary/yawning_titan>
-   Yawning-Titan Tests <source/_autosummary/tests>
-   Contribute to YT <source/contributing>
-   source/glossary
-   source/license
-   source/dependencies
-
 
 Indices and tables
 ==================
