@@ -5,7 +5,12 @@
 @mixin mini-viewport-mixin($theme) {
   $primary: map-get($theme, primary);
 
-  .mini-viewport-container {
-    border: 1px solid map-get($primary, 700);
+  #miniViewport {
+    border: 1px solid map-get($primary, 600);
+  }
+
+  .viewport-view {
+    border: 1px solid map-get($primary, 800);
+    background-color: rgb(map-get($primary, 700), 0.1);
   }
 }

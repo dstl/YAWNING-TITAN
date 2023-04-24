@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { MiniViewportService } from './mini-viewport.service';
+import { MiniViewportService } from './service/mini-viewport.service';
 import { CytoscapeService } from 'src/app/services/cytoscape/cytoscape.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class MiniViewportComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     // initialise service
     this.cytoscapeService.cytoscapeInstance.subscribe(() => {
-      this.viewportService.init(this.viewport, this.options);
+      this.viewportService.init(this.viewport.nativeElement, this.options);
     })
   }
 }

@@ -7,7 +7,7 @@ import { CanvasControlComponent } from './controls/canvas-control/canvas-control
 import { NodeColourKeyComponent } from './controls/node-colour-key/node-colour-key.component';
 import { NodeColourKeyItemComponent } from './controls/node-colour-key/node-colour-key-item/node-colour-key-item.component';
 import { MiniViewportComponent } from './controls/canvas-control/mini-viewport/mini-viewport.component';
-import { MiniViewportService } from './controls/canvas-control/mini-viewport/mini-viewport.service';
+import { MiniViewportService } from './controls/canvas-control/mini-viewport/service/mini-viewport.service';
 
 const components = [
   NetworkViewComponent,
