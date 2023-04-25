@@ -203,10 +203,19 @@ export class MiniViewportService {
     // get the actual rendered bounding box of the whole graph
     const renderedBounds = this._cy.elements().renderedBoundingBox();
 
+    // get viewport rendered bounds
+    const zoom = this._cy.zoom();
+    const pan = this._cy.pan();
+    const extent = this._cy.extent();
+    const x1 = (extent.x1 * zoom) + pan.x;
+    const x2 = (extent.x2 * zoom) + pan.x;
+    const y1 = (extent.y1 * zoom) + pan.y;
+    const y2 = (extent.y2 * zoom) + pan.y;
+
     this._viewportView.updateViewPosition({
-      zoom: this._cy.zoom(),
-      pan: this._cy.pan(),
-      bb: this._cy.extent()
+      zoom: 1,
+      pan: { x: x1, y: y1 },
+      bb: { x1, x2, y1, y2, w: x2 - x1, h: y2 - y1 }
     }, {
       zoom: 1,
       pan: { x: renderedBounds.x1, y: renderedBounds.y1 },

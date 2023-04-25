@@ -57,45 +57,50 @@ export class ViewportView extends ViewportElement {
     console.log('a: ' + JSON.stringify(extentA))
     console.log('b: ' + JSON.stringify(extentB))
 
+    // ratio between extentB and the parent container
     const viewZoom = Math.min(
-
+      (this._parent.offsetWidth + this._parent.offsetLeft) / extentB.bb.w,
+      (this._parent.offsetHeight + this._parent.offsetTop) / extentB.bb.h
     );
 
+    console.log(viewZoom)
+
     // if graph is too far left of the screen
-    if (extentB.bb.x1 < 0) {
+    if (extentB.bb.x1 < extentA.bb.x1) {
       // calculate how far in the graph the view is
-      bb.x1 = (-extentB.pan.x * viewZoom) / extentB.zoom;
-      console.log(bb.x1)
+      bb.x1 = -((extentB.bb.x1) * viewZoom);
+      console.log('left: ' + bb.x1)
     } else {
       // set x1 to 0
-      bb.x1 = 0;
+      bb.x1 = extentA.bb.x1;
     }
 
     // if graph is too far above the screen
-    if (extentB.bb.y1 < 0) {
+    if (extentB.bb.y1 < extentA.bb.y1) {
       // calculate how far in the graph the view is
-      bb.x1 = (-extentB.bb.y1 * viewZoom) / extentB.zoom;
+      bb.y1 = -(extentB.bb.y1 * viewZoom);
+      console.log('top: ' + bb.y1)
     } else {
-      bb.y1 = 0;
+      bb.y1 = extentA.bb.y1;
     }
 
     // if graph is too far right of the screen
     if (extentB.bb.x2 > (extentA.bb.x2 * extentA.zoom) + extentA.pan.x) {
-      // set x2 to view width
-      bb.x2 = (extentA.bb.x2 * extentA.zoom) + extentA.pan.x;
-      console.log('off right')
+      // calculate how far in the graph the view is
+      bb.x2 = (extentB.bb.w - (extentB.bb.x2 - extentA.bb.x2)) * viewZoom
+      console.log('right: ' + bb.x2)
     } else {
-      //if in screen set x2 to
-      bb.x2 = this._parent.offsetWidth;
+      // if in screen set x2 to
+      bb.x2 = this._parent.getBoundingClientRect().right - this._parent.offsetLeft;
     }
 
     // if graph is too far below the screen
     if (extentB.bb.y2 > (extentA.bb.y2 * extentA.zoom) + extentA.pan.y) {
-      // set y2 to height of parent element
-      console.log('off bot')
-      bb.y2 = (extentA.bb.y2 * extentA.zoom) + extentA.pan.y;
+      // calculate how far in the graph the view is
+      bb.y2 = (extentB.bb.h - (extentB.bb.y2 - extentA.bb.y2)) * viewZoom
+      console.log('bot: ' + bb.y2)
     } else {
-      bb.y2 = this._parent.offsetHeight;
+      bb.y2 = this._parent.getBoundingClientRect().bottom - this._parent.offsetTop;
     }
 
     console.log('')
@@ -103,13 +108,6 @@ export class ViewportView extends ViewportElement {
     // get the height and width of the bounding box
     bb.w = bb.x2 - bb.x1;
     bb.h = bb.y2 - bb.y1;
-
-    // add offset from parent
-    bb.x1 += this._parent.offsetLeft;
-    bb.x2 += this._parent.offsetLeft;
-    bb.y1 += this._parent.offsetTop;
-    bb.y2 += this._parent.offsetTop;
-
 
     return {
       zoom: viewZoom,
