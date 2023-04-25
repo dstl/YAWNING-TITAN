@@ -1,8 +1,11 @@
 .canvas-control-container {
   display: flex;
+  position: relative;
   flex-direction: row;
   flex: 1;
   padding: 10px;
+  bottom: 0;
+  left: 0;
 }
 
 .canvas-control-button-container {

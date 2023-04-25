@@ -1,4 +1,4 @@
-import { CyBoundingBox, ViewExtent, ViewportOptions } from "../viewport-objects";
+import { CyBoundingBox, Extent, ViewportOptions } from "../viewport-objects";
 import { ViewportElement } from "./viewport-element";
 
 export class ViewportView extends ViewportElement {
@@ -19,64 +19,21 @@ export class ViewportView extends ViewportElement {
     super(el, parent, vpOpts);
 
     this.displayElement = display;
+    el.style['position'] = 'absolute';
   }
 
   /**
    * Update the position of the viewport view
    */
-  public updateViewPosition(viewExtent: ViewExtent, displayExtent: ViewExtent): void {
+  public updateViewPosition(viewExtent: Extent, displayExtent: Extent): void {
     // calculate what the view extent should be
     const updatedExtent = this.calculateViewBounds(viewExtent, displayExtent, this._bb);
 
     this._bb = updatedExtent.bb;
 
+    // draw the view box
+    // TODO uncomment
     this.updateElementStyles();
-  }
-
-  /**
-   * The display extent does not have the same width and height as the
-   * parent container, so we will need to extrapolate what the parent
-   * extent would be if it were overlaid on the display on the screen
-   * @param displayExtent
-   * @returns
-   */
-  private transformDisplayExtent(displayExtent: ViewExtent): ViewExtent {
-    // convert parent into the display extent
-    let zoomRatio = Math.min(
-      this.displayElement.offsetHeight / displayExtent.bb.h,
-      this.displayElement.offsetWidth / displayExtent.bb.w
-    )
-
-    // if zoom is not a number, set to 1
-    zoomRatio = isNaN(zoomRatio) ? 1 : zoomRatio;
-
-    // set new bounds
-    const newBBounds = this.multiplyBounds(displayExtent.bb, zoomRatio);
-    displayExtent.pan = {
-      x: newBBounds.x1,
-      y: newBBounds.y1,
-    }
-    displayExtent.bb = newBBounds;
-
-    return displayExtent;
-  }
-
-  /**
-   * Standardise an extent so that the zoom level is equal to 1
-   * @param extent
-   * @returns
-   */
-  private standardiseExtent(extent: ViewExtent): ViewExtent {
-    const bounds = this.multiplyBounds(extent.bb, 1 / extent.zoom);
-
-    return {
-      zoom: 1,
-      pan: {
-        x: bounds.x1,
-        y: bounds.y1
-      },
-      bb: bounds
-    }
   }
 
   /**
@@ -86,83 +43,103 @@ export class ViewportView extends ViewportElement {
    * @param bb bounding box for the view in viewport
    * @returns
    */
-  private calculateViewBounds(extentA: ViewExtent, extentB: ViewExtent, bb: CyBoundingBox): ViewExtent {
-    // width and height that is off the display screen
-    let offsetLeft = 0,
-      offsetTop = 0,
-      offsetRight = 0,
-      offsetBottom = 0;
+  private calculateViewBounds(extentA: Extent, extentB: Extent, bb: CyBoundingBox): Extent {
+    // if extentB is empty, return a full view
+    if (this.isEmptyBounds(extentB.bb)) {
+      return this.emptyView();
+    }
 
-    extentB = this.transformDisplayExtent(extentB);
+    // get the proper graph extent that includes the padding from the viewport box
+    extentB = this.getDisplayExtent(extentB);
 
-    const viewZoom = extentA.zoom;
-    extentA = this.standardiseExtent(extentA);
-    extentB = this.standardiseExtent(extentB);
+    this.debug(extentB.bb, 'fixed', { 'z-index': 5 });
 
-    console.log(extentB)
+    console.log('a: ' + JSON.stringify(extentA))
+    console.log('b: ' + JSON.stringify(extentB))
 
-    // calculate offsets
-    if (extentA.bb.x1 < extentB.bb.x1) {
-      // set offset left
-      offsetLeft = Math.abs(extentB.bb.x1 - extentA.bb.x1)
+    const viewZoom = Math.min(
 
+    );
+
+    // if graph is too far left of the screen
+    if (extentB.bb.x1 < 0) {
+      // calculate how far in the graph the view is
+      bb.x1 = (-extentB.pan.x * viewZoom) / extentB.zoom;
+      console.log(bb.x1)
+    } else {
       // set x1 to 0
       bb.x1 = 0;
-
-      // remove the width that is off the screen
-      bb.w -= Math.abs(extentB.bb.x1 - extentA.bb.x1)
-    } else {
-      // x1 will be the difference between the view and the display
-      bb.x1 = Math.abs(extentA.bb.x1 - extentB.bb.x1);
     }
 
-    if (extentA.bb.x2 > extentB.bb.x2) {
-      // set offset right
-      offsetRight = Math.abs(extentA.bb.x2 - extentB.bb.x2);
-
-      // remove the width that is off the screen
-      bb.w -= Math.abs(extentB.bb.x2 - extentA.bb.x2);
-
-      //set x2 to width
-      bb.x2 = bb.w;
+    // if graph is too far above the screen
+    if (extentB.bb.y1 < 0) {
+      // calculate how far in the graph the view is
+      bb.x1 = (-extentB.bb.y1 * viewZoom) / extentB.zoom;
     } else {
-      bb.x2 = Math.abs(extentB.bb.x2 - extentA.bb.x2);
-    }
-
-    if (extentA.bb.y1 < extentB.bb.y1) {
-      // set offset top
-      offsetTop = Math.abs(extentB.bb.y1 - extentA.bb.y1);
-
-      // set y1 to 0
       bb.y1 = 0;
-
-      // remove the height that is off screen
-      bb.h -= Math.abs(extentB.bb.y1 - extentA.bb.y1)
-    } else {
-      bb.y1 = Math.abs(extentA.bb.y1 - extentB.bb.y1);
     }
 
-    if (extentA.bb.y2 > extentB.bb.y2) {
-      // set offset bottom
-      offsetBottom = Math.abs(extentA.bb.y2 - extentB.bb.y2);
-
-      // remove the height that is off screen
-      bb.h -= Math.abs(extentB.bb.y2 - extentA.bb.y2)
-
-      // set y2 to height
-      bb.y2 = bb.h;
+    // if graph is too far right of the screen
+    if (extentB.bb.x2 > (extentA.bb.x2 * extentA.zoom) + extentA.pan.x) {
+      // set x2 to view width
+      bb.x2 = (extentA.bb.x2 * extentA.zoom) + extentA.pan.x;
+      console.log('off right')
     } else {
-      bb.y2 = Math.abs(extentB.bb.y2 - extentA.bb.h);
+      //if in screen set x2 to
+      bb.x2 = this._parent.offsetWidth;
     }
 
+    // if graph is too far below the screen
+    if (extentB.bb.y2 > (extentA.bb.y2 * extentA.zoom) + extentA.pan.y) {
+      // set y2 to height of parent element
+      console.log('off bot')
+      bb.y2 = (extentA.bb.y2 * extentA.zoom) + extentA.pan.y;
+    } else {
+      bb.y2 = this._parent.offsetHeight;
+    }
 
-    const ext = this.standardiseExtent({
+    console.log('')
+
+    // get the height and width of the bounding box
+    bb.w = bb.x2 - bb.x1;
+    bb.h = bb.y2 - bb.y1;
+
+    // add offset from parent
+    bb.x1 += this._parent.offsetLeft;
+    bb.x2 += this._parent.offsetLeft;
+    bb.y1 += this._parent.offsetTop;
+    bb.y2 += this._parent.offsetTop;
+
+
+    return {
       zoom: viewZoom,
       pan: { x: bb.x1, y: bb.y1 },
       bb
-    });
+    };
+  }
 
-    return ext;
+  /**
+   * Multiply bounds by the zoom value
+   * @param bb
+   * @param zoom
+   * @returns
+   */
+  private multiplyBounds(bb: CyBoundingBox, zoom: number, zoomFromCenter = true): CyBoundingBox {
+    let x1 = 0, x2 = 0, y1 = 0, y2 = 0, w = 0, h = 0;
+
+    if (zoomFromCenter) {
+      x1 = bb.x1 - ((bb.w * zoom) - bb.w) / 2;
+      x2 = bb.x2 + ((bb.w * zoom) - bb.w) / 2;
+      y1 = bb.y1 - ((bb.h * zoom) - bb.h) / 2;
+      y2 = bb.y2 + ((bb.h * zoom) - bb.h) / 2;
+    } else {
+      x1 = bb.x1 * zoom;
+      x2 = bb.x2 * zoom;
+      y1 = bb.y1 * zoom;
+      y2 = bb.y2 * zoom;
+    }
+
+    return { w, h, x1, x2, y1, y2 };
   }
 
   /**
@@ -175,32 +152,55 @@ export class ViewportView extends ViewportElement {
   }
 
   /**
-   * Multiply bounds by the zoom value
-   * @param bb
-   * @param zoom
+   * Returns an extent that should cover the full view
    * @returns
    */
-  private multiplyBounds(bb: CyBoundingBox, zoom: number): CyBoundingBox {
-    const x1 = ((bb.x1 * zoom) / 2) - (bb.x1 / 2);
-    const y1 = ((bb.y1 * zoom) / 2) - (bb.y1 / 2);
-
+  private emptyView(): Extent {
     return {
-      w: bb.w * zoom,
-      h: bb.h * zoom,
-      x1: x1,
-      y1: y1,
-      x2: x1 + (bb.w * zoom),
-      y2: y1 + (bb.h * zoom)
+      zoom: 0,
+      pan: { x: 0, y: 0 },
+      bb: {
+        w: this._parent.offsetWidth,
+        h: this._parent.offsetHeight,
+        x1: this._parent.offsetLeft, y1: this._parent.offsetTop,
+        x2: this._parent.offsetWidth,
+        y2: this._parent.offsetHeight
+      }
     }
   }
 
   /**
-   * Get the difference between 2 number but return as positive value
-   * @param a
-   * @param b
+   * The display extent does not have the same width and height as the
+   * parent container, so we will need to extrapolate what the parent
+   * extent would be if it were overlaid on the display on the screen
+   * @param displayExtent
    * @returns
    */
-  private diff(a: number, b: number): number {
-    return Math.abs(a - b);
+  private getDisplayExtent(displayExtent: Extent): Extent {
+    if (!displayExtent.bb.h || !displayExtent.bb.w) {
+      return displayExtent;
+    }
+
+    // calculate the difference between the display and the actual bounds
+    const zoomRatio = Math.min(
+      displayExtent.bb.w / this.displayElement.offsetWidth,
+      displayExtent.bb.h / this.displayElement.offsetHeight
+    )
+
+    // calculate x and y values
+    const x1 = displayExtent.bb.x1 - (this.displayElement.offsetLeft * zoomRatio);
+    const y1 = displayExtent.bb.y1 - (this.displayElement.offsetTop * zoomRatio);
+    const x2 = displayExtent.bb.x2 + (this.displayElement.offsetLeft * zoomRatio);
+    const y2 = displayExtent.bb.y2 + (this.displayElement.offsetTop * zoomRatio);
+
+    return {
+      zoom: zoomRatio,
+      pan: { x: x1, y: y1 },
+      bb: {
+        w: x2 - x1,
+        h: y2 - y1,
+        x1, x2, y1, y2
+      }
+    }
   }
 }

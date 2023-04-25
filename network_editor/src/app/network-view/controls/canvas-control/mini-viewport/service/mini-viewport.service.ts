@@ -200,16 +200,17 @@ export class MiniViewportService {
    * Updates the viewport view
    */
   private updateView(): void {
-    const elBounds = this._cy.elements().renderedBoundingBox()
+    // get the actual rendered bounding box of the whole graph
+    const renderedBounds = this._cy.elements().renderedBoundingBox();
 
     this._viewportView.updateViewPosition({
       zoom: this._cy.zoom(),
       pan: this._cy.pan(),
       bb: this._cy.extent()
     }, {
-      zoom: 1 / this._cy.zoom(),
-      pan: { x: elBounds.x1, y: elBounds.y1 },
-      bb: elBounds
+      zoom: 1,
+      pan: { x: renderedBounds.x1, y: renderedBounds.y1 },
+      bb: renderedBounds
     })
   }
 }

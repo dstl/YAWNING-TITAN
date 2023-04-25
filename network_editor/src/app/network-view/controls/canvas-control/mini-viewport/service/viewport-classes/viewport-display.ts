@@ -33,9 +33,9 @@ export class ViewportDisplay extends ViewportElement {
     // calculate where the element should be so that it is centered
     this._bb.h = img.height ? img.height : this._bb.h;
     this._bb.w = img.width ? img.width : this._bb.w;
-    this._bb.x1 = (((this._parent.offsetWidth - this._parent.offsetLeft) - (this._bb.w + this.vpOpts.padding / 2)) / 2)
+    this._bb.x1 = (((this._parent.offsetWidth + this._parent.offsetLeft) - (this._bb.w + this.vpOpts.padding / 2)) / 2)
     this._bb.x2 = this._bb.x1 + this._bb.w;
-    this._bb.y1 = (((this._parent.offsetHeight - this._parent.offsetTop) - (this._bb.h + this.vpOpts.padding / 2)) / 2)
+    this._bb.y1 = (((this._parent.offsetHeight + this._parent.offsetTop) - (this._bb.h + this.vpOpts.padding / 2)) / 2)
     this._bb.y2 = this._bb.y1 + this._bb.h;
 
     // update the element bounds

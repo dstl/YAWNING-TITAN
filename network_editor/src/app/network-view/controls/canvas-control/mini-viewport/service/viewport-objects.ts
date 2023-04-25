@@ -1,4 +1,4 @@
-export interface ViewExtent {
+export interface Extent {
   zoom: number,
   pan: { x: number, y: number }
   bb: CyBoundingBox
