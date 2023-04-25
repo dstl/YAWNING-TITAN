@@ -29,11 +29,17 @@ export class ViewportView extends ViewportElement {
     // calculate what the view extent should be
     const updatedExtent = this.calculateViewBounds(viewExtent, displayExtent, this._bb);
 
-    this._bb = updatedExtent.bb;
 
     // draw the view box
-    // TODO uncomment
-    this.updateElementStyles();
+    if (updatedExtent && updatedExtent.bb) {
+      // set new bounds
+      this._element.style['display'] = 'flex';
+      this._bb = updatedExtent.bb;
+      this.updateElementStyles();
+    } else {
+      // hide the element
+      this._element.style['display'] = 'none';
+    }
   }
 
   /**
@@ -52,23 +58,24 @@ export class ViewportView extends ViewportElement {
     // get the proper graph extent that includes the padding from the viewport box
     extentB = this.getDisplayExtent(extentB);
 
+    // if the graph is not on screen at all
+    if (this.isNotOnScreen(extentB.bb, extentA.bb)) {
+      return;
+    }
+
     this.debug(extentB.bb, 'fixed', { 'z-index': 5 });
 
     console.log('a: ' + JSON.stringify(extentA))
     console.log('b: ' + JSON.stringify(extentB))
 
     // ratio between extentB and the parent container
-    const viewZoom = Math.min(
-      (this._parent.offsetWidth + this._parent.offsetLeft) / extentB.bb.w,
-      (this._parent.offsetHeight + this._parent.offsetTop) / extentB.bb.h
-    );
-
-    console.log(viewZoom)
+    const viewZoomW = (this._parent.offsetWidth) / extentB.bb.w;
+    const viewZoomH = (this._parent.offsetHeight) / extentB.bb.h;
 
     // if graph is too far left of the screen
     if (extentB.bb.x1 < extentA.bb.x1) {
       // calculate how far in the graph the view is
-      bb.x1 = -((extentB.bb.x1) * viewZoom);
+      bb.x1 = -((extentB.bb.x1) * viewZoomW);
       console.log('left: ' + bb.x1)
     } else {
       // set x1 to 0
@@ -78,7 +85,7 @@ export class ViewportView extends ViewportElement {
     // if graph is too far above the screen
     if (extentB.bb.y1 < extentA.bb.y1) {
       // calculate how far in the graph the view is
-      bb.y1 = -(extentB.bb.y1 * viewZoom);
+      bb.y1 = -(extentB.bb.y1 * viewZoomH);
       console.log('top: ' + bb.y1)
     } else {
       bb.y1 = extentA.bb.y1;
@@ -87,7 +94,7 @@ export class ViewportView extends ViewportElement {
     // if graph is too far right of the screen
     if (extentB.bb.x2 > (extentA.bb.x2 * extentA.zoom) + extentA.pan.x) {
       // calculate how far in the graph the view is
-      bb.x2 = (extentB.bb.w - (extentB.bb.x2 - extentA.bb.x2)) * viewZoom
+      bb.x2 = (extentB.bb.w - (extentB.bb.x2 - extentA.bb.x2)) * viewZoomW
       console.log('right: ' + bb.x2)
     } else {
       // if in screen set x2 to
@@ -97,47 +104,30 @@ export class ViewportView extends ViewportElement {
     // if graph is too far below the screen
     if (extentB.bb.y2 > (extentA.bb.y2 * extentA.zoom) + extentA.pan.y) {
       // calculate how far in the graph the view is
-      bb.y2 = (extentB.bb.h - (extentB.bb.y2 - extentA.bb.y2)) * viewZoom
+      bb.y2 = (extentB.bb.h - (extentB.bb.y2 - extentA.bb.y2)) * viewZoomH
       console.log('bot: ' + bb.y2)
     } else {
-      bb.y2 = this._parent.getBoundingClientRect().bottom - this._parent.offsetTop;
+      console.log(this._parent.getBoundingClientRect())
+      bb.y2 = (this._parent.getBoundingClientRect().bottom - this._parent.getBoundingClientRect().top);
     }
-
-    console.log('')
 
     // get the height and width of the bounding box
     bb.w = bb.x2 - bb.x1;
     bb.h = bb.y2 - bb.y1;
 
+    // add offsets
+    bb.x1 += this._parent.offsetLeft;
+    bb.x2 += this._parent.offsetLeft;
+    bb.y1 += this._parent.offsetTop;
+    bb.y2 += this._parent.offsetTop;
+
+    console.log('res: ' + JSON.stringify(bb))
+
     return {
-      zoom: viewZoom,
+      zoom: Math.min(viewZoomW, viewZoomH),
       pan: { x: bb.x1, y: bb.y1 },
       bb
     };
-  }
-
-  /**
-   * Multiply bounds by the zoom value
-   * @param bb
-   * @param zoom
-   * @returns
-   */
-  private multiplyBounds(bb: CyBoundingBox, zoom: number, zoomFromCenter = true): CyBoundingBox {
-    let x1 = 0, x2 = 0, y1 = 0, y2 = 0, w = 0, h = 0;
-
-    if (zoomFromCenter) {
-      x1 = bb.x1 - ((bb.w * zoom) - bb.w) / 2;
-      x2 = bb.x2 + ((bb.w * zoom) - bb.w) / 2;
-      y1 = bb.y1 - ((bb.h * zoom) - bb.h) / 2;
-      y2 = bb.y2 + ((bb.h * zoom) - bb.h) / 2;
-    } else {
-      x1 = bb.x1 * zoom;
-      x2 = bb.x2 * zoom;
-      y1 = bb.y1 * zoom;
-      y2 = bb.y2 * zoom;
-    }
-
-    return { w, h, x1, x2, y1, y2 };
   }
 
   /**
@@ -147,6 +137,18 @@ export class ViewportView extends ViewportElement {
    */
   private isEmptyBounds(bb: CyBoundingBox): boolean {
     return bb.h == 0 || bb.w == 0 || isNaN(bb.h) || isNaN(bb.w);
+  }
+
+  /**
+   * Return true if any part of the graph is not on screen
+   * @param viewBox
+   * @param currentView
+   */
+  private isNotOnScreen(graphBounds: CyBoundingBox, currentView: CyBoundingBox): boolean {
+    return graphBounds.x2 < currentView.x1 || // the whole graph is to the left of the screen
+      graphBounds.x1 > currentView.x2 || // the whole graph is to the right of the screen
+      graphBounds.y2 < currentView.x1 || // the whole graph is above the screen
+      graphBounds.y1 > currentView.x2; // the whole graph is below the screen
   }
 
   /**
@@ -181,8 +183,8 @@ export class ViewportView extends ViewportElement {
 
     // calculate the difference between the display and the actual bounds
     const zoomRatio = Math.min(
-      displayExtent.bb.w / this.displayElement.offsetWidth,
-      displayExtent.bb.h / this.displayElement.offsetHeight
+      displayExtent.bb.w / (this.displayElement.offsetWidth - this._parent.offsetLeft),
+      displayExtent.bb.h / (this.displayElement.offsetHeight - this._parent.offsetTop)
     )
 
     // calculate x and y values
