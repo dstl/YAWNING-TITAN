@@ -3,9 +3,9 @@ import os
 import sys
 import webbrowser
 from threading import Timer
-from typing import Optional
 
 import typer
+
 
 app = typer.Typer()
 
@@ -130,6 +130,14 @@ def release_notes():
 
 
 @app.command()
+def clean_up():
+    """Cleans up left over files from previous version installations."""
+    from yawning_titan.utils import old_installation_clean_up
+
+    old_installation_clean_up.run()
+
+
+@app.command()
 def setup():
     """
     Perform the Yawning-Titan first-time setup.
@@ -139,22 +147,29 @@ def setup():
     from yawning_titan.utils import setup_app_dirs
     from yawning_titan.utils import reset_network_and_game_mode_db_defaults
     from yawning_titan.utils import reset_default_notebooks
-    print("Performing the Yawning-Titan first-time setup...")
-    print()
+    from yawning_titan.utils import old_installation_clean_up
+    from logging import getLogger
 
-    print("Building the Yawning-Titan app directories...")
+    import yawning_titan  # noqa - Gets the Yawning-Titan logger config
+
+    _LOGGER = getLogger(__name__)
+
+    _LOGGER.info("Performing the Yawning-Titan first-time setup...")
+
+    _LOGGER.info("Building the Yawning-Titan app directories...")
     setup_app_dirs.run()
-    print()
 
-    print("Rebuilding the NetworkDB and GameModeDB...")
+    _LOGGER.info("Rebuilding the NetworkDB and GameModeDB...")
     reset_network_and_game_mode_db_defaults.run(rebuild=True)
-    print()
 
-    print("Rebuilding the default notebooks...")
+    _LOGGER.info("Rebuilding the default notebooks...")
     reset_default_notebooks.run(overwrite_existing=True)
-    print()
 
-    print("Setup complete!")
+    _LOGGER.info(
+        "Performing a clean-up of previous Yawning-Titan installations...")
+    old_installation_clean_up.run()
+
+    _LOGGER.info("Yawning-Titan setup complete!")
 
 
 if __name__ == "__main__":

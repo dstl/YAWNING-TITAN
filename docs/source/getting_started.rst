@@ -6,7 +6,7 @@ Getting Started
 
 Pre-Requisites
 **************
-To get YAWNING-TITAN (**YT**) installed, you will need to have the following
+To get Yawning-Titan installed, you will need to have the following
 installed:
 
 **Unix**
@@ -19,39 +19,43 @@ installed:
 
 * ``python >= 3.8.*, <= 3.10.*``
 
-**YT** is designed to be OS-agnostic, and thus should work on most variations/distros of Linux, Windows, and MacOS.
+Yawning-Titan is designed to be OS-agnostic, and thus should work on most variations/distros of Linux, Windows, and MacOS.
 
 Environment Setup
 *****************
 
-**YT** operates from the users home directory where it has two locations, one hidden for backend stuff, and one user-facing
+Yawning-Titan operates from the users home directory where it has two locations, one hidden for backend stuff, and one user-facing
 for user files. To initialise this environment, run:
 
-**Unix**
 
-.. code:: bash
 
-    mkdir ~/yawning_titan
-    cd ~/yawning_titan
-    python3 -m venv .venv
-    source .venv/bin/activate
-    pip install <path to downloaded yawningtitan .whl file>
+.. tabs::
 
-**Windows**
+    .. code-tab:: bash
+        :caption: Unix
 
-.. code:: powershell
+        mkdir ~/yawning_titan
+        cd ~/yawning_titan
+        python3 -m venv .venv
+        source .venv/bin/activate
+        pip install <path to downloaded yawningtitan .whl file>
 
-    mkdir ~\yawning_titan
-    cd ~\yawning_titan
-    python3 -m venv .venv
-    attrib +h .venv /s /d # Hides the .venv directory
-    .\.venv\Scripts\activate
-    pip install <path to downloaded yawningtitan .whl file>
+    .. code-tab:: powershell
+        :caption: Windows
+
+        mkdir ~\yawning_titan
+        cd ~\yawning_titan
+        python3 -m venv .venv
+        attrib +h .venv /s /d # Hides the .venv directory
+        .\.venv\Scripts\activate
+        pip install <path to downloaded yawningtitan .whl file>
+
+
 
 Starting Yawning-Titan
 **********************
 
-The best way to begin working with **YT** is to run Jupyter Lab from the newly created venv.
+The best way to begin working with Yawning-Titan is to run Jupyter Lab from the newly created venv.
 
 **Unix**
 
@@ -92,9 +96,9 @@ The :class:`~yawning_titan.yawning_titan_run.YawningTitanRun` class is fully con
 Development Install
 *******************
 
-For those wishing to install **YT** and use it or extend it from within an IDE, perform the following development installation:
+For those wishing to install Yawning-Titan and use it or extend it from within an IDE, perform the following development installation:
 
-1. Navigate to the YAWNING-TITAN folder and create a new python :term:`Virtual Environment` (**venv**)
+1. Navigate to the Yawning-Titan folder and create a new python :term:`Virtual Environment` (**venv**)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: unix
@@ -119,7 +123,7 @@ For those wishing to install **YT** and use it or extend it from within an IDE, 
 
    .\venv\Scripts\activate
 
-3. Install YT into the :term:`venv<Virtual Environment>` along with all of its dependencies
+3. Install Yawning-Titan into the :term:`venv<Virtual Environment>` along with all of its dependencies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: bash

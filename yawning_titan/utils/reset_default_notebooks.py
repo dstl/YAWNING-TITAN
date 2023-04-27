@@ -24,7 +24,7 @@ def run(overwrite_existing: bool = True):
     user_notebooks_dir = Path.home() / "yawning_titan" / "notebooks"
 
     # The root dir of notebook package data in the library
-    lib_notebooks = Path(__file__).parent.parent / "yawning_titan" / "notebooks"
+    lib_notebooks = Path(__file__).parent.parent / "notebooks"
     default_notebooks_root = os.path.join(lib_notebooks, "_package_data")
 
     for subdir, dirs, files in os.walk(default_notebooks_root):

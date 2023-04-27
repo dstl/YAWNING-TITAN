@@ -6,12 +6,12 @@ To create a .spec file to use with pyinstaller run the command:
 
 pyinstaller manage.py
 
-If the .spec file is being built from scratch it is good practice to add a .ico file to the exe arguments as well as amending all references to name to match the YAWNING-TITAN project name. also switching off console prevents a console window from opening when the yawning_titan.exe file is ran.
+If the .spec file is being built from scratch it is good practice to add a .ico file to the exe arguments as well as amending all references to name to match the Yawning-Titan project name. also switching off console prevents a console window from opening when the yawning_titan.exe file is ran.
 
 exe = EXE(
   ...,
   icon='path/to/icon.ico',
-  name='YAWNING-TITAN',
+  name='Yawning-Titan',
   console=False,
 )
 
