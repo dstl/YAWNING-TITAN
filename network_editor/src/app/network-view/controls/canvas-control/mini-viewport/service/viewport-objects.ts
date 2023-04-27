@@ -14,10 +14,9 @@ export interface CyBoundingBox {
 }
 
 export interface DisplayValue {
-  zoom: number,
+  zoom: {
+    h: number,
+    w: number
+  },
   pan: { x: number, y: number }
-}
-
-export interface ViewportOptions {
-  padding: number
 }

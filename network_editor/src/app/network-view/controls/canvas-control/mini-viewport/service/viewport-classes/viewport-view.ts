@@ -1,4 +1,4 @@
-import { CyBoundingBox, Extent, ViewportOptions } from "../viewport-objects";
+import { CyBoundingBox, Extent } from "../viewport-objects";
 import { ViewportElement } from "./viewport-element";
 
 export class ViewportView extends ViewportElement {
@@ -6,17 +6,20 @@ export class ViewportView extends ViewportElement {
   // the element used to display the whole graph view
   private displayElement: HTMLElement;
 
+  // the padding applied to the cytoscape graph when fit is called
+  private graphPadding: number
+
   /**
    * Create an instance of Viewport View
    * @param el
    * @param parent
    * @param vpOpts
    */
-  constructor(el: HTMLElement, parent: HTMLElement, display: HTMLElement, vpOpts?: ViewportOptions) {
+  constructor(el: HTMLElement, parent: HTMLElement, display: HTMLElement, graphPadding: number) {
     // set class for the element
     el.setAttribute('class', 'viewport-view');
 
-    super(el, parent, vpOpts);
+    super(el, parent);
 
     this.displayElement = display;
     el.style['position'] = 'absolute';
@@ -29,6 +32,7 @@ export class ViewportView extends ViewportElement {
     // calculate what the view extent should be
     const updatedExtent = this.calculateViewBounds(viewExtent, displayExtent, this._bb);
 
+    // this.debug(displayExtent.bb, 'fixed')
 
     // draw the view box
     if (updatedExtent && updatedExtent.bb) {
@@ -57,6 +61,8 @@ export class ViewportView extends ViewportElement {
 
     // get the proper graph extent that includes the padding from the viewport box
     extentB = this.getDisplayExtent(extentB);
+    // TODO remove after tests completed
+    this.debug(extentB.bb, 'fixed')
 
     // if the graph is not on screen at all
     if (this.isNotOnScreen(extentB.bb, extentA.bb)) {
@@ -64,8 +70,8 @@ export class ViewportView extends ViewportElement {
     }
 
     // ratio between extentB and the parent container
-    const viewZoomW = (this._parent.offsetWidth) / extentB.bb.w;
-    const viewZoomH = (this._parent.offsetHeight) / extentB.bb.h;
+    const viewZoomW = (this._parent.clientWidth) / extentB.bb.w;
+    const viewZoomH = (this._parent.clientHeight) / extentB.bb.h;
 
     // if graph is too far left of the screen
     if (extentB.bb.x1 < extentA.bb.x1) {
@@ -128,7 +134,8 @@ export class ViewportView extends ViewportElement {
   }
 
   /**
-   * Return true if any part of the graph is not on screen
+   * Return true if no part of the graph is on screen
+   * i.e. is not on the screen
    * @param viewBox
    * @param currentView
    */
@@ -144,15 +151,20 @@ export class ViewportView extends ViewportElement {
    * @returns
    */
   private emptyView(): Extent {
+    const offsetLeft = this._parent.offsetLeft;
+    const offsetTop = this._parent.offsetTop;
+    const clientPaddingLeft = (this._element.offsetWidth - this._element.clientWidth) / 2;
+    const clientPaddingTop = (this._element.offsetHeight - this._element.clientHeight) / 2;
+
     return {
       zoom: 0,
       pan: { x: 0, y: 0 },
       bb: {
         w: this._parent.offsetWidth,
         h: this._parent.offsetHeight,
-        x1: this._parent.offsetLeft, y1: this._parent.offsetTop,
-        x2: this._parent.offsetWidth,
-        y2: this._parent.offsetHeight
+        x1: offsetLeft + clientPaddingLeft, y1: offsetTop + clientPaddingTop,
+        x2: this._parent.offsetWidth + clientPaddingLeft,
+        y2: this._parent.offsetHeight + clientPaddingTop
       }
     }
   }
@@ -165,14 +177,14 @@ export class ViewportView extends ViewportElement {
    * @returns
    */
   private getDisplayExtent(displayExtent: Extent): Extent {
-    if (!displayExtent.bb.h || !displayExtent.bb.w) {
+    if (!displayExtent?.bb?.h || !displayExtent?.bb?.w) {
       return displayExtent;
     }
 
     // calculate the difference between the display and the actual bounds
     const zoomRatio = Math.min(
-      displayExtent.bb.w / (this.displayElement.offsetWidth - this._parent.offsetLeft),
-      displayExtent.bb.h / (this.displayElement.offsetHeight - this._parent.offsetTop)
+      displayExtent.bb.w / (this.displayElement.clientWidth - this._parent.offsetLeft),
+      displayExtent.bb.h / (this.displayElement.clientHeight - this._parent.offsetTop)
     )
 
     // calculate x and y values

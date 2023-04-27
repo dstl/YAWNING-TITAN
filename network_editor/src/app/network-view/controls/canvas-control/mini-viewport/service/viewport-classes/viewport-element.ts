@@ -1,8 +1,6 @@
-import { CyBoundingBox, ViewportOptions } from "../viewport-objects";
+import { CyBoundingBox } from "../viewport-objects";
 
 export class ViewportElement {
-  // padding for any elements
-  protected vpOpts: ViewportOptions;
 
   // element which will display the relevant viewport item
   protected _element: HTMLElement;
@@ -19,13 +17,11 @@ export class ViewportElement {
     return this._bb;
   }
 
-  constructor(el: HTMLElement, parent: HTMLElement, opts?: ViewportOptions) {
+  constructor(el: HTMLElement, parent: HTMLElement) {
     // set element
     this._element = el;
 
     this._parent = parent;
-
-    this.vpOpts = opts;
 
     // set absolute position
     this._element.style['position'] = 'relative';
@@ -57,11 +53,6 @@ export class ViewportElement {
 
     pHeight -= parseFloat(computedParentStyle.paddingTop) + parseFloat(computedParentStyle.paddingBottom);
     pWidth -= parseFloat(computedParentStyle.paddingLeft) + parseFloat(computedParentStyle.paddingRight);
-
-    // set max height and width to parent container inner height and width
-    this._element.style['max-height'] = `${pHeight}px`;
-    this._element.style['max-width'] = `${pWidth}px`;
-
   }
 
   /**

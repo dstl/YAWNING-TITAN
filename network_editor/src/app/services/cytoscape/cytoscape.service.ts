@@ -15,7 +15,10 @@ export class CytoscapeService {
   ) { }
 
   // constant number for padding
-  private CYTOSCAPE_GRAPH_PADDING = 50;
+  private CYTOSCAPE_GRAPH_PADDING = 100;
+  get graphPadding(): number {
+    return this.CYTOSCAPE_GRAPH_PADDING;
+  }
 
   private _cy: cytoscape.Core = cytoscape();
   get cy(): cytoscape.Core {

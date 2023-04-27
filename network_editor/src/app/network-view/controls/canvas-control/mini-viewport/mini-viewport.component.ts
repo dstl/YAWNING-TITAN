@@ -15,14 +15,10 @@ export class MiniViewportComponent implements AfterViewInit {
     private viewportService: MiniViewportService
   ) { }
 
-  private options = {
-    padding: 20
-  }
-
   ngAfterViewInit(): void {
     // initialise service
     this.cytoscapeService.cytoscapeInstance.subscribe(() => {
-      this.viewportService.init(this.viewport.nativeElement, this.options);
+      this.viewportService.init(this.viewport.nativeElement);
     })
   }
 }

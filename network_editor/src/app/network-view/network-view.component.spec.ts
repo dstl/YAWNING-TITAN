@@ -69,5 +69,39 @@ describe('NetworkViewComponent', () => {
       tick(200);
       expect(spy).toHaveBeenCalled();
     }));
-  })
+  });
+
+  describe('METHOD: listenToNetworkSettingsChange', () => {
+    it('should process network settings changes', () => {
+      const spy = spyOn(component['interactionService'], 'processNetworkSettingsChanges');
+      const formData = new FormData();
+      formData.append('_operation', 'UPDATE_NETWORK_DETAILS');
+      component['listenToNetworkSettingsChange']({ detail: formData })
+      expect(spy).toHaveBeenCalled();
+    });
+
+    it('should process network metadata changes', () => {
+      const spy = spyOn(component['interactionService'], 'processNetworkMetadataChanges');
+      const formData = new FormData();
+      formData.append('_operation', 'UPDATE_NETWORK_METADATA');
+      component['listenToNetworkSettingsChange']({ detail: formData })
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('METHOD: listenToSelectedNodeListItem', () => {
+    it('should process the selected node event', () => {
+      const spy = spyOn(component['interactionService'], 'processNodeSelected');
+      component['listenToSelectedNodeListItem']({});
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('METHOD: listenToNodeListItemDelete', () => {
+    it('should process the delete node event', () => {
+      const spy = spyOn(component['interactionService'], 'processNodeDelete');
+      component['listenToNodeListItemDelete']({});
+      expect(spy).toHaveBeenCalled();
+    });
+  });
 });

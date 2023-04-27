@@ -1,7 +1,7 @@
 import { ElementRef, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { CytoscapeService } from '../../../../../services/cytoscape/cytoscape.service';
 import { NetworkService } from '../../../../../network-class/network.service';
-import { CyBoundingBox, DisplayValue, ViewportOptions } from './viewport-objects';
+import { CyBoundingBox, DisplayValue } from './viewport-objects';
 import * as cytoscape from 'cytoscape';
 import { ViewportView } from './viewport-classes/viewport-view';
 import { ViewportDisplay } from './viewport-classes/viewport-display';
@@ -46,26 +46,16 @@ export class MiniViewportService {
   // prevent the display from overwriting when one is in progress
   private _updatingDisplay = false;
 
-  /********************************************************************
-   * Viewport Options
-   ********************************************************************/
-  // viewport options
-  private vpOpts: ViewportOptions;
-
   /**
    * Initialises the viewport
    * @param viewportElement
    */
-  public init(viewportElement: HTMLElement, options?: ViewportOptions): void {
+  public init(viewportElement: HTMLElement): void {
     // set the viewport element
     this._viewportPanel = viewportElement;
 
     // set the cytoscape instance
     this._cy = this.cytoscapeService.cy;
-
-    if (options) {
-      this.parseOptions(options);
-    }
 
     // get the bounding box for cytoscape elements
     this.updateCyBoundingBox();
@@ -84,23 +74,15 @@ export class MiniViewportService {
    * Listen to any updates to cytoscape
    */
   private listenToUpdates(): void {
-    this.networkService.networkObservable.subscribe(() => this.updateDisplayImage());
-
-    this._cy.on('render', (evt) => {
+    this.networkService.networkObservable.subscribe(() => {
       this.updateDisplayImage();
+      this.updateView();
     });
 
     this._cy.on('add remove pan zoom render resize', (evt) => {
+      this.updateDisplayImage();
       this.updateView();
     });
-  }
-
-  /**
-   * Parse the options for the viewport
-   * @param options
-   */
-  private parseOptions(options: ViewportOptions): void {
-    this.vpOpts = options;
   }
 
   /**
@@ -108,22 +90,29 @@ export class MiniViewportService {
    */
   private updateCyBoundingBox(): void {
     // set the cytoscape bounding box
-    this._displayBoundingBox = this._cy.elements().boundingBox();
+    this._displayBoundingBox = this.applyPaddingToBoundingBox(
+      this._cy.elements().boundingBox(),
+      this.cytoscapeService.graphPadding
+    );
 
     // get the lower zoom value
-    this._displayVal['zoom'] = Math.min(
-      this._viewportPanel.offsetHeight / this._displayBoundingBox.h,
-      this._viewportPanel.offsetWidth / this._displayBoundingBox.w
-    )
+    this._displayVal['zoom'] = {
+      w: this._viewportPanel.offsetWidth / this._displayBoundingBox.w,
+      h: this._viewportPanel.offsetHeight / this._displayBoundingBox.h
+    }
 
-    if (!isNaN(this._displayVal.zoom)) {
-      this._displayVal.zoom = 1;
+    if (isNaN(this._displayVal.zoom.h)) {
+      this._displayVal.zoom.h = 1;
+    }
+
+    if (isNaN(this._displayVal.zoom.w)) {
+      this._displayVal.zoom.w = 1;
     }
 
     // get the pan value
     this._displayVal['pan'] = {
-      x: (this._viewportPanel.offsetWidth - this._displayVal.zoom * (this._displayBoundingBox.x1 + this._displayBoundingBox.x2)) / 2,
-      y: (this._viewportPanel.offsetHeight - this._displayVal.zoom * (this._displayBoundingBox.y1 + this._displayBoundingBox.y2)) / 2,
+      x: (this._viewportPanel.offsetWidth - this._displayVal.zoom.w * (this._displayBoundingBox.x1 + this._displayBoundingBox.x2)) / 2,
+      y: (this._viewportPanel.offsetHeight - this._displayVal.zoom.h * (this._displayBoundingBox.y1 + this._displayBoundingBox.y2)) / 2,
     }
   }
 
@@ -135,7 +124,7 @@ export class MiniViewportService {
    */
   private initViewportDisplay(): void {
     // create viewport display
-    this._viewportDisplay = new ViewportDisplay(document.createElement('img'), this._viewportPanel, this.vpOpts);
+    this._viewportDisplay = new ViewportDisplay(document.createElement('img'), this._viewportPanel);
 
     // attach to the panel
     this.renderer.appendChild(this._viewportPanel, this._viewportDisplay.element);
@@ -159,8 +148,8 @@ export class MiniViewportService {
     this.updateCyBoundingBox();
 
     // calculate the size of the png
-    const w = this._viewportPanel.offsetWidth - (this.vpOpts.padding * 2);
-    const h = this._viewportPanel.offsetHeight - (this.vpOpts.padding * 2);
+    const w = this._viewportPanel.offsetWidth;
+    const h = this._viewportPanel.offsetHeight;
     const bb = this._displayBoundingBox;
     const zoom = Math.min(w / bb.w, h / bb.h);
 
@@ -186,7 +175,7 @@ export class MiniViewportService {
       document.createElement('div'),
       this._viewportPanel,
       this._viewportDisplay.element,
-      this.vpOpts
+      this.cytoscapeService.graphPadding
     );
 
     // attach to the panel
@@ -221,5 +210,23 @@ export class MiniViewportService {
       pan: { x: renderedBounds.x1, y: renderedBounds.y1 },
       bb: renderedBounds
     })
+  }
+
+  /**
+   * Applies the cytoscape padding to the bounding box
+   * @param bb
+   * @param padding
+   * @returns
+   */
+  private applyPaddingToBoundingBox(bb: CyBoundingBox, padding?: number, zoom = 1): CyBoundingBox {
+    padding = padding ? (padding * zoom) : 0;
+    return {
+      w: bb.w + padding,
+      h: bb.h + padding,
+      x1: bb.x1 - padding,
+      x2: bb.x2 + padding,
+      y1: bb.y1 - padding,
+      y2: bb.y2 + padding
+    }
   }
 }

@@ -4,9 +4,11 @@
 
 @mixin mini-viewport-mixin($theme) {
   $primary: map-get($theme, primary);
+  $background: map-get($theme, background);
 
   #miniViewport {
     border: 1px solid map-get($primary, 600);
+    background-color: map-get($background, background);
   }
 
   .viewport-view {
