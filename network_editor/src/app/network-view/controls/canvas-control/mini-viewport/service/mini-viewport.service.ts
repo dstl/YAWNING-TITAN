@@ -174,8 +174,7 @@ export class MiniViewportService {
     this._viewportView = new ViewportView(
       document.createElement('div'),
       this._viewportPanel,
-      this._viewportDisplay.element,
-      this.cytoscapeService.graphPadding
+      this._viewportDisplay.element
     );
 
     // attach to the panel

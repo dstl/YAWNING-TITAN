@@ -6,16 +6,13 @@ export class ViewportView extends ViewportElement {
   // the element used to display the whole graph view
   private displayElement: HTMLElement;
 
-  // the padding applied to the cytoscape graph when fit is called
-  private graphPadding: number
-
   /**
    * Create an instance of Viewport View
    * @param el
    * @param parent
    * @param vpOpts
    */
-  constructor(el: HTMLElement, parent: HTMLElement, display: HTMLElement, graphPadding: number) {
+  constructor(el: HTMLElement, parent: HTMLElement, display: HTMLElement) {
     // set class for the element
     el.setAttribute('class', 'viewport-view');
 
@@ -31,8 +28,6 @@ export class ViewportView extends ViewportElement {
   public updateViewPosition(viewExtent: Extent, displayExtent: Extent): void {
     // calculate what the view extent should be
     const updatedExtent = this.calculateViewBounds(viewExtent, displayExtent, this._bb);
-
-    // this.debug(displayExtent.bb, 'fixed')
 
     // draw the view box
     if (updatedExtent && updatedExtent.bb) {
@@ -61,8 +56,6 @@ export class ViewportView extends ViewportElement {
 
     // get the proper graph extent that includes the padding from the viewport box
     extentB = this.getDisplayExtent(extentB);
-    // TODO remove after tests completed
-    this.debug(extentB.bb, 'fixed')
 
     // if the graph is not on screen at all
     if (this.isNotOnScreen(extentB.bb, extentA.bb)) {

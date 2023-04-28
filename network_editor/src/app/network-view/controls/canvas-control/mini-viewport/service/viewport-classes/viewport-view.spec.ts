@@ -27,8 +27,7 @@ describe('ViewportView', () => {
     viewportView = new ViewportView(
       document.createElement('div'),
       parentEl,
-      display.element,
-      0
+      display.element
     )
   });
 
@@ -156,7 +155,5 @@ describe('ViewportView', () => {
 
       expect(viewportView['getDisplayExtent'](extent)).toEqual(extent);
     });
-
-
   });
 });

@@ -54,36 +54,4 @@ export class ViewportElement {
     pHeight -= parseFloat(computedParentStyle.paddingTop) + parseFloat(computedParentStyle.paddingBottom);
     pWidth -= parseFloat(computedParentStyle.paddingLeft) + parseFloat(computedParentStyle.paddingRight);
   }
-
-  /**
-   * Draws a bounding box on the screen
-   *
-   * (FOR DEBUGGING ONLY)
-   * @param bb
-   * @param position default relative to the parent box, use 'fixed' to show its placement exactly on screen
-   */
-  protected debug(bb: CyBoundingBox, position = 'relative', opts?: any): void {
-    const div = document.createElement('div');
-    div.style['border'] = opts && opts['border'] ? opts['border'] : '1px solid red';
-    div.style['z-index'] = opts && opts['z-index'] ? opts['z-index'] : 4;
-    div.style['background-color'] = opts && opts['background-color'] ? opts['background-color'] : 'transparent';
-
-    div.style['left'] = `${bb.x1}px`;
-    div.style['top'] = `${bb.y1}px`;
-    div.style['width'] = `${bb.w}px`;
-    div.style['height'] = `${bb.h}px`;
-
-    div.style['position'] = position;
-    div.style['pointer-events'] = opts && opts['pointer-events'] ? opts['pointer-events'] : 'none';
-
-    div.className = 'debugBox';
-
-    const debugEl = document.getElementsByClassName('debugBox');
-    if (debugEl.length) {
-      while (debugEl[0]) {
-        debugEl[0].parentNode.removeChild(debugEl[0])
-      }
-    }
-    document.body.appendChild(div);
-  }
 }
