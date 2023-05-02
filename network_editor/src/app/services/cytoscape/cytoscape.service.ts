@@ -130,6 +130,7 @@ export class CytoscapeService {
    * Bring the whole network into view
    */
   public resetView(): void {
+    this.cy.resize();
     this.cy.fit(null, this.CYTOSCAPE_GRAPH_PADDING);
   }
 
