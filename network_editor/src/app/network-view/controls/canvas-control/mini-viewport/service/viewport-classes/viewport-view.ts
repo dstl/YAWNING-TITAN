@@ -174,20 +174,17 @@ export class ViewportView extends ViewportElement {
       return displayExtent;
     }
 
-    // calculate the difference between the display and the actual bounds
-    const zoomRatio = Math.min(
-      displayExtent.bb.w / (this.displayElement.clientWidth - this._parent.offsetLeft),
-      displayExtent.bb.h / (this.displayElement.clientHeight - this._parent.offsetTop)
-    )
+    const zoomX = displayExtent.bb.w / this.displayElement.clientWidth;
+    const zoomY = displayExtent.bb.h / this.displayElement.clientHeight
 
     // calculate x and y values
-    const x1 = displayExtent.bb.x1 - (this.displayElement.offsetLeft * zoomRatio);
-    const y1 = displayExtent.bb.y1 - (this.displayElement.offsetTop * zoomRatio);
-    const x2 = displayExtent.bb.x2 + (this.displayElement.offsetLeft * zoomRatio);
-    const y2 = displayExtent.bb.y2 + (this.displayElement.offsetTop * zoomRatio);
+    const x1 = displayExtent.bb.x1 - (this.displayElement.offsetLeft * zoomX);
+    const y1 = displayExtent.bb.y1 - (this.displayElement.offsetTop * zoomY);
+    const x2 = displayExtent.bb.x2 + (this.displayElement.offsetLeft * zoomX);
+    const y2 = displayExtent.bb.y2 + (this.displayElement.offsetTop * zoomY);
 
     return {
-      zoom: zoomRatio,
+      zoom: Math.min(zoomX, zoomY),
       pan: { x: x1, y: y1 },
       bb: {
         w: x2 - x1,

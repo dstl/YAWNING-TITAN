@@ -155,5 +155,34 @@ describe('ViewportView', () => {
 
       expect(viewportView['getDisplayExtent'](extent)).toEqual(extent);
     });
+
+    it('should convert extent', () => {
+      viewportView['displayElement'] = {
+        offsetLeft: 20,
+        offsetTop: 10,
+        clientWidth: 200,
+        clientHeight: 100
+      } as any;
+
+      const extent = {
+        zoom: 1, pan: { x: 10, y: 10 },
+        bb: { x1: 0, y1: 0, x2: 100, y2: 100, w: 100, h: 100 }
+      }
+
+      const expected = {
+        zoom: 0.5,
+        pan: {x: -10, y: -10},
+        bb: {
+          x1: -10,
+          y1: -10,
+          x2: 110,
+          y2: 110,
+          h: 120,
+          w: 120
+        }
+      }
+
+      expect(viewportView['getDisplayExtent'](extent)).toEqual(expected)
+    });
   });
 });
