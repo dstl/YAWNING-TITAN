@@ -7,7 +7,7 @@ from yawning_titan_gui.forms.game_mode_forms import (
     GameModeFormManager,
     GameModeSection,
 )
-from yawning_titan_gui.helpers import get_toolbar
+from yawning_titan_gui.views.utils.helpers import get_toolbar
 
 
 class GameModeConfigView(View):

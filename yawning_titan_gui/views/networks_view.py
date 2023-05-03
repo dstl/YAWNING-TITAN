@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views import View
 
 from yawning_titan_gui.forms.network_forms import NetworkSearchForm
-from yawning_titan_gui.helpers import NetworkManager, get_toolbar
+from yawning_titan_gui.views.utils.helpers import NetworkManager, get_toolbar
 
 
 class NetworksView(View):

@@ -9,7 +9,7 @@ from tests.gui import DEFAULT_GAME_MODE_ID
 from yawning_titan.db.doc_metadata import DocMetadata
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.game_modes.game_mode_db import default_game_mode
-from yawning_titan_gui.helpers import GameModeManager
+from yawning_titan_gui.views.utils.helpers import GameModeManager
 
 URL = reverse("Manage game modes")
 MANAGEMENT_URL = reverse("db manager")

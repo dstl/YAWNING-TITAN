@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.views import View
 
 from yawning_titan_gui.forms.network_forms import NetworkFormManager
-from yawning_titan_gui.helpers import get_toolbar
+from yawning_titan_gui.views.utils.helpers import get_network_layouts, get_toolbar
 
 
 class NetworkEditor(View):
@@ -37,6 +37,7 @@ class NetworkEditor(View):
                 "network_json": json.dumps(
                     network_form.network.to_dict(json_serializable=True)
                 ),
+                "network_layouts": json.dumps(get_network_layouts())
             },
         )
 

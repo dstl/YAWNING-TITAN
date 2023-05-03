@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views import View
 
 from yawning_titan_gui.forms.run_form import RunForm
-from yawning_titan_gui.helpers import (
+from yawning_titan_gui.views.utils.helpers import (
     GameModeManager,
     NetworkManager,
     RunManager,

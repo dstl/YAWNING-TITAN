@@ -6,7 +6,7 @@ from django.views import View
 
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan_gui.forms.game_mode_forms import GameModeSearchForm
-from yawning_titan_gui.helpers import GameModeManager, get_toolbar
+from yawning_titan_gui.views.utils.helpers import GameModeManager, get_toolbar
 
 
 class GameModesView(View):

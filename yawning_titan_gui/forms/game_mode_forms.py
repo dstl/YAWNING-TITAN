@@ -12,7 +12,7 @@ from yawning_titan.config.item_types.float_item import FloatItem
 from yawning_titan.config.item_types.int_item import IntItem
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan_gui.forms import RangeInput, create_doc_meta_form
-from yawning_titan_gui.helpers import GameModeManager, next_key
+from yawning_titan_gui.views.utils.helpers import GameModeManager, next_key
 
 
 class ConfigForm(django_forms.Form):

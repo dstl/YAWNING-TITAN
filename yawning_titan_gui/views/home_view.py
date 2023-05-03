@@ -2,7 +2,7 @@ from django.http import HttpRequest
 from django.shortcuts import render
 from django.views import View
 
-from yawning_titan_gui.helpers import get_toolbar
+from yawning_titan_gui.views.utils.helpers import get_toolbar
 
 
 class HomeView(View):

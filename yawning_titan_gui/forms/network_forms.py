@@ -12,7 +12,7 @@ from yawning_titan.networks.network import (
     RandomHighValueNodePreference,
 )
 from yawning_titan_gui.forms import RangeInput, create_doc_meta_form
-from yawning_titan_gui.helpers import NetworkManager
+from yawning_titan_gui.views.utils.helpers import NetworkManager
 
 
 class NetworkTemplateForm(django_forms.Form):

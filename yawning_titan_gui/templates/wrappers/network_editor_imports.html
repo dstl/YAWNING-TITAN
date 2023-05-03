@@ -10,6 +10,7 @@
 <script src="{% static 'js/network_editor.js' %}"></script>
 
 <script type="text/javascript">
+    const NETWORK_LAYOUTS = `{{network_layouts | safe}}`
     const NETWORK = `{{network_json | safe}}`;
     const NETWORK_ID = "{{network_id}}";
     const EDITOR_URL = "{% url 'network editor' %}";
@@ -34,6 +35,7 @@
         }
     };
     window.NETWORK = NETWORK;
+    window.NETWORK_LAYOUTS = NETWORK_LAYOUTS;
     var proxy = new Proxy(window, handler);
 
     /**

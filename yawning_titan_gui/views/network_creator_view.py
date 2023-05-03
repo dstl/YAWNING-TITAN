@@ -9,7 +9,7 @@ from yawning_titan_gui.forms.network_forms import (
     NetworkFormManager,
     NetworkTemplateForm,
 )
-from yawning_titan_gui.helpers import NetworkManager, get_toolbar
+from yawning_titan_gui.views.utils.helpers import NetworkManager, get_toolbar
 
 
 class NetworkCreator(View):
