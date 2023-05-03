@@ -22,6 +22,7 @@
   }
 
   app-canvas-control {
+    display: flex;
     z-index: 999;
     position: absolute;
     bottom: 0;

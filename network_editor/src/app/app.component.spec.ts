@@ -8,6 +8,9 @@ import { DJANGO_SAVE_URL } from './app.tokens';
 import { CytoscapeService } from './services/cytoscape/cytoscape.service';
 import { ElementType } from './services/cytoscape/graph-objects';
 import { InteractionService } from './services/interaction/interaction.service';
+import { Network } from './network-class/network';
+import { test_network } from '../testing/test-network';
+import { NetworkService } from './network-class/network.service';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -25,12 +28,19 @@ describe('AppComponent', () => {
     post: () => of()
   }
 
+  const networkServiceStub: any = {
+    networkObservable: new Subject(),
+    getNodeById: () => '',
+    getNetworkJson: () => { }
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AppComponent],
       providers: [
         { provide: CytoscapeService, useValue: stubCytoscapeService },
         { provide: InteractionService, useValue: stubIteractionService },
+        { provide: NetworkService, useValue: networkServiceStub },
         { provide: DJANGO_SAVE_URL, useValue: '' },
         { provide: HttpClient, useValue: httpStub }
       ],
@@ -58,6 +68,42 @@ describe('AppComponent', () => {
     tick();
     expect(spy).toHaveBeenCalled();
   }));
+
+  it('should not try to update the network if the document is locked', fakeAsync(() => {
+    component.ngOnInit();
+    const spy = spyOn<any>(component, 'updateNetwork');
+    tick(1100);
+
+    const network = new Network(test_network);
+    networkServiceStub.networkObservable.next(network)
+    tick(1100);
+    expect(spy).not.toHaveBeenCalled();
+  }));
+
+  it('should update the network if the document is not locked', fakeAsync(() => {
+    component.ngOnInit();
+    const spy = spyOn<any>(component, 'updateNetwork');
+    tick(1100);
+
+    const network = new Network(test_network);
+    network.documentMetadata.locked = false;
+    networkServiceStub.networkObservable.next(network)
+    tick(1100);
+    expect(spy).toHaveBeenCalled();
+  }));
+
+  describe('METHOD: updateNetwork', () => {
+    it('should send the correct post body', () => {
+      component['saveUrl'] = '';
+      const testStr = JSON.stringify(test_network);
+      spyOn(component['networkService'], 'getNetworkJson').and.returnValue(test_network as any)
+      const spy = spyOn(component['http'], 'post').and.returnValue(of());
+
+      component['updateNetwork']();
+
+      expect(spy).toHaveBeenCalledWith('', testStr);
+    });
+  });
 
   describe('METHOD: handleKeyboardEvent', () => {
     it('should trigger the keyInput method in the interaction service', () => {
