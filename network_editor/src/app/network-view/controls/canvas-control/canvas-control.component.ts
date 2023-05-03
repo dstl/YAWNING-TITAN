@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { CytoscapeService } from 'src/app/services/cytoscape/cytoscape.service';
 
 @Component({
@@ -8,7 +8,9 @@ import { CytoscapeService } from 'src/app/services/cytoscape/cytoscape.service';
 })
 export class CanvasControlComponent {
 
-  constructor(private cytoscapeService: CytoscapeService) { }
+  constructor(
+    private cytoscapeService: CytoscapeService
+    ) { }
 
   resetView() {
     this.cytoscapeService.resetView();

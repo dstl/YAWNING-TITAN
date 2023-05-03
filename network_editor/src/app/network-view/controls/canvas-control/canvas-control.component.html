@@ -1,5 +1,10 @@
 <div class="canvas-control-container">
-  <button mat-icon-button (click)="resetView()">
-    <mat-icon>fullscreen</mat-icon>
-  </button>
+  <div class="mini-viewport-container">
+    <app-mini-viewport></app-mini-viewport>
+  </div>
+  <div class="canvas-control-button-container">
+    <button mat-icon-button (click)="resetView()">
+      <mat-icon>fullscreen</mat-icon>
+    </button>
+  </div>
 </div>
