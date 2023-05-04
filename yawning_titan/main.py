@@ -1,18 +1,10 @@
 """Provides a CLI using Typer as an entry point."""
 import os
 import sys
-import webbrowser
-from threading import Timer
-from typing import Optional
 
 import typer
 
 app = typer.Typer()
-
-
-def _open_browser():
-    """Opens the browser at the Yawning-Titan GUI."""
-    webbrowser.open_new("http://127.0.0.1:8000")
 
 
 @app.command()
@@ -20,18 +12,10 @@ def gui():
     """Start the Yawning-Titan GUI."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE",
                           "yawning_titan_server.settings.prod")
-    try:
-        from django.core.management import execute_from_command_line
-    except ImportError as exc:
-        raise ImportError(
-            "Couldn't import Django. Are you sure it's installed and "
-            "available on your PYTHONPATH environment variable? Did you "
-            "forget to activate a virtual environment?"
-        ) from exc
+    from django.core.management import execute_from_command_line
 
-    Timer(1, _open_browser).start()
-    execute_from_command_line(["manage.py", "runserver"])
-
+    """Method that is fired on execution of the command in the terminal."""
+    execute_from_command_line(["runserver", "run_gui"])
 
 @app.command()
 def build_dirs():

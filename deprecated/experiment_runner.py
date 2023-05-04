@@ -1,3 +1,11 @@
+"""
+CLI experiment runner.
+
+.. warning::
+
+    This module is being deprecated in a future release to make way for
+    a session option in the Yawning-Titan Typer CLI app.
+"""
 import argparse
 import logging
 import sys

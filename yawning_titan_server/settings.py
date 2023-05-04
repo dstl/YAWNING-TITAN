@@ -118,7 +118,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "_static/"
-STATIC_ROOT = STATIC_DIR
+STATIC_ROOT = Path(__file__).parent.parent / "yawning_titan_gui" / "static"
 STATICFILES_DIRS = [
     BASE_DIR / "yawning_titan_gui/static",
     DOCS_ROOT / "_static",

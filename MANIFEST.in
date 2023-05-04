@@ -1,2 +1,8 @@
-include LICENSE
 include yawning_titan/VERSION
+include yawning_titan/config/_package_data/logging_config.yaml
+include yawning_titan/game_modes/_package_data/game_modes.json
+include yawning_titan/networks/_package_data/network.json
+include yawning_titan/notebooks/_package_data/*
+
+recursive-include yawning_titan_gui/static/*
+recursive-include yawning_titan_gui/templates/*

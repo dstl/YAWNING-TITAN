@@ -21,8 +21,4 @@ class Command(BaseCommand):
 
         from yawning_titan_server.wsgi import application as app
 
-        # Creates the static ui files copy in the data directory
-        call_command("setup")
-
-        print(f"running app with {sys.executable}")
-        FlaskUI(app=app, server="django").run()
+        FlaskUI(app=app, server="django", port=8000).run()
