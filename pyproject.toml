@@ -2,9 +2,6 @@
 requires = ["setuptools", "setuptools-scm", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[tool.distutils.bdist_wheel]
-universal = true
-
 [project]
 name = "yawningtitan"
 description = "An abstract, flexible and configurable cyber security simulation."
@@ -54,23 +51,14 @@ dependencies = [
     "waitress==2.1.2"
 ]
 
+
 [tool.setuptools.dynamic]
-version = {file = "yawning_titan/VERSION"}
+version = {file = "src/yawning_titan/VERSION"}
 readme = {file = "README.md"}
 
-
 [tool.setuptools]
-packages = ["yawning_titan", "yawning_titan_gui", "yawning_titan_server"]
+package-dir = {"" = "src"}
 include-package-data = true
-
-[project.scripts]
-yawning-titan = "yawning_titan.main:app"
-
-[project.urls]
-"Homepage" = "https://github.com/dstl/YAWNING-TITAN"
-"Documentation" = "https://dstl.github.io/YAWNING-TITAN/"
-"Repository" = "https://github.com/dstl/YAWNING-TITAN"
-"Issue Tracker" = "https://github.com/dstl/YAWNING-TITAN/issues"
 
 [project.optional-dependencies]
 dev = [
@@ -88,3 +76,12 @@ dev = [
     "wheel",
     "build"
 ]
+
+[project.scripts]
+yawning-titan = "yawning_titan.main:app"
+
+[project.urls]
+"Homepage" = "https://github.com/dstl/YAWNING-TITAN"
+"Documentation" = "https://dstl.github.io/YAWNING-TITAN/"
+"Repository" = "https://github.com/dstl/YAWNING-TITAN"
+"Issue Tracker" = "https://github.com/dstl/YAWNING-TITAN/issues"
