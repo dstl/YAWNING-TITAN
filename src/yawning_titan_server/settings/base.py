@@ -15,7 +15,7 @@ from pathlib import Path
 from yawning_titan import IMAGES_DIR
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))).parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-cu!)4gec_vj=vhj&jba(b$vd6#$i#v^tr%z%#4idf9c17a#7g9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-DOCS_ROOT = BASE_DIR / "docs/_build/html"
+DOCS_ROOT = BASE_DIR / "yawning_titan_gui" / "static" / "docs"
 
 # Application definition
 

@@ -26,7 +26,8 @@ SECRET_KEY = "django-insecure-cu!)4gec_vj=vhj&jba(b$vd6#$i#v^tr%z%#4idf9c17a#7g9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-DOCS_ROOT = BASE_DIR / "docs/_build/html"
+DOCS_ROOT = BASE_DIR / "yawning_titan_gui" / "static" / "docs"
+
 
 # Application definition
 
