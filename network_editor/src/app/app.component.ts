@@ -6,7 +6,6 @@ import { NetworkService } from './network-class/network.service';
 import { Network } from './network-class/network';
 import { Node } from './network-class/network-interfaces';
 import { HttpClient } from '@angular/common/http';
-import { PortalInjector } from '@angular/cdk/portal';
 import { DJANGO_SAVE_URL } from './app.tokens';
 import { debounceTime, tap } from 'rxjs';
 

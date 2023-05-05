@@ -79,6 +79,28 @@ export class NetworkViewComponent implements AfterViewInit {
   }
 
   /**
+   * Listen to window resize event and resize the cytoscape canvas
+   * @param event
+   */
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    const element: Element = this.cytoscapeCanvas.nativeElement;
+
+    // get the height of the top nav if it exists
+    const topOffset = document.getElementById('top-nav') ? document.getElementById('top-nav').offsetHeight : 0;
+
+    // get the width of toolbar
+    const toolbarWidth = document.getElementById('toolbar') ? document.getElementById('toolbar').offsetWidth : 0;
+    const sidenavWidth = document.getElementById('network-sidenav')? document.getElementById('network-sidenav').offsetWidth : 0;
+
+    // set element width and height
+    element['style'].width = `${event.target.innerWidth - (toolbarWidth + sidenavWidth)}px`
+    element['style'].height = `${event.target.innerHeight - topOffset}px`
+
+    this.cytoscapeService.resetView();
+  }
+
+  /**
    * Load the dropped file
    * @param $event
    */

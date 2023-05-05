@@ -144,7 +144,8 @@ export class CytoscapeService {
    * Bring the whole network into view
    */
   public resetView(): void {
-    this._cy.fit(null, this.CYTOSCAPE_GRAPH_PADDING);
+    this.cy.resize();
+    this.cy.fit(null, this.CYTOSCAPE_GRAPH_PADDING);
   }
 
   /**

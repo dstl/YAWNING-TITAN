@@ -42,14 +42,9 @@ class NetworkLayout(Enum):
     See: https://networkx.org/documentation/stable/reference/drawing.html#module-networkx.drawing.layout
     """
 
-    BIPARTITE = "bipartite"
     CIRCULAR = "circular"
-    FRUCHTERMAN_REINGOLD = "fruchterman_reingold"
     KAMADA_KAWAI = "kamada_kawai"
-    MULTIPARTITE = "multipartite"
     PLANAR = "planar"
-    RANDOM = "random"
-    RESCALE = "rescale"
     SHELL = "shell"
     SPECTRAL = "spectral"
     SPIRAL = "spiral"
@@ -58,14 +53,9 @@ class NetworkLayout(Enum):
     def as_layout_func(self):
         """Maps the NetworkLayout to a function in networkx.drawing.layout."""
         layout_dict = {
-            NetworkLayout.BIPARTITE: bipartite_layout,
             NetworkLayout.CIRCULAR: circular_layout,
-            NetworkLayout.FRUCHTERMAN_REINGOLD: fruchterman_reingold_layout,
             NetworkLayout.KAMADA_KAWAI: kamada_kawai_layout,
-            NetworkLayout.MULTIPARTITE: multipartite_layout,
             NetworkLayout.PLANAR: planar_layout,
-            NetworkLayout.RANDOM: random_layout,
-            NetworkLayout.RESCALE: rescale_layout,
             NetworkLayout.SHELL: shell_layout,
             NetworkLayout.SPECTRAL: spectral_layout,
             NetworkLayout.SPIRAL: spiral_layout,
@@ -490,7 +480,11 @@ class Network(nx.Graph):
         :param network_layout: A member of NetworkLayout. Default is
             NetworkLayout.SPRING.
         """
-        pos_dict = network_layout.as_layout_func()(self)
+        try:
+            pos_dict = network_layout.as_layout_func()(self, seed=1)
+        except TypeError:
+            pos_dict = network_layout.as_layout_func()(self)
+
         for node in self.nodes:
             node.node_position = pos_dict[node]
 

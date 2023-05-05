@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
 
-from yawning_titan_gui.helpers import get_toolbar
+from yawning_titan_gui.views.utils.helpers import get_toolbar
 
 
 class DocsView(View):

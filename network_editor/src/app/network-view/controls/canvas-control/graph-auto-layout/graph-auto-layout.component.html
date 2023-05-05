@@ -1,0 +1,15 @@
+<button mat-icon-button [matMenuTriggerFor]="layoutMenu" matTooltip="Apply a layout algorithm on the network"
+  matTooltipPosition="right">
+  <mat-icon color="primary">hub</mat-icon>
+</button>
+<mat-menu #layoutMenu="matMenu" class="layout-menu-container">
+  <div *ngIf="autoLayoutsAvailable();then layoutOptions; else noLayouts"></div>
+</mat-menu>
+
+<ng-template #noLayouts>
+  <div class="no-layout-container">No layouts available</div>
+</ng-template>
+<ng-template #layoutOptions>
+  <button mat-menu-item *ngFor="let layout of layouts" (click)="applyLayout(layout)">{{layout |
+    appLayoutLabelPipe}}</button>
+</ng-template>
