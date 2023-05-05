@@ -2,7 +2,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from django.views.generic import TemplateView
 
-from yawning_titan_gui.views.utils.helpers import get_docs_sections
 from yawning_titan_gui.views.docs_view import DocsView
 from yawning_titan_gui.views.game_mode_config_view import GameModeConfigView
 from yawning_titan_gui.views.game_modes_view import GameModesView
@@ -12,9 +11,10 @@ from yawning_titan_gui.views.network_creator_view import NetworkCreator
 from yawning_titan_gui.views.network_editor_view import NetworkEditor
 from yawning_titan_gui.views.networks_view import NetworksView
 from yawning_titan_gui.views.run_view import RunView
-from yawning_titan_gui.views.utils.update_network_layout import update_network_layout
-from yawning_titan_gui.views.utils.utils import db_manager, get_output, update_game_mode
-from yawning_titan_gui.views.utils import (
+from yawning_titan_gui.views.utils.helpers import get_docs_sections
+from yawning_titan_gui.views.utils.update_network_layout import \
+    update_network_layout
+from yawning_titan_gui.views.utils.utils import (
     db_manager,
     get_output,
     update_game_mode
