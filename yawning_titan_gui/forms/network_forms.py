@@ -444,7 +444,8 @@ class NetworkFormManager:
         :param data: The python dictionary object containing a full representation of a network
             including nodes and edges.
         """
-        network = NetworkManager.db.get(network_id)
+        network = Network()
+        network.set_from_dict(data)
         form = NetworkForm(network=network, data=data)
         cls.network_forms[network_id] = form
         if settings.DYNAMIC_UPDATES:

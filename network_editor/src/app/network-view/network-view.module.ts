@@ -10,6 +10,7 @@ import { MiniViewportComponent } from './controls/canvas-control/mini-viewport/m
 import { MiniViewportService } from './controls/canvas-control/mini-viewport/service/mini-viewport.service';
 import { GraphAutoLayoutComponent } from './controls/canvas-control/graph-auto-layout/graph-auto-layout.component';
 import { LayoutLabelPipeDirective } from './controls/canvas-control/graph-auto-layout/layout-label-pipe/layout-label-pipe.directive';
+import { UndoLayoutComponent } from './controls/canvas-control/graph-auto-layout/undo-layout/undo-layout.component';
 
 const components = [
   NetworkViewComponent,
@@ -24,7 +25,8 @@ const components = [
 
 @NgModule({
   declarations: [
-    ...components
+    ...components,
+    UndoLayoutComponent
   ],
   exports: [
     ...components

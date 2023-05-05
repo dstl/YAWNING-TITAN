@@ -4,6 +4,8 @@ import { UPDATE_NETWORK_LAYOUT_URL } from '../../../../app.tokens';
 import { NetworkService } from '../../../../network-class/network.service';
 import { Network } from '../../../../network-class/network';
 import { NetworkJson } from '../../../../network-class/network-interfaces';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { UndoLayoutComponent } from './undo-layout/undo-layout.component';
 
 @Component({
   selector: 'app-graph-auto-layout',
@@ -17,7 +19,8 @@ export class GraphAutoLayoutComponent {
   constructor(
     @Inject(UPDATE_NETWORK_LAYOUT_URL) private updateNetworkLayoutUrl,
     private httpClient: HttpClient,
-    private networkService: NetworkService
+    private networkService: NetworkService,
+    private snackBar: MatSnackBar
   ) { }
 
   /**
@@ -46,9 +49,11 @@ export class GraphAutoLayoutComponent {
     })
       .subscribe((body: any) => {
         try {
+          const currentJson = this.networkService.getNetworkJson();
           body = this.scaleUpNodePositions(body);
           const network = new Network(body);
           this.networkService.loadNetwork(network);
+          this.openUndoLayout(currentJson);
         } catch (e) {
           console.error(e);
           throw new Error("Unable to parse JSON", e);
@@ -77,5 +82,15 @@ export class GraphAutoLayoutComponent {
     });
 
     return network;
+  }
+
+  /**
+   * Open the undo layout snackbar
+   */
+  private openUndoLayout(data: any): void {
+    this.snackBar.openFromComponent(
+      UndoLayoutComponent,
+      { data, horizontalPosition: 'center' }
+    )
   }
 }
