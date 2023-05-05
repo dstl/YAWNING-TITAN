@@ -24,7 +24,7 @@ from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB
 from yawning_titan.networks.node import Node
 from yawning_titan.yawning_titan_run import YawningTitanRun
-from yawning_titan_gui.helpers import GameModeManager, NetworkManager
+from yawning_titan_gui.views.utils.helpers import GameModeManager, NetworkManager
 
 TOLERANCE: Final[float] = 0.1
 N_TIME_STEPS: Final[int] = 1000

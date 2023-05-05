@@ -1,5 +1,6 @@
 {
-  "saveLocation": "http://localhost:8000/network_editor/",
+  "saveLocation": "{{HOST}}/network_editor/",
+  "layoutRequestUrl": "{{HOST}}/update_network_layout/",
   "cytoscapeStyle": [
     {
       "label": "Node",

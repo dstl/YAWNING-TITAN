@@ -253,6 +253,7 @@ option:hover{
     justify-content: flex-start;
     align-items: center;
     max-width: 250px;
+    max-height: 100vh;
 }
 #toolbar .toolbar-button{
     padding: var(--increment);

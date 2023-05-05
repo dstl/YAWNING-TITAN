@@ -9,10 +9,14 @@ import { NetworkViewModule } from './network-view/network-view.module';
 import { NodePropertiesModule } from './node-properties/node-properties.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ConfigurationService } from './services/configuration/configuration.service';
-import { NODE_KEY_CONFIG, DJANGO_SAVE_URL } from './app.tokens';
+import { NODE_KEY_CONFIG, DJANGO_SAVE_URL, UPDATE_NETWORK_LAYOUT_URL } from './app.tokens';
 
 export function djangoSaveUrlFactory(configurationService: ConfigurationService) {
   return configurationService.config?.saveLocation;
+}
+
+export function updateNetworkLayout(configurationService: ConfigurationService) {
+  return configurationService.config?.layoutRequestUrl;
 }
 
 export function cytoscapeStyleFactory(configurationService: ConfigurationService) {
@@ -43,6 +47,11 @@ export function cytoscapeStyleFactory(configurationService: ConfigurationService
     {
       provide: DJANGO_SAVE_URL,
       useFactory: djangoSaveUrlFactory,
+      deps: [ConfigurationService]
+    },
+    {
+      provide: UPDATE_NETWORK_LAYOUT_URL,
+      useFactory: updateNetworkLayout,
       deps: [ConfigurationService]
     },
     {

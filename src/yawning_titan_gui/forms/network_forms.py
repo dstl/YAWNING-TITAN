@@ -12,7 +12,7 @@ from yawning_titan.networks.network import (
     RandomHighValueNodePreference,
 )
 from yawning_titan_gui.forms import RangeInput, create_doc_meta_form
-from yawning_titan_gui.helpers import NetworkManager
+from yawning_titan_gui.views.utils.helpers import NetworkManager
 
 
 class NetworkTemplateForm(django_forms.Form):
@@ -444,8 +444,9 @@ class NetworkFormManager:
         :param data: The python dictionary object containing a full representation of a network
             including nodes and edges.
         """
-        network = NetworkManager.db.get(network_id)
-        form = NetworkForm(network=network, data=data)
+        network = Network()
+        network.set_from_dict(data)
+        form = NetworkForm(network=network)
         cls.network_forms[network_id] = form
         if settings.DYNAMIC_UPDATES:
             NetworkManager.db.update(form.network)  # update the network in the database

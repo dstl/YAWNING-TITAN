@@ -24,10 +24,14 @@ export class ConfigurationService {
     })
       .pipe(tap((res: string) => {
         // replace assets with the correct path
-        let replaceStr = isDevMode() ? `${window.location.origin}/assets` :
+        let assetsPathStr = isDevMode() ? `${window.location.origin}/assets` :
           `${window.location.origin}/_static/dist/assets`;
 
-        res = res.replace(/{{.*}}/, replaceStr)
+        res = res.replaceAll(/{{ASSETS_PATH}}/ig, assetsPathStr)
+
+        // replace host with the correct value
+        let hostStr = window.location.origin;
+        res = res.replaceAll(/{{HOST}}/ig, hostStr)
 
         this._config = JSON.parse(res)
       }));
