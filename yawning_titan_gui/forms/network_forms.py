@@ -446,7 +446,7 @@ class NetworkFormManager:
         """
         network = Network()
         network.set_from_dict(data)
-        form = NetworkForm(network=network, data=data)
+        form = NetworkForm(network=network)
         cls.network_forms[network_id] = form
         if settings.DYNAMIC_UPDATES:
             NetworkManager.db.update(form.network)  # update the network in the database
