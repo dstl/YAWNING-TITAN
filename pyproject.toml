@@ -6,11 +6,11 @@ build-backend = "setuptools.build_meta"
 name = "yawningtitan"
 description = "An abstract, flexible and configurable cyber security simulation."
 authors = [{name="Defence Science and Technology Laboratory UK", email="oss@dstl.gov.uk"}]
-license = "MIT License"
+license = {file = "LICENSE"}
 dynamic = ["version", "readme"]
 requires-python = ">=3.8, <3.11"
 classifiers = [
-    "License :: Other/Proprietary License",
+    "License :: OSI Approved :: MIT License",
     "Development Status :: 5 - Production/Stable ",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: MacOS",
@@ -59,6 +59,7 @@ readme = {file = "README.md"}
 [tool.setuptools]
 package-dir = {"" = "src"}
 include-package-data = true
+license-files = ["LICENSE"]
 
 [project.optional-dependencies]
 dev = [
