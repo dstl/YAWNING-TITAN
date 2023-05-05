@@ -12,7 +12,11 @@ from yawning_titan_gui.views.network_creator_view import NetworkCreator
 from yawning_titan_gui.views.network_editor_view import NetworkEditor
 from yawning_titan_gui.views.networks_view import NetworksView
 from yawning_titan_gui.views.run_view import RunView
-from yawning_titan_gui.views.utils import db_manager, get_output, update_game_mode
+from yawning_titan_gui.views.utils import (
+    db_manager,
+    get_output,
+    update_game_mode
+)
 
 urlpatterns = [
     path("", HomeView.as_view(), name="Home"),
@@ -53,16 +57,24 @@ urlpatterns = [
     path("manage_db/", db_manager, name="db manager"),
     path("update_game_mode/", update_game_mode, name="update config"),
     path("output/", get_output, name="stderr"),
-    path("/", TemplateView.as_view(template_name="index.html"), name="docs index"),
+    path(
+        "docs/index.html",
+        TemplateView.as_view(template_name="docs/index.html"),
+        name="docs index"
+    ),
 ]
 
 urlpatterns += [
     path(
-        f"source/{name}.html",
-        TemplateView.as_view(template_name=f"source/{name}.html"),
+        f"docs/source/{name}.html",
+        TemplateView.as_view(template_name=f"docs/source/{name}.html"),
         name=f"docs_{name}",
     )
     for name in get_docs_sections()
 ]
 
 urlpatterns += staticfiles_urlpatterns()
+urlpatterns += staticfiles_urlpatterns("docs/_images")
+urlpatterns += staticfiles_urlpatterns("docs/_modules")
+urlpatterns += staticfiles_urlpatterns("docs/_sources")
+urlpatterns += staticfiles_urlpatterns("docs/_static")

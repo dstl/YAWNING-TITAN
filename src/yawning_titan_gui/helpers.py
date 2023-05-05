@@ -327,10 +327,6 @@ def get_toolbar(current_page_title: str = None):
         "doc": {
             "icon": "bi-file-earmark",
             "title": "Documentation",
-            "links": [
-                get_url_dict(n, get_url("Documentation", section=n))
-                for n in get_docs_sections()
-            ],
             "cypressRefToolbar": "toolbar-documentation",
             "cypressRefMenu": "menu-documentation",
         },
