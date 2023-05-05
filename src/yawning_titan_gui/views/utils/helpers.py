@@ -13,7 +13,7 @@ from django.urls import reverse
 from yawning_titan import _YT_ROOT_DIR, IMAGES_DIR, NOTEBOOKS_DIR
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.game_modes.game_mode_db import GameModeDB, GameModeSchema
-from yawning_titan.networks.network import Network
+from yawning_titan.networks.network import Network, NetworkLayout
 from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
 from yawning_titan.yawning_titan_run import YawningTitanRun
 from yawning_titan_gui import YT_GUI_RUN_LOG, YT_GUI_STDOUT
@@ -428,3 +428,7 @@ def open_jupyter_notebook():
     paths = [p.split("]")[1].lstrip().rstrip() for p in paths if "http" in p]
     path = [p for p in paths if "9999" in p][-1]
     return path
+
+def get_network_layouts():
+    """Get an array of available network layout algorithms"""
+    return list(map(lambda c: c.value, NetworkLayout))
