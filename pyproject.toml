@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "yawningtitan"
 description = "An abstract, flexible and configurable cyber security simulation."
 authors = [{name="Defence Science and Technology Laboratory UK", email="oss@dstl.gov.uk"}]
-license = {file = "LICENSE"}
+license = "MIT License"
 dynamic = ["version", "readme"]
 requires-python = ">=3.8, <3.11"
 classifiers = [
