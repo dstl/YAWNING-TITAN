@@ -24,6 +24,9 @@ notebooks/.ipynb_checkpoints
 # network editor built files
 !**/static/dist/
 
+# Built docs
+docs/_build
+
 # generated RST files for documentation
 **/docs/source/_autosummary/
 
