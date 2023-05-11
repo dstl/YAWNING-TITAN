@@ -15,7 +15,7 @@ from pathlib import Path
 from yawning_titan import IMAGES_DIR
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(os.path.dirname(os.path.dirname(os.path.realpath(__file__)))).parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-cu!)4gec_vj=vhj&jba(b$vd6#$i#v^tr%z%#4idf9c17a#7g9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-DOCS_ROOT = BASE_DIR / "docs/_build/html"
+DOCS_ROOT = BASE_DIR / "yawning_titan_gui" / "static" / "docs"
 
 # Application definition
 
@@ -43,7 +43,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -59,7 +58,11 @@ ROOT_URLCONF = "yawning_titan_server.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "yawning_titan_gui/templates", DOCS_ROOT],
+        "DIRS": [
+            BASE_DIR / "yawning_titan_gui/templates",
+            DOCS_ROOT.parent,
+            DOCS_ROOT
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -118,10 +121,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "_static/"
-# STATIC_ROOT = STATIC_DIR
+
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "yawning_titan_gui", "static"),
-    os.path.join(DOCS_ROOT, "_static"),
+    BASE_DIR / "yawning_titan_gui" / "static",
+    DOCS_ROOT / "_static",
+    DOCS_ROOT / "_images",
     IMAGES_DIR
 )
 

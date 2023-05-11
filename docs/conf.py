@@ -5,7 +5,7 @@
 # This file does only contain a selection of the most common options. For a
 # full list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
-
+import datetime
 # -- Path setup --------------------------------------------------------------
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -19,13 +19,13 @@ sys.path.insert(0, os.path.abspath("../"))
 
 
 # -- Project information -----------------------------------------------------
-
+year = datetime.datetime.now().year
 project = "YAWNING TITAN"
-copyright = "Crown Copyright (C) Dstl 2022"
+copyright = f"Crown Copyright (C) Dstl 2021 - {year}"
 author = "Defence Science and Technology Laboratory UK"
 
 # The short Major.Minor.Build version
-with open("../yawning_titan/VERSION", "r") as file:
+with open("../src/yawning_titan/VERSION", "r") as file:
     version = file.readline()
 # The full version, including alpha/beta/rc tags
 release = version

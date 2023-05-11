@@ -24,8 +24,15 @@ notebooks/.ipynb_checkpoints
 # network editor built files
 !**/static/dist/
 
+# Built docs
+docs/_build
+
 # generated RST files for documentation
 **/docs/source/_autosummary/
+
+# Built docs copied from ./docs/_build/html to /src/yawning_titan_gui/static/docs/
+/src/yawning_titan_gui/static/docs/
+
 
 # Remove tensorboard logs starting with ppo-
 ppo-*/

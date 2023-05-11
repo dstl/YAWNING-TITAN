@@ -327,10 +327,6 @@ def get_toolbar(current_page_title: str = None):
         "doc": {
             "icon": "bi-file-earmark",
             "title": "Documentation",
-            "links": [
-                get_url_dict(n, get_url("Documentation", section=n))
-                for n in get_docs_sections()
-            ],
             "cypressRefToolbar": "toolbar-documentation",
             "cypressRefMenu": "menu-documentation",
         },
@@ -432,7 +428,6 @@ def open_jupyter_notebook():
     paths = [p.split("]")[1].lstrip().rstrip() for p in paths if "http" in p]
     path = [p for p in paths if "9999" in p][-1]
     return path
-
 
 def get_network_layouts():
     """Get an array of available network layout algorithms"""
