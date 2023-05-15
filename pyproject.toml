@@ -26,7 +26,7 @@ dependencies = [
     "Django==4.2",
     "django-cors-headers==3.14.0",
     "dm-tree==0.1.7",
-    "flaskwebgui==1.0.1",
+    "flaskwebgui==1.0.6",
     "gym==0.21.0",
     "imageio==2.9.0",
     "jupyterlab==3.6.1",
