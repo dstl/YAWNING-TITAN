@@ -11,11 +11,14 @@ app = typer.Typer()
 def gui():
     """Start the Yawning-Titan GUI."""
     os.environ.setdefault("DJANGO_SETTINGS_MODULE",
-                          "yawning_titan_server.settings.prod")
+                          "yawning_titan_server.settings.dev")
     from django.core.management import execute_from_command_line
 
     """Method that is fired on execution of the command in the terminal."""
-    execute_from_command_line(["runserver", "run_gui"])
+    from yawning_titan_gui.management.commands.run_gui import Command
+    command = Command()
+    command.run()
+
 
 @app.command()
 def build_dirs():

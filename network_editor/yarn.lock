@@ -3498,11 +3498,6 @@ cypress@^12.3.0:
     untildify "^4.0.0"
     yauzl "^2.10.0"
 
-cytoscape-navigator@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/cytoscape-navigator/-/cytoscape-navigator-2.0.2.tgz#4f839797ff05d921be3f22b26c5f237c730f0996"
-  integrity sha512-TZFBLFWEMW858UOt4rzusOjtDj7YT5vNx2uCwpUuicUYbaWCHHcUROBZWO+hiuSPWpVhvGLFlOq3NBcAVYOAgw==
-
 cytoscape@^3.23.0:
   version "3.23.0"
   resolved "https://registry.npmjs.org/cytoscape/-/cytoscape-3.23.0.tgz"
