@@ -19,38 +19,29 @@ commands from an interactive Python session on your venv:
 
 To get started with Notebooks, run Jupyter Lab:
 
-**Unix**
-
 .. code:: bash
 
-    cd ~/yawning_titan
-    source .venv/bin/activate
-    cd ~/yawning_titan/notebooks
-    jupyter lab
+    yawning-titan gui
 
-**Windows**
 
-.. code:: powershell
+The supplied example notebooks are:
 
-    cd ~\yawning_titan
-    .\.venv\Scripts\activate
-    cd ~\yawning_titan\notebooks
-    jupyter lab
-
-The supplied notebooks are:
-
-* Using YawningTitanRun.ipynb
-    Demonstrates how to use the :class:`~yawning_titan.yawning_titan_run.YawningTitanRun` class.
 * Create a Network.ipynb
     Demonstrates how to create a Network using the :class:`~yawning_titan.networks.network.Network` and :class:`~yawning_titan.networks.node.Node` classes.
 * Creating and playing as a Keyboard Agent.ipynb
     Demonstrates how to create a Keyboard Agent that will allow you to be able to play the game yourself.
-* sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb
+* Using YawningTitanRun.ipynb
+    Demonstrates how to use the :class:`~yawning_titan.yawning_titan_run.YawningTitanRun` class.
+* End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb
     Shows you how to create a custom environment from the very beginning and takes you through all the way
     to training the agent and then rendering its performance at the end.
-* sb3/Using an Evaluation Callback to monitor progress during training.ipynb
+* Using an Evaluation Callback to monitor progress during training.ipynb
     Shows you how to create a simple environment and an agent that can give regular updates on its
     performance throughout training.
+* Using the Network DB.ipynb
+    Demonstrates how to use the :class:`~yawning_titan.networks.network_db.NetworkDB` class.
+* Using YawningTitanRun.ipynb
+    Demonstrates how to use the :class:`~yawning_titan.yawning)titan_run.YawningTitanRun` class.
 
 If you have a Jupyter notebook that you think would make a good edition to the **Yawning-Titan* default notebooks, please submit it
 as feature request by following our [contribution guidelines](https://github.com/dstl/Yawning-Titan/blob/main/CONTRIBUTING.md).

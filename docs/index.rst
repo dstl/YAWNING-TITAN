@@ -91,7 +91,7 @@ Yawning-Titan Quick start
 Where next?
 ------------
 
-The best place to start is diving into the :ref:`getting-started`
+The best place to start is diving into the :ref:`getting-started`, or just straight into the Yawning-Titan GUI <source/yt_gui>.
 
 
 Cite This Work
