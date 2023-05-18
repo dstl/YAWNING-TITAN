@@ -1,5 +1,31 @@
 .canvas-control-container {
   display: flex;
+  position: relative;
+  flex-direction: row;
   flex: 1;
   padding: 10px;
+  bottom: 0;
+  left: 0;
+}
+
+.canvas-control-button-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding-left: 20px;
+  justify-content: flex-end;
+}
+
+.mini-viewport-container {
+  display: flex;
+  height: 20vh;
+  width: 20vw;
+  max-width: 300px;
+  max-height: 200px;
+}
+
+#mini-viewport {
+  position: relative;
+  width: 100%;
+  margin: 10px;
 }

@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --output-path=../yawning_titan_gui/static/dist --output-hashing=none",
+    "build": "ng build --output-path=../src/yawning_titan_gui/static/dist --output-hashing=none",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:e2e": "npx cypress open",

@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from yawning_titan.networks.node import Node
 from yawning_titan_gui.forms.network_forms import NetworkFormManager
-from yawning_titan_gui.helpers import NetworkManager
+from yawning_titan_gui.views.utils.helpers import NetworkManager
 
 URL = reverse("network editor")
 UPDATED_ATTRIBUTES = {

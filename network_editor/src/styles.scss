@@ -1,5 +1,6 @@
 @use "@angular/material" as mat;
 @use "./app/app-mixin.scss" as app;
+@use "./app/network-view/controls/canvas-control/mini-viewport/mini-viewport.mixin.scss" as viewport;
 @include mat.core();
 
 html {
@@ -42,3 +43,4 @@ $theme: mat.define-dark-theme(
 
 @include mat.all-component-themes($theme);
 @include app.app-mixins($theme);
+@include viewport.mini-viewport-mixin($theme);

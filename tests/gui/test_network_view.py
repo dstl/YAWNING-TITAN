@@ -6,7 +6,7 @@ from django.test import Client
 from django.urls import reverse
 
 from yawning_titan.networks.network import Network
-from yawning_titan_gui.helpers import NetworkManager
+from yawning_titan_gui.views.utils.helpers import NetworkManager
 
 URL = reverse("Manage networks")
 MANAGEMENT_URL = reverse("db manager")

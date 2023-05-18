@@ -246,4 +246,11 @@ export class InteractionService {
   private deleteItem(): void {
     this.networkService.removeItem(this._selectedItem);
   }
+
+  /**
+   * Resize the window
+   */
+  public resizeWindow(): void {
+    this.cytoscapeService.resetView();
+  }
 }
