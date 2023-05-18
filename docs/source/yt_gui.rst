@@ -1,3 +1,5 @@
+.. _yt-gui:
+
 Yawning-Titan GUI
 =================
 

@@ -63,7 +63,7 @@ The best way to begin working with Yawning-Titan is to the GUI.
 
     yawning-titan gui
 
-See Yawning-Titan GUI <yt_gui> for a guide on how to use the GUI.
+See Yawning-Titan GUI :ref:`yt-gui` for a guide on how to use the GUI.
 
 Alternatively, you can work with Yawning-Titan from Jupyter Labs.
 
