@@ -6,8 +6,10 @@ Serves a similar function to library helpers such as Stable Baselines 3 ``evalua
 
 import os
 import re
+import string
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 from uuid import uuid4
 
 import imageio
@@ -35,9 +37,6 @@ class ActionLoop:
         self.agent = agent
         self.filename = filename
         self.episode_count = episode_count
-
-        # arrange nodes in graph for matplot layout:
-        self.env.network_interface.current_graph.set_node_positions()
 
     def gif_action_loop(
             self,
@@ -94,10 +93,7 @@ class ActionLoop:
                     current_image += 1
 
                     # set the size of the gif image
-                    fig = plt.gcf()
-                    fig.set_size_inches(16, 9)
-                    # save the current image
-                    plt.savefig(current_name, dpi=100)
+                    self._get_gif_figure(current_name)
 
                     frame_names.append(current_name)
 
@@ -175,3 +171,11 @@ class ActionLoop:
                 ob, reward, done, ep_history = self.env.step(action)
                 if done:
                     break
+
+    @classmethod
+    def _get_gif_figure(cls, gif_name: string) -> Any:
+        fig = plt.gcf()
+        # save the current image
+        plt.savefig(gif_name, bbox_inches='tight', dpi=100)
+
+        return fig

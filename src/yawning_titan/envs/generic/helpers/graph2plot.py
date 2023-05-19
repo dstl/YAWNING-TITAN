@@ -43,6 +43,8 @@ class CustomEnvGraph:
         self.fig.suptitle(title)
         # Create subplot for network graph drawing
         self.vis_ax = plt.subplot2grid(shape=(1, 1), loc=(0, 0), rowspan=1, colspan=1)
+        plt.tight_layout()
+
         plt.subplots_adjust(
             # left=0.11, bottom=0.24, right=0.90, top=0.90, wspace=0.2, hspace=0
             left=0.02,
@@ -96,8 +98,6 @@ class CustomEnvGraph:
             show_only_blue_view: If true only shows what the blue agent can see
             show_node_names: Show the names of nodes
         """
-        # arrange nodes in graph for matplot layout:
-        g.set_node_positions()
 
         # If no value for  entrance nodes is passed in then it is set to an empty list
 

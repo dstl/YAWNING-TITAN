@@ -209,23 +209,34 @@ function get_output() {
     })
         .done(res => {
             // show gif only if a gif returned in the payload
-            if (res.gif && res.request_count > 20) {
+            if (res.gif && res.request_count > 10) {
+                const url = `..${res.gif}?x=${Math.random()}`
+
                 $("#gif-spinner-container").hide();
 
                 // stop polling
                 clearInterval(interval);
 
-                $("#gif-output").css({ display: 'flex' });
-                $("#gif-output").css({
-                    backgroundImage: `url(..${res.gif}?${Math.random()})`,
-                    backgroundSize: 'contain',
-                    width: '100%',
-                    height: '100%',
-                });
+                // remove gif
+                $("#gif-output").remove()
 
-                $("#open-gif").attr("href", `..${res.gif}?${Math.random()}`)
+                var img = $('<img id=gif-output>');
+                // add img src but with a randomised param to prevent chrome not loading GIF
+                img.attr('src', url)
+                img.css({
+                    height: "100%",
+                    width: "100%",
+                    "object-fit": "contain"
+                })
+
+                // add img to gif container
+                $('#action-loop-view-container').prepend(img);
+
+                $("#open-gif").attr("href", url)
                 $("#open-gif").show();
                 isRunning = false;
+
+                waitAndUpdateGif(500, url)
             }
 
             if (!res.active && interval) {
@@ -235,4 +246,9 @@ function get_output() {
 
             enable_run_form();
         })
+}
+
+async function waitAndUpdateGif(time = 500, url = '') {
+    await new Promise(resolve => setTimeout(resolve, time));
+    $("#gif-output").attr('src', url)
 }

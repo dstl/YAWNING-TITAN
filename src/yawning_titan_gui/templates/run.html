@@ -73,14 +73,15 @@
         <div class="inner logs-container"></div>
     </div>
     <div id="action-loop-view" class="grid-item">
-        <div id="gif-spinner-container" class="spinner-container">
-            <div class="spinner-border" role="status">
-                <span class="sr-only"></span>
+        <div id="action-loop-view-container">
+            <div id="gif-spinner-container" class="spinner-container">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only"></span>
+                </div>
+                <div>Generating GIF...</div>
             </div>
-            <div>Generating GIF...</div>
+            <a id="open-gif" role="button" target="_blank" class="btn btn-primary" data-cy="open-gif" style="display: none;">Open GIF in new tab</a>
         </div>
-        <div id="gif-output" style="display: none;"></div>
-        <a id="open-gif" role="button" target="_blank" class="btn btn-primary" data-cy="open-gif" style="display: none;">Open GIF in new tab</a>
     </div>
 </div>
 {% endblock %}
@@ -110,7 +111,7 @@
         flex-basis: 30%;
         min-height: 0;
         max-height: calc(50% - 6*var(--increment));
-        height: 50%;
+        height: 100%;
         word-wrap: break-word;
         overflow: hidden;
     }
@@ -257,6 +258,14 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+
+    #action-loop-view-container {
+        display: inherit;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
     }
 
     #open-gif {
