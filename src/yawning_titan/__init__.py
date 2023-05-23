@@ -149,6 +149,12 @@ def _images_dir() -> Union[Path, PosixPath]:
     return dir_path
 
 
+def _videos_dir() -> Union[Path, PosixPath]:
+    dir_path = _YT_USER_DIRS / "videos"
+    # Create if it doesn't already exist and bypass if it does already exist
+    dir_path.mkdir(parents=True, exist_ok=True)
+    return dir_path
+
 def _agents_dir() -> Union[Path, PosixPath]:
     dir_path = _YT_USER_DIRS / "agents"
     # Create if it doesn't already exist and bypass if it does already exist
@@ -208,6 +214,13 @@ IMAGES_DIR: Final[Union[Path, PosixPath]] = _images_dir()
 The path to the users images directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
 Users images are stored at: ~/yawning_titan/images.
+"""
+
+VIDEOS_DIR: Final[Union[Path, PosixPath]] = _videos_dir()
+"""
+The path to the users videos directory as an instance of `Path` or `PosixPath`, depending on the OS.
+
+Users videos are stored at: ~/yawning_titan/videos.
 """
 
 AGENTS_DIR: Final[Union[Path, PosixPath]] = _agents_dir()

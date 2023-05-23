@@ -44,18 +44,21 @@ class RunForm(django_forms.Form):
         required=False,
         help_text="The number of samples (env steps) to train on",
         label="Total timesteps",
+        initial=1000
     )
     training_runs = django_forms.IntegerField(
         widget=widgets.NumberInput(attrs={"class": "inline form-control"}),
         required=False,
         help_text="The number of times the agent is trained",
-        label="Training runs",
+        label="Training episodes",
+        initial=1
     )
     n_eval_episodes = django_forms.IntegerField(
         widget=widgets.NumberInput(attrs={"class": "inline form-control"}),
         required=False,
         help_text="The number of episodes to evaluate the agent",
-        label="N eval episodes",
+        label="Evaluation episodes",
+        initial=1
     )
 
     verbose = django_forms.FloatField(
@@ -71,14 +74,14 @@ class RunForm(django_forms.Form):
             attrs={"role": "switch", "class": "inline form-check-input"}
         ),
         required=False,
-        label="Render gif",
-        help_text="Whether the output should render a gif action loop",
+        label="Generate Preview",
+        help_text="Whether the output should render a gif and a webm video",
     )
     num_episodes = django_forms.IntegerField(
         widget=widgets.NumberInput(attrs={"class": "inline form-control"}),
         required=False,
         help_text="The number of episodes to run",
-        label="Number of episodes",
+        label="Number of episodes"
     )
 
     def __init__(self, *args, **kwargs) -> None:

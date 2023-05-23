@@ -74,11 +74,11 @@
     </div>
     <div id="action-loop-view" class="grid-item">
         <div id="action-loop-view-container">
-            <div id="gif-spinner-container" class="spinner-container">
+            <div id="preview-spinner-container" class="spinner-container">
                 <div class="spinner-border" role="status">
                     <span class="sr-only"></span>
                 </div>
-                <div>Generating GIF...</div>
+                <div>Generating Preview...</div>
             </div>
             <a id="open-gif" role="button" target="_blank" class="btn btn-primary" data-cy="open-gif" style="display: none;">Open GIF in new tab</a>
         </div>
@@ -270,6 +270,11 @@
 
     #open-gif {
         margin-top: 5px;
+    }
+
+    #video-output {
+        width: 100%;
+        height: 100%;
     }
 </style>
 {% endblock %}

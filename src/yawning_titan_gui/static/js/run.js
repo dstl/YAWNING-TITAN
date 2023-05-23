@@ -4,6 +4,8 @@ let interval;
 // keeps track of whether or not there is a current run
 let isRunning = false;
 
+let OUTPUT_POLL_INTERVAL = 500
+
 $(document).ready(function () {
     let selected = {
         "game_mode": null,
@@ -89,7 +91,7 @@ $(document).ready(function () {
     //setup on start
     $("#view-buttons button:first-child").addClass("selected");
     $(".run-subsection:first-child").show();
-    $("#gif-spinner-container").hide();
+    $("#preview-spinner-container").hide();
 
     // add tooltip to each game mode item
     $("#game-modes-container .list-item").each(function (el) {
@@ -130,7 +132,18 @@ $(document).ready(function () {
  * @param {*} data 
  */
 function run(data) {
+    // clear interval if it exists
+    if (interval) {
+        clearInterval(interval);
+        interval = null;
+    }
+
     $("#open-gif").hide();
+
+    if ($("#video-output")) {
+        $("#video-output").remove();
+    }
+
     isRunning = true;
 
     // clear logs
@@ -138,7 +151,7 @@ function run(data) {
     $("#metric-view>.inner").empty();
 
     if (data.get("render") == "on") {
-        $("#gif-spinner-container").css({ display: "flex" });
+        $("#preview-spinner-container").css({ display: "flex" });
     }
 
     // deactivate the input form
@@ -157,7 +170,7 @@ function run(data) {
             enable_run_form();
         }
     })
-        .done(() => interval = setInterval(get_output, 500))
+        .done(() => interval = setInterval(get_output, OUTPUT_POLL_INTERVAL))
 }
 
 /**
@@ -203,52 +216,46 @@ function get_output() {
 
             // stop polling
             clearInterval(interval);
-            $("#gif-spinner-container").hide();
+            $("#preview-spinner-container").hide();
             isRunning = false;
         }
     })
         .done(res => {
             // show gif only if a gif returned in the payload
-            if (res.gif && res.request_count > 10) {
-                const url = `..${res.gif}?x=${Math.random()}`
-
-                $("#gif-spinner-container").hide();
+            if ((res.gif && res.webm) ||
+                (!res.active && res.request_count > 50)) {
+                const gif_url = `..${res.gif}?x=${Math.random()}`
+                const webm_url = `..${res.webm}?x=${Math.random()}`
 
                 // stop polling
                 clearInterval(interval);
+                interval = null;
 
-                // remove gif
-                $("#gif-output").remove()
-
-                var img = $('<img id=gif-output>');
-                // add img src but with a randomised param to prevent chrome not loading GIF
-                img.attr('src', url)
-                img.css({
-                    height: "100%",
-                    width: "100%",
-                    "object-fit": "contain"
-                })
-
-                // add img to gif container
-                $('#action-loop-view-container').prepend(img);
-
-                $("#open-gif").attr("href", url)
+                waitAndUpdateVideo(webm_url)
+                $("#open-gif").attr("href", gif_url);
                 $("#open-gif").show();
+
                 isRunning = false;
-
-                waitAndUpdateGif(500, url)
+                enable_run_form();
             }
-
-            if (!res.active && interval) {
-                clearInterval(interval);
-                isRunning = false;
-            }
-
-            enable_run_form();
         })
 }
 
-async function waitAndUpdateGif(time = 500, url = '') {
+async function waitAndUpdateVideo(url, time = 5000) {
+    // remove video
+    $("#video-output").remove();
+
+    var video = document.createElement('video');
+    video.id = "video-output";
+    video.controls = true;
+    video.muted = true;
+    $('#action-loop-view-container').prepend(video);
+    $('#video-output').attr('src', url);
+
+    // wait for the specified time
     await new Promise(resolve => setTimeout(resolve, time));
-    $("#gif-output").attr('src', url)
+    $("#preview-spinner-container").hide();
+
+    $('#video-output').get(0).load();
+    $('#video-output').get(0).play();
 }
