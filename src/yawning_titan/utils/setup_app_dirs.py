@@ -41,6 +41,7 @@ def run():
         app_dirs.append(_YT_USER_DIRS / "notebooks")
         app_dirs.append(_YT_USER_DIRS / "game_modes")
         app_dirs.append(_YT_USER_DIRS / "images")
+        app_dirs.append(_YT_USER_DIRS / "videos")
         app_dirs.append(_YT_USER_DIRS / "agents")
         app_dirs.append(_YT_USER_DIRS / "agents" / "logs" / "tensorboard")
 

@@ -107,15 +107,14 @@ The path to the users images directory as an instance of `Path` or `PosixPath`, 
 Users images are stored at: ~/yawning_titan/images.
 """
 
-AGENTS_DIR: Final[Union[Path, PosixPath]] = _YT_USER_DIRS / "agents"
-VIDEOS_DIR: Final[Union[Path, PosixPath]] = _videos_dir()
+VIDEOS_DIR: Final[Union[Path, PosixPath]] = _YT_USER_DIRS / "videos"
 """
 The path to the users videos directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
 Users videos are stored at: ~/yawning_titan/videos.
 """
 
-AGENTS_DIR: Final[Union[Path, PosixPath]] = _agents_dir()
+AGENTS_DIR: Final[Union[Path, PosixPath]] = _YT_USER_DIRS / "agents"
 """
 The path to the users agents directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
