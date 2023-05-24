@@ -4,6 +4,8 @@ let interval;
 // keeps track of whether or not there is a current run
 let isRunning = false;
 
+let OUTPUT_POLL_INTERVAL = 500
+
 $(document).ready(function () {
     let selected = {
         "game_mode": null,
@@ -89,7 +91,7 @@ $(document).ready(function () {
     //setup on start
     $("#view-buttons button:first-child").addClass("selected");
     $(".run-subsection:first-child").show();
-    $("#gif-spinner-container").hide();
+    $("#preview-spinner-container").hide();
 
     // add tooltip to each game mode item
     $("#game-modes-container .list-item").each(function (el) {
@@ -130,7 +132,19 @@ $(document).ready(function () {
  * @param {*} data 
  */
 function run(data) {
+    // clear interval if it exists
+    if (interval) {
+        clearInterval(interval);
+        interval = null;
+    }
+
     $("#open-gif").hide();
+    $("#open-video").hide();
+
+    if ($("#video-output")) {
+        $("#video-output").remove();
+    }
+
     isRunning = true;
 
     // clear logs
@@ -138,7 +152,7 @@ function run(data) {
     $("#metric-view>.inner").empty();
 
     if (data.get("render") == "on") {
-        $("#gif-spinner-container").css({ display: "flex" });
+        $("#preview-spinner-container").css({ display: "flex" });
     }
 
     // deactivate the input form
@@ -157,7 +171,7 @@ function run(data) {
             enable_run_form();
         }
     })
-        .done(() => interval = setInterval(get_output, 500))
+        .done(() => interval = setInterval(get_output, OUTPUT_POLL_INTERVAL))
 }
 
 /**
@@ -203,36 +217,48 @@ function get_output() {
 
             // stop polling
             clearInterval(interval);
-            $("#gif-spinner-container").hide();
+            $("#preview-spinner-container").hide();
             isRunning = false;
         }
     })
         .done(res => {
             // show gif only if a gif returned in the payload
-            if (res.gif && res.request_count > 20) {
-                $("#gif-spinner-container").hide();
+            if ((res.gif && res.webm) ||
+                (!res.active && res.request_count > 50)) {
+                const gif_url = `..${res.gif}?x=${Math.random()}`
+                const webm_url = `..${res.webm}?x=${Math.random()}`
 
                 // stop polling
                 clearInterval(interval);
+                interval = null;
 
-                $("#gif-output").css({ display: 'flex' });
-                $("#gif-output").css({
-                    backgroundImage: `url(..${res.gif}?${Math.random()})`,
-                    backgroundSize: 'contain',
-                    width: '100%',
-                    height: '100%',
-                });
+                waitAndUpdateVideo(gif_url, webm_url)
 
-                $("#open-gif").attr("href", `..${res.gif}?${Math.random()}`)
-                $("#open-gif").show();
                 isRunning = false;
+                enable_run_form();
             }
-
-            if (!res.active && interval) {
-                clearInterval(interval);
-                isRunning = false;
-            }
-
-            enable_run_form();
         })
+}
+
+async function waitAndUpdateVideo(gif_url, webm_url, time = 5000) {
+    // remove video
+    $("#video-output").remove();
+
+    var video = document.createElement('video');
+    video.id = "video-output";
+    video.controls = true;
+    video.muted = true;
+
+    // wait for the specified time
+    await new Promise(resolve => setTimeout(resolve, time));
+    $('#action-loop-view-container').prepend(video);
+    $('#video-output').attr('src', webm_url);
+    
+    $('#video-output').get(0).load();
+    $("#preview-spinner-container").hide();
+
+    $("#open-gif").attr("href", gif_url);
+    $("#open-video").attr("href", webm_url);
+    $("#open-gif").show();
+    $("#open-video").show();
 }

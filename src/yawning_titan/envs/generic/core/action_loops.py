@@ -6,13 +6,18 @@ Serves a similar function to library helpers such as Stable Baselines 3 ``evalua
 
 import os
 import re
+import string
 from datetime import datetime
 from pathlib import Path
+from threading import Thread
+from typing import Any
 from uuid import uuid4
 
 import imageio
 import matplotlib.pyplot as plt
 import pandas as pd
+
+import moviepy.editor as mp
 
 from yawning_titan import APP_IMAGES_DIR, IMAGES_DIR
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
@@ -36,16 +41,14 @@ class ActionLoop:
         self.filename = filename
         self.episode_count = episode_count
 
-        # arrange nodes in graph for matplot layout:
-        self.env.network_interface.current_graph.set_node_positions()
-
     def gif_action_loop(
             self,
             render_network=True,
             prompt_to_close=False,
             save_gif=False,
             deterministic=False,
-            output_directory: Path = None,
+            gif_output_directory: Path = None,
+            webm_output_directory: Path = None,
             *args,
             **kwargs,
     ):
@@ -59,6 +62,8 @@ class ActionLoop:
                 close immediately on loop ending
             save_gif: Bool to toggle if gif file should be saved to AppData
             deterministic: Bool to toggle if the agents actions should be deterministic
+            gif_output_directory: Directory where the GIF will be output
+            webm_output_directory: Directory where the WEBM file will be output
         """
         gif_uuid = str(uuid4())
 
@@ -94,10 +99,7 @@ class ActionLoop:
                     current_image += 1
 
                     # set the size of the gif image
-                    fig = plt.gcf()
-                    fig.set_size_inches(16, 9)
-                    # save the current image
-                    plt.savefig(current_name, dpi=100)
+                    self._get_gif_figure(current_name)
 
                     frame_names.append(current_name)
 
@@ -107,36 +109,37 @@ class ActionLoop:
             if save_gif:
                 # attach the time GIF was generated to gif name
                 string_time = datetime.now().strftime("%d-%m-%Y_%H-%M")
-                if output_directory is None:
-                    output_directory = IMAGES_DIR
+                if gif_output_directory is None:
+                    gif_output_directory = IMAGES_DIR
                 gif_path = os.path.join(
-                    output_directory,
+                    gif_output_directory,
                     f"{self.filename}_{string_time}_{self.episode_count}.gif",
                 )
-                with imageio.get_writer(gif_path, mode="I") as writer:
-                    # create a gif from the images
-                    def natural_sort_key(s, _nsre=re.compile('([0-9]+)')):
-                        return [int(text) if text.isdigit() else text.lower()
-                                for text in _nsre.split(s)]
+                webm_path = os.path.join(
+                    webm_output_directory,
+                    f"{self.filename}_{string_time}_{self.episode_count}.webm",
+                )
 
-                    frame_names = sorted(frame_names, key=natural_sort_key)
-                    for frame_num, filename in enumerate(frame_names):
-                        # skip first frame because it is empty
-                        if filename == frame_names[0]:
-                            continue
-                        # read image
-                        image = imageio.imread(filename)
-                        # add image to GIF
-                        writer.append_data(image)
+                def natural_sort_key(s, _nsre=re.compile('([0-9]+)')):
+                    return [int(text) if text.isdigit() else text.lower()
+                            for text in _nsre.split(s)]
 
-                        # if the last frame, add more of it so the result can be seen longer
-                        if frame_num == len(frame_names) - 1:
-                            for _ in range(10):
-                                writer.append_data(image)
+                frame_names = sorted(frame_names, key=natural_sort_key)
 
-                    # delete images
-                    for filename in set(frame_names):
-                        os.remove(filename)
+                # gif generator thread
+                gif_thread = Thread(target=self.generate_gif, args=(gif_path, frame_names,))
+                # video generator thread
+                video_thread = Thread(target=self.generate_webm, args=(webm_path, frame_names,))
+
+                # start threads
+                video_thread.start()
+                gif_thread.start()
+
+                # join threads
+                video_thread.join()
+                gif_thread.join()
+
+                self.render_cleanup(frame_names)
 
             complete_results.append(results)
 
@@ -175,3 +178,40 @@ class ActionLoop:
                 ob, reward, done, ep_history = self.env.step(action)
                 if done:
                     break
+
+    @classmethod
+    def _get_gif_figure(cls, gif_name: string) -> Any:
+        fig = plt.gcf()
+        # save the current image
+        plt.savefig(gif_name, bbox_inches='tight', dpi=100)
+
+        return fig
+
+    def generate_gif(self, gif_path, frame_names):
+        with imageio.get_writer(gif_path, mode="I") as writer:
+            # create a gif from the images
+            for frame_num, filename in enumerate(frame_names):
+                print(filename)
+                # skip first frame because it is empty
+                if filename == frame_names[0]:
+                    continue
+                # read image
+                image = imageio.imread(filename)
+                # add image to GIF
+                writer.append_data(image)
+
+                # if the last frame, add more of it so the result can be seen longer
+                if frame_num == len(frame_names) - 1:
+                    for _ in range(10):
+                        writer.append_data(image)
+
+    def generate_webm(self, webm_path, frame_names):
+        # create video
+        clip = mp.ImageSequenceClip(frame_names[1:], fps=5)
+        clip.write_gif(webm_path, program='ffmpeg')
+
+    def render_cleanup(self, frame_names):
+        # delete images
+        for filename in set(frame_names):
+            print(filename)
+            os.remove(filename)

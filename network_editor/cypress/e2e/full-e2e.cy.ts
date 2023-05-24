@@ -81,17 +81,19 @@ describe('End To End', () => {
     // set time steps to 1000
     cy.get('[data-cy="total_timesteps"]')
       .scrollIntoView()
+      .clear()
       .type('1000');
 
     // set training run loops to 10
     cy.get('[data-cy="training_runs"]')
       .scrollIntoView()
+      .clear()
       .type('1');
 
-    // evaluate every 100 episodes
     cy.get('[data-cy="n_eval_episodes"]')
       .scrollIntoView()
-      .type('100');
+      .clear()
+      .type('1');
 
     // press run
     cy.get('[data-cy="run-yt-button"]').click();
