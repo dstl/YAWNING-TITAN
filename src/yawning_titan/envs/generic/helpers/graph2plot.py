@@ -43,17 +43,16 @@ class CustomEnvGraph:
         self.fig.suptitle(title)
         # Create subplot for network graph drawing
         self.vis_ax = plt.subplot2grid(shape=(1, 1), loc=(0, 0), rowspan=1, colspan=1)
-        plt.tight_layout()
-
         plt.subplots_adjust(
             # left=0.11, bottom=0.24, right=0.90, top=0.90, wspace=0.2, hspace=0
-            left=0.02,
-            bottom=0.15,
-            right=0.80,
-            top=0.90,
-            wspace=0.15,
+            left=0.12,
+            bottom=0.25,
+            right=0.90,
+            top=1.00,
+            wspace=0.25,
             hspace=0,
         )
+        plt.tight_layout()
 
         # Show the graph without blocking the rest of the program
         plt.show(block=False)
@@ -435,8 +434,8 @@ class CustomEnvGraph:
             plt.gca().spines[pos].set_visible(False)
 
         # plt.show()
-
-        plt.pause(0.001)
+        # invert y axis - computer coords to cartesian conversion
+        plt.gca().invert_yaxis()
 
     def close(self):
         """Close all handles to external renderers."""

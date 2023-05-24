@@ -139,6 +139,7 @@ function run(data) {
     }
 
     $("#open-gif").hide();
+    $("#open-video").hide();
 
     if ($("#video-output")) {
         $("#video-output").remove();
@@ -231,9 +232,7 @@ function get_output() {
                 clearInterval(interval);
                 interval = null;
 
-                waitAndUpdateVideo(webm_url)
-                $("#open-gif").attr("href", gif_url);
-                $("#open-gif").show();
+                waitAndUpdateVideo(gif_url, webm_url)
 
                 isRunning = false;
                 enable_run_form();
@@ -241,7 +240,7 @@ function get_output() {
         })
 }
 
-async function waitAndUpdateVideo(url, time = 5000) {
+async function waitAndUpdateVideo(gif_url, webm_url, time = 5000) {
     // remove video
     $("#video-output").remove();
 
@@ -249,13 +248,17 @@ async function waitAndUpdateVideo(url, time = 5000) {
     video.id = "video-output";
     video.controls = true;
     video.muted = true;
-    $('#action-loop-view-container').prepend(video);
-    $('#video-output').attr('src', url);
 
     // wait for the specified time
     await new Promise(resolve => setTimeout(resolve, time));
+    $('#action-loop-view-container').prepend(video);
+    $('#video-output').attr('src', webm_url);
+    
+    $('#video-output').get(0).load();
     $("#preview-spinner-container").hide();
 
-    $('#video-output').get(0).load();
-    $('#video-output').get(0).play();
+    $("#open-gif").attr("href", gif_url);
+    $("#open-video").attr("href", webm_url);
+    $("#open-gif").show();
+    $("#open-video").show();
 }

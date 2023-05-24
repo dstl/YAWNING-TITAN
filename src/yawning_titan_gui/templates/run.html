@@ -14,7 +14,7 @@
 
 {% block main %}
 <div id="grid-container" class="stretch clear">
-    <div id="networks-container"  data-type="network" class="grid-item list-container">
+    <div id="networks-container" data-type="network" class="grid-item list-container">
         <div id="search-container">
             <div class="input-group rounded">
                 <input id="filter-game-modes" type="search" class="form-control rounded" placeholder="Filter"
@@ -80,7 +80,12 @@
                 </div>
                 <div>Generating Preview...</div>
             </div>
-            <a id="open-gif" role="button" target="_blank" class="btn btn-primary" data-cy="open-gif" style="display: none;">Open GIF in new tab</a>
+            <div class="preview-action-buttons-container">
+                <a id="open-video" role="button" target="_blank" class="btn btn-primary" data-cy="open-video"
+                    style="display: none;">Open Video in new tab</a>
+                <a id="open-gif" role="button" target="_blank" class="btn btn-primary" data-cy="open-gif"
+                    style="display: none;">Open GIF in new tab</a>
+            </div>
         </div>
     </div>
 </div>
@@ -268,8 +273,16 @@
         flex: 1;
     }
 
-    #open-gif {
-        margin-top: 5px;
+    .preview-action-buttons-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #open-gif,
+    #open-video {
+        margin: 15px 5px 5px 5px;
     }
 
     #video-output {
