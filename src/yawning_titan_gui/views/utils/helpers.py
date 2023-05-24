@@ -10,7 +10,7 @@ from typing import Any, Dict, List
 
 from django.urls import reverse
 
-from yawning_titan import _YT_ROOT_DIR, IMAGES_DIR, NOTEBOOKS_DIR
+from yawning_titan import _YT_ROOT_DIR, IMAGES_DIR, NOTEBOOKS_DIR, VIDEOS_DIR
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
 from yawning_titan.game_modes.game_mode_db import GameModeDB, GameModeSchema
 from yawning_titan.networks.network import Network, NetworkLayout
@@ -27,8 +27,12 @@ class RunManager:
     process = None
     counter = 0
     gif_count = len(list(IMAGES_DIR.iterdir()))
+    webm_count = len(list(VIDEOS_DIR.iterdir()))
     run_args = None
     run_started = False
+
+    gif_path = ''
+    webm_path = ''
 
     @staticmethod
     def format_file(path):
@@ -71,12 +75,13 @@ class RunManager:
                 loop = ActionLoop(
                     env=run.env,
                     agent=run.agent,
-                    filename="gif",
+                    filename="YT",
                     episode_count=kwargs.get("num_episodes", run.total_timesteps),
                 )
 
                 loop.gif_action_loop(
-                    output_directory=IMAGES_DIR,
+                    gif_output_directory=IMAGES_DIR,
+                    webm_output_directory=VIDEOS_DIR,
                     save_gif=True,
                     render_network=True
                     # TODO: fix bug where network must be rendered to get gif to be produced
@@ -89,17 +94,29 @@ class RunManager:
         output = {
             "stderr": cls.format_file(YT_GUI_RUN_LOG),
             "stdout": cls.format_file(YT_GUI_STDOUT),
-            "gif": "",
+            "gif": cls.gif_path,
+            "webm": cls.webm_path,
             "active": cls.process.is_alive() if cls.process else False,
             "request_count": cls.counter
         }
-        if cls.run_args["render"]:
-            dir = glob.glob(f"{IMAGES_DIR.as_posix()}/*")
+
+        if cls.run_args["render"] and cls.counter > 20 and cls.process.is_alive():
+            gif_dir = glob.glob(f"{IMAGES_DIR.as_posix()}/*.gif")
+            webm_dir = glob.glob(f"{VIDEOS_DIR.as_posix()}/*.webm")
+
             # only update gif path if a new GIF was generated
-            if len(dir) > cls.gif_count:
-                cls.gif_count = len(dir)
-                gif_path = max(dir, key=os.path.getctime)
+            if len(gif_dir) > cls.gif_count:
+                cls.gif_count = len(gif_dir)
+                gif_path = max(gif_dir, key=os.path.getctime)
                 output["gif"] = f"/{STATIC_URL}{Path(gif_path).name}".replace("\\", "/")
+                cls.gif_path = output['gif']
+
+            if len(webm_dir) > cls.webm_count:
+                cls.webm_count = len(webm_dir)
+                webm_path = max(webm_dir, key=os.path.getctime)
+                output["webm"] = f"/{STATIC_URL}{Path(webm_path).name}".replace("\\", "/")
+                cls.webm_path = output['webm']
+
         return output
 
     @classmethod
@@ -108,6 +125,13 @@ class RunManager:
         cls.run_started = True
         cls.run_args = fkwargs
         cls.counter = 0
+        
+        # clear gif path
+        cls.gif_path = ''
+
+        # clear webm path
+        cls.webm_path = ''
+
         cls.process = multiprocessing.Process(
             target=RunManager.run_yt,
             kwargs=(fkwargs),

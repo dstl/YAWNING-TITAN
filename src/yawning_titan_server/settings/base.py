@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
-from yawning_titan import IMAGES_DIR
+from yawning_titan import IMAGES_DIR, VIDEOS_DIR
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -126,7 +126,8 @@ STATICFILES_DIRS = (
     BASE_DIR / "yawning_titan_gui" / "static",
     DOCS_ROOT / "_static",
     DOCS_ROOT / "_images",
-    IMAGES_DIR
+    IMAGES_DIR,
+    VIDEOS_DIR
 )
 
 # Default primary key field type
