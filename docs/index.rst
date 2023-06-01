@@ -10,6 +10,7 @@ Welcome to the Yawning-Titan docs!
    source/create_a_network
    source/db
    source/tutorials
+   source/agent_training
    source/experiments
    GameMode UML <source/game_mode_config_explained>
    Yawning-Titan CLI <source/yt_cli>

@@ -41,13 +41,13 @@ class YawningTitanRun:
 
     The ``YawningTitanRun`` class can be used 'straight out of the box', as all params have default values.
 
-    .. code::python
+    .. code:: python
 
         yt_run = YawningTitanRun()
 
     The ``YawningTitanRun`` class can also be used manually by setting auto=False.
 
-    .. code::python
+    .. code:: python
 
         yt_run = YawningTitanRun(auto=False)
         yt_run.setup()
@@ -57,7 +57,7 @@ class YawningTitanRun:
     Trained agents can be saved by calling ``.save()``. If no path is provided, a path is generated using the
     AGENTS_DIR, today's date, and the uuid of the instance of ``YawningTitanRun``.
 
-    .. code::python
+    .. code:: python
 
         yt_run = YawningTitanRun()
         yt_run.save()
@@ -489,7 +489,7 @@ class YawningTitanRun:
         args.pop("auto")
 
         yt_run = YawningTitanRun(**args, auto=False)
-        yt_run.uuid = uuid  # We'll allow it here :)
+        yt_run.uuid = uuid  # noqa - We'll allow it here :)
         yt_run.setup(new=False, ppo_zip_path=os.path.join(path, "ppo.zip"))
 
         return yt_run

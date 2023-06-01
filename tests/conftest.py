@@ -40,7 +40,7 @@ def not_raises(expected_exception: Type[Exception]):
 
     Example of a 'good' test:
 
-    .. code::python::
+    .. code:: python
 
         a_list = ['This is a good test']
         with not_raises(IndexError):
@@ -48,7 +48,7 @@ def not_raises(expected_exception: Type[Exception]):
 
     Example of a 'bad' test:
 
-    .. code::python::
+    .. code:: python
 
         a_list = ['This is a bad test']
         with not_raises(IndexError):

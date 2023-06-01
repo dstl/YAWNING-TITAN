@@ -91,7 +91,7 @@ class Network(nx.Graph):
     Network extends networkx.Graph.
 
     Example:
-        .. code::python
+        .. code:: python
 
 
     """

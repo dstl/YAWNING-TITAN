@@ -43,8 +43,6 @@ dependencies = [
     "seaborn==0.12.1",
     "stable_baselines3==1.6.2",
     "tabulate==0.8.9",
-    "tensorboard==2.11.0",
-    "tinydb==4.7.0",
     "tinydb==4.7.0",
     "torch==1.13.1",
     "typer[all]==0.7.0",
@@ -78,6 +76,9 @@ dev = [
     "sphinx-copybutton==0.5.2",
     "wheel",
     "build"
+]
+tensorflow = [
+    "tensorflow==2.12.0",
 ]
 
 [project.scripts]
