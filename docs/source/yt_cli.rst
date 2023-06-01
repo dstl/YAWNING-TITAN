@@ -2,7 +2,7 @@ Command-Line Interface
 ======================
 
 A command-line interface (CLI) built using `Typer <https://github.com/tiangolo/typer>`_ serves as the main entry-point
-to Yawning-Titan once it is installed. To access the simply CLI, run the following command from the Pythn enviornment
+to Yawning-Titan once it is installed. To access the simply CLI, run the following command from the Python environment
 that Yawning-Titan is installed on.
 
 .. code:: bash
