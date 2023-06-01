@@ -15,7 +15,7 @@ The easiest way to train an agent is to use the :class:`~yawning_titan.yawning_t
 
 Configurable Param:
 
-- network - An instance of Network.
+- network - An instance of :class:`~yawning_titan.networks.network.Network`.
 
 - game_mode - An instance of GameMode.
 
