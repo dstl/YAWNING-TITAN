@@ -92,7 +92,6 @@ class GameModeDB:
 
     def __init__(self):
         self._db = YawningTitanDB("game_modes")
-        self.reset_default_game_modes_in_db()
 
     def __enter__(self) -> GameModeDB:
         return GameModeDB()

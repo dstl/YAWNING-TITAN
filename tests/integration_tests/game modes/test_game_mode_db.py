@@ -14,25 +14,22 @@ from yawning_titan.networks.network_db import default_18_node_network
 
 
 @pytest.mark.integration_test
-def test_db_file_exists():
+def test_db_file_exists(game_mode_db):
     """Test the creation of the game mode db."""
-    with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
-        db = GameModeDB()
-        assert os.path.isfile(db._db._path)
-        db._db.close_and_delete_temp_db()
+    db = GameModeDB()
+    assert os.path.isfile(db._db._path)
 
 
 @pytest.mark.integration_test
-def test_delete_default_game_mode_delete_fails():
+def test_delete_default_game_mode_delete_fails(game_mode_db):
     """Test attempted deletion of locked game mode fails."""
-    with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
-        db = GameModeDB()
-        config = db.search(DocMetadataSchema.LOCKED == True)[0]
+    db = GameModeDB()
+    db.show()
+    config = db.search(DocMetadataSchema.LOCKED == True)[0]
 
-        with pytest.raises(YawningTitanDBError):
-            db.remove(config)
+    with pytest.raises(YawningTitanDBError):
+        db.remove(config)
 
-        db._db.close_and_delete_temp_db()
 
 
 @pytest.mark.integration_test

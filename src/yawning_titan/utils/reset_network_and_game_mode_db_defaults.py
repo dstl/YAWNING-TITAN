@@ -5,10 +5,7 @@ def run(rebuild: bool = False):
     :param rebuild: If True, completely rebuild the DB, removing all custom
         Networks and GameModes. Default value is False.
     """
-
     from yawning_titan.game_modes.game_mode_db import GameModeDB
-
-    """Forces a reset of the default entries in the NetworkDB and GameModeDB."""
     from yawning_titan.networks.network_db import NetworkDB
 
     network_db = NetworkDB()

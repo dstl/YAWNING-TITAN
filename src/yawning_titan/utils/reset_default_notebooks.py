@@ -11,6 +11,8 @@ def run(overwrite_existing: bool = True):
     import shutil
     from logging import getLogger
     from pathlib import Path
+    from yawning_titan import NOTEBOOKS_DIR
+
 
     try:
         # Attempt to import Yawning-Titan to leverage its logging config
@@ -21,10 +23,9 @@ def run(overwrite_existing: bool = True):
     logger = getLogger("scripts.reset_default_notebooks")
 
     # The users Yawning-Titan notebook directory
-    user_notebooks_dir = Path.home() / "yawning_titan" / "notebooks"
 
     # The root dir of notebook package data in the library
-    lib_notebooks = Path(__file__).parent.parent / "yawning_titan" / "notebooks"
+    lib_notebooks = Path(__file__).parent.parent / "notebooks"
     default_notebooks_root = os.path.join(lib_notebooks, "_package_data")
 
     for subdir, dirs, files in os.walk(default_notebooks_root):
@@ -33,7 +34,7 @@ def run(overwrite_existing: bool = True):
             if lib_subdir == ".ipynb_checkpoints":
                 continue
             if lib_subdir:
-                target_subdir = os.path.join(user_notebooks_dir, lib_subdir)
+                target_subdir = os.path.join(NOTEBOOKS_DIR, lib_subdir)
                 if not os.path.isdir(target_subdir):
                     # Create new subdirectory in the app notebooks
                     # directory
@@ -42,7 +43,7 @@ def run(overwrite_existing: bool = True):
         for file in files:
             fp = os.path.join(subdir, file)
             path_split = fp.replace(default_notebooks_root, "").split(os.sep)
-            target_fp = os.path.join(user_notebooks_dir, *path_split)
+            target_fp = os.path.join(NOTEBOOKS_DIR, *path_split)
             copy_file = not os.path.isfile(target_fp)
             if overwrite_existing:
                 if not copy_file:

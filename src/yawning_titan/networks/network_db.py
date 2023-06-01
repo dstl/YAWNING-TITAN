@@ -215,7 +215,6 @@ class NetworkDB:
 
     def __init__(self):
         self._db = YawningTitanDB("networks")
-        self.reset_default_networks_in_db()
 
     def __enter__(self) -> NetworkDB:
         return NetworkDB()

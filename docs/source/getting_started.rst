@@ -6,70 +6,70 @@ Getting Started
 
 Pre-Requisites
 **************
-To get YAWNING-TITAN (**YT**) installed, you will need to have the following
+To get Yawning-Titan installed, you will need to have the following
 installed:
 
-**Unix**
+**Bash**
 
 * ``python >= 3.8.*, <= 3.10.*``
 * ``python3-pip``
 * ``virtualenv``
 
-**Windows**
+**Powershell**
 
 * ``python >= 3.8.*, <= 3.10.*``
 
-**YT** is designed to be OS-agnostic, and thus should work on most variations/distros of Linux, Windows, and MacOS.
+Yawning-Titan is designed to be OS-agnostic, and thus should work on most variations/distros of Linux, Windows, and MacOS.
 
 Environment Setup
 *****************
 
-**YT** operates from the users home directory where it has two locations, one hidden for backend stuff, and one user-facing
+Yawning-Titan operates from the users home directory where it has two locations, one hidden for backend stuff, and one user-facing
 for user files. To initialise this environment, run:
 
-**Unix**
 
-.. code:: bash
 
-    mkdir ~/yawning_titan
-    cd ~/yawning_titan
-    python3 -m venv .venv
-    source .venv/bin/activate
-    pip install <path to downloaded yawningtitan .whl file>
+.. tabs::
 
-**Windows**
+    .. code-tab:: bash
+        :caption: Bash
 
-.. code:: powershell
+        mkdir ~/yawning_titan
+        cd ~/yawning_titan
+        python3 -m venv .venv
+        source .venv/bin/activate
+        pip install <path to downloaded yawningtitan .whl file>
+        yawning-titan setup
 
-    mkdir ~\yawning_titan
-    cd ~\yawning_titan
-    python3 -m venv .venv
-    attrib +h .venv /s /d # Hides the .venv directory
-    .\.venv\Scripts\activate
-    pip install <path to downloaded yawningtitan .whl file>
+    .. code-tab:: powershell
+        :caption: Powershell
+
+        mkdir ~\yawning_titan
+        cd ~\yawning_titan
+        python3 -m venv .venv
+        attrib +h .venv /s /d # Hides the .venv directory
+        .\.venv\Scripts\activate
+        pip install <path to downloaded yawningtitan .whl file>
+        yawning-titan setup
+
+
 
 Starting Yawning-Titan
 **********************
 
-The best way to begin working with **YT** is to run Jupyter Lab from the newly created venv.
-
-**Unix**
+The best way to begin working with Yawning-Titan is to the GUI.
 
 .. code:: bash
 
-    cd ~/yawning_titan
-    source .venv/bin/activate
-    cd ~/yawning_titan/notebooks
-    jupyter lab
+    yawning-titan gui
 
-**Windows**
+See Yawning-Titan GUI :ref:`yt-gui` for a guide on how to use the GUI.
 
-.. code:: powershell
+Alternatively, you can work with Yawning-Titan from Jupyter Labs.
 
-    cd ~\yawning_titan
-    .\.venv\Scripts\activate
-    cd ~\yawning_titan\notebooks
-    jupyter lab
+.. code:: bash
+
+    yawning-titan notebooks
 
 Running Yawning-Titan
 *********************
@@ -92,12 +92,12 @@ The :class:`~yawning_titan.yawning_titan_run.YawningTitanRun` class is fully con
 Development Install
 *******************
 
-For those wishing to install **YT** and use it or extend it from within an IDE, perform the following development installation:
+For those wishing to install Yawning-Titan and use it or extend it from within an IDE, perform the following development installation:
 
-1. Navigate to the YAWNING-TITAN folder and create a new python :term:`Virtual Environment` (**venv**)
+1. Navigate to the Yawning-Titan folder and create a new python :term:`Virtual Environment` (**venv**)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code:: unix
+.. code:: bash
 
    python3 -m venv venv
 
@@ -105,21 +105,20 @@ For those wishing to install **YT** and use it or extend it from within an IDE, 
 2. Activate the :term:`venv<Virtual Environment>`
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. tabs::
 
-**Unix**
+    .. code-tab:: bash
+        :caption: Bash
 
-.. code:: bash
+        source venv/bin/activate
 
-   source venv/bin/activate
+    .. code-tab:: powershell
+        :caption: Powershell
+
+        .\venv\Scripts\activate
 
 
-**Windows**
-
-.. code:: powershell
-
-   .\venv\Scripts\activate
-
-3. Install YT into the :term:`venv<Virtual Environment>` along with all of its dependencies
+3. Install Yawning-Titan into the :term:`venv<Virtual Environment>` along with all of its dependencies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: bash
