@@ -17,7 +17,7 @@ Configurable Param:
 
 - network - An instance of :class:`~yawning_titan.networks.network.Network`.
 
-- game_mode - An instance of GameMode.
+- game_mode - An instance of :class:`~yawning_titan.game_modes.game_mode.GameMode`.
 
 - red_agent_class - The agent/action set class used for the red agent.
 
