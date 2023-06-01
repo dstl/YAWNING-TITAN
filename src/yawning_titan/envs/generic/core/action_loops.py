@@ -191,7 +191,6 @@ class ActionLoop:
         with imageio.get_writer(gif_path, mode="I") as writer:
             # create a gif from the images
             for frame_num, filename in enumerate(frame_names):
-                print(filename)
                 # skip first frame because it is empty
                 if filename == frame_names[0]:
                     continue
@@ -213,5 +212,4 @@ class ActionLoop:
     def render_cleanup(self, frame_names):
         # delete images
         for filename in set(frame_names):
-            print(filename)
             os.remove(filename)
