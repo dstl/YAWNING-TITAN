@@ -11,37 +11,51 @@ on:
 
 
 jobs:
+  build:
 
-  build_sphinx_job:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      matrix:
+        python-version: ["3.10"]
 
     steps:
+      - uses: actions/checkout@v3
 
-      - name: Get prerequisites and clone repository
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install python dev
         run: |
           set -x
           sudo apt-get update
-          sudo apt-get install -y git
           sudo add-apt-repository ppa:deadsnakes/ppa -y
-          sudo apt install python3.10-dev -y
-          python -m pip install --upgrade pip
-          git clone "https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
+          sudo apt install python${{ matrix.python-version}}-dev -y
+
+      - name: Install Git
+        run: |
+          set -x
+          sudo apt-get install -y git
         shell: bash
 
-      - name: Install Yawning-Titan for docs autosummary
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set pip, wheel, setuptools versions
         run: |
           python -m pip install --upgrade pip==23.0.1
           pip install wheel==0.38.4 --upgrade
           pip install setuptools==66 --upgrade
           pip install build
+
+      - name: Install Yawning-Titan for docs autosummary
+        run: |
+          set -x
           python -m pip install -e .[dev]
+
       - name: Run build script for Sphinx pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
         run: |
+          set -x
           bash $PWD/docs/build-sphinx-docs-to-github-pages.sh
