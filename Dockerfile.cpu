@@ -1,4 +1,4 @@
-FROM python:3.8.13-slim
+FROM python:3.10.11-slim
 
 COPY ./ /root/code
 RUN apt-get update && apt-get install gcc -y

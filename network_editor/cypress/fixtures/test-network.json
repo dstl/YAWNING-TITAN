@@ -1,0 +1,51 @@
+{
+  "nodes": {
+    "test1": {
+      "uuid": "test1",
+      "name": "test1",
+      "high_value_node": false,
+      "entry_node": false,
+      "vulnerability": 0.6,
+      "x_pos": 100,
+      "y_pos": 700
+    },
+    "test2": {
+      "uuid": "test2",
+      "name": "test2",
+      "high_value_node": false,
+      "entry_node": false,
+      "vulnerability": 0.79,
+      "x_pos": 300,
+      "y_pos": 600
+    },
+    "test3": {
+      "uuid": "test3",
+      "name": "test3",
+      "high_value_node": false,
+      "entry_node": false,
+      "vulnerability": 0.3,
+      "x_pos": 200,
+      "y_pos": 700
+    }
+  },
+  "edges": {
+    "test1": {
+      "test2": {},
+      "test3": {}
+    },
+    "test2": {
+      "test1": {}
+    },
+    "test3": {
+      "test1": {}
+    }
+  },
+  "_doc_metadata": {
+    "uuid": "test-network",
+    "created_at": "2022-12-08T14:56:42.891677",
+    "name": "test-network",
+    "description": "end to end test network",
+    "author": "Czar",
+    "locked": false
+  }
+}

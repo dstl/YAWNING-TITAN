@@ -8,6 +8,8 @@
 
 # -- Path setup --------------------------------------------------------------
 
+import datetime
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -19,13 +21,13 @@ sys.path.insert(0, os.path.abspath("../"))
 
 
 # -- Project information -----------------------------------------------------
-
+year = datetime.datetime.now().year
 project = "YAWNING TITAN"
-copyright = "Crown Copyright (C) Dstl 2022"
+copyright = f"Crown Copyright (C) Dstl 2021 - {year}"
 author = "Defence Science and Technology Laboratory UK"
 
 # The short Major.Minor.Build version
-with open("../VERSION", "r") as file:
+with open("../src/yawning_titan/VERSION", "r") as file:
     version = file.readline()
 # The full version, including alpha/beta/rc tags
 release = version
@@ -42,12 +44,13 @@ release = version
 # ones.
 extensions = [
     "sphinx.ext.napoleon",
-    "sphinx_rtd_theme",
     "sphinx.ext.autodoc",  # Core Sphinx library for auto html doc generation from docstrings
     "sphinx.ext.autosummary",  # Create neat summary tables for modules/classes/methods etc
     "sphinx.ext.intersphinx",  # Link to other project's documentation (see mapping below)
     "sphinx.ext.viewcode",  # Add a link to the Python source code for classes, functions etc.
     "sphinx.ext.todo",
+    "sphinx_copybutton",  # Adds a copy button to code blocks
+    "sphinx_code_tabs",  # Enables tabbed code blocks
 ]
 
 # Mappings for sphinx.ext.intersphinx. Projects have to have Sphinx-generated doc! (.inv file)
@@ -106,7 +109,8 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
+html_theme = "furo"
+html_title = f"{project} v{release} docs"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

@@ -1,0 +1,5 @@
+<div class="window" #window>
+  <app-node-colour-key></app-node-colour-key>
+  <app-canvas-control></app-canvas-control>
+  <div id="cytoscapeCanvas" #cytoscapeCanvas class="main" appFileDragDrop (fileDropped)="loadFile($event)" data-cy="cytoscape-canvas"></div>
+</div>

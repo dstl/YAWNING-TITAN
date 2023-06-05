@@ -1,0 +1,165 @@
+textarea{
+    background-color: var(--light) !important;
+    border: none !important;
+    color: var(--text-light) !important;
+}
+
+#section-controls{
+    justify-content: center;
+}
+#section-controls>*{
+    margin: var(--increment);
+}
+
+.form-label{
+    color: var(--text-superlight);
+}
+.form-switch{
+    text-align: center;
+}
+/* .form-range{
+    display: flex;
+    flex-direction: row;
+} */
+.form-select{
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='white' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e")
+}
+.form-range-container{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+.form-range::-moz-range-progress {
+    background-color: var(--primary);
+    height: .5rem;
+    border-radius: .25rem 0%  0%  .25rem;
+}
+.form-range>.range-setter{
+    width: 50px;
+    margin-left: var(--increment);
+}
+.range-setter{
+    background-color: var(--light);
+    border: 1px solid var(--text-light);
+    color: var(--text-light);
+    border-radius: .25rem;
+    width: 4rem;
+}
+.range-setter::-webkit-inner-spin-button,.form-range>.range-setter::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* config form elements */
+.error-list{
+    font-size: .75rem;
+    color: red
+}
+.form-control{
+    padding: 0;
+    padding-left: .2rem;
+    padding-right: .2rem;
+    margin-right: var(--increment);
+    max-width: calc(100% - .5rem);
+}
+.form-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 1;
+    min-height: 0;
+    max-height: 100%;
+}
+.form-container div, .form-container form{
+    min-height: 0;
+    /* max-height: 100%; */
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
+}
+.config-form{
+    display: flex;
+    flex-direction: column;
+    margin-top: calc(var(--increment)*4);
+    margin-bottom: calc(var(--increment)*4);
+    /* flex: 1; */
+}
+.fields{
+    width: 100%;
+}
+.config-form>.fields{
+    overflow-y: auto;
+    padding-right: var(--increment);
+}
+.config-form .info{
+    margin-right: var(--increment);
+}
+.title{
+    font-size: 1.25rem;
+}
+
+ /* form layouts */
+ .mb-3{
+    position: relative;
+    display: block;
+    flex-wrap: wrap;
+    min-height: 5rem;
+    margin: var(--increment);
+    margin-top: calc(var(--increment) * 3) !important;
+    margin-bottom: calc(var(--increment) * 3) !important;
+}
+.mb-3:has(.inline){
+    display: flex;
+}
+.mb-3:has(.hidden){
+    display: none;
+}
+.mb-3 label{
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+.mb-3 input{
+    height: 25px;
+}
+.mb-3>div{
+    flex: 1;
+}
+
+.mb-3:has(.grouped.child) .info{
+    margin-left: var(--padding); /*calc(var(--increment)*3);*/
+}
+
+/* search form delete */
+#search-form .mb-3 .delete{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+#search-form{
+    min-height: 0;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+
+.help-text{
+    font-size: .8rem;
+    color: #888;
+    flex-basis: 100%;
+    margin: 0;
+}
+.field-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.field-container:has(.inline){
+    max-width: 400px;
+}
+.field-container>*{
+    width:100%;
+    margin: 0;
+}

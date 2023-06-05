@@ -1,0 +1,149 @@
+/* multi range slider */
+
+.multi-range{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: var(--increment);
+}
+.slider-distance{
+    flex: 1;
+}
+.range-setter:first-of-type{
+    margin-right: var(--increment);
+}
+
+.multi-range .slider {
+    position: relative;
+    height: 9px;
+    border-radius: 10px;
+    text-align: left;
+    margin: 10px 0 10px 0;
+}
+
+.multi-range .slider > div {
+    position: absolute;
+    left: 13px;
+    right: 15px;
+    height: 9px;
+}
+
+.multi-range .inverse-left {
+    position: absolute;
+    left: 0;
+    height: 9px;
+    border-radius: 10px;
+    background-color: #CCC;
+    margin: 0 7px;
+}
+
+.multi-range .inverse-right {
+    position: absolute;
+    right: 0;
+    height: 9px;
+    border-radius: 10px;
+    background-color: #CCC;
+    margin: 0 7px;
+}
+
+.multi-range .range {
+    position: absolute;
+    left: 0;
+    height: 9px;
+    border-radius: 9px;
+    background-color: var(--primary);
+}
+
+.multi-range .thumb {
+    position: absolute;
+    top: -5px;
+    z-index: 2;
+    height: 18px;
+    width: 18px;
+    text-align: left;
+    margin-left: -11px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    background-color: #FFF;
+    border-radius: 50%;
+    outline: none;
+}
+
+.multi-range .slider > input[type=range] {
+    position: absolute;
+    pointer-events: none;
+    -webkit-appearance: none;
+    z-index: 3;
+    height: 9px;
+    top: -2px;
+    width: 100%;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    -khtml-opacity: 0;
+    opacity: 0;
+}
+
+.multi-range > input[type=range]::-ms-track {
+    -webkit-appearance: none;
+    background: transparent;
+    color: transparent;
+}
+
+.multi-range .slider > input[type=range]::-moz-range-track {
+    -moz-appearance: none;
+    background: transparent;
+    color: transparent;
+}
+
+.multi-range .slider > input[type=range]:focus::-webkit-slider-runnable-track {
+    background: transparent;
+    border: transparent;
+}
+
+.multi-range .slider > input[type=range]:focus {
+    outline: none;
+}
+
+.multi-range .slider > input[type=range]::-ms-thumb {
+    pointer-events: all;
+    width: 18px;
+    height: 18px;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+}
+
+.multi-range .slider > input[type=range]::-moz-range-thumb {
+    pointer-events: all;
+    width: 18px;
+    height: 18px;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+}
+
+.multi-range .slider > input[type=range]::-webkit-slider-thumb {
+    pointer-events: all;
+    width: 18px;
+    height: 18px;
+    border-radius: 0px;
+    border: 0 none;
+    background: red;
+    -webkit-appearance: none;
+}
+
+.multi-range .slider > input[type=range]::-ms-fill-lower {
+    background: transparent;
+    border: 0 none;
+}
+
+.multi-range .slider > input[type=range]::-ms-fill-upper {
+    background: transparent;
+    border: 0 none;
+}
+
+.multi-range .slider > input[type=range]::-ms-tooltip {
+    display: none;
+}

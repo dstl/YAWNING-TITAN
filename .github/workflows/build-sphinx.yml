@@ -34,8 +34,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python -m pip install build
-          python -m pip install wheel
+          python -m pip install --upgrade pip==23.0.1
+          pip install wheel==0.38.4 --upgrade
+          pip install setuptools==66 --upgrade
+          pip install build
           python -m pip install -e .[dev]
       - name: Run build script for Sphinx pages
         env:

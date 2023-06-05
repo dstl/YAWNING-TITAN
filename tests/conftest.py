@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from typing import Dict, Final, Type
+from typing import Dict, Final, List, Optional, Type
 from unittest.mock import patch
 
 import pytest
@@ -8,14 +8,23 @@ import yaml
 from tests import TEST_PACKAGE_DATA_PATH
 from tests.game_mode_db_patch import game_mode_db_init_patch
 from tests.network_db_patch import network_db_init_patch
-from yawning_titan.db.doc_metadata import DocMetadataSchema
+from tests.yawning_titan_db_patch import yawning_titan_db_init_patch
+from yawning_titan.config.core import ConfigGroup, ConfigGroupValidation
+from yawning_titan.config.item_types.bool_item import BoolItem
+from yawning_titan.config.item_types.float_item import FloatItem
+from yawning_titan.config.item_types.int_item import IntItem
+from yawning_titan.config.item_types.str_item import StrItem
+from yawning_titan.db.doc_metadata import DocMetadata, DocMetadataSchema
+from yawning_titan.db.yawning_titan_db import YawningTitanDB
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
+from yawning_titan.exceptions import ConfigGroupValidationError
 from yawning_titan.game_modes.game_mode import GameMode
 from yawning_titan.game_modes.game_mode_db import GameModeDB
 from yawning_titan.networks.network import Network
 from yawning_titan.networks.network_db import NetworkDB
 from yawning_titan.networks.node import Node
 from yawning_titan.yawning_titan_run import YawningTitanRun
+from yawning_titan_gui.views.utils.helpers import GameModeManager, NetworkManager
 
 TOLERANCE: Final[float] = 0.1
 N_TIME_STEPS: Final[int] = 1000
@@ -31,7 +40,7 @@ def not_raises(expected_exception: Type[Exception]):
 
     Example of a 'good' test:
 
-    .. code::python::
+    .. code:: python
 
         a_list = ['This is a good test']
         with not_raises(IndexError):
@@ -39,7 +48,7 @@ def not_raises(expected_exception: Type[Exception]):
 
     Example of a 'bad' test:
 
-    .. code::python::
+    .. code:: python
 
         a_list = ['This is a bad test']
         with not_raises(IndexError):
@@ -65,6 +74,22 @@ def game_mode_db() -> GameModeDB:
         return GameModeDB()
 
 
+@pytest.fixture(scope="session")
+def game_mode_manager() -> GameModeManager:
+    """A patched GameModeManager that uses tests/_package_data/game_modes.json."""
+    with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
+        GameModeManager.db = GameModeDB()
+        return GameModeManager
+
+
+@pytest.fixture(scope="session")
+def network_manager() -> NetworkManager:
+    """A patched NetworkManager that uses tests/_package_data/networks.json."""
+    with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
+        NetworkManager.db = NetworkDB()
+        return NetworkManager
+
+
 @pytest.fixture()
 def default_game_mode(game_mode_db) -> GameMode:
     """Return the default game mode."""
@@ -84,6 +109,31 @@ def default_network(network_db) -> Network:
     network = network_db.search(DocMetadataSchema.NAME == "Default 18-node network")[0]
     network.set_node_positions()
     return network
+
+
+@pytest.fixture
+def temp_networks(network_manager: NetworkManager) -> List[str]:
+    """Create a number of temporary networks as copies of an existing network.
+
+    :param source_network: The network id to copy
+    :param n: The number of networks to create
+
+    :return: a list of created network Ids.
+    """
+
+    def _temp_networks(source_network_id: str, n: int = 1):
+        ids = []
+        for _ in range(n):
+            network = network_manager.db.get(source_network_id)
+            meta = network.doc_metadata.to_dict()
+            meta["uuid"] = None
+            meta["locked"] = False
+            network._doc_metadata = DocMetadata(**meta)
+            network_manager.db.insert(network=network, name="temp")
+            ids.append(network.doc_metadata.uuid)
+        return ids
+
+    return _temp_networks
 
 
 @pytest.fixture()
@@ -197,3 +247,72 @@ def basic_2_agent_loop(create_yawning_titan_run):
         return ActionLoop(yt_run.env, yt_run.agent, episode_count=num_episodes)
 
     return _basic_2_agent_loop
+
+
+class Group(ConfigGroup):
+    """Basic implementation of a :class: `~yawning_titan.config.core.ConfigGroup`."""
+
+    def __init__(self, doc: Optional[str] = None):
+        self.a: BoolItem = BoolItem(value=False, alias="legacy_a")
+        self.b: FloatItem = FloatItem(value=1, alias="legacy_b")
+        self.c: StrItem = StrItem(value="test", alias="legacy_c")
+        super().__init__(doc)
+
+
+class GroupTier1(ConfigGroup):
+    """Basic implementation of a nested :class: `~yawning_titan.config.core.ConfigGroup`."""
+
+    def __init__(self, doc: Optional[str] = None):
+        self.bool: BoolItem = BoolItem(value=False)
+        self.float: FloatItem = FloatItem(value=1)
+        super().__init__(doc)
+
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
+        super().validate()
+        try:
+            if self.bool.value and self.float.value > 1:
+                msg = "test error tier 1"
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        try:
+            if self.bool.value and self.float.value < 0:
+                msg = "test error tier 1 b"
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        return self.validation
+
+
+class GroupTier2(ConfigGroup):
+    """Basic implementation of a nested :class: `~yawning_titan.config.core.ConfigGroup`."""
+
+    def __init__(self, doc: Optional[str] = None):
+        self.bool: BoolItem = BoolItem(value=False)
+        self.int: IntItem = IntItem(value=1)
+        self.tier_1: GroupTier1 = GroupTier1()
+        super().__init__(doc)
+
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
+        super().validate()
+        try:
+            if self.bool.value and self.int.value != 1:
+                msg = "test error tier 2"
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        return self.validation
+
+
+@pytest.fixture
+def test_group() -> Group:
+    """A test instance of :class: `~yawning_titan.config.core.ConfigGroup`."""
+    return Group()
+
+
+@pytest.fixture
+def multi_tier_test_group() -> GroupTier2:
+    """A nested test instance of :class: `~yawning_titan.config.core.ConfigGroup`."""
+    return GroupTier2()

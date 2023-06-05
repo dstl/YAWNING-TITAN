@@ -1,0 +1,9 @@
+@use '@angular/material' as mat;
+
+@mixin network-view-component($theme) {
+  $background: mat.get($theme, background);
+
+  .window {
+    background-color: #000;
+  }
+}

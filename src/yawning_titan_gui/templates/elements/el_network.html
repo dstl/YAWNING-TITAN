@@ -1,0 +1,27 @@
+{% load tags %}
+<div class="list-item" data-item-name="{{network.name}}" data-item-id="{{network.uuid}}">
+    <div class="contents">
+        <h3 class="subhead">{{network.name | format_text}}</h3>
+        <p class="description">{{network.description}}</p>
+    </div>
+    {% if show_icons %}
+        <div class="icons">
+            <div class="icon create-from">
+                <i class="bi bi-clipboard"></i>
+            </div>
+            {% if not network.locked %}
+            <a class="icon" href="{% url 'network editor' network_id=network.uuid %}">
+                <i class="bi bi-pencil"></i>
+            </a>
+            <div class="icon delete">
+                <i class="bi bi-trash3"></i>
+            </div>
+            <input class="form-check-input icon" type="checkbox" value="">
+            {% else %}
+            <a class="icon" href="{% url 'network editor' network_id=network.uuid %}">
+                <i class="bi bi-eye"></i>
+            </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
