@@ -354,12 +354,14 @@ def get_toolbar(current_page_title: str = None):
             "cypressRefToolbar": "toolbar-documentation",
             "cypressRefMenu": "menu-documentation",
         },
-        "jupyter": {
-            "icon": "bi-book",
-            "title": "Jupyter Notebooks",
-            "cypressRefToolbar": "toolbar-jupyter-notebooks",
-            "cypressRefMenu": "menu-jupyter-notebooks",
-        },
+        # Not comfortable with this yet. Causing issues in test and
+        # currently only works on Windows. Will release in later version.
+        # "jupyter": {
+        #     "icon": "bi-book",
+        #     "title": "Jupyter Notebooks",
+        #     "cypressRefToolbar": "toolbar-jupyter-notebooks",
+        #     "cypressRefMenu": "menu-jupyter-notebooks",
+        # },
         "manage-game_modes": {
             "icon": "bi-gear",
             "title": "Manage game modes",
@@ -449,6 +451,7 @@ def open_jupyter_notebook():
             return None
     # get the tokenised url
     paths = [p.split("::", 1)[0] for p in b.split("\n")]
+
     paths = [p.split("]")[1].lstrip().rstrip() for p in paths if "http" in p]
     path = [p for p in paths if "9999" in p][-1]
     return path
