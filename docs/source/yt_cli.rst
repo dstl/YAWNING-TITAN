@@ -35,4 +35,3 @@ display what matching options are available.
 .. image:: ../_static/yt-cli-completion-example.png
    :width: 800
    :alt: Yawning-Titan CLI completion example
-

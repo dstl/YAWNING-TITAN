@@ -17,7 +17,7 @@ from yawning_titan.networks.network import Network, NetworkLayout
 from yawning_titan.networks.network_db import NetworkDB, NetworkQuery
 from yawning_titan.yawning_titan_run import YawningTitanRun
 from yawning_titan_gui import YT_GUI_RUN_LOG, YT_GUI_STDOUT
-from yawning_titan_server.settings.base import STATIC_URL, DOCS_ROOT
+from yawning_titan_server.settings.base import DOCS_ROOT, STATIC_URL
 
 
 class RunManager:
@@ -31,8 +31,8 @@ class RunManager:
     run_args = None
     run_started = False
 
-    gif_path = ''
-    webm_path = ''
+    gif_path = ""
+    webm_path = ""
 
     @staticmethod
     def format_file(path):
@@ -97,7 +97,7 @@ class RunManager:
             "gif": cls.gif_path,
             "webm": cls.webm_path,
             "active": cls.process.is_alive() if cls.process else False,
-            "request_count": cls.counter
+            "request_count": cls.counter,
         }
 
         if cls.run_args["render"] and cls.counter > 20 and cls.process.is_alive():
@@ -109,13 +109,15 @@ class RunManager:
                 cls.gif_count = len(gif_dir)
                 gif_path = max(gif_dir, key=os.path.getctime)
                 output["gif"] = f"/{STATIC_URL}{Path(gif_path).name}".replace("\\", "/")
-                cls.gif_path = output['gif']
+                cls.gif_path = output["gif"]
 
             if len(webm_dir) > cls.webm_count:
                 cls.webm_count = len(webm_dir)
                 webm_path = max(webm_dir, key=os.path.getctime)
-                output["webm"] = f"/{STATIC_URL}{Path(webm_path).name}".replace("\\", "/")
-                cls.webm_path = output['webm']
+                output["webm"] = f"/{STATIC_URL}{Path(webm_path).name}".replace(
+                    "\\", "/"
+                )
+                cls.webm_path = output["webm"]
 
         return output
 
@@ -125,12 +127,12 @@ class RunManager:
         cls.run_started = True
         cls.run_args = fkwargs
         cls.counter = 0
-        
+
         # clear gif path
-        cls.gif_path = ''
+        cls.gif_path = ""
 
         # clear webm path
-        cls.webm_path = ''
+        cls.webm_path = ""
 
         cls.process = multiprocessing.Process(
             target=RunManager.run_yt,
@@ -354,12 +356,14 @@ def get_toolbar(current_page_title: str = None):
             "cypressRefToolbar": "toolbar-documentation",
             "cypressRefMenu": "menu-documentation",
         },
-        "jupyter": {
-            "icon": "bi-book",
-            "title": "Jupyter Notebooks",
-            "cypressRefToolbar": "toolbar-jupyter-notebooks",
-            "cypressRefMenu": "menu-jupyter-notebooks",
-        },
+        # Not comfortable with this yet. Causing issues in test and
+        # currently only works on Windows. Will release in later version.
+        # "jupyter": {
+        #     "icon": "bi-book",
+        #     "title": "Jupyter Notebooks",
+        #     "cypressRefToolbar": "toolbar-jupyter-notebooks",
+        #     "cypressRefMenu": "menu-jupyter-notebooks",
+        # },
         "manage-game_modes": {
             "icon": "bi-gear",
             "title": "Manage game modes",
@@ -449,10 +453,12 @@ def open_jupyter_notebook():
             return None
     # get the tokenised url
     paths = [p.split("::", 1)[0] for p in b.split("\n")]
+
     paths = [p.split("]")[1].lstrip().rstrip() for p in paths if "http" in p]
     path = [p for p in paths if "9999" in p][-1]
     return path
 
+
 def get_network_layouts():
-    """Get an array of available network layout algorithms"""
+    """Get an array of available network layout algorithms."""
     return list(map(lambda c: c.value, NetworkLayout))

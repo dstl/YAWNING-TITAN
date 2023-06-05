@@ -26,8 +26,8 @@ from yawning_titan.game_modes.game_mode_db import default_game_mode
 from yawning_titan.networks import network_creator
 
 
-
 def main():
+    """Run the custom config."""
     game_mode = default_game_mode()
 
     network = network_creator.gnp_random_connected_graph(
@@ -59,8 +59,7 @@ def main():
     DURING_TRAIN_EVAL = False
 
     if CREATE_TENSORBOARD:
-        agent = PPO(PPOMlp, env, verbose=1,
-                    tensorboard_log="logs/ppo-tensorboard/")
+        agent = PPO(PPOMlp, env, verbose=1, tensorboard_log="logs/ppo-tensorboard/")
     else:
         agent = PPO(PPOMlp, env, verbose=1)
 
@@ -76,8 +75,7 @@ def main():
 
         profiler.enable()
         if DURING_TRAIN_EVAL:
-            agent.learn(total_timesteps=5000, n_eval_episodes=1,
-                        callback=eval_callback)
+            agent.learn(total_timesteps=5000, n_eval_episodes=1, callback=eval_callback)
         else:
             agent.learn(total_timesteps=5000)
 
@@ -90,8 +88,7 @@ def main():
         stats.print_stats()
     else:
         if DURING_TRAIN_EVAL:
-            agent.learn(total_timesteps=5000, n_eval_episodes=1,
-                        callback=eval_callback)
+            agent.learn(total_timesteps=5000, n_eval_episodes=1, callback=eval_callback)
         else:
             agent.learn(total_timesteps=5000)
 

@@ -4,6 +4,7 @@ from django.views import View
 
 from yawning_titan_gui.views.utils.helpers import get_toolbar, open_jupyter_notebook
 
+
 class JupyterView(View):
     """
     Django representation of jupyter.html.

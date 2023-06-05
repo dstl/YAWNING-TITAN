@@ -1,6 +1,6 @@
-"""Django settings for a development environment"""
+"""Django settings for a development environment."""
 
-from yawning_titan_server.settings.base import *
+from yawning_titan_server.settings.base import *  # noqa
 
 # DEBUG CONFIGURATION
 DEBUG = True

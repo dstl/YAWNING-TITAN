@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-import os
 from pathlib import Path
 
 from yawning_titan import IMAGES_DIR, VIDEOS_DIR
@@ -58,11 +57,7 @@ ROOT_URLCONF = "yawning_titan_server.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            BASE_DIR / "yawning_titan_gui/templates",
-            DOCS_ROOT.parent,
-            DOCS_ROOT
-        ],
+        "DIRS": [BASE_DIR / "yawning_titan_gui/templates", DOCS_ROOT.parent, DOCS_ROOT],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -127,7 +122,7 @@ STATICFILES_DIRS = (
     DOCS_ROOT / "_static",
     DOCS_ROOT / "_images",
     IMAGES_DIR,
-    VIDEOS_DIR
+    VIDEOS_DIR,
 )
 
 # Default primary key field type

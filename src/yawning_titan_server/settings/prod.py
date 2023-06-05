@@ -1,6 +1,6 @@
-"""Django settings for a development environment"""
+"""Django settings for a development environment."""
 
-from yawning_titan_server.settings.base import *
+from yawning_titan_server.settings.base import *  # noqa
 
 # DEBUG CONFIGURATION
 DEBUG = True
@@ -8,11 +8,11 @@ DEBUG = True
 
 # Stop spamming the console with irrelevant logs
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'null': {
-            'class': 'logging.NullHandler',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "null": {
+            "class": "logging.NullHandler",
         },
     },
     "root": {
@@ -21,10 +21,10 @@ LOGGING = {
         "propagate": True,
     },
     "loggers": {
-        'django.server': {
-            'handlers': ['null'],
-            'level': 'WARNING',
-            'propagate': False,
+        "django.server": {
+            "handlers": ["null"],
+            "level": "WARNING",
+            "propagate": False,
         }
     },
 }

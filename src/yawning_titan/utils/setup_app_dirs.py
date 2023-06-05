@@ -2,16 +2,16 @@ from logging import getLogger
 
 from yawning_titan import (
     _YT_USER_DIRS,
-    PPO_TENSORBOARD_LOGS_DIR,
     AGENTS_DIR,
     AGENTS_LOGS_DIR,
-    VIDEOS_DIR,
-    IMAGES_DIR,
-    GAME_MODES_DIR,
-    NOTEBOOKS_DIR,
+    APP_IMAGES_DIR,
     DB_DIR,
+    GAME_MODES_DIR,
+    IMAGES_DIR,
     LOG_DIR,
-    APP_IMAGES_DIR
+    NOTEBOOKS_DIR,
+    PPO_TENSORBOARD_LOGS_DIR,
+    VIDEOS_DIR,
 )
 
 _LOGGER = getLogger(__name__)
@@ -35,7 +35,7 @@ def run():
         NOTEBOOKS_DIR,
         DB_DIR,
         LOG_DIR,
-        APP_IMAGES_DIR
+        APP_IMAGES_DIR,
     ]
 
     for app_dir in app_dirs:

@@ -129,7 +129,7 @@ $(document).ready(function () {
 
 /**
  * Function that triggers a YT run
- * @param {*} data 
+ * @param {*} data
  */
 function run(data) {
     // clear interval if it exists
@@ -176,7 +176,7 @@ function run(data) {
 
 /**
  * Function used to deal with incompatibilities between networks and game modes
- * @param {*} network_id 
+ * @param {*} network_id
  */
 function get_game_modes_compatible_with(network_id) {
     return $.ajax({
@@ -253,7 +253,7 @@ async function waitAndUpdateVideo(gif_url, webm_url, time = 5000) {
     await new Promise(resolve => setTimeout(resolve, time));
     $('#action-loop-view-container').prepend(video);
     $('#video-output').attr('src', webm_url);
-    
+
     $('#video-output').get(0).load();
     $("#preview-spinner-container").hide();
 

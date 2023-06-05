@@ -97,9 +97,6 @@ class CustomEnvGraph:
             show_only_blue_view: If true only shows what the blue agent can see
             show_node_names: Show the names of nodes
         """
-
-        # If no value for  entrance nodes is passed in then it is set to an empty list
-
         self.vis_ax.clear()
 
         special_node_info = {

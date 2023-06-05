@@ -1,42 +1,43 @@
-import multiprocessing
-import subprocess
 import logging
-import sys
-import threading
-
-from django.core.management.base import BaseCommand
-from yawning_titan_server.wsgi import application
-
-import os
-import time
-import signal
-import psutil
-import tempfile
-import platform
-import subprocess
-import socketserver
 import multiprocessing
+import os
+import platform
+import socketserver
+import subprocess
+import sys
+import tempfile
+import threading
+from dataclasses import dataclass
 from multiprocessing import Process
 from threading import Thread
-from dataclasses import dataclass
-from typing import Callable, Any, Union
+from typing import Any, Callable, Union
+
+from django.core.management.base import BaseCommand
+
+from yawning_titan_server.wsgi import application
 
 OPERATING_SYSTEM = platform.system().lower()
 PY = "python3" if OPERATING_SYSTEM in ["linux", "darwin"] else "python"
 
 
 def get_free_port():
+    """Get a free port."""
     with socketserver.TCPServer(("localhost", 0), None) as s:
         free_port = s.server_address[1]
     return free_port
 
+
 class DefaultServerDjango:
+    """default Django Server class."""
+
     @staticmethod
     def get_server_kwargs(**kwargs):
+        """Get keyword arguments from server."""
         return {"app": kwargs["app"], "port": kwargs["port"]}
 
     @staticmethod
     def server(**server_kwargs):
+        """Serve the app in waitress."""
         import waitress
 
         waitress.serve(**server_kwargs)
@@ -44,6 +45,8 @@ class DefaultServerDjango:
 
 @dataclass
 class YawningTitanServer:
+    """The Yawning-Titan Server."""
+
     server: Union[str, Callable[[Any], None]]
     server_kwargs: dict = None
     app: Any = None
@@ -76,27 +79,27 @@ class YawningTitanServer:
         self.url = f"http://127.0.0.1:{self.port}"
 
     def _get_browser_process(self):
-        """Creates the thread used for the browser process"""
+        """Creates the thread used for the browser process."""
         process = None
         # check if windows
-        if sys.platform == 'win32':
-            process = subprocess.Popen(['start', self.url], shell=True)
+        if sys.platform == "win32":
+            process = subprocess.Popen(["start", self.url], shell=True)
         # check if macOS
-        elif sys.platform == 'darwin':
-            process = subprocess.Popen(['open', self.url])
+        elif sys.platform == "darwin":
+            process = subprocess.Popen(["open", self.url])
         # catch all for other Operating Systems
         else:
             try:
-                process = subprocess.Popen(['xdg-open', self.url])
+                process = subprocess.Popen(["xdg-open", self.url])
             except OSError:
-                logging.warning('Unable to determine Operating System')
-                logging.warning('Please open a browser on: ' + self.url)
+                logging.warning("Unable to determine Operating System")
+                logging.warning("Please open a browser on: " + self.url)
 
         return process
 
-
     def run(self):
-        end_server_event = threading.Event()
+        """Run the GUI."""
+        end_server_event = threading.Event()  # noqa TODO: Still required?
 
         if self.on_startup is not None:
             self.on_startup()
@@ -142,17 +145,11 @@ class Command(BaseCommand):
         super().__init__(stdout, stderr, no_color, force_color)
 
     def run(self):
-        """
-        Run the GUI backend server and then runs the GUI in the user's default browser
-        """
+        """Run the GUI backend server and then runs the GUI in default browser."""
         YawningTitanServer(  # noqa
             server="django",
-            server_kwargs={
-                "app": application,
-                "port": 8000,
-                "host": "localhost"
-            },
-            fullscreen=True
+            server_kwargs={"app": application, "port": 8000, "host": "localhost"},
+            fullscreen=True,
         ).run()
 
     def handle(self, *args, **kwargs):

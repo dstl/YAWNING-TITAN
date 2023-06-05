@@ -37,7 +37,7 @@ class NetworkEditor(View):
                 "network_json": json.dumps(
                     network_form.network.to_dict(json_serializable=True)
                 ),
-                "network_layouts": json.dumps(get_network_layouts())
+                "network_layouts": json.dumps(get_network_layouts()),
             },
         )
 

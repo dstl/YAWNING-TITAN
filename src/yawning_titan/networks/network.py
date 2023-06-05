@@ -12,14 +12,9 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import networkx as nx
 import numpy
 from networkx.drawing.layout import (
-    bipartite_layout,
     circular_layout,
-    fruchterman_reingold_layout,
     kamada_kawai_layout,
-    multipartite_layout,
     planar_layout,
-    random_layout,
-    rescale_layout,
     shell_layout,
     spectral_layout,
     spiral_layout,

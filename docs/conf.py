@@ -8,13 +8,15 @@
 
 # -- Path setup --------------------------------------------------------------
 
+import datetime
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
 import sys
-import datetime
+
 sys.path.insert(0, os.path.abspath("../"))
 
 
@@ -48,7 +50,7 @@ extensions = [
     "sphinx.ext.viewcode",  # Add a link to the Python source code for classes, functions etc.
     "sphinx.ext.todo",
     "sphinx_copybutton",  # Adds a copy button to code blocks
-    "sphinx_code_tabs"  # Enables tabbed code blocks
+    "sphinx_code_tabs",  # Enables tabbed code blocks
 ]
 
 # Mappings for sphinx.ext.intersphinx. Projects have to have Sphinx-generated doc! (.inv file)
