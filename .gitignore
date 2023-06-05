@@ -4,24 +4,36 @@ venv/
 *.egg-info
 dist/
 build/
-yawning_titan_gui/network_editor/node_modules
+**/node_modules
 logs/*
 !logs/.gitkeep
 *__pycache__
 
 .logs/
 yawning_titan/envs/generic/core/images/
-*.gif
+yawning_titan/**/*.gif
+yawning_titan_gui/**/*.gif
 notebooks/.ipynb_checkpoints
 *.ipynb_checkpoints
 .coverage
 *.csv
 
+# keep track of the angular dependencies
+!**/network-editor-dependencies.csv
+
+# network editor built files
+!**/static/dist/
+
+# Built docs
+docs/_build
+
 # generated RST files for documentation
-**/source/_autosummary/
-docs/source/yt-dependencies.rst
+**/docs/source/_autosummary/
+
+# Built docs copied from ./docs/_build/html to /src/yawning_titan_gui/static/docs/
+/src/yawning_titan_gui/static/docs/
+
 
 # Remove tensorboard logs starting with ppo-
 ppo-*/
 **.pkl
-docs/_build

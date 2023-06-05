@@ -1,0 +1,19 @@
+{% load static %}
+{% load tags %}
+
+<div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
+      data-bs-toggle="dropdown" aria-expanded="false">
+      Dropdown button
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    {% for name,item in element.config_items.items %}
+    <li>
+        <a class="dropdown-item" href="#" data-element="{{item.alias}}">{{name}}</a>
+    </li>
+    {% endfor %}
+    {% for name,group in element.config_groups.items %}
+        {% include 'elements/el_game_mode_dropdown_child.html' with element=group child_name=name %}
+    {% endfor %}
+  </ul>
+</div>

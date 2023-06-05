@@ -53,7 +53,7 @@ B
 ===============
 .. glossary::
     Blue Agent
-        Within :term:`YT<YAWNING-TITAN>`, a |Blue Agent| blue agent represents a friendly :term:`AI<Artificial Intelligence>`
+        Within :term:`Yawning-Titan<Yawning-Titan>`, a |Blue Agent| blue agent represents a friendly :term:`AI<Artificial Intelligence>`
         force that is able to interface with the environment in order to defend against or repel an adversary
         (:term:`Red Agent`). The |Blue Agent| utilises an :term:`algorithm<Algorithm>`
         (e.g. :term:`Proximal Policy Optimization`) to determine the optimum decision for which action(s) to take on the
@@ -156,7 +156,7 @@ R
 ===============
 .. glossary::
     Red Agent
-        Within :term:`YT<YAWNING-TITAN>`, a |Red Agent| represents an adversary that is designed to attack and infect one
+        Within :term:`Yawning-Titan<Yawning-Titan>`, a |Red Agent| represents an adversary that is designed to attack and infect one
         or more nodes within the environment. The |Red Agent| employs a probabilistic approach to implement the spread of
         an attack throughout the environment, but its advance can be countered by actions taken by the :term:`Blue Agent`.
 
@@ -209,7 +209,7 @@ X
 Y
 ===============
 .. glossary::
-    YAWNING-TITAN
+    Yawning-Titan
         An abstract, graph based cyber-security simulation environment that supports the training of intelligent agents
         for autonomous cyber operations.
 

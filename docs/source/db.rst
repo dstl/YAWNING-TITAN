@@ -1,7 +1,7 @@
 Yawning-Titan DB
 ================
 
-YAWNING-TITAN (**YT**) comes packages with a lightweight document database (See: `TinyDB <https://tinydb.readthedocs.io/en/latest/>`_).
+Yawning-Titan comes packages with a lightweight document database (See: `TinyDB <https://tinydb.readthedocs.io/en/latest/>`_).
 
 
 The YawningTitanDB class
@@ -18,7 +18,7 @@ provides extended TinyDB functions :func:`~yawning_titan.db.yawning_titan_db_abc
 :func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.count`,
 :func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.remove`, and
 :func:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB.close`, methods. All methods provided have either direct
-calls to their their :class:`~tinydb.database.TinyDB` counterpart, or some custom **YT** login before the call. Methods have been defined as
+calls to their their :class:`~tinydb.database.TinyDB` counterpart, or some custom Yawning-Titan login before the call. Methods have been defined as
 abstract methods to force sub-classes of :class:`~yawning_titan.db.yawning_titan_db_abc.YawningTitanDB` to
 implement them. If functionality does not change, the implementations of the abstract methods can simple
 call ``super()`` to trigger the default logic.
