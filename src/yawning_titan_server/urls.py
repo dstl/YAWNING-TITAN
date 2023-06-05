@@ -12,13 +12,8 @@ from yawning_titan_gui.views.network_editor_view import NetworkEditor
 from yawning_titan_gui.views.networks_view import NetworksView
 from yawning_titan_gui.views.run_view import RunView
 from yawning_titan_gui.views.utils.helpers import get_docs_sections
-from yawning_titan_gui.views.utils.update_network_layout import \
-    update_network_layout
-from yawning_titan_gui.views.utils.utils import (
-    db_manager,
-    get_output,
-    update_game_mode
-)
+from yawning_titan_gui.views.utils.update_network_layout import update_network_layout
+from yawning_titan_gui.views.utils.utils import db_manager, get_output, update_game_mode
 
 urlpatterns = [
     path("", HomeView.as_view(), name="Home"),
@@ -63,7 +58,7 @@ urlpatterns = [
     path(
         "docs/index.html",
         TemplateView.as_view(template_name="docs/index.html"),
-        name="docs index"
+        name="docs index",
     ),
 ]
 

@@ -1,6 +1,7 @@
 import os
-from pathlib import Path
 from logging import getLogger
+from pathlib import Path
+
 import yawning_titan  # noqa - To use the Yawning-Titan logging config
 
 _LOGGER = getLogger(__name__)
@@ -30,7 +31,7 @@ def _clean_up_pre_v2_0_0():
         "Using the Network DB.ipynb",
         "Using YawningTitanRun.ipynb",
         "sb3/End to End Generic Env Example - Env Creation, Agent Train and Agent Rendering.ipynb",
-        "sb3/Using an Evaluation Callback to monitor progress during training.ipynb"
+        "sb3/Using an Evaluation Callback to monitor progress during training.ipynb",
     ]
 
     user_notebooks_dir = Path.home() / "yawning_titan" / "notebooks"

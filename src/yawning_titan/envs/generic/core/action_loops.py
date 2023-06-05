@@ -15,9 +15,8 @@ from uuid import uuid4
 
 import imageio
 import matplotlib.pyplot as plt
-import pandas as pd
-
 import moviepy.editor as mp
+import pandas as pd
 
 from yawning_titan import APP_IMAGES_DIR, IMAGES_DIR
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
@@ -42,15 +41,15 @@ class ActionLoop:
         self.episode_count = episode_count
 
     def gif_action_loop(
-            self,
-            render_network=True,
-            prompt_to_close=False,
-            save_gif=False,
-            deterministic=False,
-            gif_output_directory: Path = None,
-            webm_output_directory: Path = None,
-            *args,
-            **kwargs,
+        self,
+        render_network=True,
+        prompt_to_close=False,
+        save_gif=False,
+        deterministic=False,
+        gif_output_directory: Path = None,
+        webm_output_directory: Path = None,
+        *args,
+        **kwargs,
     ):
         """
         Run the agent in evaluation and create a gif from episodes.
@@ -120,16 +119,30 @@ class ActionLoop:
                     f"{self.filename}_{string_time}_{self.episode_count}.webm",
                 )
 
-                def natural_sort_key(s, _nsre=re.compile('([0-9]+)')):
-                    return [int(text) if text.isdigit() else text.lower()
-                            for text in _nsre.split(s)]
+                def natural_sort_key(s, _nsre=re.compile("([0-9]+)")):
+                    return [
+                        int(text) if text.isdigit() else text.lower()
+                        for text in _nsre.split(s)
+                    ]
 
                 frame_names = sorted(frame_names, key=natural_sort_key)
 
                 # gif generator thread
-                gif_thread = Thread(target=self.generate_gif, args=(gif_path, frame_names,))
+                gif_thread = Thread(
+                    target=self.generate_gif,
+                    args=(
+                        gif_path,
+                        frame_names,
+                    ),
+                )
                 # video generator thread
-                video_thread = Thread(target=self.generate_webm, args=(webm_path, frame_names,))
+                video_thread = Thread(
+                    target=self.generate_webm,
+                    args=(
+                        webm_path,
+                        frame_names,
+                    ),
+                )
 
                 # start threads
                 video_thread.start()
@@ -183,11 +196,13 @@ class ActionLoop:
     def _get_gif_figure(cls, gif_name: string) -> Any:
         fig = plt.gcf()
         # save the current image
-        plt.savefig(gif_name, bbox_inches='tight', dpi=100)
+        plt.savefig(gif_name, bbox_inches="tight", dpi=100)
 
         return fig
 
     def generate_gif(self, gif_path, frame_names):
+        """Generate GIF from images."""
+        # TODO: Full docstring.
         with imageio.get_writer(gif_path, mode="I") as writer:
             # create a gif from the images
             for frame_num, filename in enumerate(frame_names):
@@ -205,11 +220,14 @@ class ActionLoop:
                         writer.append_data(image)
 
     def generate_webm(self, webm_path, frame_names):
-        # create video
+        """Create webm from image files."""
+        # TODO: Full docstring.
         clip = mp.ImageSequenceClip(frame_names[1:], fps=5)
-        clip.write_gif(webm_path, program='ffmpeg')
+        clip.write_gif(webm_path, program="ffmpeg")
 
     def render_cleanup(self, frame_names):
+        """Delete the frames image files."""
+        # TODO: Full docstring.
         # delete images
         for filename in set(frame_names):
             os.remove(filename)

@@ -31,7 +31,6 @@ def test_delete_default_game_mode_delete_fails(game_mode_db):
         db.remove(config)
 
 
-
 @pytest.mark.integration_test
 def test_game_mode_configuration_query():
     """Test searching by game mode property returns appropriate result."""

@@ -75,7 +75,7 @@ dev = [
     "sphinx==5.3.0",
     "sphinx-code-tabs==0.5.3",
     "sphinx-copybutton==0.5.2",
-    "wheel",
+    "wheel==0.38.4",
     "build"
 ]
 tensorflow = [

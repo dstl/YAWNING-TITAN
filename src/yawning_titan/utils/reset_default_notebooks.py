@@ -11,8 +11,8 @@ def run(overwrite_existing: bool = True):
     import shutil
     from logging import getLogger
     from pathlib import Path
-    from yawning_titan import NOTEBOOKS_DIR
 
+    from yawning_titan import NOTEBOOKS_DIR
 
     try:
         # Attempt to import Yawning-Titan to leverage its logging config

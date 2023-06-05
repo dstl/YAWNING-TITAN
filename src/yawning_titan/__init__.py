@@ -28,26 +28,24 @@ import yaml
 from gym.envs.registration import register
 from platformdirs import PlatformDirs
 
-register(id="five-node-def-v0",
-         entry_point="yawning_titan.envs.specific:FiveNodeDef")
+register(id="five-node-def-v0", entry_point="yawning_titan.envs.specific:FiveNodeDef")
 
-register(id="four-node-def-v0",
-         entry_point="yawning_titan.envs.specific:FourNodeDef")
+register(id="four-node-def-v0", entry_point="yawning_titan.envs.specific:FourNodeDef")
 
 register(
     id="networks-graph-explore-v0",
     entry_point="yawning_titan.envs.specific:GraphExplore",
 )
 
-register(id="18-node-env-v0",
-         entry_point="yawning_titan.envs.specific:NodeEnv")
+register(id="18-node-env-v0", entry_point="yawning_titan.envs.specific:NodeEnv")
 
 # Below handles application directories and user directories.
 # Uses `platformdirs.PlatformDirs` and `pathlib.Path` to create the required
 # app directories in the correct locations based on the users OS.
 
 _YT_ROOT_DIR: Final[Union[Path, WindowsPath, PosixPath]] = Path(
-    __file__).parent.resolve()
+    __file__
+).parent.resolve()
 
 
 def _version() -> str:
@@ -61,8 +59,9 @@ __version__ = _version()
 _YT_PLATFORM_DIRS: Final[PlatformDirs] = PlatformDirs(appname="yawning_titan")
 """An instance of `PlatformDirs` set with appname='yawning_titan'."""
 
-_YT_USER_DIRS: Final[
-    Union[Path, WindowsPath, PosixPath]] = Path.home() / "yawning_titan"
+_YT_USER_DIRS: Final[Union[Path, WindowsPath, PosixPath]] = (
+    Path.home() / "yawning_titan"
+)
 """The users home space for YT which is located at: ~/yawning_titan."""
 
 
@@ -77,66 +76,65 @@ def _log_dir() -> Union[Path, WindowsPath, PosixPath]:
 LOG_DIR: Final[Union[Path, WindowsPath, PosixPath]] = _log_dir()
 """The path to the app log directory as an instance of `Path` or `PosixPath`, depending on the OS."""
 
-DB_DIR: Final[Union[
-    Path, WindowsPath, PosixPath]] = _YT_PLATFORM_DIRS.user_data_path / "db"
+DB_DIR: Final[Union[Path, WindowsPath, PosixPath]] = (
+    _YT_PLATFORM_DIRS.user_data_path / "db"
+)
 """The path to the app db directory as an instance of `Path` or `PosixPath`, depending on the OS."""
 
-APP_IMAGES_DIR: Final[
-    Union[
-        Path, WindowsPath, PosixPath]] = _YT_PLATFORM_DIRS.user_data_path / "app_images"
+APP_IMAGES_DIR: Final[Union[Path, WindowsPath, PosixPath]] = (
+    _YT_PLATFORM_DIRS.user_data_path / "app_images"
+)
 """The path to the app images directory as an instance of `Path` or `PosixPath`, depending on the OS."""
 
-NOTEBOOKS_DIR: Final[
-    Union[Path, WindowsPath, PosixPath]] = _YT_USER_DIRS / "notebooks"
+NOTEBOOKS_DIR: Final[Union[Path, WindowsPath, PosixPath]] = _YT_USER_DIRS / "notebooks"
 """
 The path to the users notebooks directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
 Users notebooks are stored at: ~/yawning_titan/notebooks.
 """
 
-GAME_MODES_DIR: Final[
-    Union[Path, WindowsPath, PosixPath]] = _YT_USER_DIRS / "game_modes"
+GAME_MODES_DIR: Final[Union[Path, WindowsPath, PosixPath]] = (
+    _YT_USER_DIRS / "game_modes"
+)
 """
 The path to the users game modes directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
 Users game modes are stored at: ~/yawning_titan/game_modes.
 """
 
-IMAGES_DIR: Final[
-    Union[Path, WindowsPath, PosixPath]] = _YT_USER_DIRS / "images"
+IMAGES_DIR: Final[Union[Path, WindowsPath, PosixPath]] = _YT_USER_DIRS / "images"
 """
 The path to the users images directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
 Users images are stored at: ~/yawning_titan/images.
 """
 
-VIDEOS_DIR: Final[
-    Union[Path, WindowsPath, PosixPath]] = _YT_USER_DIRS / "videos"
+VIDEOS_DIR: Final[Union[Path, WindowsPath, PosixPath]] = _YT_USER_DIRS / "videos"
 """
 The path to the users videos directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
 Users videos are stored at: ~/yawning_titan/videos.
 """
 
-AGENTS_DIR: Final[
-    Union[Path, WindowsPath, PosixPath]] = _YT_USER_DIRS / "agents"
+AGENTS_DIR: Final[Union[Path, WindowsPath, PosixPath]] = _YT_USER_DIRS / "agents"
 """
 The path to the users agents directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
 Users agents are stored at: ~/yawning_titan/agents.
 """
 
-AGENTS_LOGS_DIR: Final[
-    Union[Path, WindowsPath, PosixPath]] = _YT_USER_DIRS / "agents" / "logs"
+AGENTS_LOGS_DIR: Final[Union[Path, WindowsPath, PosixPath]] = (
+    _YT_USER_DIRS / "agents" / "logs"
+)
 """
 The path to the users agents logs directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
 Users agent logs are stored at: ~/yawning_titan/agents/logs.
 """
 
-PPO_TENSORBOARD_LOGS_DIR: Final[
-    Union[
-        Path, WindowsPath, PosixPath]] = _YT_USER_DIRS / "agents" / "logs" / "tensorboard"
+PPO_TENSORBOARD_LOGS_DIR: Final[Union[Path, WindowsPath, PosixPath]] = (
+    _YT_USER_DIRS / "agents" / "logs" / "tensorboard"
+)
 """
 The path to the PPO algorithm tensorboard logs directory as an instance of `Path` or `PosixPath`, depending on the OS.
 
@@ -145,7 +143,7 @@ Users agent PPO algorithm tensorboard logs are stored at: ~/yawning_titan/agents
 
 # Setup root logger format
 with open(
-        _YT_ROOT_DIR / "config" / "_package_data" / "logging_config.yaml", "r"
+    _YT_ROOT_DIR / "config" / "_package_data" / "logging_config.yaml", "r"
 ) as stream:
     config = yaml.load(stream, Loader=yaml.FullLoader)
 

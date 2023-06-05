@@ -6,10 +6,8 @@ import sys
 
 def main():
     """Run administrative tasks."""
-
     os.environ.setdefault(
-        "DJANGO_SETTINGS_MODULE",
-        "yawning_titan_server.settings.prod"
+        "DJANGO_SETTINGS_MODULE", "yawning_titan_server.settings.prod"
     )
     try:
         from django.core.management import execute_from_command_line

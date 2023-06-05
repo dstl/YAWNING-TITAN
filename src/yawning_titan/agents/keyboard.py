@@ -1,3 +1,5 @@
+import time
+
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 
@@ -14,6 +16,23 @@ class KeyboardAgent:
 
     def __init__(self, env: GenericNetworkEnv):
         self.env = env
+        print("Welcome to the Yawning-Titan Keyboard Agent game!")
+        print("")
+        print("Playing With:")
+        print(f"  Network: {env.network_interface.current_graph._doc_metadata.name}")
+        print(f"  Game Mode: {env.network_interface.game_mode._doc_metadata.name}")
+        print("")
+        print(
+            "When selecting an option, enter the integer key provided and "
+            "not the string value."
+        )
+        print("")
+        print("The game will begin in 3...")
+        time.sleep(1)
+        print("The game will begin in 2...")
+        time.sleep(1)
+        print("The game will begin in 1...")
+        time.sleep(1)
 
     def get_move_set(self):
         """
@@ -57,7 +76,9 @@ class KeyboardAgent:
             actions += 1
             standard_actions += 1
 
-        node_list = ["Node " + i for i in network_interface.current_graph.get_nodes()]
+        node_list = [
+            "Node " + str(i) for i in network_interface.current_graph.get_nodes()
+        ]
         if settings.blue.action_set.reduce_vulnerability.value:
             full_action_dict["reduce_vulnerability"] = node_list
             top_level_action_mask["reduce_vulnerability"] = actions
@@ -112,10 +133,11 @@ class KeyboardAgent:
                 number_of_standard_actions,
             ) = self.get_move_set()
             possible_top_actions = list(top.keys())
+            print("")
             print("Current possible actions:")
             for counter, i in enumerate(possible_top_actions):
                 # Displays the possible actions to the user
-                print(counter, ")", i)
+                print(f"  {counter}) {i}")
             top_action_legal = False
             chosen_top_action = ""
             # If the user does not input a legal action then they are forced to retry
@@ -130,31 +152,32 @@ class KeyboardAgent:
                         top_action_legal = True
                     else:
                         # Informs the user if they input an invalid action
-                        print("Invalid Input")
+                        print(f"Invalid Input Entered ({chosen_top_action})")
                 except ValueError:
-                    print("Invalid Input")
+                    print(f"Invalid Input Entered ({chosen_top_action})")
             # Checks if there are any secondary actions for this chosen top action
             secondary_actions = move_set[possible_top_actions[chosen_top_action]]
             chosen_secondary_action = -1
             if secondary_actions is not None:
                 # Prints out all of the possible secondary actions
-                print("Action Location:")
+                print("  Action Location:")
                 for counter, i in enumerate(secondary_actions):
-                    print(counter, ")", i)
+                    print(f"    {counter}) {i}")
                 secondary_action_legal = False
                 chosen_secondary_action = ""
                 while not secondary_action_legal:
                     # Runs until the user inputs a legal action
                     try:
-                        chosen_secondary_action = int(input("Chosen Location: "))
+                        chosen_secondary_action = int(input("  Chosen Location: "))
                         if chosen_secondary_action in [
                             i for i in range(len(secondary_actions))
                         ]:
                             secondary_action_legal = True
                         else:
-                            print("Invalid Input")
+                            print(f"Invalid Input Entered ({chosen_secondary_action})")
                     except ValueError:
-                        print("Invalid Input")
+                        print(f"Invalid Input Entered ({chosen_secondary_action})")
+            print("")
 
             # calculates the final action number
             final_action = top[possible_top_actions[chosen_top_action]]
@@ -182,7 +205,7 @@ class KeyboardAgent:
             else:
                 for node, state in notes["end_blue_view"].items():
                     print("Node: ", node, " State: ", state)
-
+        print("")
         # checks if the red or blue agent won
         if (
             self.env.current_duration
@@ -191,7 +214,7 @@ class KeyboardAgent:
             print("---Blue agent wins---")
         else:
             print("---Red agent wins---")
-
+        print("")
         # Renders the final true state of the environment
         print("Final True State: ")
         if render_graphically:

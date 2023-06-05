@@ -1,6 +1,3 @@
-from gym import Space
-
-
 class RandomAgent(object):
     """
     A simple implementation of a Random Agent capable of randomly acting within anOpenAI Gym environment.
@@ -9,7 +6,7 @@ class RandomAgent(object):
     online that use different terminology for the same thing.*
     """
 
-    def __init__(self, action_space: Space):
+    def __init__(self, action_space):
         self.action_space = action_space
 
     def act(self, observation, reward, done):

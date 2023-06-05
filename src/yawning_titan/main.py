@@ -4,19 +4,17 @@ import sys
 
 import typer
 
-
 app = typer.Typer()
 
 
 @app.command()
 def gui():
     """Start the Yawning-Titan GUI."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE",
-                          "yawning_titan_server.settings.dev")
-    from django.core.management import execute_from_command_line
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "yawning_titan_server.settings.dev")
 
     """Method that is fired on execution of the command in the terminal."""
     from yawning_titan_gui.management.commands.run_gui import Command
+
     command = Command()
     command.run()
 
@@ -132,13 +130,15 @@ def setup():
 
     WARNING: All user-data will be lost.
     """
-    from yawning_titan.utils import setup_app_dirs
-    from yawning_titan.utils import reset_network_and_game_mode_db_defaults
-    from yawning_titan.utils import reset_default_notebooks
-    from yawning_titan.utils import old_installation_clean_up
     from logging import getLogger
 
     import yawning_titan  # noqa - Gets the Yawning-Titan logger config
+    from yawning_titan.utils import (
+        old_installation_clean_up,
+        reset_default_notebooks,
+        reset_network_and_game_mode_db_defaults,
+        setup_app_dirs,
+    )
 
     _LOGGER = getLogger(__name__)
 
@@ -153,11 +153,39 @@ def setup():
     _LOGGER.info("Rebuilding the default notebooks...")
     reset_default_notebooks.run(overwrite_existing=True)
 
-    _LOGGER.info(
-        "Performing a clean-up of previous Yawning-Titan installations...")
+    _LOGGER.info("Performing a clean-up of previous Yawning-Titan installations...")
     old_installation_clean_up.run()
 
     _LOGGER.info("Yawning-Titan setup complete!")
+
+
+@app.command()
+def keyboard_agent():
+    """Play Yawning-Titan using the Keyboard Agent."""
+    from stable_baselines3.common.env_checker import check_env
+
+    from yawning_titan.agents.keyboard import KeyboardAgent
+    from yawning_titan.envs.generic.core.blue_interface import BlueInterface
+    from yawning_titan.envs.generic.core.network_interface import NetworkInterface
+    from yawning_titan.envs.generic.core.red_interface import RedInterface
+    from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
+    from yawning_titan.game_modes.game_mode_db import default_game_mode
+    from yawning_titan.networks.network_db import default_18_node_network
+
+    network = default_18_node_network()
+    game_mode = default_game_mode()
+
+    network_interface = NetworkInterface(game_mode=game_mode, network=network)
+
+    red = RedInterface(network_interface)
+    blue = BlueInterface(network_interface)
+
+    env = GenericNetworkEnv(red, blue, network_interface)
+    check_env(env, warn=True)
+    _ = env.reset()
+
+    kb = KeyboardAgent(env)
+    kb.play(render_graphically=False)
 
 
 if __name__ == "__main__":
