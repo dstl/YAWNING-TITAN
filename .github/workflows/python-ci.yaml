@@ -6,52 +6,105 @@ on:
       - main
       - dev
       - dev-gui
-      - 'releases/**'  # dev-gui to be removed once dev-gui branch is dropped
+      - 'release/**'
   pull_request:
     branches:
       - main
       - dev
       - dev-gui
-      - 'releases/**'  # dev-gui to be removed once dev-gui branch is dropped
+      - 'release/**'
 jobs:
   build:
 
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     strategy:
       matrix:
         python-version: ["3.8", "3.9", "3.10"]
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+
       - name: Install python dev
         run: |
           sudo apt update
           sudo add-apt-repository ppa:deadsnakes/ppa -y
           sudo apt install python${{ matrix.python-version}}-dev -y
+
       - name: Install Build Dependencies
         run: |
-          python -m pip install --upgrade pip
+          python -m pip install --upgrade pip==23.0.1
+          pip install wheel==0.38.4 --upgrade
+          pip install setuptools==66 --upgrade
           pip install build
-          pip install wheel
+
       - name: Build Yawning-Titan
         run: |
-          python setup.py sdist
+          python -m build
+
       - name: Install Yawning-Titan
         run: |
-          YT=$(ls ./dist/yawningtitan-*.*.*.tar.gz)
+          YT=$(ls ./dist/yawningtitan-*.*.*-*.whl)
           python -m pip install torch==1.11+cpu -f https://download.pytorch.org/whl/torch_stable.html
           python -m pip install $YT[dev] --default-timeout 1000
+
+      - name: Setup Yawning-Titan
+        run: |
+          yawning-titan setup
+
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      - name: Test with pytest
+
+      - name: Run unmarked tests
         run: |
-          pytest tests
+          pytest tests/ -m "not (unit_test or integration_test or e2e_integration_test or gui_test)"
+
+      - name: Run unit tests
+        run: |
+          pytest tests/ -m unit_test
+
+      - name: Run integration tests
+        run: |
+          pytest tests/ -m integration_test
+
+      - name: Run end-to-end integration tests
+        run: |
+          pytest tests/ -m e2e_integration_test
+
+      - name: Preparing to run GUI tests
+        run: |
+          echo 'Preparing to run GUI tests'
+
+      - name: Install yarn
+        run: |
+          npm install --global yarn
+
+      - name: Install dependencies with yarn
+        run: |
+          cd network_editor && yarn
+
+      - name: Network Editor unit test
+        run: |
+          cd network_editor && yarn test:ci
+
+      - name: Build Network Editor
+        run: |
+          cd network_editor && yarn build
+
+      - name: GUI end-to-end test
+        run: |
+          yawning-titan gui & (sleep 15 && cd network_editor && yarn test:ci:e2e)

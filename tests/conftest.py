@@ -1,194 +1,318 @@
-import os
-from datetime import datetime
-from typing import Any, Dict, List, Optional
+from contextlib import contextmanager
+from typing import Dict, Final, List, Optional, Type
+from unittest.mock import patch
 
-import numpy as np
 import pytest
 import yaml
-from stable_baselines3 import PPO
-from stable_baselines3.common.callbacks import EvalCallback
-from stable_baselines3.common.env_checker import check_env
-from stable_baselines3.common.monitor import Monitor
-from stable_baselines3.ppo import MlpPolicy as PPOMlp
-from yaml import SafeLoader
 
-from yawning_titan.config.game_config.game_mode_config import GameModeConfig
-from yawning_titan.config.game_modes import default_game_mode_path
-from yawning_titan.config.network_config.network_config import NetworkConfig
+from tests import TEST_PACKAGE_DATA_PATH
+from tests.game_mode_db_patch import game_mode_db_init_patch
+from tests.network_db_patch import network_db_init_patch
+from tests.yawning_titan_db_patch import yawning_titan_db_init_patch
+from yawning_titan.config.core import ConfigGroup, ConfigGroupValidation
+from yawning_titan.config.item_types.bool_item import BoolItem
+from yawning_titan.config.item_types.float_item import FloatItem
+from yawning_titan.config.item_types.int_item import IntItem
+from yawning_titan.config.item_types.str_item import StrItem
+from yawning_titan.db.doc_metadata import DocMetadata, DocMetadataSchema
+from yawning_titan.db.yawning_titan_db import YawningTitanDB
 from yawning_titan.envs.generic.core.action_loops import ActionLoop
-from yawning_titan.envs.generic.core.blue_interface import BlueInterface
-from yawning_titan.envs.generic.core.network_interface import NetworkInterface
-from yawning_titan.envs.generic.core.red_interface import RedInterface
-from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
-from yawning_titan.envs.generic.helpers import network_creator
+from yawning_titan.exceptions import ConfigGroupValidationError
+from yawning_titan.game_modes.game_mode import GameMode
+from yawning_titan.game_modes.game_mode_db import GameModeDB
+from yawning_titan.networks.network import Network
+from yawning_titan.networks.network_db import NetworkDB
+from yawning_titan.networks.node import Node
+from yawning_titan.yawning_titan_run import YawningTitanRun
+from yawning_titan_gui.views.utils.helpers import GameModeManager, NetworkManager
+
+TOLERANCE: Final[float] = 0.1
+N_TIME_STEPS: Final[int] = 1000
+N_TIME_STEPS_LONG: Final[int] = 10000
+
+
+@contextmanager
+def not_raises(expected_exception: Type[Exception]):
+    """
+    Function to test whether a function does not raise an exception.
+
+    A 'good' function test.
+
+    Example of a 'good' test:
+
+    .. code:: python
+
+        a_list = ['This is a good test']
+        with not_raises(IndexError):
+            print(a_list[0])
+
+    Example of a 'bad' test:
+
+    .. code:: python
+
+        a_list = ['This is a bad test']
+        with not_raises(IndexError):
+            print(a_list[1])
+
+    :param expected_exception: The type of Exception being tested for.
+    :raise AssertionError: When the exception is raised expectedly.
+    """
+    try:
+        yield
+
+    except expected_exception as error:
+        raise AssertionError(f"Raised exception {error} when it should not!")
+
+    except Exception as error:
+        raise AssertionError(f"An unexpected exception {error} raised.")
+
+
+@pytest.fixture(scope="session")
+def game_mode_db() -> GameModeDB:
+    """A patched GameModeDB that uses tests/_package_data/game_modes.json."""
+    with patch.object(GameModeDB, "__init__", game_mode_db_init_patch):
+        return GameModeDB()
+
+
+@pytest.fixture(scope="session")
+def game_mode_manager() -> GameModeManager:
+    """A patched GameModeManager that uses tests/_package_data/game_modes.json."""
+    with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
+        GameModeManager.db = GameModeDB()
+        return GameModeManager
+
+
+@pytest.fixture(scope="session")
+def network_manager() -> NetworkManager:
+    """A patched NetworkManager that uses tests/_package_data/networks.json."""
+    with patch.object(YawningTitanDB, "__init__", yawning_titan_db_init_patch):
+        NetworkManager.db = NetworkDB()
+        return NetworkManager
+
+
+@pytest.fixture()
+def default_game_mode(game_mode_db) -> GameMode:
+    """Return the default game mode."""
+    return game_mode_db.search(DocMetadataSchema.NAME == "Default Game Mode")[0]
+
+
+@pytest.fixture(scope="session")
+def network_db() -> NetworkDB:
+    """A patched NetworkDB that uses tests/_package_data/networks.json."""
+    with patch.object(NetworkDB, "__init__", network_db_init_patch):
+        return NetworkDB()
+
+
+@pytest.fixture()
+def default_network(network_db) -> Network:
+    """Return the default network."""
+    network = network_db.search(DocMetadataSchema.NAME == "Default 18-node network")[0]
+    network.set_node_positions()
+    return network
 
 
 @pytest.fixture
-def temp_config_from_base(tmpdir_factory) -> str:
-    """Pytest fixture to create temporary config files derived from a base config yaml file."""
+def temp_networks(network_manager: NetworkManager) -> List[str]:
+    """Create a number of temporary networks as copies of an existing network.
 
-    def _temp_config_from_base(
-        base_config_path: str, updated_settings: Dict[str, Dict[str, Any]]
-    ):
-        try:
-            with open(base_config_path) as f:
-                new_settings: Dict[str, Dict[str, Any]] = yaml.load(
-                    f, Loader=SafeLoader
-                )
-        except FileNotFoundError as e:
-            msg = f"Configuration file does not exist: {base_config_path}"
-            print(msg)  # TODO: Remove once proper logging is setup
-            raise e
+    :param source_network: The network id to copy
+    :param n: The number of networks to create
 
-        for key, val in updated_settings.items():
-            new_settings[key].update(val)
+    :return: a list of created network Ids.
+    """
 
-        temp_config_filename = (
-            "tmp_config" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".yaml"
+    def _temp_networks(source_network_id: str, n: int = 1):
+        ids = []
+        for _ in range(n):
+            network = network_manager.db.get(source_network_id)
+            meta = network.doc_metadata.to_dict()
+            meta["uuid"] = None
+            meta["locked"] = False
+            network._doc_metadata = DocMetadata(**meta)
+            network_manager.db.insert(network=network, name="temp")
+            ids.append(network.doc_metadata.uuid)
+        return ids
+
+    return _temp_networks
+
+
+@pytest.fixture()
+def corporate_network() -> Network:
+    """An example network with components akin to that of a basic corporate network."""
+    router_1 = Node()
+    switch_1 = Node()
+    switch_2 = Node()
+    pc_1 = Node()
+    pc_2 = Node()
+    pc_3 = Node()
+    pc_4 = Node()
+    pc_5 = Node()
+    pc_6 = Node()
+    server_1 = Node()
+    server_2 = Node()
+    network = Network(
+        set_random_entry_nodes=True,
+        num_of_random_entry_nodes=3,
+        set_random_high_value_nodes=True,
+        num_of_random_high_value_nodes=3,
+        set_random_vulnerabilities=True,
+    )
+    network.add_node(router_1)
+    network.add_node(switch_1)
+    network.add_node(switch_2)
+    network.add_node(pc_1)
+    network.add_node(pc_2)
+    network.add_node(pc_3)
+    network.add_node(pc_4)
+    network.add_node(pc_5)
+    network.add_node(pc_6)
+    network.add_node(server_1)
+    network.add_node(server_2)
+    network.add_edge(router_1, switch_1)
+    network.add_edge(switch_1, server_1)
+    network.add_edge(switch_1, pc_1)
+    network.add_edge(switch_1, pc_2)
+    network.add_edge(switch_1, pc_3)
+    network.add_edge(router_1, switch_2)
+    network.add_edge(switch_2, server_2)
+    network.add_edge(switch_2, pc_4)
+    network.add_edge(switch_2, pc_5)
+    network.add_edge(switch_2, pc_6)
+    network.reset_random_entry_nodes()
+    network.reset_random_high_value_nodes()
+    network.reset_random_vulnerabilities()
+    network.set_node_positions()
+    return network
+
+
+@pytest.fixture()
+def legacy_default_game_mode_dict() -> Dict:
+    """
+    The legacy default game mode yaml file.
+
+    :returns: The path to the legacy_default_game_mode.yaml as an instance of
+        pathlib.Path.
+    """
+    filepath = TEST_PACKAGE_DATA_PATH / "legacy_default_game_mode.yaml"
+    with open(filepath, "r") as file:
+        return yaml.safe_load(file)
+
+
+@pytest.fixture(scope="function")
+def create_yawning_titan_run(network_db: NetworkDB, game_mode_db: GameModeDB):
+    """Create an initialised and setup YawningTitanRun."""
+
+    def _create_yawning_titan_run(
+        game_mode_name: str,
+        network_name: str,
+        timesteps: int = 1000,
+        eval_freq: int = 1000,
+        deterministic: bool = False,
+    ) -> YawningTitanRun:
+        network = network_db.search(DocMetadataSchema.NAME == network_name)[0]
+        game_mode = game_mode_db.search(DocMetadataSchema.NAME == game_mode_name)[0]
+
+        yt_run = YawningTitanRun(
+            network=network,
+            game_mode=game_mode,
+            collect_additional_per_ts_data=True,
+            auto=False,
+            total_timesteps=timesteps,
+            eval_freq=eval_freq,
+            deterministic=deterministic,
         )
-        temp_config_path = os.path.join(
-            tmpdir_factory.mktemp("tmp_config"), temp_config_filename
-        )
 
-        with open(temp_config_path, "w") as file:
-            yaml.dump(new_settings, file)
+        yt_run.setup()
 
-        return temp_config_path
+        return yt_run
 
-    return _temp_config_from_base
+    return _create_yawning_titan_run
 
 
 @pytest.fixture
-def init_test_env():
-    """Return a `GenericNetworkEnv`."""
-
-    def _init_test_env(
-        settings_path: str,
-        adj_matrix: np.array,
-        positions,
-        entry_nodes: List[str],
-        high_value_nodes: List[str],
-    ) -> GenericNetworkEnv:
-        """
-        Generate the test GenericEnv() and number of actions for the blue agent.
-
-        Args:
-            settings_path: A path to the environment settings file
-            adj_matrix: the adjacency matrix used for the network to defend.
-            positions: x and y co-ordinates to plot the graph in 2D space
-            entry_nodes: list of strings that dictate which nodes are entry nodes
-            high_value_nodes: list of strings that dictate which nodes are high value nodes
-
-        Returns:
-            env: An OpenAI gym environment
-        """
-        network = NetworkConfig.create_from_args(
-            matrix=adj_matrix,
-            positions=positions,
-            entry_nodes=entry_nodes,
-            high_value_nodes=high_value_nodes,
-        )
-
-        game_mode = GameModeConfig.create_from_yaml(settings_path)
-
-        network_interface = NetworkInterface(game_mode=game_mode, network=network)
-
-        red = RedInterface(network_interface)
-        blue = BlueInterface(network_interface)
-
-        env = GenericNetworkEnv(red, blue, network_interface)
-
-        check_env(env, warn=True)
-        env.reset()
-
-        return env
-
-    return _init_test_env
-
-
-@pytest.fixture
-def generate_generic_env_test_reqs(init_test_env):
-    """Return a `GenericNetworkEnv`."""
-
-    def _generate_generic_env_test_reqs(
-        settings_path: Optional[str] = default_game_mode_path(),
-        net_creator_type="mesh",
-        n_nodes: int = 10,
-        connectivity: float = 0.7,
-        entry_nodes=None,
-        high_value_nodes=None,
-    ) -> GenericNetworkEnv:
-        """
-        Generate test environment requirements.
-
-        Args:
-            settings_path: A path to the environment settings file
-            net_creator_type: The type of net creator to use to generate the underlying network
-            n_nodes: The number of nodes to create within the network
-            connectivity: The connectivity value for the mesh net creator (Only required for mesh network creator type)
-            entry_nodes: list of strings that dictate which nodes are entry nodes
-            high_value_nodes: list of strings that dictate which nodes are high value nodes
-
-        Returns:
-            env: An OpenAI gym environment
-
-        """
-        valid_net_creator_types = ["18node", "mesh"]
-        if net_creator_type not in valid_net_creator_types:
-            raise ValueError(
-                f"net_creator_type is {net_creator_type}, Must be 18_node or mesh"
-            )
-
-        if net_creator_type == "18node":
-            adj_matrix, node_positions = network_creator.create_18_node_network()
-        if net_creator_type == "mesh":
-            adj_matrix, node_positions = network_creator.create_mesh(
-                size=n_nodes, connectivity=connectivity
-            )
-
-        env = init_test_env(
-            settings_path, adj_matrix, node_positions, entry_nodes, high_value_nodes
-        )
-
-        return env
-
-    return _generate_generic_env_test_reqs
-
-
-@pytest.fixture
-def basic_2_agent_loop(
-    generate_generic_env_test_reqs, temp_config_from_base
-) -> ActionLoop:
+def basic_2_agent_loop(create_yawning_titan_run):
     """Return a basic 2-agent `ActionLoop`."""
 
     def _basic_2_agent_loop(
-        settings_path: Optional[str] = default_game_mode_path(),
-        entry_nodes=None,
-        high_value_nodes=None,
+        yt_run: YawningTitanRun = None,
         num_episodes=1,
-        custom_settings=None,
     ) -> ActionLoop:
         """Use parameterized settings to return a configured ActionLoop."""
-        if custom_settings is not None:
-            settings_path = temp_config_from_base(settings_path, custom_settings)
+        if not yt_run:
+            yt_run = create_yawning_titan_run(
+                game_mode_name="Default Game Mode",
+                network_name="Default 18-node network",
+            )
 
-        env: GenericNetworkEnv = generate_generic_env_test_reqs(
-            settings_path=settings_path,
-            net_creator_type="18node",
-            entry_nodes=entry_nodes,
-            high_value_nodes=high_value_nodes,
-        )
-
-        eval_callback = EvalCallback(
-            Monitor(env), eval_freq=1000, deterministic=False, render=False
-        )
-
-        agent = PPO(
-            PPOMlp, env, verbose=1, seed=env.network_interface.random_seed
-        )  # TODO: allow PPO to inherit environment random_seed. Monkey patch additional feature?
-
-        agent.learn(total_timesteps=1000, n_eval_episodes=100, callback=eval_callback)
-
-        return ActionLoop(env, agent, episode_count=num_episodes)
+        return ActionLoop(yt_run.env, yt_run.agent, episode_count=num_episodes)
 
     return _basic_2_agent_loop
+
+
+class Group(ConfigGroup):
+    """Basic implementation of a :class: `~yawning_titan.config.core.ConfigGroup`."""
+
+    def __init__(self, doc: Optional[str] = None):
+        self.a: BoolItem = BoolItem(value=False, alias="legacy_a")
+        self.b: FloatItem = FloatItem(value=1, alias="legacy_b")
+        self.c: StrItem = StrItem(value="test", alias="legacy_c")
+        super().__init__(doc)
+
+
+class GroupTier1(ConfigGroup):
+    """Basic implementation of a nested :class: `~yawning_titan.config.core.ConfigGroup`."""
+
+    def __init__(self, doc: Optional[str] = None):
+        self.bool: BoolItem = BoolItem(value=False)
+        self.float: FloatItem = FloatItem(value=1)
+        super().__init__(doc)
+
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
+        super().validate()
+        try:
+            if self.bool.value and self.float.value > 1:
+                msg = "test error tier 1"
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        try:
+            if self.bool.value and self.float.value < 0:
+                msg = "test error tier 1 b"
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        return self.validation
+
+
+class GroupTier2(ConfigGroup):
+    """Basic implementation of a nested :class: `~yawning_titan.config.core.ConfigGroup`."""
+
+    def __init__(self, doc: Optional[str] = None):
+        self.bool: BoolItem = BoolItem(value=False)
+        self.int: IntItem = IntItem(value=1)
+        self.tier_1: GroupTier1 = GroupTier1()
+        super().__init__(doc)
+
+    def validate(self) -> ConfigGroupValidation:
+        """Extend the parent validation with additional rules specific to this :class: `~yawning_titan.config.core.ConfigGroup`."""
+        super().validate()
+        try:
+            if self.bool.value and self.int.value != 1:
+                msg = "test error tier 2"
+                raise ConfigGroupValidationError(msg)
+        except ConfigGroupValidationError as e:
+            self.validation.add_validation(msg, e)
+        return self.validation
+
+
+@pytest.fixture
+def test_group() -> Group:
+    """A test instance of :class: `~yawning_titan.config.core.ConfigGroup`."""
+    return Group()
+
+
+@pytest.fixture
+def multi_tier_test_group() -> GroupTier2:
+    """A nested test instance of :class: `~yawning_titan.config.core.ConfigGroup`."""
+    return GroupTier2()

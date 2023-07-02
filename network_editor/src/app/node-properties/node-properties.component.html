@@ -1,0 +1,51 @@
+<mat-card class="node-properties-container">
+  <mat-card-header mat-header>
+    <mat-card-title-group>
+      <mat-card-title>Node Details</mat-card-title>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="formGroup" *ngIf="!!formGroup" class="node-properties-form">
+      <mat-form-field>
+        <mat-label>UUID</mat-label>
+        <input matInput formControlName="uuid" data-cy="node-properties-uuid-input">
+      </mat-form-field>
+      <mat-form-field hideRequiredMarker="true">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" appFocusTracking data-cy="node-properties-name-input">
+      </mat-form-field>
+      <mat-form-field hideRequiredMarker="true">
+        <mat-label>X Position</mat-label>
+        <input matInput formControlName="x_pos" appFocusTracking step="0.01" data-cy="node-properties-x-position-input">
+      </mat-form-field>
+      <mat-form-field hideRequiredMarker="true">
+        <mat-label>Y Position</mat-label>
+        <input matInput formControlName="y_pos" appFocusTracking step="0.01" data-cy="node-properties-y-position-input">
+      </mat-form-field>
+      <div class="node-properties-vulnerability-container" *ngIf="showVulnerabilitySlider()">
+        <div class="node-properties-vulnerability-label-container">
+          <p class="node-properties-vulnerability-label">Vulnerability</p>
+          <p class="node-properties-vulnerability-value">{{formGroup?.get('vulnerability')?.value}}</p>
+        </div>
+        <mat-slider min="0" max="1" step="0.001">
+          <input matSliderThumb formControlName="vulnerability" displayWith>
+        </mat-slider>
+      </div>
+      <div class="node-properties-toggle-input-container">
+        <mat-slide-toggle color="primary" formControlName="entry_node" *ngIf="showEntryNodeToggle()"
+          data-cy="node-properties-entry-node-toggle-input">
+          Entry Node
+        </mat-slide-toggle>
+        <mat-slide-toggle color="primary" formControlName="high_value_node" *ngIf="showHighValueNodeToggle()"
+          data-cy="node-properties-high-value-node-toggle-input">
+          High Value Node
+        </mat-slide-toggle>
+      </div>
+
+
+    </form>
+    <div class="node-properties-action-buttons">
+      <button mat-raised-button (click)="closeSideNav()">Close</button>
+    </div>
+  </mat-card-content>
+</mat-card>

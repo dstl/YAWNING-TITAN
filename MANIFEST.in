@@ -1,0 +1,8 @@
+include src/yawning_titan/VERSION
+include src/yawning_titan/config/_package_data/logging_config.yaml
+include src/yawning_titan/game_modes/_package_data/game_modes.json
+include src/yawning_titan/networks/_package_data/network.json
+include src/yawning_titan/notebooks/_package_data/*
+
+recursive-include src/yawning_titan_gui/static *
+recursive-include src/yawning_titan_gui/templates *

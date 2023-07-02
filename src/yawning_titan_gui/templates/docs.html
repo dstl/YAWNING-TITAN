@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tags %}
+
+{% block scripts %}
+    <script src="{% static 'js/docs.js' %}"></script>
+{% endblock %}
+
+{% block top-buttons %}
+    <a id="back" href="{% url 'Home' %}"><i class="bi bi-arrow-90deg-left"></i></a>
+{% endblock %}
+
+
+{% block main %}
+<iframe id="docs-iframe" src="{{doc_url}}"></iframe>
+{% endblock %}
+
+{% block style %}
+<style>
+    #main{
+        padding: 0;
+    }
+    iframe{
+        width: 100%;
+        height: 100%;
+    }
+</style>
+{% endblock %}

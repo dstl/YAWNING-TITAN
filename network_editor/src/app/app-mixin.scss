@@ -1,0 +1,9 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+@mixin app-mixins($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, accent);
+}

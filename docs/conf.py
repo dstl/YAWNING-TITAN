@@ -8,6 +8,8 @@
 
 # -- Path setup --------------------------------------------------------------
 
+import datetime
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -19,15 +21,16 @@ sys.path.insert(0, os.path.abspath("../"))
 
 
 # -- Project information -----------------------------------------------------
-
+year = datetime.datetime.now().year
 project = "YAWNING TITAN"
-copyright = "Crown Copyright (C) Dstl 2022"
+copyright = f"Crown Copyright (C) Dstl 2021 - {year}"
 author = "Defence Science and Technology Laboratory UK"
 
 # The short Major.Minor.Build version
-version = "1.0.1"
+with open("../src/yawning_titan/VERSION", "r") as file:
+    version = file.readline()
 # The full version, including alpha/beta/rc tags
-release = "1.0.1"
+release = version
 
 
 # -- General configuration ---------------------------------------------------
@@ -41,12 +44,13 @@ release = "1.0.1"
 # ones.
 extensions = [
     "sphinx.ext.napoleon",
-    "sphinx_rtd_theme",
     "sphinx.ext.autodoc",  # Core Sphinx library for auto html doc generation from docstrings
     "sphinx.ext.autosummary",  # Create neat summary tables for modules/classes/methods etc
     "sphinx.ext.intersphinx",  # Link to other project's documentation (see mapping below)
     "sphinx.ext.viewcode",  # Add a link to the Python source code for classes, functions etc.
     "sphinx.ext.todo",
+    "sphinx_copybutton",  # Adds a copy button to code blocks
+    "sphinx_code_tabs",  # Enables tabbed code blocks
 ]
 
 # Mappings for sphinx.ext.intersphinx. Projects have to have Sphinx-generated doc! (.inv file)
@@ -57,6 +61,7 @@ intersphinx_mapping = {
     "pandas": ("https://pandas.pydata.org/docs/", None),
     "matplotlib": ("https://matplotlib.org/stable/", None),
     "Django": ("https://docs.djangoproject.com/en/4.1/", None),
+    "tinydb": ("https://tinydb.readthedocs.io/en/latest/", None),
 }
 autosummary_generate = True  # Turn on sphinx.ext.autosummary
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
@@ -65,12 +70,14 @@ html_show_sourcelink = (
 )
 autodoc_inherit_docstrings = True  # If no docstring, inherit from base class
 set_type_checking_flag = True  # Enable 'expensive' imports for sphinx_autodoc_typehints
+autodoc_typehints = "none"
 add_module_names = True  # Remove namespaces from class/method signatures
 napoleon_google_docstring = True
 todo_include_todos = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
+
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -102,7 +109,8 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
+html_theme = "furo"
+html_title = f"{project} v{release} docs"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -213,3 +221,8 @@ autodoc_default_options = {
     "undoc-members": True,
     "exclude-members": "__weakref__",
 }
+
+
+def setup(app):
+    """Set up the necessary files needed to build the docs page."""
+    app.add_css_file("docs.css")
