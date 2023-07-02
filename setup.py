@@ -169,7 +169,7 @@ setup(
         "stable_baselines3==1.6.2",
         "tabulate==0.8.9",
         "tensorboard==2.11.0",
-        "torch==1.12.1",
+        "torch==2.0.0",
         "typing-extensions==4.4.0",
     ],
     extras_require={
