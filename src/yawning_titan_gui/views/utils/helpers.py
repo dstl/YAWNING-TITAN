@@ -100,7 +100,7 @@ class RunManager:
             "request_count": cls.counter,
         }
 
-        if cls.run_args["render"] and cls.counter > 20 and cls.process.is_alive():
+        if cls.run_args["render"] and cls.process.is_alive():
             gif_dir = glob.glob(f"{IMAGES_DIR.as_posix()}/*.gif")
             webm_dir = glob.glob(f"{VIDEOS_DIR.as_posix()}/*.webm")
 

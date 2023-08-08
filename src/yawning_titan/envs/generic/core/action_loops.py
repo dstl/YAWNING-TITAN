@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 import moviepy.editor as mp
 import pandas as pd
 
-from yawning_titan import APP_IMAGES_DIR, IMAGES_DIR
+from yawning_titan import APP_IMAGES_DIR, IMAGES_DIR, VIDEOS_DIR
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 
@@ -35,6 +35,8 @@ class ActionLoop:
             filename: The save name for the action lop
             episode_count: The number of episodes to go through
         """
+        if filename:
+            filename = uuid4()
         self.env: GenericNetworkEnv = env
         self.agent = agent
         self.filename = filename
@@ -110,6 +112,8 @@ class ActionLoop:
                 string_time = datetime.now().strftime("%d-%m-%Y_%H-%M")
                 if gif_output_directory is None:
                     gif_output_directory = IMAGES_DIR
+                if webm_output_directory is None:
+                    webm_output_directory = VIDEOS_DIR
                 gif_path = os.path.join(
                     gif_output_directory,
                     f"{self.filename}_{string_time}_{self.episode_count}.gif",
