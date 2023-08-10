@@ -139,6 +139,8 @@ class RunManager:
         # reset counts
         RunManager.gif_count = len(list(IMAGES_DIR.iterdir()))
         RunManager.webm_count = len(list(VIDEOS_DIR.iterdir()))
+        RunManager.gif_path = ""
+        RunManager.webm_path = ""
 
         cls.process = multiprocessing.Process(
             target=RunManager.run_yt,

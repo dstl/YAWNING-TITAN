@@ -151,7 +151,7 @@ function run(data) {
     $("#log-view>.inner").empty();
     $("#metric-view>.inner").empty();
 
-    if (data.get("render") == "on") {
+    if ((data.get("render_gif") == "on") || (data.get("render_webm") == "on")) {
         $("#preview-spinner-container").css({ display: "flex" });
     }
 
