@@ -141,8 +141,8 @@ function run(data) {
     $("#open-gif").hide();
     $("#open-video").hide();
 
-    if ($("#video-output")) {
-        $("#video-output").remove();
+    if ($("#preview-output")) {
+        $("#preview-output").remove();
     }
 
     isRunning = true;
@@ -225,14 +225,11 @@ function get_output() {
             // show gif only if a gif returned in the payload
             if ((res.gif && res.webm) ||
                 (!res.active && res.request_count > 50)) {
-                const gif_url = `..${res.gif}?x=${Math.random()}`
-                const webm_url = `..${res.webm}?x=${Math.random()}`
-
                 // stop polling
                 clearInterval(interval);
                 interval = null;
 
-                waitAndUpdateVideo(gif_url, webm_url)
+                waitAndUpdatePreview(res.gif, res.webm)
 
                 isRunning = false;
                 enable_run_form();
@@ -240,25 +237,45 @@ function get_output() {
         })
 }
 
-async function waitAndUpdateVideo(gif_url, webm_url, time = 5000) {
+async function waitAndUpdatePreview(gif_name, webm_name, time = 5000) {
     // remove video
-    $("#video-output").remove();
-
-    var video = document.createElement('video');
-    video.id = "video-output";
-    video.controls = true;
-    video.muted = true;
+    $("#preview-output").remove();
 
     // wait for the specified time
     await new Promise(resolve => setTimeout(resolve, time));
-    $('#action-loop-view-container').prepend(video);
-    $('#video-output').attr('src', webm_url);
 
-    $('#video-output').get(0).load();
+    const gif_url = `..${gif_name}?x=${Math.random()}`
+    const webm_url = `..${webm_name}?x=${Math.random()}`
+
+    var display = null;
+
+    // if there is a gif name, display it
+    if (gif_name) {
+        display = document.createElement('img')
+        display.id = 'preview-output'
+    }
+
+    if (webm_name) {
+        display = document.createElement('video');
+        display.id = "preview-output";
+        display.controls = true;
+        display.muted = true;
+    }
+
+    $('#action-loop-view-container').prepend(display);
     $("#preview-spinner-container").hide();
 
     $("#open-gif").attr("href", gif_url);
     $("#open-video").attr("href", webm_url);
-    $("#open-gif").show();
-    $("#open-video").show();
+
+    if (!!gif_name) {
+        $('#preview-output').attr('src', gif_url)
+        $("#open-gif").show();
+    }
+
+    if (!!webm_name) {
+        $('#preview-output').attr('src', webm_url);
+        $("#open-video").show();
+        $('#preview-output').get(0).load();
+    }
 }
