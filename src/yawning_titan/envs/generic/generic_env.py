@@ -268,7 +268,7 @@ class GenericNetworkEnv(gym.Env):
                         / self.network_interface.game_mode.game_rules.max_steps.value
                     )
                 )
-        if not done:
+        if True:  # Force this to always occur, the game cannot end
             blue_action, blue_node = self.BLUE.perform_action(action)
 
             if blue_action == "make_node_safe" or blue_action == "restore_node":

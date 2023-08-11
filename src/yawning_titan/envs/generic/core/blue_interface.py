@@ -100,6 +100,7 @@ class BlueInterface(BlueActionSet):
             The action that has been taken
             The node the action was performed on
         """
+        og_action = action  # Capture the original action
         if action >= self.get_number_of_actions():
             blue_action, blue_node = self.do_nothing()
         elif action < self.deceptive_actions:
@@ -127,7 +128,11 @@ class BlueInterface(BlueActionSet):
                     action_taken = int(action % self.number_of_actions)
 
                     blue_action, blue_node = self.action_dict[action_taken](action_node)
-
+        node_name = blue_node
+        if blue_node:
+            node_name = blue_node.name
+        # print the original action, the blue action, and the node
+        print(f"{og_action=}, {blue_action=}, {node_name=}")
         return blue_action, blue_node
 
     def get_number_of_actions(self) -> int:
