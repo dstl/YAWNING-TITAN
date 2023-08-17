@@ -38,6 +38,7 @@ Log display
 The next section is a live display of the logs produced by :class: `~yawning_titan.yawning_titan_run.YawningTitanRun`
 related to the Individual stages of the run session
 
-Gif output
+Preview output
 **********
-The next section displays the gif output produced by each iteration of the trained agent playing the game
+The next section displays the Animated GIF or WEBM video output produced after an example evaluation run.
+If both GIF and WEBM outputs are to be generated, the preview will show the video, otherwise it will show the Animated GIF if only the GIF is to be generated.
