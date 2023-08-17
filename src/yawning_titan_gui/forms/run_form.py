@@ -69,19 +69,28 @@ class RunForm(django_forms.Form):
         max_value=2,
         label="Verbosity level",
     )
-    render = django_forms.BooleanField(
+    render_gif = django_forms.BooleanField(
         widget=widgets.CheckboxInput(
             attrs={"role": "switch", "class": "inline form-check-input"}
         ),
         required=False,
-        label="Generate Preview",
-        help_text="Whether the output should render a gif and a webm video",
+        label="Generate Animated GIF",
+        help_text="Whether the output should render an animated GIF of an evaluation run",
+    )
+    render_webm = django_forms.BooleanField(
+        widget=widgets.CheckboxInput(
+            attrs={"role": "switch", "class": "inline form-check-input"}
+        ),
+        required=False,
+        label="Generate WEBM video",
+        help_text="Whether the output should render a WEBM video of an evaluation run",
     )
     num_episodes = django_forms.IntegerField(
         widget=widgets.NumberInput(attrs={"class": "inline form-control"}),
         required=False,
         help_text="The number of episodes to run",
         label="Number of episodes",
+        initial=1,
     )
 
     def __init__(self, *args, **kwargs) -> None:
@@ -104,7 +113,7 @@ class RunForm(django_forms.Form):
             f
             for f in self
             if f.id_for_label.replace("id_", "")
-            in ["render", "num_episodes", "verbose"]
+            in ["render_gif", "render_webm", "num_episodes", "verbose"]
         ]
 
     @property

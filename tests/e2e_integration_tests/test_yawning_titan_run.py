@@ -55,5 +55,18 @@ def test_rendering_an_action_loop(default_game_mode, default_network):
     webm_dir = glob.glob(f"{tmp_path}/*.webm")
 
     assert len(gif_dir) == 1
+    assert len(webm_dir) == 0
+
+    loop.gif_action_loop(
+        save_webm=True,
+        render_network=False,
+        gif_output_directory=tmp_path,
+        webm_output_directory=tmp_path,
+    )
+
+    gif_dir = glob.glob(f"{tmp_path}/*.gif")
+    webm_dir = glob.glob(f"{tmp_path}/*.webm")
+
+    assert len(gif_dir) == 1
     assert len(webm_dir) == 1
     tmp_dir.cleanup()

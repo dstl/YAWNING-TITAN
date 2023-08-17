@@ -23,7 +23,6 @@ from yawning_titan_server.settings.base import DOCS_ROOT, STATIC_URL
 class RunManager:
     """Wrapper over an instance of :class: `~yawning_titan.yawning_titan_run.YawningTitanRun` to provide helper functions to the GUI."""
 
-    gif = None
     process = None
     counter = 0
     gif_count = len(list(IMAGES_DIR.iterdir()))
@@ -71,7 +70,7 @@ class RunManager:
             if kwargs["export"]:
                 run.export()
 
-            if kwargs["render"]:
+            if kwargs["render_gif"] or kwargs["render_webm"]:
                 loop = ActionLoop(
                     env=run.env,
                     agent=run.agent,
@@ -82,7 +81,8 @@ class RunManager:
                 loop.gif_action_loop(
                     gif_output_directory=IMAGES_DIR,
                     webm_output_directory=VIDEOS_DIR,
-                    save_gif=True,
+                    save_gif=kwargs["render_gif"],
+                    save_webm=kwargs["render_webm"],
                     render_network=True
                     # TODO: fix bug where network must be rendered to get gif to be produced
                 )
@@ -100,7 +100,9 @@ class RunManager:
             "request_count": cls.counter,
         }
 
-        if cls.run_args["render"] and cls.counter > 20 and cls.process.is_alive():
+        if (
+            cls.run_args["render_gif"] or cls.run_args["render_webm"]
+        ) and cls.process.is_alive():
             gif_dir = glob.glob(f"{IMAGES_DIR.as_posix()}/*.gif")
             webm_dir = glob.glob(f"{VIDEOS_DIR.as_posix()}/*.webm")
 
@@ -134,9 +136,15 @@ class RunManager:
         # clear webm path
         cls.webm_path = ""
 
+        # reset counts
+        RunManager.gif_count = len(list(IMAGES_DIR.iterdir()))
+        RunManager.webm_count = len(list(VIDEOS_DIR.iterdir()))
+        RunManager.gif_path = ""
+        RunManager.webm_path = ""
+
         cls.process = multiprocessing.Process(
             target=RunManager.run_yt,
-            kwargs=(fkwargs),
+            kwargs=fkwargs,
         )
         cls.process.start()
 

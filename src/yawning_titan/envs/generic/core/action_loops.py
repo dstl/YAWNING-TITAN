@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 import moviepy.editor as mp
 import pandas as pd
 
-from yawning_titan import APP_IMAGES_DIR, IMAGES_DIR
+from yawning_titan import APP_IMAGES_DIR, IMAGES_DIR, VIDEOS_DIR
 from yawning_titan.envs.generic.generic_env import GenericNetworkEnv
 
 
@@ -35,6 +35,8 @@ class ActionLoop:
             filename: The save name for the action lop
             episode_count: The number of episodes to go through
         """
+        if filename is None:
+            filename = uuid4()
         self.env: GenericNetworkEnv = env
         self.agent = agent
         self.filename = filename
@@ -45,6 +47,7 @@ class ActionLoop:
         render_network=True,
         prompt_to_close=False,
         save_gif=False,
+        save_webm=False,
         deterministic=False,
         gif_output_directory: Path = None,
         webm_output_directory: Path = None,
@@ -55,11 +58,12 @@ class ActionLoop:
         Run the agent in evaluation and create a gif from episodes.
 
         Args:
-            render: Bool to toggle rendering on or off. Has a default
+            render_network: Bool to toggle rendering on or off. Has a default
                 value of True.
             prompt_to_close: Bool to toggle if the output window should
                 close immediately on loop ending
             save_gif: Bool to toggle if gif file should be saved to AppData
+            save_webm: Bool to toggle if webm file should be saved to AppData
             deterministic: Bool to toggle if the agents actions should be deterministic
             gif_output_directory: Directory where the GIF will be output
             webm_output_directory: Directory where the WEBM file will be output
@@ -91,41 +95,40 @@ class ActionLoop:
                 # logging.info(f'Observations: {obs.flatten()} Rewards:{rewards} Done:{done}')
                 # self.env.render(episode=i+1)
 
-                if save_gif:
+                if save_gif or save_webm:
                     current_name = os.path.join(
                         APP_IMAGES_DIR, f"{gif_uuid}_{current_image}.png"
                     )
                     current_image += 1
 
                     # set the size of the gif image
-                    self._get_gif_figure(current_name)
+                    self._get_render_figure(current_name)
 
                     frame_names.append(current_name)
 
                 if render_network:
                     self.env.render(*args, **kwargs)
 
+            # get current time
+            string_time = datetime.now().strftime("%d-%m-%Y_%H-%M")
+
+            generate_render_thread = []
+
+            def natural_sort_key(s, _nsre=re.compile("([0-9]+)")):
+                return [
+                    int(text) if text.isdigit() else text.lower()
+                    for text in _nsre.split(s)
+                ]
+
+            frame_names = sorted(frame_names, key=natural_sort_key)
+
             if save_gif:
-                # attach the time GIF was generated to gif name
-                string_time = datetime.now().strftime("%d-%m-%Y_%H-%M")
                 if gif_output_directory is None:
                     gif_output_directory = IMAGES_DIR
                 gif_path = os.path.join(
                     gif_output_directory,
                     f"{self.filename}_{string_time}_{self.episode_count}.gif",
                 )
-                webm_path = os.path.join(
-                    webm_output_directory,
-                    f"{self.filename}_{string_time}_{self.episode_count}.webm",
-                )
-
-                def natural_sort_key(s, _nsre=re.compile("([0-9]+)")):
-                    return [
-                        int(text) if text.isdigit() else text.lower()
-                        for text in _nsre.split(s)
-                    ]
-
-                frame_names = sorted(frame_names, key=natural_sort_key)
 
                 # gif generator thread
                 gif_thread = Thread(
@@ -135,6 +138,17 @@ class ActionLoop:
                         frame_names,
                     ),
                 )
+
+                generate_render_thread.append(gif_thread)
+
+            if save_webm:
+                if webm_output_directory is None:
+                    webm_output_directory = VIDEOS_DIR
+                webm_path = os.path.join(
+                    webm_output_directory,
+                    f"{self.filename}_{string_time}_{self.episode_count}.webm",
+                )
+
                 # video generator thread
                 video_thread = Thread(
                     target=self.generate_webm,
@@ -144,14 +158,15 @@ class ActionLoop:
                     ),
                 )
 
-                # start threads
-                video_thread.start()
-                gif_thread.start()
+                generate_render_thread.append(video_thread)
 
-                # join threads
-                video_thread.join()
-                gif_thread.join()
+            # if any threads were added to generate threads list, run them
+            if len(generate_render_thread):
+                for thread in generate_render_thread:
+                    thread.start()
+                    thread.join()
 
+                # clean up once done
                 self.render_cleanup(frame_names)
 
             complete_results.append(results)
@@ -193,7 +208,7 @@ class ActionLoop:
                     break
 
     @classmethod
-    def _get_gif_figure(cls, gif_name: string) -> Any:
+    def _get_render_figure(cls, gif_name: string) -> Any:
         fig = plt.gcf()
         # save the current image
         plt.savefig(gif_name, bbox_inches="tight", dpi=100)
