@@ -214,3 +214,7 @@ If you would like to include a citation for **YT** in your work, please cite the
 # License
 
 YAWNING-TITAN is released under MIT license. Please see [LICENSE](LICENSE) for details.
+
+# Related Environments
+
+You may also wish to explore the PrimAITE environment, an effective simulation capability for the purposes of training and evaluating AI in a cyber-defensive role: https://github.com/Autonomous-Resilient-Cyber-Defence/PrimAITE
