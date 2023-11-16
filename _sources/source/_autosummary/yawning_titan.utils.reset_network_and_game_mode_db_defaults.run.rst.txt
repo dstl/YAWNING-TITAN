@@ -1,0 +1,6 @@
+yawning\_titan.utils.reset\_network\_and\_game\_mode\_db\_defaults.run
+======================================================================
+
+.. currentmodule:: yawning_titan.utils.reset_network_and_game_mode_db_defaults
+
+.. autofunction:: run

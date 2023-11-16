@@ -1,0 +1,34 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.utils.old\_installation\_clean\_up
+=================================================
+
+.. automodule:: yawning_titan.utils.old_installation_clean_up
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      run
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

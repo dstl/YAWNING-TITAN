@@ -1,0 +1,38 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.db.schemas.BlueActionSetSchema
+=============================================
+
+.. currentmodule:: yawning_titan.db.schemas
+
+.. autoclass:: BlueActionSetSchema
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BlueActionSetSchema.DO_NOTHING
+      ~BlueActionSetSchema.ISOLATE_NODE
+      ~BlueActionSetSchema.RECONNECT_NODE
+      ~BlueActionSetSchema.REDUCE_VULNERABILITY
+      ~BlueActionSetSchema.RESTORE_NODE
+      ~BlueActionSetSchema.SCAN
+   
+   

@@ -1,0 +1,44 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.game\_modes.components.red\_agent.Red
+====================================================
+
+.. currentmodule:: yawning_titan.game_modes.components.red_agent
+
+.. autoclass:: Red
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~Red.get_config_elements
+      ~Red.get_non_config_elements
+      ~Red.set_from_dict
+      ~Red.set_from_yaml
+      ~Red.stringify
+      ~Red.to_dict
+      ~Red.to_legacy_dict
+      ~Red.to_yaml
+      ~Red.validate
+      ~Red.validate_elements
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Red.config_groups
+      ~Red.config_items
+   
+   

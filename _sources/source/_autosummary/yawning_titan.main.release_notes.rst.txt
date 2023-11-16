@@ -1,0 +1,6 @@
+yawning\_titan.main.release\_notes
+==================================
+
+.. currentmodule:: yawning_titan.main
+
+.. autofunction:: release_notes

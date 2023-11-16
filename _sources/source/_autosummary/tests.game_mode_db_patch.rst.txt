@@ -1,0 +1,34 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+tests.game\_mode\_db\_patch
+===========================
+
+.. automodule:: tests.game_mode_db_patch
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      game_mode_db_init_patch
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

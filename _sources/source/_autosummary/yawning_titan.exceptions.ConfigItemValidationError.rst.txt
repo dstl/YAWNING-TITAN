@@ -1,0 +1,6 @@
+yawning\_titan.exceptions.ConfigItemValidationError
+===================================================
+
+.. currentmodule:: yawning_titan.exceptions
+
+.. autoexception:: ConfigItemValidationError

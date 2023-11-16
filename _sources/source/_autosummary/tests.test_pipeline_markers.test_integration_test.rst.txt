@@ -1,0 +1,6 @@
+tests.test\_pipeline\_markers.test\_integration\_test
+=====================================================
+
+.. currentmodule:: tests.test_pipeline_markers
+
+.. autofunction:: test_integration_test

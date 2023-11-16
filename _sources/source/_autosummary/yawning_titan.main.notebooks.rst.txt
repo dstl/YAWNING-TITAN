@@ -1,0 +1,6 @@
+yawning\_titan.main.notebooks
+=============================
+
+.. currentmodule:: yawning_titan.main
+
+.. autofunction:: notebooks

@@ -1,0 +1,6 @@
+tests.integration\_tests.test\_network\_interface.test\_network\_interface
+==========================================================================
+
+.. currentmodule:: tests.integration_tests.test_network_interface
+
+.. autofunction:: test_network_interface

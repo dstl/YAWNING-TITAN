@@ -1,0 +1,6 @@
+yawning\_titan.utils.setup\_app\_dirs.run
+=========================================
+
+.. currentmodule:: yawning_titan.utils.setup_app_dirs
+
+.. autofunction:: run

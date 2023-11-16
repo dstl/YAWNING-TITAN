@@ -1,0 +1,37 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.config.core.ConfigBase
+=====================================
+
+.. currentmodule:: yawning_titan.config.core
+
+.. autoclass:: ConfigBase
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ConfigBase.get_config_elements
+      ~ConfigBase.get_non_config_elements
+      ~ConfigBase.stringify
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ConfigBase.config_groups
+      ~ConfigBase.config_items
+   
+   

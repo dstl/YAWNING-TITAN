@@ -1,0 +1,6 @@
+tests.unit\_tests.network.test\_network.test\_reset\_high\_value\_nodes\_randomly
+=================================================================================
+
+.. currentmodule:: tests.unit_tests.network.test_network
+
+.. autofunction:: test_reset_high_value_nodes_randomly

@@ -1,0 +1,29 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.networks.network.RandomEntryNodePreference
+=========================================================
+
+.. currentmodule:: yawning_titan.networks.network
+
+.. autoclass:: RandomEntryNodePreference
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RandomEntryNodePreference.CENTRAL
+      ~RandomEntryNodePreference.EDGE
+      ~RandomEntryNodePreference.NONE
+   
+   

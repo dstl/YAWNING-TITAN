@@ -1,0 +1,36 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.utils
+====================
+
+.. automodule:: yawning_titan.utils
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   yawning_titan.utils.old_installation_clean_up
+   yawning_titan.utils.reset_default_notebooks
+   yawning_titan.utils.reset_network_and_game_mode_db_defaults
+   yawning_titan.utils.setup_app_dirs
+

@@ -1,0 +1,6 @@
+yawning\_titan.main.docs
+========================
+
+.. currentmodule:: yawning_titan.main
+
+.. autofunction:: docs

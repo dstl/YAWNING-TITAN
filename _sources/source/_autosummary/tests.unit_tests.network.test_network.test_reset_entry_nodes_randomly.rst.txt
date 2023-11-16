@@ -1,0 +1,6 @@
+tests.unit\_tests.network.test\_network.test\_reset\_entry\_nodes\_randomly
+===========================================================================
+
+.. currentmodule:: tests.unit_tests.network.test_network
+
+.. autofunction:: test_reset_entry_nodes_randomly

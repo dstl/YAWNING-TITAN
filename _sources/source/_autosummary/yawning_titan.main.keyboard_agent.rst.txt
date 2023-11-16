@@ -1,0 +1,6 @@
+yawning\_titan.main.keyboard\_agent
+===================================
+
+.. currentmodule:: yawning_titan.main
+
+.. autofunction:: keyboard_agent

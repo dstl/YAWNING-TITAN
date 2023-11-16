@@ -1,0 +1,6 @@
+yawning\_titan.main.version
+===========================
+
+.. currentmodule:: yawning_titan.main
+
+.. autofunction:: version

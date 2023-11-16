@@ -1,0 +1,6 @@
+yawning\_titan.VIDEOS\_DIR
+==========================
+
+.. currentmodule:: yawning_titan
+
+.. autodata:: VIDEOS_DIR

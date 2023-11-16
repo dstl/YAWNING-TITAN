@@ -1,0 +1,6 @@
+yawning\_titan.main.build\_dirs
+===============================
+
+.. currentmodule:: yawning_titan.main
+
+.. autofunction:: build_dirs

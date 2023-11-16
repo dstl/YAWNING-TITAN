@@ -1,0 +1,6 @@
+tests.game\_mode\_db\_patch.game\_mode\_db\_init\_patch
+=======================================================
+
+.. currentmodule:: tests.game_mode_db_patch
+
+.. autofunction:: game_mode_db_init_patch

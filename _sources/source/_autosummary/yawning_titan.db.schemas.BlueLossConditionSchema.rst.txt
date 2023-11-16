@@ -1,0 +1,35 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.db.schemas.BlueLossConditionSchema
+=================================================
+
+.. currentmodule:: yawning_titan.db.schemas
+
+.. autoclass:: BlueLossConditionSchema
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BlueLossConditionSchema.ALL_NODES_LOST
+      ~BlueLossConditionSchema.HIGH_VALUE_NODE_LOST
+      ~BlueLossConditionSchema.TARGET_NODE_LOST
+   
+   

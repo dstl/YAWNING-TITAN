@@ -1,0 +1,6 @@
+yawning\_titan.utils.reset\_default\_notebooks.run
+==================================================
+
+.. currentmodule:: yawning_titan.utils.reset_default_notebooks
+
+.. autofunction:: run

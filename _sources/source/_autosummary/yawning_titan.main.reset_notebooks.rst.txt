@@ -1,0 +1,6 @@
+yawning\_titan.main.reset\_notebooks
+====================================
+
+.. currentmodule:: yawning_titan.main
+
+.. autofunction:: reset_notebooks

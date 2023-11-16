@@ -1,0 +1,6 @@
+yawning\_titan.main.setup
+=========================
+
+.. currentmodule:: yawning_titan.main
+
+.. autofunction:: setup

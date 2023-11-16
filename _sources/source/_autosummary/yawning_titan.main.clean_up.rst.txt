@@ -1,0 +1,6 @@
+yawning\_titan.main.clean\_up
+=============================
+
+.. currentmodule:: yawning_titan.main
+
+.. autofunction:: clean_up

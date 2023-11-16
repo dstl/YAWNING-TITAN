@@ -1,0 +1,6 @@
+tests.integration\_tests.generic\_env.test\_graph\_embedding\_observations.test\_obs\_size
+==========================================================================================
+
+.. currentmodule:: tests.integration_tests.generic_env.test_graph_embedding_observations
+
+.. autofunction:: test_obs_size

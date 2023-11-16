@@ -1,0 +1,6 @@
+tests.network\_db\_patch.network\_db\_init\_patch
+=================================================
+
+.. currentmodule:: tests.network_db_patch
+
+.. autofunction:: network_db_init_patch

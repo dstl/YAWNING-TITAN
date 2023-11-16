@@ -1,0 +1,6 @@
+yawning\_titan.main.logs
+========================
+
+.. currentmodule:: yawning_titan.main
+
+.. autofunction:: logs

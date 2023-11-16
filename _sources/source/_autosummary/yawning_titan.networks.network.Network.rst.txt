@@ -1,0 +1,98 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.networks.network.Network
+=======================================
+
+.. currentmodule:: yawning_titan.networks.network
+
+.. autoclass:: Network
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~Network.add_edge
+      ~Network.add_edges_from
+      ~Network.add_edges_from_dict
+      ~Network.add_node
+      ~Network.add_nodes_from
+      ~Network.add_nodes_from_dict
+      ~Network.add_weighted_edges_from
+      ~Network.adjacency
+      ~Network.clear
+      ~Network.clear_edges
+      ~Network.clear_special_nodes
+      ~Network.copy
+      ~Network.create
+      ~Network.edge_subgraph
+      ~Network.get_edge_data
+      ~Network.get_node_from_name
+      ~Network.get_node_from_uuid
+      ~Network.get_nodes
+      ~Network.has_edge
+      ~Network.has_node
+      ~Network.is_directed
+      ~Network.is_multigraph
+      ~Network.nbunch_iter
+      ~Network.neighbors
+      ~Network.number_of_edges
+      ~Network.number_of_nodes
+      ~Network.order
+      ~Network.remove_edge
+      ~Network.remove_edges_from
+      ~Network.remove_node
+      ~Network.remove_nodes_from
+      ~Network.reset
+      ~Network.reset_random_entry_nodes
+      ~Network.reset_random_high_value_nodes
+      ~Network.reset_random_vulnerabilities
+      ~Network.set_from_dict
+      ~Network.set_node_positions
+      ~Network.show
+      ~Network.size
+      ~Network.subgraph
+      ~Network.to_adj_matrix_and_positions
+      ~Network.to_dict
+      ~Network.to_directed
+      ~Network.to_directed_class
+      ~Network.to_undirected
+      ~Network.to_undirected_class
+      ~Network.update
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Network.adj
+      ~Network.deceptive_nodes
+      ~Network.degree
+      ~Network.doc_metadata
+      ~Network.edges
+      ~Network.entry_nodes
+      ~Network.high_value_nodes
+      ~Network.name
+      ~Network.node_vulnerability_lower_bound
+      ~Network.nodes
+      ~Network.num_possible_high_value_nodes
+      ~Network.set_random_entry_nodes
+      ~Network.random_entry_node_preference
+      ~Network.num_of_random_entry_nodes
+      ~Network.set_random_high_value_nodes
+      ~Network.random_high_value_node_preference
+      ~Network.num_of_random_high_value_nodes
+      ~Network.set_random_vulnerabilities
+      ~Network.node_vulnerability_upper_bound
+   
+   

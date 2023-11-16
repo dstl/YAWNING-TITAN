@@ -1,0 +1,43 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.game\_modes.components.red\_agent
+================================================
+
+.. automodule:: yawning_titan.game_modes.components.red_agent
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      AttackSourceGroup
+      NaturalSpreadChanceGroup
+      Red
+      RedActionSetGroup
+      RedAgentAttackGroup
+      RedNaturalSpreadingGroup
+      RedTargetMechanismGroup
+      TargetNodeGroup
+      ZeroDayGroup
+   
+   
+
+   
+   
+   
+
+
+

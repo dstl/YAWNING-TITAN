@@ -1,0 +1,6 @@
+yawning\_titan.game\_modes.game\_mode\_db.dcbo\_game\_mode
+==========================================================
+
+.. currentmodule:: yawning_titan.game_modes.game_mode_db
+
+.. autofunction:: dcbo_game_mode

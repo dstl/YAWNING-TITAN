@@ -1,0 +1,44 @@
+..
+    Credit to https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion for the custom templates.
+..
+yawning\_titan.game\_modes.components.blue\_agent.BlueActionSetGroup
+====================================================================
+
+.. currentmodule:: yawning_titan.game_modes.components.blue_agent
+
+.. autoclass:: BlueActionSetGroup
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BlueActionSetGroup.get_config_elements
+      ~BlueActionSetGroup.get_non_config_elements
+      ~BlueActionSetGroup.set_from_dict
+      ~BlueActionSetGroup.set_from_yaml
+      ~BlueActionSetGroup.stringify
+      ~BlueActionSetGroup.to_dict
+      ~BlueActionSetGroup.to_legacy_dict
+      ~BlueActionSetGroup.to_yaml
+      ~BlueActionSetGroup.validate
+      ~BlueActionSetGroup.validate_elements
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BlueActionSetGroup.config_groups
+      ~BlueActionSetGroup.config_items
+   
+   

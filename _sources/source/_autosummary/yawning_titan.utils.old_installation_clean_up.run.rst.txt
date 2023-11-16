@@ -1,0 +1,6 @@
+yawning\_titan.utils.old\_installation\_clean\_up.run
+=====================================================
+
+.. currentmodule:: yawning_titan.utils.old_installation_clean_up
+
+.. autofunction:: run

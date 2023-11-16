@@ -1,0 +1,6 @@
+tests.unit\_tests.config.groups.test\_restrict\_range\_group.test\_restrict\_range\_not\_used
+=============================================================================================
+
+.. currentmodule:: tests.unit_tests.config.groups.test_restrict_range_group
+
+.. autofunction:: test_restrict_range_not_used
